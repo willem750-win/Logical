@@ -72,6 +72,13 @@ De help in `Resultaat/help` wordt gemaakt uit `helpsrc`:
 powershell -ExecutionPolicy Bypass -File projects\LogicCEF\helpsrc\make-help.ps1
 ```
 
+## Met dank aan
+
+De `jan*`-componenten (`janSimLogic`, `janLed`, `janToggle`, `janSimIndicator`,
+`janSimPID`, `janSimPIDLinker`, `janSimScope`) zijn gebaseerd op de freeware-componenten
+van **Jan Verhoeven**. Ze zijn omgezet naar Lazarus en sterk uitgebreid
+(teller, geheugen, display, panelen, meertaligheid, Linux ...).
+
 ## Licentie
 
 MIT, zie [LICENSE](LICENSE). Uitzondering: `SZCodeBaseX.pas` (Sasa Zeman)
@@ -91,5 +98,8 @@ To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows, needs CEF4Delphi and the matching CEF
 binaries copied into `projects/LogicCEF/Resultaat/`) or `Linux/logic.lpi`.
 Generate the help with `projects/LogicCEF/helpsrc/make-help.ps1`.
+
+The `jan*` components are based on the freeware components by Jan Verhoeven,
+ported to Lazarus and extended.
 
 License: MIT, see [LICENSE](LICENSE), except `SZCodeBaseX.pas` (MPL 1.1).
