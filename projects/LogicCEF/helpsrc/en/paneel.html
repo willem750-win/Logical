@@ -1,0 +1,68 @@
+<!-- titel: Panel & grid -->
+  <h1 id="raster">Panel &amp; grid</h1>
+  <p class="lead">The panel is the work area on which you build the circuit. It has a grid,
+  rulers and a title, and you can save it and open it again later.</p>
+
+  <h2>Grid and rulers</h2>
+  <p>The grid helps you line up components neatly. While you drag an object it snaps magnetically
+  to the rulers, so components easily end up in line.</p>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What does it do?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-raster.png" alt=""></td><td class="name">Grid</td><td>Shows or hides the grid. More options (colour, spacing) are in <a href="instellingen.html">Settings</a>.</td></tr>
+    <tr id="richtlijnen"><td class="btn"><img src="../img/knop-richtlijnen.png" alt=""></td><td class="name">Guide lines</td><td>Helper lines through the centre of the object while you drag it.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-kader.png" alt=""></td><td class="name">Frame</td><td>Draws a frame around object(s). See below.</td></tr>
+    <tr id="titel"><td class="btn"><img src="../img/knop-titel.png" alt=""></td><td class="name">Change title</td><td>Asks for a new title for the panel.</td></tr>
+  </table>
+
+  <h2 id="kader">Frames</h2>
+  <p>A frame groups components that belong together, for example &ldquo;Inputs&rdquo; or
+  &ldquo;Counter&rdquo;. A frame has a caption and a colour.</p>
+  <ol class="steps">
+    <li>Click <img src="../img/knop-kader.png" class="ico" alt=""><b>Frame</b>.</li>
+    <li>Drag a rectangle on the panel around the object(s).</li>
+  </ol>
+  <p>Afterwards you can drag the frame and resize it with the grips on the corners.
+  Right-click a frame for its menu:</p>
+  <table>
+    <tr><th>Menu item</th><th>What does it do?</th></tr>
+    <tr><td class="name">Change caption</td><td>Gives the frame a different caption.</td></tr>
+    <tr><td class="name">Color blue / red / green</td><td>Changes the colour of the border.</td></tr>
+    <tr><td class="name">Delete frame</td><td>Deletes the frame. The components inside it stay.</td></tr>
+  </table>
+
+  <h2 id="paneelkeuze">Panel choice</h2>
+  <p>With <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Panel choice</b> you start a new panel.
+  The current panel is cleared; save it first if you want to keep it. The menu items have Dutch names.</p>
+  <dl class="parts">
+    <dt>New standard panel (<i>Nieuw standaardpaneel</i>)</dt>
+    <dd>An empty panel to build your own circuit.</dd>
+
+    <dt id="beslissen">Decision panel (<i>Beslissingspaneel</i>)</dt>
+    <dd>A practice panel for making a decision with logic gates. Ready on the panel are:
+      <ul>
+        <li>inputs: a push button, a switch, a light sensor and a heat sensor;</li>
+        <li>processing: an AND gate, an OR gate and a NOT gate;</li>
+        <li>outputs: a lamp, a relay and a buzzer.</li>
+      </ul>
+      There are no wires yet: you decide how to connect them. For example: the buzzer sounds
+      when it is warm <b>and</b> the switch is on.</dd>
+
+    <dt id="tellerpaneel">Counter panel (<i>Tellerpaneel</i>)</dt>
+    <dd>A working counter example. A pulse generator and a push button supply the counting pulses,
+      a second push button resets the counter to 0, and a display shows the count.
+      The wires are already in place: start the simulation and the pulse generator.</dd>
+
+    <dt id="geheugenpaneel">Memory panel (<i>Geheugenpaneel</i>)</dt>
+    <dd>A working memory example. A counter with push buttons chooses the address, a DIP switch
+      writes a number into it, and two displays show the address and the content.
+      Set a number on the DIP switch and press its button to store it; then count on and come
+      back to read it again.</dd>
+  </dl>
+
+  <h2 id="opslaan">Open and save</h2>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What does it do?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-opslaan.png" alt=""></td><td class="name">Save panel</td><td>Saves all components, wires and their settings in a <code>.lpl</code> file. By default in the <code>panels</code> folder next to the program.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-openen.png" alt=""></td><td class="name">Open panel</td><td>Loads a saved panel. The current panel is replaced.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-schermkopie.png" alt=""></td><td class="name">Screen copy</td><td>Copies a picture of the panel to the clipboard.</td></tr>
+  </table>

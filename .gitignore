@@ -1,0 +1,27 @@
+# Lazarus/FPC build-uitvoer
+lib/
+backup/
+ConverterBackup/
+*.o
+*.ppu
+*.compiled
+*.a
+*.exe
+*.dbg
+*.lps
+*.bak
+*.log
+link*.res
+
+# Linux-binaries (zonder extensie)
+Linux/logic
+Linux/project1
+
+# LogicCEF: uitvoermap bevat exe, CEF-runtime, cache en gegenereerde help.
+# Alleen de echte data bijhouden.
+projects/LogicCEF/Resultaat/*
+!projects/LogicCEF/Resultaat/panels/
+!projects/LogicCEF/Resultaat/ini/
+!projects/LogicCEF/Resultaat/html/
+!projects/LogicCEF/Resultaat/ImmoSetup/
+!projects/LogicCEF/Resultaat/help-oud/

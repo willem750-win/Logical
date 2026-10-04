@@ -1,0 +1,13 @@
+TjanSimLight;23;620;284;69;
+TjanSimRelais;62;620;169;80;
+TjanSimKnop;50;145;140;51;
+TjanSimBuzzer;44;620;90;80;
+TjanSimSensor;32;140;220;58;
+TjanSimWarm;32;140;290;58;
+TjanLogic;68;380;EN;65;100;
+TjanLogic;68;380;NIET;265;100;
+TjanLogic;68;380;OF;165;100;
+TjanSimButton;32;140;80;58;
+Paneelkleur;12639424;
+Dotkleur;8421504;
+Grid;True;

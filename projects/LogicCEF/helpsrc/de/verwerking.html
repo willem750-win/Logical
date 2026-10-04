@@ -1,0 +1,63 @@
+<!-- titel: Verarbeitung -->
+  <h1>Verarbeitung</h1>
+  <p class="lead">Verarbeitungsbauteile nehmen Signale von den Eingängen, verarbeiten sie und geben das Ergebnis
+  an die Ausgänge weiter.</p>
+
+  <h2 id="poorten">Logikgatter</h2>
+  <p>Ein Gatter hat <span class="pin in">Eingänge</span> links und einen <span class="pin out">Ausgang</span> rechts.
+  Die Symbole im Programm tragen die niederländischen Namen EN (UND), OF (ODER) und NIET (NICHT).</p>
+
+  <h3 id="en"><img src="../img/pal-en.png" class="ico" alt="">UND-Gatter</h3>
+  <p>Der Ausgang ist nur ein, wenn <b>beide</b> Eingänge ein sind.</p>
+  <table>
+    <tr><th>Eingang A1</th><th>Eingang A2</th><th>Ausgang A</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="of"><img src="../img/pal-of.png" class="ico" alt="">ODER-Gatter</h3>
+  <p>Der Ausgang ist ein, wenn <b>mindestens ein</b> Eingang ein ist.</p>
+  <table>
+    <tr><th>Eingang O1</th><th>Eingang O2</th><th>Ausgang O</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="niet"><img src="../img/pal-niet.png" class="ico" alt="">NICHT-Gatter</h3>
+  <p>Ein Eingang; der Ausgang ist das Gegenteil des Eingangs.</p>
+  <table>
+    <tr><th>Eingang N1</th><th>Ausgang N</th></tr>
+    <tr><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td></tr>
+  </table>
+  <div class="tip"><strong>Tipp:</strong> Durch Kombinieren von Gattern bauen Sie jede logische Funktion,
+  zum Beispiel ein NICHT-Gatter hinter einem UND-Gatter (eine NAND-Funktion).</div>
+
+  <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Zählerbaustein</h2>
+  <p>Zählt die Impulse an seinem Zähleingang und gibt den Stand binär an vier Ausgängen weiter.</p>
+  <table>
+    <tr><th>Anschluss</th><th>Bedeutung</th></tr>
+    <tr><td><span class="pin in">Te</span></td><td>Zähleingang: Jeder Impuls zählt den Zähler einen Schritt weiter.</td></tr>
+    <tr><td><span class="pin in">Re</span></td><td>Reset: setzt den Zähler auf 0 zurück.</td></tr>
+    <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Der Zählerstand als Binärzahl (0 bis 15).</td></tr>
+  </table>
+  <p>Verbinden Sie die Ausgänge mit Lampen oder einer <a href="uitvoer.html#display">Anzeige</a>, um den Stand zu sehen.
+  Ein <a href="invoer.html#drukknop">Taster</a> oder <a href="invoer.html#puls">Impulsgeber</a> am Zähleingang
+  lässt den Zähler laufen.</p>
+
+  <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Speicherbaustein</h2>
+  <p>Ein Speicher mit 32 Speicherplätzen (Adresse 0 bis 31). Jeder Platz speichert eine Zahl von 0 bis 15.
+  Beim Platzieren steht überall 0.</p>
+  <table>
+    <tr><th>Anschluss</th><th>Bedeutung</th></tr>
+    <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Adresseingänge oben: wählen den Speicherplatz binär.</td></tr>
+    <tr><td>Knopf A16</td><td>Der Knopf oben links addiert 16 zur Adresse, für die Plätze 16 bis 31. Die gewählte Adresse steht im Baustein (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td><span class="pin in">Schreiben</span></td><td>Schreibeingang links: Verbinden Sie hier einen <a href="invoer.html#dipswitch">DIP-Schalter</a>. Drücken Sie den Knopf des DIP-Schalters, wird seine Zahl an der gewählten Adresse gespeichert.</td></tr>
+    <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Der Inhalt des gewählten Speicherplatzes als Binärzahl, unten.</td></tr>
+  </table>
+  <p>Das <a href="paneel.html#paneelkeuze">Speicherpanel</a> zeigt ein ausgearbeitetes Beispiel mit einem Zähler
+  als Adresse und Anzeigen für Adresse und Inhalt.</p>

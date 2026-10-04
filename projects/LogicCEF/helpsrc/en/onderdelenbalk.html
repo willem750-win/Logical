@@ -1,0 +1,56 @@
+<!-- titel: Component bar -->
+  <h1 id="logicbox">Component bar</h1>
+  <p class="lead">The component bar is on the left of the panel. Choose a component there and
+  then place it with a click on the panel.</p>
+
+  <h2>Placing a component</h2>
+  <ol class="steps">
+    <li>Click the component in the component bar. The mouse pointer takes the shape of that component.</li>
+    <li>Click on the panel where the component should go.</li>
+    <li>Then drag it to a better place if you like.</li>
+  </ol>
+  <div class="tip"><strong>Tip:</strong> hold the mouse over a button in the component bar to see which component it is.</div>
+
+  <h2>Layout</h2>
+  <p>The components are divided into three groups, from left to right in a circuit:
+  input &rarr; processing &rarr; output.</p>
+
+  <h3>Connecting</h3>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What does it do?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-verbinding.png" alt=""></td><td class="name">Connection</td><td>Turns wire mode on or off. See <a href="verbindingen.html">Connections</a>.</td></tr>
+  </table>
+
+  <h3>Inputs</h3>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-drukknop.png" alt=""></td><td class="name"><a href="invoer.html#drukknop">Push button</a></td><td>Gives a signal as long as you hold it down.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar.png" alt=""></td><td class="name"><a href="invoer.html#schakelaar">Switch</a></td><td>Stays on or off until you click again.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dipschakelaar.png" alt=""></td><td class="name"><a href="invoer.html#dipswitch">DIP switch</a></td><td>Set a number from 0 to 15 and send it with a button.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls.png" alt=""></td><td class="name"><a href="invoer.html#puls">Pulse generator</a></td><td>Gives a pulse at regular intervals.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lichtsensor.png" alt=""></td><td class="name"><a href="invoer.html#sensor">Light sensor</a></td><td>Reacts to light.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-warmtesensor.png" alt=""></td><td class="name"><a href="invoer.html#warm">Heat sensor</a></td><td>Reacts to heat.</td></tr>
+  </table>
+
+  <h3>Processing</h3>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-en.png" alt=""></td><td class="name"><a href="verwerking.html#en">AND gate</a></td><td>Output on when all inputs are on.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-of.png" alt=""></td><td class="name"><a href="verwerking.html#of">OR gate</a></td><td>Output on when at least one input is on.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-niet.png" alt=""></td><td class="name"><a href="verwerking.html#niet">NOT gate</a></td><td>Inverts the signal.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-teller.png" alt=""></td><td class="name"><a href="verwerking.html#teller">Counter block</a></td><td>Counts pulses and passes the count on in binary.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-geheugen.png" alt=""></td><td class="name"><a href="verwerking.html#geheugen">Memory block</a></td><td>Passes on the content of a chosen memory location.</td></tr>
+  </table>
+
+  <h3>Outputs</h3>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp.png" alt=""></td><td class="name"><a href="uitvoer.html#lamp">Lamp</a></td><td>Lights when the input is on.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais.png" alt=""></td><td class="name"><a href="uitvoer.html#relais">Relay</a></td><td>Shows how a contact switches over when the coil is energised.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer.png" alt=""></td><td class="name"><a href="uitvoer.html#zoemer">Buzzer</a></td><td>Sounds when the input is on.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-display.png" alt=""></td><td class="name"><a href="uitvoer.html#display">7-segment display</a></td><td>Shows a digit or letter.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-meter.png" alt=""></td><td class="name"><a href="uitvoer.html#meter">Meter</a></td><td>Voltmeter: shows 0 V or 5 V.</td></tr>
+  </table>
+
+  <div class="tip"><strong>Note:</strong> which components appear in the bar can be set in
+  <a href="instellingen.html">Settings</a> (tab Switch Elements). If a component is missing, look there.</div>

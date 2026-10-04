@@ -1,0 +1,36 @@
+<!-- titel: Uitvoer -->
+  <h1>Uitvoer</h1>
+  <p class="lead">Uitvoeronderdelen tonen het resultaat van de schakeling. Ze hebben een of meer
+  <span class="pin in">ingangen</span> links, waar je de draden van de verwerking op aansluit.</p>
+
+  <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lamp</h2>
+  <p>Brandt zolang de ingang aan is.</p>
+
+  <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relais</h2>
+  <p>Een relais is een schakelaar die door een elektromagneet bediend wordt. Links zit de ingang
+  <b>R</b> naar de spoel, rechts het omschakelcontact met de aansluitingen <b>R1</b> (boven) en
+  <b>R2</b> (onder).</p>
+  <ul>
+    <li>Ingang uit: de spoel is niet bekrachtigd en het contact staat in rust.</li>
+    <li>Ingang aan: de spoel wordt bekrachtigd, de rode led wordt groen en het contact schakelt om.</li>
+  </ul>
+  <p>Het relais toont zo hoe een klein stuursignaal een contact omzet. R1 en R2 zijn alleen
+  aanduidingen op het symbool: je kunt er geen draad op aansluiten.</p>
+
+  <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Zoemer</h2>
+  <p>Gaat af zolang de ingang aan is. Handig als alarm.</p>
+
+  <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segmentdisplay</h2>
+  <p>Het display heeft één ingang. Wat het toont, hangt af van wat je erop aansluit:</p>
+  <ul>
+    <li>de display-uitgang van een <a href="verwerking.html#teller">teller</a> of een
+      <a href="verwerking.html#geheugen">geheugen</a>: de waarde als cijfer of letter, 0 tot 9 en daarna A tot F;</li>
+    <li>elke andere uitgang (drukknop, schakelaar, poort, sensor...): <b>1</b> als de uitgang aan is,
+      <b>0</b> als ze uit is.</li>
+  </ul>
+
+  <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Meter</h2>
+  <p>Een voltmeter met twee meetingangen: <b>+</b> links en <b>&minus;</b> rechts. Het venster toont
+  <b>5&nbsp;V</b> als op beide ingangen een signaal staat (beide aan), en anders <b>0&nbsp;V</b>.</p>
+  <p>De meter heeft ook een uitgang: die is aan wanneer de meter 5&nbsp;V aangeeft, zodat je het
+  resultaat kunt doorgeven aan een volgend onderdeel.</p>

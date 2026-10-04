@@ -1,0 +1,63 @@
+<!-- titel: Traitement -->
+  <h1>Traitement</h1>
+  <p class="lead">Les composants de traitement prennent les signaux des entrées, les traitent et transmettent
+  le résultat aux sorties.</p>
+
+  <h2 id="poorten">Portes logiques</h2>
+  <p>Une porte a des <span class="pin in">entrées</span> à gauche et une <span class="pin out">sortie</span> à droite.
+  Les symboles du programme portent les noms néerlandais EN (ET), OF (OU) et NIET (NON).</p>
+
+  <h3 id="en"><img src="../img/pal-en.png" class="ico" alt="">Porte ET</h3>
+  <p>La sortie n&rsquo;est active que si les <b>deux</b> entrées sont actives.</p>
+  <table>
+    <tr><th>Entrée A1</th><th>Entrée A2</th><th>Sortie A</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="of"><img src="../img/pal-of.png" class="ico" alt="">Porte OU</h3>
+  <p>La sortie est active si <b>au moins une</b> entrée est active.</p>
+  <table>
+    <tr><th>Entrée O1</th><th>Entrée O2</th><th>Sortie O</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="niet"><img src="../img/pal-niet.png" class="ico" alt="">Porte NON</h3>
+  <p>Une seule entrée&nbsp;; la sortie est l&rsquo;inverse de l&rsquo;entrée.</p>
+  <table>
+    <tr><th>Entrée N1</th><th>Sortie N</th></tr>
+    <tr><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td></tr>
+  </table>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> en combinant des portes, vous réalisez n&rsquo;importe quelle fonction logique,
+  par exemple une porte NON après une porte ET (une fonction NON-ET).</div>
+
+  <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Bloc compteur</h2>
+  <p>Compte les impulsions sur son entrée de comptage et transmet la valeur en binaire sur quatre sorties.</p>
+  <table>
+    <tr><th>Connexion</th><th>Signification</th></tr>
+    <tr><td><span class="pin in">Te</span></td><td>Entrée de comptage&nbsp;: chaque impulsion fait avancer le compteur d&rsquo;un pas.</td></tr>
+    <tr><td><span class="pin in">Re</span></td><td>Remise à zéro&nbsp;: remet le compteur à 0.</td></tr>
+    <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>La valeur du compteur en binaire (de 0 à 15).</td></tr>
+  </table>
+  <p>Reliez les sorties à des lampes ou à un <a href="uitvoer.html#display">afficheur</a> pour voir la valeur.
+  Un <a href="invoer.html#drukknop">bouton-poussoir</a> ou un <a href="invoer.html#puls">générateur d&rsquo;impulsions</a>
+  sur l&rsquo;entrée de comptage fait avancer le compteur.</p>
+
+  <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Bloc mémoire</h2>
+  <p>Une mémoire de 32 emplacements (adresse 0 à 31). Chaque emplacement contient un nombre de 0 à 15.
+  Au placement, tous les emplacements valent 0.</p>
+  <table>
+    <tr><th>Connexion</th><th>Signification</th></tr>
+    <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Entrées d&rsquo;adresse en haut&nbsp;: choisissent l&rsquo;emplacement en binaire.</td></tr>
+    <tr><td>Bouton A16</td><td>Le bouton en haut à gauche ajoute 16 à l&rsquo;adresse, pour les emplacements 16 à 31. L&rsquo;adresse choisie est affichée dans le bloc (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td><span class="pin in">écriture</span></td><td>Entrée d&rsquo;écriture à gauche&nbsp;: reliez-y un <a href="invoer.html#dipswitch">commutateur DIP</a>. Quand vous appuyez sur le bouton du commutateur DIP, son nombre est enregistré à l&rsquo;adresse choisie.</td></tr>
+    <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Le contenu de l&rsquo;emplacement choisi en binaire, en bas.</td></tr>
+  </table>
+  <p>Le <a href="paneel.html#paneelkeuze">panneau mémoire</a> montre un exemple complet avec un compteur
+  comme adresse et des afficheurs pour l&rsquo;adresse et le contenu.</p>

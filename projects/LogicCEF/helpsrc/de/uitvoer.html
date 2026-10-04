@@ -1,0 +1,35 @@
+<!-- titel: Ausgänge -->
+  <h1>Ausgänge</h1>
+  <p class="lead">Ausgangsbauteile zeigen das Ergebnis der Schaltung. Sie haben einen oder mehrere
+  <span class="pin in">Eingänge</span> links, an die Sie die Drähte aus der Verarbeitung anschließen.</p>
+
+  <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</h2>
+  <p>Leuchtet, solange der Eingang ein ist.</p>
+
+  <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relais</h2>
+  <p>Ein Relais ist ein Schalter, der von einem Elektromagneten betätigt wird. Links befindet sich der Eingang
+  <b>R</b> zur Spule, rechts der Wechselkontakt mit den Anschlüssen <b>R1</b> (oben) und <b>R2</b> (unten).</p>
+  <ul>
+    <li>Eingang aus: Die Spule ist nicht erregt und der Kontakt steht in Ruhe.</li>
+    <li>Eingang ein: Die Spule wird erregt, die rote LED wird grün und der Kontakt schaltet um.</li>
+  </ul>
+  <p>Das Relais zeigt so, wie ein kleines Steuersignal einen Kontakt umschaltet. R1 und R2 sind nur
+  Beschriftungen am Symbol: Sie können dort keinen Draht anschließen.</p>
+
+  <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Summer</h2>
+  <p>Ertönt, solange der Eingang ein ist. Praktisch als Alarm.</p>
+
+  <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-Segment-Anzeige</h2>
+  <p>Die Anzeige hat einen Eingang. Was sie zeigt, hängt davon ab, was Sie anschließen:</p>
+  <ul>
+    <li>den Anzeige-Ausgang eines <a href="verwerking.html#teller">Zählers</a> oder eines
+      <a href="verwerking.html#geheugen">Speichers</a>: den Wert als Ziffer oder Buchstabe, 0 bis 9 und danach A bis F;</li>
+    <li>jeden anderen Ausgang (Taster, Schalter, Gatter, Sensor...): <b>1</b>, wenn der Ausgang an ist,
+      <b>0</b>, wenn er aus ist.</li>
+  </ul>
+
+  <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Messgerät</h2>
+  <p>Ein Voltmeter mit zwei Messeingängen: <b>+</b> links und <b>&minus;</b> rechts. Das Fenster zeigt
+  <b>5&nbsp;V</b>, wenn an beiden Eingängen ein Signal anliegt (beide ein), sonst <b>0&nbsp;V</b>.</p>
+  <p>Das Messgerät hat auch einen Ausgang: Er ist ein, wenn das Messgerät 5&nbsp;V anzeigt, sodass Sie
+  das Ergebnis an ein nächstes Bauteil weitergeben können.</p>

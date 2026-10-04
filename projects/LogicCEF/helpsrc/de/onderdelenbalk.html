@@ -1,0 +1,56 @@
+<!-- titel: Bauteilleiste -->
+  <h1 id="logicbox">Bauteilleiste</h1>
+  <p class="lead">Die Bauteilleiste befindet sich links auf dem Panel. Dort wählen Sie ein Bauteil und
+  setzen es anschließend mit einem Klick auf das Panel.</p>
+
+  <h2>Ein Bauteil platzieren</h2>
+  <ol class="steps">
+    <li>Klicken Sie in der Leiste auf das Bauteil. Der Mauszeiger nimmt die Form dieses Bauteils an.</li>
+    <li>Klicken Sie auf das Panel, wo das Bauteil hin soll.</li>
+    <li>Ziehen Sie es danach bei Bedarf an eine bessere Stelle.</li>
+  </ol>
+  <div class="tip"><strong>Tipp:</strong> Halten Sie die Maus über eine Schaltfläche der Leiste, um zu sehen, welches Bauteil es ist.</div>
+
+  <h2>Aufbau</h2>
+  <p>Die Bauteile sind in drei Gruppen eingeteilt, von links nach rechts in einer Schaltung:
+  Eingang &rarr; Verarbeitung &rarr; Ausgang.</p>
+
+  <h3>Verbinden</h3>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was macht sie?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-verbinding.png" alt=""></td><td class="name">Verbindung</td><td>Schaltet den Drahtmodus ein oder aus. Siehe <a href="verbindingen.html">Verbindungen</a>.</td></tr>
+  </table>
+
+  <h3>Eingänge</h3>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-drukknop.png" alt=""></td><td class="name"><a href="invoer.html#drukknop">Taster</a></td><td>Gibt ein Signal, solange Sie ihn gedrückt halten.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar.png" alt=""></td><td class="name"><a href="invoer.html#schakelaar">Schalter</a></td><td>Bleibt ein oder aus, bis Sie erneut klicken.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dipschakelaar.png" alt=""></td><td class="name"><a href="invoer.html#dipswitch">DIP-Schalter</a></td><td>Eine Zahl von 0 bis 15 einstellen und mit einem Knopf senden.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls.png" alt=""></td><td class="name"><a href="invoer.html#puls">Impulsgeber</a></td><td>Gibt regelmäßig einen Impuls.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lichtsensor.png" alt=""></td><td class="name"><a href="invoer.html#sensor">Lichtsensor</a></td><td>Reagiert auf Licht.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-warmtesensor.png" alt=""></td><td class="name"><a href="invoer.html#warm">Wärmesensor</a></td><td>Reagiert auf Wärme.</td></tr>
+  </table>
+
+  <h3>Verarbeitung</h3>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-en.png" alt=""></td><td class="name"><a href="verwerking.html#en">UND-Gatter</a></td><td>Ausgang ein, wenn alle Eingänge ein sind.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-of.png" alt=""></td><td class="name"><a href="verwerking.html#of">ODER-Gatter</a></td><td>Ausgang ein, wenn mindestens ein Eingang ein ist.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-niet.png" alt=""></td><td class="name"><a href="verwerking.html#niet">NICHT-Gatter</a></td><td>Kehrt das Signal um.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-teller.png" alt=""></td><td class="name"><a href="verwerking.html#teller">Zählerbaustein</a></td><td>Zählt Impulse und gibt den Stand binär weiter.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-geheugen.png" alt=""></td><td class="name"><a href="verwerking.html#geheugen">Speicherbaustein</a></td><td>Gibt den Inhalt eines gewählten Speicherplatzes weiter.</td></tr>
+  </table>
+
+  <h3>Ausgänge</h3>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp.png" alt=""></td><td class="name"><a href="uitvoer.html#lamp">Lampe</a></td><td>Leuchtet, wenn der Eingang ein ist.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais.png" alt=""></td><td class="name"><a href="uitvoer.html#relais">Relais</a></td><td>Zeigt, wie ein Kontakt umschaltet, wenn die Spule erregt wird.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer.png" alt=""></td><td class="name"><a href="uitvoer.html#zoemer">Summer</a></td><td>Ertönt, wenn der Eingang ein ist.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-display.png" alt=""></td><td class="name"><a href="uitvoer.html#display">7-Segment-Anzeige</a></td><td>Zeigt eine Ziffer oder einen Buchstaben.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-meter.png" alt=""></td><td class="name"><a href="uitvoer.html#meter">Messgerät</a></td><td>Voltmeter: zeigt 0 V oder 5 V.</td></tr>
+  </table>
+
+  <div class="tip"><strong>Achtung:</strong> Welche Bauteile in der Leiste stehen, stellen Sie unter
+  <a href="instellingen.html">Einstellungen</a> ein (Registerkarte Schaltereinheiten). Fehlt ein Bauteil, schauen Sie dort nach.</div>

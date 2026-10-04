@@ -1,0 +1,68 @@
+<!-- titel: Panneau & grille -->
+  <h1 id="raster">Panneau &amp; grille</h1>
+  <p class="lead">Le panneau est la zone de travail sur laquelle vous construisez le circuit. Il possède
+  une grille, des règles et un titre, et vous pouvez l&rsquo;enregistrer pour le rouvrir plus tard.</p>
+
+  <h2>Grille et règles</h2>
+  <p>La grille aide à aligner proprement les composants. Quand vous déplacez un objet, il s&rsquo;aimante
+  aux règles, ce qui permet d&rsquo;aligner facilement les composants.</p>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-raster.png" alt=""></td><td class="name">Grille</td><td>Affiche ou masque la grille. Plus d&rsquo;options (couleur, espacement) dans les <a href="instellingen.html">Réglages</a>.</td></tr>
+    <tr id="richtlijnen"><td class="btn"><img src="../img/knop-richtlijnen.png" alt=""></td><td class="name">Guides</td><td>Lignes d&rsquo;aide passant par le centre de l&rsquo;objet pendant que vous le déplacez.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-kader.png" alt=""></td><td class="name">Cadre</td><td>Dessine un cadre autour d&rsquo;un ou de plusieurs objets. Voir ci-dessous.</td></tr>
+    <tr id="titel"><td class="btn"><img src="../img/knop-titel.png" alt=""></td><td class="name">Modifier le titre</td><td>Demande un nouveau titre pour le panneau.</td></tr>
+  </table>
+
+  <h2 id="kader">Cadres</h2>
+  <p>Un cadre regroupe des composants qui vont ensemble, par exemple &laquo;&nbsp;Entrées&nbsp;&raquo; ou
+  &laquo;&nbsp;Compteur&nbsp;&raquo;. Un cadre a une légende et une couleur.</p>
+  <ol class="steps">
+    <li>Cliquez sur <img src="../img/knop-kader.png" class="ico" alt=""><b>Cadre</b>.</li>
+    <li>Tracez sur le panneau un rectangle autour du ou des objets.</li>
+  </ol>
+  <p>Vous pouvez ensuite déplacer le cadre et le redimensionner avec les poignées des coins.
+  Un clic droit sur un cadre ouvre son menu&nbsp;:</p>
+  <table>
+    <tr><th>Élément de menu</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr><td class="name">Modifier la légende</td><td>Donne une autre légende au cadre.</td></tr>
+    <tr><td class="name">Couleur bleue / rouge / verte</td><td>Change la couleur du bord.</td></tr>
+    <tr><td class="name">Supprimer le cadre</td><td>Supprime le cadre. Les composants à l&rsquo;intérieur restent en place.</td></tr>
+  </table>
+
+  <h2 id="paneelkeuze">Choix du panneau</h2>
+  <p><img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Choix du panneau</b> démarre un nouveau panneau.
+  Le panneau actuel est vidé&nbsp;; enregistrez-le d&rsquo;abord si vous voulez le garder. Les éléments du menu portent des noms néerlandais.</p>
+  <dl class="parts">
+    <dt>Nouveau panneau standard (<i>Nieuw standaardpaneel</i>)</dt>
+    <dd>Un panneau vide pour construire votre propre circuit.</dd>
+
+    <dt id="beslissen">Panneau de décision (<i>Beslissingspaneel</i>)</dt>
+    <dd>Un panneau d&rsquo;exercice pour prendre une décision avec des portes logiques. Déjà sur le panneau&nbsp;:
+      <ul>
+        <li>entrées&nbsp;: un bouton-poussoir, un interrupteur, un capteur de lumière et un capteur de chaleur&nbsp;;</li>
+        <li>traitement&nbsp;: une porte ET, une porte OU et une porte NON&nbsp;;</li>
+        <li>sorties&nbsp;: une lampe, un relais et un buzzer.</li>
+      </ul>
+      Il n&rsquo;y a pas encore de fils&nbsp;: c&rsquo;est vous qui décidez comment les relier. Par exemple&nbsp;: le buzzer
+      sonne quand il fait chaud <b>et</b> que l&rsquo;interrupteur est enclenché.</dd>
+
+    <dt id="tellerpaneel">Panneau compteur (<i>Tellerpaneel</i>)</dt>
+    <dd>Un exemple de compteur qui fonctionne. Un générateur d&rsquo;impulsions et un bouton-poussoir fournissent
+      les impulsions de comptage, un deuxième bouton-poussoir remet le compteur à 0, et un afficheur montre la valeur.
+      Les fils sont déjà posés&nbsp;: démarrez la simulation puis le générateur d&rsquo;impulsions.</dd>
+
+    <dt id="geheugenpaneel">Panneau mémoire (<i>Geheugenpaneel</i>)</dt>
+    <dd>Un exemple de mémoire qui fonctionne. Un compteur avec boutons-poussoirs choisit l&rsquo;adresse, un commutateur
+      DIP y écrit un nombre, et deux afficheurs montrent l&rsquo;adresse et le contenu.
+      Réglez un nombre sur le commutateur DIP et appuyez sur son bouton pour l&rsquo;enregistrer&nbsp;; comptez ensuite
+      plus loin, puis revenez pour le relire.</dd>
+  </dl>
+
+  <h2 id="opslaan">Ouvrir et enregistrer</h2>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-opslaan.png" alt=""></td><td class="name">Enregistrer le panneau</td><td>Enregistre tous les composants, les fils et leurs réglages dans un fichier <code>.lpl</code>. Par défaut dans le dossier <code>panels</code> à côté du programme.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-openen.png" alt=""></td><td class="name">Ouvrir un panneau</td><td>Charge un panneau enregistré. Le panneau actuel est remplacé.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-schermkopie.png" alt=""></td><td class="name">Copie d&rsquo;écran</td><td>Copie une image du panneau dans le presse-papiers.</td></tr>
+  </table>

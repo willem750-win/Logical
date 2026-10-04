@@ -1,0 +1,68 @@
+<!-- titel: Paneel & raster -->
+  <h1 id="raster">Paneel &amp; raster</h1>
+  <p class="lead">Het paneel is het werkvlak waarop je de schakeling bouwt. Het heeft een raster,
+  linialen en een titel, en je kunt het opslaan en later weer openen.</p>
+
+  <h2>Raster en linialen</h2>
+  <p>Het raster helpt om onderdelen netjes uit te lijnen. Terwijl je een object versleept,
+  springt het magnetisch naar de linialen, zodat onderdelen makkelijk op één lijn komen.</p>
+  <table>
+    <tr><th>Knop</th><th>Naam</th><th>Wat doet het?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-raster.png" alt=""></td><td class="name">Raster</td><td>Toont of verbergt het raster. Meer mogelijkheden (kleur, afstand) vind je bij <a href="instellingen.html">Instellingen</a>.</td></tr>
+    <tr id="richtlijnen"><td class="btn"><img src="../img/knop-richtlijnen.png" alt=""></td><td class="name">Richtlijnen</td><td>Hulplijnen die tijdens het slepen door het midden van het object lopen.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-kader.png" alt=""></td><td class="name">Kader</td><td>Teken een kader rond object(en). Zie hieronder.</td></tr>
+    <tr id="titel"><td class="btn"><img src="../img/knop-titel.png" alt=""></td><td class="name">Titel wijzigen</td><td>Vraagt een nieuwe titel voor het paneel.</td></tr>
+  </table>
+
+  <h2 id="kader">Kaders</h2>
+  <p>Met een kader groepeer je onderdelen die bij elkaar horen, bijvoorbeeld &ldquo;Ingangen&rdquo; of
+  &ldquo;Teller&rdquo;. Een kader heeft een opschrift en een kleur.</p>
+  <ol class="steps">
+    <li>Klik op <img src="../img/knop-kader.png" class="ico" alt=""><b>Kader</b>.</li>
+    <li>Sleep op het paneel een rechthoek rond de object(en).</li>
+  </ol>
+  <p>Daarna kun je het kader verslepen en met de grepen op de hoeken groter of kleiner maken.
+  Rechtsklik op een kader voor het menu:</p>
+  <table>
+    <tr><th>Menu-item</th><th>Wat doet het?</th></tr>
+    <tr><td class="name">Caption wijzigen</td><td>Geeft het kader een ander opschrift.</td></tr>
+    <tr><td class="name">Kleur blauw / rood / groen</td><td>Verandert de kleur van de rand.</td></tr>
+    <tr><td class="name">Kader verwijderen</td><td>Verwijdert het kader. De onderdelen erin blijven staan.</td></tr>
+  </table>
+
+  <h2 id="paneelkeuze">Paneelkeuze</h2>
+  <p>Met <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Paneelkeuze</b> begin je een nieuw paneel.
+  Het huidige paneel wordt daarbij leeggemaakt; bewaar het eerst als je het wil houden.</p>
+  <dl class="parts">
+    <dt>Nieuw standaardpaneel</dt>
+    <dd>Een leeg paneel om zelf een schakeling te bouwen.</dd>
+
+    <dt id="beslissen">Beslissingspaneel</dt>
+    <dd>Een oefenpaneel om met logische poorten een beslissing te laten nemen. Klaar op het paneel staan:
+      <ul>
+        <li>invoer: een drukknop, een schakelaar, een lichtsensor en een warmtesensor;</li>
+        <li>verwerking: een EN-poort, een OF-poort en een NIET-poort;</li>
+        <li>uitvoer: een lamp, een relais en een zoemer.</li>
+      </ul>
+      Er zijn nog geen draden: jij beslist hoe je ze verbindt. Bijvoorbeeld: de zoemer gaat af
+      als het warm is <b>en</b> de schakelaar aan staat.</dd>
+
+    <dt id="tellerpaneel">Tellerpaneel</dt>
+    <dd>Een werkend voorbeeld van een teller. Een impulsgenerator en een drukknop leveren de
+      telpulsen, een tweede drukknop zet de teller terug op 0, en een display toont de stand.
+      De draden liggen er al: start de simulatie en de impulsgenerator.</dd>
+
+    <dt id="geheugenpaneel">Geheugenpaneel</dt>
+    <dd>Een werkend voorbeeld van een geheugen. Een teller met drukknoppen kiest het adres, een
+      dipschakelaar schrijft er een getal in, en twee displays tonen het adres en de inhoud.
+      Zet een getal op de dipschakelaar en druk op zijn knop om het op te slaan; tel daarna verder
+      en kom terug om het weer uit te lezen.</dd>
+  </dl>
+
+  <h2 id="opslaan">Openen en opslaan</h2>
+  <table>
+    <tr><th>Knop</th><th>Naam</th><th>Wat doet het?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-opslaan.png" alt=""></td><td class="name">Paneel opslaan</td><td>Bewaart alle onderdelen, draden en hun instellingen in een <code>.lpl</code>-bestand. Standaard in de map <code>panels</code> naast het programma.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-openen.png" alt=""></td><td class="name">Open paneel</td><td>Laadt een bewaard paneel. Het huidige paneel wordt vervangen.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-schermkopie.png" alt=""></td><td class="name">Schermkopie</td><td>Kopieert een afbeelding van het paneel naar het klembord.</td></tr>
+  </table>

@@ -1,0 +1,35 @@
+<!-- titel: Outputs -->
+  <h1>Outputs</h1>
+  <p class="lead">Output components show the result of the circuit. They have one or more
+  <span class="pin in">inputs</span> on the left, to which you connect the wires from the processing part.</p>
+
+  <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lamp</h2>
+  <p>Lights as long as the input is on.</p>
+
+  <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relay</h2>
+  <p>A relay is a switch operated by an electromagnet. On the left is input <b>R</b> to the coil,
+  on the right the changeover contact with the terminals <b>R1</b> (top) and <b>R2</b> (bottom).</p>
+  <ul>
+    <li>Input off: the coil is not energised and the contact is at rest.</li>
+    <li>Input on: the coil is energised, the red LED turns green and the contact switches over.</li>
+  </ul>
+  <p>The relay shows how a small control signal switches a contact. R1 and R2 are only labels
+  on the symbol: you cannot connect a wire to them.</p>
+
+  <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
+  <p>Sounds as long as the input is on. Handy as an alarm.</p>
+
+  <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>
+  <p>The display has one input. What it shows depends on what you connect to it:</p>
+  <ul>
+    <li>the display output of a <a href="verwerking.html#teller">counter</a> or a
+      <a href="verwerking.html#geheugen">memory</a>: the value as a digit or letter, 0 to 9 and then A to F;</li>
+    <li>any other output (push button, switch, gate, sensor...): <b>1</b> when the output is on,
+      <b>0</b> when it is off.</li>
+  </ul>
+
+  <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Meter</h2>
+  <p>A voltmeter with two measuring inputs: <b>+</b> on the left and <b>&minus;</b> on the right. The window shows
+  <b>5&nbsp;V</b> when there is a signal on both inputs (both on), and <b>0&nbsp;V</b> otherwise.</p>
+  <p>The meter also has an output: it is on when the meter reads 5&nbsp;V, so you can pass the
+  result on to a next component.</p>

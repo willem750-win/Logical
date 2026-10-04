@@ -1,0 +1,41 @@
+<!-- titel: Eingänge -->
+  <h1>Eingänge</h1>
+  <p class="lead">Eingangsbauteile sind der Anfang jeder Schaltung: Sie geben ein Signal
+  (ein = 1, aus = 0) an ihrem Ausgang. Sie bedienen sie mit der Maus.</p>
+
+  <p>Jedes Eingangsbauteil hat einen <span class="pin out">Ausgang</span> auf der rechten Seite.
+  Dort beginnen Sie einen Draht zum Rest der Schaltung. Siehe <a href="verbindingen.html">Verbindungen</a>.</p>
+
+  <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Taster</h2>
+  <p>Der Ausgang ist ein, solange Sie den Taster mit der Maus gedrückt halten. Lassen Sie los, geht der Ausgang aus.
+  Verwenden Sie einen Taster für kurze Signale, zum Beispiel um einen Zähler einen Schritt zählen zu lassen.</p>
+
+  <h2 id="schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">Schalter</h2>
+  <p>Klicken Sie auf den Schalter, um ihn ein- oder auszuschalten. Er bleibt in dieser Stellung, bis Sie erneut klicken.</p>
+
+  <h2 id="dipswitch"><img src="../img/pal-dipschakelaar.png" class="ico" alt="">DIP-Schalter</h2>
+  <p>Damit geben Sie eine Zahl ein, zum Beispiel um sie in einen <a href="verwerking.html#geheugen">Speicherbaustein</a>
+  zu schreiben.</p>
+  <ol class="steps">
+    <li>Stellen Sie mit den vier kleinen Schaltern <b>8</b>, <b>4</b>, <b>2</b> und <b>1</b> die Zahl ein
+      (binär, 0 bis 15). Sind zum Beispiel 4 und 1 ein, ist die Zahl 5.</li>
+    <li>Klicken Sie auf den Knopf unten rechts, um die Zahl zu senden. Solange der Knopf gedrückt ist,
+      ist der Ausgang ein und die Zahl geht an das Bauteil am Ende des Drahtes.</li>
+  </ol>
+
+  <h2 id="puls"><img src="../img/pal-puls.png" class="ico" alt="">Impulsgeber</h2>
+  <p>Gibt regelmäßig einen Impuls: Der Ausgang geht etwa alle 0,3 Sekunden ein und wieder aus.
+  Klicken Sie auf den Knopf unten, um den Impulsgeber zu starten; klicken Sie erneut, um ihn zu stoppen.
+  Die Leuchte oben blinkt im Takt der Impulse.</p>
+  <p>Ideal, um einen <a href="verwerking.html#teller">Zähler</a> selbstständig laufen oder eine Lampe blinken zu lassen.</p>
+
+  <h2 id="sensor"><img src="../img/pal-lichtsensor.png" class="ico" alt="">Lichtsensor</h2>
+  <p>Simuliert einen Sensor, der auf Licht reagiert. Klicken Sie auf den Sensor, um &bdquo;hell&ldquo; oder
+  &bdquo;dunkel&ldquo; zu wählen; der Ausgang folgt.</p>
+
+  <h2 id="warm"><img src="../img/pal-warmtesensor.png" class="ico" alt="">Wärmesensor</h2>
+  <p>Simuliert einen Temperatursensor. Klicken Sie auf den Sensor, um &bdquo;warm&ldquo; oder &bdquo;kalt&ldquo;
+  zu wählen; der Ausgang folgt.</p>
+
+  <div class="tip"><strong>Tipp:</strong> Geben Sie Eingangsbauteilen über das Kontextmenü einen klaren Namen
+  (<i>Namen ändern</i>), zum Beispiel &bdquo;Tür offen&ldquo;. Der Name erscheint im Hinweis und in der Statusleiste.</div>

@@ -1,0 +1,40 @@
+<!-- titel: Inputs -->
+  <h1>Inputs</h1>
+  <p class="lead">Input components are the start of every circuit: they give a signal
+  (on = 1, off = 0) at their output. You operate them with the mouse.</p>
+
+  <p>Every input component has an <span class="pin out">output</span> on its right-hand side.
+  That is where you start a wire to the rest of the circuit. See <a href="verbindingen.html">Connections</a>.</p>
+
+  <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Push button</h2>
+  <p>The output is on as long as you hold the button down with the mouse. When you let go, the output goes off.
+  Use a push button for short signals, for example to make a counter count one step.</p>
+
+  <h2 id="schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">Switch</h2>
+  <p>Click the switch to turn it on or off. It stays in that position until you click again.</p>
+
+  <h2 id="dipswitch"><img src="../img/pal-dipschakelaar.png" class="ico" alt="">DIP switch</h2>
+  <p>Use it to enter a number, for example to write it into a <a href="verwerking.html#geheugen">memory block</a>.</p>
+  <ol class="steps">
+    <li>Set the number with the four small switches <b>8</b>, <b>4</b>, <b>2</b> and <b>1</b>
+      (binary, 0 to 15). If 4 and 1 are on, for example, the number is 5.</li>
+    <li>Click the button at the bottom right to send the number. As long as the button is pressed,
+      the output is on and the number travels to the component at the end of the wire.</li>
+  </ol>
+
+  <h2 id="puls"><img src="../img/pal-puls.png" class="ico" alt="">Pulse generator</h2>
+  <p>Gives a pulse at regular intervals: the output keeps switching on and off, about every 0.3 seconds.
+  Click the button at the bottom to start the generator; click it again to stop it.
+  The lamp at the top blinks with the pulses.</p>
+  <p>Ideal for making a <a href="verwerking.html#teller">counter</a> run by itself or a lamp blink.</p>
+
+  <h2 id="sensor"><img src="../img/pal-lichtsensor.png" class="ico" alt="">Light sensor</h2>
+  <p>Simulates a sensor that reacts to light. Click the sensor to choose &ldquo;light&rdquo; or
+  &ldquo;dark&rdquo;; the output follows.</p>
+
+  <h2 id="warm"><img src="../img/pal-warmtesensor.png" class="ico" alt="">Heat sensor</h2>
+  <p>Simulates a temperature sensor. Click the sensor to choose &ldquo;warm&rdquo; or &ldquo;cold&rdquo;;
+  the output follows.</p>
+
+  <div class="tip"><strong>Tip:</strong> give input components a clear name through the right-click menu
+  (<i>Change name</i>), for example &ldquo;Door open&rdquo;. The name appears in the hint and in the status bar.</div>

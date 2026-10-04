@@ -1,0 +1,41 @@
+<!-- titel: Entrées -->
+  <h1>Entrées</h1>
+  <p class="lead">Les composants d&rsquo;entrée sont le début de tout circuit&nbsp;: ils donnent un signal
+  (actif = 1, inactif = 0) sur leur sortie. Vous les commandez avec la souris.</p>
+
+  <p>Chaque composant d&rsquo;entrée a une <span class="pin out">sortie</span> sur son côté droit.
+  C&rsquo;est là que vous commencez un fil vers le reste du circuit. Voir <a href="verbindingen.html">Connexions</a>.</p>
+
+  <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Bouton-poussoir</h2>
+  <p>La sortie est active tant que vous maintenez le bouton enfoncé avec la souris. Dès que vous relâchez,
+  la sortie se désactive. Utilisez un bouton-poussoir pour des signaux brefs, par exemple pour faire avancer
+  un compteur d&rsquo;un pas.</p>
+
+  <h2 id="schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">Interrupteur</h2>
+  <p>Cliquez sur l&rsquo;interrupteur pour l&rsquo;enclencher ou le couper. Il garde cette position jusqu&rsquo;au prochain clic.</p>
+
+  <h2 id="dipswitch"><img src="../img/pal-dipschakelaar.png" class="ico" alt="">Commutateur DIP</h2>
+  <p>Il sert à saisir un nombre, par exemple pour l&rsquo;écrire dans un <a href="verwerking.html#geheugen">bloc mémoire</a>.</p>
+  <ol class="steps">
+    <li>Réglez le nombre avec les quatre petits interrupteurs <b>8</b>, <b>4</b>, <b>2</b> et <b>1</b>
+      (binaire, de 0 à 15). Si 4 et 1 sont actifs, par exemple, le nombre vaut 5.</li>
+    <li>Cliquez sur le bouton en bas à droite pour envoyer le nombre. Tant que le bouton est enfoncé,
+      la sortie est active et le nombre est transmis au composant au bout du fil.</li>
+  </ol>
+
+  <h2 id="puls"><img src="../img/pal-puls.png" class="ico" alt="">Générateur d&rsquo;impulsions</h2>
+  <p>Donne une impulsion à intervalles réguliers&nbsp;: la sortie s&rsquo;active et se désactive environ toutes les
+  0,3&nbsp;seconde. Cliquez sur le bouton du bas pour démarrer le générateur&nbsp;; cliquez à nouveau pour l&rsquo;arrêter.
+  Le voyant en haut clignote avec les impulsions.</p>
+  <p>Idéal pour faire tourner un <a href="verwerking.html#teller">compteur</a> tout seul ou faire clignoter une lampe.</p>
+
+  <h2 id="sensor"><img src="../img/pal-lichtsensor.png" class="ico" alt="">Capteur de lumière</h2>
+  <p>Simule un capteur sensible à la lumière. Cliquez sur le capteur pour choisir &laquo;&nbsp;clair&nbsp;&raquo; ou
+  &laquo;&nbsp;sombre&nbsp;&raquo;&nbsp;; la sortie suit.</p>
+
+  <h2 id="warm"><img src="../img/pal-warmtesensor.png" class="ico" alt="">Capteur de chaleur</h2>
+  <p>Simule un capteur de température. Cliquez sur le capteur pour choisir &laquo;&nbsp;chaud&nbsp;&raquo; ou
+  &laquo;&nbsp;froid&nbsp;&raquo;&nbsp;; la sortie suit.</p>
+
+  <div class="tip"><strong>Astuce&nbsp;:</strong> donnez aux composants d&rsquo;entrée un nom clair via le menu contextuel
+  (<i>Changer le nom</i>), par exemple &laquo;&nbsp;Porte ouverte&nbsp;&raquo;. Le nom apparaît dans l&rsquo;info-bulle et dans la barre d&rsquo;état.</div>

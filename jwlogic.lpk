@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="5">
+    <PathDelim Value="\"/>
+    <Name Value="jwlogic"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="slide"/>
+        <OtherUnitFiles Value="slide;slideS;..\..\LogiLink1\jvDataEmbedded;..\capture2\Apprehend"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <CodeGeneration>
+        <Optimizations>
+          <OptimizationLevel Value="4"/>
+        </Optimizations>
+      </CodeGeneration>
+    </CompilerOptions>
+    <Files>
+      <Item>
+        <Filename Value="janLed.pas"/>
+        <UnitName Value="janLed"/>
+      </Item>
+      <Item>
+        <Filename Value="janSimIndicator.pas"/>
+        <UnitName Value="janSimIndicator"/>
+      </Item>
+      <Item>
+        <Filename Value="janSimLogic.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="janSimLogic"/>
+      </Item>
+      <Item>
+        <Filename Value="janSimPID.pas"/>
+        <UnitName Value="janSimPID"/>
+      </Item>
+      <Item>
+        <Filename Value="janSimPIDLinker.pas"/>
+        <UnitName Value="janSimPIDLinker"/>
+      </Item>
+      <Item>
+        <Filename Value="janToggle.pas"/>
+        <UnitName Value="janToggle"/>
+      </Item>
+      <Item>
+        <Filename Value="jwlogicreg.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="jwlogicreg"/>
+      </Item>
+      <Item>
+        <Filename Value="chatgridpcodeSmall.pas"/>
+        <AddToUsesPkgSection Value="False"/>
+        <UnitName Value="chatgridpcodeSmall"/>
+      </Item>
+      <Item>
+        <Filename Value="InTex.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="InTex"/>
+      </Item>
+      <Item>
+        <Filename Value="tiphtmln.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="tiphtmln"/>
+      </Item>
+    </Files>
+    <RequiredPkgs>
+      <Item>
+        <PackageName Value="ComboBox_image"/>
+      </Item>
+      <Item>
+        <PackageName Value="rx"/>
+      </Item>
+      <Item>
+        <PackageName Value="IDEIntf"/>
+      </Item>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

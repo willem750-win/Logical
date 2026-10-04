@@ -1,0 +1,39 @@
+<!-- titel: Barre de boutons -->
+  <h1>Barre de boutons</h1>
+  <p class="lead">En haut de la fenêtre se trouvent deux rangées de boutons&nbsp;: la barre de titre avec
+  les boutons généraux, et en dessous les boutons de modification. Ceux-ci sont masqués pendant la simulation.</p>
+
+  <h2 id="titelbalk">Barre de titre</h2>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr id="paneelkeuze"><td class="btn"><img src="../img/knop-paneelkeuze.png" alt=""></td><td class="name">Choix du panneau</td><td>Ouvre un menu avec un nouveau panneau standard et des exemples prêts à l&rsquo;emploi. Voir <a href="paneel.html#paneelkeuze">Panneau &amp; grille</a>.</td></tr>
+    <tr id="openen"><td class="btn"><img src="../img/knop-openen.png" alt=""></td><td class="name">Ouvrir un panneau</td><td>Ouvre un panneau enregistré (<code>.lpl</code>) du dossier <code>panels</code>.</td></tr>
+    <tr id="opslaan"><td class="btn"><img src="../img/knop-opslaan.png" alt=""></td><td class="name">Enregistrer le panneau</td><td>Enregistre le panneau actuel dans un fichier <code>.lpl</code>.</td></tr>
+    <tr id="schermkopie"><td class="btn"><img src="../img/knop-schermkopie.png" alt=""></td><td class="name">Copie d&rsquo;écran</td><td>Place une image du panneau dans le presse-papiers, par exemple pour la coller dans un traitement de texte.</td></tr>
+    <tr id="simulate"><td class="btn"><img src="../img/knop-simuleren.png" alt=""></td><td class="name">Démarrer la simulation</td><td>Bascule entre modification et simulation. Pendant la simulation, le bouton est rouge (<img src="../img/knop-simuleren-stop.png" class="ico" alt="">). Voir <a href="simulatie.html">Simulation</a>.</td></tr>
+    <tr id="browser"><td class="btn"><img src="../img/knop-help.png" alt=""></td><td class="name">Aide</td><td>Ouvre cette aide.</td></tr>
+    <tr id="info"><td class="btn"><img src="../img/knop-info.png" alt=""></td><td class="name">Info</td><td>Affiche des informations sur le programme.</td></tr>
+    <tr id="afsluiten"><td class="btn"><img src="../img/knop-afsluiten.png" alt=""></td><td class="name">Fermer</td><td>Ferme le programme.</td></tr>
+  </table>
+
+  <h2 id="bewerken">Boutons de modification</h2>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr id="delete_selected"><td class="btn"><img src="../img/knop-verwijder.png" alt=""></td><td class="name">Supprimer l&rsquo;objet sélectionné</td><td>Supprime l&rsquo;objet sélectionné via le menu contextuel. Voir <a href="objecten.html#verwijderen">Manipuler les objets</a>.</td></tr>
+    <tr id="draden"><td class="btn"><img src="../img/knop-draden-weg.png" alt=""></td><td class="name">Supprimer les connexions</td><td>Supprime tous les fils du panneau. Les composants restent en place.</td></tr>
+    <tr id="grid"><td class="btn"><img src="../img/knop-raster.png" alt=""></td><td class="name">Grille</td><td>Affiche ou masque la grille du panneau.</td></tr>
+    <tr id="richtlijnen"><td class="btn"><img src="../img/knop-richtlijnen.png" alt=""></td><td class="name">Guides</td><td>Active ou désactive les lignes d&rsquo;aide qui apparaissent quand vous déplacez un objet.</td></tr>
+    <tr id="kader"><td class="btn"><img src="../img/knop-kader.png" alt=""></td><td class="name">Cadre</td><td>Dessine un cadre autour d&rsquo;un ou de plusieurs objets. Voir <a href="paneel.html#kader">Panneau &amp; grille</a>.</td></tr>
+    <tr id="titel"><td class="btn"><img src="../img/knop-titel.png" alt=""></td><td class="name">Modifier le titre</td><td>Donne un autre titre au panneau.</td></tr>
+    <tr id="settings"><td class="btn"><img src="../img/knop-instellingen.png" alt=""></td><td class="name">Réglages</td><td>Ouvre les réglages du panneau, des composants et des info-bulles. Voir <a href="instellingen.html">Réglages &amp; langue</a>.</td></tr>
+  </table>
+
+  <h2 id="statusbalk">Barre d&rsquo;état</h2>
+  <p>En bas de la fenêtre, la barre d&rsquo;état affiche des informations sur l&rsquo;objet sous la souris&nbsp;:</p>
+  <ol>
+    <li>le nom ou les infos de l&rsquo;objet&nbsp;;</li>
+    <li>son état ou sa fonction&nbsp;;</li>
+    <li>sa position X et Y&nbsp;;</li>
+    <li>son type&nbsp;: entrée, traitement ou sortie.</li>
+  </ol>
+  <p>Tout à droite, vous choisissez la langue avec les drapeaux. Voir <a href="instellingen.html#taal">Réglages &amp; langue</a>.</p>

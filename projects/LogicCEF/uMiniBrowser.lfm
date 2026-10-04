@@ -1,0 +1,360 @@
+object MiniBrowserFrm: TMiniBrowserFrm
+  Left = 348
+  Height = 440
+  Top = 119
+  Width = 705
+  BorderIcons = [biSystemMenu]
+  Caption = 'Browser LogicNew'
+  ClientHeight = 440
+  ClientWidth = 705
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poScreenCenter
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  object Splitter1: TSplitter
+    Left = 700
+    Height = 391
+    Top = 25
+    Width = 5
+    Align = alRight
+    ResizeAnchor = akRight
+    Visible = False
+  end
+  object NavControlPnl: TPanel
+    Left = 0
+    Height = 25
+    Top = 0
+    Width = 705
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 25
+    ClientWidth = 705
+    Enabled = False
+    ParentBackground = False
+    TabOrder = 1
+    object NavButtonPnl: TPanel
+      Left = 0
+      Height = 25
+      Top = 0
+      Width = 133
+      Align = alLeft
+      BevelOuter = bvNone
+      ClientHeight = 25
+      ClientWidth = 133
+      ParentBackground = False
+      TabOrder = 0
+      object BackBtn: TButton
+        Left = 8
+        Height = 25
+        Top = 0
+        Width = 25
+        Caption = '3'
+        Font.CharSet = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        ParentFont = False
+        TabOrder = 0
+        OnClick = BackBtnClick
+      end
+      object ForwardBtn: TButton
+        Left = 39
+        Height = 25
+        Top = 0
+        Width = 25
+        Caption = '4'
+        Font.CharSet = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        ParentFont = False
+        TabOrder = 1
+        OnClick = ForwardBtnClick
+      end
+      object ReloadBtn: TButton
+        Left = 70
+        Height = 25
+        Top = 0
+        Width = 25
+        Caption = 'q'
+        Font.CharSet = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        ParentFont = False
+        TabOrder = 2
+        OnClick = ReloadBtnClick
+      end
+      object StopBtn: TButton
+        Left = 101
+        Height = 25
+        Top = 0
+        Width = 25
+        Caption = '='
+        Font.CharSet = SYMBOL_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Webdings'
+        ParentFont = False
+        TabOrder = 3
+        OnClick = StopBtnClick
+      end
+    end
+    object URLEditPnl: TPanel
+      Left = 133
+      Height = 25
+      Top = 0
+      Width = 499
+      Align = alClient
+      BevelOuter = bvNone
+      ClientHeight = 25
+      ClientWidth = 499
+      ParentBackground = False
+      TabOrder = 1
+      object URLCbx: TComboBox
+        Left = 0
+        Height = 21
+        Top = 3
+        Width = 499
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ItemHeight = 13
+        ItemIndex = 0
+        Items.Strings = (
+          'file:///D:/LazProjecten/LogicCEF/Resultaat/help/index.html'
+        )
+        TabOrder = 0
+        Text = 'file:///D:/LazProjecten/LogicCEF/Resultaat/help/index.html'
+      end
+    end
+    object ConfigPnl: TPanel
+      Left = 632
+      Height = 25
+      Top = 0
+      Width = 73
+      Align = alRight
+      BevelOuter = bvNone
+      ClientHeight = 25
+      ClientWidth = 73
+      ParentBackground = False
+      TabOrder = 2
+      object ConfigBtn: TButton
+        Left = 40
+        Height = 25
+        Top = 0
+        Width = 25
+        Caption = '≡'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        OnClick = ConfigBtnClick
+      end
+      object GoBtn: TButton
+        Left = 8
+        Height = 25
+        Top = 0
+        Width = 25
+        Caption = '►'
+        Default = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 1
+        OnClick = GoBtnClick
+      end
+    end
+  end
+  object CEFWindowParent1: TCEFWindowParent
+    Left = 0
+    Height = 391
+    Top = 25
+    Width = 700
+    Align = alClient
+    TabStop = True
+    TabOrder = 0
+    OnDragDrop = CEFWindowParent1DragDrop
+  end
+  object DevTools: TCEFWindowParent
+    Left = 705
+    Height = 391
+    Top = 25
+    Width = 0
+    Align = alRight
+    TabOrder = 2
+    Visible = False
+  end
+  object StatusPnl: TPanel
+    Left = 0
+    Height = 24
+    Top = 416
+    Width = 705
+    Align = alBottom
+    BevelOuter = bvLowered
+    ParentBackground = False
+    TabOrder = 4
+  end
+  object Chromium1: TChromium
+    OnTextResultAvailable = Chromium1TextResultAvailable
+    OnPdfPrintFinished = Chromium1PdfPrintFinished
+    OnPrefsAvailable = Chromium1PrefsAvailable
+    OnResolvedHostAvailable = Chromium1ResolvedHostAvailable
+    OnNavigationVisitorResultAvailable = Chromium1NavigationVisitorResultAvailable
+    OnDownloadImageFinished = Chromium1DownloadImageFinished
+    OnCookiesFlushed = Chromium1CookiesFlushed
+    OnZoomPctAvailable = Chromium1ZoomPctAvailable
+    OnRenderCompMsg = Chromium1RenderCompMsg
+    OnLoadEnd = Chromium1LoadEnd
+    OnLoadError = Chromium1LoadError
+    OnLoadingStateChange = Chromium1LoadingStateChange
+    OnBeforeContextMenu = Chromium1BeforeContextMenu
+    OnContextMenuCommand = Chromium1ContextMenuCommand
+    OnPreKeyEvent = Chromium1PreKeyEvent
+    OnKeyEvent = Chromium1KeyEvent
+    OnAddressChange = Chromium1AddressChange
+    OnTitleChange = Chromium1TitleChange
+    OnFullScreenModeChange = Chromium1FullScreenModeChange
+    OnStatusMessage = Chromium1StatusMessage
+    OnLoadingProgressChange = Chromium1LoadingProgressChange
+    OnCursorChange = Chromium1CursorChange
+    OnMediaAccessChange = Chromium1MediaAccessChange
+    OnCanDownload = Chromium1CanDownload
+    OnBeforeDownload = Chromium1BeforeDownload
+    OnDownloadUpdated = Chromium1DownloadUpdated
+    OnAfterCreated = Chromium1AfterCreated
+    OnBeforeClose = Chromium1BeforeClose
+    OnClose = Chromium1Close
+    OnCertificateError = Chromium1CertificateError
+    OnBeforeResourceLoad = Chromium1BeforeResourceLoad
+    OnResourceResponse = Chromium1ResourceResponse
+    OnDevToolsMethodResult = Chromium1DevToolsMethodResult
+    OnRequestMediaAccessPermission = Chromium1RequestMediaAccessPermission
+    Left = 32
+    Top = 224
+  end
+  object PopupMenu1: TPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 32
+    Top = 168
+    object DevTools1: TMenuItem
+      Caption = 'DevTools'
+      OnClick = DevTools1Click
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object Openfile1: TMenuItem
+      Caption = 'Open file with a FILE URL...'
+      OnClick = Openfile1Click
+    end
+    object OpenfilewithaDAT1: TMenuItem
+      Caption = 'Open file with a DATA URL...'
+      OnClick = OpenfilewithaDAT1Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = 'Save as MHTML...'
+      OnClick = MenuItem6Click
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Print1: TMenuItem
+      Caption = 'Print'
+      OnClick = Print1Click
+    end
+    object PrintinPDF1: TMenuItem
+      Caption = 'Print to PDF'
+      OnClick = PrintinPDF1Click
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object Zoom1: TMenuItem
+      Caption = 'Zoom'
+      object Inczoom1: TMenuItem
+        Caption = 'Inc zoom'
+        OnClick = Inczoom1Click
+      end
+      object Deczoom1: TMenuItem
+        Caption = 'Dec zoom'
+        OnClick = Deczoom1Click
+      end
+      object Resetzoom1: TMenuItem
+        Caption = 'Reset zoom'
+        OnClick = Resetzoom1Click
+      end
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object Preferences1: TMenuItem
+      Caption = 'Preferences...'
+      OnClick = Preferences1Click
+    end
+    object Resolvehost1: TMenuItem
+      Caption = 'Resolve host...'
+      OnClick = Resolvehost1Click
+    end
+    object MenuItem1: TMenuItem
+      Caption = 'Download image...'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Simulate keyboard presses'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Accept language...'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Flush cookies'
+      OnClick = MenuItem3Click
+    end
+    object Allowdownloads1: TMenuItem
+      Caption = 'Allow downloads'
+      OnClick = Allowdownloads1Click
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object Memoryinfo1: TMenuItem
+      Caption = 'Memory info...'
+      OnClick = Memoryinfo1Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'CEF info...'
+      OnClick = MenuItem5Click
+    end
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 32
+    Top = 112
+  end
+  object ApplicationEvents1: TApplicationProperties
+    Left = 32
+    Top = 56
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'HTML files|*.htm;*.html|Text files|*.txt|PDF files|*.pdf|Image files|*.jpg;*.jpeg;*.png;*.bmp;*.gif'
+    Left = 32
+    Top = 280
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 300
+    OnTimer = Timer1Timer
+    Left = 32
+    Top = 344
+  end
+end

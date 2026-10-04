@@ -1,0 +1,68 @@
+<!-- titel: Panel & Raster -->
+  <h1 id="raster">Panel &amp; Raster</h1>
+  <p class="lead">Das Panel ist die Arbeitsfläche, auf der Sie die Schaltung bauen. Es hat ein Raster,
+  Lineale und einen Titel, und Sie können es speichern und später wieder öffnen.</p>
+
+  <h2>Raster und Lineale</h2>
+  <p>Das Raster hilft, Bauteile sauber auszurichten. Beim Ziehen rastet ein Objekt magnetisch an den
+  Linealen ein, sodass Bauteile leicht in einer Linie stehen.</p>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was macht sie?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-raster.png" alt=""></td><td class="name">Raster</td><td>Zeigt oder verbirgt das Raster. Weitere Möglichkeiten (Farbe, Abstand) unter <a href="instellingen.html">Einstellungen</a>.</td></tr>
+    <tr id="richtlijnen"><td class="btn"><img src="../img/knop-richtlijnen.png" alt=""></td><td class="name">Hilfslinien</td><td>Linien durch die Mitte des Objekts, während Sie es ziehen.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-kader.png" alt=""></td><td class="name">Rahmen</td><td>Zeichnet einen Rahmen um ein oder mehrere Objekte. Siehe unten.</td></tr>
+    <tr id="titel"><td class="btn"><img src="../img/knop-titel.png" alt=""></td><td class="name">Titel ändern</td><td>Fragt nach einem neuen Titel für das Panel.</td></tr>
+  </table>
+
+  <h2 id="kader">Rahmen</h2>
+  <p>Ein Rahmen gruppiert Bauteile, die zusammengehören, zum Beispiel &bdquo;Eingänge&ldquo; oder
+  &bdquo;Zähler&ldquo;. Ein Rahmen hat eine Beschriftung und eine Farbe.</p>
+  <ol class="steps">
+    <li>Klicken Sie auf <img src="../img/knop-kader.png" class="ico" alt=""><b>Rahmen</b>.</li>
+    <li>Ziehen Sie auf dem Panel ein Rechteck um das Objekt bzw. die Objekte.</li>
+  </ol>
+  <p>Danach können Sie den Rahmen verschieben und mit den Griffen an den Ecken vergrößern oder verkleinern.
+  Ein Rechtsklick auf einen Rahmen öffnet sein Menü:</p>
+  <table>
+    <tr><th>Menüpunkt</th><th>Was macht er?</th></tr>
+    <tr><td class="name">Beschriftung ändern</td><td>Gibt dem Rahmen eine andere Beschriftung.</td></tr>
+    <tr><td class="name">Farbe blau / rot / grün</td><td>Ändert die Farbe des Randes.</td></tr>
+    <tr><td class="name">Rahmen löschen</td><td>Löscht den Rahmen. Die Bauteile darin bleiben stehen.</td></tr>
+  </table>
+
+  <h2 id="paneelkeuze">Panelwahl</h2>
+  <p>Mit <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Panelwahl</b> beginnen Sie ein neues Panel.
+  Das aktuelle Panel wird dabei geleert; speichern Sie es zuerst, wenn Sie es behalten möchten. Die Menüpunkte haben niederländische Namen.</p>
+  <dl class="parts">
+    <dt>Neues Standardpanel (<i>Nieuw standaardpaneel</i>)</dt>
+    <dd>Ein leeres Panel, um selbst eine Schaltung zu bauen.</dd>
+
+    <dt id="beslissen">Entscheidungspanel (<i>Beslissingspaneel</i>)</dt>
+    <dd>Ein Übungspanel, um mit Logikgattern eine Entscheidung zu treffen. Bereits auf dem Panel:
+      <ul>
+        <li>Eingänge: ein Taster, ein Schalter, ein Lichtsensor und ein Wärmesensor;</li>
+        <li>Verarbeitung: ein UND-, ein ODER- und ein NICHT-Gatter;</li>
+        <li>Ausgänge: eine Lampe, ein Relais und ein Summer.</li>
+      </ul>
+      Es gibt noch keine Drähte: Sie entscheiden, wie Sie sie verbinden. Zum Beispiel: Der Summer ertönt,
+      wenn es warm ist <b>und</b> der Schalter eingeschaltet ist.</dd>
+
+    <dt id="tellerpaneel">Zählerpanel (<i>Tellerpaneel</i>)</dt>
+    <dd>Ein funktionierendes Zählerbeispiel. Ein Impulsgeber und ein Taster liefern die Zählimpulse,
+      ein zweiter Taster setzt den Zähler auf 0 zurück, und eine Anzeige zeigt den Zählerstand.
+      Die Drähte sind schon verlegt: Starten Sie die Simulation und den Impulsgeber.</dd>
+
+    <dt id="geheugenpaneel">Speicherpanel (<i>Geheugenpaneel</i>)</dt>
+    <dd>Ein funktionierendes Speicherbeispiel. Ein Zähler mit Tastern wählt die Adresse, ein DIP-Schalter
+      schreibt eine Zahl hinein, und zwei Anzeigen zeigen Adresse und Inhalt.
+      Stellen Sie eine Zahl am DIP-Schalter ein und drücken Sie seinen Knopf, um sie zu speichern; zählen Sie
+      dann weiter und kehren Sie zurück, um sie wieder auszulesen.</dd>
+  </dl>
+
+  <h2 id="opslaan">Öffnen und speichern</h2>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was macht sie?</th></tr>
+    <tr><td class="btn"><img src="../img/knop-opslaan.png" alt=""></td><td class="name">Panel speichern</td><td>Speichert alle Bauteile, Drähte und ihre Einstellungen in einer <code>.lpl</code>-Datei. Standardmäßig im Ordner <code>panels</code> neben dem Programm.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-openen.png" alt=""></td><td class="name">Panel öffnen</td><td>Lädt ein gespeichertes Panel. Das aktuelle Panel wird ersetzt.</td></tr>
+    <tr><td class="btn"><img src="../img/knop-schermkopie.png" alt=""></td><td class="name">Bildschirmkopie</td><td>Kopiert ein Bild des Panels in die Zwischenablage.</td></tr>
+  </table>

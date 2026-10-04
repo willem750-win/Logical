@@ -1,0 +1,62 @@
+<!-- titel: Verwerking -->
+  <h1>Verwerking</h1>
+  <p class="lead">Verwerkingsonderdelen nemen signalen van de invoer, bewerken ze en geven het resultaat
+  door aan de uitvoer.</p>
+
+  <h2 id="poorten">Logische poorten</h2>
+  <p>Een poort heeft <span class="pin in">ingangen</span> links en een <span class="pin out">uitgang</span> rechts.</p>
+
+  <h3 id="en"><img src="../img/pal-en.png" class="ico" alt="">EN-poort</h3>
+  <p>De uitgang is alleen aan als <b>beide</b> ingangen aan zijn.</p>
+  <table>
+    <tr><th>Ingang A1</th><th>Ingang A2</th><th>Uitgang A</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="of"><img src="../img/pal-of.png" class="ico" alt="">OF-poort</h3>
+  <p>De uitgang is aan als <b>minstens één</b> ingang aan is.</p>
+  <table>
+    <tr><th>Ingang O1</th><th>Ingang O2</th><th>Uitgang O</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="niet"><img src="../img/pal-niet.png" class="ico" alt="">NIET-poort</h3>
+  <p>Eén ingang; de uitgang is het omgekeerde van de ingang.</p>
+  <table>
+    <tr><th>Ingang N1</th><th>Uitgang N</th></tr>
+    <tr><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> door poorten te combineren maak je elke logische functie,
+  bijvoorbeeld een NIET-poort achter een EN-poort (een NEN-functie).</div>
+
+  <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Tellerblok</h2>
+  <p>Telt de pulsen op zijn telingang en geeft de stand binair door op vier uitgangen.</p>
+  <table>
+    <tr><th>Aansluiting</th><th>Betekenis</th></tr>
+    <tr><td><span class="pin in">Te</span></td><td>Telingang: bij elke puls gaat de teller één stap verder.</td></tr>
+    <tr><td><span class="pin in">Re</span></td><td>Reset: zet de teller terug op 0.</td></tr>
+    <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>De stand van de teller als binair getal (0 tot 15).</td></tr>
+  </table>
+  <p>Sluit de uitgangen aan op lampen of op een <a href="uitvoer.html#display">display</a> om de stand te zien.
+  Een <a href="invoer.html#drukknop">drukknop</a> of <a href="invoer.html#puls">impulsgenerator</a> op de telingang
+  laat de teller lopen.</p>
+
+  <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Geheugenblok</h2>
+  <p>Een geheugen met 32 geheugenplaatsen (adres 0 tot 31). Elke plaats bewaart een getal van 0 tot 15.
+  Bij het plaatsen staat overal 0.</p>
+  <table>
+    <tr><th>Aansluiting</th><th>Betekenis</th></tr>
+    <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Adresingangen bovenaan: kiezen binair de geheugenplaats.</td></tr>
+    <tr><td>Knop A16</td><td>De knop linksboven telt 16 bij het adres op, voor de plaatsen 16 tot 31. Het gekozen adres staat in het blok (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td><span class="pin in">schrijf</span></td><td>Schrijfingang links: verbind hier een <a href="invoer.html#dipswitch">dipschakelaar</a>. Druk je op de knop van de dipschakelaar, dan wordt zijn getal op het gekozen adres bewaard.</td></tr>
+    <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>De inhoud van de gekozen geheugenplaats als binair getal, onderaan.</td></tr>
+  </table>
+  <p>Het <a href="paneel.html#paneelkeuze">geheugenpaneel</a> toont een uitgewerkt voorbeeld met een teller
+  als adres en displays voor adres en inhoud.</p>

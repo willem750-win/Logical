@@ -1,0 +1,63 @@
+<!-- titel: Processing -->
+  <h1>Processing</h1>
+  <p class="lead">Processing components take signals from the inputs, work on them and pass the result
+  on to the outputs.</p>
+
+  <h2 id="poorten">Logic gates</h2>
+  <p>A gate has <span class="pin in">inputs</span> on the left and an <span class="pin out">output</span> on the right.
+  The symbols in the program carry the Dutch names EN (AND), OF (OR) and NIET (NOT).</p>
+
+  <h3 id="en"><img src="../img/pal-en.png" class="ico" alt="">AND gate</h3>
+  <p>The output is only on when <b>both</b> inputs are on.</p>
+  <table>
+    <tr><th>Input A1</th><th>Input A2</th><th>Output A</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="of"><img src="../img/pal-of.png" class="ico" alt="">OR gate</h3>
+  <p>The output is on when <b>at least one</b> input is on.</p>
+  <table>
+    <tr><th>Input O1</th><th>Input O2</th><th>Output O</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h3 id="niet"><img src="../img/pal-niet.png" class="ico" alt="">NOT gate</h3>
+  <p>One input; the output is the opposite of the input.</p>
+  <table>
+    <tr><th>Input N1</th><th>Output N</th></tr>
+    <tr><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> by combining gates you can make any logic function,
+  for example a NOT gate after an AND gate (a NAND function).</div>
+
+  <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Counter block</h2>
+  <p>Counts the pulses on its count input and passes the count on in binary on four outputs.</p>
+  <table>
+    <tr><th>Connection</th><th>Meaning</th></tr>
+    <tr><td><span class="pin in">Te</span></td><td>Count input: every pulse moves the counter one step on.</td></tr>
+    <tr><td><span class="pin in">Re</span></td><td>Reset: sets the counter back to 0.</td></tr>
+    <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>The count as a binary number (0 to 15).</td></tr>
+  </table>
+  <p>Connect the outputs to lamps or to a <a href="uitvoer.html#display">display</a> to see the count.
+  A <a href="invoer.html#drukknop">push button</a> or <a href="invoer.html#puls">pulse generator</a> on the count
+  input makes the counter run.</p>
+
+  <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Memory block</h2>
+  <p>A memory with 32 locations (address 0 to 31). Each location holds a number from 0 to 15.
+  When placed, every location contains 0.</p>
+  <table>
+    <tr><th>Connection</th><th>Meaning</th></tr>
+    <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Address inputs at the top: choose the memory location in binary.</td></tr>
+    <tr><td>Button A16</td><td>The button at the top left adds 16 to the address, for locations 16 to 31. The chosen address is shown in the block (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td><span class="pin in">write</span></td><td>Write input on the left: connect a <a href="invoer.html#dipswitch">DIP switch</a> here. When you press the DIP switch's button, its number is stored at the chosen address.</td></tr>
+    <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>The content of the chosen location as a binary number, at the bottom.</td></tr>
+  </table>
+  <p>The <a href="paneel.html#paneelkeuze">memory panel</a> shows a worked-out example with a counter
+  as address and displays for address and content.</p>

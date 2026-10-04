@@ -1,0 +1,237 @@
+/* Stijl voor de help-pagina's van Logic */
+
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1f2328;
+  --muted: #5b636e;
+  --accent: #1a7f37;
+  --accent-soft: #e6f4ea;
+  --border: #d9dde3;
+  --key-bg: #f0f1f3;
+  --tip-bg: #fff8db;
+  --tip-border: #e6cf6b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.55 "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Inhoudsopgave links ---------- */
+
+nav {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+nav .brand {
+  padding: 0 20px 16px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+nav .langs {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px 12px;
+}
+
+nav .langs a {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+nav .langs a.cur {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+nav > a {
+  display: block;
+  padding: 7px 20px;
+  color: var(--text);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+}
+
+nav a:hover { background: var(--accent-soft); }
+
+nav a.active {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+nav .group {
+  padding: 14px 20px 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+}
+
+/* ---------- Inhoud ---------- */
+
+main {
+  flex: 1;
+  max-width: 900px;
+  padding: 28px 40px 60px;
+}
+
+h1 { font-size: 26px; margin: 0 0 6px; }
+h2 { font-size: 19px; margin: 32px 0 10px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 16px; margin: 22px 0 6px; }
+
+p.lead { color: var(--muted); margin-top: 0; font-size: 16px; }
+
+a { color: var(--accent); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  margin: 10px 0 18px;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+th { background: var(--key-bg); font-weight: 600; }
+
+td.btn {
+  width: 70px;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+td.name { width: 190px; font-weight: 600; }
+
+/* Iconen uit het programma */
+td.btn img {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px;
+  background: #fff;
+}
+
+img.ico {
+  vertical-align: middle;
+  margin: 0 4px 2px 0;
+}
+
+nav > a img.ico { margin-right: 8px; }
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font: 13px Consolas, "Courier New", monospace;
+  background: var(--key-bg);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+
+.tip {
+  background: var(--tip-bg);
+  border: 1px solid var(--tip-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 14px 0;
+}
+
+.tip strong:first-child { margin-right: 4px; }
+
+ol.steps li { margin-bottom: 6px; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.card {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.card:hover { border-color: var(--accent); }
+.card b { color: var(--accent); display: block; margin-bottom: 4px; }
+.card span { color: var(--muted); font-size: 14px; }
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 700px) {
+  .layout { display: block; }
+  nav { width: auto; height: auto; position: static; border-right: 0; border-bottom: 1px solid var(--border); }
+  main { padding: 20px 16px 40px; }
+}
+
+/* ---------- Aanvullingen voor Logic ---------- */
+
+nav .brand img.ico { margin-right: 8px; }
+
+/* Afbeelding van een onderdeel naast de beschrijving */
+td.btn img.big { width: 32px; height: 32px; image-rendering: pixelated; }
+
+/* Aansluitpunten: in- en uitgangen */
+.pin {
+  display: inline-block;
+  min-width: 22px;
+  padding: 0 5px;
+  font: 12px Consolas, "Courier New", monospace;
+  text-align: center;
+  border-radius: 3px;
+  color: #fff;
+}
+.pin.in  { background: #2e7d32; }
+.pin.out { background: #c62828; }
+
+dl.parts dt { font-weight: 600; margin-top: 10px; }
+dl.parts dd { margin: 2px 0 0 0; color: var(--text); }

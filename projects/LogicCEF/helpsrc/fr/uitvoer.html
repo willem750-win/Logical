@@ -1,0 +1,35 @@
+<!-- titel: Sorties -->
+  <h1>Sorties</h1>
+  <p class="lead">Les composants de sortie montrent le résultat du circuit. Ils ont une ou plusieurs
+  <span class="pin in">entrées</span> à gauche, auxquelles vous reliez les fils venant du traitement.</p>
+
+  <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</h2>
+  <p>S&rsquo;allume tant que l&rsquo;entrée est active.</p>
+
+  <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relais</h2>
+  <p>Un relais est un interrupteur commandé par un électroaimant. À gauche se trouve l&rsquo;entrée <b>R</b> vers
+  la bobine, à droite le contact inverseur avec les bornes <b>R1</b> (en haut) et <b>R2</b> (en bas).</p>
+  <ul>
+    <li>Entrée inactive&nbsp;: la bobine n&rsquo;est pas alimentée et le contact est au repos.</li>
+    <li>Entrée active&nbsp;: la bobine est alimentée, la LED rouge devient verte et le contact bascule.</li>
+  </ul>
+  <p>Le relais montre ainsi comment un petit signal de commande fait basculer un contact. R1 et R2 ne sont
+  que des repères sur le symbole&nbsp;: vous ne pouvez pas y relier de fil.</p>
+
+  <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
+  <p>Sonne tant que l&rsquo;entrée est active. Pratique comme alarme.</p>
+
+  <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">Afficheur 7 segments</h2>
+  <p>L&rsquo;afficheur a une seule entrée. Ce qu&rsquo;il affiche dépend de ce que vous y reliez&nbsp;:</p>
+  <ul>
+    <li>la sortie afficheur d&rsquo;un <a href="verwerking.html#teller">compteur</a> ou d&rsquo;une
+      <a href="verwerking.html#geheugen">mémoire</a>&nbsp;: la valeur sous forme de chiffre ou de lettre, 0 à 9 puis A à F&nbsp;;</li>
+    <li>toute autre sortie (bouton-poussoir, interrupteur, porte, capteur...)&nbsp;: <b>1</b> quand la sortie est active,
+      <b>0</b> quand elle est inactive.</li>
+  </ul>
+
+  <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmètre</h2>
+  <p>Un voltmètre à deux entrées de mesure&nbsp;: <b>+</b> à gauche et <b>&minus;</b> à droite. La fenêtre affiche
+  <b>5&nbsp;V</b> quand les deux entrées reçoivent un signal (toutes deux actives), sinon <b>0&nbsp;V</b>.</p>
+  <p>Le voltmètre a aussi une sortie&nbsp;: elle est active quand il indique 5&nbsp;V, ce qui permet de
+  transmettre le résultat au composant suivant.</p>

@@ -1,0 +1,56 @@
+<!-- titel: Barre des composants -->
+  <h1 id="logicbox">Barre des composants</h1>
+  <p class="lead">La barre des composants se trouve à gauche du panneau. Choisissez-y un composant,
+  puis placez-le d&rsquo;un clic sur le panneau.</p>
+
+  <h2>Placer un composant</h2>
+  <ol class="steps">
+    <li>Cliquez sur le composant dans la barre. Le pointeur de la souris prend la forme de ce composant.</li>
+    <li>Cliquez sur le panneau à l&rsquo;endroit voulu.</li>
+    <li>Déplacez-le ensuite à un meilleur endroit si nécessaire.</li>
+  </ol>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> laissez la souris sur un bouton de la barre pour voir de quel composant il s&rsquo;agit.</div>
+
+  <h2>Organisation</h2>
+  <p>Les composants sont répartis en trois groupes, de gauche à droite dans un circuit&nbsp;:
+  entrée &rarr; traitement &rarr; sortie.</p>
+
+  <h3>Relier</h3>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-verbinding.png" alt=""></td><td class="name">Connexion</td><td>Active ou désactive le mode fil. Voir <a href="verbindingen.html">Connexions</a>.</td></tr>
+  </table>
+
+  <h3>Entrées</h3>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-drukknop.png" alt=""></td><td class="name"><a href="invoer.html#drukknop">Bouton-poussoir</a></td><td>Donne un signal tant que vous l&rsquo;enfoncez.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar.png" alt=""></td><td class="name"><a href="invoer.html#schakelaar">Interrupteur</a></td><td>Reste enclenché ou non jusqu&rsquo;au prochain clic.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dipschakelaar.png" alt=""></td><td class="name"><a href="invoer.html#dipswitch">Commutateur DIP</a></td><td>Régler un nombre de 0 à 15 et l&rsquo;envoyer avec un bouton.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls.png" alt=""></td><td class="name"><a href="invoer.html#puls">Générateur d&rsquo;impulsions</a></td><td>Donne une impulsion à intervalles réguliers.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lichtsensor.png" alt=""></td><td class="name"><a href="invoer.html#sensor">Capteur de lumière</a></td><td>Réagit à la lumière.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-warmtesensor.png" alt=""></td><td class="name"><a href="invoer.html#warm">Capteur de chaleur</a></td><td>Réagit à la chaleur.</td></tr>
+  </table>
+
+  <h3>Traitement</h3>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-en.png" alt=""></td><td class="name"><a href="verwerking.html#en">Porte ET</a></td><td>Sortie active si toutes les entrées sont actives.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-of.png" alt=""></td><td class="name"><a href="verwerking.html#of">Porte OU</a></td><td>Sortie active si au moins une entrée est active.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-niet.png" alt=""></td><td class="name"><a href="verwerking.html#niet">Porte NON</a></td><td>Inverse le signal.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-teller.png" alt=""></td><td class="name"><a href="verwerking.html#teller">Bloc compteur</a></td><td>Compte les impulsions et transmet la valeur en binaire.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-geheugen.png" alt=""></td><td class="name"><a href="verwerking.html#geheugen">Bloc mémoire</a></td><td>Transmet le contenu d&rsquo;un emplacement mémoire choisi.</td></tr>
+  </table>
+
+  <h3>Sorties</h3>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp.png" alt=""></td><td class="name"><a href="uitvoer.html#lamp">Lampe</a></td><td>S&rsquo;allume quand l&rsquo;entrée est active.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais.png" alt=""></td><td class="name"><a href="uitvoer.html#relais">Relais</a></td><td>Montre comment un contact bascule quand la bobine est alimentée.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer.png" alt=""></td><td class="name"><a href="uitvoer.html#zoemer">Buzzer</a></td><td>Sonne quand l&rsquo;entrée est active.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-display.png" alt=""></td><td class="name"><a href="uitvoer.html#display">Afficheur 7 segments</a></td><td>Affiche un chiffre ou une lettre.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-meter.png" alt=""></td><td class="name"><a href="uitvoer.html#meter">Voltmètre</a></td><td>Affiche 0 V ou 5 V.</td></tr>
+  </table>
+
+  <div class="tip"><strong>Attention&nbsp;:</strong> les composants présents dans la barre se règlent dans les
+  <a href="instellingen.html">Réglages</a> (onglet Éléments de commutation). S&rsquo;il manque un composant, regardez-y.</div>
