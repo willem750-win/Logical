@@ -7,6 +7,8 @@ Daarna zet je de simulatie aan en zie je de schakeling werken.
 
 *English summary: see [below](#english).*
 
+![Logic](docs/screenshot.png)
+
 ## Onderdelen
 
 | Groep      | Onderdelen |
@@ -70,6 +72,11 @@ De help in `Resultaat/help` wordt gemaakt uit `helpsrc`:
 powershell -ExecutionPolicy Bypass -File projects\LogicCEF\helpsrc\make-help.ps1
 ```
 
+## Licentie
+
+MIT, zie [LICENSE](LICENSE). Uitzondering: `SZCodeBaseX.pas` (Sasa Zeman)
+valt onder de Mozilla Public License 1.1, zoals in dat bestand vermeld.
+
 ---
 
 ## English
@@ -84,3 +91,5 @@ To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows, needs CEF4Delphi and the matching CEF
 binaries copied into `projects/LogicCEF/Resultaat/`) or `Linux/logic.lpi`.
 Generate the help with `projects/LogicCEF/helpsrc/make-help.ps1`.
+
+License: MIT, see [LICENSE](LICENSE), except `SZCodeBaseX.pas` (MPL 1.1).
