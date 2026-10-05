@@ -8,11 +8,10 @@ uses
   Classes, SysUtils, Forms, Controls, Buttons, Graphics, Dialogs, ComCtrls,
   Menus,StrHolder, SMNetGradient, ScreenCapture, chatgridpcodeSmall,
   janSimLogic,AdvancedPropertyGridComponent, wcimgcbo, IniFiles,LCLIntf,LCLType,
-  TypInfo, LCLProc, ExtCtrls, UTF8Process,
+  TypInfo, LCLProc, ExtCtrls, UTF8Process,  uHelpManager, uAbout,
   // De ingebouwde CEF-browser bestaat enkel onder Windows; onder Linux
   // wordt de help in de standaardbrowser van het systeem geopend.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
-  uHelpManager,
   // Frames om in te laden
   FSettings;
 const
@@ -88,6 +87,8 @@ type
     procedure btGridkadersMouseEnter(Sender: TObject);
     procedure btGridMouseEnter(Sender: TObject);
     procedure btGridPanelTitelMouseEnter(Sender: TObject);
+    procedure btInfo2ChangeBounds(Sender: TObject);
+    procedure btInfo2Click(Sender: TObject);
     procedure btInfo2MouseEnter(Sender: TObject);
     procedure btnSimulateClick(Sender: TObject);
     procedure btnSavePanelClick(Sender: TObject);
@@ -1318,6 +1319,16 @@ begin
   UpdateLastHelpObject(Sender);
 end;
 
+procedure TmainForm.btInfo2ChangeBounds(Sender: TObject);
+begin
+
+end;
+
+procedure TmainForm.btInfo2Click(Sender: TObject);
+begin
+  ShowAbout(Grid.Language);
+end;
+
 procedure TmainForm.btInfo2MouseEnter(Sender: TObject);
 begin
   UpdateLastHelpObject(Sender);
@@ -1568,17 +1579,11 @@ end;
 
 procedure TmainForm.brButtonClick(Sender: TObject);
 begin
-  {$IFDEF WINDOWS}
-  if not Assigned(MiniBrowserFrm) then
-    MiniBrowserFrm := TMiniBrowserFrm.Create(Application);
-
-  MiniBrowserFrm.Show;
-  MiniBrowserFrm.BringToFront;
-  {$ELSE}
-  // Geen ingebouwde browser: de help-inhoud in de systeembrowser openen.
+  // Help-startpagina in de gekozen taal openen: onder Windows in de
+  // ingebouwde browser, onder Linux in de systeembrowser
+  // (via OpenHelpInMiniBrowser).
   if Assigned(AppHelpManager) then
     AppHelpManager.ShowTableOfContents;
-  {$ENDIF}
 end;
 
 procedure TmainForm.brButtonMouseEnter(Sender: TObject);
