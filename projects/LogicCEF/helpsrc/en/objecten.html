@@ -23,13 +23,32 @@
 
   <h2 id="verwijderen">Deleting a component</h2>
   <ol class="steps">
-    <li>Right-click the component and choose <b>Select object</b>.</li>
-    <li>Click <img src="../img/knop-verwijder.png" class="ico" alt=""><b>Delete selected object</b> among the editing buttons.
-      The hint of that button shows which object will be deleted.</li>
+    <li>Right-click the component and choose <b>Select object</b>. A red dashed line appears
+      around the component, and the <img src="../img/knop-verwijder.png" class="ico" alt=""><b>Delete selected object</b>
+      button at the top left of the editing buttons turns <b>red</b>.</li>
+    <li>Click that red button. Its hint shows which object will be deleted.</li>
   </ol>
+  <div class="tip"><strong>Tip:</strong> As long as no object is selected, the button is not red
+  and does nothing. Selected the wrong component? Right-click it and choose
+  <b>Deselect object</b>.</div>
+
+  <h2 id="groep">Moving several components together</h2>
+  <ol class="steps">
+    <li>Drag a rectangle (grey dashed line) with the left mouse button on an <b>empty spot</b> of the
+      panel, around the components. To take everything, press <kbd>Ctrl</kbd>+<kbd>A</kbd>.</li>
+    <li>Every component that lies <b>completely</b> inside the rectangle is now selected. A
+      <b>blue dashed line</b> appears around the group.</li>
+    <li>Drag inside that blue frame: all components move together, with their wires.</li>
+    <li>Done? Click outside it, press <kbd>Esc</kbd> or right-click the frame.</li>
+  </ol>
+  <p>A wire between two selected components simply moves along. A wire to a component outside
+  the selection stretches. Locked components stay where they are, and you cannot select during the
+  <a href="simulatie.html">simulation</a>.</p>
 
   <h2>Keys</h2>
   <table>
     <tr><th>Key</th><th>What does it do?</th></tr>
     <tr><td><kbd>F1</kbd></td><td>Opens the help about the component or button under the mouse.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Selects all components to move them together.</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Cancels the selection of several components.</td></tr>
   </table>

@@ -2,6 +2,8 @@
   <h1>Sorties</h1>
   <p class="lead">Les composants de sortie montrent le résultat du circuit. Ils ont une ou plusieurs
   <span class="pin in">entrées</span> à gauche, auxquelles vous reliez les fils venant du traitement.</p>
+  <p>Un composant de sortie n&rsquo;a pas de &minus; séparé&nbsp;: il est relié de façon invisible à la masse. Voir
+  <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a></p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</h2>
   <p>S&rsquo;allume tant que l&rsquo;entrée est active.</p>
@@ -28,8 +30,22 @@
       <b>0</b> quand elle est inactive.</li>
   </ul>
 
+  <!-- METER voorlopig verborgen (KMeter = False in main.lfm).
+       Om terug te zetten: dit commentaar weghalen.
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmètre</h2>
-  <p>Un voltmètre à deux entrées de mesure&nbsp;: <b>+</b> à gauche et <b>&minus;</b> à droite. La fenêtre affiche
-  <b>5&nbsp;V</b> quand les deux entrées reçoivent un signal (toutes deux actives), sinon <b>0&nbsp;V</b>.</p>
+  <p>Un voltmètre à deux entrées de mesure&nbsp;: <b>+</b> à gauche et <b>&minus;</b> à droite. Comme un vrai
+  voltmètre, on le branche <b>en parallèle</b>, aux bornes d&rsquo;un composant ou entre deux points du circuit.
+  Il mesure la différence de tension entre + et &minus;&nbsp;:</p>
+  <table>
+    <tr><th>+</th><th>&minus;</th><th>Le voltmètre affiche</th></tr>
+    <tr><td>actif</td><td>inactif</td><td><b>5&nbsp;V</b></td></tr>
+    <tr><td>actif</td><td>actif</td><td>0&nbsp;V (pas de différence)</td></tr>
+    <tr><td>inactif</td><td>inactif</td><td>0&nbsp;V</td></tr>
+    <tr><td>inactif</td><td>actif</td><td>0&nbsp;V (voltmètre branché à l&rsquo;envers)</td></tr>
+  </table>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> Un voltmètre se branche toujours <b>en parallèle</b>, un
+  ampèremètre toujours <b>en série</b> (dans le fil). Logic ne connaît que actif et inactif, c&rsquo;est pourquoi
+  il n&rsquo;y a qu&rsquo;un voltmètre.</div>
   <p>Le voltmètre a aussi une sortie&nbsp;: elle est active quand il indique 5&nbsp;V, ce qui permet de
   transmettre le résultat au composant suivant.</p>
+  -->

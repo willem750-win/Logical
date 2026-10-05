@@ -23,13 +23,34 @@
 
   <h2 id="verwijderen">Supprimer un composant</h2>
   <ol class="steps">
-    <li>Faites un clic droit sur le composant et choisissez <b>Sélectionner un objet</b>.</li>
-    <li>Cliquez sur <img src="../img/knop-verwijder.png" class="ico" alt=""><b>Supprimer l&rsquo;objet sélectionné</b> parmi les boutons de modification.
-      L&rsquo;info-bulle de ce bouton indique l&rsquo;objet qui sera supprimé.</li>
+    <li>Faites un clic droit sur le composant et choisissez <b>Sélectionner un objet</b>. Une ligne
+      pointillée rouge apparaît autour du composant, et le bouton
+      <img src="../img/knop-verwijder.png" class="ico" alt=""><b>Supprimer l&rsquo;objet sélectionné</b>
+      en haut à gauche des boutons de modification devient <b>rouge</b>.</li>
+    <li>Cliquez sur ce bouton rouge. Son info-bulle indique l&rsquo;objet qui sera supprimé.</li>
   </ol>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> Tant qu&rsquo;aucun objet n&rsquo;est sélectionné, le bouton
+  n&rsquo;est pas rouge et ne fait rien. Mauvais composant sélectionné&nbsp;? Faites un clic droit dessus et
+  choisissez <b>Désélectionner l&rsquo;objet</b>.</div>
+
+  <h2 id="groep">Déplacer plusieurs composants ensemble</h2>
+  <ol class="steps">
+    <li>Avec le bouton gauche de la souris, tracez sur un <b>endroit vide</b> du panneau un rectangle
+      (ligne pointillée grise) autour des composants. Pour tout prendre, appuyez sur <kbd>Ctrl</kbd>+<kbd>A</kbd>.</li>
+    <li>Chaque composant qui se trouve <b>entièrement</b> dans le rectangle est maintenant sélectionné.
+      Une <b>ligne pointillée bleue</b> apparaît autour du groupe.</li>
+    <li>Faites glisser à l&rsquo;intérieur de ce cadre bleu&nbsp;: tous les composants se déplacent ensemble,
+      avec leurs fils.</li>
+    <li>Terminé&nbsp;? Cliquez à côté, appuyez sur <kbd>Échap</kbd> ou faites un clic droit sur le cadre.</li>
+  </ol>
+  <p>Un fil entre deux composants sélectionnés se déplace simplement avec eux. Un fil vers un
+  composant hors de la sélection s&rsquo;étire. Les composants verrouillés restent en place, et pendant la
+  <a href="simulatie.html">simulation</a> vous ne pouvez pas sélectionner.</p>
 
   <h2>Touches</h2>
   <table>
     <tr><th>Touche</th><th>Que fait-elle&nbsp;?</th></tr>
     <tr><td><kbd>F1</kbd></td><td>Ouvre l&rsquo;aide du composant ou du bouton sous la souris.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Sélectionne tous les composants pour les déplacer ensemble.</td></tr>
+    <tr><td><kbd>Échap</kbd></td><td>Annule la sélection de plusieurs composants.</td></tr>
   </table>

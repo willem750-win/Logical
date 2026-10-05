@@ -5,8 +5,8 @@
   --panel: #ffffff;
   --text: #1f2328;
   --muted: #5b636e;
-  --accent: #1a7f37;
-  --accent-soft: #e6f4ea;
+  --accent: #1f5fbf;       /* blauw, zoals het programma-icoon */
+  --accent-soft: #e7effb;  /* lichtblauw voor selectie en hover */
   --border: #d9dde3;
   --key-bg: #f0f1f3;
   --tip-bg: #fff8db;
@@ -216,6 +216,8 @@ ol.steps li { margin-bottom: 6px; }
 /* ---------- Aanvullingen voor Logic ---------- */
 
 nav .brand img.ico { margin-right: 8px; }
+/* programma-icoon naast de naam bovenaan de navigatie */
+nav .brand img.logo { width: 28px; height: 28px; vertical-align: middle; margin: 0 8px 2px 0; }
 
 /* Afbeelding van een onderdeel naast de beschrijving */
 td.btn img.big { width: 32px; height: 32px; image-rendering: pixelated; }
@@ -232,6 +234,11 @@ td.btn img.big { width: 32px; height: 32px; image-rendering: pixelated; }
 }
 .pin.in  { background: #2e7d32; }
 .pin.out { background: #c62828; }
+
+/* Schema met uitleg eronder */
+figure { margin: 14px 0 18px; }
+figure img { max-width: 100%; height: auto; background: #fff; border: 1px solid var(--border); border-radius: 6px; }
+figcaption { color: var(--muted); font-size: 14px; margin-top: 6px; }
 
 dl.parts dt { font-weight: 600; margin-top: 10px; }
 dl.parts dd { margin: 2px 0 0 0; color: var(--text); }

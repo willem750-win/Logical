@@ -2,6 +2,8 @@
   <h1>Uitvoer</h1>
   <p class="lead">Uitvoeronderdelen tonen het resultaat van de schakeling. Ze hebben een of meer
   <span class="pin in">ingangen</span> links, waar je de draden van de verwerking op aansluit.</p>
+  <p>Een uitvoeronderdeel heeft geen aparte &minus;: die hangt onzichtbaar aan de massa. Zie
+  <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a></p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lamp</h2>
   <p>Brandt zolang de ingang aan is.</p>
@@ -29,8 +31,21 @@
       <b>0</b> als ze uit is.</li>
   </ul>
 
+  <!-- METER voorlopig verborgen (KMeter = False in main.lfm).
+       Om terug te zetten: dit commentaar weghalen.
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Meter</h2>
-  <p>Een voltmeter met twee meetingangen: <b>+</b> links en <b>&minus;</b> rechts. Het venster toont
-  <b>5&nbsp;V</b> als op beide ingangen een signaal staat (beide aan), en anders <b>0&nbsp;V</b>.</p>
+  <p>Een voltmeter met twee meetingangen: <b>+</b> links en <b>&minus;</b> rechts. Zoals een echte
+  voltmeter sluit je hem <b>parallel</b> aan, over een onderdeel of tussen twee punten van de schakeling.
+  Hij meet het spanningsverschil tussen + en &minus;:</p>
+  <table>
+    <tr><th>+</th><th>&minus;</th><th>Meter toont</th></tr>
+    <tr><td>aan</td><td>uit</td><td><b>5&nbsp;V</b></td></tr>
+    <tr><td>aan</td><td>aan</td><td>0&nbsp;V (geen verschil)</td></tr>
+    <tr><td>uit</td><td>uit</td><td>0&nbsp;V</td></tr>
+    <tr><td>uit</td><td>aan</td><td>0&nbsp;V (meter omgekeerd aangesloten)</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> Een voltmeter staat altijd <b>parallel</b>, een ampèremeter
+  altijd <b>in serie</b> (in de draad). Logic rekent alleen met aan en uit, daarom is er enkel een voltmeter.</div>
   <p>De meter heeft ook een uitgang: die is aan wanneer de meter 5&nbsp;V aangeeft, zodat je het
   resultaat kunt doorgeven aan een volgend onderdeel.</p>
+  -->

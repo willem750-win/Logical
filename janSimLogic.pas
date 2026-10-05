@@ -2059,6 +2059,48 @@ type
    // property LastStatusSender: TObject read FLastStatusSender;
 end;
 
+  { TjanGroupSelect: meerdere objecten tegelijk selecteren en verplaatsen.
+    Wordt als onzichtbaar besturingselement op het paneel gezet. Tijdens het
+    slepen van een selectierechthoek toont het die rechthoek; daarna ligt het
+    als kader over de geselecteerde objecten en vangt het de muis op om de
+    hele groep (met de draden) te verplaatsen. }
+  TjanGroupSelect = class(TGraphicControl)
+  private
+    FItems: TList;               // geselecteerde objecten (TControl)
+    FBanding: Boolean;           // selectierechthoek wordt getekend
+    FBandStart: TPoint;
+    FDragging: Boolean;
+    FDragStart: TPoint;          // muis bij begin slepen (paneel-coördinaten)
+    FFrameStart: TPoint;
+    FItemStart: array of TPoint;
+    FCons: array of TjanConnector;
+    FConMove: array of Integer;  // 1 = hele draad mee, 2 = één uiteinde mee
+    FConStart: array of TPoint;
+    FBTaal: string;
+    function IsGroupable(C: TControl): Boolean;
+    procedure UpdateFrame;
+    procedure PrepareDrag;
+    procedure ApplyDelta(DX, DY: Integer);
+  protected
+    procedure Paint; override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure BeginBand(X, Y: Integer);
+    procedure MoveBand(X, Y: Integer);
+    procedure EndBand(X, Y: Integer);
+    procedure SelectRect(R: TRect);
+    procedure SelectAll;
+    procedure Clear;
+    function Count: Integer;
+    property Banding: Boolean read FBanding;
+    property BTaal: string read FBTaal write FBTaal;
+  end;
+
 procedure Register;
 
 implementation
@@ -8405,11 +8447,11 @@ begin
   {case FLogicAndFunc of
   jlfEN: OutPut2:= Input1 and Input3;
  { end; }
-  if (Input1=true) and (input3=true)
-    then
-    output2:=true
-    else
-    output2:=false;
+  // Voltmeter (parallel aangesloten): toont het spanningsverschil
+  // U(+) - U(-). Input1 = + (links), Input3 = - (rechts).
+  //   + aan, - uit -> 5 V ; beide gelijk -> 0 V ;
+  //   + uit, - aan (omgekeerd aangesloten) -> 0 V
+  output2 := Input1 and not Input3;
 end;
 
 procedure TjanMeter.SetInput1(const Value: boolean);
@@ -19421,6 +19463,331 @@ begin
   FLastStatusSender := nil;
    if Assigned(FOnStatusText) then
     FOnStatusText(Self, '', 0);
+end;
+
+{ TjanGroupSelect }
+
+function GroupNormRect(const R: TRect): TRect;
+begin
+  Result := R;
+  if R.Left > R.Right then
+  begin
+    Result.Left := R.Right;
+    Result.Right := R.Left;
+  end;
+  if R.Top > R.Bottom then
+  begin
+    Result.Top := R.Bottom;
+    Result.Bottom := R.Top;
+  end;
+end;
+
+constructor TjanGroupSelect.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FItems := TList.Create;
+  FBTaal := 'NL';
+  Visible := False;
+  ShowHint := True;
+  SetBounds(0, 0, 1, 1);
+end;
+
+destructor TjanGroupSelect.Destroy;
+begin
+  FItems.Free;
+  inherited Destroy;
+end;
+
+function TjanGroupSelect.IsGroupable(C: TControl): Boolean;
+begin
+  Result := (C <> Self) and C.Visible and
+    ((C is TjanLogic) or (C is TjanTeller) or (C is TjanMemory) or
+     (C is TjanSimButton) or (C is TjanSimKnop) or (C is TjanSimSensor) or
+     (C is TjanSimWarm) or (C is TjanSimPuls) or (C is TjanDipSwitsh) or
+     (C is TjanSimLight) or (C is TjanSimRelais) or (C is TjanSimBuzzer) or
+     (C is TjanDisplay) or (C is TjanMeter));
+  // vergrendelde objecten blijven staan
+  if Result and IsPublishedProp(C, 'Lock') then
+    Result := GetOrdProp(C, 'Lock') = 0;
+end;
+
+function TjanGroupSelect.Count: Integer;
+begin
+  Result := FItems.Count;
+end;
+
+procedure TjanGroupSelect.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and Assigned(FItems) and (FItems.IndexOf(AComponent) >= 0) then
+  begin
+    FItems.Remove(AComponent);
+    if not FBanding then
+      UpdateFrame;
+  end;
+end;
+
+procedure TjanGroupSelect.Clear;
+var
+  i: Integer;
+begin
+  for i := 0 to FItems.Count - 1 do
+    TComponent(FItems[i]).RemoveFreeNotification(Self);
+  FItems.Clear;
+  FBanding := False;
+  FDragging := False;
+  Visible := False;
+end;
+
+procedure TjanGroupSelect.UpdateFrame;
+var
+  i: Integer;
+  R, U: TRect;
+begin
+  if FItems.Count = 0 then
+  begin
+    Visible := False;
+    Exit;
+  end;
+  U := TControl(FItems[0]).BoundsRect;
+  for i := 1 to FItems.Count - 1 do
+  begin
+    R := TControl(FItems[i]).BoundsRect;
+    UnionRect(U, U, R);
+  end;
+  InflateRect(U, 6, 6);
+  BoundsRect := U;
+  Hint := Tr(FBTaal,
+    Format('%d objecten geselecteerd'#13#10'Sleep om ze samen te verplaatsen, Esc of klik ernaast om te deselecteren', [FItems.Count]),
+    Format('%d objects selected'#13#10'Drag to move them together, Esc or click outside to deselect', [FItems.Count]),
+    Format('%d objets sélectionnés'#13#10'Faites glisser pour les déplacer ensemble, Échap ou clic à côté pour désélectionner', [FItems.Count]),
+    Format('%d Objekte ausgewählt'#13#10'Ziehen, um sie gemeinsam zu verschieben, Esc oder daneben klicken zum Abwählen', [FItems.Count]));
+  Visible := True;
+  BringToFront;
+  Invalidate;
+end;
+
+procedure TjanGroupSelect.SelectRect(R: TRect);
+var
+  i: Integer;
+  C: TControl;
+  RC: TRect;
+begin
+  Clear;
+  if Parent = nil then Exit;
+  R := GroupNormRect(R);
+  for i := 0 to Parent.ControlCount - 1 do
+  begin
+    C := Parent.Controls[i];
+    if not IsGroupable(C) then Continue;
+    RC := C.BoundsRect;
+    // object moet volledig binnen de rechthoek liggen
+    if (RC.Left >= R.Left) and (RC.Top >= R.Top) and
+       (RC.Right <= R.Right) and (RC.Bottom <= R.Bottom) then
+    begin
+      FItems.Add(C);
+      C.FreeNotification(Self);
+    end;
+  end;
+  UpdateFrame;
+end;
+
+procedure TjanGroupSelect.SelectAll;
+begin
+  SelectRect(Rect(-MaxInt div 2, -MaxInt div 2, MaxInt div 2, MaxInt div 2));
+end;
+
+procedure TjanGroupSelect.BeginBand(X, Y: Integer);
+begin
+  Clear;
+  FBanding := True;
+  FBandStart := Point(X, Y);
+  SetBounds(X, Y, 1, 1);
+  Visible := True;
+  BringToFront;
+end;
+
+procedure TjanGroupSelect.MoveBand(X, Y: Integer);
+begin
+  if not FBanding then Exit;
+  BoundsRect := GroupNormRect(Rect(FBandStart.X, FBandStart.Y, X, Y));
+  Invalidate;
+end;
+
+procedure TjanGroupSelect.EndBand(X, Y: Integer);
+var
+  R: TRect;
+begin
+  if not FBanding then Exit;
+  FBanding := False;
+  R := GroupNormRect(Rect(FBandStart.X, FBandStart.Y, X, Y));
+  // gewoon klikken (geen echte rechthoek) = alleen deselecteren
+  if (R.Right - R.Left < 4) and (R.Bottom - R.Top < 4) then
+    Clear
+  else
+    SelectRect(R);
+end;
+
+procedure TjanGroupSelect.Paint;
+begin
+  // Alleen de rand tekenen: de objecten eronder blijven zichtbaar.
+  Canvas.Brush.Style := bsClear;
+  Canvas.Pen.Width := 1;
+  Canvas.Pen.Style := psDash;
+  if FBanding then
+    Canvas.Pen.Color := clGray
+  else
+    Canvas.Pen.Color := clBlue;
+  Canvas.Rectangle(0, 0, Width, Height);
+end;
+
+procedure TjanGroupSelect.PrepareDrag;
+var
+  i, j, n: Integer;
+  C: TControl;
+  Con: TjanConnector;
+  Rc: TRect;
+  EndA, EndB: TPoint;
+  ModeA, ModeB: TjanConMode;
+  InA, InB: Boolean;
+
+  function InGroup(const P: TPoint): Boolean;
+  var
+    k: Integer;
+    R: TRect;
+  begin
+    Result := False;
+    for k := 0 to FItems.Count - 1 do
+    begin
+      R := TControl(FItems[k]).BoundsRect;
+      InflateRect(R, 8, 8);   // zelfde marge als AnchorConnectors
+      if PtInRect(R, P) then
+        Exit(True);
+    end;
+  end;
+
+begin
+  SetLength(FItemStart, FItems.Count);
+  for i := 0 to FItems.Count - 1 do
+    FItemStart[i] := Point(TControl(FItems[i]).Left, TControl(FItems[i]).Top);
+  FFrameStart := Point(Left, Top);
+
+  // draden: welke uiteinden liggen op een geselecteerd object?
+  SetLength(FCons, 0);
+  SetLength(FConMove, 0);
+  SetLength(FConStart, 0);
+  n := 0;
+  for j := 0 to Parent.ControlCount - 1 do
+  begin
+    C := Parent.Controls[j];
+    if not (C is TjanConnector) then Continue;
+    Con := TjanConnector(C);
+    Rc := Con.BoundsRect;
+    if Con.Shape = jcsTLBR then
+    begin
+      EndA := Point(Rc.Left, Rc.Top);      ModeA := jcmTL;
+      EndB := Point(Rc.Right, Rc.Bottom);  ModeB := jcmBR;
+    end
+    else
+    begin
+      EndA := Point(Rc.Right, Rc.Top);     ModeA := jcmTR;
+      EndB := Point(Rc.Left, Rc.Bottom);   ModeB := jcmBL;
+    end;
+    InA := InGroup(EndA);
+    InB := InGroup(EndB);
+    if not (InA or InB) then Continue;
+
+    SetLength(FCons, n + 1);
+    SetLength(FConMove, n + 1);
+    SetLength(FConStart, n + 1);
+    FCons[n] := Con;
+    FConStart[n] := Point(Con.Left, Con.Top);
+    if InA and InB then
+      FConMove[n] := 1                 // beide uiteinden mee: draad verschuiven
+    else
+    begin
+      FConMove[n] := 2;                // één uiteinde mee: draad uitrekken
+      // ankerpunt (0,0): MoveConnector(delta) verplaatst dan dat uiteinde
+      if InA then
+        Con.AnchorCorner(Point(0, 0), ModeA)
+      else
+        Con.AnchorCorner(Point(0, 0), ModeB);
+    end;
+    Inc(n);
+  end;
+end;
+
+procedure TjanGroupSelect.ApplyDelta(DX, DY: Integer);
+var
+  i: Integer;
+begin
+  for i := 0 to FItems.Count - 1 do
+    if i <= High(FItemStart) then
+      TControl(FItems[i]).SetBounds(FItemStart[i].X + DX, FItemStart[i].Y + DY,
+        TControl(FItems[i]).Width, TControl(FItems[i]).Height);
+  for i := 0 to High(FCons) do
+    if FConMove[i] = 1 then
+      FCons[i].SetBounds(FConStart[i].X + DX, FConStart[i].Y + DY,
+        FCons[i].Width, FCons[i].Height)
+    else
+      FCons[i].MoveConnector(Point(DX, DY));
+  SetBounds(FFrameStart.X + DX, FFrameStart.Y + DY, Width, Height);
+end;
+
+procedure TjanGroupSelect.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited MouseDown(Button, Shift, X, Y);
+  if FBanding then Exit;
+  if Button = mbRight then
+  begin
+    Clear;
+    Exit;
+  end;
+  if (Button = mbLeft) and (FItems.Count > 0) then
+  begin
+    FDragStart := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+    PrepareDrag;
+    FDragging := True;
+  end;
+end;
+
+procedure TjanGroupSelect.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, C0, Snapped: TPoint;
+  DX, DY: Integer;
+  WorkR: TRect;
+  Ref: TControl;
+begin
+  inherited MouseMove(Shift, X, Y);
+  if not (FDragging and (ssLeft in Shift)) then Exit;
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  DX := P.X - FDragStart.X;
+  DY := P.Y - FDragStart.Y;
+
+  if Parent is TjanGridS then
+  begin
+    WorkR := TjanGridS(Parent).GetWorkAreaRect;
+    // groep binnen het werkgebied houden
+    if FFrameStart.X + DX < WorkR.Left then DX := WorkR.Left - FFrameStart.X;
+    if FFrameStart.Y + DY < WorkR.Top then DY := WorkR.Top - FFrameStart.Y;
+    // snappen zoals bij één object: op het midden van het eerste object
+    Ref := TControl(FItems[0]);
+    C0 := Point(FItemStart[0].X + Ref.Width div 2 + DX,
+                FItemStart[0].Y + Ref.Height div 2 + DY);
+    Snapped := TjanGridS(Parent).SnapPointToRuler(C0, WorkR);
+    DX := DX + (Snapped.X - C0.X);
+    DY := DY + (Snapped.Y - C0.Y);
+  end;
+
+  ApplyDelta(DX, DY);
+end;
+
+procedure TjanGroupSelect.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited MouseUp(Button, Shift, X, Y);
+  FDragging := False;
+  if Assigned(Parent) then
+    Parent.Invalidate;
 end;
 
 

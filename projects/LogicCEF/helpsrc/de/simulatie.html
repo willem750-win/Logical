@@ -3,6 +3,26 @@
   <p class="lead">In der Simulation benutzen Sie die Schaltung wie eine echte: Sie bedienen die Eingänge und
   sehen die Ausgänge reagieren, ohne versehentlich etwas zu verschieben.</p>
 
+  <h2 id="voeding">Wo sind Plus und Minus?</h2>
+  <p>In einem echten Stromkreis fließt der Strom vom <b>+</b> einer Quelle (zum Beispiel einer Batterie)
+  durch den Schalter und die Lampe zurück zum <b>&minus;</b>. In Logic zeichnen Sie keine Quelle, und die
+  Bauteile haben kein + und &minus;. Das ist kein Fehler: Logic funktioniert wie <b>Digitalelektronik</b>.</p>
+  <ul>
+    <li>Alle Bauteile werden von einer <b>unsichtbaren Versorgung</b> gespeist: <b>+5&nbsp;V</b> und
+      <b>0&nbsp;V</b> (Masse). Sie ist immer vorhanden; Sie müssen sie nicht zeichnen.</li>
+    <li>Ein Draht führt ein <b>Signal</b>: <b>ein</b> ist 5&nbsp;V, <b>aus</b> ist 0&nbsp;V, immer gegen
+      Masse gemessen.</li>
+    <li>Das &minus; jeder Lampe, jedes Summers und jedes Relais ist unsichtbar mit Masse verbunden. Darum
+      kann ein einziger Draht eine Lampe leuchten lassen.</li>
+  </ul>
+  <figure>
+    <img src="../img/voeding.svg" alt="Schalter und Lampe mit der unsichtbaren Versorgung">
+    <figcaption>Durchgezogene Linien: was Sie in Logic zeichnen (ein Schalter, ein Draht und eine Lampe).
+    Gestrichelte Linien: die Versorgung, die Logic selbst ergänzt, von +5&nbsp;V nach Masse (0&nbsp;V).</figcaption>
+  </figure>
+  <p>Auch echte Logikschaltpläne werden so gezeichnet: Die Versorgungsleitungen sind selten eingezeichnet,
+  weil sie für alle Bauteile gleich sind.</p>
+
   <h2>Simulation starten und beenden</h2>
   <p>Klicken Sie auf <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Simulation starten</b>. Die Schaltfläche wird rot
   (<img src="../img/knop-simuleren-stop.png" class="ico" alt="">). Klicken Sie erneut darauf, um die Simulation zu beenden
@@ -18,5 +38,5 @@
   <p>Nach der Simulation ist alles wieder wie vorher, auch die Einstellung der Hilfslinien.</p>
 
   <div class="tip"><strong>Tipp:</strong> Funktioniert die Schaltung nicht wie erwartet? Beenden Sie die Simulation,
-  halten Sie die Maus über die Bauteile und sehen Sie in der Statusleiste ihren Zustand, oder setzen Sie ein
-  <a href="uitvoer.html#meter">Messgerät</a>, um ein Signal zu prüfen.</div>
+  halten Sie die Maus über die Bauteile und sehen Sie in der Statusleiste ihren Zustand, oder schließen Sie eine
+  <a href="uitvoer.html#lamp">Lampe</a> an einen Draht an, um das Signal zu prüfen.</div>

@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Buttons, Graphics, Dialogs, ComCtrls,
   Menus,StrHolder, SMNetGradient, ScreenCapture, chatgridpcodeSmall,
   janSimLogic,AdvancedPropertyGridComponent, wcimgcbo, IniFiles,LCLIntf,LCLType,
-  TypInfo, LCLProc, ExtCtrls, UTF8Process,  uHelpManager, uAbout,
+  TypInfo, LCLProc, ExtCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
   // De ingebouwde CEF-browser bestaat enkel onder Windows; onder Linux
   // wordt de help in de standaardbrowser van het systeem geopend.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
@@ -46,8 +46,7 @@ type
     beslissenN: TStrHolder;
     Panel1: TPanel;
     Panel2: TPanel;
-    SpeedButton1: TSpeedButton;
-    brButton: TSpeedButton;
+    brInfo1: TSpeedButton;
     StatusBar1: TStatusBar;
     Taal: TImageComboBox;
     test: TStrHolder;
@@ -67,8 +66,8 @@ type
 
     procedure BCapture2MouseEnter(Sender: TObject);
     procedure BCaptureClick(Sender: TObject);
-    procedure brButtonClick(Sender: TObject);
-    procedure brButtonMouseEnter(Sender: TObject);
+    procedure brInfo1Click(Sender: TObject);
+    procedure brInfo1MouseEnter(Sender: TObject);
     procedure BSettings2MouseEnter(Sender: TObject);
 
     procedure BSettingsClick(Sender: TObject);
@@ -120,7 +119,6 @@ type
     procedure maaksettingsframe;
 
     procedure killframes;
-    procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton1MouseEnter(Sender: TObject);
     procedure StatusBar1DrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel;
       const Rect: TRect);
@@ -142,9 +140,14 @@ type
      FPanel0KindColor: TColor;   // kleur-indicator voor panel 0  afhankelijk van object-soort
      FPanel0HasKind  : Boolean;  // of we hem moeten tekenen
      FLastHelpObject: TObject;
+     FGroup: TjanGroupSelect;    // meerdere objecten selecteren/verplaatsen
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
      procedure OpenHelpInMiniBrowser(const FileName: string);
+    {specifieke procedure AppShowHint tijdens de simulatie de regel "Rechter muisknop
+      voor extra instellingen" uit elke hint filtert,}
+     procedure AppShowHint(var HintStr: string; var CanShow: Boolean;
+       var HintInfo: THintInfo);
   //  procedure StartBrowser(const AUrl: string);
   //  procedure StopBrowser;
 
@@ -587,14 +590,7 @@ begin
   end;
 
 end;
-procedure TmainForm.SpeedButton1Click(Sender: TObject);
-var
-  P: TProcessUTF8;
-  ExePath: string;
-begin
- // StartBrowser('https://chatgpt.com');
-//  StartBrowser('http://localhost');
-end;
+
 
 procedure TmainForm.SpeedButton1MouseEnter(Sender: TObject);
 begin
@@ -1064,7 +1060,8 @@ end;
     btGridPanelTitel.hint:= 'Titel van paneel wijzigen...';
     BSettings2.Hint := 'Instellingen openen';
     btClose1.Hint   := 'Programma afsluiten';
-    btInfo2.Hint    := 'Informatie...';
+    btInfo2.Hint    := 'Over Logic...';
+    brInfo1.Hint    := 'Help openen (F1)';
     btOpenPaneel1.Hint:='Open bewaard paneel...';
     btnSavePanel1.hint:= 'Bewaar paneel...';
     LGPanels1.Hint:='Klik hier voor paneel keuze...';
@@ -1086,7 +1083,8 @@ end;
 
     BSettings2.Hint := 'Open settings';
     btClose1.Hint   := 'Close application';
-    btInfo2.Hint    := 'Information...';
+    btInfo2.Hint    := 'About Logic...';
+    brInfo1.Hint    := 'Open help (F1)';
     btOpenPaneel1.Hint:='Open saved panel...';
     btnSavePanel1.hint:= 'Save panel...';
     LGPanels1.Hint:='Click here to select the panel...';
@@ -1107,12 +1105,13 @@ end;
 
     BSettings2.Hint := 'Ouvrir les paramètres';
     btClose1.Hint   := 'Fermer l''application';
-    btInfo2.Hint    := 'Information...';
+    btInfo2.Hint    := 'À propos de Logic...';
+    brInfo1.Hint    := 'Ouvrir l''aide (F1)';
     btOpenPaneel1.Hint:='Ouvrir le panneau enregistré...';
-    btnSavePanel1.hint:= 'Panneau conservé....';
+    btnSavePanel1.hint:= 'Enregistrer le panneau...';
     LGPanels1.Hint:='Cliquez ici pour sélectionner le panneau...';
     btClearConnectors.Hint:= 'Supprimer les connexions...';
-    btDelCurObject.Hint:= 'Ausgewähltes Objekt löschen...';
+    btDelCurObject.Hint:= 'Supprimer l''objet sélectionné...';
     btSimulate.Hint:='Démarrer la simulation';
   end;
 
@@ -1128,9 +1127,10 @@ end;
 
     BSettings2.Hint := 'Einstellungen öffnen...';
     btClose1.Hint   := 'Anwendung schließen...';
-    btInfo2.Hint    := 'Information...';
+    btInfo2.Hint    := 'Über Logic...';
+    brInfo1.Hint    := 'Hilfe öffnen (F1)';
     btOpenPaneel1.Hint:='Gespeichertes Panel öffnen...';
-    btnSavePanel1.hint:= 'Konserviertes Panel...';
+    btnSavePanel1.hint:= 'Panel speichern...';
     LGPanels1.Hint:='Klicken Sie hier, um das Bedienfeld auszuwählen...';
     btClearConnectors.Hint:= 'Verbindungen entfernen...';
     btDelCurObject.Hint:= 'Ausgewähltes Objekt löschen...';
@@ -1140,6 +1140,8 @@ end;
 
   if Assigned(AppHelpManager) then
   AppHelpManager.BTaal := LangToBTaal(Grid.Language);
+  if Assigned(FGroup) then
+    FGroup.BTaal := LangToBTaal(Grid.Language);
 
    SaveLanguageSetting;
  end;
@@ -1341,6 +1343,8 @@ var
 begin
  huidigeGuideLines:= Grid.GuideLinesAll;
   FRunMode := btSimulate.Down;
+  if FRunMode then
+    FGroup.Clear;   // geen groepsselectie tijdens de simulatie
 
   if Assigned(Box) then
     Box.BlokkeerObjecten(FRunMode);
@@ -1471,6 +1475,10 @@ begin
 
   Grid.OnMouseMove := @GridMouseMove;
 
+  FGroup := TjanGroupSelect.Create(Self);
+  FGroup.Parent := Grid;
+
+  Application.OnShowHint := @AppShowHint;
   Application.HintColor := clYellow;
   // Zwarte hinttekst. Zolang HintFont gelijk is aan het systeemfont tekent
   // de LCL de tekst in de themakleur van tooltips; onder Linux (GTK2) is
@@ -1509,12 +1517,11 @@ begin
   //  HelpKeyword
   Grid.HelpKeyword := 'raster';
   Box.HelpKeyword := 'logicbox';
-  SpeedButton1.HelpKeyword := 'sbutton1';
   btSimulate.HelpKeyword := 'simulate';
   btDelCurObject.HelpKeyword := 'delete_selected';
   btGrid.HelpKeyword := 'grid';
   BSettings2.HelpKeyword := 'settings';
-  brButton.HelpKeyword := 'browser';
+  brInfo1.HelpKeyword := 'browser';
   // Overige knoppen: zie TAppHelpManager.HelpPageForKeyword voor de koppeling
   // met de helppagina's.
   btOpenPaneel1.HelpKeyword := 'openen';
@@ -1534,6 +1541,21 @@ procedure TmainForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftSta
 var
   HelpCtrl: TControl;
 begin
+  // Esc: groepsselectie opheffen; Ctrl+A: alle objecten selecteren
+  if (Key = VK_ESCAPE) and (FGroup.Count > 0) then
+  begin
+    FGroup.Clear;
+    Key := 0;
+    Exit;
+  end;
+  if (Key = VK_A) and (ssCtrl in Shift) and (not FRunMode) and
+     (not fr_Settingsbestaat) then
+  begin
+    FGroup.SelectAll;
+    Key := 0;
+    Exit;
+  end;
+
   if Key = VK_F1 then
   begin
     Key := 0;
@@ -1568,8 +1590,29 @@ end;
 
 
 procedure TmainForm.BCaptureClick(Sender: TObject);
+var
+  MS: TMemoryStream;
+  Bmp: TBitmap;
 begin
-  janScreenCapture1.CaptureToClipboard;
+  // Niet CaptureToClipboard gebruiken: die toont de melding altijd in het
+  // Nederlands. Via een stream opnemen en zelf een vertaalde melding tonen.
+  MS := TMemoryStream.Create;
+  Bmp := TBitmap.Create;
+  try
+    janScreenCapture1.CaptureToStream(MS);
+    if MS.Size = 0 then Exit;
+    MS.Position := 0;
+    Bmp.LoadFromStream(MS);
+    Clipboard.Assign(Bmp);
+  finally
+    Bmp.Free;
+    MS.Free;
+  end;
+  ShowMessage(MyTr(LangToBTaal(Grid.Language),
+    'Schermkopie van het paneel staat op het klembord.',
+    'Screenshot of the panel has been copied to the clipboard.',
+    'La capture du panneau a été copiée dans le presse-papiers.',
+    'Bildschirmfoto des Panels wurde in die Zwischenablage kopiert.'));
 end;
 
 procedure TmainForm.BCapture2MouseEnter(Sender: TObject);
@@ -1577,7 +1620,7 @@ begin
   UpdateLastHelpObject(Sender);
 end;
 
-procedure TmainForm.brButtonClick(Sender: TObject);
+procedure TmainForm.brInfo1Click(Sender: TObject);
 begin
   // Help-startpagina in de gekozen taal openen: onder Windows in de
   // ingebouwde browser, onder Linux in de systeembrowser
@@ -1586,7 +1629,7 @@ begin
     AppHelpManager.ShowTableOfContents;
 end;
 
-procedure TmainForm.brButtonMouseEnter(Sender: TObject);
+procedure TmainForm.brInfo1MouseEnter(Sender: TObject);
 begin
   UpdateLastHelpObject(Sender);
 end;
@@ -1597,13 +1640,37 @@ begin
 end;
 
 
+procedure TmainForm.AppShowHint(var HintStr: string; var CanShow: Boolean;
+  var HintInfo: THintInfo);
+const
+  // tweede hintregel van de objecten (zie BuildSimHint in janSimLogic)
+  RightClickLines: array[0..3] of string = (
+    'Rechter muisknop voor extra instellingen',
+    'Right mouse button for extra settings',
+    'Bouton droit pour paramètres supplémentaires',
+    'Rechte Maustaste für zusätzliche Einstellungen');
+var
+  i: Integer;
+begin
+  // Tijdens de simulatie is er geen rechtsklikmenu: die regel weglaten.
+  if not FRunMode then Exit;
+  for i := Low(RightClickLines) to High(RightClickLines) do
+    HintStr := StringReplace(HintStr, #13#10 + RightClickLines[i], '', [rfReplaceAll]);
+end;
+
 procedure TmainForm.OpenHelpInMiniBrowser(const FileName: string);
 var
   URL: string;
 begin
   {$IFDEF WINDOWS}
   if not Assigned(MiniBrowserFrm) then
+  begin
     MiniBrowserFrm := TMiniBrowserFrm.Create(Application);
+    // Help-venster blijft vóór het hoofdvenster, ook als je in het paneel
+    // klikt (maar niet boven andere programma's).
+    MiniBrowserFrm.PopupMode := pmExplicit;
+    MiniBrowserFrm.PopupParent := Self;
+  end;
 
   URL := 'file:///' + StringReplace(FileName, '\', '/', [rfReplaceAll]);
   MiniBrowserFrm.LoadURLString(URL);
@@ -1624,6 +1691,11 @@ a,b:integer;
 beweeg:Boolean;
 begin
 if fr_Settingsbestaat then exit;
+// Slepen op een lege plek: selectierechthoek voor meerdere objecten.
+if (Button = mbLeft) and (not FRunMode) and (not Box.NewObject) and
+   (Grid.GridMode = gmNormal) and (not Grid.Capture) and
+   (Screen.Cursor = crDefault) then
+  FGroup.BeginBand(X, Y);
 wc:=box.Eigenaar;
 b:= wc.ControlCount;
 beweeg:= Box.NewObject;//  NewObject;
@@ -1648,6 +1720,8 @@ var
   Child:TControl;
   a,b:integer;
 begin
+  if FGroup.Banding then
+    FGroup.MoveBand(X, Y);
   temp := '';
   wc := box.Eigenaar;
   b  := wc.ControlCount;
@@ -1676,6 +1750,8 @@ wc:TWinControl;
 a,b:integer;
 Child:TControl;
 begin
+if FGroup.Banding then
+  FGroup.EndBand(X, Y);
 wc:=Box.Eigenaar;
 b:= wc.ControlCount;
 Box.NewObject:=false;

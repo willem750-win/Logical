@@ -86,8 +86,8 @@ object mainForm: TmainForm
         D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8
         D0D4C8D0D4C8D0D40000
       }
-      Images = ImageList1
       ImageIndex = 43
+      Transparent = False
       ShowCaption = False
       ShowHint = True
       ParentShowHint = False
@@ -103,6 +103,7 @@ object mainForm: TmainForm
       Flat = True
       Images = ImageList1
       ImageIndex = 31
+      Transparent = False
       ShowCaption = False
       ShowHint = True
       ParentShowHint = False
@@ -118,6 +119,7 @@ object mainForm: TmainForm
       Flat = True
       Images = ImageList1
       ImageIndex = 22
+      Transparent = False
       ShowHint = True
       ParentShowHint = False
       OnClick = btInfo2Click
@@ -132,6 +134,7 @@ object mainForm: TmainForm
       Width = 23
       Images = ImageList1
       ImageIndex = 32
+      Transparent = False
       ShowHint = True
       ParentShowHint = False
       OnClick = btnSavePanelClick
@@ -154,27 +157,21 @@ object mainForm: TmainForm
       ParentShowHint = False
       OnClick = LGPanelsClick
     end
-    object SpeedButton1: TSpeedButton
-      Left = 624
-      Height = 22
-      Top = 3
+    object brInfo1: TSpeedButton
+      Left = 368
+      Height = 23
+      Hint = 'Informatie'
+      Top = 1
       Width = 23
-      Transparent = False
-      Visible = False
-      OnClick = SpeedButton1Click
-      OnMouseEnter = SpeedButton1MouseEnter
-    end
-    object brButton: TSpeedButton
-      Left = 756
-      Height = 25
-      Top = 0
-      Width = 23
-      Align = alRight
       Flat = True
       Images = ImageList1
       ImageIndex = 6
-      OnClick = brButtonClick
-      OnMouseEnter = brButtonMouseEnter
+      Transparent = False
+      ShowCaption = False
+      ShowHint = True
+      ParentShowHint = False
+      OnClick = brInfo1Click
+      OnMouseEnter = brInfo1MouseEnter
     end
     object btSimulate: TSpeedButton
       Left = 804
@@ -301,6 +298,7 @@ object mainForm: TmainForm
           C000C0C0C000C0C0C000C0C0C000C0C0C000C0C0C000C0C0C000C0C0C000C0C0
           C000
         }
+        Transparent = False
         ShowHint = True
         ParentFont = False
         ParentShowHint = False
@@ -554,6 +552,7 @@ object mainForm: TmainForm
         Flat = True
         Images = ImageList1
         ImageIndex = 42
+        Transparent = False
         ShowCaption = False
         ShowHint = True
         ParentShowHint = False
@@ -647,7 +646,7 @@ object mainForm: TmainForm
       Eigenaar = Grid
       ObjectID = 0
       A_Imput = 6
-      A_Output = 4
+      A_Output = 5
       A_Verwerking = 5
       B_Imput = clSilver
       B_Output = clSilver

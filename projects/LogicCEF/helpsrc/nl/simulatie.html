@@ -3,6 +3,26 @@
   <p class="lead">In de simulatie gebruik je de schakeling zoals een echte: je bedient de invoer en
   ziet de uitvoer reageren, zonder dat je per ongeluk iets verschuift.</p>
 
+  <h2 id="voeding">Waar zijn de plus en de min?</h2>
+  <p>In een echte elektrische kring loopt de stroom van de <b>+</b> van een bron (bijvoorbeeld een accu),
+  door de schakelaar en de lamp, en terug naar de <b>&minus;</b>. In Logic teken je geen bron, en de
+  onderdelen hebben geen + en &minus;. Dat is geen vergissing: Logic werkt zoals <b>digitale elektronica</b>.</p>
+  <ul>
+    <li>Alle onderdelen krijgen hun voeding van een <b>onzichtbare bron</b>: <b>+5&nbsp;V</b> en
+      <b>0&nbsp;V</b> (de massa). Die is er altijd; je hoeft ze niet te tekenen.</li>
+    <li>Een draad brengt een <b>signaal</b>: <b>aan</b> is 5&nbsp;V, <b>uit</b> is 0&nbsp;V, altijd gemeten
+      tegenover de massa.</li>
+    <li>De &minus; van elke lamp, zoemer en elk relais hangt onzichtbaar aan de massa. Daarom kan
+      één draad een lamp laten branden.</li>
+  </ul>
+  <figure>
+    <img src="../img/voeding.svg" alt="Schakelaar en lamp met de onzichtbare voeding">
+    <figcaption>Volle lijnen: wat je in Logic tekent (een schakelaar, een draad en een lamp).
+    Stippellijnen: de voeding die Logic er zelf bij denkt, van +5&nbsp;V naar de massa (0&nbsp;V).</figcaption>
+  </figure>
+  <p>Zo tekent men ook echte logische schema&rsquo;s: de voedingslijnen staan er zelden op, omdat ze
+  voor alle onderdelen dezelfde zijn.</p>
+
   <h2>Simulatie starten en stoppen</h2>
   <p>Klik op <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Start simulatie</b>. De knop wordt rood
   (<img src="../img/knop-simuleren-stop.png" class="ico" alt="">). Klik er nogmaals op om de simulatie te stoppen
@@ -18,5 +38,5 @@
   <p>Na de simulatie komt alles terug zoals het was, ook de stand van de richtlijnen.</p>
 
   <div class="tip"><strong>Tip:</strong> werkt de schakeling niet zoals verwacht? Stop de simulatie,
-  houd de muis boven de onderdelen en kijk in de statusbalk naar hun toestand, of plaats een
-  <a href="uitvoer.html#meter">meter</a> om een signaal te controleren.</div>
+  houd de muis boven de onderdelen en kijk in de statusbalk naar hun toestand, of hang een
+  <a href="uitvoer.html#lamp">lamp</a> aan een draad om het signaal te controleren.</div>

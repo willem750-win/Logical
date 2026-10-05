@@ -2,6 +2,8 @@
   <h1>Outputs</h1>
   <p class="lead">Output components show the result of the circuit. They have one or more
   <span class="pin in">inputs</span> on the left, to which you connect the wires from the processing part.</p>
+  <p>An output component has no separate &minus;: it is invisibly connected to ground. See
+  <a href="simulatie.html#voeding">Where are the plus and the minus?</a></p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lamp</h2>
   <p>Lights as long as the input is on.</p>
@@ -28,8 +30,21 @@
       <b>0</b> when it is off.</li>
   </ul>
 
+  <!-- METER voorlopig verborgen (KMeter = False in main.lfm).
+       Om terug te zetten: dit commentaar weghalen.
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Meter</h2>
-  <p>A voltmeter with two measuring inputs: <b>+</b> on the left and <b>&minus;</b> on the right. The window shows
-  <b>5&nbsp;V</b> when there is a signal on both inputs (both on), and <b>0&nbsp;V</b> otherwise.</p>
+  <p>A voltmeter with two measuring inputs: <b>+</b> on the left and <b>&minus;</b> on the right. Like a real
+  voltmeter you connect it <b>in parallel</b>, across a component or between two points of the circuit.
+  It measures the voltage difference between + and &minus;:</p>
+  <table>
+    <tr><th>+</th><th>&minus;</th><th>Meter shows</th></tr>
+    <tr><td>on</td><td>off</td><td><b>5&nbsp;V</b></td></tr>
+    <tr><td>on</td><td>on</td><td>0&nbsp;V (no difference)</td></tr>
+    <tr><td>off</td><td>off</td><td>0&nbsp;V</td></tr>
+    <tr><td>off</td><td>on</td><td>0&nbsp;V (meter connected the wrong way round)</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> A voltmeter is always connected <b>in parallel</b>, an ammeter
+  always <b>in series</b> (in the wire). Logic only works with on and off, so there is only a voltmeter.</div>
   <p>The meter also has an output: it is on when the meter reads 5&nbsp;V, so you can pass the
   result on to a next component.</p>
+  -->

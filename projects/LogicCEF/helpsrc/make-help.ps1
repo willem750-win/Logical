@@ -111,7 +111,7 @@ foreach ($L in $Langs) {
 <body>
 <div class="layout">
 <nav>
-  <div class="brand"><img src="../img/pal-en.png" class="ico" alt="">Logic</div>
+  <div class="brand"><img src="../img/logo.png" class="logo" alt="">Logic</div>
   <div class="langs">$LangLinks</div>
 $($sb.ToString().TrimEnd())
 </nav>

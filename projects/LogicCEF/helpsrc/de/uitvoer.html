@@ -2,6 +2,8 @@
   <h1>Ausgänge</h1>
   <p class="lead">Ausgangsbauteile zeigen das Ergebnis der Schaltung. Sie haben einen oder mehrere
   <span class="pin in">Eingänge</span> links, an die Sie die Drähte aus der Verarbeitung anschließen.</p>
+  <p>Ein Ausgangsbauteil hat kein eigenes &minus;: Es ist unsichtbar mit Masse verbunden. Siehe
+  <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a></p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</h2>
   <p>Leuchtet, solange der Eingang ein ist.</p>
@@ -28,8 +30,21 @@
       <b>0</b>, wenn er aus ist.</li>
   </ul>
 
+  <!-- METER voorlopig verborgen (KMeter = False in main.lfm).
+       Om terug te zetten: dit commentaar weghalen.
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Messgerät</h2>
-  <p>Ein Voltmeter mit zwei Messeingängen: <b>+</b> links und <b>&minus;</b> rechts. Das Fenster zeigt
-  <b>5&nbsp;V</b>, wenn an beiden Eingängen ein Signal anliegt (beide ein), sonst <b>0&nbsp;V</b>.</p>
+  <p>Ein Voltmeter mit zwei Messeingängen: <b>+</b> links und <b>&minus;</b> rechts. Wie ein echtes
+  Voltmeter schließen Sie es <b>parallel</b> an, über einem Bauteil oder zwischen zwei Punkten der Schaltung.
+  Es misst den Spannungsunterschied zwischen + und &minus;:</p>
+  <table>
+    <tr><th>+</th><th>&minus;</th><th>Anzeige</th></tr>
+    <tr><td>ein</td><td>aus</td><td><b>5&nbsp;V</b></td></tr>
+    <tr><td>ein</td><td>ein</td><td>0&nbsp;V (kein Unterschied)</td></tr>
+    <tr><td>aus</td><td>aus</td><td>0&nbsp;V</td></tr>
+    <tr><td>aus</td><td>ein</td><td>0&nbsp;V (Messgerät verkehrt herum angeschlossen)</td></tr>
+  </table>
+  <div class="tip"><strong>Tipp:</strong> Ein Voltmeter wird immer <b>parallel</b> angeschlossen, ein
+  Amperemeter immer <b>in Reihe</b> (im Draht). Logic kennt nur ein und aus, daher gibt es nur ein Voltmeter.</div>
   <p>Das Messgerät hat auch einen Ausgang: Er ist ein, wenn das Messgerät 5&nbsp;V anzeigt, sodass Sie
   das Ergebnis an ein nächstes Bauteil weitergeben können.</p>
+  -->

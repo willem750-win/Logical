@@ -23,13 +23,33 @@
 
   <h2 id="verwijderen">Ein Bauteil löschen</h2>
   <ol class="steps">
-    <li>Klicken Sie mit der rechten Maustaste auf das Bauteil und wählen Sie <b>Objekt auswählen</b>.</li>
-    <li>Klicken Sie bei den Bearbeitungsschaltflächen auf <img src="../img/knop-verwijder.png" class="ico" alt=""><b>Ausgewähltes Objekt löschen</b>.
-      Der Hinweis dieser Schaltfläche zeigt, welches Objekt gelöscht wird.</li>
+    <li>Klicken Sie mit der rechten Maustaste auf das Bauteil und wählen Sie <b>Objekt auswählen</b>.
+      Um das Bauteil erscheint eine rote gestrichelte Linie, und die Schaltfläche
+      <img src="../img/knop-verwijder.png" class="ico" alt=""><b>Ausgewähltes Objekt löschen</b>
+      oben links bei den Bearbeitungsschaltflächen wird <b>rot</b>.</li>
+    <li>Klicken Sie auf diese rote Schaltfläche. Ihr Hinweis zeigt, welches Objekt gelöscht wird.</li>
   </ol>
+  <div class="tip"><strong>Tipp:</strong> Solange kein Objekt ausgewählt ist, ist die Schaltfläche nicht rot
+  und bewirkt nichts. Das falsche Bauteil ausgewählt? Klicken Sie mit der rechten Maustaste darauf und
+  wählen Sie <b>Objekt abwählen</b>.</div>
+
+  <h2 id="groep">Mehrere Bauteile gemeinsam verschieben</h2>
+  <ol class="steps">
+    <li>Ziehen Sie mit der linken Maustaste auf einer <b>leeren Stelle</b> des Panels ein Rechteck
+      (graue gestrichelte Linie) um die Bauteile. Für alle Bauteile drücken Sie <kbd>Strg</kbd>+<kbd>A</kbd>.</li>
+    <li>Jedes Bauteil, das <b>vollständig</b> im Rechteck liegt, ist jetzt ausgewählt. Um die Gruppe
+      erscheint eine <b>blaue gestrichelte Linie</b>.</li>
+    <li>Ziehen Sie innerhalb dieses blauen Rahmens: Alle Bauteile bewegen sich gemeinsam, mit ihren Drähten.</li>
+    <li>Fertig? Klicken Sie daneben, drücken Sie <kbd>Esc</kbd> oder klicken Sie mit der rechten Maustaste auf den Rahmen.</li>
+  </ol>
+  <p>Ein Draht zwischen zwei ausgewählten Bauteilen wird einfach mitverschoben. Ein Draht zu einem
+  Bauteil außerhalb der Auswahl wird gedehnt. Gesperrte Bauteile bleiben stehen, und während der
+  <a href="simulatie.html">Simulation</a> können Sie nicht auswählen.</p>
 
   <h2>Tasten</h2>
   <table>
     <tr><th>Taste</th><th>Was macht sie?</th></tr>
     <tr><td><kbd>F1</kbd></td><td>Öffnet die Hilfe zum Bauteil oder zur Schaltfläche unter der Maus.</td></tr>
+    <tr><td><kbd>Strg</kbd>+<kbd>A</kbd></td><td>Wählt alle Bauteile aus, um sie gemeinsam zu verschieben.</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Hebt die Auswahl mehrerer Bauteile auf.</td></tr>
   </table>

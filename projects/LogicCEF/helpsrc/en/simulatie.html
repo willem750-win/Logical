@@ -3,6 +3,26 @@
   <p class="lead">In the simulation you use the circuit like a real one: you operate the inputs and
   watch the outputs react, without accidentally moving anything.</p>
 
+  <h2 id="voeding">Where are the plus and the minus?</h2>
+  <p>In a real electric circuit the current flows from the <b>+</b> of a source (a battery, for example),
+  through the switch and the lamp, and back to the <b>&minus;</b>. In Logic you do not draw a source, and the
+  components have no + and &minus;. That is not a mistake: Logic works like <b>digital electronics</b>.</p>
+  <ul>
+    <li>All components get their power from an <b>invisible supply</b>: <b>+5&nbsp;V</b> and
+      <b>0&nbsp;V</b> (ground). It is always there; you do not need to draw it.</li>
+    <li>A wire carries a <b>signal</b>: <b>on</b> is 5&nbsp;V, <b>off</b> is 0&nbsp;V, always measured
+      against ground.</li>
+    <li>The &minus; of every lamp, buzzer and relay is invisibly connected to ground. That is why
+      a single wire can light a lamp.</li>
+  </ul>
+  <figure>
+    <img src="../img/voeding.svg" alt="Switch and lamp with the invisible supply">
+    <figcaption>Solid lines: what you draw in Logic (a switch, a wire and a lamp).
+    Dashed lines: the supply that Logic adds by itself, from +5&nbsp;V to ground (0&nbsp;V).</figcaption>
+  </figure>
+  <p>Real logic diagrams are drawn the same way: the supply lines are rarely shown, because they are
+  the same for all components.</p>
+
   <h2>Starting and stopping the simulation</h2>
   <p>Click <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Start simulation</b>. The button turns red
   (<img src="../img/knop-simuleren-stop.png" class="ico" alt="">). Click it again to stop the simulation
@@ -18,5 +38,5 @@
   <p>After the simulation everything returns as it was, including the guide line setting.</p>
 
   <div class="tip"><strong>Tip:</strong> circuit not working as expected? Stop the simulation,
-  hold the mouse over the components and check their state in the status bar, or place a
-  <a href="uitvoer.html#meter">meter</a> to check a signal.</div>
+  hold the mouse over the components and check their state in the status bar, or connect a
+  <a href="uitvoer.html#lamp">lamp</a> to a wire to check the signal.</div>

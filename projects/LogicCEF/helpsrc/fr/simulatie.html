@@ -3,6 +3,27 @@
   <p class="lead">Pendant la simulation, vous utilisez le circuit comme un vrai&nbsp;: vous commandez les entrées
   et voyez réagir les sorties, sans risque de déplacer quelque chose par erreur.</p>
 
+  <h2 id="voeding">Où sont le plus et le moins&nbsp;?</h2>
+  <p>Dans un vrai circuit électrique, le courant part du <b>+</b> d&rsquo;une source (une batterie, par exemple),
+  traverse l&rsquo;interrupteur et la lampe, et revient au <b>&minus;</b>. Dans Logic, vous ne dessinez pas de source,
+  et les composants n&rsquo;ont ni + ni &minus;. Ce n&rsquo;est pas une erreur&nbsp;: Logic fonctionne comme
+  l&rsquo;<b>électronique numérique</b>.</p>
+  <ul>
+    <li>Tous les composants sont alimentés par une <b>source invisible</b>&nbsp;: <b>+5&nbsp;V</b> et
+      <b>0&nbsp;V</b> (la masse). Elle est toujours présente&nbsp;; inutile de la dessiner.</li>
+    <li>Un fil transporte un <b>signal</b>&nbsp;: <b>actif</b> vaut 5&nbsp;V, <b>inactif</b> vaut 0&nbsp;V,
+      toujours mesuré par rapport à la masse.</li>
+    <li>Le &minus; de chaque lampe, buzzer et relais est relié de façon invisible à la masse. C&rsquo;est pourquoi
+      un seul fil suffit pour allumer une lampe.</li>
+  </ul>
+  <figure>
+    <img src="../img/voeding.svg" alt="Interrupteur et lampe avec l&rsquo;alimentation invisible">
+    <figcaption>Traits pleins&nbsp;: ce que vous dessinez dans Logic (un interrupteur, un fil et une lampe).
+    Pointillés&nbsp;: l&rsquo;alimentation que Logic ajoute de lui-même, du +5&nbsp;V à la masse (0&nbsp;V).</figcaption>
+  </figure>
+  <p>Les vrais schémas logiques sont dessinés de la même façon&nbsp;: les lignes d&rsquo;alimentation y figurent
+  rarement, car elles sont les mêmes pour tous les composants.</p>
+
   <h2>Démarrer et arrêter la simulation</h2>
   <p>Cliquez sur <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Démarrer la simulation</b>. Le bouton devient rouge
   (<img src="../img/knop-simuleren-stop.png" class="ico" alt="">). Cliquez à nouveau dessus pour arrêter la simulation
@@ -18,5 +39,5 @@
   <p>Après la simulation, tout redevient comme avant, y compris l&rsquo;état des guides.</p>
 
   <div class="tip"><strong>Astuce&nbsp;:</strong> le circuit ne fonctionne pas comme prévu&nbsp;? Arrêtez la simulation,
-  survolez les composants avec la souris et regardez leur état dans la barre d&rsquo;état, ou placez un
-  <a href="uitvoer.html#meter">voltmètre</a> pour contrôler un signal.</div>
+  survolez les composants avec la souris et regardez leur état dans la barre d&rsquo;état, ou reliez une
+  <a href="uitvoer.html#lamp">lampe</a> à un fil pour contrôler le signal.</div>

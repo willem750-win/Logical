@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" width="640" height="230" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="640" height="230" fill="#ffffff"/>
+
+  <!-- onzichtbare voeding: stippellijnen -->
+  <g stroke="#8a929c" stroke-width="2" stroke-dasharray="7 5" fill="none">
+    <line x1="80" y1="40" x2="600" y2="40"/>
+    <line x1="80" y1="190" x2="600" y2="190"/>
+    <polyline points="150,40 150,115 180,115"/>
+    <polyline points="472,115 520,115 520,190"/>
+  </g>
+  <text x="16" y="45" font-size="16" font-weight="600" fill="#c62828">+5 V</text>
+  <text x="22" y="195" font-size="16" font-weight="600" fill="#1f2328">0 V</text>
+  <!-- massa-symbool -->
+  <g stroke="#8a929c" stroke-width="2">
+    <line x1="560" y1="190" x2="560" y2="202"/>
+    <line x1="546" y1="202" x2="574" y2="202"/>
+    <line x1="551" y1="208" x2="569" y2="208"/>
+    <line x1="556" y1="214" x2="564" y2="214"/>
+  </g>
+
+  <!-- schakelaar -->
+  <g stroke="#1f2328" stroke-width="3" fill="#1f2328">
+    <circle cx="180" cy="115" r="4"/>
+    <circle cx="240" cy="115" r="4"/>
+    <line x1="180" y1="115" x2="236" y2="92" stroke-linecap="round"/>
+  </g>
+
+  <!-- de draad die je in Logic tekent: het signaal -->
+  <line x1="240" y1="115" x2="428" y2="115" stroke="#1f5fbf" stroke-width="4"/>
+  <text x="290" y="104" font-size="14" fill="#1f5fbf">5 V / 0 V</text>
+
+  <!-- lamp -->
+  <g stroke="#1f2328" stroke-width="3" fill="#fff6a8">
+    <circle cx="450" cy="115" r="22"/>
+    <line x1="435" y1="100" x2="465" y2="130"/>
+    <line x1="465" y1="100" x2="435" y2="130"/>
+  </g>
+</svg>
