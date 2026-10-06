@@ -13,9 +13,6 @@ ConverterBackup/
 *.log
 link*.res
 
-# Linux-binaries (zonder extensie)
-Linux/logic
-Linux/project1
 
 # LogicCEF: uitvoermap bevat exe, CEF-runtime, cache en gegenereerde help.
 # Alleen de echte data bijhouden.
