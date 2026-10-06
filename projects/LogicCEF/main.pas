@@ -1052,6 +1052,7 @@ end;
   case NieuweTaalChat of
   chatgridpcodeSmall.lgDutch:
   begin
+    Caption := 'Logisch Schakelen';
     Taal.Hint:='Kies taal...';
     BCapture2.Hint  := 'Schermkopie van paneel op het klembord...';
     btGrid.Hint    := 'Raster Ja/Nee'+ #13#10 +'Ga naar instellingen voor extra mogelijkheden...';
@@ -1073,6 +1074,7 @@ end;
 
   chatgridpcodeSmall.lgEnglish:
   begin
+    Caption := 'Logic Circuits';
     Taal.Hint:='Choose language...';
     BCapture2.Hint  := 'Copy the panel to the clipboard...';
 
@@ -1095,6 +1097,7 @@ end;
 
   chatgridpcodeSmall.lgFrench:
   begin
+    Caption := 'Circuits logiques';
     Taal.Hint:='Choisissez la langue...';
     BCapture2.Hint  := 'Copiez le panneau dans le presse-papiers...';
 
@@ -1117,6 +1120,7 @@ end;
 
   chatgridpcodeSmall.lgGerman:
   begin
+    Caption := 'Logische Schaltungen';
     Taal.Hint:='Sprache wählen...';
     BCapture2.Hint  := 'Kopieren Sie das Bedienfeld in die Zwischenablage...';
 
