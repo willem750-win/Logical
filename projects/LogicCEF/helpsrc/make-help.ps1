@@ -17,7 +17,7 @@ param([string]$Out)
 
 $ErrorActionPreference = 'Stop'
 $Src = $PSScriptRoot
-if (-not $Out) { $Out = Join-Path (Split-Path $Src -Parent) 'Resultaat\help' }
+if (-not $Out) { $Out = Join-Path (Split-Path $Src -Parent) 'Resultaat/help' }
 
 $Langs = 'nl', 'en', 'fr', 'de'
 $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
@@ -66,7 +66,7 @@ $Utf8 = New-Object System.Text.UTF8Encoding($false)
 New-Item -ItemType Directory -Force $Out | Out-Null
 Copy-Item (Join-Path $Src 'help.css') (Join-Path $Out 'help.css') -Force
 New-Item -ItemType Directory -Force (Join-Path $Out 'img') | Out-Null
-Copy-Item (Join-Path $Src 'img\*') (Join-Path $Out 'img') -Force
+Copy-Item (Join-Path $Src 'img/*') (Join-Path $Out 'img') -Force
 
 $Count = 0
 foreach ($L in $Langs) {
@@ -122,7 +122,7 @@ $($Body.TrimEnd())
 </body>
 </html>
 "@
-    [IO.File]::WriteAllText((Join-Path $Out "$L\$P.html"), $Html.Replace("`r`n", "`n"), $Utf8)
+    [IO.File]::WriteAllText((Join-Path $Out "$L/$P.html"), $Html.Replace("`r`n", "`n"), $Utf8)
     $Count++
   }
 }

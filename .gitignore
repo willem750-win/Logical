@@ -25,3 +25,6 @@ projects/LogicCEF/Resultaat/*
 
 # Wordt door het programma zelf aangemaakt
 projects/LogicCEF/Resultaat/ini/comboColor.ini
+
+# Uitvoer van make-linux-release.sh
+projects/LogicCEF/release/
