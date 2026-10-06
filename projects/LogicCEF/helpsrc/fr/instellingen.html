@@ -1,25 +1,73 @@
 <!-- titel: Réglages & langue -->
   <h1 id="settings">Réglages &amp; langue</h1>
   <p class="lead"><img src="../img/knop-instellingen.png" class="ico" alt=""><b>Réglages</b> permet de modifier
-  l&rsquo;apparence du panneau et des composants. Les réglages sont enregistrés et restent valables
-  au prochain démarrage.</p>
-
-  <h2>Les onglets</h2>
-  <dl class="parts">
-    <dt>Général</dt>
-    <dd>Réglages du panneau logique, comme la grille, les couleurs et les règles.</dd>
-    <dt>Éléments de commutation</dt>
-    <dd>Réglages de la barre des composants&nbsp;: quels composants y figurent et leur apparence.</dd>
-    <dt>Conseils</dt>
-    <dd>Les textes des info-bulles de la barre des composants.</dd>
-  </dl>
+  l&rsquo;apparence du panneau et de la barre des composants. La fenêtre des réglages apparaît au milieu
+  du panneau et comporte trois onglets&nbsp;: <b>Général</b>, <b>Éléments de commutation</b> et <b>Conseils</b>.</p>
 
   <h2>Modifier un réglage</h2>
   <ol class="steps">
     <li>Dans la liste, cochez la case de la propriété à modifier.</li>
-    <li>Cliquez sur la valeur et choisissez ou tapez la nouvelle valeur.</li>
+    <li>Cliquez sur la valeur et choisissez ou tapez la nouvelle valeur. Pour un choix oui/non,
+      <b>True</b> signifie oui et <b>False</b> non.</li>
   </ol>
-  <p>Cliquez sur <b>info</b> dans la liste pour une courte explication de l&rsquo;onglet.</p>
+  <p>Vous voyez la modification tout de suite sur le panneau ou dans la barre des composants. Quand vous
+  fermez la fenêtre des réglages, les réglages sont enregistrés (voir <a href="#bewaren">Enregistrer les réglages</a>).</p>
+
+  <h2 id="knoppen">Les boutons de la fenêtre des réglages</h2>
+  <table>
+    <tr><th>Bouton</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr><td class="name">Sauvegarder INI</td><td>Enregistre les réglages de l&rsquo;onglet actif dans un fichier
+      INI de votre choix, par exemple comme copie de sécurité.</td></tr>
+    <tr><td class="name">Charger les paramètres par défaut</td><td>Remet les réglages de l&rsquo;onglet aux
+      dernières valeurs enregistrées.</td></tr>
+    <tr><td class="name">Choix de la langue</td><td>La liste déroulante en haut&nbsp;: la langue des noms de la liste.</td></tr>
+    <tr><td class="name">Info</td><td>Affiche une courte explication de l&rsquo;onglet.</td></tr>
+    <tr><td class="name">Capture</td><td>Copie une image de la fenêtre des réglages dans le presse-papiers.</td></tr>
+    <tr><td class="name">Fermer</td><td>Ferme la fenêtre des réglages et enregistre les réglages.</td></tr>
+  </table>
+
+  <h2 id="algemeen">Onglet Général</h2>
+  <p>Réglages du panneau lui-même.</p>
+  <table>
+    <tr><th>Réglage</th><th>Que fait-il&nbsp;?</th></tr>
+    <tr><td class="name">Titre (Titel)</td><td>Le titre au-dessus du panneau, par exemple &laquo;&nbsp;Panneau logique&nbsp;&raquo;.</td></tr>
+    <tr><td class="name">Couleur du panneau (Color)</td><td>La couleur de fond du panneau.</td></tr>
+    <tr><td class="name">Couleur entrées, Couleur traitement, Couleur sorties</td><td>La couleur des trois barres
+      <b>Entrées</b>, <b>Traitement</b> et <b>Sorties</b> en haut du panneau.</td></tr>
+    <tr><td class="name">Grille Oui/Non (ShowGrid)</td><td>Affiche ou masque les points de la grille.</td></tr>
+    <tr><td class="name">Couleur des points (DotColor)</td><td>La couleur des points de la grille.</td></tr>
+    <tr><td class="name">Espacement grille X et Y (GridX, GridY)</td><td>La distance entre les points de la
+      grille en pixels&nbsp;: <b>X</b> horizontalement, <b>Y</b> verticalement.</td></tr>
+    <tr><td class="name">Capture d&rsquo;écran (Capture)</td><td>Sur <b>True</b>, vous tracez un rectangle sur le
+      panneau avec la souris&nbsp;; cette partie est enregistrée selon le format ci-dessous. Tant que ce réglage
+      est actif, la <a href="objecten.html#groep">sélection de plusieurs composants</a> ne fonctionne pas.</td></tr>
+    <tr><td class="name">Format d&rsquo;image (SavePicFormat)</td><td><b>sfClipbrd</b>&nbsp;: dans le presse-papiers.
+      <b>sfPNG</b>, <b>sfJPG</b> ou <b>sfBMP</b>&nbsp;: dans le fichier <code>SelectedRegion</code> du dossier de
+      travail du programme.</td></tr>
+  </table>
+
+  <h2 id="schakelelementen">Onglet Éléments de commutation</h2>
+  <p>Ici, vous choisissez pour chaque composant si son bouton figure dans la
+  <a href="onderdelenbalk.html">barre des composants</a>&nbsp;: <b>True</b> l&rsquo;affiche, <b>False</b> le masque.
+  <b>Connexion</b> est le bouton pour poser des fils.</p>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> Vous ne donnez ainsi aux élèves que les composants dont ils
+  ont besoin pour un exercice.</div>
+
+  <h2 id="hints">Onglet Conseils</h2>
+  <p>Pour chaque composant, le texte de l&rsquo;info-bulle qui apparaît quand vous survolez son bouton dans la
+  barre des composants. <b>Afficher les info-bulles</b> (ShowHint) active ou désactive ces info-bulles.</p>
+  <p>Les textes des info-bulles suivent la <a href="#taal">langue</a> choisie. Si vous choisissez une autre
+  langue ou redémarrez Logic, les textes par défaut de cette langue reviennent. Un texte personnel est donc temporaire.</p>
+
+  <h2 id="bewaren">Enregistrer les réglages</h2>
+  <p>Quand vous fermez la fenêtre des réglages, Logic enregistre automatiquement les réglages dans le
+  dossier <code>ini</code> (à côté du programme). Ils s&rsquo;appliquent de nouveau au prochain démarrage.</p>
+  <table>
+    <tr><th>Onglet</th><th>Fichier</th></tr>
+    <tr><td>Général</td><td><code>defaultgrid.ini</code></td></tr>
+    <tr><td>Éléments de commutation</td><td><code>defaultschakel.ini</code></td></tr>
+  </table>
+  <p>Avec <b>Sauvegarder INI</b>, vous pouvez en plus garder une copie sous un autre nom.</p>
 
   <h2 id="taal">Langue</h2>
   <p>À droite de la barre d&rsquo;état, vous choisissez la langue du programme avec les drapeaux&nbsp;:</p>

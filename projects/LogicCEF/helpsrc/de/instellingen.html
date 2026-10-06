@@ -1,25 +1,74 @@
 <!-- titel: Einstellungen & Sprache -->
   <h1 id="settings">Einstellungen &amp; Sprache</h1>
   <p class="lead">Mit <img src="../img/knop-instellingen.png" class="ico" alt=""><b>Einstellungen</b> ändern Sie
-  das Aussehen des Panels und der Bauteile. Die Einstellungen werden gespeichert und gelten auch
-  beim nächsten Start.</p>
-
-  <h2>Die Registerkarten</h2>
-  <dl class="parts">
-    <dt>Allgemein</dt>
-    <dd>Einstellungen des Logikpanels, wie Raster, Farben und Lineale.</dd>
-    <dt>Schaltereinheiten</dt>
-    <dd>Einstellungen der Bauteilleiste: welche Bauteile darin stehen und wie sie aussehen.</dd>
-    <dt>Hinweise</dt>
-    <dd>Die Texte der Hinweise in der Bauteilleiste.</dd>
-  </dl>
+  das Aussehen des Panels und der Bauteilleiste. Das Einstellungsfenster erscheint in der Mitte des
+  Panels und hat drei Registerkarten: <b>Allgemein</b>, <b>Schaltereinheiten</b> und <b>Hinweise</b>.</p>
 
   <h2>Eine Einstellung ändern</h2>
   <ol class="steps">
     <li>Setzen Sie in der Liste das Häkchen bei der Eigenschaft, die Sie ändern möchten.</li>
-    <li>Klicken Sie auf den Wert und wählen oder tippen Sie den neuen Wert.</li>
+    <li>Klicken Sie auf den Wert und wählen oder tippen Sie den neuen Wert. Bei einer Ja/Nein-Wahl
+      bedeutet <b>True</b> ja und <b>False</b> nein.</li>
   </ol>
-  <p>Klicken Sie in der Liste auf <b>info</b> für eine kurze Erklärung zur Registerkarte.</p>
+  <p>Die Änderung sehen Sie sofort auf dem Panel oder in der Bauteilleiste. Wenn Sie das
+  Einstellungsfenster schließen, werden die Einstellungen gespeichert (siehe
+  <a href="#bewaren">Einstellungen speichern</a>).</p>
+
+  <h2 id="knoppen">Die Schaltflächen des Einstellungsfensters</h2>
+  <table>
+    <tr><th>Schaltfläche</th><th>Was macht sie?</th></tr>
+    <tr><td class="name">INI speichern</td><td>Speichert die Einstellungen der aktuellen Registerkarte in einer
+      INI-Datei Ihrer Wahl, zum Beispiel als Sicherungskopie.</td></tr>
+    <tr><td class="name">Standardeinstellungen laden</td><td>Setzt die Einstellungen der Registerkarte auf die
+      zuletzt gespeicherten Werte zurück.</td></tr>
+    <tr><td class="name">Sprachwahl</td><td>Die Auswahlliste oben: die Sprache der Namen in der Liste.</td></tr>
+    <tr><td class="name">Info</td><td>Zeigt eine kurze Erklärung zur Registerkarte.</td></tr>
+    <tr><td class="name">Capture</td><td>Kopiert ein Bild des Einstellungsfensters in die Zwischenablage.</td></tr>
+    <tr><td class="name">Schließen</td><td>Schließt das Einstellungsfenster und speichert die Einstellungen.</td></tr>
+  </table>
+
+  <h2 id="algemeen">Registerkarte Allgemein</h2>
+  <p>Einstellungen des Panels selbst.</p>
+  <table>
+    <tr><th>Einstellung</th><th>Was macht sie?</th></tr>
+    <tr><td class="name">Überschrift (Titel)</td><td>Der Titel über dem Panel, zum Beispiel &bdquo;Logikpanel&ldquo;.</td></tr>
+    <tr><td class="name">Panelfarbe (Color)</td><td>Die Hintergrundfarbe des Panels.</td></tr>
+    <tr><td class="name">Farbe Eingänge, Farbe Verarbeitung, Farbe Ausgänge</td><td>Die Farbe der drei Balken
+      <b>Eingänge</b>, <b>Verarbeitung</b> und <b>Ausgänge</b> oben auf dem Panel.</td></tr>
+    <tr><td class="name">Raster Ja/Nein (ShowGrid)</td><td>Zeigt oder verbirgt die Rasterpunkte.</td></tr>
+    <tr><td class="name">Farbe Rasterpunkte (DotColor)</td><td>Die Farbe der Rasterpunkte.</td></tr>
+    <tr><td class="name">Rasterabstand X und Y (GridX, GridY)</td><td>Der Abstand zwischen den Rasterpunkten in
+      Pixeln: <b>X</b> waagerecht, <b>Y</b> senkrecht.</td></tr>
+    <tr><td class="name">Bildschirmkopie (Capture)</td><td>Bei <b>True</b> ziehen Sie mit der Maus ein Rechteck auf
+      dem Panel; dieser Teil wird im unten gewählten Format gespeichert. Solange dies eingeschaltet ist,
+      funktioniert die <a href="objecten.html#groep">Auswahl mehrerer Bauteile</a> nicht.</td></tr>
+    <tr><td class="name">Aufnahmeformat (SavePicFormat)</td><td><b>sfClipbrd</b>: in die Zwischenablage.
+      <b>sfPNG</b>, <b>sfJPG</b> oder <b>sfBMP</b>: als Datei <code>SelectedRegion</code> im Arbeitsordner
+      des Programms.</td></tr>
+  </table>
+
+  <h2 id="schakelelementen">Registerkarte Schaltereinheiten</h2>
+  <p>Hier wählen Sie für jedes Bauteil, ob seine Schaltfläche in der
+  <a href="onderdelenbalk.html">Bauteilleiste</a> steht: <b>True</b> zeigt sie, <b>False</b> blendet sie aus.
+  <b>Verbindung</b> ist die Schaltfläche zum Verlegen von Drähten.</p>
+  <div class="tip"><strong>Tipp:</strong> So geben Sie Schülern nur die Bauteile, die sie für eine Übung
+  brauchen.</div>
+
+  <h2 id="hints">Registerkarte Hinweise</h2>
+  <p>Für jedes Bauteil der Text des Hinweises, der erscheint, wenn Sie die Maus über seine Schaltfläche in
+  der Bauteilleiste halten. <b>Hinweis anzeigen</b> (ShowHint) schaltet diese Hinweise ein oder aus.</p>
+  <p>Die Hinweistexte folgen der gewählten <a href="#taal">Sprache</a>. Wählen Sie eine andere Sprache oder
+  starten Sie Logic neu, kommen die Standardtexte dieser Sprache zurück. Ein eigener Text ist also vorübergehend.</p>
+
+  <h2 id="bewaren">Einstellungen speichern</h2>
+  <p>Wenn Sie das Einstellungsfenster schließen, speichert Logic die Einstellungen automatisch im Ordner
+  <code>ini</code> (neben dem Programm). Beim nächsten Start gelten sie wieder.</p>
+  <table>
+    <tr><th>Registerkarte</th><th>Datei</th></tr>
+    <tr><td>Allgemein</td><td><code>defaultgrid.ini</code></td></tr>
+    <tr><td>Schaltereinheiten</td><td><code>defaultschakel.ini</code></td></tr>
+  </table>
+  <p>Mit <b>INI speichern</b> können Sie zusätzlich eine Kopie unter einem anderen Namen speichern.</p>
 
   <h2 id="taal">Sprache</h2>
   <p>Rechts in der Statusleiste wählen Sie die Sprache des Programms mit den Flaggen:</p>

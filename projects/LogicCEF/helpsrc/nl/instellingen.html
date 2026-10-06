@@ -1,25 +1,72 @@
 <!-- titel: Instellingen & taal -->
   <h1 id="settings">Instellingen &amp; taal</h1>
   <p class="lead">Met <img src="../img/knop-instellingen.png" class="ico" alt=""><b>Instellingen</b> pas je
-  het uitzicht van het paneel en de onderdelen aan. De instellingen worden bewaard en gelden ook
-  bij de volgende start.</p>
-
-  <h2>De tabbladen</h2>
-  <dl class="parts">
-    <dt>Algemeen</dt>
-    <dd>Instellingen van het logisch paneel, zoals raster, kleuren en linialen.</dd>
-    <dt>SchakelElementen</dt>
-    <dd>Instellingen van de onderdelenbalk: welke onderdelen er staan en hoe ze eruitzien.</dd>
-    <dt>Hints</dt>
-    <dd>De teksten van de hints in de onderdelenbalk.</dd>
-  </dl>
+  het uitzicht van het paneel en van de onderdelenbalk aan. Het instellingenvenster verschijnt midden
+  op het paneel en heeft drie tabbladen: <b>Algemeen</b>, <b>SchakelElementen</b> en <b>Hints</b>.</p>
 
   <h2>Een instelling wijzigen</h2>
   <ol class="steps">
     <li>Vink in de lijst het vakje aan van de eigenschap die je wil wijzigen.</li>
-    <li>Klik op de waarde en kies of typ de nieuwe waarde.</li>
+    <li>Klik op de waarde en kies of typ de nieuwe waarde. Bij een keuze ja/nee betekent
+      <b>True</b> ja en <b>False</b> nee.</li>
   </ol>
-  <p>Klik in de lijst op <b>info</b> voor een korte uitleg bij het tabblad.</p>
+  <p>De wijziging zie je meteen op het paneel of in de onderdelenbalk. Als je het instellingenvenster
+  sluit, worden de instellingen bewaard (zie <a href="#bewaren">Instellingen bewaren</a>).</p>
+
+  <h2 id="knoppen">De knoppen van het instellingenvenster</h2>
+  <table>
+    <tr><th>Knop</th><th>Wat doet hij?</th></tr>
+    <tr><td class="name">Bewaar INI</td><td>Bewaart de instellingen van het huidige tabblad in een INI-bestand
+      naar keuze, bijvoorbeeld als reservekopie.</td></tr>
+    <tr><td class="name">Laad standaard settings</td><td>Zet de instellingen van het tabblad terug naar de
+      laatst bewaarde waarden.</td></tr>
+    <tr><td class="name">Taalkeuze</td><td>Het keuzelijstje bovenaan: de taal van de namen in de lijst.</td></tr>
+    <tr><td class="name">Info</td><td>Toont een korte uitleg bij het tabblad.</td></tr>
+    <tr><td class="name">Capture</td><td>Kopieert een afbeelding van het instellingenvenster naar het klembord.</td></tr>
+    <tr><td class="name">Sluiten</td><td>Sluit het instellingenvenster en bewaart de instellingen.</td></tr>
+  </table>
+
+  <h2 id="algemeen">Tabblad Algemeen</h2>
+  <p>Instellingen van het paneel zelf.</p>
+  <table>
+    <tr><th>Instelling</th><th>Wat doet het?</th></tr>
+    <tr><td class="name">Hoofding (Titel)</td><td>De titel boven het paneel, bijvoorbeeld &ldquo;Logisch Paneel&rdquo;.</td></tr>
+    <tr><td class="name">Kleur paneel (Color)</td><td>De achtergrondkleur van het paneel.</td></tr>
+    <tr><td class="name">Kleur invoer, Kleur verwerken, Kleur uitvoer</td><td>De kleur van de drie balken
+      <b>Invoer</b>, <b>Verwerken</b> en <b>Uitvoer</b> bovenaan het paneel.</td></tr>
+    <tr><td class="name">Raster Ja/Nee (ShowGrid)</td><td>Toont of verbergt de rasterpunten.</td></tr>
+    <tr><td class="name">Kleur rasterpunten (DotColor)</td><td>De kleur van de rasterpunten.</td></tr>
+    <tr><td class="name">Rasterafstand X en Y (GridX, GridY)</td><td>De afstand tussen de rasterpunten in
+      pixels: <b>X</b> horizontaal, <b>Y</b> verticaal.</td></tr>
+    <tr><td class="name">Scherm kopiëren (Capture)</td><td>Op <b>True</b> sleep je met de muis een rechthoek
+      op het paneel; dat stuk wordt bewaard volgens het afbeeldingsformaat hieronder. Zolang dit aan staat,
+      werkt de <a href="objecten.html#groep">selectie van meerdere onderdelen</a> niet.</td></tr>
+    <tr><td class="name">Afbeeldingsformaat (SavePicFormat)</td><td><b>sfClipbrd</b>: naar het klembord.
+      <b>sfPNG</b>, <b>sfJPG</b> of <b>sfBMP</b>: als bestand <code>SelectedRegion</code> in de werkmap
+      van het programma.</td></tr>
+  </table>
+
+  <h2 id="schakelelementen">Tabblad SchakelElementen</h2>
+  <p>Hier kies je per onderdeel of zijn knop in de <a href="onderdelenbalk.html">onderdelenbalk</a>
+  staat: <b>True</b> is tonen, <b>False</b> is verbergen. <b>Verbinding</b> is de knop om draden te leggen.</p>
+  <div class="tip"><strong>Tip:</strong> Zo geef je leerlingen alleen de onderdelen die ze voor een
+  oefening nodig hebben.</div>
+
+  <h2 id="hints">Tabblad Hints</h2>
+  <p>Per onderdeel de tekst van de hint die verschijnt als je de muis boven zijn knop in de
+  onderdelenbalk houdt. <b>Toon hint</b> (ShowHint) zet deze hints aan of uit.</p>
+  <p>De hintteksten volgen de gekozen <a href="#taal">taal</a>. Kies je een andere taal of start je Logic
+  opnieuw, dan komen de standaardteksten van die taal terug. Een eigen tekst is dus tijdelijk.</p>
+
+  <h2 id="bewaren">Instellingen bewaren</h2>
+  <p>Sluit je het instellingenvenster, dan bewaart Logic de instellingen automatisch in de map
+  <code>ini</code> (naast het programma). Bij de volgende start gelden ze opnieuw.</p>
+  <table>
+    <tr><th>Tabblad</th><th>Bestand</th></tr>
+    <tr><td>Algemeen</td><td><code>defaultgrid.ini</code></td></tr>
+    <tr><td>SchakelElementen</td><td><code>defaultschakel.ini</code></td></tr>
+  </table>
+  <p>Met <b>Bewaar INI</b> kan je daarnaast een kopie onder een andere naam bewaren.</p>
 
   <h2 id="taal">Taal</h2>
   <p>Rechts in de statusbalk kies je de taal van het programma met de vlaggetjes:</p>

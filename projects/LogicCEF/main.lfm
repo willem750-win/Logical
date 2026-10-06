@@ -630,7 +630,7 @@ object mainForm: TmainForm
       HLogicAnd = 'maak EN-poort'
       HLogicOr = 'maak OF-poort'
       HLogicNot = 'maak Niet-poort'
-      HDraad = 'maak Vebinding'
+      HDraad = 'maak Verbinding'
       HRelais = 'maak Relais'
       HBuzzer = 'maak Zoemer'
       HWarm = 'maak WarmteSensor'

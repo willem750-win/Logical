@@ -162,6 +162,7 @@ type
   public
      procedure LaadGridsettings;
      procedure LaadBoxsettings;
+     procedure BewaarInstellingen;
    public
     SettingsFrame:TSettingsFrame;
     // allerlei variable
@@ -568,10 +569,29 @@ begin
 end;
 
 
+procedure TmainForm.BewaarInstellingen;
+var
+  Dir: string;
+begin
+  // Instellingen van de tabbladen Algemeen en SchakelElementen bewaren in de
+  // bestanden die LaadGridsettings/LaadBoxsettings bij het starten inlezen.
+  // De hintteksten (tabblad Hints) volgen de gekozen taal en worden niet bewaard.
+  if not Assigned(SettingsFrame) then Exit;
+  Dir := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)) + 'ini');
+  try
+    ForceDirectories(Dir);
+    SettingsFrame.PropB2.SaveToIniFile(Dir + 'defaultgrid.ini');
+    SettingsFrame.PropB22.SaveToIniFile(Dir + 'defaultschakel.ini');
+  except
+    // bewaren mag het sluiten van het venster niet tegenhouden
+  end;
+end;
+
 procedure TMainForm.RemoveSettingsFrame(Sender: TObject);
 begin
   if Sender = SettingsFrame then
   begin
+    BewaarInstellingen;
     FreeAndNil(SettingsFrame); // Zorgt ervoor dat het object correct wordt vrijgegeven
   end;
 end;
@@ -582,6 +602,7 @@ procedure TmainForm.killframes;
 begin
  if fr_Settingsbestaat = True then
   begin
+    BewaarInstellingen;
     SettingsFrame.Parent := self;
     SettingsFrame.Free;
     SettingsFrame := nil;

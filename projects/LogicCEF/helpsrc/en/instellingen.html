@@ -1,25 +1,72 @@
 <!-- titel: Settings & language -->
   <h1 id="settings">Settings &amp; language</h1>
   <p class="lead">With <img src="../img/knop-instellingen.png" class="ico" alt=""><b>Settings</b> you change
-  the appearance of the panel and the components. The settings are saved and also apply
-  the next time you start the program.</p>
-
-  <h2>The tabs</h2>
-  <dl class="parts">
-    <dt>General</dt>
-    <dd>Settings of the logic panel, such as grid, colours and rulers.</dd>
-    <dt>Switch Elements</dt>
-    <dd>Settings of the component bar: which components it contains and how they look.</dd>
-    <dt>Hints</dt>
-    <dd>The texts of the hints in the component bar.</dd>
-  </dl>
+  the appearance of the panel and of the component bar. The settings window appears in the middle of
+  the panel and has three tabs: <b>General</b>, <b>Switch Elements</b> and <b>Hints</b>.</p>
 
   <h2>Changing a setting</h2>
   <ol class="steps">
     <li>In the list, tick the box of the property you want to change.</li>
-    <li>Click the value and choose or type the new value.</li>
+    <li>Click the value and choose or type the new value. For a yes/no choice, <b>True</b> means
+      yes and <b>False</b> means no.</li>
   </ol>
-  <p>Click <b>info</b> in the list for a short explanation of the tab.</p>
+  <p>You see the change right away on the panel or in the component bar. When you close the settings
+  window, the settings are saved (see <a href="#bewaren">Saving the settings</a>).</p>
+
+  <h2 id="knoppen">The buttons of the settings window</h2>
+  <table>
+    <tr><th>Button</th><th>What does it do?</th></tr>
+    <tr><td class="name">Save INI</td><td>Saves the settings of the current tab in an INI file of your choice,
+      for example as a backup.</td></tr>
+    <tr><td class="name">Load default settings</td><td>Resets the settings of the tab to the last saved values.</td></tr>
+    <tr><td class="name">Language choice</td><td>The drop-down list at the top: the language of the names in the list.</td></tr>
+    <tr><td class="name">Info</td><td>Shows a short explanation of the tab.</td></tr>
+    <tr><td class="name">Capture</td><td>Copies a picture of the settings window to the clipboard.</td></tr>
+    <tr><td class="name">Close</td><td>Closes the settings window and saves the settings.</td></tr>
+  </table>
+
+  <h2 id="algemeen">General tab</h2>
+  <p>Settings of the panel itself.</p>
+  <table>
+    <tr><th>Setting</th><th>What does it do?</th></tr>
+    <tr><td class="name">Header (Titel)</td><td>The title above the panel, for example &ldquo;Logic Panel&rdquo;.</td></tr>
+    <tr><td class="name">Color Panel (Color)</td><td>The background colour of the panel.</td></tr>
+    <tr><td class="name">Color Input, Color Processing, Color Output</td><td>The colour of the three bars
+      <b>Input</b>, <b>Processing</b> and <b>Output</b> at the top of the panel.</td></tr>
+    <tr><td class="name">Grid Yes/No (ShowGrid)</td><td>Shows or hides the grid dots.</td></tr>
+    <tr><td class="name">Color Dots (DotColor)</td><td>The colour of the grid dots.</td></tr>
+    <tr><td class="name">Grid spacing X and Y (GridX, GridY)</td><td>The distance between the grid dots in
+      pixels: <b>X</b> horizontally, <b>Y</b> vertically.</td></tr>
+    <tr><td class="name">Copy screen (Capture)</td><td>When <b>True</b>, you drag a rectangle on the panel
+      with the mouse; that part is saved in the image type below. While this is on,
+      <a href="objecten.html#groep">selecting several components</a> does not work.</td></tr>
+    <tr><td class="name">Image type (SavePicFormat)</td><td><b>sfClipbrd</b>: to the clipboard.
+      <b>sfPNG</b>, <b>sfJPG</b> or <b>sfBMP</b>: as the file <code>SelectedRegion</code> in the program&rsquo;s
+      working folder.</td></tr>
+  </table>
+
+  <h2 id="schakelelementen">Switch Elements tab</h2>
+  <p>Here you choose for each component whether its button is in the
+  <a href="onderdelenbalk.html">component bar</a>: <b>True</b> shows it, <b>False</b> hides it.
+  <b>Connection</b> is the button for laying wires.</p>
+  <div class="tip"><strong>Tip:</strong> This way you give students only the components they need
+  for an exercise.</div>
+
+  <h2 id="hints">Hints tab</h2>
+  <p>For each component, the text of the hint that appears when you hold the mouse over its button in
+  the component bar. <b>Show hint</b> (ShowHint) turns these hints on or off.</p>
+  <p>The hint texts follow the chosen <a href="#taal">language</a>. If you choose another language or
+  restart Logic, the default texts of that language come back. Your own text is therefore temporary.</p>
+
+  <h2 id="bewaren">Saving the settings</h2>
+  <p>When you close the settings window, Logic automatically saves the settings in the
+  <code>ini</code> folder (next to the program). They apply again at the next start.</p>
+  <table>
+    <tr><th>Tab</th><th>File</th></tr>
+    <tr><td>General</td><td><code>defaultgrid.ini</code></td></tr>
+    <tr><td>Switch Elements</td><td><code>defaultschakel.ini</code></td></tr>
+  </table>
+  <p>With <b>Save INI</b> you can also keep a copy under another name.</p>
 
   <h2 id="taal">Language</h2>
   <p>On the right of the status bar you choose the program language with the flags:</p>
