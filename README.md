@@ -85,7 +85,7 @@ pwsh -File projects/LogicCEF/helpsrc/make-help.ps1
 
 ### Release maken
 
-- Windows: `projectsogiccefmake-release.ps1 -Version 1.0.0` maakt
+- Windows: `projects\LogicCEF\make-release.ps1 -Version 1.0.0` maakt
   `Logic-1.0.0-win64.zip` (programma, CEF-runtime, help en data).
 - Linux: `sh projects/LogicCEF/make-linux-release.sh 1.0.0` maakt
   `Logic-1.0.0-linux-x86_64.tar.gz`; met `--upload` gaat het pakket
