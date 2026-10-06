@@ -19,7 +19,19 @@
 # Onder Linux gebruikt Logic geen CEF (de help opent in de standaardbrowser),
 # dus de CEF-runtime hoort niet in het pakket.
 #
-# Resultaat: projects/LogicCEF/release/Logic-<versie>-linux-<arch>.tar.gz
+# Resultaat in projects/LogicCEF/release/:
+#   Logic-<versie>-linux-<arch>.tar.gz   uitpakken en ./logicCEF starten
+#   logical_<versie>_<arch>.deb          als dpkg-deb aanwezig is
+#
+# Installeren:  sudo apt install ./logical_<versie>_<arch>.deb
+# Verwijderen:  sudo apt remove logical
+#
+# Waarom een startscript in de .deb?
+# Logic schrijft naast zijn eigen programmabestand (taal.ini, ini/, panels/).
+# In /opt mag een gewone gebruiker niet schrijven. Het startscript kopieert
+# het programma daarom per gebruiker naar ~/.local/share/logical en start
+# het vandaar. Instellingen en eigen panelen blijven bij een update behouden;
+# programma, help en html worden vervangen.
 # ---------------------------------------------------------------------------
 set -e
 
@@ -93,13 +105,119 @@ cp "$REPO/LICENSE" "$REPO/README.md" "$DST/"
 mkdir -p "$OUT"
 TAR="$OUT/$NAME.tar.gz"
 tar -czf "$TAR" -C "$STAGE" "$NAME"
-rm -rf "$STAGE"
 echo "Klaar: $TAR ($(du -h "$TAR" | cut -f1))"
+FILES="$TAR"
+
+# ------------------------------------------------------------------
+# Debian-pakket
+# ------------------------------------------------------------------
+if command -v dpkg-deb >/dev/null 2>&1; then
+  PKG=logical
+  DARCH=$(dpkg --print-architecture)
+  DEB="$OUT/${PKG}_${VERSION}_${DARCH}.deb"
+  ROOT="$STAGE/deb"
+  mkdir -p "$ROOT/DEBIAN" "$ROOT/opt" "$ROOT/usr/bin" \
+           "$ROOT/usr/share/applications" \
+           "$ROOT/usr/share/icons/hicolor/48x48/apps" "$ROOT/usr/share/pixmaps"
+
+  # Programmabestanden: dezelfde inhoud als de tar.gz
+  cp -r "$DST" "$ROOT/opt/$PKG"
+  echo "$VERSION" > "$ROOT/opt/$PKG/VERSION"
+
+  # Startscript
+  cat > "$ROOT/usr/bin/$PKG" <<EOF
+#!/bin/sh
+SRC=/opt/$PKG
+DST="\${XDG_DATA_HOME:-\$HOME/.local/share}/$PKG"
+
+if [ "\$(cat "\$DST/VERSION" 2>/dev/null)" != "\$(cat "\$SRC/VERSION")" ]; then
+  mkdir -p "\$DST"
+  # Programma, help, html en licentie altijd vernieuwen
+  cp -f "\$SRC/logicCEF" "\$SRC/LICENSE" "\$SRC/README.md" "\$DST/"
+  rm -rf "\$DST/help" "\$DST/html"
+  cp -r "\$SRC/help" "\$SRC/html" "\$DST/"
+  # Instellingen en panelen: alleen wat nog ontbreekt (eigen werk blijft)
+  [ -f "\$DST/taal.ini" ] || [ ! -f "\$SRC/taal.ini" ] || cp "\$SRC/taal.ini" "\$DST/"
+  for D in ini panels; do
+    mkdir -p "\$DST/\$D"
+    cp -rn "\$SRC/\$D/." "\$DST/\$D/"
+  done
+  cp -f "\$SRC/VERSION" "\$DST/VERSION"
+fi
+
+cd "\$DST"
+exec "\$DST/logicCEF" "\$@"
+EOF
+
+  # Menu-item en pictogram
+  cp "$PROJ/logic.png" "$ROOT/usr/share/icons/hicolor/48x48/apps/$PKG.png"
+  cp "$PROJ/logic.png" "$ROOT/usr/share/pixmaps/$PKG.png"
+  cat > "$ROOT/usr/share/applications/$PKG.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Name=Logic
+Comment=Simulator voor digitale schakelingen
+Comment[en]=Digital circuit simulator
+Comment[fr]=Simulateur de circuits numériques
+Comment[de]=Simulator für digitale Schaltungen
+Exec=$PKG
+Icon=$PKG
+Terminal=false
+Categories=Education;Electronics;
+EOF
+
+  SIZE=$(du -sk "$ROOT" | cut -f1)
+  cat > "$ROOT/DEBIAN/control" <<EOF
+Package: $PKG
+Version: $VERSION
+Section: education
+Priority: optional
+Architecture: $DARCH
+Depends: libc6, libgtk2.0-0, xdg-utils
+Installed-Size: $SIZE
+Maintainer: Willy Jansen <willyjansen@telenet.be>
+Homepage: https://github.com/willem750-win/Logical
+Description: Simulator voor digitale schakelingen
+ Logic is een Lazarus-programma om schakelingen met schakelaars,
+ sensoren, logische poorten, tellers, geheugens, lampen en displays
+ op te bouwen en te simuleren. Nederlands, Engels, Frans en Duits.
+EOF
+
+  # Na installeren/verwijderen de menu- en pictogramcache vernieuwen
+  for SCRIPT in postinst postrm; do
+    cat > "$ROOT/DEBIAN/$SCRIPT" <<'EOF'
+#!/bin/sh
+set -e
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+fi
+if command -v update-desktop-database >/dev/null 2>&1; then
+  update-desktop-database -q /usr/share/applications || true
+fi
+exit 0
+EOF
+  done
+
+  # Rechten zoals dpkg ze verwacht
+  find "$ROOT" -type d -exec chmod 755 {} +
+  find "$ROOT" -type f -exec chmod 644 {} +
+  chmod 755 "$ROOT/usr/bin/$PKG" "$ROOT/opt/$PKG/logicCEF" \
+            "$ROOT/DEBIAN/postinst" "$ROOT/DEBIAN/postrm"
+
+  dpkg-deb --root-owner-group --build "$ROOT" "$DEB"
+  echo "Klaar: $DEB ($(du -h "$DEB" | cut -f1))"
+  echo "Installeren met: sudo apt install \"$DEB\""
+  FILES="$FILES $DEB"
+else
+  echo "dpkg-deb niet gevonden: geen .deb gemaakt."
+fi
+rm -rf "$STAGE"
 
 # ------------------------------------------------------------------
 # Optioneel: toevoegen aan de GitHub-release
 # ------------------------------------------------------------------
 if [ "$UPLOAD" = 1 ]; then
-  gh release upload "v$VERSION" "$TAR" --clobber --repo willem750-win/Logical
+  # shellcheck disable=SC2086
+  gh release upload "v$VERSION" $FILES --clobber --repo willem750-win/Logical
   echo "Toegevoegd aan release v$VERSION."
 fi
