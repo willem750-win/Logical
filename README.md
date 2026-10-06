@@ -75,7 +75,7 @@ powershell -ExecutionPolicy Bypass -File projects\LogicCEF\helpsrc\make-help.ps1
 ## Met dank aan
 
 De `jan*`-componenten (`janSimLogic`, `janLed`, `janToggle`, `janSimIndicator`,
-`janSimPID`, `janSimPIDLinker`, `janSimScope`) zijn gebaseerd op de freeware-componenten
+`janSimPID`, `janSimPIDLinker`) zijn gebaseerd op de freeware-componenten
 van **Jan Verhoeven**. Ze zijn omgezet naar Lazarus en sterk uitgebreid
 (teller, geheugen, display, panelen, meertaligheid, Linux ...).
 

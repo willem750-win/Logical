@@ -10,7 +10,7 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, smnetgradientlaz, main, FSettings, rx, Pinfo,
+  Forms, smnetgradientlaz, main, FSettings, rx,
   // De ingebouwde CEF-browser (MiniBrowser) wordt enkel onder Windows
   // gebruikt; onder Linux opent de help in de systeembrowser.
   {$IFDEF WINDOWS}

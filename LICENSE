@@ -23,7 +23,7 @@ SOFTWARE.
 ---
 
 The jan* units (janSimLogic, janLed, janToggle, janSimIndicator, janSimPID,
-janSimPIDLinker, janSimScope) are based on freeware components by
+janSimPIDLinker) are based on freeware components by
 Jan Verhoeven; the original parts remain his work.
 
 Exception: SZCodeBaseX.pas is Copyright (C) 2004 Sasa Zeman and is

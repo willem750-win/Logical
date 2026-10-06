@@ -125,14 +125,6 @@
         <UnitName Value="FSettings"/>
       </Unit>
       <Unit>
-        <Filename Value="pinfo.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Info"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="Pinfo"/>
-      </Unit>
-      <Unit>
         <Filename Value="uMiniBrowser.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MiniBrowserFrm"/>
