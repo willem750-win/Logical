@@ -9,6 +9,13 @@ Daarna zet je de simulatie aan en zie je de schakeling werken.
 
 ![Logic](docs/screenshot.png)
 
+## Downloaden
+
+Kant-en-klare versies staan bij de
+[Releases](https://github.com/willem750-win/Logical/releases).
+Voor Windows: pak `Logic-<versie>-win64.zip` uit naar een map naar keuze en
+start `logicCEF.exe`. Installeren is niet nodig.
+
 ## Onderdelen
 
 | Groep      | Onderdelen |
@@ -89,6 +96,8 @@ Place switches, sensors, logic gates (AND, OR, NOT), counters, memories, lamps,
 relays, buzzers and 7-segment displays on a panel, connect them with
 wires and run the simulation. User interface and help are available in Dutch,
 English, French and German. It runs on Windows and Linux (GTK2).
+
+Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: unzip and run `logicCEF.exe`).
 
 To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows and Linux; needs CEF4Delphi, and on Windows

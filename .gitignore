@@ -22,3 +22,6 @@ projects/LogicCEF/Resultaat/*
 !projects/LogicCEF/Resultaat/html/
 !projects/LogicCEF/Resultaat/ImmoSetup/
 !projects/LogicCEF/Resultaat/help-oud/
+
+# Wordt door het programma zelf aangemaakt
+projects/LogicCEF/Resultaat/ini/comboColor.ini

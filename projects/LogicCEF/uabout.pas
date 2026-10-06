@@ -12,7 +12,7 @@ uses
   LCLIntf, chatgridpcodeSmall;
 
 const
-  AppVersion = '1.0';
+  AppVersion = '1.0.0';
   AppUrl     = 'https://github.com/willem750-win/Logical';
 
 procedure ShowAbout(ALang: chatgridpcodeSmall.TLanguage);
