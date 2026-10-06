@@ -17,7 +17,7 @@ Voor Windows: pak `Logic-<versie>-win64.zip` uit naar een map naar keuze en
 start `logicCEF.exe`. Installeren is niet nodig.
 Voor Linux (Debian, Ubuntu, Mint ...): installeer `logical_<versie>_amd64.deb` met
 `sudo apt install ./logical_<versie>_amd64.deb`; Logic staat dan in het menu
-(onder Onderwijs) en start ook met `logical`. Zonder installatie: pak
+(onder Educatie) en start ook met `logical`. Zonder installatie: pak
 `Logic-<versie>-linux-x86_64.tar.gz` uit in je thuismap en
 start `./logicCEF`.
 
@@ -116,7 +116,7 @@ relays, buzzers and 7-segment displays on a panel, connect them with
 wires and run the simulation. User interface and help are available in Dutch,
 English, French and German. It runs on Windows and Linux (GTK2).
 
-Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: unzip and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, or extract the `.tar.gz` and run `./logicCEF`).
+Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: unzip and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, then start Logic from the Education menu, or extract the `.tar.gz` and run `./logicCEF`).
 
 To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows and Linux; needs CEF4Delphi, and on Windows
