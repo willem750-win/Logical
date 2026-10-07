@@ -1,8 +1,11 @@
-# Bouwt logicCEF.exe opnieuw en maakt de Windows-release-zip.
+# Bouwt logicCEF.exe opnieuw en maakt de Windows-release-zip en het
+# installatieprogramma (Inno Setup 6, logic.iss).
 #
-#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\make-release.ps1 [-Version 1.0.0] [-NoBuild]
+#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\make-release.ps1 [-Version 1.0.1] [-NoBuild]
 #
-# Resultaat: C:\fpcupdeluxe\publish\release\Logic-<versie>-win64.zip
+# Resultaat in C:\fpcupdeluxe\publish\release:
+#   Logic-<versie>-win64.zip    uitpakken en logicCEF.exe starten
+#   Logic-<versie>-setup.exe    installeert per gebruiker, zonder beheerdersrechten
 # De zip bevat het programma, de CEF-runtime, help, html, panels, ini en taal.ini.
 # Cache, logs, backups en ontwikkelbestanden blijven eruit.
 
@@ -63,3 +66,15 @@ Remove-Item $stage -Recurse -Force
 
 $mb = [math]::Round((Get-Item $zip).Length / 1MB, 1)
 Write-Host "Klaar: $zip ($mb MB)"
+
+# Installatieprogramma met Inno Setup 6 (logic.iss), als het aanwezig is
+$iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+if (Test-Path $iscc) {
+  & $iscc /Q "/DMyAppVersion=$Version" "/O$OutDir" (Join-Path $proj 'logic.iss')
+  if ($LASTEXITCODE -ne 0) { throw "ISCC faalde ($LASTEXITCODE)" }
+  $setup = Join-Path $OutDir "Logic-$Version-setup.exe"
+  $mb = [math]::Round((Get-Item $setup).Length / 1MB, 1)
+  Write-Host "Klaar: $setup ($mb MB)"
+} else {
+  Write-Host "Inno Setup 6 niet gevonden: geen installatieprogramma gemaakt."
+}

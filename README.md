@@ -13,8 +13,10 @@ Daarna zet je de simulatie aan en zie je de schakeling werken.
 
 Kant-en-klare versies staan bij de
 [Releases](https://github.com/willem750-win/Logical/releases).
-Voor Windows: pak `Logic-<versie>-win64.zip` uit naar een map naar keuze en
-start `logicCEF.exe`. Installeren is niet nodig.
+Voor Windows: start `Logic-<versie>-setup.exe`. Logic wordt dan voor jou
+geïnstalleerd (geen beheerdersrechten nodig) en staat in het Startmenu.
+Zonder installatie: pak `Logic-<versie>-win64.zip` uit naar een map naar keuze en
+start `logicCEF.exe`.
 Voor Linux (Debian, Ubuntu, Mint ...): installeer `logical_<versie>_amd64.deb` met
 `sudo apt install ./logical_<versie>_amd64.deb`; Logic staat dan in het menu
 (onder Educatie) en start ook met `logical`. Zonder installatie: pak
@@ -89,7 +91,9 @@ pwsh -File projects/LogicCEF/helpsrc/make-help.ps1
 ### Release maken
 
 - Windows: `projects\LogicCEF\make-release.ps1 -Version 1.0.0` maakt
-  `Logic-1.0.0-win64.zip` (programma, CEF-runtime, help en data).
+  `Logic-1.0.0-win64.zip` (programma, CEF-runtime, help en data) en, met
+  [Inno Setup 6](https://jrsoftware.org/isinfo.php), het installatieprogramma
+  `Logic-1.0.0-setup.exe` (uit `projects/LogicCEF/logic.iss`).
 - Linux: `sh projects/LogicCEF/make-linux-release.sh 1.0.0` maakt
   `Logic-1.0.0-linux-x86_64.tar.gz` en `logical_1.0.0_amd64.deb`; met `--upload`
   gaan ze meteen naar de GitHub-release `v1.0.0`.
@@ -122,7 +126,7 @@ relays, buzzers and 7-segment displays on a panel, connect them with
 wires and run the simulation. User interface and help are available in Dutch,
 English, French and German. It runs on Windows and Linux (GTK2).
 
-Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: unzip and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, then start Logic from the Education menu, or extract the `.tar.gz` and run `./logicCEF`).
+Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: run `Logic-<version>-setup.exe`, or unzip the `.zip` and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, then start Logic from the Education menu, or extract the `.tar.gz` and run `./logicCEF`).
 
 To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows and Linux; needs CEF4Delphi, and on Windows
