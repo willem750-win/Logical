@@ -7,7 +7,7 @@
 # Cache, logs, backups en ontwikkelbestanden blijven eruit.
 
 param(
-  [string]$Version = '1.0.0',
+  [string]$Version = '1.0.1',
   [string]$Lazbuild = 'C:\fpcupdeluxe\lazarus\lazbuild.exe',
   [string]$OutDir = 'C:\fpcupdeluxe\publish\release',
   [switch]$NoBuild

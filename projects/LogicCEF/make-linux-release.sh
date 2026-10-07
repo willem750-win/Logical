@@ -4,7 +4,7 @@
 #
 # Uitvoeren ONDER LINUX vanuit de repository:
 #
-#     sh projects/LogicCEF/make-linux-release.sh                 (versie 1.0.0)
+#     sh projects/LogicCEF/make-linux-release.sh                 (versie 1.0.1)
 #     sh projects/LogicCEF/make-linux-release.sh 1.0.1           (eigen versie)
 #     sh projects/LogicCEF/make-linux-release.sh 1.0.1 --no-build
 #     sh projects/LogicCEF/make-linux-release.sh 1.0.1 --upload  (ook naar GitHub)
@@ -35,7 +35,7 @@
 # ---------------------------------------------------------------------------
 set -e
 
-VERSION=1.0.0
+VERSION=1.0.1
 BUILD=1
 UPLOAD=0
 for A in "$@"; do

@@ -94,6 +94,12 @@ pwsh -File projects/LogicCEF/helpsrc/make-help.ps1
   `Logic-1.0.0-linux-x86_64.tar.gz` en `logical_1.0.0_amd64.deb`; met `--upload`
   gaan ze meteen naar de GitHub-release `v1.0.0`.
 
+## Auteur
+
+Deze versie van Logic is gemaakt door **Willy Jansen**
+([willem750-win](https://github.com/willem750-win)).
+Contact: [willyjansen@telenet.be](mailto:willyjansen@telenet.be)
+
 ## Met dank aan
 
 De `jan*`-componenten (`janSimLogic`, `janLed`, `janToggle`, `janSimIndicator`,
@@ -124,6 +130,6 @@ the matching CEF binaries copied into `projects/LogicCEF/Resultaat/`).
 Generate the help with `projects/LogicCEF/helpsrc/make-help.ps1`.
 
 The `jan*` components are based on the freeware components by Jan Verhoeven,
-ported to Lazarus and extended.
+ported to Lazarus and extended by **Willy Jansen** (willyjansen@telenet.be), the author of this version.
 
 License: MIT, see [LICENSE](LICENSE), except `SZCodeBaseX.pas` (MPL 1.1).

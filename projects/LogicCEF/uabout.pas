@@ -12,7 +12,9 @@ uses
   LCLIntf, chatgridpcodeSmall;
 
 const
-  AppVersion = '1.0.0';
+  AppVersion = '1.0.1';
+  AppAuthor  = 'Willy Jansen';
+  AppEmail   = 'willyjansen@telenet.be';
   AppUrl     = 'https://github.com/willem750-win/Logical';
 
 procedure ShowAbout(ALang: chatgridpcodeSmall.TLanguage);
@@ -23,6 +25,7 @@ type
   TAboutForm = class(TForm)
   private
     procedure UrlClick(Sender: TObject);
+    procedure MailClick(Sender: TObject);
     procedure UrlEnter(Sender: TObject);
     procedure UrlLeave(Sender: TObject);
   end;
@@ -30,6 +33,11 @@ type
 procedure TAboutForm.UrlClick(Sender: TObject);
 begin
   OpenURL(AppUrl);
+end;
+
+procedure TAboutForm.MailClick(Sender: TObject);
+begin
+  OpenURL('mailto:' + AppEmail);
 end;
 
 procedure TAboutForm.UrlEnter(Sender: TObject);
@@ -113,7 +121,7 @@ begin
     F.BorderStyle := bsDialog;
     F.Position := poMainFormCenter;
     F.ClientWidth := 460;
-    F.ClientHeight := 300;
+    F.ClientHeight := 340;
 
     // onderaan: OK-knop
     PBottom := TPanel.Create(F);
@@ -157,6 +165,13 @@ begin
     L.Font.Size := 16;
     L.Font.Style := [fsBold];
     AddLabel(sVersion + AppVersion, 0);
+    AddLabel('© 2026 ' + AppAuthor, 0);
+    L := AddLabel(AppEmail, 0);
+    L.Font.Color := clBlue;
+    L.Cursor := crHandPoint;
+    L.OnClick := @F.MailClick;
+    L.OnMouseEnter := @F.UrlEnter;
+    L.OnMouseLeave := @F.UrlLeave;
     AddLabel(sDesc, 12);
     AddLabel(sCredit, 10);
     AddLabel(sLicense, 4);
