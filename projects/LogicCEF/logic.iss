@@ -1,7 +1,7 @@
 ﻿; Inno Setup-script voor Logic (Windows-installatieprogramma).
 ;
 ; Compileren (Inno Setup 6):
-;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=1.0.1 projects\LogicCEF\logic.iss
+;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=1.0.2 projects\LogicCEF\logic.iss
 ; of via make-release.ps1, dat ook de zip maakt.
 ;
 ; Resultaat: C:\fpcupdeluxe\publish\release\Logic-<versie>-setup.exe
@@ -14,7 +14,7 @@
 ; behouden; programma, CEF-runtime, help en html worden vervangen.
 
 #ifndef MyAppVersion
-  #define MyAppVersion "1.0.1"
+  #define MyAppVersion "1.0.2"
 #endif
 #define MyAppName      "Logic"
 #define MyAppPublisher "Willy Jansen"

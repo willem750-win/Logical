@@ -16,8 +16,8 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <RevisionNr Value="1"/>
-      <StringTable CompanyName="Willy Jansen" LegalCopyright="© 2026 Willy Jansen" FileDescription="Logic - simulator voor digitale schakelingen" InternalName="logicCEF" OriginalFilename="logicCEF.exe" ProductName="Logic" ProductVersion="1.0.1"/>
+      <RevisionNr Value="2"/>
+      <StringTable CompanyName="Willy Jansen" LegalCopyright="© 2026 Willy Jansen" FileDescription="Logic - simulator voor digitale schakelingen" InternalName="logicCEF" OriginalFilename="logicCEF.exe" ProductName="Logic" ProductVersion="1.0.2"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
