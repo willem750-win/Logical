@@ -37,19 +37,24 @@ New-Item -ItemType Directory $stage | Out-Null
 # Programma en CEF-runtime
 $files = @(
   'logicCEF.exe', 'taal.ini',
-  'libcef.dll', 'chrome_elf.dll', 'd3dcompiler_47.dll', 'libEGL.dll', 'libGLESv2.dll',
-  'vk_swiftshader.dll', 'vk_swiftshader_icd.json', 'vulkan-1.dll',
-  'icudtl.dat', 'resources.pak', 'chrome_100_percent.pak', 'chrome_200_percent.pak',
-  'snapshot_blob.bin', 'v8_context_snapshot.bin'
+  'ceflib\libcef.dll', 'ceflib\chrome_elf.dll', 'ceflib\d3dcompiler_47.dll',
+  'ceflib\libEGL.dll', 'ceflib\libGLESv2.dll',
+  'ceflib\vk_swiftshader.dll', 'ceflib\vk_swiftshader_icd.json', 'ceflib\vulkan-1.dll',
+  'ceflib\icudtl.dat', 'ceflib\resources.pak',
+  'ceflib\chrome_100_percent.pak', 'ceflib\chrome_200_percent.pak',
+  'ceflib\snapshot_blob.bin', 'ceflib\v8_context_snapshot.bin'
 )
 foreach ($f in $files) {
   $p = Join-Path $src $f
   if (-not (Test-Path $p)) { throw "Ontbreekt: $p" }
-  Copy-Item $p $stage
+  $dest = $stage
+  if (Split-Path $f -Parent) { $dest = Join-Path $stage (Split-Path $f -Parent) }
+  New-Item -ItemType Directory $dest -Force | Out-Null
+  Copy-Item $p $dest
 }
 
 # Datamappen
-foreach ($d in 'locales', 'help', 'html', 'panels', 'ini') {
+foreach ($d in 'ceflib\locales', 'help', 'html', 'panels', 'ini') {
   Copy-Item (Join-Path $src $d) (Join-Path $stage $d) -Recurse
 }
 Remove-Item (Join-Path $stage 'ini\comboColor.ini') -ErrorAction SilentlyContinue

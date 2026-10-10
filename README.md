@@ -72,7 +72,8 @@ git clone https://github.com/willem750-win/Logical.git
 De CEF-runtime staat niet in de repo (te groot). Kopieer de CEF-binaries
 die bij je CEF4Delphi-versie horen (`libcef.dll`, `chrome_elf.dll`,
 `icudtl.dat`, de `.pak`- en `.bin`-bestanden en de map `locales`) naar
-`projects/LogicCEF/Resultaat/`.
+`projects/LogicCEF/Resultaat/ceflib/`. Logic zoekt ze in de submap `ceflib`
+naast `logicCEF.exe`.
 
 ### Help opbouwen
 
@@ -130,7 +131,7 @@ Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Win
 
 To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows and Linux; needs CEF4Delphi, and on Windows
-the matching CEF binaries copied into `projects/LogicCEF/Resultaat/`).
+the matching CEF binaries copied into `projects/LogicCEF/Resultaat/ceflib/`).
 Generate the help with `projects/LogicCEF/helpsrc/make-help.ps1`.
 
 The `jan*` components are based on the freeware components by Jan Verhoeven,

@@ -361,10 +361,20 @@ end;
 
 
 procedure CreateGlobalCEFApp;
+var
+  AppDir, CefDir: string;
 begin
+  // De CEF-runtime staat in de submap ceflib naast logicCEF.exe.
+  // Paden absoluut maken: bij een andere werkmap vindt CEF anders niets.
+  AppDir := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  CefDir := AppDir + 'ceflib';
+
   GlobalCEFApp                     := TCefApplication.Create;
-  GlobalCEFApp.cache               := 'cache';
-  GlobalCEFApp.LogFile             := 'debug.log';
+  GlobalCEFApp.FrameworkDirPath    := CefDir;
+  GlobalCEFApp.ResourcesDirPath    := CefDir;
+  GlobalCEFApp.LocalesDirPath      := CefDir + PathDelim + 'locales';
+  GlobalCEFApp.cache               := AppDir + 'cache';
+  GlobalCEFApp.LogFile             := AppDir + 'debug.log';
   GlobalCEFApp.LogSeverity         := LOGSEVERITY_INFO;
   GlobalCEFApp.EnablePrintPreview  := True;          
   GlobalCEFApp.EnableGPU           := True;

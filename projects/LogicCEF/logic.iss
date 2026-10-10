@@ -63,21 +63,22 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 ; Programma en CEF-runtime: altijd vervangen
 Source: "{#Src}\{#MyAppExeName}";           DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\libcef.dll";                DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\chrome_elf.dll";            DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\d3dcompiler_47.dll";        DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\libEGL.dll";                DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\libGLESv2.dll";             DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\vk_swiftshader.dll";        DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\vk_swiftshader_icd.json";   DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\vulkan-1.dll";              DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\icudtl.dat";                DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\resources.pak";             DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\chrome_100_percent.pak";    DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\chrome_200_percent.pak";    DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\snapshot_blob.bin";         DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\v8_context_snapshot.bin";   DestDir: "{app}"; Flags: ignoreversion
-Source: "{#Src}\locales\*";                 DestDir: "{app}\locales"; Flags: ignoreversion recursesubdirs createallsubdirs
+; CEF-runtime in de submap ceflib (zie CreateGlobalCEFApp in uMiniBrowser.pas)
+Source: "{#Src}\ceflib\libcef.dll";              DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\chrome_elf.dll";          DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\d3dcompiler_47.dll";      DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\libEGL.dll";              DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\libGLESv2.dll";           DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\vk_swiftshader.dll";      DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\vk_swiftshader_icd.json"; DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\vulkan-1.dll";            DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\icudtl.dat";              DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\resources.pak";           DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\chrome_100_percent.pak";  DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\chrome_200_percent.pak";  DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\snapshot_blob.bin";       DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\v8_context_snapshot.bin"; DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\locales\*";               DestDir: "{app}\ceflib\locales"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#Src}\help\*";                    DestDir: "{app}\help"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#Src}\html\*";                    DestDir: "{app}\html"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\..\LICENSE";                    DestDir: "{app}"; Flags: ignoreversion
@@ -95,6 +96,24 @@ Name: "{autodesktop}\{#MyAppName}";  Filename: "{app}\{#MyAppExeName}"; WorkingD
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
+
+[InstallDelete]
+; Bij een update van 1.0.x: de CEF-runtime stond toen naast logicCEF.exe
+Type: files; Name: "{app}\libcef.dll"
+Type: files; Name: "{app}\chrome_elf.dll"
+Type: files; Name: "{app}\d3dcompiler_47.dll"
+Type: files; Name: "{app}\libEGL.dll"
+Type: files; Name: "{app}\libGLESv2.dll"
+Type: files; Name: "{app}\vk_swiftshader.dll"
+Type: files; Name: "{app}\vk_swiftshader_icd.json"
+Type: files; Name: "{app}\vulkan-1.dll"
+Type: files; Name: "{app}\icudtl.dat"
+Type: files; Name: "{app}\resources.pak"
+Type: files; Name: "{app}\chrome_100_percent.pak"
+Type: files; Name: "{app}\chrome_200_percent.pak"
+Type: files; Name: "{app}\snapshot_blob.bin"
+Type: files; Name: "{app}\v8_context_snapshot.bin"
+Type: filesandordirs; Name: "{app}\locales"
 
 [UninstallDelete]
 ; Door het programma aangemaakt
