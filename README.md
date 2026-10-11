@@ -23,6 +23,10 @@ Voor Linux (Debian, Ubuntu, Mint ...): installeer `logical_<versie>_amd64.deb` m
 `Logic-<versie>-linux-x86_64.tar.gz` uit in je thuismap en
 start `./logicCEF`.
 
+Logic staat ook op [SourceForge](https://sourceforge.net/projects/logic-simulator/).
+Vind je Logic handig? Laat dan een
+[review achter op SourceForge](https://sourceforge.net/projects/logic-simulator/reviews/).
+
 ## Onderdelen
 
 | Groep      | Onderdelen |
@@ -128,6 +132,8 @@ wires and run the simulation. User interface and help are available in Dutch,
 English, French and German. It runs on Windows and Linux (GTK2).
 
 Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: run `Logic-<version>-setup.exe`, or unzip the `.zip` and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, then start Logic from the Education menu, or extract the `.tar.gz` and run `./logicCEF`).
+Also on [SourceForge](https://sourceforge.net/projects/logic-simulator/). Do you find
+Logic useful? Please leave a [review on SourceForge](https://sourceforge.net/projects/logic-simulator/reviews/).
 
 To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 `projects/LogicCEF/logic.lpi` (Windows and Linux; needs CEF4Delphi, and on Windows
