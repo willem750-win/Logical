@@ -300,6 +300,11 @@ type
     procedure DoMouseDown(x, y: integer);
     procedure DoMouseMove(dx, dy: integer);
     procedure AnchorCorner(logTL:TPoint;ACorner:TjanConMode);
+    function AnchorToRect(const R: TRect; logTL: TPoint): Boolean;
+    function StraightenDelta(logTL: TPoint; out dX, dY: Integer): Boolean;
+    procedure EndCenters(out APi, APo: TPoint);
+    procedure PlaceEnds(const APi, APo: TPoint);
+    procedure SnapEndToInput;
     procedure MoveConnector(logTL:TPoint);
 
     property ToPoint:TPoint read FToPoint write SetToPoint;
@@ -2108,6 +2113,9 @@ implementation
   {$R janSimImages.res}
   {$R Cursors.RES}
 
+// magnetisch rechttrekken van draden bij het slepen (zie verderop)
+procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer); forward;
+
   var
     GlobalSimBox: TjanSimLogicBox;
 
@@ -2523,7 +2531,7 @@ procedure TjanDisplay.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -2535,32 +2543,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -2759,6 +2744,7 @@ begin
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
+     StraightenWires(connectors,newleft,newtop);
      Left:=newleft;
      Top:=newtop;
 
@@ -3498,6 +3484,9 @@ end;
 procedure TjanConnector.MouseUp(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
+// uiteinde losgelaten vlak bij een ingang: exact op die ingang zetten
+if (not doEdge) and (not doMove) then
+    SnapEndToInput;
 if not doEdge then
     DisConnectFinal;
     //SendToBack;
@@ -4069,6 +4058,233 @@ begin
   end;
 end;
 
+// Koppelt deze draad aan een component met (vergrote) rechthoek R als
+// een van de twee UITEINDEN van de draad in R ligt. De uiteinden hangen
+// af van de vorm: jcsTLBR = linksboven/rechtsonder, jcsTRBL =
+// rechtsboven/linksonder. De andere twee hoeken zijn geen uiteinde en
+// worden bewust niet getest: bij een (bijna) rechte draad liggen die ook
+// binnen R, en wie daarop ankert verschuift de koppeling en krijgt een
+// conPos die niet bij de vorm past (de draad wordt dan niet getekend).
+function TjanConnector.AnchorToRect(const R: TRect; logTL: TPoint): Boolean;
+var Rc:TRect;
+begin
+  Result:=True;
+  Rc:=BoundsRect;
+  if Shape=jcsTLBR then
+  begin
+    if PtInRect(R,Point(Rc.Left,Rc.Top)) then AnchorCorner(logTL,jcmTL)
+    else if PtInRect(R,Point(Rc.Right,Rc.Bottom)) then AnchorCorner(logTL,jcmBR)
+    else Result:=False;
+  end
+  else
+  begin
+    if PtInRect(R,Point(Rc.Right,Rc.Top)) then AnchorCorner(logTL,jcmTR)
+    else if PtInRect(R,Point(Rc.Left,Rc.Bottom)) then AnchorCorner(logTL,jcmBL)
+    else Result:=False;
+  end;
+end;
+
+// Hoeveel moet het gesleepte component (linkerbovenhoek logTL) nog
+// verschuiven zodat deze draad exact recht ligt? Vergelijkt het
+// aansluitblokje aan het bewegende uiteinde met dat aan het vaste
+// uiteinde. Geeft True met dY (liggende draad) of dX (staande draad);
+// de andere waarde is 0. Alleen geldig na AnchorCorner.
+function TjanConnector.StraightenDelta(logTL: TPoint; out dX, dY: Integer): Boolean;
+var d:integer;
+    nc,M,S:TPoint;
+begin
+  d:=conSize;
+  nc:=point(logTL.x+ConOffset.x,logTL.y+ConOffset.y);
+  // linkerbovenhoek van het blokje aan het bewegende uiteinde (M) en aan
+  // het vaste uiteinde (S), afhankelijk van welke hoek vastgemaakt werd
+  case conMode of
+    jcmTL: begin M:=nc;                        S:=point(ConAnchor.x-d,ConAnchor.y-d); end;
+    jcmTR: begin M:=point(nc.x-d,nc.y);        S:=point(ConAnchor.x,ConAnchor.y-d);   end;
+    jcmBR: begin M:=point(nc.x-d,nc.y-d);      S:=ConAnchor;                          end;
+  else     begin M:=point(nc.x,nc.y-d);        S:=point(ConAnchor.x-d,ConAnchor.y);   end;
+  end;
+  dX:=0; dY:=0;
+  if Abs(S.x-M.x)>=Abs(S.y-M.y) then dY:=S.y-M.y   // liggende draad
+  else dX:=S.x-M.x;                                // staande draad
+  Result:=(dX<>0) or (dY<>0);
+end;
+
+// Magnetisch rechttrekken: ligt een draad aan het gesleepte component
+// binnen WireStraightenTol pixels van recht, dan schuift het component
+// dat laatste stukje bij. De kleinste correctie per richting wint.
+const
+  WireStraightenTol = 6;
+
+procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer);
+var i,dX,dY,BestX,BestY:integer;
+begin
+  if (AConnectors=nil) or (AConnectors.Count=0) then exit;
+  BestX:=WireStraightenTol+1;
+  BestY:=WireStraightenTol+1;
+  for i:=0 to AConnectors.Count-1 do
+    if TjanConnector(AConnectors[i]).StraightenDelta(point(ANewLeft,ANewTop),dX,dY) then
+    begin
+      if (dY<>0) and (Abs(dY)<Abs(BestY)) then BestY:=dY;
+      if (dX<>0) and (Abs(dX)<Abs(BestX)) then BestX:=dX;
+    end;
+  if Abs(BestY)<=WireStraightenTol then Inc(ANewTop,BestY);
+  if Abs(BestX)<=WireStraightenTol then Inc(ANewLeft,BestX);
+end;
+
+// ============================================================
+// Uiteinde van een draad laten "springen" naar een ingang
+// ============================================================
+
+type
+  TPinArray = array of TPoint;
+
+// Ingangen van component C: linkerbovenhoek van het groene
+// aansluitvierkantje (7x7), relatief t.o.v. het component. Opgemeten
+// uit de getekende componenten; bij poort, teller en meter alleen de
+// ingangen die actief zijn.
+function InputPins(C: TControl): TPinArray;
+  procedure Add(X, Y: Integer);
+  begin
+    SetLength(Result, Length(Result) + 1);
+    Result[High(Result)] := Point(X, Y);
+  end;
+var i: Integer;
+begin
+  Result := nil;
+  if C is TjanLogic then
+  begin
+    for i := 0 to 2 do
+      if TjanLogic(C).Gates[i].Active then
+        Add(TjanLogic(C).Gates[i].pos.x + 1, TjanLogic(C).Gates[i].pos.y + 2);
+  end
+  else if C is TjanMeter then
+  begin
+    if TjanMeter(C).Gates[2].Active then Add(6, 36);    // +
+    if TjanMeter(C).Gates[0].Active then Add(86, 36);   // -
+  end
+  else if C is TjanTeller then
+  begin
+    if TjanTeller(C).Gates[0].Active then Add(1, 12);   // reset
+    if TjanTeller(C).Gates[1].Active then Add(1, 52);   // telimpuls
+  end
+  else if C is TjanMemory then
+  begin
+    Add(58, 35); Add(82, 35); Add(107, 35); Add(132, 35); Add(157, 35); // adres
+    Add(19, 123);                                                         // data
+  end
+  else if C is TjanSimRelais then Add(1, 28)
+  else if C is TjanSimLight then Add(1, 3)
+  else if C is TjanSimBuzzer then Add(1, 18)
+  else if C is TjanDisplay then Add(1, C.Height div 2 - 3)
+  else if C is TjanDipSwitsh then Add(93, 17);
+end;
+
+// Middelpunt van het blokje aan het begin (APi, de bron, kant van conPos)
+// en aan het einde (APo) van de draad, in coördinaten van het paneel.
+// Zelfde berekening als in Connect/DisConnect.
+procedure TjanConnector.EndCenters(out APi, APo: TPoint);
+var d2,xw,yh:integer;
+begin
+  d2:=conSize div 2;
+  xw:=Width-1;
+  yh:=Height-1;
+  case conPos of
+    jcpTL: begin APi:=point(d2,d2);       APo:=point(xw-d2,yh-d2); end;
+    jcpTR: begin APi:=point(xw-d2,d2);    APo:=point(d2,yh-d2);    end;
+    jcpBR: begin APi:=point(xw-d2,yh-d2); APo:=point(d2,d2);       end;
+  else     begin APi:=point(d2,yh-d2);    APo:=point(xw-d2,d2);    end;
+  end;
+  APi:=point(Left+APi.x,Top+APi.y);
+  APo:=point(Left+APo.x,Top+APo.y);
+end;
+
+// Bouwt de draad opnieuw op met het begin op APi en het einde op APo
+// (middelpunten van de blokjes). Gebruikt MoveConnector, zodat vorm,
+// conPos en het rechte/omgeklapte geval op de gewone manier geregeld
+// worden.
+procedure TjanConnector.PlaceEnds(const APi, APo: TPoint);
+var lo,hi,k:integer;
+    m:TjanConMode;
+    GotPi,GotPo:TPoint;
+begin
+  lo:=conSize div 2;       // van middelpunt naar hoek links/boven
+  hi:=conSize-lo+1;        // van middelpunt naar hoek rechts/onder (xw = Width-1)
+  // het einde ligt in de hoek tegenover conPos
+  case conPos of
+    jcpTL: m:=jcmBR;
+    jcpTR: m:=jcmBL;
+    jcpBR: m:=jcmTL;
+  else     m:=jcmTR;
+  end;
+  ConMode:=m;
+  ConHot:=conPos;
+  case m of
+    jcmTL: begin ConOffset:=point(APo.x-lo,APo.y-lo); ConAnchor:=point(APi.x+hi,APi.y+hi); end;
+    jcmTR: begin ConOffset:=point(APo.x+hi,APo.y-lo); ConAnchor:=point(APi.x-lo,APi.y+hi); end;
+    jcmBR: begin ConOffset:=point(APo.x+hi,APo.y+hi); ConAnchor:=point(APi.x-lo,APi.y-lo); end;
+  else     begin ConOffset:=point(APo.x-lo,APo.y+hi); ConAnchor:=point(APi.x+hi,APi.y-lo); end;
+  end;
+  MoveConnector(point(0,0));
+
+  // Bij een (bijna) rechte of omgeklapte draad wisselt een blokje van een
+  // rechter-/onderhoek naar een linker-/bovenhoek; die worden 1 pixel
+  // verschillend getekend (Width-1). Daarom nameten en bijsturen.
+  for k:=1 to 3 do
+  begin
+    EndCenters(GotPi,GotPo);
+    if (GotPi.x=APi.x) and (GotPi.y=APi.y) and (GotPo.x=APo.x) and (GotPo.y=APo.y) then
+      break;
+    ConAnchor:=point(ConAnchor.x+APi.x-GotPi.x,ConAnchor.y+APi.y-GotPi.y);
+    ConOffset:=point(ConOffset.x+APo.x-GotPo.x,ConOffset.y+APo.y-GotPo.y);
+    MoveConnector(point(0,0));
+  end;
+end;
+
+const
+  InputSnapTol = 12;   // pixels rond een ingang waarbinnen het einde springt
+
+procedure TjanConnector.SnapEndToInput;
+var PiC,PoC,Best,P:TPoint;
+    BestDist,Dist,i,j:integer;
+    C:TControl;
+    Pins:TPinArray;
+    EndMode:TjanConMode;
+begin
+  if Parent=nil then exit;
+  // alleen als het EINDE van de draad versleept werd (niet het begin)
+  case conPos of
+    jcpTL: EndMode:=jcmBR;
+    jcpTR: EndMode:=jcmBL;
+    jcpBR: EndMode:=jcmTL;
+  else     EndMode:=jcmTR;
+  end;
+  if Mode<>EndMode then exit;
+
+  EndCenters(PiC,PoC);
+  BestDist:=InputSnapTol+1;
+  Best:=PoC;
+  for i:=0 to Parent.ControlCount-1 do
+  begin
+    C:=Parent.Controls[i];
+    if (C=Self) or (C is TjanConnector) or not C.Visible then continue;
+    Pins:=InputPins(C);
+    for j:=0 to High(Pins) do
+    begin
+      // middelpunt van het 7x7-vierkantje
+      P:=point(C.Left+Pins[j].x+3,C.Top+Pins[j].y+3);
+      Dist:=Abs(P.x-PoC.x);
+      if Abs(P.y-PoC.y)>Dist then Dist:=Abs(P.y-PoC.y);
+      if Dist<BestDist then
+      begin
+        BestDist:=Dist;
+        Best:=P;
+      end;
+    end;
+  end;
+  if (BestDist<=InputSnapTol) and ((Best.x<>PoC.x) or (Best.y<>PoC.y)) then
+    PlaceEnds(PiC,Best);
+end;
+
 procedure TjanConnector.MoveConnector(logTL: TPoint);
 var nw,nh:integer;
     d,dd,d2:integer;
@@ -4149,6 +4365,10 @@ begin
       width:=-nw+d+d;
     end
     else begin
+      // left altijd opnieuw vanaf het vaste punt: was de draad in deze
+      // sleepbeweging al eens omgeklapt (tak hierboven), dan staat left
+      // nog verkeerd en schuift het vaste uiteinde anders mee.
+      left:=ConAnchor.x;
       width:=nw;
     end;
     nh:=ConAnchor.y-nc.y;
@@ -4209,6 +4429,7 @@ begin
       width:=-nw+d+d;
     end
     else begin
+      left:=ConAnchor.x;   // zie jcmTR: vaste uiteinde niet laten meeschuiven
       width:=nw;
     end;
     nh:=nc.y-ConAnchor.y;
@@ -4251,6 +4472,7 @@ begin
       height:=-nh+d+d;
     end
     else begin
+       top:=ConAnchor.y;   // zie jcmTR: vaste uiteinde niet laten meeschuiven
        height:=nh;
     end;
     end;
@@ -4306,6 +4528,7 @@ begin
        height:=-nh+d+d;
     end
     else begin
+      top:=ConAnchor.y;   // zie jcmTR: vaste uiteinde niet laten meeschuiven
       height:=nh;
     end;
     end;
@@ -5197,6 +5420,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -5235,7 +5459,7 @@ procedure TjanLogic.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -5247,32 +5471,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -6148,6 +6349,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -6417,7 +6619,7 @@ procedure TjanTeller.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -6429,32 +6631,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -7216,6 +7395,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -7310,7 +7490,7 @@ procedure TjanMemory.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -7322,32 +7502,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -8298,6 +8455,7 @@ begin
      newleft:=p.x-mdp.x;
      newtop:=p.y-mdp.y;
      MoveConnectors;
+     StraightenWires(connectors,newleft,newtop);
      left:=newleft;
      top:=newtop;
       if Assigned(GlobalSimBox) then
@@ -8310,7 +8468,7 @@ procedure TjanMeter.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -8322,32 +8480,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -8692,7 +8827,7 @@ procedure TjanSimButton.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -8704,32 +8839,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -8999,6 +9111,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -9039,6 +9152,7 @@ begin
       NewLeft := p.X - mdp.X;
       NewTop := p.Y - mdp.Y;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -9537,7 +9651,7 @@ procedure TjanSimKnop.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -9549,32 +9663,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -9900,6 +9991,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
 
@@ -10303,7 +10395,7 @@ procedure TjanDipSwitsh.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -10315,32 +10407,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -10589,6 +10658,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -10756,6 +10826,7 @@ begin
      newleft:=p.x-mdp.x;
      newtop:=p.y-mdp.y;
      MoveConnectors;
+     StraightenWires(connectors,newleft,newtop);
      left:=newleft;
      top:=newtop;
 
@@ -11212,7 +11283,7 @@ procedure TjanSimPuls.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -11224,32 +11295,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -11418,6 +11466,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -11816,7 +11865,7 @@ procedure TjanSimSensor.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -11828,32 +11877,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -12190,6 +12216,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -12455,7 +12482,7 @@ procedure TjanSimWarm.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -12467,32 +12494,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -12717,6 +12721,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
+      StraightenWires(connectors,newleft,newtop);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -13103,7 +13108,7 @@ procedure TjanSimLight.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -13115,32 +13120,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -13389,6 +13371,7 @@ inherited;
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
+     StraightenWires(connectors,newleft,newtop);
      Left:=newleft;
      Top:=newtop;
 
@@ -13766,7 +13749,7 @@ procedure TjanSimRelais.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -13778,32 +13761,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -13981,6 +13941,7 @@ begin
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
+     StraightenWires(connectors,newleft,newtop);
      Left:=newleft;
      Top:=newtop;
 
@@ -14466,7 +14427,7 @@ procedure TjanSimBuzzer.AnchorConnectors;
 var wc:TWincontrol;
     i:integer;
     con:TjanConnector;
-    R,Rc:TRect;
+    R:TRect;
     p:TPoint;
 begin
   wc:=parent;
@@ -14478,32 +14439,9 @@ begin
     if (wc.controls[i] is TjanConnector) then
     begin
       con:=TjanConnector(wc.controls[i]);
-      // check for corners in bounds
-      Rc:=con.BoundsRect;
-      // TL
-      if ptinrect(R,point(Rc.left,Rc.top)) then
-      begin
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if con.AnchorToRect(R,p) then
         connectors.Add(con);
-        con.AnchorCorner(p,jcmTL);
-      end
-      // TR
-      else if ptinrect(R,point(Rc.right,Rc.top)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmTR);
-      end
-      // BR
-      else if ptinrect(R,point(Rc.right,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBR);
-      end
-      // BL
-      else if ptinrect(R,point(Rc.left,Rc.bottom)) then
-      begin
-        connectors.Add(con);
-        con.AnchorCorner(p,jcmBL);
-      end
     end;
 end;
 
@@ -14681,6 +14619,7 @@ begin
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
+     StraightenWires(connectors,newleft,newtop);
      Left:=newleft;
      Top:=newtop;
 
