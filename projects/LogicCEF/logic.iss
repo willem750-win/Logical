@@ -20,7 +20,12 @@
 #define MyAppPublisher "Willy Jansen"
 #define MyAppURL       "https://github.com/willem750-win/Logical"
 #define MyAppExeName   "logicCEF.exe"
-#define Src            "Resultaat"
+; Bronmap met programma, CEF-runtime en gegevens. make-release.ps1 geeft hier
+; (/DSrc=...) een schoon samengestelde map op: panelen, ini en html uit Git,
+; help vers opgebouwd. Zonder /DSrc wordt Resultaat gebruikt zoals het is.
+#ifndef Src
+  #define Src          "Resultaat"
+#endif
 
 [Setup]
 AppId={{6E0B2F4A-3C7D-4B8E-9A51-2D4F7C1E8B36}

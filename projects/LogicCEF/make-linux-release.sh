@@ -12,9 +12,13 @@
 # Bouwen: met lazbuild uit PATH of uit $LAZBUILD. Zonder lazbuild (of met
 # --no-build) wordt het programma gebruikt dat al in Resultaat/ staat.
 #
-# Help: met pwsh wordt ze opnieuw opgebouwd uit helpsrc. Zonder pwsh wordt
-# Resultaat/help gebruikt, of als die ontbreekt de help uit de Windows-zip
-# van dezelfde release op GitHub.
+# Gegevens: panels, ini en html komen uit Git (de laatste commit, HEAD), niet
+# uit Resultaat. Niet-gecommitte wijzigingen en testpanelen gaan dus niet mee;
+# het script waarschuwt als er zulke wijzigingen zijn.
+#
+# Help: altijd vers, in een lege map. Met pwsh opgebouwd uit helpsrc, anders
+# uit de Windows-zip van dezelfde release op GitHub. Alleen als dat allebei
+# niet lukt, wordt Resultaat/help gebruikt (met een waarschuwing).
 #
 # Onder Linux gebruikt Logic geen CEF (de help opent in de standaardbrowser),
 # dus de CEF-runtime hoort niet in het pakket.
@@ -69,22 +73,6 @@ if [ ! -x "$SRC/logicCEF" ]; then
 fi
 
 # ------------------------------------------------------------------
-# Help
-# ------------------------------------------------------------------
-if command -v pwsh >/dev/null 2>&1; then
-  pwsh -NoProfile -File "$PROJ/helpsrc/make-help.ps1"
-elif [ -f "$SRC/help/index.html" ]; then
-  echo "pwsh niet gevonden; ik gebruik de bestaande help in Resultaat/help."
-else
-  echo "pwsh niet gevonden; ik haal de help uit de Windows-zip van v$VERSION."
-  TMPZIP=$(mktemp)
-  curl -fL -o "$TMPZIP" \
-    "https://github.com/willem750-win/Logical/releases/download/v$VERSION/Logic-$VERSION-win64.zip"
-  unzip -q -o "$TMPZIP" 'help/*' -d "$SRC"
-  rm -f "$TMPZIP"
-fi
-
-# ------------------------------------------------------------------
 # Pakket samenstellen
 # ------------------------------------------------------------------
 STAGE=$(mktemp -d)
@@ -95,10 +83,63 @@ cp "$SRC/logicCEF" "$DST/"
 strip "$DST/logicCEF" 2>/dev/null || true
 chmod 755 "$DST/logicCEF"
 [ -f "$SRC/taal.ini" ] && cp "$SRC/taal.ini" "$DST/"
-for D in help html panels ini; do
-  cp -r "$SRC/$D" "$DST/$D"
-done
+
+# ------------------------------------------------------------------
+# panels, ini en html uit Git (HEAD)
+# ------------------------------------------------------------------
+DATA="projects/LogicCEF/Resultaat/panels projects/LogicCEF/Resultaat/ini projects/LogicCEF/Resultaat/html"
+if git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1; then
+  # shellcheck disable=SC2086
+  DIRTY=$(git -C "$REPO" status --porcelain -- $DATA)
+  if [ -n "$DIRTY" ]; then
+    echo "LET OP: deze niet-gecommitte wijzigingen gaan NIET mee in de release:"
+    echo "$DIRTY"
+  fi
+  GITTMP=$(mktemp -d)
+  # shellcheck disable=SC2086
+  git -C "$REPO" archive HEAD -- $DATA | tar -x -C "$GITTMP"
+  for D in panels ini html; do
+    cp -r "$GITTMP/projects/LogicCEF/Resultaat/$D" "$DST/$D"
+  done
+  rm -rf "$GITTMP"
+else
+  echo "LET OP: $REPO is geen Git-repository; panels, ini en html komen uit Resultaat zoals ze zijn."
+  for D in panels ini html; do
+    cp -r "$SRC/$D" "$DST/$D"
+  done
+fi
 rm -f "$DST/ini/comboColor.ini"
+
+# ------------------------------------------------------------------
+# Help: altijd vers, in een lege map
+# ------------------------------------------------------------------
+if command -v pwsh >/dev/null 2>&1; then
+  pwsh -NoProfile -File "$PROJ/helpsrc/make-help.ps1" -Out "$DST/help"
+else
+  echo "pwsh niet gevonden; ik haal de help uit de Windows-zip van v$VERSION."
+  TMPZIP=$(mktemp)
+  HELPTMP=$(mktemp -d)
+  if curl -fsSL -o "$TMPZIP" \
+      "https://github.com/willem750-win/Logical/releases/download/v$VERSION/Logic-$VERSION-win64.zip"; then
+    # De help-bestanden eerst opsommen en dan precies die uitpakken:
+    # 'help/*' als patroon pakt bij sommige unzip-versies de submappen niet
+    # mee. Waarschuwingen zijn niet fataal: hieronder wordt gecontroleerd of
+    # de help er echt is.
+    # shellcheck disable=SC2046
+    unzip -q -o "$TMPZIP" $(unzip -Z1 "$TMPZIP" | grep '^help/[^/]') -d "$HELPTMP" || true
+  fi
+  if [ -f "$HELPTMP/help/index.html" ]; then
+    cp -r "$HELPTMP/help" "$DST/help"
+  elif [ -f "$SRC/help/index.html" ]; then
+    echo "LET OP: help niet te downloaden; ik gebruik Resultaat/help. Controleer of die actueel is"
+    echo "        (geen oude bestanden), of installeer pwsh."
+    cp -r "$SRC/help" "$DST/help"
+  else
+    echo "Geen help gevonden: installeer pwsh of zet eerst de Windows-release v$VERSION op GitHub." >&2
+    exit 1
+  fi
+  rm -rf "$TMPZIP" "$HELPTMP"
+fi
 find "$DST" \( -name '*.bak' -o -name '*.log' \) -exec rm -f {} +
 cp "$REPO/LICENSE" "$REPO/README.md" "$DST/"
 
