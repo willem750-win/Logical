@@ -28,3 +28,6 @@ projects/LogicCEF/Resultaat/ini/comboColor.ini
 
 # Uitvoer van make-linux-release.sh
 projects/LogicCEF/release/
+
+# Eigen testpanelen (niet voor de release)
+projects/LogicCEF/testpanelen/
