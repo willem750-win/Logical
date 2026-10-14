@@ -15499,6 +15499,10 @@ var
 
 begin
   KillPanel;
+  // Geen nieuw object meer "aan de muis": koos je in de balk een component
+  // maar plaatste je het niet, dan zou anders na het laden een object van
+  // het paneel de muis volgen (zie GridMouseMove in main.pas).
+  FNew := False;
   wc := FParent;
   FFilterLijst.Clear;
 
@@ -16071,6 +16075,11 @@ begin
       // Onbekend type → negeren
     end;
   end;
+  // Hierboven schrijft "FObjectID := wc.ControlCount" (binnen de with-
+  // blokken) in het ObjectID van de BOX: dat wees daarna naar het laatst
+  // ingelezen object. ObjectID hoort alleen bij een nieuw geplaatst object.
+  FNew := False;
+  FObjectID := -1;
   BlokkeerObjecten(False);
 end;
 
