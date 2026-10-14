@@ -143,8 +143,21 @@ type
      // Welk ingebouwd paneel is open (0 = geen / extern bestand), zodat de
      // titel bij een taalwissel mee vertaald wordt.
      FBuiltinPanel: Integer;
+     // Niet-bewaarde wijzigingen: vingerafdruk van het paneel bij het laatste
+     // laden/bewaren, de titel zonder sterretje, en het bijbehorende bestand.
+     FCleanSignature: string;
+     FPanelTitleBase: string;
+     FCurrentFile: string;      // '' = ingebouwd of nog niet bewaard paneel
+     FDirtyTimer: TTimer;
      function BuiltinPanelName(AKind: Integer): string;
      procedure ShowBuiltinPanelTitle(AKind: Integer);
+     procedure SetPanelTitle(const ATitle: string);
+     procedure MarkPanelClean;
+     function PanelModified: Boolean;
+     procedure DirtyTimerTick(Sender: TObject);
+     function SavePanelAs: Boolean;
+     function ConfirmDiscardPanel: Boolean;
+     procedure MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
      procedure OpenHelpInMiniBrowser(const FileName: string);
@@ -1205,7 +1218,150 @@ end;
 procedure TmainForm.ShowBuiltinPanelTitle(AKind: Integer);
 begin
   FBuiltinPanel := AKind;
-  Grid.Titel := ''; Grid.Titel := BuiltinPanelName(AKind);
+  SetPanelTitle(BuiltinPanelName(AKind));
+end;
+
+// ============================================================
+// Waarschuwing bij niet-bewaarde wijzigingen
+// ============================================================
+
+// Titel zonder sterretje; het sterretje zet DirtyTimerTick erbij.
+procedure TmainForm.SetPanelTitle(const ATitle: string);
+begin
+  FPanelTitleBase := ATitle;
+  Grid.Titel := ''; Grid.Titel := ATitle;
+  DirtyTimerTick(nil);
+end;
+
+procedure TmainForm.MarkPanelClean;
+begin
+  FCleanSignature := Box.PanelSignature(Grid);
+  DirtyTimerTick(nil);
+end;
+
+function TmainForm.PanelModified: Boolean;
+begin
+  Result := Box.PanelSignature(Grid) <> FCleanSignature;
+end;
+
+// Zet " *" achter de titel zolang het paneel gewijzigd is.
+procedure TmainForm.DirtyTimerTick(Sender: TObject);
+var
+  Wanted: string;
+begin
+  if not Assigned(Grid) or not Assigned(Box) then Exit;
+  // In het instellingenvenster kan de titel bewerkt (en bewaard) worden:
+  // dan geen sterretje tonen.
+  if fr_Settingsbestaat then
+  begin
+    if Grid.Titel = FPanelTitleBase + ' *' then Grid.Titel := FPanelTitleBase;
+    Exit;
+  end;
+  // titel ergens anders gewijzigd (bv. in het instellingenvenster): overnemen
+  if (Grid.Titel <> FPanelTitleBase) and (Grid.Titel <> FPanelTitleBase + ' *') then
+    FPanelTitleBase := Grid.Titel;
+  Wanted := FPanelTitleBase;
+  if PanelModified then Wanted := Wanted + ' *';
+  if Grid.Titel <> Wanted then
+  begin
+    Grid.Titel := ''; Grid.Titel := Wanted;
+  end;
+end;
+
+// Opslaan via het venster "Opslaan als"; True als er echt bewaard is.
+function TmainForm.SavePanelAs: Boolean;
+var
+  saveDialog : TSaveDialog;
+  baseDir,panelsDir: string;
+begin
+  Result := False;
+  baseDir   := ExtractFilePath(ParamStr(0));
+  panelsDir := IncludeTrailingPathDelimiter(baseDir) + 'panels';
+  saveDialog := TSaveDialog.Create(self);
+  try
+    saveDialog.Title := 'Opslaan Panel';
+    saveDialog.InitialDir := panelsDir;
+    saveDialog.Filter := '*.lpl';
+    saveDialog.DefaultExt := 'lpl';
+    saveDialog.FilterIndex := 1;
+    savedialog.FileName:=OpslagFileName;
+    saveDialog.Options:=[ofOverwritePrompt];
+    if saveDialog.Execute then
+    begin
+      box.SavePanel(saveDialog.FileName,Grid,false);
+      // titel = naam van het bestand, zoals bij Openen
+      OpslagFileName := saveDialog.FileName;
+      FCurrentFile := saveDialog.FileName;
+      FBuiltinPanel := 0;
+      SetPanelTitle(ChangeFileExt(ExtractFileName(saveDialog.FileName), ''));
+      MarkPanelClean;
+      Result := True;
+    end;
+  finally
+    saveDialog.Free;
+  end;
+end;
+
+// Vraagt bij een gewijzigd paneel of het bewaard moet worden.
+// False = de gebruiker koos Annuleren (of bewaren lukte niet): niet verdergaan.
+function TmainForm.ConfirmDiscardPanel: Boolean;
+var
+  Naam, Msg: string;
+begin
+  Result := True;
+  if FRunMode or not PanelModified then Exit;
+
+  Naam := FPanelTitleBase;
+  case Taal.ItemIndex of
+    1: begin
+         if Naam = '' then Naam := 'without name';
+         Msg := 'The panel "' + Naam + '" has been changed.' + LineEnding +
+                'Do you want to save the changes?';
+       end;
+    2: begin
+         if Naam = '' then Naam := 'sans nom';
+         Msg := 'Le panneau « ' + Naam + ' » a été modifié.' + LineEnding +
+                'Voulez-vous enregistrer les modifications ?';
+       end;
+    3: begin
+         if Naam = '' then Naam := 'ohne Namen';
+         Msg := 'Das Panel „' + Naam + '“ wurde geändert.' + LineEnding +
+                'Möchten Sie die Änderungen speichern?';
+       end;
+  else
+    begin
+      if Naam = '' then Naam := 'zonder naam';
+      Msg := 'Het paneel "' + Naam + '" is gewijzigd.' + LineEnding +
+             'Wil je de wijzigingen bewaren?';
+    end;
+  end;
+
+  case MessageDlg(Msg, mtConfirmation, [mbYes, mbNo, mbCancel], 0) of
+    mrYes:
+      if (FCurrentFile <> '') and (FBuiltinPanel = 0) then
+      begin
+        // al een bestand: daar rechtstreeks in bewaren
+        Box.SavePanel(FCurrentFile, Grid, False);
+        MarkPanelClean;
+      end
+      else
+        Result := SavePanelAs;
+    mrNo:
+      Result := True;
+  else
+    Result := False;
+  end;
+end;
+
+procedure TmainForm.MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := ConfirmDiscardPanel;
+  // nooit een titel met sterretje laten bewaren
+  if CanClose and Assigned(Grid) then
+  begin
+    if Assigned(FDirtyTimer) then FDirtyTimer.Enabled := False;
+    if Grid.Titel = FPanelTitleBase + ' *' then Grid.Titel := FPanelTitleBase;
+  end;
 end;
 
 
@@ -1454,30 +1610,8 @@ begin
 end;
 
 procedure TmainForm.btnSavePanelClick(Sender: TObject);
-var
-  saveDialog : TSaveDialog;    // Save dialog variable
-  baseDir,panelsDir: string;
 begin
-  baseDir   := ExtractFilePath(ParamStr(0));
-  panelsDir := IncludeTrailingPathDelimiter(baseDir) + 'panels';
-  saveDialog := TSaveDialog.Create(self);
-  saveDialog.Title := 'Opslaan Panel';
-  saveDialog.InitialDir := panelsDir;
-  saveDialog.Filter := '*.lpl';
-  saveDialog.DefaultExt := 'lpl';
-  saveDialog.FilterIndex := 1;
-  savedialog.FileName:=OpslagFileName;
-  saveDialog.Options:=[ofOverwritePrompt];
-  if saveDialog.Execute then
-  begin
-    box.SavePanel(saveDialog.FileName,Grid,false);
-    // titel = naam van het bestand, zoals bij Openen
-    OpslagFileName := saveDialog.FileName;
-    FBuiltinPanel := 0;
-    Grid.Titel:='';Grid.Titel:=ChangeFileExt(ExtractFileName(saveDialog.FileName), '');
-  end;
-
-  saveDialog.Free;
+  SavePanelAs;
 end;
 
 procedure TmainForm.btOpenPaneelClick(Sender: TObject);
@@ -1485,6 +1619,9 @@ var
   OpenDialog : TOpenDialog;
   baseDir,panelsDir: string;
 begin
+  // eerst vragen of het huidige (gewijzigde) paneel bewaard moet worden
+  if not ConfirmDiscardPanel then Exit;
+
   baseDir   := ExtractFilePath(ParamStr(0));
   panelsDir := IncludeTrailingPathDelimiter(baseDir) + 'panels';
 
@@ -1503,7 +1640,9 @@ begin
        // titel van het paneel = naam van het bestand, zoals bij de
        // ingebouwde panelen hun naam
        FBuiltinPanel := 0;
-       Grid.Titel:='';Grid.Titel:=ChangeFileExt(ExtractFileName(OpenDialog.FileName), '');
+       FCurrentFile := OpenDialog.FileName;
+       SetPanelTitle(ChangeFileExt(ExtractFileName(OpenDialog.FileName), ''));
+       MarkPanelClean;
        end;
  OpenDialog.Free;
 end;
@@ -1580,6 +1719,8 @@ begin
   AppHelpManager.OnOpenHelpFile := @OpenHelpInMiniBrowser;
 
   KeyPreview := True;
+  // bij afsluiten vragen of een gewijzigd paneel bewaard moet worden
+  OnCloseQuery := @MainFormCloseQuery;
   AssignHelpRecursive(Self);
 
   //  HelpKeyword
@@ -1668,6 +1809,17 @@ begin
  LaadGridsettings;
  LaadBoxsettings;
 
+ // vertrekpunt voor "niet-bewaarde wijzigingen": het lege paneel bij de start
+ if FDirtyTimer = nil then
+ begin
+   FPanelTitleBase := Grid.Titel;
+   FCurrentFile := '';
+   MarkPanelClean;
+   FDirtyTimer := TTimer.Create(Self);
+   FDirtyTimer.Interval := 500;
+   FDirtyTimer.OnTimer := @DirtyTimerTick;
+   FDirtyTimer.Enabled := True;
+ end;
 end;
 
 
@@ -1892,11 +2044,9 @@ begin
     end;
   end;
 
-  S := InputBox(CapTxt, PromptTxt, G.Titel);
-  if Trim(S) = '' then
-  G.Titel := ''
-else
-  G.Titel := Trim(S);
+  // titel zonder het sterretje van "niet bewaard" tonen en bewerken
+  S := InputBox(CapTxt, PromptTxt, FPanelTitleBase);
+  SetPanelTitle(Trim(S));
 end;
 
 
@@ -1917,6 +2067,8 @@ procedure TmainForm.MBeslissenClick(Sender: TObject);
  var
   FStream: TMemoryStream;
 begin
+  // eerst vragen of het huidige (gewijzigde) paneel bewaard moet worden
+  if not ConfirmDiscardPanel then Exit;
   Box.Killpanel; Box.KillConnectors;
   // zeker zijn: geen nieuw object meer in slep-modus
   Box.NewObject := False;
@@ -1930,12 +2082,16 @@ begin
     FStream.Free;
   end;
   ShowBuiltinPanelTitle(1);
+  FCurrentFile := '';
+  MarkPanelClean;
 end;
 
 procedure TmainForm.MGeheugenpaneelClick(Sender: TObject);
 var
   FStream: TMemoryStream;
 begin
+  // eerst vragen of het huidige (gewijzigde) paneel bewaard moet worden
+  if not ConfirmDiscardPanel then Exit;
   Box.Killpanel; Box.KillConnectors;
   // zeker zijn: geen nieuw object meer in slep-modus
   Box.NewObject := False;
@@ -1948,22 +2104,30 @@ begin
     FStream.Free;
   end;
   ShowBuiltinPanelTitle(3);
+  FCurrentFile := '';
+  MarkPanelClean;
 end;
 
 procedure TmainForm.MNieuwStandaardpaneelClick(Sender: TObject);
 begin
+  // eerst vragen of het huidige (gewijzigde) paneel bewaard moet worden
+  if not ConfirmDiscardPanel then Exit;
   Box.Killpanel; Box.KillConnectors;
   // zeker zijn: geen nieuw object meer in slep-modus
   Box.NewObject := False;
   box.open:=true;box.Enabled:=true;
 //  LGPanels1.Caption:=''; LGPanels1.Caption:='Nieuw Standaardpaneel';LGPanels1.Refresh;
   ShowBuiltinPanelTitle(4);
+  FCurrentFile := '';
+  MarkPanelClean;
 end;
 
 procedure TmainForm.MTellerClick(Sender: TObject);
 var
   FStream: TMemoryStream;
 begin
+  // eerst vragen of het huidige (gewijzigde) paneel bewaard moet worden
+  if not ConfirmDiscardPanel then Exit;
   Box.Killpanel; Box.KillConnectors;
   // zeker zijn: geen nieuw object meer in slep-modus
   Box.NewObject := False;
@@ -1976,6 +2140,8 @@ begin
   end;
  // LGPanels1.Caption:=''; LGPanels1.Caption:='Tellerpaneel';LGPanels1.Refresh;
   ShowBuiltinPanelTitle(2);
+  FCurrentFile := '';
+  MarkPanelClean;
 end;
 
 

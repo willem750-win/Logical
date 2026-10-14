@@ -1953,6 +1953,10 @@ type
 
     procedure InternalLoadFromList(AList: TStrings; Paneel: TjanGridS);
     PROCEDURE SavePanel(waar:String; paneel:TjanGridS; codec:Boolean);
+    // Samenvatting van de inhoud van het paneel (objecten, draden en de
+    // paneelinstellingen die SavePanel bewaart), los van de volgorde.
+    // Verschilt ze van een eerdere samenvatting, dan is het paneel gewijzigd.
+    function PanelSignature(Paneel: TjanGridS): string;
 
     // ophalen van paneel uit tempFile
     PROCEDURE LoadPanelTemp(Paneel:TjanGridS);
@@ -15331,6 +15335,47 @@ begin
   end;
 end;
 
+
+function TjanSimLogicBox.PanelSignature(Paneel: TjanGridS): string;
+var
+  wc: TWinControl;
+  i: Integer;
+  c: TControl;
+  L: TStringList;
+  s: string;
+begin
+  Result := '';
+  wc := FParent;
+  if wc = nil then Exit;
+  L := TStringList.Create;
+  try
+    for i := 0 to wc.ControlCount - 1 do
+    begin
+      c := wc.Controls[i];
+      // alleen wat in een paneelbestand terechtkomt (geen selectiekader e.d.)
+      if not ((c is TjanConnector) or (c is TjanLogic) or (c is TjanTeller) or
+              (c is TjanMemory) or (c is TjanMeter) or (c is TjanSimButton) or
+              (c is TjanSimKnop) or (c is TjanDipSwitsh) or (c is TjanSimPuls) or
+              (c is TjanSimSensor) or (c is TjanSimWarm) or (c is TjanSimLight) or
+              (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay)) then
+        Continue;
+      s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
+      if c is TjanConnector then
+        with TjanConnector(c) do
+          s := s + Format(';%d;%d;%.3f', [Ord(V_ConPos), Ord(V_ConShape), V_Edge])
+      else if c is TjanLogic then
+        s := s + Format(';%d', [Ord(TjanLogic(c).LogicFunc)]);
+      L.Add(s);
+    end;
+    // volgorde doet er niet toe (BringToFront bij de simulatie verandert ze)
+    L.Sort;
+    if Assigned(Paneel) then
+      L.Add(Format('paneel;%d;%d;%s', [Paneel.Color, Paneel.DotColor, BoolToStr(Paneel.ShowGrid, True)]));
+    Result := L.Text;
+  finally
+    L.Free;
+  end;
+end;
 
 procedure TjanSimLogicBox.SavePanelTemp(Paneel: TjanGridS);
 var
