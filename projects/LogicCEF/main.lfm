@@ -9,6 +9,7 @@ object mainForm: TmainForm
   ClientWidth = 852
   Position = poScreenCenter
   ShowHint = True
+  LCLVersion = '4.2.0.0'
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
@@ -311,7 +312,6 @@ object mainForm: TmainForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
-    OnClick = GridClick
     OnMouseDown = GridMouseDown
     OnMouseMove = GridMouseMove
     OnMouseUp = GridMouseUp

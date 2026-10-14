@@ -140,6 +140,11 @@ type
      FPanel0HasKind  : Boolean;  // of we hem moeten tekenen
      FLastHelpObject: TObject;
      FGroup: TjanGroupSelect;    // meerdere objecten selecteren/verplaatsen
+     // Welk ingebouwd paneel is open (0 = geen / extern bestand), zodat de
+     // titel bij een taalwissel mee vertaald wordt.
+     FBuiltinPanel: Integer;
+     function BuiltinPanelName(AKind: Integer): string;
+     procedure ShowBuiltinPanelTitle(AKind: Integer);
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
      procedure OpenHelpInMiniBrowser(const FileName: string);
@@ -1167,8 +1172,41 @@ end;
   if Assigned(FGroup) then
     FGroup.BTaal := LangToBTaal(Grid.Language);
 
+  // menu met de ingebouwde panelen, en de titel van het open ingebouwde paneel
+  MBeslissen.Caption            := BuiltinPanelName(1);
+  MTeller.Caption               := BuiltinPanelName(2);
+  MGeheugenpaneel.Caption       := BuiltinPanelName(3);
+  MNieuwStandaardpaneel.Caption := BuiltinPanelName(4);
+  if FBuiltinPanel > 0 then
+    ShowBuiltinPanelTitle(FBuiltinPanel);
+
    SaveLanguageSetting;
  end;
+
+// Naam van een ingebouwd paneel in de gekozen taal.
+// 1 = beslissen, 2 = teller, 3 = geheugen, 4 = nieuw standaardpaneel
+function TmainForm.BuiltinPanelName(AKind: Integer): string;
+const
+  Names: array[1..4, 0..3] of string = (
+    ('Beslissingspaneel',     'Decision panel',     'Panneau de décision',      'Entscheidungspanel'),
+    ('Tellerpaneel',          'Counter panel',      'Panneau compteur',         'Zählerpanel'),
+    ('Geheugenpaneel',        'Memory panel',       'Panneau mémoire',          'Speicherpanel'),
+    ('Nieuw standaardpaneel', 'New standard panel', 'Nouveau panneau standard', 'Neues Standardpanel'));
+var
+  L: Integer;
+begin
+  Result := '';
+  if (AKind < 1) or (AKind > 4) then Exit;
+  L := Taal.ItemIndex;
+  if (L < 0) or (L > 3) then L := 0;
+  Result := Names[AKind, L];
+end;
+
+procedure TmainForm.ShowBuiltinPanelTitle(AKind: Integer);
+begin
+  FBuiltinPanel := AKind;
+  Grid.Titel := ''; Grid.Titel := BuiltinPanelName(AKind);
+end;
 
 
 
@@ -1435,6 +1473,7 @@ begin
     box.SavePanel(saveDialog.FileName,Grid,false);
     // titel = naam van het bestand, zoals bij Openen
     OpslagFileName := saveDialog.FileName;
+    FBuiltinPanel := 0;
     Grid.Titel:='';Grid.Titel:=ChangeFileExt(ExtractFileName(saveDialog.FileName), '');
   end;
 
@@ -1463,6 +1502,7 @@ begin
        OpslagFileName:= OpenDialog.FileName;
        // titel van het paneel = naam van het bestand, zoals bij de
        // ingebouwde panelen hun naam
+       FBuiltinPanel := 0;
        Grid.Titel:='';Grid.Titel:=ChangeFileExt(ExtractFileName(OpenDialog.FileName), '');
        end;
  OpenDialog.Free;
@@ -1889,7 +1929,7 @@ begin
   finally
     FStream.Free;
   end;
-  Grid.Titel:='';Grid.Titel:='Beslissingspaneel';
+  ShowBuiltinPanelTitle(1);
 end;
 
 procedure TmainForm.MGeheugenpaneelClick(Sender: TObject);
@@ -1907,7 +1947,7 @@ begin
   finally
     FStream.Free;
   end;
-  Grid.Titel:='';Grid.Titel:='Geheugenpaneel';
+  ShowBuiltinPanelTitle(3);
 end;
 
 procedure TmainForm.MNieuwStandaardpaneelClick(Sender: TObject);
@@ -1917,7 +1957,7 @@ begin
   Box.NewObject := False;
   box.open:=true;box.Enabled:=true;
 //  LGPanels1.Caption:=''; LGPanels1.Caption:='Nieuw Standaardpaneel';LGPanels1.Refresh;
-  Grid.Titel:='';Grid.Titel:='Nieuw Standaardpaneel';
+  ShowBuiltinPanelTitle(4);
 end;
 
 procedure TmainForm.MTellerClick(Sender: TObject);
@@ -1935,7 +1975,7 @@ begin
     FStream.Free;
   end;
  // LGPanels1.Caption:=''; LGPanels1.Caption:='Tellerpaneel';LGPanels1.Refresh;
-  Grid.Titel:='';Grid.Titel:='Tellerpaneel';
+  ShowBuiltinPanelTitle(2);
 end;
 
 
