@@ -158,6 +158,7 @@ type
      function SavePanelAs: Boolean;
      function ConfirmDiscardPanel: Boolean;
      procedure MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
+     procedure FocusPanel;
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
      procedure OpenHelpInMiniBrowser(const FileName: string);
@@ -1353,6 +1354,18 @@ begin
   end;
 end;
 
+// Geeft het paneel de toetsenbordfocus (weg van bv. de taalkeuzelijst).
+procedure TmainForm.FocusPanel;
+begin
+  if (ActiveControl is TCustomComboBox) or (ActiveControl is TCustomEdit) then
+  begin
+    if Grid.CanFocus then
+      Grid.SetFocus
+    else
+      ActiveControl := nil;
+  end;
+end;
+
 procedure TmainForm.MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := ConfirmDiscardPanel;
@@ -1762,6 +1775,7 @@ begin
      (not fr_Settingsbestaat) then
   begin
     FGroup.SelectAll;
+    FocusPanel;   // pijltjestoetsen daarna naar de selectie
     Key := 0;
     Exit;
   end;
@@ -1927,6 +1941,10 @@ a,b:integer;
 beweeg:Boolean;
 begin
 if fr_Settingsbestaat then exit;
+// Klik op het paneel: focus weg van bv. de taalkeuzelijst, zodat de
+// pijltjestoetsen daarna de selectie verschuiven (en niet de taal wijzigen).
+if Button = mbLeft then
+  FocusPanel;
 // Slepen op een lege plek: selectierechthoek voor meerdere objecten.
 if (Button = mbLeft) and (not FRunMode) and (not Box.NewObject) and
    (Grid.GridMode = gmNormal) and (not Grid.Capture) and
