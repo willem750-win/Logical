@@ -4,10 +4,10 @@
 #
 # Uitvoeren ONDER LINUX vanuit de repository:
 #
-#     sh projects/LogicCEF/tools/make-linux-release.sh                 (versie 1.1.1)
-#     sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1           (eigen versie)
-#     sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1 --no-build
-#     sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1 --upload  (ook naar GitHub)
+#     sh projects/LogicCEF/tools/make-linux-release.sh                 (versie 1.2.0)
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.2.0           (eigen versie)
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.2.0 --no-build
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.2.0 --upload  (ook naar GitHub)
 #
 # Bouwen: met lazbuild uit PATH of uit $LAZBUILD. Zonder lazbuild (of met
 # --no-build) wordt het programma gebruikt dat al in Resultaat/ staat.
@@ -39,7 +39,7 @@
 # ---------------------------------------------------------------------------
 set -e
 
-VERSION=1.1.1
+VERSION=1.2.0
 BUILD=1
 UPLOAD=0
 for A in "$@"; do

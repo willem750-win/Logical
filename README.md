@@ -99,13 +99,13 @@ De releasescripts staan in `projects/LogicCEF/tools/`. Ze nemen de panelen,
 ini-bestanden en html uit Git (de laatste commit) en bouwen de help vers op;
 niet-gecommitte wijzigingen gaan dus niet mee in een release.
 
-- Windows: `projects\LogicCEF\tools\make-release.ps1 -Version 1.1.1` maakt
-  `Logic-1.1.1-win64.zip` (programma, CEF-runtime, help en data) en, met
+- Windows: `projects\LogicCEF\tools\make-release.ps1 -Version 1.2.0` maakt
+  `Logic-1.2.0-win64.zip` (programma, CEF-runtime, help en data) en, met
   [Inno Setup 6](https://jrsoftware.org/isinfo.php), het installatieprogramma
-  `Logic-1.1.1-setup.exe` (uit `projects/LogicCEF/logic.iss`).
-- Linux: `sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1` maakt
-  `Logic-1.1.1-linux-x86_64.tar.gz` en `logical_1.1.1_amd64.deb`; met `--upload`
-  gaan ze meteen naar de GitHub-release `v1.1.1`.
+  `Logic-1.2.0-setup.exe` (uit `projects/LogicCEF/logic.iss`).
+- Linux: `sh projects/LogicCEF/tools/make-linux-release.sh 1.2.0` maakt
+  `Logic-1.2.0-linux-x86_64.tar.gz` en `logical_1.2.0_amd64.deb`; met `--upload`
+  gaan ze meteen naar de GitHub-release `v1.2.0`.
 
 ## Auteur
 
