@@ -4,10 +4,10 @@
 #
 # Uitvoeren ONDER LINUX vanuit de repository:
 #
-#     sh projects/LogicCEF/make-linux-release.sh                 (versie 1.1.1)
-#     sh projects/LogicCEF/make-linux-release.sh 1.1.1           (eigen versie)
-#     sh projects/LogicCEF/make-linux-release.sh 1.1.1 --no-build
-#     sh projects/LogicCEF/make-linux-release.sh 1.1.1 --upload  (ook naar GitHub)
+#     sh projects/LogicCEF/tools/make-linux-release.sh                 (versie 1.1.1)
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1           (eigen versie)
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1 --no-build
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.1.1 --upload  (ook naar GitHub)
 #
 # Bouwen: met lazbuild uit PATH of uit $LAZBUILD. Zonder lazbuild (of met
 # --no-build) wordt het programma gebruikt dat al in Resultaat/ staat.
@@ -51,7 +51,8 @@ for A in "$@"; do
   esac
 done
 
-PROJ=$(cd "$(dirname "$0")" && pwd)
+# projects/LogicCEF; dit script staat in projects/LogicCEF/tools
+PROJ=$(cd "$(dirname "$0")" && cd .. && pwd)
 REPO=$(cd "$PROJ/../.." && pwd)
 SRC="$PROJ/Resultaat"
 ARCH=$(uname -m)

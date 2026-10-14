@@ -1,7 +1,7 @@
 # Bouwt logicCEF.exe opnieuw en maakt de Windows-release-zip en het
 # installatieprogramma (Inno Setup 6, logic.iss).
 #
-#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\make-release.ps1 [-Version 1.1.1] [-NoBuild]
+#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\tools\make-release.ps1 [-Version 1.1.1] [-NoBuild]
 #
 # Resultaat in C:\fpcupdeluxe\publish\release:
 #   Logic-<versie>-win64.zip    uitpakken en logicCEF.exe starten
@@ -23,7 +23,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$proj = $PSScriptRoot
+$proj = Split-Path $PSScriptRoot -Parent   # projects\LogicCEF (dit script staat in tools)
 $repo = (Resolve-Path (Join-Path $proj '..\..')).Path
 $src  = Join-Path $proj 'Resultaat'
 

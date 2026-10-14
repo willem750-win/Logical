@@ -2,7 +2,7 @@
 ;
 ; Compileren (Inno Setup 6):
 ;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=1.1.1 projects\LogicCEF\logic.iss
-; of via make-release.ps1, dat ook de zip maakt.
+; of via tools\make-release.ps1, dat ook de zip maakt.
 ;
 ; Resultaat: C:\fpcupdeluxe\publish\release\Logic-<versie>-setup.exe
 ;
