@@ -2101,6 +2101,8 @@ end;
     procedure SelectRect(R: TRect);
     procedure SelectAll;
     procedure Clear;
+    // Selectie (met draden) DX/DY pixels verschuiven, bv. met de pijltjestoetsen
+    procedure Nudge(DX, DY: Integer);
     function Count: Integer;
     property Banding: Boolean read FBanding;
     property BTaal: string read FBTaal write FBTaal;
@@ -19663,6 +19665,24 @@ begin
     end;
     Inc(n);
   end;
+end;
+
+procedure TjanGroupSelect.Nudge(DX, DY: Integer);
+var
+  WorkR: TRect;
+begin
+  if (FItems.Count = 0) or FDragging or FBanding then Exit;
+  PrepareDrag;
+  // net als bij slepen: niet links of boven het werkgebied uit
+  if Parent is TjanGridS then
+  begin
+    WorkR := TjanGridS(Parent).GetWorkAreaRect;
+    if FFrameStart.X + DX < WorkR.Left then DX := WorkR.Left - FFrameStart.X;
+    if FFrameStart.Y + DY < WorkR.Top then DY := WorkR.Top - FFrameStart.Y;
+  end;
+  if (DX = 0) and (DY = 0) then Exit;
+  ApplyDelta(DX, DY);
+  Parent.Invalidate;
 end;
 
 procedure TjanGroupSelect.ApplyDelta(DX, DY: Integer);

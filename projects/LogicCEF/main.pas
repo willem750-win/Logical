@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Buttons, Graphics, Dialogs, ComCtrls,
   Menus,StrHolder, SMNetGradient, ScreenCapture, chatgridpcodeSmall,
   janSimLogic,AdvancedPropertyGridComponent, wcimgcbo, IniFiles,LCLIntf,LCLType,
-  TypInfo, LCLProc, ExtCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
+  TypInfo, LCLProc, ExtCtrls, StdCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
   // De ingebouwde CEF-browser bestaat enkel onder Windows; onder Linux
   // wordt de help in de standaardbrowser van het systeem geopend.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
@@ -99,7 +99,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
-    procedure GridClick(Sender: TObject);
 
     procedure GridMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -1432,7 +1431,12 @@ begin
   savedialog.FileName:=OpslagFileName;
   saveDialog.Options:=[ofOverwritePrompt];
   if saveDialog.Execute then
+  begin
     box.SavePanel(saveDialog.FileName,Grid,false);
+    // titel = naam van het bestand, zoals bij Openen
+    OpslagFileName := saveDialog.FileName;
+    Grid.Titel:='';Grid.Titel:=ChangeFileExt(ExtractFileName(saveDialog.FileName), '');
+  end;
 
   saveDialog.Free;
 end;
@@ -1454,10 +1458,14 @@ begin
   if OpenDialog.Execute then
        begin
        Box.LoadPanel(OpenDialog.FileName,Grid,false) ;
+       // OpslagFile:=ExtractFileName(OpenDialog.FileName);
+       // alleen bij echt openen (bij Annuleren bleef de naam anders leeg)
+       OpslagFileName:= OpenDialog.FileName;
+       // titel van het paneel = naam van het bestand, zoals bij de
+       // ingebouwde panelen hun naam
+       Grid.Titel:='';Grid.Titel:=ChangeFileExt(ExtractFileName(OpenDialog.FileName), '');
        end;
- // OpslagFile:=ExtractFileName(OpenDialog.FileName);
- OpslagFileName:= OpenDialog.FileName;
-
+ OpenDialog.Free;
 end;
 
 procedure TmainForm.btGridPanelTitelClick(Sender: TObject);
@@ -1478,12 +1486,7 @@ end;
 
 procedure TmainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  { SaveLanguageSetting;
-  if Assigned(MiniBrowserFrm) then
-    Begin
 
-    MiniBrowserFrm.Close;
-    end;}
    SaveLanguageSetting;
 
   {$IFDEF WINDOWS}
@@ -1565,6 +1568,7 @@ end;
 procedure TmainForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
   HelpCtrl: TControl;
+  Stap: Integer;
 begin
   // Esc: groepsselectie opheffen; Ctrl+A: alle objecten selecteren
   if (Key = VK_ESCAPE) and (FGroup.Count > 0) then
@@ -1577,6 +1581,25 @@ begin
      (not fr_Settingsbestaat) then
   begin
     FGroup.SelectAll;
+    Key := 0;
+    Exit;
+  end;
+
+  // Pijltjestoetsen: selectie 1 pixel verschuiven, met Shift 10 pixels.
+  // Alleen als er iets geselecteerd is, zodat de pijltjes in bv. de
+  // taalkeuzelijst gewoon blijven werken.
+  if ((Key = VK_LEFT) or (Key = VK_RIGHT) or (Key = VK_UP) or (Key = VK_DOWN)) and
+     (FGroup.Count > 0) and (not FRunMode) and (not fr_Settingsbestaat) and
+     not (ActiveControl is TCustomEdit) and
+     not (ActiveControl is TCustomComboBox) then
+  begin
+    if ssShift in Shift then Stap := 10 else Stap := 1;
+    case Key of
+      VK_LEFT:  FGroup.Nudge(-Stap, 0);
+      VK_RIGHT: FGroup.Nudge(Stap, 0);
+      VK_UP:    FGroup.Nudge(0, -Stap);
+      VK_DOWN:  FGroup.Nudge(0, Stap);
+    end;
     Key := 0;
     Exit;
   end;
@@ -1607,10 +1630,6 @@ begin
 
 end;
 
-procedure TmainForm.GridClick(Sender: TObject);
-begin
-
-end;
 
 
 
