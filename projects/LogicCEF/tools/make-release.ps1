@@ -42,7 +42,7 @@ try {
   # Programma en CEF-runtime (uit Resultaat)
   # ----------------------------------------------------------------
   $files = @(
-    'logicCEF.exe', 'taal.ini',
+    'logicCEF.exe',
     'ceflib\libcef.dll', 'ceflib\chrome_elf.dll', 'ceflib\d3dcompiler_47.dll',
     'ceflib\libEGL.dll', 'ceflib\libGLESv2.dll',
     'ceflib\vk_swiftshader.dll', 'ceflib\vk_swiftshader_icd.json', 'ceflib\vulkan-1.dll',
@@ -59,6 +59,10 @@ try {
     Copy-Item $p $dest
   }
   Copy-Item (Join-Path $src 'ceflib\locales') (Join-Path $stage 'ceflib\locales') -Recurse
+
+  # Vaste taal.ini: nieuwe gebruikers starten in het Nederlands, los van de
+  # taal die je zelf laatst koos (bestaande installaties houden hun keuze).
+  Set-Content (Join-Path $stage 'taal.ini') "[Settings]`r`nLanguage=0" -Encoding ascii
 
   # ----------------------------------------------------------------
   # panels, ini en html uit Git (HEAD)

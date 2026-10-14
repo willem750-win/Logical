@@ -83,7 +83,9 @@ mkdir -p "$DST"
 cp "$SRC/logicCEF" "$DST/"
 strip "$DST/logicCEF" 2>/dev/null || true
 chmod 755 "$DST/logicCEF"
-[ -f "$SRC/taal.ini" ] && cp "$SRC/taal.ini" "$DST/"
+# Vaste taal.ini: nieuwe gebruikers starten in het Nederlands, los van de
+# taal die je zelf laatst koos (bestaande installaties houden hun keuze).
+printf '[Settings]\nLanguage=0\n' > "$DST/taal.ini"
 
 # ------------------------------------------------------------------
 # panels, ini en html uit Git (HEAD)
