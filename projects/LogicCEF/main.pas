@@ -803,7 +803,7 @@ Begin
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HMemory,HPuls,HRelais,HSchakelaar,'+
-                                  'HSensor,HTeller,HWarm,ShowHint');
+                                  'HSensor,HTeller,HWarm,HMeter,HRailPlus,HRailMin,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];
     SettingsFrame.Note.ActivePageIndex:=0;

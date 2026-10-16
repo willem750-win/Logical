@@ -1883,6 +1883,8 @@ type
     FKnopTop:Integer;
     FHGrid:String;
     FHMeter:String;
+    FHRailPlus: string;   // hint van de knop + rail
+    FHRailMin: string;    // hint van de knop - rail
     FBoxTaal:TStatTaal;
     FOnObjectMove: TObjectMoveEvent;
 
@@ -2063,6 +2065,8 @@ type
     property HSchakelaar:String read FHSchakelaar write SetHSchakelaar;
     property HGrid:String read FHGrid write SetHgrid;
     property HMeter:String read FHMeter write SetHMeter;
+    property HRailPlus: string read FHRailPlus write FHRailPlus;
+    property HRailMin: string read FHRailMin write FHRailMin;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -17585,12 +17589,9 @@ begin
   else if PtInRect(RTeller, P) then NewHint := FHTeller
   else if PtInRect(RMemory, P) then NewHint := FHMemory
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
-  else if PtInRect(RRailPlus, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), '+ rail (voeding) plaatsen', 'Place + rail (supply)',
-      'Placer un rail + (alimentation)', '+ Schiene (Versorgung) platzieren')
-  else if PtInRect(RRailMin, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), '- rail (massa) plaatsen', 'Place - rail (ground)',
-      'Placer un rail - (masse)', '- Schiene (Masse) platzieren')
+  else if PtInRect(RMeter, P) then NewHint := FHMeter
+  else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
+  else if PtInRect(RRailMin, P) then NewHint := FHRailMin
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -18690,6 +18691,9 @@ if FBoxTaal=stDutch then
   HSensor:='maak Lichtsensor';
   HTeller:='maak Tellerblok';
   HWarm:='maak WarmteSensor';
+  HMeter:='maak Voltmeter';
+  HRailPlus:='maak + rail (voeding)';
+  HRailMin:='maak - rail (massa)';
  end;
 
 if FBoxTaal=stEnglish then
@@ -18711,6 +18715,9 @@ if FBoxTaal=stEnglish then
   HSensor:='create Light sensor';
   HTeller:='create Counter block';
   HWarm:='create HeatSensor';
+  HMeter:='create Voltmeter';
+  HRailPlus:='create + rail (supply)';
+  HRailMin:='create - rail (ground)';
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -18731,6 +18738,9 @@ if FBoxTaal=stFrench then
   HSensor:='faire Capteur de lumière';
   HTeller:='faire Bloc compteur';
   HWarm:='faire Capteur de chaleur';
+  HMeter:='faire Voltmètre';
+  HRailPlus:='faire Rail + (alimentation)';
+  HRailMin:='faire Rail - (masse)';
  end;
 
  if FBoxTaal=stGerman then
@@ -18752,6 +18762,9 @@ if FBoxTaal=stFrench then
   HSensor:='Lichtsensor herstellen';
   HTeller:='Gegenblock erstellen';
   HWarm:='HeatSensor erstellen';
+  HMeter:='Voltmeter erstellen';
+  HRailPlus:='+ Schiene (Versorgung) erstellen';
+  HRailMin:='- Schiene (Masse) erstellen';
   end;
   invalidate;
  // willy
