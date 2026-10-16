@@ -12,7 +12,7 @@ uses
   LCLIntf, chatgridpcodeSmall;
 
 const
-  AppVersion = '1.2.0';
+  AppVersion = '1.3.0';
   AppAuthor  = 'Willy Jansen';
   AppEmail   = 'willyjansen@telenet.be';
   AppUrl     = 'https://github.com/willem750-win/Logical';
