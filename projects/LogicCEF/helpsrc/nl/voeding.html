@@ -1,0 +1,103 @@
+<!-- titel: Voeding & voltmeter -->
+  <h1 id="voeding">Voeding &amp; voltmeter</h1>
+  <p class="lead">Normaal hangt de voeding van alle onderdelen onzichtbaar op de achtergrond (zie
+  <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a>). Wil je de plus en de min toch zien,
+  zet dan <b>voedingsrails</b> op het paneel: een rode <b>+ rail</b> voor de invoer en een blauwe
+  <b>&minus; rail</b> (de massa) voor de uitvoer. Met de <b>voltmeter</b> meet je de spanning.</p>
+
+  <figure>
+    <img src="../img/voeding-voorbeeld.png" alt="Voedingsrails met drukknop, lamp en voltmeter">
+    <figcaption>Een drukknop op de + rail van 5&nbsp;V, een lamp op de &minus; rail (massa), en een
+    voltmeter tussen een + rail van 3,3&nbsp;V en de massa.</figcaption>
+  </figure>
+
+  <h2 id="rails">Voedingsrails plaatsen</h2>
+  <p>Onderaan de <a href="onderdelenbalk.html">onderdelenbalk</a> staan twee halve knoppen naast elkaar:</p>
+  <table>
+    <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (voeding)</td><td>Rode rail. Bovenaan staat de spanning, bijvoorbeeld <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; rail (massa)</td><td>Blauwe rail met bovenaan <b>0V</b> en onderaan het massasymbool.</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Klik op de knop van de rail die je wil plaatsen.</li>
+    <li>Klik op het paneel waar de rail moet komen.</li>
+  </ol>
+  <p>Je mag zoveel + en &minus; rails plaatsen als je wil, bijvoorbeeld een aparte rail per deel van de schakeling.</p>
+
+  <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
+  <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er
+  <b>minstens één</b> rail, dan moeten invoer en uitvoer <b>ingeplugd</b> zijn:</p>
+  <ul>
+    <li><a href="invoer.html">Invoer</a> (drukknop, schakelaar, dipschakelaar, impulsgenerator, licht- en
+      warmtesensor) zit <b>rechts</b> van een <b>+ rail</b>.</li>
+    <li><a href="uitvoer.html">Uitvoer</a> (lamp, relais, zoemer en display) zit <b>links</b> van een
+      <b>&minus; rail</b>.</li>
+  </ul>
+  <p>Een ingeplugd onderdeel krijgt een dunne stekker met een bolletje in de kleur van de rail. Een onderdeel
+  dat niet ingeplugd is, krijgt een <b>grijs bolletje</b> en werkt niet: invoer geeft geen signaal, uitvoer
+  blijft uit en een display blijft donker.</p>
+  <p>De <a href="verwerking.html">verwerking</a> (poorten, teller en geheugen) plug je niet in: die krijgt
+  haar voeding nog altijd onzichtbaar.</p>
+
+  <h2 id="inpluggen">Inpluggen</h2>
+  <ul>
+    <li>Sleep een onderdeel tegen de rail. Komt het binnen 12 pixels, dan springt het er vanzelf op.</li>
+    <li>Ook als je een nieuw onderdeel uit de balk plaatst, of een groep onderdelen sleept, springt het op een rail
+      in de buurt.</li>
+    <li>Het <b>midden</b> van het onderdeel moet naast het getekende stuk rail liggen, niet erboven of eronder.
+      Maak de rail zo nodig langer.</li>
+    <li>Met de pijltjestoetsen verschuif je per pixel; zo kan je een onderdeel ook weer lostrekken.</li>
+  </ul>
+
+  <h2 id="bewerken">Rails verplaatsen en verlengen</h2>
+  <ul>
+    <li><b>Verplaatsen:</b> sleep in het midden van de rail. Alle onderdelen die erop ingeplugd zijn, schuiven
+      mee, met hun draden.</li>
+    <li><b>Langer of korter:</b> sleep een uiteinde (de muisaanwijzer wordt &updownarrow;). Bij de &minus; rail is het
+      massasymbool het onderste uiteinde.</li>
+    <li><b>Rechtsklikmenu:</b> <b>Spanning</b> (alleen bij een + rail), <b>Vergrendel / Ontgrendel</b> en
+      <b>Selecteer object</b> om de rail te <a href="objecten.html#verwijderen">verwijderen</a>.</li>
+    <li>Tijdens de <a href="simulatie.html">simulatie</a> liggen de rails vast.</li>
+  </ul>
+
+  <h2 id="spanning">Spanning van een + rail</h2>
+  <p>Rechtsklik op een + rail en kies <b>Spanning</b>: 0, 1, 2, 3, 3,3, 4 of 5&nbsp;V. Net als bij echte
+  logische schakelingen werkt een ingang pas vanaf ongeveer <b>2&nbsp;V</b>.</p>
+  <table>
+    <tr><th>Spanning</th><th>Rail</th><th>Invoer op deze rail</th></tr>
+    <tr><td>0&nbsp;V</td><td>grijs</td><td>geeft geen signaal</td></tr>
+    <tr><td>1&nbsp;V</td><td>donkerrood</td><td>geeft geen signaal: te weinig spanning</td></tr>
+    <tr><td>2&nbsp;V tot 5&nbsp;V</td><td>rood, feller naarmate de spanning hoger is</td><td>werkt</td></tr>
+  </table>
+
+  <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
+  <p>De voltmeter staat in de onderdelenbalk. Wil je hem verbergen, zet dan bij
+  <a href="instellingen.html#schakelelementen">Instellingen</a>, tabblad SchakelElementen,
+  <b>Voltmeter</b> op <b>False</b>.</p>
+  <p>De voltmeter meet de spanning <b>tegenover de massa</b> (0&nbsp;V) en toont ze met één decimaal,
+  in het rood zodra er spanning is.</p>
+  <ul>
+    <li><b>+</b> (links): sluit er een draad op aan, of plug de meter rechts van een + rail in. Dan toont hij
+      de spanning van die rail.</li>
+    <li><b>&minus;</b> (rechts): mag open blijven, of plug de meter links van een &minus; rail in. De meting
+      blijft dezelfde; het maakt de schakeling alleen duidelijker.</li>
+  </ul>
+  <p>Een draad brengt de spanning van zijn bron mee:</p>
+  <table>
+    <tr><th>Bron</th><th>Spanning op de draad</th></tr>
+    <tr><td>invoer op een + rail, aan</td><td>de spanning van die rail</td></tr>
+    <tr><td>invoer zonder rails op het paneel, aan</td><td>5&nbsp;V</td></tr>
+    <tr><td>poort, teller of geheugen, uitgang aan</td><td>5&nbsp;V</td></tr>
+    <tr><td>alles wat uit staat</td><td>0&nbsp;V</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> zet een drukknop op een + rail van 1&nbsp;V en verbind hem met een
+  lamp en met de voltmeter. Druk je de knop in, dan toont de meter 1,0&nbsp;V, maar de lamp blijft uit:
+  de spanning is te laag voor een logische ingang.</div>
+
+  <h2 id="bewaren">Opslaan en instellingen</h2>
+  <ul>
+    <li>Rails (met hun plaats, lengte en spanning) en voltmeters worden in het paneelbestand (<code>.lpl</code>)
+      bewaard. Een oudere versie van Logic slaat de rails over.</li>
+    <li>Wil je de railknoppen niet in de onderdelenbalk, zet dan bij
+      <a href="instellingen.html#schakelelementen">Instellingen</a> <b>Voedingsrails (+ en -)</b> op <b>False</b>.</li>
+  </ul>

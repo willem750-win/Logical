@@ -61,6 +61,7 @@ type
   TObjectStatusEvent = procedure(Sender: TObject; const AText: string; APanel: Integer) of object;
 
   TjanSimLogicBox = class;  // forward
+  TjanRail = class;         // forward (voedingsrail)
 
 
   // Event doorgeven van Strings naar TStatusBar panels in main
@@ -808,6 +809,13 @@ type
     FOutPut2: boolean;
     FInput1: boolean;
     FLogicAndFunc: TjanMeterFunc;
+    // spanning die via een draad op + en - binnenkomt (volt)
+    FPlusVolt: Double;
+    FMinVolt: Double;
+    FSelected: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FOnStatus: TSimStatusEvent;
     function  GetGate(Index: Integer): TjanGate;
     procedure AnchorConnectors;
     procedure MoveConnectors;
@@ -815,6 +823,13 @@ type
     procedure MeterClick(sender:TObject);
     procedure MeterClick1(sender:TObject);
     procedure MeterClick2(sender:TObject);
+    procedure MeterSelectClick(Sender: TObject);
+    procedure SetPlusVolt(const Value: Double);
+    function GetOutPut2: Boolean;
+    procedure SetMinVolt(const Value: Double);
+    procedure SendStatusToBar;
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
     procedure SetInput1(const Value: boolean);
 
     procedure SetInput3(const Value: boolean);
@@ -836,11 +851,21 @@ type
     destructor  Destroy; override;
     procedure Paint; override;
     property Gates[index:integer]: TjanGate read GetGate;
+    // gemeten spanning U(+) - U(-) in volt. + en - komen van een draad of
+    // van een rail: + ingeplugd op een + rail, - ingeplugd op een - rail (0 V)
+    function Reading: Double;
+    procedure UpdateHintText;
+    property PlusVolt: Double read FPlusVolt write SetPlusVolt;
+    property MinVolt: Double read FMinVolt write SetMinVolt;
   published
     property Input1:boolean read FInput1 write SetInput1;
     property Input3:boolean read FInput3 write SetInput3;
-    property OutPut2:boolean read FOutPut2 write SetOutPut2;
+    property OutPut2:boolean read GetOutPut2 write SetOutPut2;
     property LogicFunc:TjanMeterFunc read FLogicAndFunc write SetLogicFunc;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write FTaal;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
     property Lock:boolean read FLock write SetLock;
     property Info:String read FInfo write SetInfo;
     property PColor:TColor read FPcolor write SetPcolor;
@@ -1732,6 +1757,7 @@ type
     cpu:TTimer;
     Fdraden:Boolean;
     FMeter:Boolean;
+    FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     FKader: Boolean;
 
     // rect + down-state
@@ -1825,6 +1851,10 @@ type
     RMeter:TRect;
     DMeter:boolean;
 
+    // voedingsrails (+ en - naast elkaar)
+    RRailPlus, RRailMin: TRect;
+    DRailPlus, DRailMin: Boolean;
+
     FOnEnter: TNotifyEvent;
     FOnLeave: TNotifyEvent;
 
@@ -1898,6 +1928,7 @@ type
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
     PROCEDURE SetMeter(const Value: Boolean);
+    procedure SetVoeding(const Value: Boolean);
     PROCEDURE SetKnopLeft(const Value: Integer);
     PROCEDURE SetKnopTop(const Value: Integer);
     PROCEDURE SetKnopSpatie(const Value: Integer);
@@ -1937,6 +1968,7 @@ type
     procedure StatusFromChild(Sender: TObject; const AText: string; APanel: Integer);
     PROCEDURE Paint; override;
     PROCEDURE PaintBoxLeft;
+    procedure DrawRailButton(const R: TRect; APlus, ADown: Boolean);
     PROCEDURE PaintBoxTop;
     PROCEDURE PaintBoxBottom;
     // kontrole of er connectors zijn gemaakt
@@ -1962,6 +1994,10 @@ type
     PROCEDURE LoadPanelTemp(Paneel:TjanGridS);
     // ophalen van opgeslagen Paneel uit bestand
     PROCEDURE LoadPanel(welke:String;Paneel:TjanGridS;codec:Boolean);
+    // voedingsrail op het paneel zetten (laden)
+    function AddRail(ALeft, ATop, AHeight: Integer; APlus: Boolean; AVolt: Double): TjanRail;
+    // nieuwe rail aan de muis hangen om te plaatsen (zoals een component uit de balk)
+    procedure NewRail(APlus: Boolean);
     // ophalen van paneelopbouw uit exe
     PROCEDURE LoadStream(welke:TStream;inf:Boolean);
     procedure LoadStreamNew(welke: TStream; Paneel: TjanGridS; Inf: Boolean);
@@ -2018,6 +2054,8 @@ type
     property KDipSwitsh:Boolean read FDipSwitsh write SetDipSwitsh;
     property KDisplay:Boolean read FDisplay write SetDisplay;
     property KMeter:Boolean read FMeter write SetMeter;
+    // knoppen voor de voedingsrails (+ en -) in de balk tonen
+    property KVoeding: Boolean read FVoeding write SetVoeding default True;
     property PStandaard:Boolean read FStart write SetStart;
     property NewObject:Boolean read FNew write SetNewObject;
     property HDrukknop:String read FHDrukknop write SetHDrukknop;
@@ -2068,6 +2106,65 @@ type
    // property LastStatusSender: TObject read FLastStatusSender;
 end;
 
+  { TjanRail: verticale voedingsrail. Een + rail (rood, instelbare spanning)
+    voedt de invoer die er rechts op ingeplugd is, een - rail (blauw, massa)
+    de uitvoer die er links op ingeplugd is. Staat er minstens een rail op het
+    paneel, dan werken invoer en uitvoer alleen als ze ingeplugd zijn.
+    De rail zelf is de lijn op LineX; het besturingselement is breder zodat de
+    stekkers en bolletjes van de ingeplugde componenten erin vallen. }
+  TjanRail = class(TGraphicControl)
+  private
+    FPlus: Boolean;
+    FVolt: Double;
+    FLock: Boolean;
+    FSelected: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FOnStatus: TSimStatusEvent;
+    FDragMode: Integer;          // 0 = niet, 1 = verplaatsen, 2 = bovenkant, 3 = onderkant
+    FDragStart: TPoint;          // muis bij begin slepen (paneel-coördinaten)
+    FStartRect: TRect;
+    FMover: TObject;             // TjanGroupSelect: ingeplugde componenten schuiven mee
+    procedure SetPlus(const Value: Boolean);
+    procedure SetVolt(const Value: Double);
+    procedure SetTaal(const Value: string);
+    function GetLineX: Integer;
+    function GetSpanTop: Integer;
+    function GetSpanBottom: Integer;
+    function HitMode(Y: Integer): Integer;
+    procedure SendStatusToBar;
+    procedure BuildPopup;
+    procedure VoltClick(Sender: TObject);
+    procedure LockClick(Sender: TObject);
+    procedure SelectClick(Sender: TObject);
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+  protected
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure Paint; override;
+    procedure UpdateHintText;
+    // werkt een ingeplugde invoer? (+ rail met minstens RailMinVolt)
+    function Powered: Boolean;
+    function RailColor: TColor;
+    property LineX: Integer read GetLineX;          // X van de 2 px lijn in het paneel
+    property SpanTop: Integer read GetSpanTop;      // getekend stuk rail, in het paneel
+    property SpanBottom: Integer read GetSpanBottom;
+  published
+    property Plus: Boolean read FPlus write SetPlus;
+    property Volt: Double read FVolt write SetVolt;
+    property Lock: Boolean read FLock write FLock;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write SetTaal;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
+    property ShowHint;
+  end;
+
   { TjanGroupSelect: meerdere objecten tegelijk selecteren en verplaatsen.
     Wordt als onzichtbaar besturingselement op het paneel gezet. Tijdens het
     slepen van een selectierechthoek toont het die rechthoek; daarna ligt het
@@ -2086,6 +2183,7 @@ end;
     FConMove: array of Integer;  // 1 = hele draad mee, 2 = één uiteinde mee
     FConStart: array of TPoint;
     FBTaal: string;
+    FRailMoving: Boolean;
     function IsGroupable(C: TControl): Boolean;
     procedure UpdateFrame;
     procedure PrepareDrag;
@@ -2107,12 +2205,46 @@ end;
     procedure Clear;
     // Selectie (met draden) DX/DY pixels verschuiven, bv. met de pijltjestoetsen
     procedure Nudge(DX, DY: Integer);
+    // rail verslepen: de ingeplugde componenten (met draden) schuiven mee
+    procedure BeginRailMove(ARail: TControl);
+    procedure RailMove(DX, DY: Integer);
+    procedure EndRailMove;
     function Count: Integer;
     property Banding: Boolean read FBanding;
     property BTaal: string read FBTaal write FBTaal;
   end;
 
 procedure Register;
+
+// ------------------------------------------------------------
+// Voedingsrails (TjanRail): invoer op een + rail, uitvoer op een - rail
+// ------------------------------------------------------------
+const
+  RailGap = 12;        // afstand lijn van de rail -> component (stekker + bolletje)
+  RailSnapTol = 12;    // binnen zoveel pixels springt een component op de rail
+  RailMinVolt = 2.0;   // onder deze spanning geeft ingeplugde invoer geen signaal
+  RailMaxVolt = 5.0;
+  RailLineOfs = 11;    // X van de lijn binnen TjanRail
+  RailWidth = 23;      // breedte van TjanRail (stekkers links en rechts van de lijn)
+  RailLabelH = 14;     // bovenaan: spanning (+ rail) of 0V (- rail)
+  RailMinLen = 40;     // kortste rail (getekende lijn)
+  RailGrip = 6;        // zo dicht bij een uiteinde: rail langer/korter slepen
+  RailFootH = 12;      // onderaan de - rail: massasymbool
+
+function IsRailInput(C: TControl): Boolean;
+function IsRailOutput(C: TControl): Boolean;
+// staat er minstens een rail op het paneel?
+function PanelHasRails(P: TWinControl): Boolean;
+// de rail waarop C (invoer of uitvoer) ingeplugd is, anders nil
+function RailOf(C: TControl): TjanRail;
+function RailPlugged(C: TControl): Boolean;
+// mag C werken? (geen rails op het paneel, geen rail-component, of
+// ingeplugd; invoer bovendien op een + rail met genoeg spanning)
+function RailOK(C: TControl): Boolean;
+// NewLeft van een gesleept component op de dichtstbijzijnde rail laten springen
+procedure SnapToRail(C: TControl; var NewLeft: Integer; Tol: Integer = RailSnapTol);
+// stekkers en bolletjes tekenen; voor TjanGridS.OnPaintOverlay
+procedure DrawRailOverlay(Grid: TjanGridS);
 
 implementation
 
@@ -2750,7 +2882,7 @@ begin
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
-     StraightenWires(connectors,newleft,newtop);
+     StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
      Left:=newleft;
      Top:=newtop;
 
@@ -3072,18 +3204,21 @@ end;
 procedure TjanDisplay.DrawDigit(WhereTo: TBitmap);
 var
   i : integer;
+  S : word;
 begin
    with WhereTo.Canvas do
         begin
           Lock;
-          i := ord(FDigit);
-          Hexagon(WhereTo, UpLeft[0].x, UpLeft[0].y, SegHorLen, FSegWidth, SegState[i] and $0001 <> 0);
-          Hexagon(WhereTo, UpLeft[1].x, UpLeft[1].y, SegHorLen, FSegWidth, SegState[i] and $0002 <> 0);
-          Hexagon(WhereTo, UpLeft[2].x, UpLeft[2].y, SegHorLen, FSegWidth, SegState[i] and $0004 <> 0);
-          Hexagon(WhereTo, UpLeft[3].x, UpLeft[3].y, FSegWidth, SegVerLen, SegState[i] and $0008 <> 0);
-          Hexagon(WhereTo, UpLeft[4].x, UpLeft[4].y, FSegWidth, SegVerLen, SegState[i] and $0010 <> 0);
-          Hexagon(WhereTo, UpLeft[5].x, UpLeft[5].y, FSegWidth, SegVerLen, SegState[i] and $0020 <> 0);
-          Hexagon(WhereTo, UpLeft[6].x, UpLeft[6].y, FSegWidth, SegVerLen, SegState[i] and $0040 <> 0);
+          i := ord(FDigit) and $7F;
+          S := SegState[i];
+          if FDigit = ' ' then S := 0;   // spatie = alle segmenten uit (geen voeding)
+          Hexagon(WhereTo, UpLeft[0].x, UpLeft[0].y, SegHorLen, FSegWidth, S and $0001 <> 0);
+          Hexagon(WhereTo, UpLeft[1].x, UpLeft[1].y, SegHorLen, FSegWidth, S and $0002 <> 0);
+          Hexagon(WhereTo, UpLeft[2].x, UpLeft[2].y, SegHorLen, FSegWidth, S and $0004 <> 0);
+          Hexagon(WhereTo, UpLeft[3].x, UpLeft[3].y, FSegWidth, SegVerLen, S and $0008 <> 0);
+          Hexagon(WhereTo, UpLeft[4].x, UpLeft[4].y, FSegWidth, SegVerLen, S and $0010 <> 0);
+          Hexagon(WhereTo, UpLeft[5].x, UpLeft[5].y, FSegWidth, SegVerLen, S and $0020 <> 0);
+          Hexagon(WhereTo, UpLeft[6].x, UpLeft[6].y, FSegWidth, SegVerLen, S and $0040 <> 0);
           Unlock;
         end;
 end;
@@ -3525,9 +3660,9 @@ begin
   else if (Discon is TjanMeter) then
   begin
     if DisConI=1 then
-      TjanMeter(DisCon).input1:=false
+      begin TjanMeter(DisCon).input1:=false; TjanMeter(DisCon).PlusVolt:=0; end
     else if DisConI=3 then
-      TjanMeter(DisCon).input3:=false
+      begin TjanMeter(DisCon).input3:=false; TjanMeter(DisCon).MinVolt:=0; end
   end
   else if (DisCon is TjanTeller) then
   begin
@@ -4138,6 +4273,593 @@ begin
 end;
 
 // ============================================================
+// Voedingsrails
+// ============================================================
+
+function IsRailInput(C: TControl): Boolean;
+begin
+  Result := (C is TjanSimButton) or (C is TjanSimKnop) or (C is TjanSimSensor) or
+            (C is TjanSimWarm) or (C is TjanSimPuls) or (C is TjanDipSwitsh);
+end;
+
+function IsRailOutput(C: TControl): Boolean;
+begin
+  Result := (C is TjanSimLight) or (C is TjanSimRelais) or
+            (C is TjanSimBuzzer) or (C is TjanDisplay);
+end;
+
+function PanelHasRails(P: TWinControl): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible then
+      Exit(True);
+end;
+
+// zou C met linkerkant ALeft en bovenkant ATop op rail R ingeplugd zijn?
+// Invoer zit rechts van een + rail, uitvoer links van een - rail. De
+// voltmeter kan beide: + (links) op een + rail, - (rechts) op een - rail.
+function RailFits(R: TjanRail; C: TControl; ALeft, ATop: Integer): Boolean;
+var
+  Y: Integer;
+  OnPlus, OnMin: Boolean;
+begin
+  Result := False;
+  Y := ATop + C.Height div 2;
+  if (Y < R.SpanTop) or (Y > R.SpanBottom) then Exit;
+  OnPlus := ALeft = R.LineX + RailGap;
+  OnMin := ALeft + C.Width + RailGap = R.LineX;
+  if IsRailInput(C) then
+    Result := R.Plus and OnPlus
+  else if IsRailOutput(C) then
+    Result := (not R.Plus) and OnMin
+  else if C is TjanMeter then
+    Result := (R.Plus and OnPlus) or ((not R.Plus) and OnMin);
+end;
+
+function RailOf(C: TControl): TjanRail;
+var
+  i: Integer;
+  P: TWinControl;
+begin
+  Result := nil;
+  if (C = nil) or not (IsRailInput(C) or IsRailOutput(C)) then Exit;
+  P := C.Parent;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible and
+       RailFits(TjanRail(P.Controls[i]), C, C.Left, C.Top) then
+      Exit(TjanRail(P.Controls[i]));
+end;
+
+function RailPlugged(C: TControl): Boolean;
+begin
+  Result := RailOf(C) <> nil;
+end;
+
+function RailOK(C: TControl): Boolean;
+var
+  R: TjanRail;
+begin
+  Result := True;
+  if not (IsRailInput(C) or IsRailOutput(C)) then Exit;
+  if not PanelHasRails(C.Parent) then Exit;
+  R := RailOf(C);
+  if R = nil then
+    Result := False
+  else if IsRailInput(C) then
+    Result := R.Powered;
+end;
+
+// spanning (volt) die invoer C op zijn draad zet: zonder rails 5 V als hij
+// aan staat, met rails de spanning van zijn + rail (0 V als hij los staat)
+function SignalVolt(C: TControl; Raw: Boolean): Double;
+var
+  R: TjanRail;
+begin
+  Result := 0;
+  if not Raw then Exit;
+  if not PanelHasRails(C.Parent) then Exit(RailMaxVolt);
+  R := RailOf(C);
+  if (R <> nil) and R.Plus then
+    Result := R.Volt;
+end;
+
+procedure SnapToRail(C: TControl; var NewLeft: Integer; Tol: Integer);
+var
+  i, Want, D, Best, BestWant, Y: Integer;
+  P: TWinControl;
+  R: TjanRail;
+  CanPlus, CanMin: Boolean;
+begin
+  CanPlus := IsRailInput(C) or (C is TjanMeter);
+  CanMin := IsRailOutput(C) or (C is TjanMeter);
+  if not (CanPlus or CanMin) then Exit;
+  P := C.Parent;
+  if not PanelHasRails(P) then Exit;
+  Best := Tol + 1;
+  BestWant := NewLeft;
+  Y := C.Top + C.Height div 2;
+  for i := 0 to P.ControlCount - 1 do
+  begin
+    if not (P.Controls[i] is TjanRail) then Continue;
+    R := TjanRail(P.Controls[i]);
+    if not R.Visible then Continue;
+    if (R.Plus and not CanPlus) or ((not R.Plus) and not CanMin) then Continue;
+    if (Y < R.SpanTop) or (Y > R.SpanBottom) then Continue;  // boven of onder de rail
+    if R.Plus then
+      Want := R.LineX + RailGap
+    else
+      Want := R.LineX - RailGap - C.Width;
+    D := Abs(NewLeft - Want);
+    if D < Best then
+    begin
+      Best := D;
+      BestWant := Want;
+    end;
+  end;
+  if Best <= Tol then
+    NewLeft := BestWant;
+  P.Invalidate;   // stekkers en bolletjes bijwerken
+end;
+
+// Per ingeplugd component: een stekker (1 px) van de rail naar het
+// component met een bolletje (7 px) tegen het component. Niet ingeplugde
+// invoer en uitvoer krijgen een grijs bolletje: zij werken niet.
+procedure DrawRailOverlay(Grid: TjanGridS);
+
+  procedure Plug(R: TjanRail; C: TControl; APlusSide: Boolean);
+  var
+    Y, DotX: Integer;
+  begin
+    Y := C.Top + C.Height div 2;
+    if APlusSide then
+      DotX := C.Left - 4                  // midden bolletje, links van het component
+    else
+      DotX := C.Left + C.Width + 4;       // midden bolletje, rechts van het component
+    if R <> nil then
+    begin
+      Grid.Canvas.Pen.Color := R.RailColor;
+      if APlusSide then
+        Grid.Canvas.MoveTo(R.LineX + 2, Y)
+      else
+        Grid.Canvas.MoveTo(R.LineX - 1, Y);
+      Grid.Canvas.LineTo(DotX, Y);
+      Grid.Canvas.Brush.Color := R.RailColor;
+    end
+    else
+    begin
+      Grid.Canvas.Pen.Color := clGray;
+      Grid.Canvas.Brush.Color := clSilver;
+    end;
+    Grid.Canvas.Ellipse(DotX - 3, Y - 3, DotX + 4, Y + 4);
+  end;
+
+var
+  i, k: Integer;
+  C: TControl;
+begin
+  if not PanelHasRails(Grid) then Exit;
+  Grid.Canvas.Pen.Width := 1;
+  Grid.Canvas.Pen.Style := psSolid;
+  Grid.Canvas.Brush.Style := bsSolid;
+  for i := 0 to Grid.ControlCount - 1 do
+  begin
+    C := Grid.Controls[i];
+    if not C.Visible then Continue;
+    if IsRailInput(C) then
+      Plug(RailOf(C), C, True)
+    else if IsRailOutput(C) then
+      Plug(RailOf(C), C, False)
+    else if C is TjanMeter then
+      // voltmeter: alleen de kanten die echt op een rail zitten
+      for k := 0 to Grid.ControlCount - 1 do
+        if (Grid.Controls[k] is TjanRail) and Grid.Controls[k].Visible and
+           RailFits(TjanRail(Grid.Controls[k]), C, C.Left, C.Top) then
+          Plug(TjanRail(Grid.Controls[k]), C, TjanRail(Grid.Controls[k]).Plus);
+  end;
+end;
+
+// regel in het paneelbestand: TjanRail;height;left;top;width;+ of -;spanning x10;
+function RailFileLine(R: TjanRail): string;
+var
+  Sign: string;
+begin
+  if R.Plus then Sign := '+' else Sign := '-';
+  Result := Format('TjanRail;%d;%d;%d;%d;%s;%d;',
+    [R.Height, R.Left, R.Top, R.Width, Sign, Round(R.Volt * 10)]);
+end;
+
+{ TjanRail }
+
+const
+  RailVolts: array[0..6] of Double = (0, 1, 2, 3, 3.3, 4, 5);
+
+constructor TjanRail.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FPlus := True;
+  FVolt := RailMaxVolt;
+  FTaal := 'NL';
+  Width := RailWidth;
+  Height := 200;
+  HelpKeyword := 'voeding';   // F1: help over voeding & voltmeter
+  ShowHint := True;
+end;
+
+destructor TjanRail.Destroy;
+begin
+  FreeAndNil(FMover);
+  inherited Destroy;
+end;
+
+function TjanRail.GetLineX: Integer;
+begin
+  Result := Left + RailLineOfs;
+end;
+
+function TjanRail.GetSpanTop: Integer;
+begin
+  Result := Top + RailLabelH;
+end;
+
+function TjanRail.GetSpanBottom: Integer;
+begin
+  Result := Top + Height - 1;
+  if not FPlus then
+    Dec(Result, RailFootH);   // onderaan staat het massasymbool
+end;
+
+function TjanRail.Powered: Boolean;
+begin
+  Result := FPlus and (FVolt >= RailMinVolt - 0.001);
+end;
+
+// - rail blauw; + rail grijs bij 0 V, daarboven rood en feller naarmate de
+// spanning hoger is
+function TjanRail.RailColor: TColor;
+begin
+  if not FPlus then
+    Result := clBlue
+  else if FVolt <= 0 then
+    Result := clGray
+  else
+    Result := RGBToColor(110 + Round(145 * FVolt / RailMaxVolt), 0, 0);
+end;
+
+procedure TjanRail.SetPlus(const Value: Boolean);
+begin
+  if FPlus = Value then Exit;
+  FPlus := Value;
+  UpdateHintText;
+  Invalidate;
+  if Assigned(Parent) then Parent.Invalidate;
+end;
+
+procedure TjanRail.SetVolt(const Value: Double);
+var
+  V: Double;
+begin
+  V := Value;
+  if V < 0 then V := 0;
+  if V > RailMaxVolt then V := RailMaxVolt;
+  if Abs(V - FVolt) < 0.001 then Exit;
+  FVolt := V;
+  UpdateHintText;
+  Invalidate;
+  if Assigned(Parent) then Parent.Invalidate;   // kleur van de stekkers
+end;
+
+procedure TjanRail.SetTaal(const Value: string);
+begin
+  FTaal := Value;
+  UpdateHintText;
+end;
+
+procedure TjanRail.UpdateHintText;
+var
+  V: string;
+begin
+  V := FormatFloat('0.#', FVolt);
+  if FPlus then
+    Hint := Tr(FTaal,
+      '+ rail (voeding ' + V + 'V)' + #13#10 +
+        'Invoer rechts op de rail inpluggen. Onder 2V geen signaal.' + #13#10 +
+        'Rechtsklik: spanning instellen. Sleep de uiteinden om te verlengen.',
+      '+ rail (supply ' + V + 'V)' + #13#10 +
+        'Plug inputs in on the right of the rail. Below 2V no signal.' + #13#10 +
+        'Right-click: set voltage. Drag the ends to resize.',
+      'Rail + (alimentation ' + V + 'V)' + #13#10 +
+        'Branchez les entrées à droite du rail. Sous 2V pas de signal.' + #13#10 +
+        'Clic droit : régler la tension. Faites glisser les extrémités.',
+      '+ Schiene (Versorgung ' + V + 'V)' + #13#10 +
+        'Eingänge rechts an die Schiene stecken. Unter 2V kein Signal.' + #13#10 +
+        'Rechtsklick: Spannung einstellen. Enden ziehen zum Verlängern.')
+  else
+    Hint := Tr(FTaal,
+      '- rail (massa)' + #13#10 + 'Uitvoer links op de rail inpluggen.' + #13#10 +
+        'Sleep de uiteinden om te verlengen.',
+      '- rail (ground)' + #13#10 + 'Plug outputs in on the left of the rail.' + #13#10 +
+        'Drag the ends to resize.',
+      'Rail - (masse)' + #13#10 + 'Branchez les sorties à gauche du rail.' + #13#10 +
+        'Faites glisser les extrémités pour redimensionner.',
+      '- Schiene (Masse)' + #13#10 + 'Ausgänge links an die Schiene stecken.' + #13#10 +
+        'Enden ziehen zum Verlängern.');
+end;
+
+procedure TjanRail.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  if FPlus then
+  begin
+    FOnStatus(Self, Tr(FTaal, '+ rail', '+ rail', 'Rail +', '+ Schiene') + ' > ', 0);
+    FOnStatus(Self, 'U = ' + FormatFloat('0.#', FVolt) + ' V', 1);
+  end
+  else
+  begin
+    FOnStatus(Self, Tr(FTaal, '- rail', '- rail', 'Rail -', '- Schiene') + ' > ', 0);
+    FOnStatus(Self, Tr(FTaal, 'Massa', 'Ground', 'Masse', 'Masse'), 1);
+  end;
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+procedure TjanRail.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  SendStatusToBar;
+end;
+
+procedure TjanRail.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if FDragMode = 0 then
+    Cursor := crDefault;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+end;
+
+procedure TjanRail.Paint;
+var
+  X, T, B, TW: Integer;
+  Col: TColor;
+  S: string;
+begin
+  X := RailLineOfs;
+  T := RailLabelH;
+  B := Height;
+  Col := RailColor;
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    Brush.Color := Col;
+    // dopje bovenaan: daar kun je de rail langer of korter slepen
+    FillRect(Rect(X - 3, T, X + 5, T + 2));
+    if FPlus then
+    begin
+      FillRect(Rect(X, T, X + 2, B));
+      FillRect(Rect(X - 3, B - 2, X + 5, B));     // dopje onderaan
+    end
+    else
+    begin
+      // - rail: onderaan het massasymbool, drie streepjes naar beneden
+      FillRect(Rect(X, T, X + 2, B - RailFootH + 2));
+      FillRect(Rect(X - 6, B - RailFootH + 1, X + 8, B - RailFootH + 3));
+      FillRect(Rect(X - 4, B - RailFootH + 5, X + 6, B - RailFootH + 7));
+      FillRect(Rect(X - 2, B - RailFootH + 9, X + 4, B - RailFootH + 11));
+    end;
+    // spanning bovenaan (+ rail: ingestelde spanning, - rail: 0V)
+    if FPlus then
+      S := FormatFloat('0.#', FVolt) + 'V'
+    else
+      S := '0V';
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    Font.Color := Col;
+    TW := TextWidth(S);
+    TextOut((Self.Width - TW) div 2, 0, S);
+    if FSelected then
+    begin
+      Brush.Style := bsClear;
+      Pen.Color := clRed;
+      Pen.Style := psDot;
+      Pen.Width := 1;
+      Rectangle(ClientRect);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+  end;
+end;
+
+// 1 = verplaatsen, 2 = bovenkant, 3 = onderkant
+function TjanRail.HitMode(Y: Integer): Integer;
+begin
+  if Y <= RailLabelH + RailGrip then
+    Result := 2
+  else if (FPlus and (Y >= Height - RailGrip)) or
+          ((not FPlus) and (Y >= Height - RailFootH - RailGrip)) then
+    Result := 3
+  else
+    Result := 1;
+end;
+
+procedure TjanRail.BuildPopup;
+var
+  mi, sub: TMenuItem;
+  i: Integer;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+
+  if FPlus then
+  begin
+    mi := TMenuItem.Create(PopupMenu);
+    mi.Caption := Tr(FTaal, 'Spanning', 'Voltage', 'Tension', 'Spannung');
+    PopupMenu.Items.Add(mi);
+    for i := Low(RailVolts) to High(RailVolts) do
+    begin
+      sub := TMenuItem.Create(PopupMenu);
+      sub.Caption := FormatFloat('0.#', RailVolts[i]) + ' V';
+      sub.Tag := i;
+      sub.RadioItem := True;
+      sub.Checked := Abs(RailVolts[i] - FVolt) < 0.001;
+      sub.OnClick := VoltClick;
+      mi.Add(sub);
+    end;
+  end;
+
+  mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  mi.OnClick := LockClick;
+  PopupMenu.Items.Add(mi);
+
+  mi := TMenuItem.Create(PopupMenu);
+  if FSelected then
+    mi.Caption := Tr(FTaal, 'Deselecteer object', 'Deselect object', 'Désélectionner l''objet', 'Objekt abwählen')
+  else
+    mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner un objet', 'Objekt auswählen');
+  mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(mi);
+end;
+
+procedure TjanRail.VoltClick(Sender: TObject);
+begin
+  Volt := RailVolts[TMenuItem(Sender).Tag];
+  SendStatusToBar;
+end;
+
+procedure TjanRail.LockClick(Sender: TObject);
+begin
+  FLock := not FLock;
+end;
+
+procedure TjanRail.SelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanRail.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  P: TPoint;
+begin
+  inherited MouseDown(Button, Shift, X, Y);
+  if Parent = nil then Exit;
+  if (Button = mbRight) and not FLock then
+  begin
+    BuildPopup;
+    P := Mouse.CursorPos;
+    PopupMenu.PopUp(P.X, P.Y);
+    Exit;
+  end;
+  if (Button <> mbLeft) or FLock then Exit;
+  FDragStart := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  FStartRect := BoundsRect;
+  FDragMode := HitMode(Y);
+  if FDragMode = 1 then
+  begin
+    // ingeplugde componenten (met hun draden) schuiven mee
+    FreeAndNil(FMover);
+    FMover := TjanGroupSelect.Create(nil);
+    TjanGroupSelect(FMover).Parent := Parent;
+    TjanGroupSelect(FMover).BeginRailMove(Self);
+  end;
+end;
+
+procedure TjanRail.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, Snapped: TPoint;
+  DX, DY, NewTop, NewBottom: Integer;
+  WorkR: TRect;
+begin
+  inherited MouseMove(Shift, X, Y);
+  if Parent = nil then Exit;
+  if FDragMode = 0 then
+  begin
+    if FLock then
+      Cursor := crDefault
+    else if HitMode(Y) = 1 then
+      Cursor := crSizeAll
+    else
+      Cursor := crSizeNS;
+    Exit;
+  end;
+  if not (ssLeft in Shift) then Exit;
+
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  DX := P.X - FDragStart.X;
+  DY := P.Y - FDragStart.Y;
+  if Parent is TjanGridS then
+    WorkR := TjanGridS(Parent).GetWorkAreaRect
+  else
+    WorkR := Parent.ClientRect;
+
+  case FDragMode of
+    1:
+      begin
+        // lijn en bovenkant van de rail op het raster laten springen
+        if Parent is TjanGridS then
+        begin
+          Snapped := TjanGridS(Parent).SnapPointToRuler(
+            Point(FStartRect.Left + RailLineOfs + DX, FStartRect.Top + RailLabelH + DY), WorkR);
+          DX := Snapped.X - (FStartRect.Left + RailLineOfs);
+          DY := Snapped.Y - (FStartRect.Top + RailLabelH);
+        end;
+        if FStartRect.Left + DX < WorkR.Left then DX := WorkR.Left - FStartRect.Left;
+        if FStartRect.Top + DY < WorkR.Top then DY := WorkR.Top - FStartRect.Top;
+        SetBounds(FStartRect.Left + DX, FStartRect.Top + DY, Width, Height);
+        if Assigned(FMover) then
+          TjanGroupSelect(FMover).RailMove(DX, DY);
+      end;
+    2:
+      begin
+        NewTop := FStartRect.Top + DY;
+        if NewTop < WorkR.Top then NewTop := WorkR.Top;
+        if FStartRect.Bottom - NewTop < RailLabelH + RailMinLen + RailFootH then
+          NewTop := FStartRect.Bottom - RailLabelH - RailMinLen - RailFootH;
+        SetBounds(Left, NewTop, Width, FStartRect.Bottom - NewTop);
+      end;
+    3:
+      begin
+        NewBottom := FStartRect.Bottom + DY;
+        if NewBottom > WorkR.Bottom then NewBottom := WorkR.Bottom;
+        if NewBottom - FStartRect.Top < RailLabelH + RailMinLen + RailFootH then
+          NewBottom := FStartRect.Top + RailLabelH + RailMinLen + RailFootH;
+        SetBounds(Left, FStartRect.Top, Width, NewBottom - FStartRect.Top);
+      end;
+  end;
+  SendStatusToBar;
+end;
+
+procedure TjanRail.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited MouseUp(Button, Shift, X, Y);
+  if Assigned(FMover) then
+  begin
+    TjanGroupSelect(FMover).EndRailMove;
+    FreeAndNil(FMover);
+  end;
+  FDragMode := 0;
+  if Assigned(Parent) then
+    Parent.Invalidate;
+end;
+
+// ============================================================
 // Uiteinde van een draad laten "springen" naar een ingang
 // ============================================================
 
@@ -4165,8 +4887,7 @@ begin
   end
   else if C is TjanMeter then
   begin
-    if TjanMeter(C).Gates[2].Active then Add(6, 36);    // +
-    if TjanMeter(C).Gates[0].Active then Add(86, 36);   // -
+    if TjanMeter(C).Gates[0].Active then Add(6, 36);    // + (links); de - zit op de massa
   end
   else if C is TjanTeller then
   begin
@@ -4549,6 +5270,7 @@ var Pi,Po:TPoint;
     i,g,d,d2,xw,yh,puls,puls1,getal:integer;
     wc:TWinControl;
     Vi,aktief:boolean;
+    SrcVolt:Double;   // spanning van de bron in volt (-1 = nog niet bepaald)
     Adres:Integer;
     Ledw:char;
     sBut:TjanSimButton;
@@ -4581,6 +5303,7 @@ var Pi,Po:TPoint;
       ii:integer;
   begin
     result:=true;
+    SrcVolt:=-1;
     for ii:=0 to wc.ControlCount-1 do
     begin
       if (wc.controls[ii] is TjanSimButton) then
@@ -4591,7 +5314,8 @@ var Pi,Po:TPoint;
         begin
           sBut:=TjanSimButton(wc.controls[ii]);
           puls:=sBut.Puls;
-          Vi:=sBut.Down;
+          Vi:=sBut.Down and RailOK(sBut);
+          SrcVolt:=SignalVolt(sBut, sBut.Down);
           sBut.Puls:=0;
           exit;
         end;
@@ -4603,7 +5327,8 @@ var Pi,Po:TPoint;
         if ptinrect(R,Pi)   then
         begin
           sDipSwitsh:=TjanDipSwitsh(wc.controls[ii]);
-          if  (sDipSwitsh.Down=true) or (sDipSwitsh.Start=true) then vi:=true else vi:=false;
+          if  (sDipSwitsh.Down=true) or (sDipSwitsh.Start=true) then vi:=RailOK(sDipSwitsh) else vi:=false;
+          SrcVolt:=SignalVolt(sDipSwitsh, sDipSwitsh.Down or sDipSwitsh.Start);
           if vi=true then
           begin
              TSchrijf:=true;
@@ -4620,7 +5345,8 @@ var Pi,Po:TPoint;
         begin
           sKnop:=TjanSimKnop(wc.controls[ii]);
           puls:=sKnop.Puls;
-          Vi:=sKnop.Down;
+          Vi:=sKnop.Down and RailOK(sKnop);
+          SrcVolt:=SignalVolt(sKnop, sKnop.Down);
           sKnop.Puls:=0;
           exit;
         end;
@@ -4633,7 +5359,8 @@ var Pi,Po:TPoint;
         begin
           sPuls:=TjanSimPuls(wc.controls[ii]);
           puls:=sPuls.Pulser;
-          Vi:=sPuls.Pulsen;
+          Vi:=sPuls.Pulsen and RailOK(sPuls);
+          SrcVolt:=SignalVolt(sPuls, sPuls.Pulsen);
           sPuls.Pulser:=0;
           exit;
         end;
@@ -4646,7 +5373,8 @@ var Pi,Po:TPoint;
         begin
           sSensor:=TjanSimSensor(wc.controls[ii]);
           puls:=sSensor.Puls;
-          Vi:=sSensor.Down;
+          Vi:=sSensor.Down and RailOK(sSensor);
+          SrcVolt:=SignalVolt(sSensor, sSensor.Down);
           sSensor.Puls:=0;
           exit;
         end;
@@ -4660,7 +5388,8 @@ var Pi,Po:TPoint;
         begin
           sWarm:=TjanSimWarm(wc.controls[ii]);
           puls:=sWarm.Puls;
-          Vi:=sWarm.Down;
+          Vi:=sWarm.Down and RailOK(sWarm);
+          SrcVolt:=SignalVolt(sWarm, sWarm.Down);
           sWarm.Puls:=0;
           exit;
         end;
@@ -4676,7 +5405,8 @@ var Pi,Po:TPoint;
           R:=rect(sMeter.left+33,sMeter.top+23,sMeter.left+sMeter.Width+ConSize,smeter.Top+44);
           if ptinrect(R,Pi) and SMeter.Gates[4].Active then
           begin  // output is gate 4
-            vi:=SMeter.OutPut2;
+            SrcVolt:=SMeter.Reading;
+            vi:=SrcVolt >= RailMinVolt - 0.001;
             exit;
           end;
         end;
@@ -4803,7 +5533,7 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sLight:=TjanSimLight(wc.controls[ii]);
-          If SLight.Lit<> Vi then SLight.Lit:=Vi;
+          If SLight.Lit <> (Vi and RailOK(SLight)) then SLight.Lit:=Vi and RailOK(SLight);
           exit;
         end;
       end
@@ -4833,6 +5563,7 @@ var Pi,Po:TPoint;
           sDisplay:=TjanDisplay(wc.controls[ii]);
           if LedW=#0 then // gewone aan/uit-bron (drukknop, schakelaar, poort...)
             if vi then LedW:='1' else LedW:='0';
+          if not RailOK(SDisplay) then LedW:=' ';  // zonder voeding: donker
           If SDisplay.Digit <> LedW then  SDisplay.digit:=LedW;
           exit;
         end;
@@ -4844,7 +5575,7 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sRelais:=TjanSimRelais(wc.controls[ii]);
-          If Srelais.Lit <>vi then Srelais.Lit:=Vi;
+          If Srelais.Lit <> (Vi and RailOK(Srelais)) then Srelais.Lit:=Vi and RailOK(Srelais);
           exit;
         end;
       end
@@ -4856,7 +5587,7 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sBuzzer:=TjanSimBuzzer(wc.controls[ii]);
-          if SBuzzer.Lit <> vi then  SBuzzer.Lit:=Vi;
+          if SBuzzer.Lit <> (Vi and RailOK(SBuzzer)) then SBuzzer.Lit:=Vi and RailOK(SBuzzer);
           exit;
         end;
       end
@@ -4873,13 +5604,13 @@ var Pi,Po:TPoint;
          // in input gate 0
          if ptinrect(R,Po) and SMeter.Gates[0].Active then
           begin
-            SMeter.Input1:=vi;exit;
+            SMeter.Input1:=vi; SMeter.PlusVolt:=SrcVolt; exit;
           end;
           R:=rect(sMeter.left+ 85,sMeter.top+ 35,sMeter.left+ 93,sMeter.Top+ 43);
           // in input gate 2
           if ptinrect(R,Po) and SMeter.Gates[2].Active then
           begin
-            SMeter.Input3:=vi;exit;
+            SMeter.Input3:=vi; SMeter.MinVolt:=SrcVolt; exit;
           end;
         end;
       end
@@ -5005,6 +5736,9 @@ begin
   LedW:=#0; // enkel teller/geheugen vullen dit in; anders toont het display 0/1
   if getvi then
   Begin
+  // bronnen zonder eigen spanning (poorten, teller, ...): hoog = 5 V
+  if SrcVolt < 0 then
+    if Vi then SrcVolt := RailMaxVolt else SrcVolt := 0;
   setvo;
   end;
 end;
@@ -5114,7 +5848,8 @@ var Pi,Po:TPoint;
         begin
           sMeter:=TjanMeter(wc.controls[ii]);
           // now check if p is in one of the 3 input area's
-          R:=rect(sMeter.left-d,sMeter.top,sMeter.left+32,sMeter.Top+22);
+          // zelfde aansluitingen als in Connect: + links (5,35), - rechts (85,35)
+          R:=rect(sMeter.left+1,sMeter.top+31,sMeter.left+17,sMeter.Top+47);
           if ptinrect(R,Po) and sMeter.Gates[0].Active then
           begin  // input is gate 0
           DisCon:=sMeter;
@@ -5124,7 +5859,7 @@ var Pi,Po:TPoint;
           end;
 
           //R:=rect(sMeter.left-d,sMeter.top+45,sMeter.left+32,sMeter.Top+64);
-          R:=rect(sMeter.left+sMeter.Width-d,sMeter.top+sMeter.height,sMeter.left+sMeter.Width,sMeter.Top+sMeter.Height+8);
+          R:=rect(sMeter.left+81,sMeter.top+31,sMeter.left+97,sMeter.Top+47);
 
           if ptinrect(R,Po) and sMeter.Gates[2].Active then
           begin  // input is gate 2
@@ -5426,7 +6161,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -6355,7 +7090,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -7401,7 +8136,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -8366,7 +9101,7 @@ begin
   FLogicAndFunc:=jlfEN;
   FGates[0].Active:=true;
   FGates[1].Active:=false;
-  FGates[2].Active:=true;
+  FGates[2].Active:=false;   // geen - aansluiting meer: de meter meet tegen de massa
   FGates[3].Active:=false;
   FGates[4].Active:=true;
   FGates[5].Active:=false;
@@ -8379,6 +9114,9 @@ begin
   V5.LoadFromResourceName(HInstance,'V5');
 
   FInfo:= 'Meter';
+  FTaal:='NL';
+  FPlusVolt:=0; FMinVolt:=0;
+  HelpKeyword:='meter';
   ShowHint:=true;
   FLock:=false;
   FPcolor:=rgb(250,250,220);
@@ -8392,82 +9130,84 @@ end;
 
 procedure TjanMeter.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
-var R,R2,R3:TRect;
-p : TPoint;
-pop:TPopupMenu;
-ItemNew,ItemNew1,ItemNew2:TMenuItem;
-S:String;
-L,T:integer;
-wc:TWinControl;
+var
+  p: TPoint;
+  pop: TPopupMenu;
+  ItemNew: TMenuItem;
 begin
-  doMove:=false;
-  //doStyle:=false;
-  //StyleDown:=false;
-  mdp:=point(x,y);
-  R:=clientRect;
-  // maken van aansluitdraad
-  if (ptinrect(R,mdp)) and (screen.Cursor=crMeter) then
+  inherited MouseDown(Button, Shift, X, Y);
+  doMove := False;
+  mdp := Point(X, Y);
+
+  if Button = mbRight then
   begin
-   wc:=parent;L:=left+width-9;T:=top+31;
-   Maakdraad(T,L,wc);
-   screen.Cursor:= crdefault;
+    // popupmenu: vergrendelen, info, selecteren (om te verwijderen)
+    pop := TPopupMenu.Create(Self);
+    ItemNew := TMenuItem.Create(pop);
+    if FLock then
+      ItemNew.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+    else
+      ItemNew.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+    ItemNew.OnClick := MeterClick;
+    pop.Items.Add(ItemNew);
+    ItemNew := TMenuItem.Create(pop);
+    if ShowHint then
+      ItemNew.Caption := Tr(FTaal, 'Info uit', 'Information off', 'Infos off', 'Infos aus')
+    else
+      ItemNew.Caption := Tr(FTaal, 'Info aan', 'Information on', 'Infos on', 'Infos an');
+    ItemNew.OnClick := MeterClick2;
+    pop.Items.Add(ItemNew);
+    ItemNew := TMenuItem.Create(pop);
+    if FSelected then
+      ItemNew.Caption := Tr(FTaal, 'Deselecteer object', 'Deselect object', 'Désélectionner l''objet', 'Objekt abwählen')
+    else
+      ItemNew.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner un objet', 'Objekt auswählen');
+    ItemNew.OnClick := MeterSelectClick;
+    pop.Items.Add(ItemNew);
+    p := ClientToScreen(Point(0, Height));
+    pop.Popup(p.X, p.Y - 1);
+    Exit;
   end;
 
-  // einde van het maken van een aansluiting
-
- // R2:=rect(22,20,65,45);
- // doStyle:= ptinrect(R2,mdp);
-  doMove:= true;
-  oldp:=point(x,y);
-  if doMove then
-    AnchorConnectors;
-
-  // opbouw popupmenu
-  pop:=TPopupMenu.Create(self);
-  ItemNew := TMenuItem.Create(self);
-  If FLock=true then S:='Ontgrendel' else S:='Vergrendel';
-  ItemNew.Caption := S;
-  ItemNew.OnClick := meterClick;
-  Pop.Items.Add(ItemNew);
-  {ItemNew1 := TMenuItem.Create(self);
-  ItemNew1.Caption := 'Verwijder poort';
-  ItemNew1.OnClick := meterClick1;
-  Pop.Items.Add(ItemNew1);}
-  ItemNew2 := TMenuItem.Create(self);
-  If ShowHint=true then S:='Info uit' else S:='Info aan';
-  ItemNew2.Caption :=S;
-  ItemNew2.OnClick := meterClick2;
-  Pop.Items.Add(ItemNew2);
-  if (Button = mbRight)  then
-     begin
-       p.X := 0;
-       p.Y := Self.Height;
-       p := ClientToScreen(p);
-       pop.Popup(p.X,p.Y-1);
-  end;
+  if Button <> mbLeft then Exit;
+  doMove := True;
+  oldp := Point(X, Y);
+  AnchorConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).BeginGuideLines(Left + Width div 2, Top + Height div 2);
 end;
 
 procedure TjanMeter.MouseMove(Shift: TShiftState; X, Y: Integer);
-var p:TPoint;
-r:TRect;
+var
+  p, SnapP: TPoint;
+  Grid: TjanGridS;
 begin
-   If FLock=true then exit;
-   p:=clienttoscreen(point(x,y));
-   p:=parent.ScreenToClient(p);
-   if (ssleft in shift) then
-   begin
-     if doMove then
-     begin
-     newleft:=p.x-mdp.x;
-     newtop:=p.y-mdp.y;
-     MoveConnectors;
-     StraightenWires(connectors,newleft,newtop);
-     left:=newleft;
-     top:=newtop;
-      if Assigned(GlobalSimBox) then
-         GlobalSimBox.DoObjectMove(Self, Left, Top);
-     end
-   end;
+  inherited MouseMove(Shift, X, Y);
+  if FLock or (Parent = nil) then Exit;
+  if (ssLeft in Shift) and doMove then
+  begin
+    p := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+    newleft := p.x - mdp.x;
+    newtop := p.y - mdp.y;
+    if Parent is TjanGridS then
+    begin
+      // net als de andere componenten: midden op het raster laten springen
+      Grid := TjanGridS(Parent);
+      SnapP := Grid.SnapPointToRuler(Point(newleft + Width div 2, newtop + Height div 2),
+        Grid.GetWorkAreaRect);
+      newleft := SnapP.X - Width div 2;
+      newtop := SnapP.Y - Height div 2;
+    end;
+    StraightenWires(connectors, newleft, newtop); SnapToRail(Self, newleft);
+    left := newleft;
+    top := newtop;
+    MoveConnectors;
+    if Parent is TjanGridS then
+      TjanGridS(Parent).UpdateGuideLines(Left + Width div 2, Top + Height div 2);
+    if Assigned(GlobalSimBox) then
+      GlobalSimBox.DoObjectMove(Self, Left, Top);
+    SendStatusToBar;
+  end;
 end;
 
 procedure TjanMeter.AnchorConnectors;
@@ -8496,43 +9236,31 @@ end;
 procedure TjanMeter.MouseUp(Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 begin
-
+  inherited MouseUp(Button, Shift, X, Y);
+  doMove := False;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).EndGuideLines;
   select:=false;Cursor := crDefault;repaint;
-  if FLock=true then exit;
 end;
 
 procedure TjanMeter.PaintLed(index:integer);
-var
-    lit:boolean;
-    S:String;
-    R:Trect;
 begin
   if not Gates[index].Active then exit;
+  // aansluitblokjes: + links, - rechts
   if index=0 then
-    begin
-    lit:=FInput1;
+    canvas.draw(5,35,lIn)
+  else if index=2 then
     canvas.draw(85,35,lIn);
-    end
-    else
-  if index=2 then
-    begin
-    lit:=Finput3;
-    canvas.draw(5,35,lIn);
-    end
-    else
-  if index=4 then
-    Begin
-    lit:=Foutput2;
-    if lit then
-      canvas.draw(25,7,V5) else canvas.draw(25,7,V0);
-    end;
 end;
 
 
 procedure TjanMeter.Paint;
-var i:integer;
+var i, TW: integer;
     R:TRect;
+    U: Double;
+    S: string;
 begin
+   U := Reading;
    with canvas do
    begin
      brush.color:=clSilver;
@@ -8546,8 +9274,22 @@ begin
      for i:=0 to 4 do
        PaintLed(i);
      brush.style:=bsclear;
-     Font.Name:='Arial';Font.Size:=14;Font.Style:= [];Font.Color:=clWhite;
+     // gemeten spanning, bv. 3,3 (rood zodra er spanning is)
+     S := FormatFloat('0.0', U);
+     Font.Name := 'Arial'; Font.Size := 12; Font.Style := [fsBold];
+     if U > 0.001 then Font.Color := clRed else Font.Color := clGray;
+     TW := TextWidth(S);
+     TextOut(62 - TW, 8, S);
+     Font.Style := [];
+     Font.Name:='Arial';Font.Size:=14;Font.Color:=clWhite;
      TextOut(4,10,'+');TextOut(84,2,'_');Font.Color:=clBlack;Font.Size:=12;  TextOut(64,9,'V');
+     if FSelected then
+     begin
+       brush.style := bsClear;
+       pen.color := clRed; pen.style := psDot; pen.width := 1;
+       Rectangle(ClientRect);
+       pen.style := psSolid;
+     end;
    end;
 end;
 
@@ -8570,6 +9312,100 @@ begin
 
 end;
 
+// U(+) - U(-). + en - komen elk van een rail (ingeplugd) of van een draad.
+function TjanMeter.Reading: Double;
+var
+  R: TjanRail;
+  UP, UM: Double;
+  i: Integer;
+begin
+  UP := FPlusVolt;
+  UM := FMinVolt;
+  if Parent <> nil then
+    for i := 0 to Parent.ControlCount - 1 do
+      if (Parent.Controls[i] is TjanRail) and Parent.Controls[i].Visible then
+      begin
+        R := TjanRail(Parent.Controls[i]);
+        if RailFits(R, Self, Left, Top) then
+          if R.Plus then
+            UP := R.Volt              // + ingeplugd op een + rail
+          else
+            UM := 0;                  // - ingeplugd op de massa
+      end;
+  Result := UP - UM;
+  if Result < 0 then Result := 0;     // omgekeerd aangesloten: 0 V
+end;
+
+// uitgang van de meter: hoog vanaf RailMinVolt (altijd actueel, ook als een
+// rail van spanning verandert)
+function TjanMeter.GetOutPut2: Boolean;
+begin
+  Result := Reading >= RailMinVolt - 0.001;
+end;
+
+procedure TjanMeter.SetPlusVolt(const Value: Double);
+begin
+  if Abs(Value - FPlusVolt) < 0.001 then Exit;
+  FPlusVolt := Value;
+  OutCalc;
+  Invalidate;
+end;
+
+procedure TjanMeter.SetMinVolt(const Value: Double);
+begin
+  if Abs(Value - FMinVolt) < 0.001 then Exit;
+  FMinVolt := Value;
+  OutCalc;
+  Invalidate;
+end;
+
+procedure TjanMeter.MeterSelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanMeter.UpdateHintText;
+begin
+  // de meter meet altijd tegen de massa (0 V)
+  Hint := Tr(FTaal,
+    'Voltmeter (meet tegen de massa)' + #13#10 + '+ links: aansluiten met een draad of op een + rail inpluggen.' + #13#10 +
+      '- rechts mag open blijven of op een - rail ingeplugd worden.',
+    'Voltmeter (measures against ground)' + #13#10 + '+ left: connect a wire or plug onto a + rail.' + #13#10 +
+      '- right may stay open or be plugged onto a - rail.',
+    'Voltmètre (mesure par rapport à la masse)' + #13#10 + '+ à gauche : relier un fil ou brancher sur un rail +.' + #13#10 +
+      '- à droite peut rester libre ou être branché sur un rail -.',
+    'Voltmeter (misst gegen Masse)' + #13#10 + '+ links: Draht anschließen oder an eine + Schiene stecken.' + #13#10 +
+      '- rechts darf offen bleiben oder an eine - Schiene gesteckt werden.');
+end;
+
+procedure TjanMeter.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, 'Voltmeter > ', 0);
+  FOnStatus(Self, 'U = ' + FormatFloat('0.0', Reading) + ' V', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+procedure TjanMeter.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  SendStatusToBar;
+end;
+
+procedure TjanMeter.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+end;
+
 procedure TjanMeter.MoveConnectors;
 var i:integer;
     con:TjanConnector;
@@ -8589,10 +9425,9 @@ begin
   jlfEN: OutPut2:= Input1 and Input3;
  { end; }
   // Voltmeter (parallel aangesloten): toont het spanningsverschil
-  // U(+) - U(-). Input1 = + (links), Input3 = - (rechts).
-  //   + aan, - uit -> 5 V ; beide gelijk -> 0 V ;
-  //   + uit, - aan (omgekeerd aangesloten) -> 0 V
-  output2 := Input1 and not Input3;
+  // U(+) - U(-) in volt (zie Reading). Input1 = + (links), Input3 = - (rechts).
+  // De uitgang is hoog vanaf RailMinVolt (2 V), zoals een logische ingang.
+  output2 := Reading >= RailMinVolt - 0.001;
 end;
 
 procedure TjanMeter.SetInput1(const Value: boolean);
@@ -8693,7 +9528,7 @@ begin
       begin
         FGates[0].Active:=true;
         FGates[1].Active:=false;
-        FGates[2].Active:=true;
+        FGates[2].Active:=false;
         FGates[3].Active:=false;
         FGates[4].Active:=true;
         FGates[5].Active:=false;
@@ -9117,7 +9952,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -9158,7 +9993,7 @@ begin
       NewLeft := p.X - mdp.X;
       NewTop := p.Y - mdp.Y;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -9997,7 +10832,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
 
@@ -10664,7 +11499,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -10832,7 +11667,7 @@ begin
      newleft:=p.x-mdp.x;
      newtop:=p.y-mdp.y;
      MoveConnectors;
-     StraightenWires(connectors,newleft,newtop);
+     StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
      left:=newleft;
      top:=newtop;
 
@@ -11472,7 +12307,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -12222,7 +13057,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -12727,7 +13562,7 @@ begin
         NewTop := SnapP.Y - Height div 2;
       end;
 
-      StraightenWires(connectors,newleft,newtop);
+      StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
       Left := NewLeft;
       Top := NewTop;
       MoveConnectors;
@@ -13377,7 +14212,7 @@ inherited;
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
-     StraightenWires(connectors,newleft,newtop);
+     StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
      Left:=newleft;
      Top:=newtop;
 
@@ -13947,7 +14782,7 @@ begin
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
-     StraightenWires(connectors,newleft,newtop);
+     StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
      Left:=newleft;
      Top:=newtop;
 
@@ -14625,7 +15460,7 @@ begin
         NewLeft := SnapP.X - Width div 2;
         NewTop := SnapP.Y - Height div 2;
       end;
-     StraightenWires(connectors,newleft,newtop);
+     StraightenWires(connectors,newleft,newtop); SnapToRail(Self,newleft);
      Left:=newleft;
      Top:=newtop;
 
@@ -14934,6 +15769,7 @@ begin
   FVerwerkingAantal:=5;
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FBuzzer:=True;FDisplay:=true;
+  FVoeding:=True;
   FOutputAantal:=4;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -15315,7 +16151,11 @@ begin
         with TjanDisplay(c) do
           lijn := Format('TjanDisplay;%d;%d;%d;%d;', [Height, Left, Top, Width]);
         SFile.Add(lijn);
-      end;
+      end
+      else if c is TjanMeter then
+        SFile.Add(Format('TjanMeter;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+      else if c is TjanRail then
+        SFile.Add(RailFileLine(TjanRail(c)));
     end;
 
     // Paneel-instellingen achteraan
@@ -15325,6 +16165,8 @@ begin
       SFile.Add('Grid;True;')
     else
       SFile.Add('Grid;False;');
+    if not Paneel.ShowStatusBar then
+      SFile.Add('Statusbalk;False;');
 
     if codec then
       Decode(SFile); // of Encode, afhankelijk van jouw implementatie
@@ -15357,10 +16199,13 @@ begin
               (c is TjanMemory) or (c is TjanMeter) or (c is TjanSimButton) or
               (c is TjanSimKnop) or (c is TjanDipSwitsh) or (c is TjanSimPuls) or
               (c is TjanSimSensor) or (c is TjanSimWarm) or (c is TjanSimLight) or
-              (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay)) then
+              (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay) or
+              (c is TjanRail)) then
         Continue;
       s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
-      if c is TjanConnector then
+      if c is TjanRail then
+        s := RailFileLine(TjanRail(c))
+      else if c is TjanConnector then
         with TjanConnector(c) do
           s := s + Format(';%d;%d;%.3f', [Ord(V_ConPos), Ord(V_ConShape), V_Edge])
       else if c is TjanLogic then
@@ -15370,7 +16215,8 @@ begin
     // volgorde doet er niet toe (BringToFront bij de simulatie verandert ze)
     L.Sort;
     if Assigned(Paneel) then
-      L.Add(Format('paneel;%d;%d;%s', [Paneel.Color, Paneel.DotColor, BoolToStr(Paneel.ShowGrid, True)]));
+      L.Add(Format('paneel;%d;%d;%s;%s', [Paneel.Color, Paneel.DotColor, BoolToStr(Paneel.ShowGrid, True),
+        BoolToStr(Paneel.ShowStatusBar, True)]));
     Result := L.Text;
   finally
     L.Free;
@@ -15515,7 +16361,11 @@ begin
       with TjanDisplay(c) do
         lijn := Format('TjanDisplay;%d;%d;%d;%d;', [Height, Left, Top, Width]);
       TempFile.Add(lijn);
-    end;
+    end
+    else if c is TjanMeter then
+      TempFile.Add(Format('TjanMeter;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+    else if c is TjanRail then
+      TempFile.Add(RailFileLine(TjanRail(c)));
   end;
 
   // Paneel-instellingen
@@ -15525,6 +16375,8 @@ begin
     TempFile.Add('Grid;True;')
   else
     TempFile.Add('Grid;False;');
+  if not Paneel.ShowStatusBar then
+    TempFile.Add('Statusbalk;False;');
 end;
 
 procedure TjanSimLogicBox.InternalLoadFromList(AList: TStrings; Paneel: TjanGridS);
@@ -15552,6 +16404,8 @@ begin
   FNew := False;
   wc := FParent;
   FFilterLijst.Clear;
+  if Assigned(Paneel) then
+    Paneel.ShowStatusBar := True;   // panelen zonder regel 'Statusbalk' tonen de balk
 
   for i := 0 to AList.Count - 1 do
   begin
@@ -15621,6 +16475,78 @@ begin
       obj[2] := Copy(S, 1, positie - 1);           // True / False
       if Assigned(Paneel) then
          Paneel.ShowGrid := (Trim(obj[2]) = 'True');
+      Continue;
+    end;
+
+    // Statusbalk;False;  (balk Invoer / Verwerken / Uitvoer verborgen)
+    if obj[1] = 'Statusbalk' then
+    begin
+      if Assigned(Paneel) then
+        Paneel.ShowStatusBar := not SameText(Trim(Copy(S, 1, Pos(';', S + ';') - 1)), 'False');
+      Continue;
+    end;
+
+    // TjanMeter;height;left;top;width;  (voltmeter)
+    if obj[1] = 'TjanMeter' then
+    begin
+      with TStringList.Create do
+      try
+        Delimiter := ';';
+        StrictDelimiter := True;
+        DelimitedText := S;
+        if Count >= 3 then
+          with TjanMeter.Create(Self) do
+          begin
+            Parent := wc;
+            Tag := wc.ControlCount;
+            SetBounds(StrToIntDef(Trim(Strings[1]), 0), StrToIntDef(Trim(Strings[2]), 0), 100, 51);
+            Box := Self;
+            BTaal := StatTaalToBTaal(Language);
+            OnStatus := StatusFromChild;
+          end;
+      finally
+        Free;
+      end;
+      Continue;
+    end;
+
+    // TjanRail;height;left;top;width;+ of -;spanning x10;
+    if obj[1] = 'TjanRail' then
+    begin
+      with TStringList.Create do
+      try
+        Delimiter := ';';
+        StrictDelimiter := True;
+        DelimitedText := S;
+        if Count >= 6 then
+          AddRail(StrToIntDef(Trim(Strings[1]), 0), StrToIntDef(Trim(Strings[2]), 0),
+            StrToIntDef(Trim(Strings[0]), 200), Trim(Strings[4]) = '+',
+            StrToIntDef(Trim(Strings[5]), 50) / 10);
+      finally
+        Free;
+      end;
+      Continue;
+    end;
+
+    // Voeding;True;plusX;minX;plusBoven;plusOnder;minBoven;minOnder;
+    // (vaste paneelrails uit een testversie): omzetten naar twee rails
+    if obj[1] = 'Voeding' then
+    begin
+      with TStringList.Create do
+      try
+        Delimiter := ';';
+        StrictDelimiter := True;
+        DelimitedText := S;
+        if (Count >= 7) and (Trim(Strings[0]) = 'True') then
+        begin
+          AddRail(StrToIntDef(Strings[1], 0) - RailLineOfs, StrToIntDef(Strings[3], 0) - RailLabelH,
+            StrToIntDef(Strings[4], 0) - StrToIntDef(Strings[3], 0) + 1 + RailLabelH, True, RailMaxVolt);
+          AddRail(StrToIntDef(Strings[2], 0) - RailLineOfs, StrToIntDef(Strings[5], 0) - RailLabelH,
+            StrToIntDef(Strings[6], 0) - StrToIntDef(Strings[5], 0) + 1 + RailLabelH + RailFootH, False, 0);
+        end;
+      finally
+        Free;
+      end;
       Continue;
     end;
 
@@ -16130,6 +17056,39 @@ begin
   BlokkeerObjecten(False);
 end;
 
+function TjanSimLogicBox.AddRail(ALeft, ATop, AHeight: Integer; APlus: Boolean;
+  AVolt: Double): TjanRail;
+begin
+  Result := TjanRail.Create(Self);
+  Result.Parent := FParent;
+  Result.Plus := APlus;
+  Result.Volt := AVolt;
+  if AHeight < RailLabelH + RailMinLen + RailFootH then
+    AHeight := RailLabelH + RailMinLen + RailFootH;
+  Result.SetBounds(ALeft, ATop, RailWidth, AHeight);
+  Result.Box := Self;
+  Result.BTaal := StatTaalToBTaal(Language);
+  Result.OnStatus := StatusFromChild;
+end;
+
+procedure TjanSimLogicBox.NewRail(APlus: Boolean);
+var
+  R: TjanRail;
+begin
+  if FParent = nil then Exit;
+  if APlus then
+    R := AddRail(-100, 0, 200, True, RailMaxVolt)
+  else
+    R := AddRail(-100, 0, 200, False, 0);
+  // zoals een nieuw component uit de balk: volgt de muis tot de klik
+  // (zie GridMouseMove/GridMouseDown/GridMouseUp in main.pas)
+  R.Visible := False;
+  R.Tag := FParent.ControlCount;
+  FObjectID := R.Tag;
+  FNew := True;
+  Screen.Cursor := crCross;
+end;
+
 procedure TjanSimLogicBox.LoadPanel(welke: string; Paneel: TjanGridS; codec: Boolean);
 begin
   templijst.Clear;
@@ -16161,6 +17120,8 @@ begin
   // Zelfde start als LoadPanel / LoadPanelTemp
   KillPanel;
   FFilterLijst.Clear;
+  if Assigned(Paneel) then
+    Paneel.ShowStatusBar := True;   // panelen zonder regel 'Statusbalk' tonen de balk
   L := TStringList.Create;
   try
     // hele stream als tekst inlezen
@@ -16570,7 +17531,7 @@ begin
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
-  DDipSwitsh:=false;DGrid:=false;
+  DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
   else if ptinrect(RCon,p) then Dcon:=true
@@ -16590,6 +17551,8 @@ begin
   else if ptinrect(RMemory,p) and (KMemory=true)then DMemory:=true
   else if ptinrect(RDipSwitsh,p) and (KDipSwitsh=true)then DDipSwitsh:=true
   else if ptinrect(RMeter,p) and (KMeter=true)then DMeter:=true
+  else if PtInRect(RRailPlus, P) then DRailPlus := True
+  else if PtInRect(RRailMin, P) then DRailMin := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -16622,6 +17585,12 @@ begin
   else if PtInRect(RTeller, P) then NewHint := FHTeller
   else if PtInRect(RMemory, P) then NewHint := FHMemory
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
+  else if PtInRect(RRailPlus, P) then
+    NewHint := Tr(StatTaalToBTaal(Language), '+ rail (voeding) plaatsen', 'Place + rail (supply)',
+      'Placer un rail + (alimentation)', '+ Schiene (Versorgung) platzieren')
+  else if PtInRect(RRailMin, P) then
+    NewHint := Tr(StatTaalToBTaal(Language), '- rail (massa) plaatsen', 'Place - rail (ground)',
+      'Placer un rail - (masse)', '- Schiene (Masse) platzieren')
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -16764,6 +17733,12 @@ i:integer;
 begin
    wc:=Fparent;
    for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanRail) then
+        TjanRail(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanMeter) then
+        TjanMeter(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanSimLight) then
        begin
        (wc.Controls[i] as TjanSimLight).Lock:=blokkeer;
@@ -16855,6 +17830,9 @@ wc:TWinControl;
 i:integer;
 begin
    wc:=Fparent;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanRail) then
+        wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanSimLight) then
        begin
@@ -17015,6 +17993,7 @@ var
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DBuzzer := False; DDisplay := False;
+    DRailPlus := False; DRailMin := False;
 
     // nieuw
     DSquare := False;
@@ -17203,6 +18182,10 @@ begin
     AddF('TjanDisplay.Left');  AddF('TjanDisplay.Top');
     AddF('TjanDisplay.Width'); AddF('TjanDisplay.Height');
   end
+  else if DRailPlus then
+    NewRail(True)
+  else if DRailMin then
+    NewRail(False)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -17211,6 +18194,7 @@ begin
 
     AddF('TjanMeter.Left');  AddF('TjanMeter.Top');
     AddF('TjanMeter.Width'); AddF('TjanMeter.Height');
+    Box := Self; BTaal := StatTaalToBTaal(Language); OnStatus := StatusFromChild;
   end
   else if DBuzzer then
   with TjanSimBuzzer.Create(self) do
@@ -17585,7 +18569,9 @@ procedure TjanSimLogicBox.SelectObject(AObj: TObject);
     else if Obj is TjanSimLight then TjanSimLight(Obj).Selected := AValue
     else if Obj is TjanSimRelais then TjanSimRelais(Obj).Selected := AValue
     else if Obj is TjanSimBuzzer then TjanSimBuzzer(Obj).Selected := AValue
-    else if Obj is TjanDisplay then TjanDisplay(Obj).Selected := AValue;
+    else if Obj is TjanDisplay then TjanDisplay(Obj).Selected := AValue
+    else if Obj is TjanRail then TjanRail(Obj).Selected := AValue
+    else if Obj is TjanMeter then TjanMeter(Obj).Selected := AValue;
     // aanpassen voor volgend object
   end;
 
@@ -17655,6 +18641,10 @@ begin
       TjanSimWarm(c).BTaal := s
     else if c is TjanSimPuls then
       TjanSimPuls(c).BTaal := s
+    else if c is TjanMeter then
+      TjanMeter(c).BTaal := s
+    else if c is TjanRail then
+      TjanRail(c).BTaal := s
     else if c is TjanDipSwitsh then
       TjanDipSwitsh(c).BTaal := s
     else if c is TjanLogic then
@@ -17794,6 +18784,13 @@ begin
     FDisplay := Value;
   if Value=true then FOutputAantal:= FOutputAantal+1 else FOutputAantal:= FOutputAantal-1;
   end;
+  invalidate;
+end;
+
+procedure TjanSimLogicBox.SetVoeding(const Value: Boolean);
+begin
+  if Value = FVoeding then Exit;
+  FVoeding := Value;
   invalidate;
 end;
 
@@ -18342,10 +19339,63 @@ begin
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
         draw(Lk+1,top + 2,bmMeter);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
+      // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
+      RRailPlus := Rect(0, 0, 0, 0);
+      RRailMin := Rect(0, 0, 0, 0);
+      if FVoeding then
+      begin
+      TOP := TOP + 8;
+      RRailPlus := Rect(LK - 4, TOP, LK + 13, TOP + H);
+      RRailMin := Rect(LK + 15, TOP, LK + 32, TOP + H);
+      DrawRailButton(RRailPlus, True, DRailPlus);
+      DrawRailButton(RRailMin, False, DRailMin);
       end;
     end;
   end;
 
+end;
+
+// knop in de componentenbalk: verticale rail met + (rood) of massasymbool (blauw)
+procedure TjanSimLogicBox.DrawRailButton(const R: TRect; APlus, ADown: Boolean);
+var
+  Rb: TRect;
+  X: Integer;
+  Col: TColor;
+begin
+  Rb := R;
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    Brush.Color := clSilver;
+    if not ADown then
+      Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+    else
+      Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+    FillRect(Rb);
+    if APlus then Col := clRed else Col := clBlue;
+    Brush.Color := Col;
+    X := (R.Left + R.Right) div 2 - 1;
+    if APlus then
+    begin
+      // plusteken boven de rail
+      FillRect(Rect(X, R.Top + 9, X + 2, R.Bottom - 3));
+      FillRect(Rect(X - 3, R.Top + 4, X + 5, R.Top + 6));
+      FillRect(Rect(X, R.Top + 1, X + 2, R.Top + 9));
+    end
+    else
+    begin
+      // rail met het massasymbool onderaan
+      FillRect(Rect(X, R.Top + 3, X + 2, R.Bottom - 10));
+      FillRect(Rect(X - 4, R.Bottom - 11, X + 6, R.Bottom - 9));
+      FillRect(Rect(X - 2, R.Bottom - 8, X + 4, R.Bottom - 6));
+      FillRect(Rect(X, R.Bottom - 5, X + 2, R.Bottom - 3));
+    end;
+    Brush.Color := clSilver;
+  end;
 end;
 
 
@@ -19174,6 +20224,10 @@ begin
     TjanSimPuls(AComponent).BTaal := Taal;
     TjanSimPuls(AComponent).UpdateHintText;
   end
+  else if AComponent is TjanRail then
+    TjanRail(AComponent).BTaal := Taal
+  else if AComponent is TjanMeter then
+    TjanMeter(AComponent).BTaal := Taal
   else if AComponent is TjanDipSwitsh then
   begin
     TjanDipSwitsh(AComponent).BTaal := Taal;
@@ -19500,7 +20554,7 @@ begin
      (C is TjanSimButton) or (C is TjanSimKnop) or (C is TjanSimSensor) or
      (C is TjanSimWarm) or (C is TjanSimPuls) or (C is TjanDipSwitsh) or
      (C is TjanSimLight) or (C is TjanSimRelais) or (C is TjanSimBuzzer) or
-     (C is TjanDisplay) or (C is TjanMeter));
+     (C is TjanDisplay) or (C is TjanMeter) or (C is TjanRail));
   // vergrendelde objecten blijven staan
   if Result and IsPublishedProp(C, 'Lock') then
     Result := GetOrdProp(C, 'Lock') = 0;
@@ -19730,6 +20784,39 @@ begin
   Parent.Invalidate;
 end;
 
+procedure TjanGroupSelect.BeginRailMove(ARail: TControl);
+var
+  i: Integer;
+  C: TControl;
+begin
+  Clear;
+  if Parent = nil then Exit;
+  for i := 0 to Parent.ControlCount - 1 do
+  begin
+    C := Parent.Controls[i];
+    if C.Visible and (ARail is TjanRail) and RailFits(TjanRail(ARail), C, C.Left, C.Top) then
+    begin
+      FItems.Add(C);
+      C.FreeNotification(Self);
+    end;
+  end;
+  FRailMoving := FItems.Count > 0;
+  if FRailMoving then
+    PrepareDrag;   // het kader zelf blijft onzichtbaar
+end;
+
+procedure TjanGroupSelect.RailMove(DX, DY: Integer);
+begin
+  if FRailMoving then
+    ApplyDelta(DX, DY);   // DX/DY t.o.v. het begin van het slepen
+end;
+
+procedure TjanGroupSelect.EndRailMove;
+begin
+  FRailMoving := False;
+  Clear;
+end;
+
 procedure TjanGroupSelect.ApplyDelta(DX, DY: Integer);
 var
   i: Integer;
@@ -19767,7 +20854,7 @@ end;
 procedure TjanGroupSelect.MouseMove(Shift: TShiftState; X, Y: Integer);
 var
   P, C0, Snapped: TPoint;
-  DX, DY: Integer;
+  DX, DY, i, NL: Integer;
   WorkR: TRect;
   Ref: TControl;
 begin
@@ -19790,6 +20877,19 @@ begin
     Snapped := TjanGridS(Parent).SnapPointToRuler(C0, WorkR);
     DX := DX + (Snapped.X - C0.X);
     DY := DY + (Snapped.Y - C0.Y);
+  end;
+
+  // voedingsrails: komt een invoer of uitvoer van de groep dicht bij zijn
+  // rail, dan springt de hele groep zodat die erop zit (eerste treffer wint)
+  for i := 0 to FItems.Count - 1 do
+  begin
+    NL := FItemStart[i].X + DX;
+    SnapToRail(TControl(FItems[i]), NL);
+    if NL <> FItemStart[i].X + DX then
+    begin
+      DX := NL - FItemStart[i].X;
+      Break;
+    end;
   end;
 
   ApplyDelta(DX, DY);

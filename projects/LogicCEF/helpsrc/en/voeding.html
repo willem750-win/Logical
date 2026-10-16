@@ -1,0 +1,101 @@
+<!-- titel: Power & voltmeter -->
+  <h1 id="voeding">Power &amp; voltmeter</h1>
+  <p class="lead">Normally all components get their power invisibly in the background (see
+  <a href="simulatie.html#voeding">Where are the plus and the minus?</a>). If you want to see the plus and
+  the minus, put <b>power rails</b> on the panel: a red <b>+ rail</b> for the inputs and a blue
+  <b>&minus; rail</b> (ground) for the outputs. With the <b>voltmeter</b> you measure the voltage.</p>
+
+  <figure>
+    <img src="../img/voeding-voorbeeld.png" alt="Power rails with push button, lamp and voltmeter">
+    <figcaption>A push button on a 5&nbsp;V + rail, a lamp on the &minus; rail (ground), and a voltmeter
+    between a 3.3&nbsp;V + rail and ground.</figcaption>
+  </figure>
+
+  <h2 id="rails">Placing power rails</h2>
+  <p>At the bottom of the <a href="onderdelenbalk.html">component bar</a> there are two half buttons side by side:</p>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (supply)</td><td>Red rail. The voltage is shown at the top, for example <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; rail (ground)</td><td>Blue rail with <b>0V</b> at the top and the ground symbol at the bottom.</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Click the button of the rail you want to place.</li>
+    <li>Click on the panel where the rail should go.</li>
+  </ol>
+  <p>You may place as many + and &minus; rails as you like, for example a separate rail for each part of the circuit.</p>
+
+  <h2 id="regels">What changes when there are rails on the panel?</h2>
+  <p>As long as there is no rail on the panel, everything works as before. As soon as there is
+  <b>at least one</b> rail, inputs and outputs must be <b>plugged in</b>:</p>
+  <ul>
+    <li><a href="invoer.html">Inputs</a> (push button, switch, DIP switch, pulse generator, light and
+      heat sensor) sit on the <b>right</b> of a <b>+ rail</b>.</li>
+    <li><a href="uitvoer.html">Outputs</a> (lamp, relay, buzzer and display) sit on the <b>left</b> of a
+      <b>&minus; rail</b>.</li>
+  </ul>
+  <p>A plugged-in component gets a thin plug with a dot in the colour of the rail. A component that is not
+  plugged in gets a <b>grey dot</b> and does not work: an input gives no signal, an output stays off and a
+  display stays dark.</p>
+  <p>The <a href="verwerking.html">processing</a> components (gates, counter and memory) are not plugged in:
+  they still get their power invisibly.</p>
+
+  <h2 id="inpluggen">Plugging in</h2>
+  <ul>
+    <li>Drag a component against the rail. Within 12 pixels it snaps onto it.</li>
+    <li>When you place a new component from the bar, or drag a group of components, it also snaps onto a rail
+      nearby.</li>
+    <li>The <b>middle</b> of the component must be next to the drawn part of the rail, not above or below it.
+      Make the rail longer if needed.</li>
+    <li>The arrow keys move one pixel at a time; that way you can also pull a component off again.</li>
+  </ul>
+
+  <h2 id="bewerken">Moving and resizing rails</h2>
+  <ul>
+    <li><b>Move:</b> drag the middle of the rail. All components plugged into it move along, with their wires.</li>
+    <li><b>Longer or shorter:</b> drag an end (the mouse pointer becomes &updownarrow;). On a &minus; rail the
+      ground symbol is the bottom end.</li>
+    <li><b>Right-click menu:</b> <b>Voltage</b> (+ rail only), <b>Lock / Unlock</b> and <b>Select object</b>
+      to <a href="objecten.html#verwijderen">delete</a> the rail.</li>
+    <li>During the <a href="simulatie.html">simulation</a> the rails cannot be moved.</li>
+  </ul>
+
+  <h2 id="spanning">Voltage of a + rail</h2>
+  <p>Right-click a + rail and choose <b>Voltage</b>: 0, 1, 2, 3, 3.3, 4 or 5&nbsp;V. Just like in real logic
+  circuits, an input only works from about <b>2&nbsp;V</b>.</p>
+  <table>
+    <tr><th>Voltage</th><th>Rail</th><th>Input on this rail</th></tr>
+    <tr><td>0&nbsp;V</td><td>grey</td><td>gives no signal</td></tr>
+    <tr><td>1&nbsp;V</td><td>dark red</td><td>gives no signal: voltage too low</td></tr>
+    <tr><td>2&nbsp;V to 5&nbsp;V</td><td>red, brighter as the voltage rises</td><td>works</td></tr>
+  </table>
+
+  <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
+  <p>The voltmeter is in the component bar. To hide it, set <b>Voltmeter</b> to <b>False</b> in
+  <a href="instellingen.html#schakelelementen">Settings</a>, <b>Switch Elements</b> tab.</p>
+  <p>The voltmeter measures the voltage <b>against ground</b> (0&nbsp;V) and shows it with one decimal,
+  in red as soon as there is a voltage.</p>
+  <ul>
+    <li><b>+</b> (left): connect a wire, or plug the meter in on the right of a + rail. It then shows the
+      voltage of that rail.</li>
+    <li><b>&minus;</b> (right): may stay open, or plug the meter in on the left of a &minus; rail. The reading
+      stays the same; it only makes the circuit clearer.</li>
+  </ul>
+  <p>A wire carries the voltage of its source:</p>
+  <table>
+    <tr><th>Source</th><th>Voltage on the wire</th></tr>
+    <tr><td>input on a + rail, on</td><td>the voltage of that rail</td></tr>
+    <tr><td>input without rails on the panel, on</td><td>5&nbsp;V</td></tr>
+    <tr><td>gate, counter or memory, output on</td><td>5&nbsp;V</td></tr>
+    <tr><td>anything that is off</td><td>0&nbsp;V</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> put a push button on a 1&nbsp;V + rail and connect it to a lamp and
+  to the voltmeter. When you press the button, the meter shows 1.0&nbsp;V but the lamp stays off: the voltage
+  is too low for a logic input.</div>
+
+  <h2 id="bewaren">Saving and settings</h2>
+  <ul>
+    <li>Rails (with their position, length and voltage) and voltmeters are saved in the panel file
+      (<code>.lpl</code>). An older version of Logic skips the rails.</li>
+    <li>If you do not want the rail buttons in the component bar, set <b>Power rails (+ and -)</b> to
+      <b>False</b> in <a href="instellingen.html#schakelelementen">Settings</a>.</li>
+  </ul>

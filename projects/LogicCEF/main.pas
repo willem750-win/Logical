@@ -32,6 +32,7 @@ type
     btGridguidelines: TSpeedButton;
     btGridkaders: TSpeedButton;
     btGridPanelTitel: TSpeedButton;
+    btStatusBalk: TSpeedButton;
     btSimulate: TSpeedButton;
     btInfo2: TSpeedButton;
     btnSavePanel1: TSpeedButton;
@@ -93,6 +94,7 @@ type
     procedure btnSavePanelClick(Sender: TObject);
     procedure btOpenPaneelClick(Sender: TObject);
     procedure btGridPanelTitelClick(Sender: TObject);
+    procedure btStatusBalkClick(Sender: TObject);
     procedure btSimulateMouseEnter(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -153,6 +155,7 @@ type
      procedure ShowBuiltinPanelTitle(AKind: Integer);
      procedure SetPanelTitle(const ATitle: string);
      procedure MarkPanelClean;
+     procedure GridPaintOverlay(Sender: TObject);
      function PanelModified: Boolean;
      procedure DirtyTimerTick(Sender: TObject);
      function SavePanelAs: Boolean;
@@ -790,7 +793,7 @@ Begin
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KWarm,KDraad');
+                                  'KSensor,KTeller,KWarm,KDraad,KVoeding,KMeter');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
@@ -1098,6 +1101,7 @@ end;
     btGridguidelines.Hint:= 'Richtlijnen op raster Ja/Nee...';
     btGridkaders.hint := 'Teken kader op raster...';
     btGridPanelTitel.hint:= 'Titel van paneel wijzigen...';
+    btStatusBalk.Hint := 'Balk Invoer / Verwerken / Uitvoer Ja/Nee';
     BSettings2.Hint := 'Instellingen openen';
     btClose1.Hint   := 'Programma afsluiten';
     btInfo2.Hint    := 'Over Logic...';
@@ -1121,6 +1125,7 @@ end;
     btGridguidelines.Hint:= 'Guidelines on grid YES/NO...';
     btGridkaders.hint := 'Draw frame on grid...';
     btGridPanelTitel.hint:= 'Change panel title...';
+    btStatusBalk.Hint := 'Bar Input / Processing / Output on/off';
 
     BSettings2.Hint := 'Open settings';
     btClose1.Hint   := 'Close application';
@@ -1144,6 +1149,7 @@ end;
     btGridguidelines.Hint:= 'Lignes directrices sur la grille OUI/NON...';
     btGridkaders.hint := 'Tracer un cadre sur la grille...';
     btGridPanelTitel.hint:= 'Changer le titre du panneau...';
+    btStatusBalk.Hint := 'Barre Entrée / Traitement / Sortie oui/non';
 
     BSettings2.Hint := 'Ouvrir les paramètres';
     btClose1.Hint   := 'Fermer l''application';
@@ -1167,6 +1173,7 @@ end;
     btGridguidelines.Hint:= 'Richtlinien zum Raster JA/NEIN...';
     btGridkaders.hint := 'Zeichne einen Rahmen auf das Raster...';
     btGridPanelTitel.hint:= 'Paneltitel ändern...';
+    btStatusBalk.Hint := 'Leiste Eingabe / Verarbeitung / Ausgabe ein/aus';
 
     BSettings2.Hint := 'Einstellungen öffnen...';
     btClose1.Hint   := 'Anwendung schließen...';
@@ -1236,6 +1243,7 @@ end;
 
 procedure TmainForm.MarkPanelClean;
 begin
+  btStatusBalk.Down := Grid.ShowStatusBar;   // na laden: knop volgt het paneel
   FCleanSignature := Box.PanelSignature(Grid);
   DirtyTimerTick(nil);
 end;
@@ -1487,7 +1495,8 @@ begin
          (C is TjanSimWarm)  or (C is TjanSimPuls) or (C is TjanDipSwitsh) or
          (C is TjanDipSwitsh) or (C is TjanLogic) or (C is TjanTeller) or
          (C is TjanMemory) or (C is TjanSimLight) or (C is TjanSimRelais) or
-         (C is TjanSimBuzzer) or (C is TjanDisplay))  then
+         (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
+         (C is TjanMeter))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 
@@ -1665,6 +1674,18 @@ begin
   GridTitleClick(Grid);
 end;
 
+// balk Invoer / Verwerken / Uitvoer boven het paneel tonen of verbergen
+procedure TmainForm.btStatusBalkClick(Sender: TObject);
+begin
+  Grid.ShowStatusBar := btStatusBalk.Down;
+end;
+
+// stekkers en bolletjes van de voedingsrails (zie TjanRail)
+procedure TmainForm.GridPaintOverlay(Sender: TObject);
+begin
+  DrawRailOverlay(Grid);
+end;
+
 procedure TmainForm.btSimulateMouseEnter(Sender: TObject);
 begin
   UpdateLastHelpObject(Sender);
@@ -1688,6 +1709,8 @@ begin
 end;
 
 procedure TmainForm.FormCreate(Sender: TObject);
+var
+  BarIcon: TBitmap;
 begin
   Box.OnStatusText := @StatusFromLogicBox;
   Box.OnObjectMove := @BoxObjectMove;
@@ -1756,6 +1779,26 @@ begin
   btGridguidelines.HelpKeyword := 'richtlijnen';
   btGridkaders.HelpKeyword := 'kader';
   btGridPanelTitel.HelpKeyword := 'titel';
+  btStatusBalk.HelpKeyword := 'statusbalk';
+  Grid.OnPaintOverlay := @GridPaintOverlay;
+  // icoon voor de knop: de balk Invoer (groen) / Verwerken (rood) / Uitvoer (blauw).
+  // Alleen zolang de knop nog geen icoon uit ImageList1 heeft (statusbalk16.png).
+  if (btStatusBalk.Images = nil) or (btStatusBalk.ImageIndex < 0) then
+  begin
+  BarIcon := TBitmap.Create;
+  try
+    BarIcon.SetSize(18, 10);
+    BarIcon.Canvas.Brush.Color := Grid.ColorInput;
+    BarIcon.Canvas.FillRect(Rect(0, 0, 6, 10));
+    BarIcon.Canvas.Brush.Color := Grid.ColorProcessing;
+    BarIcon.Canvas.FillRect(Rect(6, 0, 12, 10));
+    BarIcon.Canvas.Brush.Color := Grid.ColorOutput;
+    BarIcon.Canvas.FillRect(Rect(12, 0, 18, 10));
+    btStatusBalk.Glyph.Assign(BarIcon);
+  finally
+    BarIcon.Free;
+  end;
+  end;
   Taal.HelpKeyword := 'taal';
 end;
 
@@ -1937,7 +1980,7 @@ procedure TmainForm.GridMouseDown(Sender: TObject; Button: TMouseButton;
 var
 wc:TWinControl;
 Child:TControl;
-a,b:integer;
+a,b,nl:integer;
 beweeg:Boolean;
 begin
 if fr_Settingsbestaat then exit;
@@ -1960,7 +2003,10 @@ beweeg:= Box.NewObject;//  NewObject;
     Child := wc.controls[a];
     if Child.Tag= Box.ObjectID then
       begin
-      Child.Left:= X + 2;Child.top:=Y+2;
+      Child.top:=Y+2;   // eerst de hoogte: inspringen alleen naast de rail
+      nl := X + 2;
+      SnapToRail(Child, nl, 30);   // nieuw component meteen op de rail
+      Child.Left:= nl;Child.top:=Y+2;
       end;
     end;
    end;
@@ -1972,7 +2018,7 @@ procedure TmainForm.GridMouseMove(Sender: TObject; Shift: TShiftState; X,
 var
   wc:TWinControl;
   Child:TControl;
-  a,b:integer;
+  a,b,nl:integer;
 begin
   if FGroup.Banding then
     FGroup.MoveBand(X, Y);
@@ -1987,7 +2033,10 @@ begin
       Child := wc.Controls[a];
       if Child.Tag = box.ObjectID then
       begin
-        Child.Left := X + 2;
+        Child.Top  := Y + 2;   // eerst de hoogte: inspringen alleen naast de rail
+        nl := X + 2;
+        SnapToRail(Child, nl, 30);   // nieuw component meteen op de rail
+        Child.Left := nl;
         Child.Top  := Y + 2;
       end;
     end;

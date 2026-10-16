@@ -83,6 +83,7 @@ type
     FOnMouseUp: TMouseEvent;
     // statusbar / titel
     FStatusBarHeight: NativeInt;
+    FShowStatusBar: Boolean;   // balk Invoer / Verwerken / Uitvoer tonen
     FColorInput: TColor;
     FColorProcessing: TColor;
     FColorOutput: TColor;
@@ -119,6 +120,7 @@ type
     miFrameColorRed: TMenuItem;
     miFrameColorGreen: TMenuItem;
     miFrameDelete: TMenuItem;
+    FOnPaintOverlay: TNotifyEvent;   // tekenen na het raster, onder de objecten
     procedure ClearFrameSelection;
     procedure BuildFramePopup;
     procedure UpdateFramePopupCaptions;
@@ -153,6 +155,8 @@ type
 
     procedure DrawStatusBar;
     function GetStatusBarRect: TRect;
+    function BarHeight: Integer;
+    procedure SetShowStatusBar(Value: Boolean);
 
     // rulers helpers
     function GetTitleHeight: Integer;
@@ -185,6 +189,8 @@ type
     procedure BeginGuideLines(AX, AY: Integer);
     procedure UpdateGuideLines(AX, AY: Integer);
     procedure EndGuideLines;
+    // getekend na raster en kaders, onder de objecten (bv. stekkers van voedingsrails)
+    property OnPaintOverlay: TNotifyEvent read FOnPaintOverlay write FOnPaintOverlay;
 
   published
     property Capture: Boolean read FCapture write FCapture;
@@ -195,6 +201,7 @@ type
     property SnapToGrid: Boolean read FSnapToGrid write FSnapToGrid;
 
     property StatusBarHeight: NativeInt read FStatusBarHeight write FStatusBarHeight default 25;
+    property ShowStatusBar: Boolean read FShowStatusBar write SetShowStatusBar default True;
     property ColorInput: TColor read FColorInput write FColorInput default clGreen;
     property ColorProcessing: TColor read FColorProcessing write FColorProcessing default clRed;
     property ColorOutput: TColor read FColorOutput write FColorOutput default clBlue;
@@ -789,6 +796,7 @@ begin
 
   // statusbar / titel
   FStatusBarHeight := 25;
+  FShowStatusBar := True;
   FColorInput := clGreen;
   FColorProcessing := clRed;
   FColorOutput := clBlue;
@@ -858,7 +866,7 @@ end;
 
 function TjanGridS.GetTitleTop: Integer;
 begin
-  Result := FStatusBarHeight + 3;
+  Result := BarHeight + 3;
 end;
 
 function TjanGridS.GetTopRulerRect: TRect;
@@ -1068,6 +1076,22 @@ begin
     Result := Rect(3, 2, Width - 3, FStatusBarHeight);
 end;
 
+// hoogte die de balk Invoer / Verwerken / Uitvoer inneemt (0 als verborgen)
+function TjanGridS.BarHeight: Integer;
+begin
+  if FShowStatusBar then
+    Result := FStatusBarHeight
+  else
+    Result := 0;
+end;
+
+procedure TjanGridS.SetShowStatusBar(Value: Boolean);
+begin
+  if FShowStatusBar = Value then Exit;
+  FShowStatusBar := Value;
+  Invalidate;
+end;
+
 procedure TjanGridS.DrawStatusBar;
 var
   StatusBarRect: TRect;
@@ -1078,6 +1102,8 @@ begin
   StatusBarRect := GetStatusBarRect;
   SectionWidth := StatusBarRect.Width div 3;
 
+  if FShowStatusBar then
+  begin
   // Input-sectie
   Canvas.Brush.Color := FColorInput;
   Canvas.FillRect(Rect(StatusBarRect.Left, StatusBarRect.Top,
@@ -1111,6 +1137,8 @@ begin
   CenterY := (StatusBarRect.Top + StatusBarRect.Bottom - TextHeight) div 2;
   Canvas.TextOut(CenterX, CenterY, FOutputText);
 
+  end;
+
   // Titel alleen tekenen als die niet leeg is
   if Trim(FTitel) <> '' then
   begin
@@ -1126,7 +1154,7 @@ begin
     else
       TextX := ((Width - TextWidth) div 2) + 23;
 
-    TextY := FStatusBarHeight + 5;
+    TextY := BarHeight + 5;
     RectT := Rect(TextX, TextY, TextX + TextWidth, TextY + TextHeight);
     Canvas.TextRect(RectT, TextX, TextY, FTitel);
   end;
@@ -1280,6 +1308,9 @@ begin
 
   for i := 0 to FFrames.Count - 1 do
     TGridFrame(FFrames[i]).Draw(Canvas);
+
+  if Assigned(FOnPaintOverlay) then
+    FOnPaintOverlay(Self);
 end;
 
 
@@ -1319,7 +1350,7 @@ begin
   else
     TextX := ((Width - TxtWidth) div 2) + 23;
 
-  TextY := FStatusBarHeight + 5;
+  TextY := BarHeight + 5;
 
   Result := Rect(TextX, TextY, TextX + TxtWidth, TextY + TxtHeight);
 end;

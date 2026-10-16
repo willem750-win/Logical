@@ -133,8 +133,14 @@ begin
       begin Result := 'verwerking'; AAnchor := 'poorten'; end;
     'teller', 'geheugen':
       Result := 'verwerking';
-    'lamp', 'relais', 'zoemer', 'display', 'meter':
+    'lamp', 'relais', 'zoemer', 'display':
       Result := 'uitvoer';
+    'voeding', 'rail':
+      begin Result := 'voeding'; AAnchor := 'rails'; end;
+    'meter':
+      begin Result := 'voeding'; AAnchor := 'voltmeter'; end;
+    'statusbalk':
+      begin Result := 'paneel'; AAnchor := 'statusbalk'; end;
     'connector':
       Result := 'verbindingen';
     'delete_selected':
@@ -242,6 +248,40 @@ begin
         '- Verarbeitet Eingänge entsprechend einer logischen Funktion.'#13#10 +
         '- Unterstützte Funktionen sind z. B. AND, OR und NOT.'#13#10 +
         '- Die gewählte Funktion kann in Statusleiste oder Hinweis angezeigt werden.');
+
+    'voeding', 'rail':
+      Result := TrHelp(ABTaal,
+        'Voedingsrail'#13#10#13#10 +
+        '- + rail: invoer rechts inpluggen; rechtsklik voor de spanning.'#13#10 +
+        '- - rail (massa): uitvoer links inpluggen.'#13#10 +
+        '- Midden slepen = verplaatsen, uiteinde slepen = langer/korter.',
+        'Power rail'#13#10#13#10 +
+        '- + rail: plug inputs in on the right; right-click for the voltage.'#13#10 +
+        '- - rail (ground): plug outputs in on the left.'#13#10 +
+        '- Drag the middle to move, drag an end to resize.',
+        'Rail d''alimentation'#13#10#13#10 +
+        '- Rail + : brancher les entrées à droite ; clic droit pour la tension.'#13#10 +
+        '- Rail - (masse) : brancher les sorties à gauche.'#13#10 +
+        '- Glisser le milieu pour déplacer, une extrémité pour redimensionner.',
+        'Versorgungsschiene'#13#10#13#10 +
+        '- + Schiene: Eingänge rechts anstecken; Rechtsklick für die Spannung.'#13#10 +
+        '- - Schiene (Masse): Ausgänge links anstecken.'#13#10 +
+        '- Mitte ziehen = verschieben, Ende ziehen = verlängern/kürzen.');
+
+    'meter':
+      Result := TrHelp(ABTaal,
+        'Voltmeter'#13#10#13#10 +
+        '- Toont de spanning op de + tegenover de massa.'#13#10 +
+        '- + via een draad of ingeplugd op een + rail.',
+        'Voltmeter'#13#10#13#10 +
+        '- Shows the voltage on the + against ground.'#13#10 +
+        '- + via a wire or plugged onto a + rail.',
+        'Voltmètre'#13#10#13#10 +
+        '- Affiche la tension sur le + par rapport à la masse.'#13#10 +
+        '- + par un fil ou branché sur un rail +.',
+        'Voltmeter'#13#10#13#10 +
+        '- Zeigt die Spannung am + gegen Masse.'#13#10 +
+        '- + über einen Draht oder an eine + Schiene gesteckt.');
 
     'connector':
       Result := TrHelp(ABTaal,
@@ -478,6 +518,7 @@ begin
     'tjansimbuzzer':    AControl.HelpKeyword := 'zoemer';
     'tjandisplay':      AControl.HelpKeyword := 'display';
     'tjanmeter':        AControl.HelpKeyword := 'meter';
+    'tjanrail':         AControl.HelpKeyword := 'voeding';
     'tjanconnector':    AControl.HelpKeyword := 'connector';
     'tjansimlogicbox':  AControl.HelpKeyword := 'logicbox';
     'tjangrids':        AControl.HelpKeyword := 'grid';

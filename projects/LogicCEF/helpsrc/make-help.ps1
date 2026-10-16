@@ -26,28 +26,32 @@ $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
 $Pages = @(
   'index', 'werkwijze',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
-  'group:onderdelen', 'invoer', 'verwerking', 'uitvoer',
+  'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding',
   'group:werken', 'verbindingen', 'objecten', 'simulatie', 'instellingen'
 )
 
 $Nav = @{
   nl = @{ index = 'Start'; werkwijze = 'Aan de slag'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
+          voeding = 'Voeding &amp; voltmeter';
           verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
   en = @{ index = 'Start'; werkwijze = 'Getting started'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
+          voeding = 'Power &amp; voltmeter';
           verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
   fr = @{ index = 'Accueil'; werkwijze = 'Premiers pas'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
+          voeding = 'Alimentation &amp; voltmètre';
           verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
   de = @{ index = 'Start'; werkwijze = 'Erste Schritte'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
+          voeding = 'Versorgung &amp; Voltmeter';
           verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation';
           instellingen = 'Einstellungen &amp; Sprache';
           'group:scherm' = 'Das Fenster'; 'group:onderdelen' = 'Bauteile'; 'group:werken' = 'Arbeiten mit Logic' }
@@ -56,7 +60,7 @@ $Nav = @{
 # Pictogram per navigatie-item
 $NavIcon = @{
   knoppen = 'knop-simuleren'; paneel = 'knop-raster'; onderdelenbalk = 'pal-verbinding';
-  invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp';
+  invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus';
   verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren';
   instellingen = 'knop-instellingen'
 }

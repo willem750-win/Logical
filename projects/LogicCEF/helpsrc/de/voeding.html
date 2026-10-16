@@ -1,0 +1,103 @@
+<!-- titel: Versorgung & Voltmeter -->
+  <h1 id="voeding">Versorgung &amp; Voltmeter</h1>
+  <p class="lead">Normalerweise werden alle Bauteile unsichtbar im Hintergrund versorgt (siehe
+  <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a>). Möchten Sie Plus und Minus sehen, setzen Sie
+  <b>Versorgungsschienen</b> auf das Panel: eine rote <b>+ Schiene</b> für die Eingänge und eine blaue
+  <b>&minus; Schiene</b> (Masse) für die Ausgänge. Mit dem <b>Voltmeter</b> messen Sie die Spannung.</p>
+
+  <figure>
+    <img src="../img/voeding-voorbeeld.png" alt="Versorgungsschienen mit Taster, Lampe und Voltmeter">
+    <figcaption>Ein Taster an einer + Schiene mit 5&nbsp;V, eine Lampe an der &minus; Schiene (Masse) und ein
+    Voltmeter zwischen einer + Schiene mit 3,3&nbsp;V und Masse.</figcaption>
+  </figure>
+
+  <h2 id="rails">Versorgungsschienen platzieren</h2>
+  <p>Unten in der <a href="onderdelenbalk.html">Bauteilleiste</a> stehen zwei halbe Schaltflächen nebeneinander:</p>
+  <table>
+    <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ Schiene (Versorgung)</td><td>Rote Schiene. Oben steht die Spannung, zum Beispiel <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; Schiene (Masse)</td><td>Blaue Schiene mit <b>0V</b> oben und dem Massesymbol unten.</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Klicken Sie auf die Schaltfläche der gewünschten Schiene.</li>
+    <li>Klicken Sie auf das Panel, wo die Schiene hin soll.</li>
+  </ol>
+  <p>Sie können beliebig viele + und &minus; Schienen setzen, zum Beispiel eine eigene Schiene für jeden Teil der Schaltung.</p>
+
+  <h2 id="regels">Was ändert sich, wenn Schienen auf dem Panel stehen?</h2>
+  <p>Solange keine Schiene auf dem Panel steht, funktioniert alles wie bisher. Sobald <b>mindestens eine</b>
+  Schiene vorhanden ist, müssen Eingänge und Ausgänge <b>angesteckt</b> sein:</p>
+  <ul>
+    <li><a href="invoer.html">Eingänge</a> (Taster, Schalter, DIP-Schalter, Impulsgeber, Licht- und
+      Wärmesensor) sitzen <b>rechts</b> an einer <b>+ Schiene</b>.</li>
+    <li><a href="uitvoer.html">Ausgänge</a> (Lampe, Relais, Summer und Anzeige) sitzen <b>links</b> an einer
+      <b>&minus; Schiene</b>.</li>
+  </ul>
+  <p>Ein angestecktes Bauteil bekommt einen dünnen Stecker mit einem Punkt in der Farbe der Schiene. Ein
+  Bauteil, das nicht angesteckt ist, bekommt einen <b>grauen Punkt</b> und funktioniert nicht: Ein Eingang
+  gibt kein Signal, ein Ausgang bleibt aus und eine Anzeige bleibt dunkel.</p>
+  <p>Die <a href="verwerking.html">Verarbeitung</a> (Gatter, Zähler und Speicher) wird nicht angesteckt:
+  sie wird weiterhin unsichtbar versorgt.</p>
+
+  <h2 id="inpluggen">Anstecken</h2>
+  <ul>
+    <li>Ziehen Sie ein Bauteil an die Schiene. Innerhalb von 12 Pixeln springt es von selbst an.</li>
+    <li>Auch wenn Sie ein neues Bauteil aus der Leiste platzieren oder eine Gruppe verschieben, springt es an
+      eine Schiene in der Nähe.</li>
+    <li>Die <b>Mitte</b> des Bauteils muss neben dem gezeichneten Teil der Schiene liegen, nicht darüber oder
+      darunter. Verlängern Sie die Schiene bei Bedarf.</li>
+    <li>Mit den Pfeiltasten verschieben Sie pixelweise; so können Sie ein Bauteil auch wieder abziehen.</li>
+  </ul>
+
+  <h2 id="bewerken">Schienen verschieben und verlängern</h2>
+  <ul>
+    <li><b>Verschieben:</b> ziehen Sie die Mitte der Schiene. Alle angesteckten Bauteile wandern mit, samt Drähten.</li>
+    <li><b>Länger oder kürzer:</b> ziehen Sie ein Ende (der Mauszeiger wird zu &updownarrow;). Bei einer
+      &minus; Schiene ist das Massesymbol das untere Ende.</li>
+    <li><b>Rechtsklickmenü:</b> <b>Spannung</b> (nur + Schiene), <b>Sperren / Entsperren</b> und
+      <b>Objekt auswählen</b>, um die Schiene zu <a href="objecten.html#verwijderen">löschen</a>.</li>
+    <li>Während der <a href="simulatie.html">Simulation</a> sind die Schienen fest.</li>
+  </ul>
+
+  <h2 id="spanning">Spannung einer + Schiene</h2>
+  <p>Klicken Sie mit der rechten Maustaste auf eine + Schiene und wählen Sie <b>Spannung</b>: 0, 1, 2, 3, 3,3,
+  4 oder 5&nbsp;V. Wie bei echten Logikschaltungen funktioniert ein Eingang erst ab etwa <b>2&nbsp;V</b>.</p>
+  <table>
+    <tr><th>Spannung</th><th>Schiene</th><th>Eingang an dieser Schiene</th></tr>
+    <tr><td>0&nbsp;V</td><td>grau</td><td>gibt kein Signal</td></tr>
+    <tr><td>1&nbsp;V</td><td>dunkelrot</td><td>gibt kein Signal: Spannung zu niedrig</td></tr>
+    <tr><td>2&nbsp;V bis 5&nbsp;V</td><td>rot, heller bei höherer Spannung</td><td>funktioniert</td></tr>
+  </table>
+
+  <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
+  <p>Das Voltmeter steht in der Bauteilleiste. Zum Ausblenden setzen Sie in den
+  <a href="instellingen.html#schakelelementen">Einstellungen</a>, Registerkarte <b>Schaltereinheiten</b>,
+  <b>Voltmeter</b> auf <b>False</b>.</p>
+  <p>Das Voltmeter misst die Spannung <b>gegen Masse</b> (0&nbsp;V) und zeigt sie mit einer Nachkommastelle,
+  rot sobald Spannung anliegt.</p>
+  <ul>
+    <li><b>+</b> (links): einen Draht anschließen oder das Messgerät rechts an eine + Schiene stecken. Dann
+      zeigt es die Spannung dieser Schiene.</li>
+    <li><b>&minus;</b> (rechts): darf offen bleiben, oder das Messgerät links an eine &minus; Schiene stecken.
+      Die Messung bleibt gleich; die Schaltung wird nur übersichtlicher.</li>
+  </ul>
+  <p>Ein Draht führt die Spannung seiner Quelle mit:</p>
+  <table>
+    <tr><th>Quelle</th><th>Spannung auf dem Draht</th></tr>
+    <tr><td>Eingang an einer + Schiene, ein</td><td>die Spannung dieser Schiene</td></tr>
+    <tr><td>Eingang ohne Schienen auf dem Panel, ein</td><td>5&nbsp;V</td></tr>
+    <tr><td>Gatter, Zähler oder Speicher, Ausgang ein</td><td>5&nbsp;V</td></tr>
+    <tr><td>alles, was aus ist</td><td>0&nbsp;V</td></tr>
+  </table>
+  <div class="tip"><strong>Tipp:</strong> Setzen Sie einen Taster an eine + Schiene mit 1&nbsp;V und verbinden
+  Sie ihn mit einer Lampe und dem Voltmeter. Drücken Sie den Taster, zeigt das Voltmeter 1,0&nbsp;V, aber die
+  Lampe bleibt aus: Die Spannung ist zu niedrig für einen Logikeingang.</div>
+
+  <h2 id="bewaren">Speichern und Einstellungen</h2>
+  <ul>
+    <li>Schienen (mit Position, Länge und Spannung) und Voltmeter werden in der Panel-Datei (<code>.lpl</code>)
+      gespeichert. Eine ältere Version von Logic überspringt die Schienen.</li>
+    <li>Möchten Sie die Schienen-Schaltflächen nicht in der Bauteilleiste, setzen Sie
+      <b>Versorgungsschienen (+ und -)</b> in den <a href="instellingen.html#schakelelementen">Einstellungen</a>
+      auf <b>False</b>.</li>
+  </ul>

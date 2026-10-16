@@ -1,0 +1,102 @@
+<!-- titel: Alimentation & voltmètre -->
+  <h1 id="voeding">Alimentation &amp; voltmètre</h1>
+  <p class="lead">Normalement, tous les composants sont alimentés de manière invisible (voir
+  <a href="simulatie.html#voeding">Où sont le plus et le moins ?</a>). Pour voir le plus et le moins,
+  placez des <b>rails d&rsquo;alimentation</b> sur le panneau : un <b>rail +</b> rouge pour les entrées et un
+  <b>rail &minus;</b> bleu (la masse) pour les sorties. Avec le <b>voltmètre</b>, vous mesurez la tension.</p>
+
+  <figure>
+    <img src="../img/voeding-voorbeeld.png" alt="Rails d'alimentation avec bouton-poussoir, lampe et voltmètre">
+    <figcaption>Un bouton-poussoir sur un rail + de 5&nbsp;V, une lampe sur le rail &minus; (masse) et un
+    voltmètre entre un rail + de 3,3&nbsp;V et la masse.</figcaption>
+  </figure>
+
+  <h2 id="rails">Placer des rails d&rsquo;alimentation</h2>
+  <p>En bas de la <a href="onderdelenbalk.html">barre des composants</a> se trouvent deux demi-boutons côte à côte :</p>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est ?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">Rail + (alimentation)</td><td>Rail rouge. La tension est indiquée en haut, par exemple <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">Rail &minus; (masse)</td><td>Rail bleu avec <b>0V</b> en haut et le symbole de masse en bas.</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Cliquez sur le bouton du rail à placer.</li>
+    <li>Cliquez sur le panneau à l&rsquo;endroit voulu.</li>
+  </ol>
+  <p>Vous pouvez placer autant de rails + et &minus; que vous voulez, par exemple un rail par partie du circuit.</p>
+
+  <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>
+  <p>Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau, tout fonctionne comme avant. Dès qu&rsquo;il y a
+  <b>au moins un</b> rail, les entrées et les sorties doivent être <b>branchées</b> :</p>
+  <ul>
+    <li>les <a href="invoer.html">entrées</a> (bouton-poussoir, interrupteur, commutateur DIP, générateur
+      d&rsquo;impulsions, capteurs de lumière et de chaleur) se placent à <b>droite</b> d&rsquo;un <b>rail +</b> ;</li>
+    <li>les <a href="uitvoer.html">sorties</a> (lampe, relais, buzzer et afficheur) se placent à <b>gauche</b>
+      d&rsquo;un <b>rail &minus;</b>.</li>
+  </ul>
+  <p>Un composant branché reçoit une fine fiche avec un point de la couleur du rail. Un composant non branché
+  reçoit un <b>point gris</b> et ne fonctionne pas : une entrée ne donne pas de signal, une sortie reste
+  éteinte et un afficheur reste sombre.</p>
+  <p>Le <a href="verwerking.html">traitement</a> (portes, compteur et mémoire) ne se branche pas : il reste
+  alimenté de manière invisible.</p>
+
+  <h2 id="inpluggen">Brancher</h2>
+  <ul>
+    <li>Faites glisser un composant contre le rail. À moins de 12 pixels, il s&rsquo;y accroche tout seul.</li>
+    <li>Quand vous placez un nouveau composant depuis la barre, ou que vous déplacez un groupe, il
+      s&rsquo;accroche aussi à un rail proche.</li>
+    <li>Le <b>milieu</b> du composant doit se trouver à côté de la partie dessinée du rail, pas au-dessus ni
+      en dessous. Allongez le rail si nécessaire.</li>
+    <li>Les touches fléchées déplacent d&rsquo;un pixel ; vous pouvez ainsi aussi débrancher un composant.</li>
+  </ul>
+
+  <h2 id="bewerken">Déplacer et allonger les rails</h2>
+  <ul>
+    <li><b>Déplacer :</b> faites glisser le milieu du rail. Tous les composants branchés suivent, avec leurs fils.</li>
+    <li><b>Plus long ou plus court :</b> faites glisser une extrémité (le pointeur devient &updownarrow;). Sur un
+      rail &minus;, le symbole de masse est l&rsquo;extrémité du bas.</li>
+    <li><b>Menu du clic droit :</b> <b>Tension</b> (rail + uniquement), <b>Verrouiller / Déverrouiller</b> et
+      <b>Sélectionner un objet</b> pour <a href="objecten.html#verwijderen">supprimer</a> le rail.</li>
+    <li>Pendant la <a href="simulatie.html">simulation</a>, les rails sont fixes.</li>
+  </ul>
+
+  <h2 id="spanning">Tension d&rsquo;un rail +</h2>
+  <p>Faites un clic droit sur un rail + et choisissez <b>Tension</b> : 0, 1, 2, 3, 3,3, 4 ou 5&nbsp;V. Comme
+  dans les vrais circuits logiques, une entrée ne fonctionne qu&rsquo;à partir d&rsquo;environ <b>2&nbsp;V</b>.</p>
+  <table>
+    <tr><th>Tension</th><th>Rail</th><th>Entrée sur ce rail</th></tr>
+    <tr><td>0&nbsp;V</td><td>gris</td><td>pas de signal</td></tr>
+    <tr><td>1&nbsp;V</td><td>rouge foncé</td><td>pas de signal : tension trop faible</td></tr>
+    <tr><td>2&nbsp;V à 5&nbsp;V</td><td>rouge, plus vif quand la tension augmente</td><td>fonctionne</td></tr>
+  </table>
+
+  <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmètre</h2>
+  <p>Le voltmètre se trouve dans la barre des composants. Pour le masquer, mettez <b>Voltmètre</b> sur
+  <b>False</b> dans les <a href="instellingen.html#schakelelementen">Réglages</a>, onglet <b>Éléments de commutation</b>.</p>
+  <p>Le voltmètre mesure la tension <b>par rapport à la masse</b> (0&nbsp;V) et l&rsquo;affiche avec une
+  décimale, en rouge dès qu&rsquo;il y a une tension.</p>
+  <ul>
+    <li><b>+</b> (à gauche) : reliez un fil, ou branchez le voltmètre à droite d&rsquo;un rail +. Il affiche
+      alors la tension de ce rail.</li>
+    <li><b>&minus;</b> (à droite) : peut rester libre, ou branchez le voltmètre à gauche d&rsquo;un rail &minus;.
+      La mesure reste la même ; le schéma devient seulement plus clair.</li>
+  </ul>
+  <p>Un fil transporte la tension de sa source :</p>
+  <table>
+    <tr><th>Source</th><th>Tension sur le fil</th></tr>
+    <tr><td>entrée sur un rail +, activée</td><td>la tension de ce rail</td></tr>
+    <tr><td>entrée sans rails sur le panneau, activée</td><td>5&nbsp;V</td></tr>
+    <tr><td>porte, compteur ou mémoire, sortie activée</td><td>5&nbsp;V</td></tr>
+    <tr><td>tout ce qui est éteint</td><td>0&nbsp;V</td></tr>
+  </table>
+  <div class="tip"><strong>Astuce :</strong> placez un bouton-poussoir sur un rail + de 1&nbsp;V et reliez-le
+  à une lampe et au voltmètre. Quand vous appuyez, le voltmètre indique 1,0&nbsp;V mais la lampe reste
+  éteinte : la tension est trop faible pour une entrée logique.</div>
+
+  <h2 id="bewaren">Enregistrer et réglages</h2>
+  <ul>
+    <li>Les rails (position, longueur et tension) et les voltmètres sont enregistrés dans le fichier du
+      panneau (<code>.lpl</code>). Une version plus ancienne de Logic ignore les rails.</li>
+    <li>Si vous ne voulez pas les boutons des rails dans la barre des composants, mettez
+      <b>Rails d&rsquo;alimentation (+ et -)</b> sur <b>False</b> dans les
+      <a href="instellingen.html#schakelelementen">Réglages</a>.</li>
+  </ul>
