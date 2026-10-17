@@ -6589,6 +6589,19 @@ begin
   end;
 end;
 
+// zelfde, met het plaatje op (X,Y); R in dezelfde coordinaten als het canvas
+procedure DrawBitmapPartAt(C: TCanvas; Bm: TBitmap; X, Y: Integer; const R: TRect);
+var S: Integer;
+begin
+  S := SaveDC(C.Handle);
+  try
+    IntersectClipRect(C.Handle, R.Left, R.Top, R.Right, R.Bottom);
+    C.Draw(X, Y, Bm);
+  finally
+    RestoreDC(C.Handle, S);
+  end;
+end;
+
 procedure SymPen(C: TCanvas; Col: TColor);
 begin
   C.Pen.Color := Col;
@@ -6912,6 +6925,34 @@ begin
        end;
   end;
   C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
+end;
+
+// Lichaam van een blok (teller, geheugen): bij Afbeelding een vlak met 3D-rand,
+// bij schemasymbolen een rechthoek met zwarte rand en de IEC-aanduiding
+// Qual (bv. CTR4) op (QX,QY).
+procedure DrawBlockBody(C: TCanvas; const R: TRect; Fill: TColor; S: TjanSymbolen;
+  const Qual: string; QX, QY: Integer);
+var F: TRect;
+begin
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := Fill;
+  if S = Afbeelding then
+  begin
+    C.FillRect(R);
+    F := R;
+    C.Frame3D(F, clBtnHighlight, clBtnShadow, 1);
+    Exit;
+  end;
+  SymPen(C, clBlack);
+  C.Rectangle(R);
+  C.Brush.Style := bsClear;
+  C.Font.Name := 'Arial';
+  C.Font.Size := 8;
+  C.Font.Style := [fsBold];
+  C.Font.Color := clBlack;
+  C.TextOut(QX, QY, Qual);
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := Fill;
 end;
 
 procedure TjanLogic.PaintLed(index:integer);
@@ -8077,8 +8118,7 @@ begin
    Lock;
      brush.color:=FPcolor;
      R:=rect(22,15,125,65);
-     Fillrect(R);
-     Frame3D(R,clbtnhighlight,clbtnshadow,1);
+     DrawBlockBody(Canvas, R, FPcolor, SymOf(Self), 'CTR4', 24, 0);
      PaintLeds(FBits);
      brush.style:=bsclear;
      Font.Name:='Arial';
@@ -9067,8 +9107,7 @@ begin
      y:=50;x:=50;
      brush.color:=FPcolor;
      R:=rect(22+x,0+y+15,125+x,65+y);
-     Fillrect(R);
-     Frame3D(R,clbtnhighlight,clbtnshadow,1);
+     DrawBlockBody(Canvas, R, FPcolor, SymOf(Self), 'RAM 32x4', 8, 64);
      PaintLeds(FBits);
      brush.style:=bsclear;
      Font.Name:='Arial';Font.Size:=8;Font.Style:= [];Font.Color:=clNavy;
@@ -9124,13 +9163,23 @@ begin
      if FDepressed or FDown then
      begin
      BinAan.Transparent:=true;
-     draw(17,0,BinAan);
+     if SymOf(Self) = Afbeelding then draw(17,0,BinAan)
+     else begin
+       // A16-schakelaar als schakelcontact (gesloten)
+       DrawBitmapPartAt(Canvas, BinAan, 17, 0, Rect(30, 0, 70, 48));
+       DrawContactSymbol(Canvas, 27, 24, 41, 17, 30, 27, True, False);
+     end;
      pen.Style:=psSolid;
      end
      else
      begin
      Bin.Transparent:=true;
-     draw(17,0,Bin);
+     if SymOf(Self) = Afbeelding then draw(17,0,Bin)
+     else begin
+       // A16-schakelaar als schakelcontact (open)
+       DrawBitmapPartAt(Canvas, Bin, 17, 0, Rect(30, 0, 70, 48));
+       DrawContactSymbol(Canvas, 27, 24, 41, 17, 30, 27, False, False);
+     end;
      pen.Style:=psSolid
      end;
      If FConnector=true then
@@ -9402,11 +9451,9 @@ end;
 
 procedure TjanMemory.SetAdress(const Value:Integer);
 begin
-if value <> FAdress then
-  begin
-  FAdress := Value;
-  if FDown=true then FAdress:=FAdress + 16;
-  end;
+// Value is het adres van A1..A8 (0..15); met A16 aan komt er 16 bij
+FAdress := Value mod 16;
+if FDown=true then FAdress:=FAdress + 16;
 If (schrijf=false) then Bits:= StrToInt(Lijst.Strings[FAdress]);
 invalidate;
 end;
@@ -9485,10 +9532,11 @@ begin
    FDown := Value;
    FDepressed:=value;
 
-   if (FDown=false) and (FAdress >15) then
-       FAdress:=FAdress - 15
-       else
-       FAdress:=FAdress + 15;
+   // A16: bovenste helft (16..31) of onderste helft (0..15) van het geheugen;
+   // daarna meteen de inhoud van het nieuwe adres tonen
+   if FDown then FAdress := (FAdress mod 16) + 16
+   else FAdress := FAdress mod 16;
+   if (schrijf=false) then Bits := StrToInt(Lijst.Strings[FAdress]);
 
    If FDown=true then FStatMemB := stMemButtonStop else FStatMemB := stMemButtonStart;
    invalidate;
@@ -19395,7 +19443,8 @@ begin
   Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
 end;
 
-// Knop van een uitvoeronderdeel in de balk (Kind zoals bij PaintOutputSymbol)
+// Knop van een uitvoeronderdeel in de balk (Kind zoals bij PaintOutputSymbol;
+// 3 = voltmeter)
 procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
@@ -19417,6 +19466,19 @@ begin
          DrawRelaySymbol(Canvas, X + 3, X + 9, Y + 11, 12, X + 18, Y + 1, Y + 21, False);
        end;
     2: DrawBuzzerSymbol(Canvas, X + 1, X + 21, Y + 8, 8, False);
+    3: begin
+         // voltmeter: cirkel met V
+         SymPen(Canvas, clBlack);
+         Canvas.Line(X + 1, Y + 11, X + 4, Y + 11);
+         Canvas.Line(X + 19, Y + 11, X + 22, Y + 11);
+         Canvas.Brush.Color := clWhite;
+         Canvas.Ellipse(X + 3, Y + 2, X + 21, Y + 20);
+         Canvas.Brush.Style := bsClear;
+         Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 9;
+         Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clBlack;
+         Canvas.TextOut(X + 12 - Canvas.TextWidth('V') div 2,
+                        Y + 11 - Canvas.TextHeight('V') div 2, 'V');
+       end;
   end;
   Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
 end;
@@ -20015,7 +20077,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmDisplay);
+        DrawPlainIcon(bmDisplay, Lk, top, Lk+1, top+2);
         TOP:=TOP+H+6; // 6 in de plaats van SPATIE
         HK:= H+TOP;
       end;
@@ -20031,7 +20093,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top + 2,bmMeter);
+        DrawOutputIcon(3, bmMeter, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -20064,6 +20126,7 @@ begin
   begin
     Brush.Style := bsSolid;
     Brush.Color := clSilver;
+    if FSymbolen <> Afbeelding then Brush.Color := SymKnopKleur;
     if not ADown then
       Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
     else
@@ -20450,7 +20513,7 @@ begin
         if not DDisplay then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmDisplay);
+        DrawPlainIcon(bmDisplay, LK, TOP, LK+1, TOP+2);
 
         // was: TOP := TOP + H + 6;
         NextX(B + 6);
@@ -20465,7 +20528,7 @@ begin
         if not DMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP + 2, bmMeter);
+        DrawOutputIcon(3, bmMeter, LK+1, TOP+2);
       end;
     end;
   end;
@@ -20828,7 +20891,7 @@ begin
         if not DDisplay then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmDisplay);
+        DrawPlainIcon(bmDisplay, LK, TOP, LK+1, TOP+2);
 
         // was: TOP := TOP + H + 6;
         NextX(B + 6);
@@ -20843,7 +20906,7 @@ begin
         if not DMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP + 2, bmMeter);
+        DrawOutputIcon(3, bmMeter, LK+1, TOP+2);
       end;
     end;
   end;

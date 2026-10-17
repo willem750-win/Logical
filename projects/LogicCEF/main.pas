@@ -151,6 +151,7 @@ type
      FPanelTitleBase: string;
      FCurrentFile: string;      // '' = ingebouwd of nog niet bewaard paneel
      FDirtyTimer: TTimer;
+     FcbSymbolen: TComboBox;      // keuze Afbeelding / IEC / ANSI in TitelBar2
      function BuiltinPanelName(AKind: Integer): string;
      procedure ShowBuiltinPanelTitle(AKind: Integer);
      procedure SetPanelTitle(const ATitle: string);
@@ -162,6 +163,10 @@ type
      function ConfirmDiscardPanel: Boolean;
      procedure MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
      procedure OpenPanelFromHelp(const AFileName: string);
+     // keuze Afbeelding / IEC / ANSI bovenaan in TitelBar2
+     procedure cbSymbolenChange(Sender: TObject);
+     procedure SyncSymbolenCombo;
+     procedure SaveSymbolenSetting;
      procedure FocusPanel;
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
@@ -615,6 +620,61 @@ begin
   begin
     BewaarInstellingen;
     FreeAndNil(SettingsFrame); // Zorgt ervoor dat het object correct wordt vrijgegeven
+    SaveSymbolenSetting;   // de Box is de waarheid (ook na een keuze bovenaan)
+    SyncSymbolenCombo;
+  end;
+end;
+
+// keuzelijst bovenaan volgt de eigenschap KSymbolen van de Box
+procedure TmainForm.SyncSymbolenCombo;
+begin
+  if Assigned(FcbSymbolen) then
+    FcbSymbolen.ItemIndex := Ord(Box.KSymbolen);
+end;
+
+procedure TmainForm.cbSymbolenChange(Sender: TObject);
+begin
+  if FcbSymbolen.ItemIndex < 0 then Exit;
+  Box.KSymbolen := TjanSymbolen(FcbSymbolen.ItemIndex);
+  SaveSymbolenSetting;
+  FocusPanel;
+end;
+
+// KSymbolen meteen in ini\defaultschakel.ini zetten (zelfde vorm als het
+// instellingenscherm: RowN_Name + waarde), zodat de keuze blijft na herstarten
+procedure TmainForm.SaveSymbolenSetting;
+var
+  Ini: TIniFile;
+  FileName: string;
+  i, N: Integer;
+  Found: Boolean;
+begin
+  FileName := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'ini' +
+    PathDelim + 'defaultschakel.ini';
+  if not FileExists(FileName) then Exit;
+  try
+    Ini := TIniFile.Create(FileName);
+    try
+      N := Ini.ReadInteger('Settings', 'RowCount', 0);
+      Found := False;
+      for i := 1 to N do
+        if SameText(Ini.ReadString('Properties', 'Row' + IntToStr(i) + '_Name', ''), 'KSymbolen') then
+          Found := True;
+      if not Found then
+      begin
+        Inc(N);
+        Ini.WriteInteger('Settings', 'RowCount', N);
+        Ini.WriteString('Properties', 'Row' + IntToStr(N) + '_Name', 'KSymbolen');
+        Ini.WriteInteger('RowTags', 'Row' + IntToStr(N) + '_IntValue', 0);
+        Ini.WriteString('RowTags', 'Row' + IntToStr(N) + '_StrValue', '');
+      end;
+      Ini.WriteString('Properties', 'KSymbolen',
+        GetEnumName(TypeInfo(TjanSymbolen), Ord(Box.KSymbolen)));
+    finally
+      Ini.Free;
+    end;
+  except
+    // bewaren mag de keuze niet tegenhouden
   end;
 end;
 
@@ -629,6 +689,8 @@ begin
     SettingsFrame.Free;
     SettingsFrame := nil;
     fr_Settingsbestaat := False;
+    SaveSymbolenSetting;
+    SyncSymbolenCombo;
     Grid.Repaint;
   end;
 
@@ -1103,6 +1165,7 @@ end;
     btGridkaders.hint := 'Teken kader op raster...';
     btGridPanelTitel.hint:= 'Titel van paneel wijzigen...';
     btStatusBalk.Hint := 'Balk Invoer / Verwerken / Uitvoer Ja/Nee';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schemasymbolen: Afbeelding, IEC (Europees) of ANSI (Amerikaans)';
     BSettings2.Hint := 'Instellingen openen';
     btClose1.Hint   := 'Programma afsluiten';
     btInfo2.Hint    := 'Over Logic...';
@@ -1127,6 +1190,7 @@ end;
     btGridkaders.hint := 'Draw frame on grid...';
     btGridPanelTitel.hint:= 'Change panel title...';
     btStatusBalk.Hint := 'Bar Input / Processing / Output on/off';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)';
 
     BSettings2.Hint := 'Open settings';
     btClose1.Hint   := 'Close application';
@@ -1151,6 +1215,7 @@ end;
     btGridkaders.hint := 'Tracer un cadre sur la grille...';
     btGridPanelTitel.hint:= 'Changer le titre du panneau...';
     btStatusBalk.Hint := 'Barre Entrée / Traitement / Sortie oui/non';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Symboles de schéma : Afbeelding (image), IEC (européen) ou ANSI (américain)';
 
     BSettings2.Hint := 'Ouvrir les paramètres';
     btClose1.Hint   := 'Fermer l''application';
@@ -1175,6 +1240,7 @@ end;
     btGridkaders.hint := 'Zeichne einen Rahmen auf das Raster...';
     btGridPanelTitel.hint:= 'Paneltitel ändern...';
     btStatusBalk.Hint := 'Leiste Eingabe / Verarbeitung / Ausgabe ein/aus';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schaltzeichen: Afbeelding (Bild), IEC (europäisch) oder ANSI (amerikanisch)';
 
     BSettings2.Hint := 'Einstellungen öffnen...';
     btClose1.Hint   := 'Anwendung schließen...';
@@ -1783,6 +1849,25 @@ begin
   // een link "Open dit voorbeeld" in de help opent het paneel hier
   OnHelpOpenPanel := @OpenPanelFromHelp;
   {$ENDIF}
+
+  // keuze van de schemasymbolen, rechts in TitelBar2 naast Info
+  FcbSymbolen := TComboBox.Create(Self);
+  FcbSymbolen.Parent := TitelBar2;
+  FcbSymbolen.Style := csDropDownList;
+  FcbSymbolen.Width := 96;
+  FcbSymbolen.Top := 1;
+  FcbSymbolen.Left := btInfo2.Left - FcbSymbolen.Width - 6;
+  FcbSymbolen.Anchors := [akTop, akRight];   // blijft links van Info bij een breder venster
+  FcbSymbolen.ParentFont := False;
+  FcbSymbolen.Font.Color := clWindowText;
+  FcbSymbolen.Items.Add('Afbeelding');
+  FcbSymbolen.Items.Add('IEC');
+  FcbSymbolen.Items.Add('ANSI');
+  FcbSymbolen.ItemIndex := 0;
+  FcbSymbolen.ShowHint := True;
+  FcbSymbolen.Hint := 'Schemasymbolen: Afbeelding, IEC of ANSI';
+  FcbSymbolen.OnChange := @cbSymbolenChange;
+
   AssignHelpRecursive(Self);
 
   //  HelpKeyword
@@ -1891,6 +1976,7 @@ procedure TmainForm.FormShow(Sender: TObject);
 begin
  LaadGridsettings;
  LaadBoxsettings;
+ SyncSymbolenCombo;
 
  // vertrekpunt voor "niet-bewaarde wijzigingen": het lege paneel bij de start
  if FDirtyTimer = nil then
