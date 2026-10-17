@@ -1939,6 +1939,7 @@ type
     procedure DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
     procedure DrawInputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
     procedure DrawPlainIcon(Bm: TBitmap; BL, BT, X, Y: Integer);
+    procedure DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
     PROCEDURE SetKnopLeft(const Value: Integer);
     PROCEDURE SetKnopTop(const Value: Integer);
     PROCEDURE SetKnopSpatie(const Value: Integer);
@@ -4439,6 +4440,12 @@ procedure DrawRailOverlay(Grid: TjanGridS);
       else if C is TjanSimKnop then Y := C.Top + 47
       else if C is TjanSimWarm then Y := C.Top + 17;
     end;
+    // en bij de uitvoer op de hoogte van de uitgangsdraad naar de - rail
+    if (not APlusSide) and (SymOf(C) <> Afbeelding) then
+    begin
+      if C is TjanSimLight then Y := C.Top + 6
+      else if C is TjanSimBuzzer then Y := C.Top + 32;   // BuzzerLegY(21, 13)
+    end;
     if APlusSide then
       DotX := C.Left - 4                  // midden bolletje, links van het component
     else
@@ -6750,6 +6757,158 @@ begin
          DrawBitmapPart(C, Bm, Rect(17, 0, W, H));
          DrawBitmapPart(C, Bm, Rect(0, 40, 17, H));
          DrawPulsSymbol(C, 0, 17, 24, On);
+       end;
+  end;
+  C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
+end;
+
+// Lamp op de lijn Y van L tot R, cirkel met diameter D: IEC een kruis erin,
+// ANSI een gloeidraad (lusje). Geel als hij brandt.
+procedure DrawLampSymbol(C: TCanvas; L, R, Y, D: Integer; Lit: Boolean; S: TjanSymbolen);
+var cx, x0, x1, y0, y1, k: Integer;
+begin
+  x0 := L + 3; x1 := x0 + D; y0 := Y - D div 2; y1 := y0 + D;
+  cx := (x0 + x1) div 2;
+  SymPen(C, clBlack);
+  C.Line(L, Y, x0, Y);
+  C.Line(x1, Y, R + 1, Y);
+  C.Brush.Style := bsSolid;
+  if Lit then C.Brush.Color := clYellow else C.Brush.Color := clWhite;
+  C.Ellipse(x0, y0, x1 + 1, y1 + 1);
+  if Lit then SymPen(C, clRed);
+  if S = ANSI then
+  begin
+    // gloeidraad: van links en rechts naar een lusje in het midden
+    k := D div 4;
+    C.Line(x0, Y, cx - k, Y);
+    C.Line(cx + k, Y, x1, Y);
+    C.Brush.Style := bsClear;
+    C.Ellipse(cx - k, Y - 2 * k, cx + k + 1, Y + 1);
+  end
+  else
+  begin
+    // kruis onder 45 graden
+    k := Round(D * 0.35);
+    C.Line(cx - k, Y - k, cx + k + 1, Y + k + 1);
+    C.Line(cx - k, Y + k, cx + k + 1, Y - k - 1);
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Zoemer: koepel (straal Rad) op een platte voet, met twee pootjes eronder.
+// De ingang komt op hoogte Y van links en gaat naar het linkerpootje; het
+// rechterpootje loopt naar R (op de hoogte BuzzerLegY). Als hij zoemt: geel
+// met geluidsboogjes.
+function BuzzerLegY(Y, Rad: Integer): Integer;
+begin
+  Result := Y + Rad div 2 + 5;
+end;
+
+procedure DrawBuzzerSymbol(C: TCanvas; L, R, Y, Rad: Integer; On: Boolean);
+var cx, yb, yl, xl, xr, i, a: Integer;
+begin
+  cx := L + 5 + Rad;
+  yb := Y + Rad div 2;               // voet
+  yl := BuzzerLegY(Y, Rad);          // onderkant van de pootjes
+  xl := cx - Rad div 2;
+  xr := cx + Rad div 2;
+  SymPen(C, clBlack);
+  // ingang: van links naar beneden en onder het linkerpootje
+  C.Line(L, Y, L + 2, Y);
+  C.Line(L + 2, Y, L + 2, yl);
+  C.Line(L + 2, yl, xl, yl);
+  C.Line(xl, yl, xl, yb);
+  // uitgang: rechterpootje naar rechts
+  C.Line(xr, yb, xr, yl);
+  C.Line(xr, yl, R + 1, yl);
+  // koepel
+  C.Brush.Style := bsSolid;
+  if On then C.Brush.Color := clYellow else C.Brush.Color := clWhite;
+  C.Pie(cx - Rad, yb - Rad, cx + Rad + 1, yb + Rad + 1, cx + Rad, yb, cx - Rad, yb);
+  C.Line(cx - Rad, yb, cx + Rad + 1, yb);
+  if On and (cx + Rad + 10 < R) then
+  begin
+    SymPen(C, clRed);
+    C.Brush.Style := bsClear;
+    for i := 1 to 2 do
+    begin
+      a := Rad + 2 + 4 * i;
+      C.Arc(cx - a, yb - a, cx + a + 1, yb + a + 1,
+            cx + a, yb - a div 4, cx + a div 2, yb - a);
+    end;
+    SymPen(C, clBlack);
+  end;
+end;
+
+// Relais: spoel (rechthoek CoilL..CoilR rond Y), stippellijn naar een
+// verticaal maakcontact op x = CX tussen YTop en YBot. Aan: spoel groen,
+// contact gesloten en rood.
+procedure DrawRelaySymbol(C: TCanvas; CoilL, CoilR, Y, CoilH, CX, YTop, YBot: Integer; On: Boolean);
+var yt, yb, dx, xm, i: Integer;
+    Col: TColor;
+begin
+  SymPen(C, clBlack);
+  C.Brush.Style := bsSolid;
+  if On then C.Brush.Color := $80FF80 else C.Brush.Color := clWhite;
+  C.Rectangle(CoilL, Y - CoilH div 2, CoilR + 1, Y - CoilH div 2 + CoilH + 1);
+  yt := YTop + (YBot - YTop) div 5;
+  yb := YBot - (YBot - YTop) div 4;
+  if On then begin dx := 0; Col := clRed; end
+  else begin dx := (yb - yt) div 2 + 1; Col := clBlack; end;
+  SymPen(C, Col);
+  C.Line(CX, YTop, CX, yt + 1);
+  C.Line(CX, yb, CX, YBot + 1);
+  SymPen(C, clBlack);
+  C.Line(CX, yt, CX - 3, yt);           // vast contact
+  SymPen(C, Col);
+  if On then
+  begin
+    C.Line(CX, yb, CX, yt);
+    C.Line(CX + 1, yb, CX + 1, yt);
+  end
+  else
+    C.Line(CX, yb, CX - dx, yt - 3);
+  // mechanische koppeling: stippellijn van de spoel naar het mes
+  xm := CX - dx * (yb - Y) div (yb - yt + 3) - 1;
+  if xm > CX - 1 then xm := CX - 1;
+  for i := CoilR + 2 to xm do
+    if ((i - CoilR) mod 3) <> 0 then C.Pixels[i, Y] := clBlack;
+  SymPen(C, clBlack);
+end;
+
+// Uitvoeronderdeel tekenen: het plaatje Bm bij Afbeelding, anders van het
+// plaatje alleen aansluitblokje, pijl (en ledje) en rechts het schemasymbool.
+// Kind: 0 lamp, 1 relais, 2 zoemer.
+procedure PaintOutputSymbol(Ctl: TControl; C: TCanvas; Bm: TBitmap; Kind: Integer; On: Boolean);
+var W, H: Integer;
+    OldBrush: TColor;
+    OldStyle: TBrushStyle;
+    S: TjanSymbolen;
+begin
+  S := SymOf(Ctl);
+  if S = Afbeelding then
+  begin
+    C.Draw(0, 0, Bm);
+    Exit;
+  end;
+  W := Ctl.Width; H := Ctl.Height;
+  OldBrush := C.Brush.Color; OldStyle := C.Brush.Style;
+  case Kind of
+    0: begin
+         DrawBitmapPart(C, Bm, Rect(0, 0, 37, H));
+         DrawLampSymbol(C, 37, W - 1, 6, 12, On, S);
+       end;
+    1: begin
+         DrawBitmapPart(C, Bm, Rect(0, 0, 36, H));
+         DrawBitmapPart(C, Bm, Rect(62, 0, W, 15));     // R1
+         DrawBitmapPart(C, Bm, Rect(62, 47, W, H));     // R2
+         SymPen(C, clBlack);
+         C.Line(34, 31, 39, 31);
+         DrawRelaySymbol(C, 39, 52, 31, 18, 71, 15, 46, On);
+       end;
+    2: begin
+         DrawBitmapPart(C, Bm, Rect(0, 0, 35, H));
+         DrawBuzzerSymbol(C, 35, W - 1, 21, 13, On);
        end;
   end;
   C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
@@ -14786,9 +14945,9 @@ begin
    Lock;
    lUit.Transparent:=true; lAan.Transparent:=true;
    If FLit=false then
-     draw(0,0,lUit)
+     PaintOutputSymbol(Self,Canvas,lUit,0,False)
      else
-     draw(0,0,lAan);
+     PaintOutputSymbol(Self,Canvas,lAan,0,True);
      brush.style:=bsclear;
      Font.Name:='Arial';
      Font.Size:=9;
@@ -15359,8 +15518,8 @@ with canvas do
  begin
    Lock;
    If FLit=false then
-     draw(0,0,lUit)
-     else draw(0,0,lAan);
+     PaintOutputSymbol(Self,Canvas,lUit,1,False)
+     else PaintOutputSymbol(Self,Canvas,lAan,1,True);
      brush.style:=bsclear;
      Font.Name:='Arial';
      Font.Size:=9;
@@ -15914,8 +16073,8 @@ lUit.Transparent:=true;
   begin
    Lock;
    If FLit=false then
-     draw(0,0,lUit)
-     else draw(0,0,lAan);
+     PaintOutputSymbol(Self,Canvas,lUit,2,False)
+     else PaintOutputSymbol(Self,Canvas,lAan,2,True);
      brush.style:=bsclear;
      Font.Name:='Arial';
      Font.Size:=9;
@@ -19236,6 +19395,32 @@ begin
   Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
 end;
 
+// Knop van een uitvoeronderdeel in de balk (Kind zoals bij PaintOutputSymbol)
+procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
+var OldBrush, OldPen: TColor;
+    OldStyle: TBrushStyle;
+begin
+  if FSymbolen = Afbeelding then
+  begin
+    Canvas.Draw(X, Y, Bm);
+    Exit;
+  end;
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Color := SymKnopKleur;
+  Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+  case Kind of
+    0: DrawLampSymbol(Canvas, X + 1, X + 21, Y + 11, 14, False, FSymbolen);
+    1: begin
+         SymPen(Canvas, clBlack);
+         Canvas.Line(X + 1, Y + 11, X + 3, Y + 11);
+         DrawRelaySymbol(Canvas, X + 3, X + 9, Y + 11, 12, X + 18, Y + 1, Y + 21, False);
+       end;
+    2: DrawBuzzerSymbol(Canvas, X + 1, X + 21, Y + 8, 8, False);
+  end;
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+end;
+
 // Knop met een vast plaatje (draad, dipschakelaar, teller, geheugen): bij
 // schemasymbolen dezelfde lichte achtergrond als de symboolknoppen; het plaatje
 // komt er transparant op (de achtergrondkleur is die van pixel 0,0).
@@ -19788,7 +19973,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmLight);
+        DrawOutputIcon(0, bmLight, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19802,7 +19987,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmRelais);
+        DrawOutputIcon(1, bmRelais, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19816,7 +20001,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmBuzzer);
+        DrawOutputIcon(2, bmBuzzer, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -20232,7 +20417,7 @@ begin
         if not DLight then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLight);
+        DrawOutputIcon(0, bmLight, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20243,7 +20428,7 @@ begin
         if not DRelais then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmRelais);
+        DrawOutputIcon(1, bmRelais, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20254,7 +20439,7 @@ begin
         if not DBuzzer then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmBuzzer);
+        DrawOutputIcon(2, bmBuzzer, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20610,7 +20795,7 @@ begin
         if not DLight then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLight);
+        DrawOutputIcon(0, bmLight, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20621,7 +20806,7 @@ begin
         if not DRelais then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmRelais);
+        DrawOutputIcon(1, bmRelais, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20632,7 +20817,7 @@ begin
         if not DBuzzer then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmBuzzer);
+        DrawOutputIcon(2, bmBuzzer, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
