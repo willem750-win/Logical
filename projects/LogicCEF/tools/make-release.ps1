@@ -1,7 +1,7 @@
 # Bouwt logicCEF.exe opnieuw en maakt de Windows-release-zip en het
 # installatieprogramma (Inno Setup 6, logic.iss).
 #
-#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\tools\make-release.ps1 [-Version 1.3.0] [-NoBuild]
+#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\tools\make-release.ps1 [-Version 1.4.0] [-NoBuild]
 #
 # Resultaat in C:\fpcupdeluxe\publish\release:
 #   Logic-<versie>-win64.zip    uitpakken en logicCEF.exe starten
@@ -16,7 +16,7 @@
 # Cache, logs, backups en ontwikkelbestanden blijven eruit.
 
 param(
-  [string]$Version = '1.3.0',
+  [string]$Version = '1.4.0',
   [string]$Lazbuild = 'C:\fpcupdeluxe\lazarus\lazbuild.exe',
   [string]$OutDir = 'C:\fpcupdeluxe\publish\release',
   [switch]$NoBuild
@@ -92,6 +92,15 @@ try {
   # ----------------------------------------------------------------
   & powershell -ExecutionPolicy Bypass -File (Join-Path $proj 'helpsrc\make-help.ps1') -Out (Join-Path $stage 'help')
   if ($LASTEXITCODE -ne 0) { throw "make-help.ps1 faalde ($LASTEXITCODE)" }
+
+  # De hele help als PDF per taal (help\Logic-help-<taal>.pdf), ook los
+  # naast de zip als Logic-<versie>-help-<taal>.pdf
+  & powershell -ExecutionPolicy Bypass -File (Join-Path $proj 'helpsrc\make-help-pdf.ps1') -Out (Join-Path $stage 'help') -Version $Version
+  if ($LASTEXITCODE -ne 0) { throw "make-help-pdf.ps1 faalde ($LASTEXITCODE)" }
+  New-Item -ItemType Directory $OutDir -Force | Out-Null
+  foreach ($pdf in Get-ChildItem (Join-Path $stage 'help') -Filter 'Logic-help-*.pdf') {
+    Copy-Item $pdf.FullName (Join-Path $OutDir ($pdf.Name -replace '^Logic-help-', "Logic-$Version-help-"))
+  }
 
   Remove-Item (Join-Path $stage 'ini\comboColor.ini') -ErrorAction SilentlyContinue
   Get-ChildItem $stage -Recurse -Include *.bak, *.log | Remove-Item -Force

@@ -4,10 +4,10 @@
 #
 # Uitvoeren ONDER LINUX vanuit de repository:
 #
-#     sh projects/LogicCEF/tools/make-linux-release.sh                 (versie 1.3.0)
-#     sh projects/LogicCEF/tools/make-linux-release.sh 1.3.0           (eigen versie)
-#     sh projects/LogicCEF/tools/make-linux-release.sh 1.3.0 --no-build
-#     sh projects/LogicCEF/tools/make-linux-release.sh 1.3.0 --upload  (ook naar GitHub)
+#     sh projects/LogicCEF/tools/make-linux-release.sh                 (versie 1.4.0)
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.4.0           (eigen versie)
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.4.0 --no-build
+#     sh projects/LogicCEF/tools/make-linux-release.sh 1.4.0 --upload  (ook naar GitHub)
 #
 # Bouwen: met lazbuild uit PATH of uit $LAZBUILD. Zonder lazbuild (of met
 # --no-build) wordt het programma gebruikt dat al in Resultaat/ staat.
@@ -39,7 +39,7 @@
 # ---------------------------------------------------------------------------
 set -e
 
-VERSION=1.3.0
+VERSION=1.4.0
 BUILD=1
 UPLOAD=0
 for A in "$@"; do
@@ -143,6 +143,15 @@ else
   fi
   rm -rf "$TMPZIP" "$HELPTMP"
 fi
+# De PDF's van de help worden onder Windows gemaakt (Edge): haal ze van de
+# GitHub-release v$VERSION als ze er nog niet zijn.
+for L in nl en fr de; do
+  PDF="$DST/help/Logic-help-$L.pdf"
+  [ -f "$PDF" ] && continue
+  curl -fsSL -o "$PDF" \
+    "https://github.com/willem750-win/Logical/releases/download/v$VERSION/Logic-$VERSION-help-$L.pdf" \
+    || { rm -f "$PDF"; echo "LET OP: Logic-$VERSION-help-$L.pdf niet gevonden op GitHub; PDF ontbreekt."; }
+done
 find "$DST" \( -name '*.bak' -o -name '*.log' \) -exec rm -f {} +
 cp "$REPO/LICENSE" "$REPO/README.md" "$DST/"
 
