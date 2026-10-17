@@ -242,3 +242,36 @@ figcaption { color: var(--muted); font-size: 14px; margin-top: 6px; }
 
 dl.parts dt { font-weight: 600; margin-top: 10px; }
 dl.parts dd { margin: 2px 0 0 0; color: var(--text); }
+
+/* Leerpad */
+p.crumb { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
+a.open {
+  display: inline-block;
+  padding: 7px 14px;
+  margin: 4px 0 10px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+a.open:hover { filter: brightness(1.1); }
+.goal {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 12px 0;
+}
+details {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  background: var(--panel);
+}
+details summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+details[open] summary { margin-bottom: 8px; }
+ol.lessons { padding-left: 22px; }
+ol.lessons li { margin-bottom: 10px; }
+ol.lessons li span { display: block; color: var(--muted); font-size: 14px; }

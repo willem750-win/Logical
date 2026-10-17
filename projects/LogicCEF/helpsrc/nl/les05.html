@@ -1,0 +1,36 @@
+<!-- titel: Les 5 - De OF-poort -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 5 van 10</p>
+  <h1>De OF-poort</h1>
+  <div class="goal"><strong>Doel:</strong> een uitgang laten werken als <b>minstens één</b> ingang aan is.</div>
+
+  <p><a class="open" href="../../panels/lessen/les05-of-poort.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les05-of-poort.png" alt="Twee drukknoppen, OF-poort en zoemer">
+    <figcaption>De onderste drukknop is ingedrukt: de zoemer (de deurbel) gaat af.</figcaption>
+  </figure>
+
+  <h2>Een echt voorbeeld: de deurbel</h2>
+  <p>Een huis heeft een bel aan de voordeur én aan de achterdeur. Welke knop je ook indrukt, de bel moet
+  rinkelen. Dat is een <a href="verwerking.html#of"><img src="../img/pal-of.png" class="ico" alt="">OF-poort</a>:</p>
+  <table>
+    <tr><th>Voordeur (O1)</th><th>Achterdeur (O2)</th><th>Bel (zoemer)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Vergelijk met de EN-poort</h2>
+  <p>Leg de tabel naast die van <a href="les04.html">les 4</a>. Bij EN moet <b>alles</b> aan zijn, bij OF is
+  <b>één</b> genoeg. Alleen als beide ingangen uit zijn, is de uitgang van de OF-poort uit.</p>
+
+  <h2>Opdracht</h2>
+  <p>Vervang in dit voorbeeld de OF-poort door een EN-poort en probeer beide knoppen. Wanneer gaat de bel nu af?
+  Is dat nog een goede deurbel?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Met een EN-poort gaat de bel alleen af als iemand aan de voordeur <b>en</b> iemand aan de achterdeur
+    tegelijk drukt. Met één muis lukt dat zelfs niet. Voor een deurbel is de OF-poort dus de juiste keuze.</p>
+  </details>
+
+  <div class="pager"><a href="les04.html">&larr; Les 4: De EN-poort</a><a href="les06.html">Les 6: Poorten combineren &rarr;</a></div>

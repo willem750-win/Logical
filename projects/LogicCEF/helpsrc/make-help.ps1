@@ -24,32 +24,32 @@ $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
 
 # Volgorde en groepen van de navigatie. 'group:' = tussenkop.
 $Pages = @(
-  'index', 'werkwijze',
+  'index', 'werkwijze', 'leerpad',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
   'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding',
   'group:werken', 'verbindingen', 'objecten', 'simulatie', 'instellingen'
 )
 
 $Nav = @{
-  nl = @{ index = 'Start'; werkwijze = 'Aan de slag'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
+  nl = @{ index = 'Start'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
           voeding = 'Voeding &amp; voltmeter';
           verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
-  en = @{ index = 'Start'; werkwijze = 'Getting started'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
+  en = @{ index = 'Start'; werkwijze = 'Getting started'; leerpad = 'Learning path'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
           voeding = 'Power &amp; voltmeter';
           verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
-  fr = @{ index = 'Accueil'; werkwijze = 'Premiers pas'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
+  fr = @{ index = 'Accueil'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
           voeding = 'Alimentation &amp; voltmètre';
           verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
-  de = @{ index = 'Start'; werkwijze = 'Erste Schritte'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
+  de = @{ index = 'Start'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
           voeding = 'Versorgung &amp; Voltmeter';
           verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation';
@@ -59,6 +59,7 @@ $Nav = @{
 
 # Pictogram per navigatie-item
 $NavIcon = @{
+  leerpad = 'knop-paneelkeuze';
   knoppen = 'knop-simuleren'; paneel = 'knop-raster'; onderdelenbalk = 'pal-verbinding';
   invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus';
   verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren';
@@ -78,7 +79,11 @@ foreach ($L in $Langs) {
   if (-not (Test-Path $LangDir)) { continue }
   New-Item -ItemType Directory -Force (Join-Path $Out $L) | Out-Null
 
-  foreach ($P in $Pages | Where-Object { $_ -notlike 'group:*' }) {
+  # gewone pagina's, plus de lessen van het leerpad (les*.html): die staan niet
+  # apart in de navigatie, daar is 'Leerpad' actief
+  $Lessons = @(Get-ChildItem $LangDir -Filter 'les*.html' | Sort-Object Name | ForEach-Object { $_.BaseName })
+  foreach ($P in @($Pages | Where-Object { $_ -notlike 'group:*' }) + $Lessons) {
+    $Active = if ($P -like 'les*') { 'leerpad' } else { $P }
     $File = Join-Path $LangDir "$P.html"
     if (-not (Test-Path $File)) { continue }
     $Body = [IO.File]::ReadAllText($File, $Utf8)
@@ -94,13 +99,15 @@ foreach ($L in $Langs) {
         [void]$sb.AppendLine("  <div class=""group"">$($Nav[$L][$N])</div>")
         continue
       }
-      $cls = if ($N -eq $P) { ' class="active"' } else { '' }
+      $cls = if ($N -eq $Active) { ' class="active"' } else { '' }
       $ico = if ($NavIcon.ContainsKey($N)) { "<img src=""../img/$($NavIcon[$N]).png"" class=""ico"" alt="""">" } else { '' }
       [void]$sb.AppendLine("  <a href=""$N.html""$cls>$ico$($Nav[$L][$N])</a>")
     }
     $LangLinks = ($Langs | ForEach-Object {
       $c = if ($_ -eq $L) { ' class="cur"' } else { '' }
-      "<a href=""../$_/$P.html""$c>$($LangLabel[$_])</a>"
+      # bestaat de pagina niet in die taal (bv. een les), dan naar het leerpad
+      $T = if (Test-Path (Join-Path $Src "$_/$P.html")) { $P } else { 'leerpad' }
+      "<a href=""../$_/$T.html""$c>$($LangLabel[$_])</a>"
     }) -join ''
 
     $Html = @"

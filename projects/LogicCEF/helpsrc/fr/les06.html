@@ -1,0 +1,44 @@
+<!-- titel: Leçon 6 - Combiner des portes -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 6 sur 10</p>
+  <h1>Combiner des portes</h1>
+  <div class="goal"><strong>Objectif :</strong> utiliser plusieurs portes à la suite, et transformer un problème de la
+  vie courante en circuit.</div>
+
+  <p><a class="open" href="../../panels/lessen/les06-tuinlamp.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les06-tuinlamp.png" alt="Capteur de lumière, porte NON, interrupteur, porte OU et lampe">
+    <figcaption>Il fait sombre (le capteur de lumière donne 0) : la lampe de jardin est allumée.</figcaption>
+  </figure>
+
+  <h2>Le problème</h2>
+  <p>Une lampe de jardin doit s&rsquo;allumer <b>toute seule</b> quand il fait sombre. Vous voulez aussi pouvoir
+  l&rsquo;allumer <b>à la main</b>, par exemple pour une fête en journée.</p>
+  <ol class="steps">
+    <li>&laquo;&nbsp;Quand il fait sombre&nbsp;&raquo; : le <a href="invoer.html#sensor">capteur de lumière</a> donne 1 quand il y a
+      de la lumière. Sombre, c&rsquo;est donc <b>NON</b> lumière.</li>
+    <li>&laquo;&nbsp;&hellip; <b>ou</b> à la main&nbsp;&raquo; : la sortie de la porte NON et un interrupteur vont vers une <b>porte OU</b>.</li>
+    <li>La porte OU commande la lampe.</li>
+  </ol>
+  <table>
+    <tr><th>Lumière</th><th>Interrupteur</th><th>NON lumière</th><th>Lampe de jardin</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Essayez</h2>
+  <p>Démarrez la simulation. Cliquez sur le capteur de lumière pour passer de la lumière à l&rsquo;obscurité,
+  et actionnez l&rsquo;interrupteur. Comparez avec la table.</p>
+
+  <h2>Exercice</h2>
+  <p>Les voisins se plaignent : la lampe reste allumée toute la nuit. Elle ne doit s&rsquo;allumer que s&rsquo;il fait
+  sombre <b>et</b> que quelqu&rsquo;un est dans le jardin (un <a href="invoer.html#drukknop">bouton-poussoir</a> représente
+  le détecteur de mouvement). Modifiez le circuit.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Remplacez la porte OU par une <b>porte ET</b> et l&rsquo;interrupteur par un bouton-poussoir. La lampe ne
+    s&rsquo;allume plus que s&rsquo;il fait sombre (NON lumière) <b>et</b> que le détecteur de mouvement voit quelque chose.</p>
+  </details>
+
+  <div class="pager"><a href="les05.html">&larr; Leçon 5 : La porte OU</a><a href="les07.html">Leçon 7 : Une alarme &rarr;</a></div>

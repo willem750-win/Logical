@@ -1,0 +1,42 @@
+<!-- titel: Leçon 4 - La porte ET -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 4 sur 10</p>
+  <h1>La porte ET</h1>
+  <div class="goal"><strong>Objectif :</strong> n&rsquo;activer une sortie que lorsque <b>toutes</b> les entrées sont activées.</div>
+
+  <p><a class="open" href="../../panels/lessen/les04-en-poort.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les04-en-poort.png" alt="Deux interrupteurs, porte ET et lampe">
+    <figcaption>Les deux interrupteurs sont fermés : la lampe (la presse) fonctionne.</figcaption>
+  </figure>
+
+  <h2>Un exemple réel : la commande à deux mains</h2>
+  <p>Une presse dans une usine ne peut fonctionner que si l&rsquo;opérateur appuie sur les <b>deux</b> boutons, un de
+  chaque main. Ainsi, aucune main ne peut se trouver sous la presse. La
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">porte ET</a> fait exactement cela :</p>
+  <table>
+    <tr><th>Main gauche (A1)</th><th>Main droite (A2)</th><th>Presse (lampe)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+  <p>Deux entrées donnent quatre possibilités. La sortie n&rsquo;est activée que dans la dernière ligne.</p>
+  <div class="tip"><strong>Pourquoi des interrupteurs ?</strong> Sur une vraie presse, ce sont des boutons-poussoirs.
+  Avec une seule souris, on ne peut maintenir qu&rsquo;un bouton à la fois dans Logic. C&rsquo;est pourquoi deux
+  <a href="les02.html">interrupteurs</a> représentent ici les deux mains.</div>
+
+  <h2>Essayez</h2>
+  <p>Démarrez la simulation. Fermez d&rsquo;abord un interrupteur, puis l&rsquo;autre, et regardez quand la lampe
+  s&rsquo;allume. Parcourez ainsi les quatre lignes de la table.</p>
+
+  <h2>Exercice</h2>
+  <p>La presse ne doit fonctionner que si la <b>grille de sécurité est fermée</b> elle aussi : trois conditions donc.
+  Une porte ET n&rsquo;a que deux entrées. Comment faire ?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Utilisez deux portes ET à la suite. La première reçoit les deux mains. Sa sortie va, avec un troisième
+    interrupteur (la grille), vers la deuxième porte ET. La lampe est reliée à la deuxième porte : elle ne
+    s&rsquo;allume que si les trois sont activés.</p>
+  </details>
+
+  <div class="pager"><a href="les03.html">&larr; Leçon 3 : La porte NON</a><a href="les05.html">Leçon 5 : La porte OU &rarr;</a></div>

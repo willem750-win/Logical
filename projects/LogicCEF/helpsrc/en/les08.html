@@ -1,0 +1,49 @@
+<!-- titel: Lesson 8 - Counting -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 8 of 10</p>
+  <h1>Counting</h1>
+  <div class="goal"><strong>Goal:</strong> count pulses with a counter, show the count on a display,
+  and understand binary counting.</div>
+
+  <p><a class="open" href="../../panels/lessen/les08-tellen.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les08-tellen.png" alt="Pulse generator, push button, counter and display">
+    <figcaption>The pulse generator makes the counter run; the display shows the count.</figcaption>
+  </figure>
+
+  <h2>How it works</h2>
+  <ul>
+    <li>The <a href="invoer.html#puls">pulse generator</a> gives a pulse every 0.3 seconds on the count input
+      <b>Te</b> of the <a href="verwerking.html#teller">counter</a>.</li>
+    <li>The push button on <b>Re</b> resets the counter to 0.</li>
+    <li>The red output on the right goes to the <a href="uitvoer.html#display">7-segment display</a>: it shows the
+      count as a digit, and after 9 as A to F.</li>
+  </ul>
+
+  <h2>Binary counting</h2>
+  <p>Below the counter there are four small lamps: <b>8</b>, <b>4</b>, <b>2</b> and <b>1</b>. Add up the numbers
+  of the lamps that are lit, and you have the count:</p>
+  <table>
+    <tr><th>8</th><th>4</th><th>2</th><th>1</th><th>Count</th><th>Display</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>2 + 1 = 3</td><td>3</td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>4 + 2 = 6</td><td>6</td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>8 + 2 = 10</td><td>A</td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>15</td><td>F</td></tr>
+  </table>
+  <p>After 15 the counter starts again at 0.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and click the button at the bottom of the pulse generator: the counter starts running.</li>
+    <li>Click again to stop, and check the count with the lamps 8-4-2-1.</li>
+    <li>Press the push button: the counter is back at 0.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Replace the pulse generator with a push button, so you give the pulses yourself. How many times do you have to
+  press to get <b>C</b> on the display?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>C is 12 (A = 10, B = 11, C = 12): press twelve times. In binary that is 8 + 4, so the lamps 8 and 4 are lit.</p>
+  </details>
+
+  <div class="pager"><a href="les07.html">&larr; Lesson 7: An alarm</a><a href="les09.html">Lesson 9: Memory &rarr;</a></div>

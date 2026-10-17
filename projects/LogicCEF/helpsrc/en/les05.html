@@ -1,0 +1,36 @@
+<!-- titel: Lesson 5 - The OR gate -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 5 of 10</p>
+  <h1>The OR gate</h1>
+  <div class="goal"><strong>Goal:</strong> make an output work when <b>at least one</b> input is on.</div>
+
+  <p><a class="open" href="../../panels/lessen/les05-of-poort.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les05-of-poort.png" alt="Two push buttons, OR gate and buzzer">
+    <figcaption>The bottom push button is pressed: the buzzer (the doorbell) sounds.</figcaption>
+  </figure>
+
+  <h2>A real example: the doorbell</h2>
+  <p>A house has a bell button at the front door and at the back door. Whichever button you press, the bell must
+  ring. That is an <a href="verwerking.html#of"><img src="../img/pal-of.png" class="ico" alt="">OR gate</a>:</p>
+  <table>
+    <tr><th>Front door (O1)</th><th>Back door (O2)</th><th>Bell (buzzer)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Compare with the AND gate</h2>
+  <p>Put the table next to the one of <a href="les04.html">lesson 4</a>. With AND <b>everything</b> must be on,
+  with OR <b>one</b> is enough. Only when both inputs are off is the output of the OR gate off.</p>
+
+  <h2>Exercise</h2>
+  <p>Replace the OR gate in this example with an AND gate and try both buttons. When does the bell ring now?
+  Is that still a good doorbell?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>With an AND gate the bell only rings when someone at the front door <b>and</b> someone at the back door
+    press at the same time. With one mouse that is not even possible. For a doorbell the OR gate is the right choice.</p>
+  </details>
+
+  <div class="pager"><a href="les04.html">&larr; Lesson 4: The AND gate</a><a href="les06.html">Lesson 6: Combining gates &rarr;</a></div>

@@ -1,0 +1,43 @@
+<!-- titel: Leçon 10 - Alimentation et tension -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 10 sur 10</p>
+  <h1>Alimentation et tension</h1>
+  <div class="goal"><strong>Objectif :</strong> voir d&rsquo;où vient le courant, mesurer une tension avec un voltmètre,
+  et comprendre pourquoi une entrée logique a besoin d&rsquo;une tension suffisante.</div>
+
+  <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Deux boutons-poussoirs sur des rails de 5 V et 1 V, deux lampes et un voltmètre">
+    <figcaption>Les deux boutons-poussoirs sont enfoncés. À 5&nbsp;V la lampe s&rsquo;allume, à 1&nbsp;V non, bien que le voltmètre mesure 1,0&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Rails d&rsquo;alimentation</h2>
+  <p>Dans les leçons précédentes, l&rsquo;alimentation venait de manière invisible de l&rsquo;arrière-plan. Avec des
+  <a href="voeding.html">rails d&rsquo;alimentation</a>, vous la rendez visible :</p>
+  <ul>
+    <li>le <b>rail +</b> rouge alimente les entrées (ici les boutons-poussoirs), avec une tension que vous choisissez ;</li>
+    <li>le <b>rail &minus;</b> bleu est la masse (0&nbsp;V), à laquelle les sorties (les lampes) sont reliées.</li>
+  </ul>
+  <p>Le bouton-poussoir du haut est sur un rail de <b>5&nbsp;V</b>, celui du bas sur un rail de <b>1&nbsp;V</b>.</p>
+
+  <h2>Mesurer la tension</h2>
+  <p>Le <a href="voeding.html#voltmeter">voltmètre</a> est relié au fil du bouton-poussoir du bas et mesure la tension par
+  rapport à la masse : <b>1,0&nbsp;V</b>. Pourtant, la lampe reste éteinte. Une entrée logique ne fonctionne qu&rsquo;à
+  partir d&rsquo;environ <b>2&nbsp;V</b> : en dessous, le signal compte comme &laquo;&nbsp;désactivé&nbsp;&raquo;.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et appuyez sur le bouton-poussoir du bas : le voltmètre indique 1,0&nbsp;V, la lampe reste éteinte.</li>
+    <li>Arrêtez la simulation. Faites un clic droit sur le rail + du bas et choisissez <b>Tension &rsaquo; 3,3&nbsp;V</b>.</li>
+    <li>Redémarrez et appuyez : le voltmètre indique 3,3&nbsp;V et la lampe s&rsquo;allume.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Cherchez dans le menu la tension la plus basse pour laquelle la lampe du bas s&rsquo;allume encore. Que se passe-t-il
+  pour une lampe que vous débranchez du rail &minus; ?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>À partir de <b>2&nbsp;V</b>, la lampe s&rsquo;allume ; à 1&nbsp;V et 0&nbsp;V, non. Une lampe qui n&rsquo;est pas branchée
+    sur un rail &minus; reçoit un point gris et ne s&rsquo;allume jamais : sans liaison à la masse, aucun courant ne peut circuler.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Leçon 9 : La mémoire</a><a href="leerpad.html">Parcours &rarr;</a></div>

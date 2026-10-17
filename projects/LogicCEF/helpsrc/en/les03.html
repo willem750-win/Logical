@@ -1,0 +1,38 @@
+<!-- titel: Lesson 3 - The NOT gate -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 3 of 10</p>
+  <h1>The NOT gate</h1>
+  <div class="goal"><strong>Goal:</strong> invert a signal with a NOT gate, and read a truth table.</div>
+
+  <p><a class="open" href="../../panels/lessen/les03-niet-poort.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les03-niet-poort.png" alt="Push button, NOT gate and lamp">
+    <figcaption>The push button is released, yet the lamp is lit: the NOT gate inverts the signal.</figcaption>
+  </figure>
+
+  <h2>How it works</h2>
+  <p>A <a href="verwerking.html#niet"><img src="../img/pal-niet.png" class="ico" alt="">NOT gate</a> has one input and one output.
+  The output is always the <b>opposite</b> of the input. In a <b>truth table</b> you list all
+  possibilities below each other:</p>
+  <table>
+    <tr><th>Push button (input)</th><th>Lamp (output)</th></tr>
+    <tr><td>0 &ndash; released</td><td>1 &ndash; lit</td></tr>
+    <tr><td>1 &ndash; pressed</td><td>0 &ndash; off</td></tr>
+  </table>
+
+  <h2>Build it yourself</h2>
+  <ol class="steps">
+    <li>Place a push button, a <b>NOT gate</b> and a lamp next to each other.</li>
+    <li>Wire from the push button to input <b>N1</b> of the gate.</li>
+    <li>Wire from output <b>N</b> of the gate to the lamp.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>A fridge light is on when the door is <b>open</b>. The door switch is pressed when the door is
+  <b>closed</b>. Which circuit do you need?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Exactly this example: door closed = button pressed = lamp off; door open = button released = lamp on.
+    Without the NOT gate the light would be on precisely when the door is closed.</p>
+  </details>
+
+  <div class="pager"><a href="les02.html">&larr; Lesson 2: Push button or switch?</a><a href="les04.html">Lesson 4: The AND gate &rarr;</a></div>

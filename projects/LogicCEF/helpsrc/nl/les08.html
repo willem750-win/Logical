@@ -1,0 +1,49 @@
+<!-- titel: Les 8 - Tellen -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 8 van 10</p>
+  <h1>Tellen</h1>
+  <div class="goal"><strong>Doel:</strong> pulsen tellen met een teller, de stand tonen op een display,
+  en binair tellen begrijpen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les08-tellen.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les08-tellen.png" alt="Impulsgenerator, drukknop, teller en display">
+    <figcaption>De impulsgenerator laat de teller lopen; het display toont de stand.</figcaption>
+  </figure>
+
+  <h2>Zo werkt het</h2>
+  <ul>
+    <li>De <a href="invoer.html#puls">impulsgenerator</a> geeft om de 0,3 seconde een puls op de telingang
+      <b>Te</b> van de <a href="verwerking.html#teller">teller</a>.</li>
+    <li>De drukknop op <b>Re</b> zet de teller terug op 0.</li>
+    <li>De rode uitgang rechts gaat naar het <a href="uitvoer.html#display">7-segmentdisplay</a>: dat toont de
+      stand als cijfer, en na 9 als A tot F.</li>
+  </ul>
+
+  <h2>Binair tellen</h2>
+  <p>Onder de teller staan vier lampjes: <b>8</b>, <b>4</b>, <b>2</b> en <b>1</b>. Tel de getallen op van de
+  lampjes die branden, en je hebt de stand:</p>
+  <table>
+    <tr><th>8</th><th>4</th><th>2</th><th>1</th><th>Stand</th><th>Display</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>2 + 1 = 3</td><td>3</td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>4 + 2 = 6</td><td>6</td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>8 + 2 = 10</td><td>A</td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>15</td><td>F</td></tr>
+  </table>
+  <p>Na 15 begint de teller opnieuw bij 0.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en klik op de knop onderaan de impulsgenerator: de teller begint te lopen.</li>
+    <li>Klik nog eens om te stoppen, en controleer de stand met de lampjes 8-4-2-1.</li>
+    <li>Druk op de drukknop: de teller staat weer op 0.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Vervang de impulsgenerator door een drukknop, zodat je zelf de pulsen geeft. Hoeveel keer moet je drukken
+  om <b>C</b> op het display te krijgen?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>C is 12 (A = 10, B = 11, C = 12): twaalf keer drukken. Binair is dat 8 + 4, dus de lampjes 8 en 4 branden.</p>
+  </details>
+
+  <div class="pager"><a href="les07.html">&larr; Les 7: Een alarm</a><a href="les09.html">Les 9: Geheugen &rarr;</a></div>

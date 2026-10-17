@@ -1,0 +1,44 @@
+<!-- titel: Leçon 9 - La mémoire -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 9 sur 10</p>
+  <h1>La mémoire</h1>
+  <div class="goal"><strong>Objectif :</strong> enregistrer des nombres à une adresse dans une mémoire et les
+  retrouver plus tard, comme le fait un ordinateur.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les09-geheugen.png" alt="Boutons-poussoirs, compteur, commutateur DIP, bloc mémoire et deux afficheurs">
+    <figcaption>Un compteur choisit l&rsquo;adresse, le commutateur DIP fournit le nombre, deux afficheurs montrent l&rsquo;adresse et le contenu.</figcaption>
+  </figure>
+
+  <h2>Adresse et contenu</h2>
+  <p>Une <a href="verwerking.html#geheugen">mémoire</a> ressemble à une armoire à tiroirs numérotés. Le numéro d&rsquo;un tiroir
+  est l&rsquo;<b>adresse</b>, ce qu&rsquo;il contient est le <b>contenu</b>. Ce bloc mémoire a 32 tiroirs
+  (adresses 0 à 31) et chaque tiroir contient un nombre de 0 à 15.</p>
+  <ul>
+    <li>Le <b>compteur</b> en haut choisit l&rsquo;adresse. Le bouton-poussoir du bas avance d&rsquo;une adresse, celui du
+      haut remet à 0 (voir la <a href="les08.html">leçon 8</a>). L&rsquo;afficheur du haut montre l&rsquo;adresse.</li>
+    <li>Avec le <a href="invoer.html#dipswitch">commutateur DIP</a>, vous préparez un nombre (8, 4, 2, 1).
+      Son bouton écrit le nombre dans le tiroir choisi.</li>
+    <li>L&rsquo;afficheur du bas montre le contenu de l&rsquo;adresse choisie.</li>
+  </ul>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation. L&rsquo;adresse est 0.</li>
+    <li>Activez 4 et 1 sur le commutateur DIP (= 5) et appuyez sur son bouton. L&rsquo;afficheur du bas montre 5.</li>
+    <li>Avancez d&rsquo;une adresse : le contenu de l&rsquo;adresse 1 est encore 0.</li>
+    <li>Écrivez-y un autre nombre, par exemple 9 (8 + 1).</li>
+    <li>Remettez le compteur à 0 : l&rsquo;afficheur montre de nouveau 5. La mémoire s&rsquo;en est souvenue.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Enregistrez les nombres 3, 1, 4, 1 et 5 aux adresses 0 à 4. Remettez ensuite le compteur à 0 et parcourez les
+  adresses. Relisez-vous les nombres dans le bon ordre ?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>À chaque adresse : préparez le nombre sur le commutateur DIP (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), appuyez sur
+    son bouton, puis avancez d&rsquo;une adresse avec le compteur. Après une remise à 0, l&rsquo;afficheur montre à chaque
+    pas le nombre enregistré : 3, 1, 4, 1, 5.</p>
+  </details>
+
+  <div class="pager"><a href="les08.html">&larr; Leçon 8 : Compter</a><a href="les10.html">Leçon 10 : Alimentation et tension &rarr;</a></div>

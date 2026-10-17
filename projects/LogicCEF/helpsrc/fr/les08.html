@@ -1,0 +1,49 @@
+<!-- titel: Leçon 8 - Compter -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 8 sur 10</p>
+  <h1>Compter</h1>
+  <div class="goal"><strong>Objectif :</strong> compter des impulsions avec un compteur, afficher la valeur sur un
+  afficheur, et comprendre le comptage binaire.</div>
+
+  <p><a class="open" href="../../panels/lessen/les08-tellen.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les08-tellen.png" alt="Générateur d'impulsions, bouton-poussoir, compteur et afficheur">
+    <figcaption>Le générateur d&rsquo;impulsions fait tourner le compteur ; l&rsquo;afficheur montre la valeur.</figcaption>
+  </figure>
+
+  <h2>Fonctionnement</h2>
+  <ul>
+    <li>Le <a href="invoer.html#puls">générateur d&rsquo;impulsions</a> envoie une impulsion toutes les 0,3 seconde sur
+      l&rsquo;entrée de comptage <b>Te</b> du <a href="verwerking.html#teller">compteur</a>.</li>
+    <li>Le bouton-poussoir sur <b>Re</b> remet le compteur à 0.</li>
+    <li>La sortie rouge à droite va vers l&rsquo;<a href="uitvoer.html#display">afficheur 7 segments</a> : il montre la
+      valeur sous forme de chiffre, puis de A à F après 9.</li>
+  </ul>
+
+  <h2>Compter en binaire</h2>
+  <p>Sous le compteur se trouvent quatre petites lampes : <b>8</b>, <b>4</b>, <b>2</b> et <b>1</b>. Additionnez les
+  nombres des lampes allumées pour obtenir la valeur :</p>
+  <table>
+    <tr><th>8</th><th>4</th><th>2</th><th>1</th><th>Valeur</th><th>Afficheur</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>2 + 1 = 3</td><td>3</td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>4 + 2 = 6</td><td>6</td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>8 + 2 = 10</td><td>A</td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>15</td><td>F</td></tr>
+  </table>
+  <p>Après 15, le compteur recommence à 0.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et cliquez sur le bouton en bas du générateur d&rsquo;impulsions : le compteur démarre.</li>
+    <li>Cliquez à nouveau pour l&rsquo;arrêter, et vérifiez la valeur avec les lampes 8-4-2-1.</li>
+    <li>Appuyez sur le bouton-poussoir : le compteur revient à 0.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Remplacez le générateur d&rsquo;impulsions par un bouton-poussoir, pour envoyer les impulsions vous-même. Combien
+  de fois devez-vous appuyer pour obtenir <b>C</b> sur l&rsquo;afficheur ?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>C vaut 12 (A = 10, B = 11, C = 12) : il faut appuyer douze fois. En binaire, cela fait 8 + 4 : les lampes 8 et 4 sont allumées.</p>
+  </details>
+
+  <div class="pager"><a href="les07.html">&larr; Leçon 7 : Une alarme</a><a href="les09.html">Leçon 9 : La mémoire &rarr;</a></div>

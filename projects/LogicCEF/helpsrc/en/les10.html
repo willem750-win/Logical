@@ -1,0 +1,43 @@
+<!-- titel: Lesson 10 - Power and voltage -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 10 of 10</p>
+  <h1>Power and voltage</h1>
+  <div class="goal"><strong>Goal:</strong> see where the current comes from, measure voltage with a voltmeter,
+  and understand why a logic input needs enough voltage.</div>
+
+  <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Two push buttons on rails of 5 V and 1 V, two lamps and a voltmeter">
+    <figcaption>Both push buttons are pressed. At 5&nbsp;V the lamp is lit, at 1&nbsp;V it is not, although the voltmeter measures 1.0&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Power rails</h2>
+  <p>In the previous lessons the power came invisibly from the background. With
+  <a href="voeding.html">power rails</a> you make it visible:</p>
+  <ul>
+    <li>the red <b>+ rail</b> supplies the inputs (here the push buttons), with a voltage you choose yourself;</li>
+    <li>the blue <b>&minus; rail</b> is ground (0&nbsp;V), to which the outputs (the lamps) are connected.</li>
+  </ul>
+  <p>The top push button is on a <b>5&nbsp;V</b> rail, the bottom one on a <b>1&nbsp;V</b> rail.</p>
+
+  <h2>Measuring voltage</h2>
+  <p>The <a href="voeding.html#voltmeter">voltmeter</a> is connected to the wire of the bottom push button and measures the
+  voltage against ground: <b>1.0&nbsp;V</b>. Yet the lamp stays off. A logic input only works from about
+  <b>2&nbsp;V</b>: below that the signal counts as &ldquo;off&rdquo;.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and press the bottom push button: the voltmeter shows 1.0&nbsp;V, the lamp stays off.</li>
+    <li>Stop the simulation. Right-click the bottom + rail and choose <b>Voltage &rsaquo; 3.3&nbsp;V</b>.</li>
+    <li>Start again and press: the voltmeter shows 3.3&nbsp;V and the lamp is lit.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Find the lowest voltage in the menu at which the bottom lamp is still lit. What happens to a lamp that you pull
+  off the &minus; rail?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>From <b>2&nbsp;V</b> the lamp is lit; at 1&nbsp;V and 0&nbsp;V it is not. A lamp that is not plugged into a
+    &minus; rail gets a grey dot and is never lit: without a connection to ground no current can flow.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Lesson 9: Memory</a><a href="leerpad.html">Learning path &rarr;</a></div>

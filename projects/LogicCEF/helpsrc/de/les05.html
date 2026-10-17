@@ -1,0 +1,36 @@
+<!-- titel: Lektion 5 - Das ODER-Gatter -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 5 von 10</p>
+  <h1>Das ODER-Gatter</h1>
+  <div class="goal"><strong>Ziel:</strong> einen Ausgang arbeiten lassen, wenn <b>mindestens ein</b> Eingang ein ist.</div>
+
+  <p><a class="open" href="../../panels/lessen/les05-of-poort.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les05-of-poort.png" alt="Zwei Taster, ODER-Gatter und Summer">
+    <figcaption>Der untere Taster ist gedrückt: Der Summer (die Türklingel) ertönt.</figcaption>
+  </figure>
+
+  <h2>Ein echtes Beispiel: die Türklingel</h2>
+  <p>Ein Haus hat einen Klingelknopf an der Vordertür und an der Hintertür. Welchen Knopf man auch drückt, die Klingel
+  muss läuten. Das ist ein <a href="verwerking.html#of"><img src="../img/pal-of.png" class="ico" alt="">ODER-Gatter</a>:</p>
+  <table>
+    <tr><th>Vordertür (O1)</th><th>Hintertür (O2)</th><th>Klingel (Summer)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Vergleich mit dem UND-Gatter</h2>
+  <p>Legen Sie die Tabelle neben die von <a href="les04.html">Lektion 4</a>. Bei UND muss <b>alles</b> ein sein, bei ODER
+  genügt <b>einer</b>. Nur wenn beide Eingänge aus sind, ist der Ausgang des ODER-Gatters aus.</p>
+
+  <h2>Übung</h2>
+  <p>Ersetzen Sie in diesem Beispiel das ODER-Gatter durch ein UND-Gatter und probieren Sie beide Taster. Wann klingelt
+  es jetzt? Ist das noch eine gute Türklingel?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Mit einem UND-Gatter klingelt es nur, wenn jemand an der Vordertür <b>und</b> jemand an der Hintertür gleichzeitig
+    drückt. Mit einer Maus geht das nicht einmal. Für eine Türklingel ist das ODER-Gatter also die richtige Wahl.</p>
+  </details>
+
+  <div class="pager"><a href="les04.html">&larr; Lektion 4: Das UND-Gatter</a><a href="les06.html">Lektion 6: Gatter kombinieren &rarr;</a></div>

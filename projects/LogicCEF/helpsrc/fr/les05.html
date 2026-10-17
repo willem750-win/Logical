@@ -1,0 +1,37 @@
+<!-- titel: Leçon 5 - La porte OU -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 5 sur 10</p>
+  <h1>La porte OU</h1>
+  <div class="goal"><strong>Objectif :</strong> activer une sortie dès qu&rsquo;<b>au moins une</b> entrée est activée.</div>
+
+  <p><a class="open" href="../../panels/lessen/les05-of-poort.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les05-of-poort.png" alt="Deux boutons-poussoirs, porte OU et buzzer">
+    <figcaption>Le bouton-poussoir du bas est enfoncé : le buzzer (la sonnette) retentit.</figcaption>
+  </figure>
+
+  <h2>Un exemple réel : la sonnette</h2>
+  <p>Une maison a un bouton de sonnette à la porte d&rsquo;entrée et à la porte arrière. Quel que soit le bouton,
+  la sonnette doit retentir. C&rsquo;est une <a href="verwerking.html#of"><img src="../img/pal-of.png" class="ico" alt="">porte OU</a> :</p>
+  <table>
+    <tr><th>Porte d&rsquo;entrée (O1)</th><th>Porte arrière (O2)</th><th>Sonnette (buzzer)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Comparez avec la porte ET</h2>
+  <p>Mettez la table à côté de celle de la <a href="les04.html">leçon 4</a>. Avec ET, <b>tout</b> doit être activé ;
+  avec OU, <b>une</b> entrée suffit. La sortie de la porte OU n&rsquo;est désactivée que si les deux entrées le sont.</p>
+
+  <h2>Exercice</h2>
+  <p>Remplacez dans cet exemple la porte OU par une porte ET et essayez les deux boutons. Quand la sonnette
+  retentit-elle maintenant ? Est-ce encore une bonne sonnette ?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Avec une porte ET, la sonnette ne retentit que si quelqu&rsquo;un à la porte d&rsquo;entrée <b>et</b> quelqu&rsquo;un à
+    la porte arrière appuient en même temps. Avec une seule souris, ce n&rsquo;est même pas possible. Pour une sonnette,
+    la porte OU est donc le bon choix.</p>
+  </details>
+
+  <div class="pager"><a href="les04.html">&larr; Leçon 4 : La porte ET</a><a href="les06.html">Leçon 6 : Combiner des portes &rarr;</a></div>

@@ -1,0 +1,35 @@
+<!-- titel: Lektion 7 - Eine Alarmanlage -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 7 von 10</p>
+  <h1>Eine Alarmanlage</h1>
+  <div class="goal"><strong>Ziel:</strong> Sensoren verwenden und ein Signal an mehrere Ausgabebauteile senden.</div>
+
+  <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les07-alarm.png" alt="Wärmesensor, Paniktaster, ODER-Gatter, Summer und Relais">
+    <figcaption>Der Wärmesensor meldet &bdquo;warm&ldquo;: Der Summer ertönt und das Relais schaltet um.</figcaption>
+  </figure>
+
+  <h2>So funktioniert es</h2>
+  <ul>
+    <li>Ein <a href="invoer.html#warm">Wärmesensor</a> meldet einen Brand, ein <a href="invoer.html#drukknop">Taster</a>
+      ist der Paniktaster.</li>
+    <li>Ein <b>ODER-Gatter</b>: Der Alarm geht los, wenn der Sensor <b>oder</b> der Paniktaster etwas meldet.</li>
+    <li>Vom Ausgang des ODER-Gatters gehen <b>zwei Drähte</b> aus: zum <a href="uitvoer.html#zoemer">Summer</a> (der Ton)
+      und zu einem <a href="uitvoer.html#relais">Relais</a>. Mit einem Relais kann ein kleines Steuersignal ein großes Gerät
+      schalten, zum Beispiel eine Sirene oder die Beleuchtung.</li>
+  </ul>
+
+  <h2>Ausprobieren</h2>
+  <p>Starten Sie die Simulation. Klicken Sie auf den Wärmesensor (warm/kalt) und drücken Sie den Paniktaster. Achten Sie
+  auf das Relais: Die LED wird grün und der Kontakt schaltet um.</p>
+
+  <h2>Übung</h2>
+  <p>Fügen Sie einen <b>Lichtsensor</b> als Einbruchmelder hinzu: Der Alarm soll auch losgehen, wenn nachts im Lager
+  Licht angeht. Das ODER-Gatter hat nur zwei Eingänge.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Setzen Sie ein zweites ODER-Gatter zwischen das erste ODER-Gatter und die Ausgänge. Das erste ODER-Gatter verknüpft
+    Wärme und Paniktaster, das zweite fügt den Lichtsensor hinzu. Summer und Relais hängen am Ausgang des zweiten Gatters.</p>
+  </details>
+
+  <div class="pager"><a href="les06.html">&larr; Lektion 6: Gatter kombinieren</a><a href="les08.html">Lektion 8: Zählen &rarr;</a></div>

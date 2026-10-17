@@ -1,0 +1,42 @@
+<!-- titel: Lesson 4 - The AND gate -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 4 of 10</p>
+  <h1>The AND gate</h1>
+  <div class="goal"><strong>Goal:</strong> make an output work only when <b>all</b> inputs are on.</div>
+
+  <p><a class="open" href="../../panels/lessen/les04-en-poort.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les04-en-poort.png" alt="Two switches, AND gate and lamp">
+    <figcaption>Both switches are on: the lamp (the press) works.</figcaption>
+  </figure>
+
+  <h2>A real example: two-hand control</h2>
+  <p>A press in a factory may only work when the operator presses <b>both</b> buttons, one with each hand.
+  That way a hand can never be under the press. The
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">AND gate</a> does exactly that:</p>
+  <table>
+    <tr><th>Left hand (A1)</th><th>Right hand (A2)</th><th>Press (lamp)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+  <p>Two inputs give four possibilities. Only in the last row is the output on.</p>
+  <div class="tip"><strong>Why switches?</strong> In a real press they are push buttons. With one mouse you can
+  only hold down one button at a time in Logic. That is why two <a href="les02.html">switches</a>
+  represent the two hands here.</div>
+
+  <h2>Try it</h2>
+  <p>Start the simulation. Turn on one switch first, then the other, and watch when the lamp is lit.
+  Go through the four rows of the table this way.</p>
+
+  <h2>Exercise</h2>
+  <p>The press may only work when the <b>safety gate is closed</b> too: three conditions. An AND gate
+  has only two inputs. How do you solve that?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Use two AND gates in a row. The first gate gets the two hands. Its output goes, together with a third
+    switch (the gate), to the second AND gate. The lamp is connected to the second gate: it is only lit when
+    all three are on.</p>
+  </details>
+
+  <div class="pager"><a href="les03.html">&larr; Lesson 3: The NOT gate</a><a href="les05.html">Lesson 5: The OR gate &rarr;</a></div>

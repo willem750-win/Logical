@@ -1,0 +1,35 @@
+<!-- titel: Les 7 - Een alarm -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 7 van 10</p>
+  <h1>Een alarm</h1>
+  <div class="goal"><strong>Doel:</strong> sensoren gebruiken en één signaal naar meerdere uitvoeronderdelen sturen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les07-alarm.png" alt="Warmtesensor, paniekknop, OF-poort, zoemer en relais">
+    <figcaption>De warmtesensor meldt &ldquo;warm&rdquo;: de zoemer gaat af en het relais schakelt om.</figcaption>
+  </figure>
+
+  <h2>Zo werkt het</h2>
+  <ul>
+    <li>Een <a href="invoer.html#warm">warmtesensor</a> meldt brand, een <a href="invoer.html#drukknop">drukknop</a>
+      is de paniekknop.</li>
+    <li>Een <b>OF-poort</b>: het alarm gaat af als de sensor <b>of</b> de paniekknop iets meldt.</li>
+    <li>Uit de uitgang van de OF-poort vertrekken <b>twee draden</b>: naar de <a href="uitvoer.html#zoemer">zoemer</a>
+      (het geluid) en naar een <a href="uitvoer.html#relais">relais</a>. Met een relais kan een klein stuursignaal een
+      groot toestel schakelen, bijvoorbeeld een sirene of de verlichting.</li>
+  </ul>
+
+  <h2>Probeer het</h2>
+  <p>Start de simulatie. Klik op de warmtesensor (warm/koud) en druk op de paniekknop. Let op het relais:
+  de led wordt groen en het contact schakelt om.</p>
+
+  <h2>Opdracht</h2>
+  <p>Voeg een <b>lichtsensor</b> toe als inbraakmelder: het alarm moet ook afgaan als er &rsquo;s nachts licht
+  aangaat in het magazijn. De OF-poort heeft maar twee ingangen.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet een tweede OF-poort tussen de eerste OF-poort en de uitvoer. De eerste OF-poort combineert warmte en
+    paniekknop, de tweede voegt de lichtsensor toe. Zoemer en relais hangen aan de uitgang van de tweede poort.</p>
+  </details>
+
+  <div class="pager"><a href="les06.html">&larr; Les 6: Poorten combineren</a><a href="les08.html">Les 8: Tellen &rarr;</a></div>

@@ -1,0 +1,36 @@
+<!-- titel: Leçon 7 - Une alarme -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 7 sur 10</p>
+  <h1>Une alarme</h1>
+  <div class="goal"><strong>Objectif :</strong> utiliser des capteurs et envoyer un même signal vers plusieurs
+  composants de sortie.</div>
+
+  <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les07-alarm.png" alt="Capteur de chaleur, bouton panique, porte OU, buzzer et relais">
+    <figcaption>Le capteur de chaleur signale &laquo;&nbsp;chaud&nbsp;&raquo; : le buzzer retentit et le relais bascule.</figcaption>
+  </figure>
+
+  <h2>Fonctionnement</h2>
+  <ul>
+    <li>Un <a href="invoer.html#warm">capteur de chaleur</a> signale un incendie, un <a href="invoer.html#drukknop">bouton-poussoir</a>
+      sert de bouton panique.</li>
+    <li>Une <b>porte OU</b> : l&rsquo;alarme se déclenche si le capteur <b>ou</b> le bouton panique signale quelque chose.</li>
+    <li><b>Deux fils</b> partent de la sortie de la porte OU : vers le <a href="uitvoer.html#zoemer">buzzer</a> (le son)
+      et vers un <a href="uitvoer.html#relais">relais</a>. Avec un relais, un petit signal de commande peut commuter un
+      gros appareil, par exemple une sirène ou l&rsquo;éclairage.</li>
+  </ul>
+
+  <h2>Essayez</h2>
+  <p>Démarrez la simulation. Cliquez sur le capteur de chaleur (chaud/froid) et appuyez sur le bouton panique.
+  Observez le relais : la LED devient verte et le contact bascule.</p>
+
+  <h2>Exercice</h2>
+  <p>Ajoutez un <b>capteur de lumière</b> comme détecteur d&rsquo;intrusion : l&rsquo;alarme doit aussi se déclencher si
+  une lumière s&rsquo;allume la nuit dans l&rsquo;entrepôt. La porte OU n&rsquo;a que deux entrées.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Placez une deuxième porte OU entre la première porte OU et les sorties. La première combine la chaleur et le
+    bouton panique, la deuxième ajoute le capteur de lumière. Buzzer et relais sont reliés à la sortie de la deuxième porte.</p>
+  </details>
+
+  <div class="pager"><a href="les06.html">&larr; Leçon 6 : Combiner des portes</a><a href="les08.html">Leçon 8 : Compter &rarr;</a></div>

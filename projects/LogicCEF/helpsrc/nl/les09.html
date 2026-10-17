@@ -1,0 +1,44 @@
+<!-- titel: Les 9 - Geheugen -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 9 van 10</p>
+  <h1>Geheugen</h1>
+  <div class="goal"><strong>Doel:</strong> getallen bewaren op een adres in een geheugen en ze later terugvinden,
+  zoals een computer dat doet.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les09-geheugen.png" alt="Drukknoppen, teller, dipschakelaar, geheugenblok en twee displays">
+    <figcaption>Een teller kiest het adres, de dipschakelaar levert het getal, twee displays tonen adres en inhoud.</figcaption>
+  </figure>
+
+  <h2>Adres en inhoud</h2>
+  <p>Een <a href="verwerking.html#geheugen">geheugen</a> is als een kast met genummerde laatjes. Het nummer van
+  een laatje is het <b>adres</b>, wat erin ligt is de <b>inhoud</b>. Dit geheugenblok heeft 32 laatjes
+  (adres 0 tot 31) en elk laatje bewaart een getal van 0 tot 15.</p>
+  <ul>
+    <li>De <b>teller</b> bovenaan kiest het adres. De onderste drukknop telt één adres verder, de bovenste zet terug op 0
+      (zie <a href="les08.html">les 8</a>). Het bovenste display toont het adres.</li>
+    <li>Met de <a href="invoer.html#dipswitch">dipschakelaar</a> zet je een getal klaar (8, 4, 2, 1).
+      Met zijn knop schrijf je het getal in het gekozen laatje.</li>
+    <li>Het onderste display toont de inhoud van het gekozen adres.</li>
+  </ul>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie. Het adres is 0.</li>
+    <li>Zet op de dipschakelaar 4 en 1 aan (= 5) en druk op de knop van de dipschakelaar. Het onderste display toont 5.</li>
+    <li>Tel één adres verder: de inhoud van adres 1 is nog 0.</li>
+    <li>Schrijf daar een ander getal, bijvoorbeeld 9 (8 + 1).</li>
+    <li>Zet de teller terug op 0: het display toont weer 5. Het geheugen heeft het onthouden.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Bewaar de getallen 3, 1, 4, 1 en 5 op de adressen 0 tot 4. Zet de teller daarna terug op 0 en loop de adressen
+  af. Lees je de getallen terug in de juiste volgorde?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Op elk adres: getal klaarzetten op de dipschakelaar (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), op de knop van de
+    dipschakelaar drukken, en dan met de teller één adres verder. Na een reset toont het display bij elke stap
+    het bewaarde getal: 3, 1, 4, 1, 5.</p>
+  </details>
+
+  <div class="pager"><a href="les08.html">&larr; Les 8: Tellen</a><a href="les10.html">Les 10: Voeding en spanning &rarr;</a></div>

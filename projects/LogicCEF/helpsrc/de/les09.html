@@ -1,0 +1,44 @@
+<!-- titel: Lektion 9 - Speicher -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 9 von 10</p>
+  <h1>Speicher</h1>
+  <div class="goal"><strong>Ziel:</strong> Zahlen an einer Adresse in einem Speicher ablegen und später wiederfinden,
+  so wie es ein Computer tut.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les09-geheugen.png" alt="Taster, Zähler, DIP-Schalter, Speicherbaustein und zwei Anzeigen">
+    <figcaption>Ein Zähler wählt die Adresse, der DIP-Schalter liefert die Zahl, zwei Anzeigen zeigen Adresse und Inhalt.</figcaption>
+  </figure>
+
+  <h2>Adresse und Inhalt</h2>
+  <p>Ein <a href="verwerking.html#geheugen">Speicher</a> ist wie ein Schrank mit nummerierten Schubladen. Die Nummer einer
+  Schublade ist die <b>Adresse</b>, was darin liegt, ist der <b>Inhalt</b>. Dieser Speicherbaustein hat 32 Schubladen
+  (Adresse 0 bis 31), und jede Schublade enthält eine Zahl von 0 bis 15.</p>
+  <ul>
+    <li>Der <b>Zähler</b> oben wählt die Adresse. Der untere Taster zählt eine Adresse weiter, der obere setzt auf 0 zurück
+      (siehe <a href="les08.html">Lektion 8</a>). Die obere Anzeige zeigt die Adresse.</li>
+    <li>Mit dem <a href="invoer.html#dipswitch">DIP-Schalter</a> stellen Sie eine Zahl ein (8, 4, 2, 1).
+      Mit seinem Knopf schreiben Sie die Zahl in die gewählte Schublade.</li>
+    <li>Die untere Anzeige zeigt den Inhalt der gewählten Adresse.</li>
+  </ul>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Die Adresse ist 0.</li>
+    <li>Schalten Sie am DIP-Schalter 4 und 1 ein (= 5) und drücken Sie seinen Knopf. Die untere Anzeige zeigt 5.</li>
+    <li>Zählen Sie eine Adresse weiter: Der Inhalt von Adresse 1 ist noch 0.</li>
+    <li>Schreiben Sie dort eine andere Zahl hinein, zum Beispiel 9 (8 + 1).</li>
+    <li>Setzen Sie den Zähler auf 0 zurück: Die Anzeige zeigt wieder 5. Der Speicher hat es sich gemerkt.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Legen Sie die Zahlen 3, 1, 4, 1 und 5 an den Adressen 0 bis 4 ab. Setzen Sie den Zähler danach auf 0 zurück und
+  gehen Sie die Adressen durch. Lesen Sie die Zahlen in der richtigen Reihenfolge zurück?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>An jeder Adresse: Zahl am DIP-Schalter einstellen (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), seinen Knopf drücken und
+    dann mit dem Zähler eine Adresse weiter. Nach dem Zurücksetzen zeigt die Anzeige bei jedem Schritt die gespeicherte
+    Zahl: 3, 1, 4, 1, 5.</p>
+  </details>
+
+  <div class="pager"><a href="les08.html">&larr; Lektion 8: Zählen</a><a href="les10.html">Lektion 10: Versorgung und Spannung &rarr;</a></div>

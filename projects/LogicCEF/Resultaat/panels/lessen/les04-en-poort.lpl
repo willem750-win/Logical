@@ -1,0 +1,10 @@
+TjanSimLight;23;500;178;69;
+TjanConnector;9;390;180;119;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;32;162;197;148;jcmBR;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;30;162;140;148;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanLogic;68;300;EN;150;100;
+TjanSimKnop;50;120;200;51;
+TjanSimKnop;50;120;120;51;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;

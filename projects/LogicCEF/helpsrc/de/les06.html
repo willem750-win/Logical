@@ -1,0 +1,43 @@
+<!-- titel: Lektion 6 - Gatter kombinieren -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 6 von 10</p>
+  <h1>Gatter kombinieren</h1>
+  <div class="goal"><strong>Ziel:</strong> mehrere Gatter hintereinander verwenden und ein Alltagsproblem in eine
+  Schaltung umsetzen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les06-tuinlamp.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les06-tuinlamp.png" alt="Lichtsensor, NICHT-Gatter, Schalter, ODER-Gatter und Lampe">
+    <figcaption>Es ist dunkel (der Lichtsensor gibt 0): Die Gartenlampe leuchtet.</figcaption>
+  </figure>
+
+  <h2>Das Problem</h2>
+  <p>Eine Gartenlampe soll <b>von selbst</b> angehen, wenn es dunkel wird. Außerdem möchten Sie sie auch
+  <b>von Hand</b> einschalten können, zum Beispiel für ein Fest am Tag.</p>
+  <ol class="steps">
+    <li>&bdquo;Wenn es dunkel ist&ldquo;: Der <a href="invoer.html#sensor">Lichtsensor</a> gibt 1 bei Licht. Dunkel ist also
+      <b>NICHT</b> Licht.</li>
+    <li>&bdquo;&hellip; <b>oder</b> von Hand&ldquo;: Der Ausgang des NICHT-Gatters und ein Schalter gehen zu einem <b>ODER-Gatter</b>.</li>
+    <li>Das ODER-Gatter steuert die Lampe.</li>
+  </ol>
+  <table>
+    <tr><th>Licht</th><th>Schalter</th><th>NICHT Licht</th><th>Gartenlampe</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Ausprobieren</h2>
+  <p>Starten Sie die Simulation. Klicken Sie auf den Lichtsensor, um zwischen hell und dunkel zu wechseln, und schalten
+  Sie den Schalter ein und aus. Vergleichen Sie mit der Tabelle.</p>
+
+  <h2>Übung</h2>
+  <p>Die Nachbarn beschweren sich: Die Lampe brennt die ganze Nacht. Sie darf nur angehen, wenn es dunkel ist <b>und</b>
+  jemand im Garten ist (ein <a href="invoer.html#drukknop">Taster</a> stellt den Bewegungsmelder dar). Ändern Sie die Schaltung.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Ersetzen Sie das ODER-Gatter durch ein <b>UND-Gatter</b> und den Schalter durch einen Taster. Die Lampe leuchtet
+    jetzt nur, wenn es dunkel ist (NICHT Licht) <b>und</b> der Bewegungsmelder etwas sieht.</p>
+  </details>
+
+  <div class="pager"><a href="les05.html">&larr; Lektion 5: Das ODER-Gatter</a><a href="les07.html">Lektion 7: Eine Alarmanlage &rarr;</a></div>

@@ -1,0 +1,43 @@
+<!-- titel: Les 10 - Voeding en spanning -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 10 van 10</p>
+  <h1>Voeding en spanning</h1>
+  <div class="goal"><strong>Doel:</strong> zien waar de stroom vandaan komt, spanning meten met een voltmeter,
+  en begrijpen waarom een logische ingang genoeg spanning nodig heeft.</div>
+
+  <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Twee drukknoppen op rails van 5 V en 1 V, twee lampen en een voltmeter">
+    <figcaption>Beide drukknoppen zijn ingedrukt. Op 5&nbsp;V brandt de lamp, op 1&nbsp;V niet, hoewel de voltmeter 1,0&nbsp;V meet.</figcaption>
+  </figure>
+
+  <h2>Voedingsrails</h2>
+  <p>In de vorige lessen kwam de voeding onzichtbaar uit de achtergrond. Met
+  <a href="voeding.html">voedingsrails</a> maak je ze zichtbaar:</p>
+  <ul>
+    <li>de rode <b>+ rail</b> voedt de invoer (hier de drukknoppen), met een spanning die je zelf kiest;</li>
+    <li>de blauwe <b>&minus; rail</b> is de massa (0&nbsp;V), waarop de uitvoer (de lampen) aangesloten is.</li>
+  </ul>
+  <p>De bovenste drukknop zit op een rail van <b>5&nbsp;V</b>, de onderste op een rail van <b>1&nbsp;V</b>.</p>
+
+  <h2>Spanning meten</h2>
+  <p>De <a href="voeding.html#voltmeter">voltmeter</a> hangt aan de draad van de onderste drukknop en meet de spanning
+  tegenover de massa: <b>1,0&nbsp;V</b>. Toch blijft de lamp uit. Een logische ingang werkt pas vanaf ongeveer
+  <b>2&nbsp;V</b>: daaronder telt het signaal als &ldquo;uit&rdquo;.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en druk de onderste drukknop in: de voltmeter toont 1,0&nbsp;V, de lamp blijft uit.</li>
+    <li>Stop de simulatie. Rechtsklik op de onderste + rail en kies <b>Spanning &rsaquo; 3,3&nbsp;V</b>.</li>
+    <li>Start opnieuw en druk: de voltmeter toont 3,3&nbsp;V en de lamp brandt.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Zoek de laagste spanning in het menu waarbij de onderste lamp nog brandt. Wat gebeurt er met een lamp die je
+  van de &minus; rail lostrekt?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Vanaf <b>2&nbsp;V</b> brandt de lamp; bij 1&nbsp;V en 0&nbsp;V niet. Een lamp die niet op een &minus; rail
+    ingeplugd is, krijgt een grijs bolletje en brandt nooit: zonder verbinding met de massa kan er geen stroom lopen.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Les 9: Geheugen</a><a href="leerpad.html">Leerpad &rarr;</a></div>

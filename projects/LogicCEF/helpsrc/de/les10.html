@@ -1,0 +1,44 @@
+<!-- titel: Lektion 10 - Versorgung und Spannung -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 10 von 10</p>
+  <h1>Versorgung und Spannung</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, woher der Strom kommt, Spannung mit einem Voltmeter messen und verstehen,
+  warum ein Logikeingang genug Spannung braucht.</div>
+
+  <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Zwei Taster an Schienen mit 5 V und 1 V, zwei Lampen und ein Voltmeter">
+    <figcaption>Beide Taster sind gedrückt. Bei 5&nbsp;V leuchtet die Lampe, bei 1&nbsp;V nicht, obwohl das Voltmeter 1,0&nbsp;V misst.</figcaption>
+  </figure>
+
+  <h2>Versorgungsschienen</h2>
+  <p>In den vorigen Lektionen kam die Versorgung unsichtbar aus dem Hintergrund. Mit
+  <a href="voeding.html">Versorgungsschienen</a> machen Sie sie sichtbar:</p>
+  <ul>
+    <li>die rote <b>+ Schiene</b> versorgt die Eingänge (hier die Taster), mit einer Spannung, die Sie selbst wählen;</li>
+    <li>die blaue <b>&minus; Schiene</b> ist die Masse (0&nbsp;V), an der die Ausgänge (die Lampen) angeschlossen sind.</li>
+  </ul>
+  <p>Der obere Taster sitzt an einer Schiene mit <b>5&nbsp;V</b>, der untere an einer Schiene mit <b>1&nbsp;V</b>.</p>
+
+  <h2>Spannung messen</h2>
+  <p>Das <a href="voeding.html#voltmeter">Voltmeter</a> hängt am Draht des unteren Tasters und misst die Spannung gegen
+  Masse: <b>1,0&nbsp;V</b>. Trotzdem bleibt die Lampe aus. Ein Logikeingang funktioniert erst ab etwa <b>2&nbsp;V</b>:
+  darunter zählt das Signal als &bdquo;aus&ldquo;.</p>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und drücken Sie den unteren Taster: Das Voltmeter zeigt 1,0&nbsp;V, die Lampe bleibt aus.</li>
+    <li>Halten Sie die Simulation an. Klicken Sie mit der rechten Maustaste auf die untere + Schiene und wählen Sie
+      <b>Spannung &rsaquo; 3,3&nbsp;V</b>.</li>
+    <li>Starten Sie erneut und drücken Sie: Das Voltmeter zeigt 3,3&nbsp;V und die Lampe leuchtet.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Suchen Sie im Menü die niedrigste Spannung, bei der die untere Lampe noch leuchtet. Was passiert mit einer Lampe,
+  die Sie von der &minus; Schiene abziehen?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Ab <b>2&nbsp;V</b> leuchtet die Lampe, bei 1&nbsp;V und 0&nbsp;V nicht. Eine Lampe, die nicht an einer &minus; Schiene
+    steckt, bekommt einen grauen Punkt und leuchtet nie: Ohne Verbindung zur Masse kann kein Strom fließen.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Lektion 9: Speicher</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

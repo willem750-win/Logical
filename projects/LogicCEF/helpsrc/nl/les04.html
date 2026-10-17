@@ -1,0 +1,42 @@
+<!-- titel: Les 4 - De EN-poort -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 4 van 10</p>
+  <h1>De EN-poort</h1>
+  <div class="goal"><strong>Doel:</strong> een uitgang pas laten werken als <b>alle</b> ingangen aan zijn.</div>
+
+  <p><a class="open" href="../../panels/lessen/les04-en-poort.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les04-en-poort.png" alt="Twee schakelaars, EN-poort en lamp">
+    <figcaption>Beide schakelaars staan aan: de lamp (de pers) werkt.</figcaption>
+  </figure>
+
+  <h2>Een echt voorbeeld: de tweehandenbediening</h2>
+  <p>Een pers in een fabriek mag alleen werken als de bediener <b>beide</b> knoppen indrukt,
+  één met elke hand. Zo kan er nooit een hand onder de pers zitten. De
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">EN-poort</a> doet precies dat:</p>
+  <table>
+    <tr><th>Hand links (A1)</th><th>Hand rechts (A2)</th><th>Pers (lamp)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+  </table>
+  <p>Twee ingangen geven vier mogelijkheden. Alleen in de laatste rij is de uitgang aan.</p>
+  <div class="tip"><strong>Waarom schakelaars?</strong> In een echte pers zijn het drukknoppen. Met één muis
+  kan je in Logic maar één knop tegelijk ingedrukt houden. Daarom stellen twee
+  <a href="les02.html">schakelaars</a> hier de twee handen voor.</div>
+
+  <h2>Probeer het</h2>
+  <p>Start de simulatie. Zet eerst één schakelaar aan, dan de andere, en kijk wanneer de lamp brandt.
+  Loop zo de vier rijen van de tabel af.</p>
+
+  <h2>Opdracht</h2>
+  <p>De pers mag pas werken als ook het <b>veiligheidshek dicht</b> is: drie voorwaarden dus. Een EN-poort
+  heeft maar twee ingangen. Hoe los je dat op?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Gebruik twee EN-poorten na elkaar. De eerste poort krijgt de twee handen. Haar uitgang gaat samen
+    met een derde schakelaar (het hek) naar de tweede EN-poort. De lamp hangt aan de tweede poort:
+    ze brandt alleen als alle drie aan staan.</p>
+  </details>
+
+  <div class="pager"><a href="les03.html">&larr; Les 3: De NIET-poort</a><a href="les05.html">Les 5: De OF-poort &rarr;</a></div>

@@ -45,9 +45,12 @@ uses
   Windows, Messages, LMessages, SysUtils, Variants, Classes, Graphics, Menus,
   Controls, Forms, Dialogs, StdCtrls, ExtCtrls, Types, ComCtrls, ClipBrd, ActiveX, ShlObj,
   uCEFChromium, uCEFWindowParent, uCEFInterfaces, uCEFApplication, uCEFTypes, uCEFConstants,
-  uCEFWinControl, uCEFChromiumEvents;
+  uCEFWinControl, uCEFChromiumEvents, URIParser;
 type
   PWinMsg = ^TMsg;
+
+  // een link in de help naar een paneelbestand (.lpl) opent dat paneel in Logic
+  TOpenPanelEvent = procedure(const AFileName: string) of object;
 
 const
   MINIBROWSER_SHOWDEVTOOLS    = WM_APP + $101;
@@ -65,6 +68,12 @@ const
   MINIBROWSER_PREFS_AVLBL     = WM_APP + $10D;  
   MINIBROWSER_DTDATA_AVLBL    = WM_APP + $10E;  
   MINIBROWSER_MEDIAACCESSRQST = WM_APP + $10F;
+  MINIBROWSER_BLOCKED         = WM_APP + $110;   // internetadres tegengehouden
+  MINIBROWSER_OPENPANEL       = WM_APP + $111;   // link naar een .lpl-paneel
+
+  // Alleen lokale pagina's (de help en de html-pagina's van Logic): geen
+  // internet, zodat leerlingen via de help niet kunnen gaan surfen.
+  MINIBROWSER_LOCALONLY = True;
 
 
   //MINIBROWSER_HOMEPAGE = 'file:///D:/LazProjecten/LogicCEF/Resultaat/help/index.html';
@@ -258,6 +267,24 @@ type
       const entry: ICefNavigationEntry; current: Boolean; index, total: Integer;
       var aResult: Boolean);
 
+    // alleen lokale pagina's (zie MINIBROWSER_LOCALONLY)
+    procedure GuardBeforeBrowse(Sender: TObject; const browser: ICefBrowser;
+      const frame: ICefFrame; const request: ICefRequest;
+      user_gesture, isRedirect: Boolean; out Result: Boolean);
+    procedure GuardBeforePopup(Sender: TObject; const browser: ICefBrowser;
+      const frame: ICefFrame; const targetUrl, targetFrameName: ustring;
+      targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
+      const popupFeatures: TCefPopupFeatures; var windowInfo: TCefWindowInfo;
+      var client: ICefClient; var settings: TCefBrowserSettings;
+      var extra_info: ICefDictionaryValue; var noJavascriptAccess: Boolean;
+      var Result: Boolean);
+    procedure GuardOpenUrlFromTab(Sender: TObject; const browser: ICefBrowser;
+      const frame: ICefFrame; const targetUrl: ustring;
+      targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
+      out Result: Boolean);
+    procedure BlockedMsg(var aMessage: TMessage); message MINIBROWSER_BLOCKED;
+    procedure OpenPanelMsg(var aMessage: TMessage); message MINIBROWSER_OPENPANEL;
+
   protected
     FResponse           : TStringList;
     FRequest            : TStringList;
@@ -279,6 +306,7 @@ type
 
     FStartURL: string;
     FPendingURL : string;
+    FPanelToOpen : string;   // .lpl uit een link in de help (zie OpenPanelMsg)
 
     procedure AddURL(const aURL : string);
 
@@ -325,6 +353,8 @@ type
 
 var
   MiniBrowserFrm : TMiniBrowserFrm;
+  // ingevuld door het hoofdvenster: opent een paneel uit een link in de help
+  OnHelpOpenPanel : TOpenPanelEvent = nil;
 
 procedure CreateGlobalCEFApp;
 
@@ -478,9 +508,92 @@ begin
   end;
 end;
 
+// Mag dit adres geopend worden? Met MINIBROWSER_LOCALONLY alleen lokale
+// bestanden (de help) en interne pagina's van de browser, geen internet.
+function IsAllowedURL(const aURL: ustring): Boolean;
+var
+  U: string;
+begin
+  if not MINIBROWSER_LOCALONLY then Exit(True);
+  U := LowerCase(Trim(string(aURL)));
+  Result := (U = '') or
+            (Pos('file:', U) = 1) or
+            (Pos('about:', U) = 1) or
+            (Pos('data:', U) = 1) or
+            (Pos('blob:', U) = 1) or
+            (Pos('chrome-error:', U) = 1);
+end;
+
 procedure TMiniBrowserFrm.GoBtnClick(Sender: TObject);
 begin
+  if not IsAllowedURL(URLCbx.Text) then
+  begin
+    PostMessage(Handle, MINIBROWSER_BLOCKED, 0, 0);
+    Exit;
+  end;
   Chromium1.LoadURL(URLCbx.Text);
+end;
+
+procedure TMiniBrowserFrm.GuardBeforeBrowse(Sender: TObject; const browser: ICefBrowser;
+  const frame: ICefFrame; const request: ICefRequest;
+  user_gesture, isRedirect: Boolean; out Result: Boolean);
+var
+  U, FN: string;
+begin
+  // Link naar een paneelbestand (.lpl), bv. een voorbeeld uit het leerpad:
+  // niet tonen, maar het paneel in Logic openen.
+  if request <> nil then
+  begin
+    U := string(request.Url);
+    if (Pos('file:', LowerCase(U)) = 1) and SameText(ExtractFileExt(U), '.lpl') and
+       URIToFilename(U, FN) then
+    begin
+      FPanelToOpen := FN;
+      PostMessage(Handle, MINIBROWSER_OPENPANEL, 0, 0);
+      Result := True;
+      Exit;
+    end;
+  end;
+
+  // Result = True: navigatie annuleren
+  Result := (request <> nil) and not IsAllowedURL(request.Url);
+  if Result then
+    PostMessage(Handle, MINIBROWSER_BLOCKED, 0, 0);
+end;
+
+procedure TMiniBrowserFrm.GuardBeforePopup(Sender: TObject; const browser: ICefBrowser;
+  const frame: ICefFrame; const targetUrl, targetFrameName: ustring;
+  targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
+  const popupFeatures: TCefPopupFeatures; var windowInfo: TCefWindowInfo;
+  var client: ICefClient; var settings: TCefBrowserSettings;
+  var extra_info: ICefDictionaryValue; var noJavascriptAccess: Boolean;
+  var Result: Boolean);
+begin
+  // Result = True: geen nieuw venster openen
+  Result := not IsAllowedURL(targetUrl);
+  if Result then
+    PostMessage(Handle, MINIBROWSER_BLOCKED, 0, 0);
+end;
+
+procedure TMiniBrowserFrm.GuardOpenUrlFromTab(Sender: TObject; const browser: ICefBrowser;
+  const frame: ICefFrame; const targetUrl: ustring;
+  targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
+  out Result: Boolean);
+begin
+  Result := not IsAllowedURL(targetUrl);
+  if Result then
+    PostMessage(Handle, MINIBROWSER_BLOCKED, 0, 0);
+end;
+
+procedure TMiniBrowserFrm.BlockedMsg(var aMessage: TMessage);
+begin
+  ShowStatusText('Internet is uitgeschakeld in de help / Internet is disabled in the help');
+end;
+
+procedure TMiniBrowserFrm.OpenPanelMsg(var aMessage: TMessage);
+begin
+  if (FPanelToOpen <> '') and Assigned(OnHelpOpenPanel) then
+    OnHelpOpenPanel(FPanelToOpen);
 end;
 
 procedure TMiniBrowserFrm.ReloadBtnClick(Sender: TObject);
@@ -529,6 +642,14 @@ procedure TMiniBrowserFrm.Chromium1BeforeContextMenu(Sender: TObject;
   const browser: ICefBrowser; const frame: ICefFrame;
   const params: ICefContextMenuParams; const model: ICefMenuModel);
 begin
+  if MINIBROWSER_LOCALONLY then
+  begin
+    // alleen tekst kopiëren; geen ontwikkelaarstools of HTML wijzigen
+    model.AddSeparator;
+    model.AddItem(MINIBROWSER_CONTEXTMENU_COPYALLTEXT, 'Copy displayed text to clipboard');
+    Exit;
+  end;
+
   if Chromium1.IsSameBrowser(browser) then
     begin
       model.AddSeparator;
@@ -617,6 +738,13 @@ procedure TMiniBrowserFrm.Chromium1BeforeResourceLoad(Sender: TObject;
   const request: ICefRequest; const callback: ICefCallback;
   out Result: TCefReturnValue);
 begin
+  // ook afbeeldingen, scripts, fetch() ... van internet tegenhouden
+  if (request <> nil) and not IsAllowedURL(request.Url) then
+  begin
+    Result := RV_CANCEL;
+    Exit;
+  end;
+
   Result := RV_CONTINUE;
 
   if Chromium1.IsSameBrowser(browser) and
@@ -1180,6 +1308,23 @@ begin
   FStartURL := '';
   //Chromium1.DefaultURL := 'file:///D:/LazProjecten/LogicCEF/Resultaat/help/index.html';
   Chromium1.DefaultURL :='';
+
+  if MINIBROWSER_LOCALONLY then
+  begin
+    // elke navigatie, nieuw venster of tabblad naar internet tegenhouden
+    Chromium1.OnBeforeBrowse    := @GuardBeforeBrowse;
+    Chromium1.OnBeforePopup     := @GuardBeforePopup;
+    Chromium1.OnOpenUrlFromTab  := @GuardOpenUrlFromTab;
+    // adresbalk alleen tonen, niet zelf een adres intikken
+    URLCbx.Enabled := False;
+    GoBtn.Visible  := False;
+    // menu: ontwikkelaarstools en netwerkfuncties weg
+    DevTools1.Visible   := False;
+    Openfile1.Visible   := False;
+    OpenfilewithaDAT1.Visible := False;
+    Resolvehost1.Visible := False;
+    Preferences1.Visible := False;
+  end;
 end;
 
 procedure TMiniBrowserFrm.FormDestroy(Sender: TObject);
@@ -1825,6 +1970,7 @@ end;
 
 procedure TMiniBrowserFrm.ShowDevTools(aPoint : TPoint);
 begin
+  if MINIBROWSER_LOCALONLY then Exit;   // geen ontwikkelaarstools (ook niet met F12)
   Splitter1.Visible := True;
   DevTools.Visible  := True;
   DevTools.Width    := Width div 4;

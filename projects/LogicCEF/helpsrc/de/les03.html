@@ -1,0 +1,38 @@
+<!-- titel: Lektion 3 - Das NICHT-Gatter -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 3 von 10</p>
+  <h1>Das NICHT-Gatter</h1>
+  <div class="goal"><strong>Ziel:</strong> ein Signal mit einem NICHT-Gatter umkehren und eine Wahrheitstabelle lesen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les03-niet-poort.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les03-niet-poort.png" alt="Taster, NICHT-Gatter und Lampe">
+    <figcaption>Der Taster ist losgelassen, und trotzdem leuchtet die Lampe: Das NICHT-Gatter kehrt das Signal um.</figcaption>
+  </figure>
+
+  <h2>So funktioniert es</h2>
+  <p>Ein <a href="verwerking.html#niet"><img src="../img/pal-niet.png" class="ico" alt="">NICHT-Gatter</a> hat einen Eingang und
+  einen Ausgang. Der Ausgang ist immer das <b>Gegenteil</b> des Eingangs. In einer <b>Wahrheitstabelle</b> schreiben Sie
+  alle Möglichkeiten untereinander:</p>
+  <table>
+    <tr><th>Taster (Eingang)</th><th>Lampe (Ausgang)</th></tr>
+    <tr><td>0 &ndash; losgelassen</td><td>1 &ndash; leuchtet</td></tr>
+    <tr><td>1 &ndash; gedrückt</td><td>0 &ndash; aus</td></tr>
+  </table>
+
+  <h2>Selbst bauen</h2>
+  <ol class="steps">
+    <li>Setzen Sie einen Taster, ein <b>NICHT-Gatter</b> und eine Lampe nebeneinander.</li>
+    <li>Draht vom Taster zum Eingang <b>N1</b> des Gatters.</li>
+    <li>Draht vom Ausgang <b>N</b> des Gatters zur Lampe.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Die Kühlschranklampe leuchtet, wenn die Tür <b>offen</b> ist. Der Türkontakt ist gedrückt, wenn die Tür
+  <b>geschlossen</b> ist. Welche Schaltung brauchen Sie?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Genau dieses Beispiel: Tür zu = Taster gedrückt = Lampe aus; Tür offen = Taster losgelassen = Lampe an.
+    Ohne das NICHT-Gatter würde die Lampe genau dann leuchten, wenn die Tür zu ist.</p>
+  </details>
+
+  <div class="pager"><a href="les02.html">&larr; Lektion 2: Taster oder Schalter?</a><a href="les04.html">Lektion 4: Das UND-Gatter &rarr;</a></div>

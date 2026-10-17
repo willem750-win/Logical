@@ -161,6 +161,7 @@ type
      function SavePanelAs: Boolean;
      function ConfirmDiscardPanel: Boolean;
      procedure MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
+     procedure OpenPanelFromHelp(const AFileName: string);
      procedure FocusPanel;
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
@@ -1636,6 +1637,27 @@ begin
   SavePanelAs;
 end;
 
+// Een link "Open dit voorbeeld" in de help (leerpad) opent dit paneel.
+// Het voorbeeld wordt niet het bestand om in te bewaren: Opslaan vraagt
+// een nieuwe naam, zodat het voorbeeld zelf onveranderd blijft.
+procedure TmainForm.OpenPanelFromHelp(const AFileName: string);
+begin
+  if not FileExists(AFileName) then Exit;
+  if FRunMode then
+  begin
+    btSimulate.Down := False;
+    btnSimulateClick(nil);
+  end;
+  if not ConfirmDiscardPanel then Exit;
+  FGroup.Clear;
+  Box.LoadPanel(AFileName, Grid, False);
+  OpslagFileName := '';
+  FBuiltinPanel := 0;
+  FCurrentFile := '';
+  SetPanelTitle(ChangeFileExt(ExtractFileName(AFileName), ''));
+  MarkPanelClean;
+end;
+
 procedure TmainForm.btOpenPaneelClick(Sender: TObject);
 var
   OpenDialog : TOpenDialog;
@@ -1757,6 +1779,10 @@ begin
   KeyPreview := True;
   // bij afsluiten vragen of een gewijzigd paneel bewaard moet worden
   OnCloseQuery := @MainFormCloseQuery;
+  {$IFDEF WINDOWS}
+  // een link "Open dit voorbeeld" in de help opent het paneel hier
+  OnHelpOpenPanel := @OpenPanelFromHelp;
+  {$ENDIF}
   AssignHelpRecursive(Self);
 
   //  HelpKeyword

@@ -1,0 +1,44 @@
+<!-- titel: Lesson 9 - Memory -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 9 of 10</p>
+  <h1>Memory</h1>
+  <div class="goal"><strong>Goal:</strong> store numbers at an address in a memory and find them again later,
+  just like a computer does.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les09-geheugen.png" alt="Push buttons, counter, DIP switch, memory block and two displays">
+    <figcaption>A counter chooses the address, the DIP switch supplies the number, two displays show address and content.</figcaption>
+  </figure>
+
+  <h2>Address and content</h2>
+  <p>A <a href="verwerking.html#geheugen">memory</a> is like a cabinet with numbered drawers. The number of a drawer is
+  the <b>address</b>, what is in it is the <b>content</b>. This memory block has 32 drawers
+  (address 0 to 31) and each drawer holds a number from 0 to 15.</p>
+  <ul>
+    <li>The <b>counter</b> at the top chooses the address. The bottom push button counts one address further, the
+      top one resets to 0 (see <a href="les08.html">lesson 8</a>). The top display shows the address.</li>
+    <li>With the <a href="invoer.html#dipswitch">DIP switch</a> you set a number (8, 4, 2, 1).
+      With its button you write the number into the chosen drawer.</li>
+    <li>The bottom display shows the content of the chosen address.</li>
+  </ul>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation. The address is 0.</li>
+    <li>Turn on 4 and 1 on the DIP switch (= 5) and press the button of the DIP switch. The bottom display shows 5.</li>
+    <li>Count one address further: the content of address 1 is still 0.</li>
+    <li>Write another number there, for example 9 (8 + 1).</li>
+    <li>Reset the counter to 0: the display shows 5 again. The memory has remembered it.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Store the numbers 3, 1, 4, 1 and 5 at the addresses 0 to 4. Then reset the counter to 0 and step through the
+  addresses. Do you read the numbers back in the right order?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>At each address: set the number on the DIP switch (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), press the button of
+    the DIP switch, and then go one address further with the counter. After a reset the display shows the stored
+    number at each step: 3, 1, 4, 1, 5.</p>
+  </details>
+
+  <div class="pager"><a href="les08.html">&larr; Lesson 8: Counting</a><a href="les10.html">Lesson 10: Power and voltage &rarr;</a></div>

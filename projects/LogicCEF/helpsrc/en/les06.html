@@ -1,0 +1,42 @@
+<!-- titel: Lesson 6 - Combining gates -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 6 of 10</p>
+  <h1>Combining gates</h1>
+  <div class="goal"><strong>Goal:</strong> use several gates in a row, and turn an everyday problem into a circuit.</div>
+
+  <p><a class="open" href="../../panels/lessen/les06-tuinlamp.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les06-tuinlamp.png" alt="Light sensor, NOT gate, switch, OR gate and lamp">
+    <figcaption>It is dark (the light sensor gives 0): the garden lamp is lit.</figcaption>
+  </figure>
+
+  <h2>The problem</h2>
+  <p>A garden lamp must switch on <b>by itself</b> when it gets dark. You also want to be able to switch it on
+  <b>by hand</b>, for example for a party during the day.</p>
+  <ol class="steps">
+    <li>&ldquo;When it is dark&rdquo;: the <a href="invoer.html#sensor">light sensor</a> gives 1 when there is light.
+      Dark is therefore <b>NOT</b> light.</li>
+    <li>&ldquo;&hellip; <b>or</b> by hand&rdquo;: the output of the NOT gate and a switch go to an <b>OR gate</b>.</li>
+    <li>The OR gate drives the lamp.</li>
+  </ol>
+  <table>
+    <tr><th>Light</th><th>Switch</th><th>NOT light</th><th>Garden lamp</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Try it</h2>
+  <p>Start the simulation. Click the light sensor to switch between light and dark, and turn the switch on and off.
+  Compare with the table.</p>
+
+  <h2>Exercise</h2>
+  <p>The neighbours complain: the lamp is on all night. It may only switch on when it is dark <b>and</b> someone
+  is in the garden (a <a href="invoer.html#drukknop">push button</a> represents the motion detector). Change the circuit.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Replace the OR gate with an <b>AND gate</b> and the switch with a push button. The lamp is now only lit
+    when it is dark (NOT light) <b>and</b> the motion detector sees something.</p>
+  </details>
+
+  <div class="pager"><a href="les05.html">&larr; Lesson 5: The OR gate</a><a href="les07.html">Lesson 7: An alarm &rarr;</a></div>

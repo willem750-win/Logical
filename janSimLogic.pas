@@ -17536,6 +17536,7 @@ begin
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
+  DMeter:=false;DRelais:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
   else if ptinrect(RCon,p) then Dcon:=true
@@ -17994,7 +17995,7 @@ var
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DBuzzer := False; DDisplay := False;
-    DRailPlus := False; DRailMin := False;
+    DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
     DSquare := False;

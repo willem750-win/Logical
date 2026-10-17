@@ -1,0 +1,38 @@
+<!-- titel: Leçon 3 - La porte NON -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 3 sur 10</p>
+  <h1>La porte NON</h1>
+  <div class="goal"><strong>Objectif :</strong> inverser un signal avec une porte NON, et lire une table de vérité.</div>
+
+  <p><a class="open" href="../../panels/lessen/les03-niet-poort.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les03-niet-poort.png" alt="Bouton-poussoir, porte NON et lampe">
+    <figcaption>Le bouton-poussoir est relâché, et pourtant la lampe est allumée : la porte NON inverse le signal.</figcaption>
+  </figure>
+
+  <h2>Fonctionnement</h2>
+  <p>Une <a href="verwerking.html#niet"><img src="../img/pal-niet.png" class="ico" alt="">porte NON</a> a une entrée et une sortie.
+  La sortie est toujours l&rsquo;<b>inverse</b> de l&rsquo;entrée. Dans une <b>table de vérité</b>, on écrit toutes les
+  possibilités l&rsquo;une sous l&rsquo;autre :</p>
+  <table>
+    <tr><th>Bouton-poussoir (entrée)</th><th>Lampe (sortie)</th></tr>
+    <tr><td>0 &ndash; relâché</td><td>1 &ndash; allumée</td></tr>
+    <tr><td>1 &ndash; enfoncé</td><td>0 &ndash; éteinte</td></tr>
+  </table>
+
+  <h2>À construire vous-même</h2>
+  <ol class="steps">
+    <li>Placez côte à côte un bouton-poussoir, une <b>porte NON</b> et une lampe.</li>
+    <li>Fil du bouton-poussoir vers l&rsquo;entrée <b>N1</b> de la porte.</li>
+    <li>Fil de la sortie <b>N</b> de la porte vers la lampe.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>La lampe d&rsquo;un réfrigérateur est allumée quand la porte est <b>ouverte</b>. Le contact de la porte est enfoncé
+  quand la porte est <b>fermée</b>. De quel circuit avez-vous besoin ?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Exactement cet exemple : porte fermée = bouton enfoncé = lampe éteinte ; porte ouverte = bouton relâché =
+    lampe allumée. Sans la porte NON, la lampe serait allumée justement quand la porte est fermée.</p>
+  </details>
+
+  <div class="pager"><a href="les02.html">&larr; Leçon 2 : Bouton-poussoir ou interrupteur ?</a><a href="les04.html">Leçon 4 : La porte ET &rarr;</a></div>

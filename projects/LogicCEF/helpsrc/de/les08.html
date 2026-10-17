@@ -1,0 +1,49 @@
+<!-- titel: Lektion 8 - Zählen -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 8 von 10</p>
+  <h1>Zählen</h1>
+  <div class="goal"><strong>Ziel:</strong> Impulse mit einem Zähler zählen, den Stand auf einer Anzeige zeigen und das
+  binäre Zählen verstehen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les08-tellen.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les08-tellen.png" alt="Impulsgeber, Taster, Zähler und Anzeige">
+    <figcaption>Der Impulsgeber lässt den Zähler laufen; die Anzeige zeigt den Stand.</figcaption>
+  </figure>
+
+  <h2>So funktioniert es</h2>
+  <ul>
+    <li>Der <a href="invoer.html#puls">Impulsgeber</a> gibt alle 0,3 Sekunden einen Impuls auf den Zähleingang <b>Te</b>
+      des <a href="verwerking.html#teller">Zählers</a>.</li>
+    <li>Der Taster an <b>Re</b> setzt den Zähler auf 0 zurück.</li>
+    <li>Der rote Ausgang rechts geht zur <a href="uitvoer.html#display">7-Segment-Anzeige</a>: Sie zeigt den Stand als
+      Ziffer und nach 9 als A bis F.</li>
+  </ul>
+
+  <h2>Binär zählen</h2>
+  <p>Unter dem Zähler sind vier kleine Lampen: <b>8</b>, <b>4</b>, <b>2</b> und <b>1</b>. Zählen Sie die Zahlen der
+  leuchtenden Lampen zusammen, dann haben Sie den Stand:</p>
+  <table>
+    <tr><th>8</th><th>4</th><th>2</th><th>1</th><th>Stand</th><th>Anzeige</th></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>2 + 1 = 3</td><td>3</td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>4 + 2 = 6</td><td>6</td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>8 + 2 = 10</td><td>A</td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>15</td><td>F</td></tr>
+  </table>
+  <p>Nach 15 beginnt der Zähler wieder bei 0.</p>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und klicken Sie auf den Knopf unten am Impulsgeber: Der Zähler beginnt zu laufen.</li>
+    <li>Klicken Sie erneut, um anzuhalten, und prüfen Sie den Stand mit den Lampen 8-4-2-1.</li>
+    <li>Drücken Sie den Taster: Der Zähler steht wieder auf 0.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Ersetzen Sie den Impulsgeber durch einen Taster, sodass Sie die Impulse selbst geben. Wie oft müssen Sie drücken,
+  damit <b>C</b> auf der Anzeige erscheint?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>C ist 12 (A = 10, B = 11, C = 12): zwölfmal drücken. Binär ist das 8 + 4, also leuchten die Lampen 8 und 4.</p>
+  </details>
+
+  <div class="pager"><a href="les07.html">&larr; Lektion 7: Eine Alarmanlage</a><a href="les09.html">Lektion 9: Speicher &rarr;</a></div>

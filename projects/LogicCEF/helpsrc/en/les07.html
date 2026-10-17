@@ -1,0 +1,35 @@
+<!-- titel: Lesson 7 - An alarm -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 7 of 10</p>
+  <h1>An alarm</h1>
+  <div class="goal"><strong>Goal:</strong> use sensors and send one signal to several output components.</div>
+
+  <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les07-alarm.png" alt="Heat sensor, panic button, OR gate, buzzer and relay">
+    <figcaption>The heat sensor reports &ldquo;warm&rdquo;: the buzzer sounds and the relay switches over.</figcaption>
+  </figure>
+
+  <h2>How it works</h2>
+  <ul>
+    <li>A <a href="invoer.html#warm">heat sensor</a> reports a fire, a <a href="invoer.html#drukknop">push button</a>
+      is the panic button.</li>
+    <li>An <b>OR gate</b>: the alarm goes off when the sensor <b>or</b> the panic button reports something.</li>
+    <li><b>Two wires</b> leave the output of the OR gate: to the <a href="uitvoer.html#zoemer">buzzer</a>
+      (the sound) and to a <a href="uitvoer.html#relais">relay</a>. With a relay a small control signal can switch
+      a large device, for example a siren or the lighting.</li>
+  </ul>
+
+  <h2>Try it</h2>
+  <p>Start the simulation. Click the heat sensor (warm/cold) and press the panic button. Watch the relay:
+  the LED turns green and the contact switches over.</p>
+
+  <h2>Exercise</h2>
+  <p>Add a <b>light sensor</b> as a burglar detector: the alarm must also go off when a light comes on in the
+  warehouse at night. The OR gate has only two inputs.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Put a second OR gate between the first OR gate and the outputs. The first OR gate combines heat and panic
+    button, the second adds the light sensor. Buzzer and relay are connected to the output of the second gate.</p>
+  </details>
+
+  <div class="pager"><a href="les06.html">&larr; Lesson 6: Combining gates</a><a href="les08.html">Lesson 8: Counting &rarr;</a></div>
