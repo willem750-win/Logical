@@ -1,7 +1,7 @@
 # Bouwt logicCEF.exe opnieuw en maakt de Windows-release-zip en het
 # installatieprogramma (Inno Setup 6, logic.iss).
 #
-#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\tools\make-release.ps1 [-Version 1.4.0] [-NoBuild]
+#   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\tools\make-release.ps1 [-Version 1.5.0] [-NoBuild]
 #
 # Resultaat in C:\fpcupdeluxe\publish\release:
 #   Logic-<versie>-win64.zip    uitpakken en logicCEF.exe starten
@@ -16,7 +16,7 @@
 # Cache, logs, backups en ontwikkelbestanden blijven eruit.
 
 param(
-  [string]$Version = '1.4.0',
+  [string]$Version = '1.5.0',
   [string]$Lazbuild = 'C:\fpcupdeluxe\lazarus\lazbuild.exe',
   [string]$OutDir = 'C:\fpcupdeluxe\publish\release',
   [switch]$NoBuild
