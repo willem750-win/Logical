@@ -74,9 +74,9 @@ type
 
   TjanGateStyle=(jgsDI,jgsDO);
   TjanLogicFunc=(jlfAND,jlfOR,jlfNOT);
-  // tekenwijze van de poorten: woord in een rechthoek, IEC 60617 (&, >=1, 1)
-  // of ANSI/IEEE 91 (D-vorm, schildvorm, driehoek)
-  TjanSymbolen=(Tekst,IEC,ANSI);
+  // tekenwijze van de onderdelen: Afbeelding (plaatjes, poorten als woord in een
+  // rechthoek), IEC 60617 of ANSI/IEEE 91 (schemasymbolen; verschillen bij de poorten)
+  TjanSymbolen=(Afbeelding,IEC,ANSI);
   TjanMeterFunc=(jlfEN);
 
 
@@ -1937,6 +1937,8 @@ type
     procedure SetVoeding(const Value: Boolean);
     procedure SetSymbolen(const Value: TjanSymbolen);
     procedure DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
+    procedure DrawInputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
+    procedure DrawPlainIcon(Bm: TBitmap; BL, BT, X, Y: Integer);
     PROCEDURE SetKnopLeft(const Value: Integer);
     PROCEDURE SetKnopTop(const Value: Integer);
     PROCEDURE SetKnopSpatie(const Value: Integer);
@@ -2065,7 +2067,7 @@ type
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
-    property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Tekst;
+    property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
     property NewObject:Boolean read FNew write SetNewObject;
     property HDrukknop:String read FHDrukknop write SetHDrukknop;
@@ -2265,6 +2267,8 @@ implementation
 
 // magnetisch rechttrekken van draden bij het slepen (zie verderop)
 procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer); forward;
+// tekenwijze (Afbeelding/IEC/ANSI) van een onderdeel (zie verderop)
+function SymOf(C: TComponent): TjanSymbolen; forward;
 
   var
     GlobalSimBox: TjanSimLogicBox;
@@ -4428,6 +4432,13 @@ procedure DrawRailOverlay(Grid: TjanGridS);
     Y, DotX: Integer;
   begin
     Y := C.Top + C.Height div 2;
+    // schemasymbolen: het bolletje op de hoogte van de ingangsdraad
+    if APlusSide and (SymOf(C) <> Afbeelding) then
+    begin
+      if C is TjanSimButton then Y := C.Top + 29
+      else if C is TjanSimKnop then Y := C.Top + 47
+      else if C is TjanSimWarm then Y := C.Top + 17;
+    end;
     if APlusSide then
       DotX := C.Left - 4                  // midden bolletje, links van het component
     else
@@ -6532,6 +6543,218 @@ begin
   end;
 end;
 
+// ---------------------------------------------------------------------------
+// Schemasymbolen voor invoer- en uitvoeronderdelen (KSymbolen = IEC of ANSI)
+// ---------------------------------------------------------------------------
+
+// gekozen tekenwijze voor een onderdeel dat door de Box gemaakt is
+function SymOf(C: TComponent): TjanSymbolen;
+begin
+  Result := Afbeelding;
+  if (C <> nil) and (C.Owner is TjanSimLogicBox) then
+    Result := TjanSimLogicBox(C.Owner).KSymbolen;
+end;
+
+// achtergrond van de knoppen in de balk bij schemasymbolen
+const SymKnopKleur = $00F8F8F8;
+
+// waar je op de drukknop klikt om hem te bedienen: het knopje van het plaatje,
+// of bij schemasymbolen de beugel en het contact
+function ButtonPushZone(C: TControl): TRect;
+begin
+  if SymOf(C) = Afbeelding then
+    Result := Rect(1, 1, 16, 15)
+  else
+    Result := Rect(0, 9, 19, 31);
+end;
+
+// Alleen het deel R van een plaatje tekenen (draad, pijl en aansluitblokje
+// blijven zo precies zoals in de afbeelding, met hun kleur aan/uit).
+procedure DrawBitmapPart(C: TCanvas; Bm: TBitmap; const R: TRect);
+var S: Integer;
+begin
+  S := SaveDC(C.Handle);
+  try
+    IntersectClipRect(C.Handle, R.Left, R.Top, R.Right, R.Bottom);
+    C.Draw(0, 0, Bm);
+  finally
+    RestoreDC(C.Handle, S);
+  end;
+end;
+
+procedure SymPen(C: TCanvas; Col: TColor);
+begin
+  C.Pen.Color := Col;
+  C.Pen.Style := psSolid;
+  C.Pen.Width := 1;
+end;
+
+// pijlpunt aan het einde (X2,Y2) van de lijn van (X1,Y1)
+procedure SymArrowHead(C: TCanvas; X1, Y1, X2, Y2, Size: Integer);
+var a: Double;
+begin
+  if X2 = X1 then
+  begin
+    if Y2 > Y1 then a := Pi / 2 else a := -Pi / 2;
+  end
+  else
+  begin
+    a := ArcTan((Y2 - Y1) / (X2 - X1));
+    if X2 < X1 then a := a + Pi;
+  end;
+  C.Line(X2, Y2, X2 - Round(Size * Cos(a - 0.5)), Y2 - Round(Size * Sin(a - 0.5)));
+  C.Line(X2, Y2, X2 - Round(Size * Cos(a + 0.5)), Y2 - Round(Size * Sin(a + 0.5)));
+end;
+
+// Maakcontact verticaal op x = X, van YBot (ingang, vanaf InL links) naar YTop; vanaf YTop loopt
+// de uitgang naar rechts tot R. Bediening links (tot ActL) met een stippellijn
+// naar het mes: Push = drukknop (beugel), anders handbediening (hendel).
+// Gesloten: mes recht en rood.
+procedure DrawContactSymbol(C: TCanvas; X, YTop, YBot, ActL, R, InL: Integer; Closed, Push: Boolean);
+var L, yb, yt, dx, xm, ym, h, i: Integer;
+    Col: TColor;
+begin
+  L := YBot - YTop;
+  yb := YBot - L div 4;                // scharnier van het mes
+  yt := YTop + L div 5;                // vast contact
+  if Closed then begin dx := 0; Col := clRed; end
+  else begin dx := (yb - yt) div 2 + 1; Col := clBlack; end;
+  SymPen(C, Col);
+  if InL < X then C.Line(InL, YBot, X, YBot);   // ingang van links (rail)
+  C.Line(X, YBot, X, yb);              // ingang
+  C.Line(X, yt, X, YTop);              // naar de uitgang
+  C.Line(X, YTop, R + 1, YTop);
+  SymPen(C, clBlack);
+  C.Line(X, yt, X - 3, yt);            // vast contact
+  SymPen(C, Col);
+  if Closed then
+  begin
+    C.Line(X, yb, X, yt);              // mes
+    C.Line(X + 1, yb, X + 1, yt);
+  end
+  else
+    C.Line(X, yb, X - dx, yt - 3);
+  // bediening: stippellijn van het midden van het mes naar links
+  xm := X - dx div 2 - 1;
+  ym := (yb + yt) div 2 - 1;
+  for i := ActL + 2 to xm do
+    if ((xm - i) mod 3) <> 2 then C.Pixels[i, ym] := clBlack;
+  SymPen(C, clBlack);
+  h := L div 3;
+  if h < 4 then h := 4;
+  if ym - h < YTop then h := ym - YTop;
+  C.Line(ActL, ym - h, ActL, ym + h + 1);
+  C.Line(ActL + 1, ym - h, ActL + 1, ym + h + 1);
+  if Push then
+  begin
+    // drukknop: beugel open naar het contact
+    C.Line(ActL, ym - h, ActL + 5, ym - h);
+    C.Line(ActL, ym + h, ActL + 5, ym + h);
+  end;
+end;
+
+// weerstand (rechthoek) op de lijn Y tussen L en R; geeft de rechthoek terug
+function DrawResistorBody(C: TCanvas; L, R, Y, HalfH: Integer; Fill: TColor): TRect;
+begin
+  Result := Rect(L + 3, Y - HalfH, R - 2, Y + HalfH + 1);
+  SymPen(C, clBlack);
+  C.Line(L, Y, Result.Left, Y);
+  C.Line(Result.Right - 1, Y, R + 1, Y);
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := Fill;
+  C.Rectangle(Result);
+end;
+
+// LDR: weerstand met twee lichtpijlen; geel als er licht is
+procedure DrawLDRSymbol(C: TCanvas; L, R, Y: Integer; Lit: Boolean);
+var B: TRect;
+    x, i: Integer;
+begin
+  if Lit then B := DrawResistorBody(C, L, R, Y, 3, clYellow)
+  else B := DrawResistorBody(C, L, R, Y, 3, clWhite);
+  if Lit then SymPen(C, $0080FF) else SymPen(C, clBlack);
+  for i := 0 to 1 do
+  begin
+    x := B.Left + 1 + i * 6;
+    C.Line(x - 5, Y - 11, x, Y - 5);
+    SymArrowHead(C, x - 5, Y - 11, x, Y - 5, 3);
+  end;
+  SymPen(C, clBlack);
+end;
+
+// NTC (temperatuur): weerstand met schuine streep en voetje; rood als warm
+procedure DrawNTCSymbol(C: TCanvas; L, R, Y: Integer; Warm: Boolean);
+var B: TRect;
+begin
+  if Warm then B := DrawResistorBody(C, L, R, Y, 3, $8080FF)
+  else B := DrawResistorBody(C, L, R, Y, 3, clWhite);
+  SymPen(C, clBlack);
+  C.Line(B.Left - 2, Y + 5, B.Right + 2, Y - 6);
+  C.Line(B.Left - 5, Y + 5, B.Left - 1, Y + 5);
+end;
+
+// pulsgenerator: cirkel met blokgolf, lijn naar R
+procedure DrawPulsSymbol(C: TCanvas; L, R, Y: Integer; On: Boolean);
+var d, x0, x1, h: Integer;
+begin
+  d := R - L - 3;
+  if d > 16 then d := 16;
+  SymPen(C, clBlack);
+  C.Brush.Style := bsSolid;
+  if On then C.Brush.Color := clYellow else C.Brush.Color := clWhite;
+  C.Ellipse(L, Y - d div 2, L + d + 1, Y - d div 2 + d + 1);
+  C.Line(L + d, Y, R + 1, Y);
+  if On then SymPen(C, clRed) else SymPen(C, clBlue);
+  x0 := L + d div 4; x1 := L + d - d div 4; h := d div 5;
+  C.MoveTo(x0, Y + h);
+  C.LineTo((x0 + x1) div 2 - 1, Y + h);
+  C.LineTo((x0 + x1) div 2 - 1, Y - h);
+  C.LineTo(x1, Y - h);
+  C.LineTo(x1, Y + h + 1);
+  SymPen(C, clBlack);
+end;
+
+// Invoeronderdeel tekenen: het plaatje Bm bij Afbeelding, anders het
+// schemasymbool links en van het plaatje alleen draad en aansluitblokje.
+// Kind: 0 drukknop, 1 schakelaar, 2 lichtsensor, 3 warmtesensor, 4 puls.
+procedure PaintInputSymbol(Ctl: TControl; C: TCanvas; Bm: TBitmap; Kind: Integer; On: Boolean);
+var W, H: Integer;
+    OldBrush: TColor;
+    OldStyle: TBrushStyle;
+begin
+  if SymOf(Ctl) = Afbeelding then
+  begin
+    C.Draw(0, 0, Bm);
+    Exit;
+  end;
+  W := Ctl.Width; H := Ctl.Height;
+  OldBrush := C.Brush.Color; OldStyle := C.Brush.Style;
+  case Kind of
+    0: begin
+         DrawBitmapPart(C, Bm, Rect(21, 0, W, H));
+         DrawContactSymbol(C, 15, 10, 29, 2, 21, 0, On, True);
+       end;
+    1: begin
+         DrawBitmapPart(C, Bm, Rect(23, 0, W, H));
+         DrawContactSymbol(C, 17, 24, 47, 3, 23, 0, On, False);
+       end;
+    2: begin
+         DrawBitmapPart(C, Bm, Rect(21, 0, W, H));
+         DrawLDRSymbol(C, 1, 21, 16, On);
+       end;
+    3: begin
+         DrawBitmapPart(C, Bm, Rect(22, 0, W, H));
+         DrawNTCSymbol(C, 2, 22, 17, On);
+       end;
+    4: begin
+         DrawBitmapPart(C, Bm, Rect(17, 0, W, H));
+         DrawBitmapPart(C, Bm, Rect(0, 40, 17, H));
+         DrawPulsSymbol(C, 0, 17, 24, On);
+       end;
+  end;
+  C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
+end;
+
 procedure TjanLogic.PaintLed(index:integer);
 var surfcol,litcol:Tcolor;
     p:Tpoint;
@@ -6611,13 +6834,13 @@ var i:integer;
     s:string;
     Sym:TjanSymbolen;
 begin
-   Sym:=Tekst;
+   Sym:=Afbeelding;
    if Owner is TjanSimLogicBox then
      Sym:=TjanSimLogicBox(Owner).KSymbolen;
    with canvas do
    begin
      Lock;
-     if Sym=Tekst then
+     if Sym=Afbeelding then
      begin
        brush.color:=FPcolor;
        R:=rect(22,5,65,63);//ClientRect;
@@ -6630,7 +6853,7 @@ begin
      R:=ClientRect;
      inflaterect(R,0,0);
      s:='';
-     if Sym<>Tekst then
+     if Sym<>Afbeelding then
      begin
        // symbool na de aansluitingen, zodat het de korte draadjes afdekt
        if FLogicAndFunc=jlfNOT then
@@ -9948,7 +10171,7 @@ begin
   mdp := Point(X, Y);
 
   R  := Rect(49, 6, 57, 14);  // klik-zone voor draadaansluiting
-  R2 := Rect(1, 1, 16, 15);   // klik-zone om button te bedienen
+  R2 := ButtonPushZone(Self);   // klik-zone om button te bedienen
   R3 := ClientRect;           // zone voor square button
 
   // =========================================================
@@ -10043,7 +10266,7 @@ begin
   FDepressed := False;
 
   p := Point(X, Y);
-  R2 := Rect(1,1,16,15);
+  R2 := ButtonPushZone(Self);
   R3 := ClientRect;
 
   if PtInRect(R3, p) and (FModusSquare = True) then
@@ -10087,7 +10310,7 @@ var
 begin
   inherited;
 
-  R2 := Rect(1,1,16,15);
+  R2 := ButtonPushZone(Self);
   md := Point(X, Y);
 
   if not PtInRect(R2, md) then
@@ -10144,7 +10367,7 @@ var
 begin
   inherited;
 
-  R2 := Rect(1,1,16,15);
+  R2 := ButtonPushZone(Self);
   md := Point(X, Y);
 
   if not PtInRect(R2, md) then
@@ -10232,7 +10455,7 @@ If FModusSquare=true then
    Lock;
      if FDepressed or FDown then
       begin
-       draw(0,0,knopDown);
+       PaintInputSymbol(Self,Canvas,knopDown,0,True);
        brush.style:=bsclear;
        Font.Name:='Arial';Font.Size:=9;
        Font.Style:= [fsBold];Font.Color:=clRed;
@@ -10240,7 +10463,7 @@ If FModusSquare=true then
       end
      else
       begin
-       draw(0,0,knopUp);
+       PaintInputSymbol(Self,Canvas,knopUp,0,False);
        brush.style:=bsclear;
        Font.Name:='Arial';Font.Size:=9;
        Font.Style:= [fsBold];Font.Color:=clNavy;
@@ -11046,7 +11269,7 @@ begin
     knopUp.Transparent:=true;;
      if FDepressed or FDown then
        begin
-            draw(0,0,knopDown);
+            PaintInputSymbol(Self,Canvas,knopDown,1,True);
             brush.style:=bsclear;
             Font.Name:='Arial';Font.Size:=9;Font.Style:= [fsBold];
             Font.Color:=clRed;
@@ -11054,7 +11277,7 @@ begin
        end
        else
        begin
-            draw(0,0,knopUp);
+            PaintInputSymbol(Self,Canvas,knopUp,1,False);
             brush.style:=bsclear;
             Font.Name:='Arial';Font.Size:=9;Font.Style:= [fsBold];
             Font.Color:=clNavy;
@@ -12640,12 +12863,12 @@ begin
     knopUp.Transparent:=true;
      if FDepressed or FDown then
         Begin
-        draw(0,0,knopDown);
+        PaintInputSymbol(Self,Canvas,knopDown,4,True);
 
         end
         else
         Begin
-        draw(0,0,knopUp);
+        PaintInputSymbol(Self,Canvas,knopUp,4,False);
 
         end;
 
@@ -13270,7 +13493,7 @@ knopUp.Transparent:=true;
      R:=ClientRect;
      if FDepressed or FDown then
       begin
-       draw(0,0,knopDown);
+       PaintInputSymbol(Self,Canvas,knopDown,2,True);
        brush.style:=bsclear;
        Font.Name:='Arial'; Font.Size:=9;Font.Style:= [fsBold];
        Font.Color:=clRed;
@@ -13278,7 +13501,7 @@ knopUp.Transparent:=true;
       end
       else
       begin
-       draw(0,0,knopUp);
+       PaintInputSymbol(Self,Canvas,knopUp,2,False);
        brush.style:=bsclear;
        Font.Name:='Arial'; Font.Size:=9;Font.Style:= [fsBold];
        Font.Color:=clNavy;
@@ -13890,7 +14113,7 @@ begin
      R:=ClientRect;
      if FDepressed or FDown then
        Begin
-        draw(0,0,knopDown);
+        PaintInputSymbol(Self,Canvas,knopDown,3,True);
         brush.style:=bsclear;
         Font.Name:='Arial';Font.Size:=9;Font.Style:= [fsBold];
         Font.Color:=clRed;
@@ -13898,7 +14121,7 @@ begin
        end
        else
        begin
-        draw(0,0,knopUp);
+        PaintInputSymbol(Self,Canvas,knopUp,3,False);
         brush.style:=bsclear;
         Font.Name:='Arial';Font.Size:=9;Font.Style:= [fsBold];
         Font.Color:=clNavy;
@@ -18982,22 +19205,83 @@ begin
   FSymbolen := Value;
   invalidate;
   for i := 0 to ComponentCount - 1 do
-    if Components[i] is TjanLogic then
-      TjanLogic(Components[i]).Invalidate;
+    if Components[i] is TControl then
+      TControl(Components[i]).Invalidate;
 end;
 
-// Knop van een poort in de balk: het vaste plaatje bij Tekst, anders het
-// symbool in de gekozen stijl met korte aansluitdraden.
-procedure TjanSimLogicBox.DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
-var R: TRect;
-    M, Y1, Y2: Integer;
+// Knop van een invoeronderdeel in de balk: het vaste plaatje bij Afbeelding,
+// anders het schemasymbool (Kind zoals bij PaintInputSymbol).
+procedure TjanSimLogicBox.DrawInputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
+var OldBrush: TColor;
+    OldStyle: TBrushStyle;
     OldPen: TColor;
 begin
-  if FSymbolen = Tekst then
+  if FSymbolen = Afbeelding then
   begin
     Canvas.Draw(X, Y, Bm);
     Exit;
   end;
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+  // lichte achtergrond: de zwarte symbolen zijn zo beter zichtbaar
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Color := SymKnopKleur;
+  Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+  case Kind of
+    0: DrawContactSymbol(Canvas, X + 15, Y + 3, Y + 22, X + 2, X + 21, X + 15, False, True);
+    1: DrawContactSymbol(Canvas, X + 15, Y + 3, Y + 22, X + 2, X + 21, X + 15, False, False);
+    2: DrawLDRSymbol(Canvas, X + 1, X + 21, Y + 15, False);
+    3: DrawNTCSymbol(Canvas, X + 3, X + 21, Y + 12, False);
+    4: DrawPulsSymbol(Canvas, X + 2, X + 21, Y + 12, False);
+  end;
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+end;
+
+// Knop met een vast plaatje (draad, dipschakelaar, teller, geheugen): bij
+// schemasymbolen dezelfde lichte achtergrond als de symboolknoppen; het plaatje
+// komt er transparant op (de achtergrondkleur is die van pixel 0,0).
+procedure TjanSimLogicBox.DrawPlainIcon(Bm: TBitmap; BL, BT, X, Y: Integer);
+var OldBrush: TColor;
+    OldStyle: TBrushStyle;
+    OldTr: Boolean;
+    OldTrColor: TColor;
+begin
+  if FSymbolen = Afbeelding then
+  begin
+    Canvas.Draw(X, Y, Bm);
+    Exit;
+  end;
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style;
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Color := SymKnopKleur;
+  Canvas.FillRect(Rect(BL + 1, BT + 1, BL + 25, BT + 25));
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle;
+  OldTr := Bm.Transparent; OldTrColor := Bm.TransparentColor;
+  Bm.TransparentColor := Bm.Canvas.Pixels[0, 0];
+  Bm.Transparent := True;
+  Canvas.Draw(X, Y, Bm);
+  Bm.Transparent := OldTr;
+  Bm.TransparentColor := OldTrColor;
+end;
+
+// Knop van een poort in de balk: het vaste plaatje bij Afbeelding, anders het
+// symbool in de gekozen stijl met korte aansluitdraden.
+procedure TjanSimLogicBox.DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
+var R: TRect;
+    M, Y1, Y2: Integer;
+    OldPen, OldBrush: TColor;
+    OldStyle: TBrushStyle;
+begin
+  if FSymbolen = Afbeelding then
+  begin
+    Canvas.Draw(X, Y, Bm);
+    Exit;
+  end;
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style;
+  // lichte achtergrond: de zwarte symbolen zijn zo beter zichtbaar
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Color := SymKnopKleur;
+  Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle;
   R := Rect(X + 5, Y + 2, X + Bm.Width - 4, Y + Bm.Height - 2);
   M := (R.Top + R.Bottom) div 2;
   if AFunc = jlfNOT then
@@ -19281,7 +19565,7 @@ begin
         else
            frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+2,top+3,bmCon);
+        DrawPlainIcon(bmCon, Lk, top, Lk+2, top+3);
         TOP:=TOP+ H -15 +SPATIE+10;
         HK:= H+TOP;
       end;
@@ -19312,7 +19596,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(LK+1,TOP+2,bmButton);
+        DrawInputIcon(0, bmButton, LK+1, TOP+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19326,7 +19610,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(LK+1,TOP+2,bmKnop);
+        DrawInputIcon(1, bmKnop, LK+1, TOP+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19340,7 +19624,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmSensor);
+        DrawInputIcon(2, bmSensor, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19354,7 +19638,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmWarm);
+        DrawInputIcon(3, bmWarm, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19368,7 +19652,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmPuls);
+        DrawInputIcon(4, bmPuls, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19382,7 +19666,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmDipSwitsh);
+        DrawPlainIcon(bmDipSwitsh, Lk, top, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19457,7 +19741,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmTeller);
+        DrawPlainIcon(bmTeller, Lk, top, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19471,7 +19755,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmMemory);
+        DrawPlainIcon(bmMemory, Lk, top, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19707,7 +19991,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+4, TOP+4, bmCon);
+        DrawPlainIcon(bmCon, LK, TOP, LK+4, TOP+4);
 
         // was: TOP := TOP + H -15 +SPATIE+10;
         NextX(B  + SPATIE + 10);
@@ -19748,7 +20032,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmButton);
+        DrawInputIcon(0, bmButton, LK+1, TOP+2);
 
         // was: TOP := TOP + H + SPATIE;
         NextX(B + SPATIE);
@@ -19766,7 +20050,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmKnop);
+        DrawInputIcon(1, bmKnop, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -19783,7 +20067,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmSensor);
+        DrawInputIcon(2, bmSensor, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -19800,7 +20084,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmWarm);
+        DrawInputIcon(3, bmWarm, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -19817,7 +20101,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmPuls);
+        DrawInputIcon(4, bmPuls, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -19834,7 +20118,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmDipSwitsh);
+        DrawPlainIcon(bmDipSwitsh, LK, TOP, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -19904,7 +20188,7 @@ begin
         if not DTeller then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmTeller);
+        DrawPlainIcon(bmTeller, LK, TOP, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -19915,7 +20199,7 @@ begin
         if not DMemory then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmMemory);
+        DrawPlainIcon(bmMemory, LK, TOP, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20085,7 +20369,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+4, TOP+4, bmCon);
+        DrawPlainIcon(bmCon, LK, TOP, LK+4, TOP+4);
 
         // was: TOP := TOP + H -15 +SPATIE+10;
         NextX(B  + SPATIE + 10);
@@ -20126,7 +20410,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmButton);
+        DrawInputIcon(0, bmButton, LK+1, TOP+2);
 
         // was: TOP := TOP + H + SPATIE;
         NextX(B + SPATIE);
@@ -20144,7 +20428,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmKnop);
+        DrawInputIcon(1, bmKnop, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -20161,7 +20445,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmSensor);
+        DrawInputIcon(2, bmSensor, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -20178,7 +20462,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmWarm);
+        DrawInputIcon(3, bmWarm, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -20195,7 +20479,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmPuls);
+        DrawInputIcon(4, bmPuls, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -20212,7 +20496,7 @@ begin
           Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
 
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmDipSwitsh);
+        DrawPlainIcon(bmDipSwitsh, LK, TOP, LK+1, TOP+2);
 
         NextX(B + SPATIE);
         HK := TOP + H;
@@ -20282,7 +20566,7 @@ begin
         if not DTeller then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmTeller);
+        DrawPlainIcon(bmTeller, LK, TOP, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20293,7 +20577,7 @@ begin
         if not DMemory then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmMemory);
+        DrawPlainIcon(bmMemory, LK, TOP, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
