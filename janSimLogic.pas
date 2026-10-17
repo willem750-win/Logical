@@ -74,6 +74,9 @@ type
 
   TjanGateStyle=(jgsDI,jgsDO);
   TjanLogicFunc=(jlfAND,jlfOR,jlfNOT);
+  // tekenwijze van de poorten: woord in een rechthoek, IEC 60617 (&, >=1, 1)
+  // of ANSI/IEEE 91 (D-vorm, schildvorm, driehoek)
+  TjanSymbolen=(Tekst,IEC,ANSI);
   TjanMeterFunc=(jlfEN);
 
 
@@ -1758,6 +1761,7 @@ type
     Fdraden:Boolean;
     FMeter:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
+    FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
     // rect + down-state
@@ -1931,6 +1935,8 @@ type
     PROCEDURE SetDisplay(const Value: Boolean);
     PROCEDURE SetMeter(const Value: Boolean);
     procedure SetVoeding(const Value: Boolean);
+    procedure SetSymbolen(const Value: TjanSymbolen);
+    procedure DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
     PROCEDURE SetKnopLeft(const Value: Integer);
     PROCEDURE SetKnopTop(const Value: Integer);
     PROCEDURE SetKnopSpatie(const Value: Integer);
@@ -2058,6 +2064,8 @@ type
     property KMeter:Boolean read FMeter write SetMeter;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
+    // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
+    property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Tekst;
     property PStandaard:Boolean read FStart write SetStart;
     property NewObject:Boolean read FNew write SetNewObject;
     property HDrukknop:String read FHDrukknop write SetHDrukknop;
@@ -6383,6 +6391,147 @@ begin
 end;
 
 
+// Tekent een poort als IEC- of ANSI-symbool binnen R. Bij de NIET-poort komt
+// het bolletje (omkering) rechts in R. InY1/InY2: hoogte van de ingangen; bij
+// de ANSI OF-poort lopen die tot aan de holle achterkant (-1 = geen).
+procedure DrawGateSymbol(C: TCanvas; R: TRect; F: TjanLogicFunc; S: TjanSymbolen;
+  Fill: TColor; InY1, InY2: Integer);
+const N = 16;
+var Pts: array of TPoint;
+    W, H, D, Mid, L, BR, Bk, i, k, n2: Integer;
+    t: Double;
+    Txt: string;
+    OldBrush, OldPen: TColor;
+    OldBrushStyle: TBrushStyle;
+    OldFont: TFont;
+
+  // x van de holle achterkant van de OF-poort op hoogte y
+  function BackX(y: Integer): Integer;
+  begin
+    Result := L + Round(Bk * Sin(Pi * (R.Bottom - 1 - y) / (H - 1)));
+  end;
+
+begin
+  W := R.Right - R.Left;
+  H := R.Bottom - R.Top;
+  if (W < 6) or (H < 6) then Exit;
+  Mid := R.Top + H div 2;
+  L := R.Left;
+  D := 0;
+  if F = jlfNOT then
+  begin
+    D := H div 6;
+    if D < 4 then D := 4;
+  end;
+  BR := R.Right - D;            // rechterkant van het lichaam
+
+  OldBrush := C.Brush.Color;
+  OldBrushStyle := C.Brush.Style;
+  OldPen := C.Pen.Color;
+  OldFont := TFont.Create;
+  try
+    OldFont.Assign(C.Font);
+    C.Pen.Color := clBlack;
+    C.Pen.Style := psSolid;
+    C.Pen.Width := 1;
+    C.Brush.Style := bsSolid;
+    C.Brush.Color := Fill;
+
+    if S = IEC then
+    begin
+      C.Rectangle(L, R.Top, BR, R.Bottom);
+      case F of
+        jlfAND: Txt := '&';
+        jlfOR : Txt := #$E2#$89#$A5'1';   // >=1 (UTF-8)
+      else
+        Txt := '1';
+      end;
+      C.Font.Name := 'Arial';
+      C.Font.Style := [fsBold];
+      C.Font.Color := clBlack;
+      k := H * 2 div 7;
+      if k < 8 then k := 8;
+      if k > 16 then k := 16;
+      C.Font.Height := -k;
+      C.Brush.Style := bsClear;
+      k := H div 12;
+      if k < 1 then k := 1;
+      C.TextOut((L + BR - C.TextWidth(Txt)) div 2, R.Top + k, Txt);
+    end
+    else
+    begin
+      case F of
+        jlfAND:
+          begin
+            // recht achteraan, halve ellips vooraan
+            k := L + (BR - L) div 3;
+            SetLength(Pts, N + 3);
+            Pts[0] := Point(L, R.Top);
+            for i := 0 to N do
+            begin
+              t := -Pi / 2 + Pi * i / N;
+              Pts[i + 1] := Point(k + Round((BR - 1 - k) * Cos(t)),
+                                  Mid + Round(((H - 1) / 2) * Sin(t)));
+            end;
+            Pts[N + 2] := Point(L, R.Bottom - 1);
+          end;
+        jlfOR:
+          begin
+            // gebogen zijkanten naar een punt, holle achterkant
+            Bk := (BR - L) div 5;
+            if Bk < 2 then Bk := 2;
+            n2 := 2 * N + 1;
+            SetLength(Pts, n2 + N - 1);
+            for i := 0 to N do
+            begin
+              t := i / N;
+              Pts[i] := Point(L + Round((BR - 1 - L) * t), R.Top + Round((Mid - R.Top) * t * t));
+            end;
+            for i := N - 1 downto 0 do
+            begin
+              t := i / N;
+              Pts[N + (N - i)] := Point(L + Round((BR - 1 - L) * t),
+                                        R.Bottom - 1 - Round((R.Bottom - 1 - Mid) * t * t));
+            end;
+            for i := 1 to N - 1 do
+            begin
+              k := R.Bottom - 1 - Round((H - 1) * i / N);
+              Pts[n2 + i - 1] := Point(BackX(k), k);
+            end;
+          end;
+      else
+        begin
+          // NIET: driehoek
+          SetLength(Pts, 3);
+          Pts[0] := Point(L, R.Top);
+          Pts[1] := Point(BR - 1, Mid);
+          Pts[2] := Point(L, R.Bottom - 1);
+        end;
+      end;
+      C.Polygon(Pts);
+      if F = jlfOR then
+      begin
+        if InY1 >= 0 then C.Line(L, InY1, BackX(InY1) + 1, InY1);
+        if InY2 >= 0 then C.Line(L, InY2, BackX(InY2) + 1, InY2);
+      end;
+    end;
+
+    if D > 0 then
+    begin
+      // bolletje = omkering
+      C.Brush.Style := bsSolid;
+      C.Brush.Color := clWhite;
+      C.Ellipse(BR - 1, Mid - D div 2, BR + D, Mid - D div 2 + D + 1);
+    end;
+  finally
+    C.Font.Assign(OldFont);
+    OldFont.Free;
+    C.Pen.Color := OldPen;
+    C.Brush.Color := OldBrush;
+    C.Brush.Style := OldBrushStyle;
+  end;
+end;
+
 procedure TjanLogic.PaintLed(index:integer);
 var surfcol,litcol:Tcolor;
     p:Tpoint;
@@ -6460,19 +6609,37 @@ var i:integer;
     lit:boolean;
     R:TRect;
     s:string;
+    Sym:TjanSymbolen;
 begin
+   Sym:=Tekst;
+   if Owner is TjanSimLogicBox then
+     Sym:=TjanSimLogicBox(Owner).KSymbolen;
    with canvas do
    begin
      Lock;
-     brush.color:=FPcolor;
-     R:=rect(22,5,65,63);//ClientRect;
-     Fillrect(R);
-     Frame3D(R,clbtnhighlight,clbtnshadow,1);
+     if Sym=Tekst then
+     begin
+       brush.color:=FPcolor;
+       R:=rect(22,5,65,63);//ClientRect;
+       Fillrect(R);
+       Frame3D(R,clbtnhighlight,clbtnshadow,1);
+     end;
      brush.color:=clred;
      for i:=0 to 5 do
        PaintLed(i);
      R:=ClientRect;
      inflaterect(R,0,0);
+     s:='';
+     if Sym<>Tekst then
+     begin
+       // symbool na de aansluitingen, zodat het de korte draadjes afdekt
+       if FLogicAndFunc=jlfNOT then
+         DrawGateSymbol(Canvas,rect(22,5,72,63),FLogicAndFunc,Sym,FPcolor,-1,-1)
+       else
+         DrawGateSymbol(Canvas,rect(22,5,68,63),FLogicAndFunc,Sym,FPcolor,
+           FGates[0].pos.y+6,FGates[2].pos.y+6);
+     end
+     else
      // draw caption
      case FLogicAndFunc of
        jlfAND: begin
@@ -18808,6 +18975,49 @@ begin
   invalidate;
 end;
 
+procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);
+var i: Integer;
+begin
+  if Value = FSymbolen then Exit;
+  FSymbolen := Value;
+  invalidate;
+  for i := 0 to ComponentCount - 1 do
+    if Components[i] is TjanLogic then
+      TjanLogic(Components[i]).Invalidate;
+end;
+
+// Knop van een poort in de balk: het vaste plaatje bij Tekst, anders het
+// symbool in de gekozen stijl met korte aansluitdraden.
+procedure TjanSimLogicBox.DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
+var R: TRect;
+    M, Y1, Y2: Integer;
+    OldPen: TColor;
+begin
+  if FSymbolen = Tekst then
+  begin
+    Canvas.Draw(X, Y, Bm);
+    Exit;
+  end;
+  R := Rect(X + 5, Y + 2, X + Bm.Width - 4, Y + Bm.Height - 2);
+  M := (R.Top + R.Bottom) div 2;
+  if AFunc = jlfNOT then
+  begin
+    Y1 := M; Y2 := -1;
+  end
+  else
+  begin
+    Y1 := R.Top + (R.Bottom - R.Top) div 4;
+    Y2 := R.Bottom - 1 - (R.Bottom - R.Top) div 4;
+  end;
+  OldPen := Canvas.Pen.Color;
+  Canvas.Pen.Color := clBlack;
+  Canvas.Line(X + 1, Y1, R.Left, Y1);
+  if Y2 >= 0 then Canvas.Line(X + 1, Y2, R.Left, Y2);
+  Canvas.Line(R.Right - 1, M, X + Bm.Width - 1, M);
+  Canvas.Pen.Color := OldPen;
+  DrawGateSymbol(Canvas, R, AFunc, FSymbolen, rgb(250,250,150), Y1, Y2);
+end;
+
 procedure TjanSimLogicBox.SetMeter(const Value: Boolean);
 begin
   if value<>FMeter then
@@ -19205,7 +19415,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmLogicAnd);
+        DrawGateIcon(jlfAND, bmLogicAnd, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19219,7 +19429,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmLogicOr);
+        DrawGateIcon(jlfOR, bmLogicOr, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19233,7 +19443,7 @@ begin
         else
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
-        draw(Lk+1,top+2,bmLogicNot);
+        DrawGateIcon(jlfNOT, bmLogicNot, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -19661,7 +19871,7 @@ begin
         if not DLogicAnd then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLogicAnd);
+        DrawGateIcon(jlfAND, bmLogicAnd, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -19672,7 +19882,7 @@ begin
         if not DLogicOr then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLogicOr);
+        DrawGateIcon(jlfOR, bmLogicOr, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -19683,7 +19893,7 @@ begin
         if not DLogicNot then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLogicNot);
+        DrawGateIcon(jlfNOT, bmLogicNot, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20039,7 +20249,7 @@ begin
         if not DLogicAnd then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLogicAnd);
+        DrawGateIcon(jlfAND, bmLogicAnd, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20050,7 +20260,7 @@ begin
         if not DLogicOr then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLogicOr);
+        DrawGateIcon(jlfOR, bmLogicOr, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
@@ -20061,7 +20271,7 @@ begin
         if not DLogicNot then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
-        Draw(LK+1, TOP+2, bmLogicNot);
+        DrawGateIcon(jlfNOT, bmLogicNot, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 

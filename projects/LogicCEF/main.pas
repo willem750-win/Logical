@@ -794,7 +794,7 @@ Begin
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KWarm,KDraad,KVoeding,KMeter');
+                                  'KSensor,KTeller,KWarm,KDraad,KVoeding,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
