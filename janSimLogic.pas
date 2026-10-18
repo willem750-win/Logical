@@ -15890,9 +15890,10 @@ end;
 
 procedure TjanSchakelRelais.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  // draad maken vanaf de uitgang R2
+  // draad maken vanaf de uitgang R2: ook vanaf het stukje draad en de pijl ervoor,
+  // want op het blokje zelf ligt vaak al het begin van een bestaande draad
   if (Button = mbLeft) and (Screen.Cursor = crDraad) and
-     PtInRect(Rect(78, 6, SR_W, 19), Point(X, Y)) and (Parent <> nil) then
+     PtInRect(Rect(57, 3, SR_W, 21), Point(X, Y)) and (Parent <> nil) then
   begin
     Maakdraad(Top + SR_CY - 3, Left + 81, Parent);
     doMove := False;
