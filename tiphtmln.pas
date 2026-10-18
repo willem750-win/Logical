@@ -7,7 +7,7 @@ interface
 uses
   LCLIntf, LCLType, LMessages, Messages, SysUtils, Classes, Graphics,
   Dialogs, ExtCtrls, ImgList, StdCtrls, Buttons, ColorBox, Math,
-  Types, PropEdits, ObjectInspector, LResources, Controls, Forms, wcimgcbo;
+  Types, PropEdits, ObjectInspector, LResources, Controls, Forms, ComboEx;
 
 type
   TBalloonTipPosition = (btpNone, btpTopLeft, btpTopRight, btpBottomLeft,
@@ -704,7 +704,7 @@ var
   BtnBold, BtnItalic, BtnUnderline, BtnColor, BtnOK, BtnCancel: TButton;
   BtnWidth: Integer;
   Spatie: Integer;
-  PicBox: TImageComboBox;
+  PicBox: TComboBoxEx;
   I: Integer;
 begin
   Spatie := 4;
@@ -754,7 +754,7 @@ begin
     BtnColor.Width := BtnWidth;
     BtnColor.OnClick := @OnColorClick;
 
-    PicBox := TImageComboBox.Create(FForm);
+    PicBox := TComboBoxEx.Create(FForm);
     PicBox.Parent := Toolbar;
     PicBox.Left := Spatie + BtnWidth + Spatie + BtnWidth + Spatie + BtnWidth + Spatie + BtnWidth;
     PicBox.Width := 60;
@@ -766,7 +766,7 @@ begin
     if Assigned(PicBox.Images) then
     begin
       for I := 0 to PicBox.Images.Count - 1 do
-        PicBox.Items.Add(IntToStr(I));
+        PicBox.ItemsEx.AddItem(IntToStr(I), I);
     end;
     PicBox.OnChange := @OnPicOnChange;
 
@@ -856,11 +856,11 @@ end;
 
 procedure TjanTipHtmlStringsProperty.OnPicOnChange(Sender: TObject);
 var
-  PicBox: TImageComboBox;
+  PicBox: TComboBoxEx;
 begin
-  if (Sender is TImageComboBox) and Assigned(FEditor) then
+  if (Sender is TComboBoxEx) and Assigned(FEditor) then
   begin
-    PicBox := TImageComboBox(Sender);
+    PicBox := TComboBoxEx(Sender);
     ShowMessage('Gekozen Item = ' + IntToStr(PicBox.ItemIndex));
     FEditor.SelText := '<IMG=' + IntToStr(PicBox.ItemIndex) + '>';
   end;

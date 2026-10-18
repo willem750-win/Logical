@@ -14,21 +14,19 @@ object mainForm: TmainForm
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  object TitelBar2: TNetGradient
+  object TitelBar2: TPanel
     Left = 0
     Height = 25
     Top = 0
     Width = 852
-    BevelOuter = bvNone
-    BeginColor = clGradientActiveCaption
-    BorderColor = clDefault
-    CaptionAlignment = taCenter
-    EndColor = clGradientActiveCaption
-    FlatBorder = True
-    Font.Color = clHighlightText
-    Caption = 'Gebruik Taalkeuze'
     Align = alTop
-    Language = lgDutch
+    BevelOuter = bvNone
+    Caption = ''
+    Color = clGradientActiveCaption
+    Font.Color = clHighlightText
+    ParentBackground = False
+    ParentColor = False
+    ParentFont = False
     ParentShowHint = False
     object btClose1: TSpeedButton
       Left = 829
@@ -456,7 +454,7 @@ object mainForm: TmainForm
       OnDrawPanel = StatusBar1DrawPanel
       OnMouseMove = StatusBar1MouseMove
     end
-    object Taal: TImageComboBox
+    object Taal: TComboBox
       Cursor = crHandPoint
       Left = 787
       Height = 23
@@ -488,10 +486,7 @@ object mainForm: TmainForm
       TabStop = False
       Text = 'Nederlands'
       OnChange = TaalChange
-      ShowCaptions = False
-      Images = Flags
-      Language = lgDutch
-      ImageListName = 'Flags'
+      OnDrawItem = TaalDrawItem
     end
   end
   object ImageList1: TImageList

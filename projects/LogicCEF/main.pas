@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Buttons, Graphics, Dialogs, ComCtrls,
-  Menus,StrHolder, SMNetGradient, ScreenCapture, chatgridpcodeSmall,
-  janSimLogic,AdvancedPropertyGridComponent, wcimgcbo, IniFiles,LCLIntf,LCLType,
+  Menus,StrHolder, ScreenCapture, chatgridpcodeSmall,
+  janSimLogic,AdvancedPropertyGridComponent, IniFiles,LCLIntf,LCLType,
   TypInfo, LCLProc, ExtCtrls, StdCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
   // De ingebouwde CEF-browser bestaat enkel onder Windows; onder Linux
   // wordt de help in de standaardbrowser van het systeem geopend.
@@ -49,7 +49,7 @@ type
     Panel2: TPanel;
     brInfo1: TSpeedButton;
     StatusBar1: TStatusBar;
-    Taal: TImageComboBox;
+    Taal: TComboBox;
     test: TStrHolder;
     StringHolderTranslations: TStrHolder;
     Flags: TImageList;
@@ -60,7 +60,7 @@ type
     MGeheugenpaneel: TMenuItem;
     MNieuwStandaardpaneel: TMenuItem;
     MTeller: TMenuItem;
-    TitelBar2: TNetGradient;
+    TitelBar2: TPanel;
     FObject: TComponent;
 
 
@@ -127,6 +127,8 @@ type
     procedure StatusBar1MouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure TaalChange(Sender: TObject);
+    procedure TaalDrawItem(Control: TWinControl; Index: Integer; ARect: TRect;
+      State: TOwnerDrawState);
     procedure SaveLanguageSetting;
     procedure LoadLanguageSetting;
     function StrHolderToStream(StrHolder: TStrHolder): TMemoryStream;
@@ -1072,6 +1074,21 @@ begin
   end;
 end;
 
+// Taalkeuze: alleen het vlaggetje uit Flags tonen (de naam staat in de hint)
+procedure TmainForm.TaalDrawItem(Control: TWinControl; Index: Integer;
+  ARect: TRect; State: TOwnerDrawState);
+var
+  C: TCanvas;
+begin
+  C := TComboBox(Control).Canvas;
+  if odSelected in State then
+    C.Brush.Color := clHighlight
+  else
+    C.Brush.Color := TComboBox(Control).Color;
+  C.FillRect(ARect);
+  if (Index >= 0) and (Index < Flags.Count) then
+    Flags.Draw(C, ARect.Left + 4, ARect.Top + (ARect.Bottom - ARect.Top - Flags.Height) div 2, Index);
+end;
 
  procedure TmainForm.TaalChange(Sender: TObject);
  var

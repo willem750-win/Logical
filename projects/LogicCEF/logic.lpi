@@ -74,12 +74,6 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="atflatcontrols_package"/>
-      </Item>
-      <Item>
-        <PackageName Value="ColapsP"/>
-      </Item>
-      <Item>
         <PackageName Value="CEF4Delphi_Lazarus"/>
       </Item>
       <Item>
@@ -89,9 +83,6 @@
         <PackageName Value="rxtools"/>
       </Item>
       <Item>
-        <PackageName Value="tce"/>
-      </Item>
-      <Item>
         <PackageName Value="propadvance"/>
       </Item>
       <Item>
@@ -99,12 +90,6 @@
       </Item>
       <Item>
         <PackageName Value="screencaputre"/>
-      </Item>
-      <Item>
-        <PackageName Value="ComboBox_image"/>
-      </Item>
-      <Item>
-        <PackageName Value="smnetgradientlaz"/>
       </Item>
       <Item>
         <PackageName Value="LCL"/>

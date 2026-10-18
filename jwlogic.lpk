@@ -67,9 +67,6 @@
     </Files>
     <RequiredPkgs>
       <Item>
-        <PackageName Value="ComboBox_image"/>
-      </Item>
-      <Item>
         <PackageName Value="rx"/>
       </Item>
       <Item>
