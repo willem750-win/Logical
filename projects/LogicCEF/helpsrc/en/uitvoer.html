@@ -16,7 +16,25 @@
     <li>Input on: the coil is energised, the red LED turns green and the contact switches over.</li>
   </ul>
   <p>The relay shows how a small control signal switches a contact. R1 and R2 are only labels
-  on the symbol: you cannot connect a wire to them.</p>
+  on the symbol: you cannot connect a wire to them. To really switch something with the contact, use the <a href="#schakelrelais">switching relay</a>.</p>
+
+  <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Switching relay</h2>
+  <p>A relay whose contact you can really use: the coil operates a switch that turns a second circuit
+  on and off, for example a lamp or a buzzer.</p>
+  <figure>
+    <img src="../img/schakelrelais-voorbeeld.png" alt="Two switches, a switching relay and a lamp">
+    <figcaption>The lower switch puts a signal on R1, the upper switch energizes the coil (R+): the contact closes and the lamp lights up.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Connection</th><th>Meaning</th></tr>
+    <tr><td><b>R+</b> (bottom)</td><td>coil input: the control signal, for example from a gate</td></tr>
+    <tr><td><b>R&minus;</b> (right)</td><td>other side of the coil, to the &minus; rail (with <a href="voeding.html">power rails</a>)</td></tr>
+    <tr><td><b>R1</b> (top left)</td><td>contact input: connect a switch or another source here, or plug the relay onto a + rail on its left: the contact then gets the voltage of that rail</td></tr>
+    <tr><td><b>R2</b> (top right)</td><td>contact output: from here you run a wire to a lamp, buzzer, ...</td></tr>
+  </table>
+  <p>While the coil is energized (the LED turns red), the contact is closed and R2 passes on the signal
+  and the voltage of R1. When the coil is not energized, R2 is off, whatever is on R1.
+  You start a wire at R2 like at any output: click the block of R2 with the wire button.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
   <p>Sounds as long as the input is on. Handy as an alarm.</p>

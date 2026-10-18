@@ -16,7 +16,25 @@
     <li>Entrée active&nbsp;: la bobine est alimentée, la LED rouge devient verte et le contact bascule.</li>
   </ul>
   <p>Le relais montre ainsi comment un petit signal de commande fait basculer un contact. R1 et R2 ne sont
-  que des repères sur le symbole&nbsp;: vous ne pouvez pas y relier de fil.</p>
+  que des repères sur le symbole&nbsp;: vous ne pouvez pas y relier de fil. Pour vraiment commuter quelque chose avec le contact, utilisez le <a href="#schakelrelais">relais avec contact</a>.</p>
+
+  <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Relais avec contact</h2>
+  <p>Un relais dont vous pouvez vraiment utiliser le contact&nbsp;: la bobine commande un interrupteur qui
+  allume et éteint un deuxième circuit, par exemple une lampe ou un ronfleur.</p>
+  <figure>
+    <img src="../img/schakelrelais-voorbeeld.png" alt="Deux interrupteurs, un relais avec contact et une lampe">
+    <figcaption>L&rsquo;interrupteur du bas met un signal sur R1, celui du haut alimente la bobine (R+)&nbsp;: le contact se ferme et la lampe s&rsquo;allume.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Connexion</th><th>Signification</th></tr>
+    <tr><td><b>R+</b> (en bas)</td><td>entrée de la bobine&nbsp;: le signal de commande, par exemple d&rsquo;une porte</td></tr>
+    <tr><td><b>R&minus;</b> (à droite)</td><td>autre côté de la bobine, vers le rail &minus; (avec des <a href="voeding.html">rails d&rsquo;alimentation</a>)</td></tr>
+    <tr><td><b>R1</b> (en haut à gauche)</td><td>entrée du contact&nbsp;: reliez ici un interrupteur ou une autre source, ou branchez le relais à gauche sur un rail +&nbsp;: le contact reçoit alors la tension de ce rail</td></tr>
+    <tr><td><b>R2</b> (en haut à droite)</td><td>sortie du contact&nbsp;: de là, tirez un fil vers une lampe, un ronfleur, ...</td></tr>
+  </table>
+  <p>Tant que la bobine est alimentée (la LED devient rouge), le contact est fermé et R2 transmet le signal
+  et la tension de R1. Si la bobine n&rsquo;est pas alimentée, R2 est éteint, quel que soit l&rsquo;état de R1.
+  Un fil sur R2 se commence comme sur toute sortie&nbsp;: cliquez sur le bloc de R2 avec le bouton fil.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
   <p>Sonne tant que l&rsquo;entrée est active. Pratique comme alarme.</p>

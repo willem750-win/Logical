@@ -1,0 +1,43 @@
+<!-- titel: Leçon 11 - Le relais -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 11 sur 11</p>
+  <h1>Le relais : commuter un deuxième circuit</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> allumer et éteindre un circuit séparé avec un petit signal de commande,
+  comme le fait un relais dans une voiture, une machine à laver ou une alarme.</div>
+
+  <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les11-schakelrelais.png" alt="Bouton-poussoir, relais avec contact et lampe sur des rails d'alimentation">
+    <figcaption>Le bouton-poussoir est enfoncé&nbsp;: la bobine est alimentée, le contact est fermé et les 5&nbsp;V du rail vont vers la lampe.</figcaption>
+  </figure>
+
+  <h2>Deux circuits</h2>
+  <ul>
+    <li>Le <b>circuit de commande</b>&nbsp;: le bouton-poussoir est sur le rail + de gauche. Son fil va vers <b>R+</b>,
+      la bobine du <a href="uitvoer.html#schakelrelais">relais avec contact</a>. La bobine est sur un rail &minus; avec <b>R&minus;</b>.</li>
+    <li>Le <b>circuit de puissance</b>&nbsp;: le contact du relais est sur un deuxième rail + de 5&nbsp;V avec <b>R1</b>.
+      De <b>R2</b>, un fil va vers la lampe.</li>
+  </ul>
+  <p>Les deux circuits ne se touchent pas. La bobine actionne le contact avec un électroaimant&nbsp;: c&rsquo;est le
+  trait pointillé du symbole. Ainsi, un petit bouton peut commander un gros appareil. Dans une voiture, un petit
+  interrupteur allume les phares puissants par l&rsquo;intermédiaire d&rsquo;un relais.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et appuyez sur le bouton-poussoir&nbsp;: la LED du relais devient rouge, le contact se ferme et la lampe s&rsquo;allume.</li>
+    <li>Relâchez&nbsp;: le contact s&rsquo;ouvre et la lampe s&rsquo;éteint.</li>
+    <li>Arrêtez la simulation. Faites un clic droit sur le petit rail + du relais et choisissez <b>Tension &rsaquo; 1&nbsp;V</b>.
+      Redémarrez et appuyez.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Pourquoi la lampe reste-t-elle éteinte quand le rail de R1 est à 1&nbsp;V, alors que la bobine fonctionne encore&nbsp;?
+  Remettez ensuite le rail à 5&nbsp;V et ajoutez un ronfleur qui fonctionne en même temps que la lampe.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Le contact transmet la tension de R1. 1&nbsp;V est inférieur à 2&nbsp;V, donc pour la lampe c&rsquo;est
+    &laquo;&nbsp;éteint&nbsp;&raquo; (voir la <a href="les10.html">leçon 10</a>). La bobine fonctionne, car elle reçoit son signal
+    du bouton-poussoir sur l&rsquo;autre rail de 5&nbsp;V. Pour le ronfleur&nbsp;: placez-le avec son côté droit contre un
+    rail &minus; et tirez un deuxième fil de R2 vers son entrée. Une sortie peut avoir plusieurs fils.</p>
+  </details>
+
+  <div class="pager"><a href="les10.html">&larr; Leçon 10 : Alimentation et tension</a><a href="leerpad.html">Parcours &rarr;</a></div>

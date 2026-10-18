@@ -1,0 +1,43 @@
+<!-- titel: Lektion 11 - Das Relais -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 11 von 11</p>
+  <h1>Das Relais: einen zweiten Stromkreis schalten</h1>
+  <div class="goal"><strong>Ziel:</strong> mit einem kleinen Steuersignal einen getrennten Stromkreis ein- und ausschalten,
+  so wie es ein Relais in einem Auto, einer Waschmaschine oder einer Alarmanlage tut.</div>
+
+  <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les11-schakelrelais.png" alt="Taster, Schaltrelais und Lampe an Versorgungsschienen">
+    <figcaption>Der Taster ist gedrückt: Die Spule ist erregt, der Kontakt ist geschlossen und die 5&nbsp;V der Schiene gehen zur Lampe.</figcaption>
+  </figure>
+
+  <h2>Zwei Stromkreise</h2>
+  <ul>
+    <li>Der <b>Steuerstromkreis</b>: Der Taster sitzt an der linken + Schiene. Sein Draht führt zu <b>R+</b>, der Spule
+      des <a href="uitvoer.html#schakelrelais">Schaltrelais</a>. Die Spule sitzt mit <b>R&minus;</b> an einer &minus; Schiene.</li>
+    <li>Der <b>Laststromkreis</b>: Der Kontakt des Relais sitzt mit <b>R1</b> an einer zweiten + Schiene mit 5&nbsp;V.
+      Von <b>R2</b> führt ein Draht zur Lampe.</li>
+  </ul>
+  <p>Die beiden Stromkreise berühren sich nicht. Die Spule betätigt den Kontakt mit einem Elektromagneten: Das ist
+  die gestrichelte Linie im Symbol. So kann ein kleiner Taster ein großes Gerät schalten. Im Auto schaltet ein
+  kleiner Schalter über ein Relais die starken Scheinwerfer ein.</p>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und drücken Sie den Taster: Die LED des Relais wird rot, der Kontakt schließt und die Lampe leuchtet.</li>
+    <li>Lassen Sie los: Der Kontakt öffnet und die Lampe geht aus.</li>
+    <li>Halten Sie die Simulation an. Klicken Sie mit der rechten Maustaste auf die kurze + Schiene des Relais und wählen Sie
+      <b>Spannung &rsaquo; 1&nbsp;V</b>. Starten Sie erneut und drücken Sie.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Warum bleibt die Lampe aus, wenn die Schiene von R1 auf 1&nbsp;V steht, obwohl die Spule noch funktioniert? Stellen
+  Sie die Schiene danach wieder auf 5&nbsp;V und fügen Sie einen Summer hinzu, der zusammen mit der Lampe angeht.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Der Kontakt gibt die Spannung von R1 weiter. 1&nbsp;V ist weniger als 2&nbsp;V, für die Lampe bedeutet das
+    &bdquo;aus&ldquo; (siehe <a href="les10.html">Lektion 10</a>). Die Spule funktioniert, weil sie ihr Signal vom Taster an
+    der anderen 5&nbsp;V-Schiene bekommt. Für den Summer: Setzen Sie ihn mit der rechten Seite an eine &minus; Schiene und
+    führen Sie einen zweiten Draht von R2 zu seinem Eingang. Ein Ausgang darf mehrere Drähte haben.</p>
+  </details>
+
+  <div class="pager"><a href="les10.html">&larr; Lektion 10: Versorgung und Spannung</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

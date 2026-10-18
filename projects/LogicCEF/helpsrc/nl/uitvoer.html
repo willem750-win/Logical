@@ -19,7 +19,25 @@
     <li>Ingang aan: de spoel wordt bekrachtigd, de rode led wordt groen en het contact schakelt om.</li>
   </ul>
   <p>Het relais toont zo hoe een klein stuursignaal een contact omzet. R1 en R2 zijn alleen
-  aanduidingen op het symbool: je kunt er geen draad op aansluiten.</p>
+  aanduidingen op het symbool: je kunt er geen draad op aansluiten. Wil je met het contact echt iets schakelen, gebruik dan het <a href="#schakelrelais">schakelrelais</a>.</p>
+
+  <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Schakelrelais</h2>
+  <p>Een relais waarvan je het contact echt kunt gebruiken: de spoel bedient een schakelaar die een
+  tweede stroomkring aan- en uitzet, bijvoorbeeld een lamp of een zoemer.</p>
+  <figure>
+    <img src="../img/schakelrelais-voorbeeld.png" alt="Twee schakelaars, een schakelrelais en een lamp">
+    <figcaption>De onderste schakelaar geeft spanning op R1, de bovenste bekrachtigt de spoel (R+): het contact sluit en de lamp brandt.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Aansluiting</th><th>Betekenis</th></tr>
+    <tr><td><b>R+</b> (onderaan)</td><td>ingang van de spoel: hier komt het stuursignaal, bijvoorbeeld van een poort</td></tr>
+    <tr><td><b>R&minus;</b> (rechts)</td><td>andere kant van de spoel, naar de &minus; rail (bij <a href="voeding.html">voedingsrails</a>)</td></tr>
+    <tr><td><b>R1</b> (links boven)</td><td>ingang van het contact: sluit hier een schakelaar of een andere bron aan, of plug het relais links op een + rail: dan krijgt het contact de spanning van die rail</td></tr>
+    <tr><td><b>R2</b> (rechts boven)</td><td>uitgang van het contact: van hier leg je een draad naar een lamp, zoemer, ...</td></tr>
+  </table>
+  <p>Zolang de spoel bekrachtigd is (het ledje wordt rood), is het contact gesloten en geeft R2 het signaal
+  &eacute;n de spanning van R1 door. Is de spoel niet bekrachtigd, dan is R2 uit, wat er ook op R1 staat.
+  Een draad aan R2 begin je zoals bij elke uitgang: met de draadknop op het blokje van R2 klikken.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Zoemer</h2>
   <p>Gaat af zolang de ingang aan is. Handig als alarm.</p>

@@ -133,7 +133,7 @@ begin
       begin Result := 'verwerking'; AAnchor := 'poorten'; end;
     'teller', 'geheugen':
       Result := 'verwerking';
-    'lamp', 'relais', 'zoemer', 'display':
+    'lamp', 'relais', 'schakelrelais', 'zoemer', 'display':
       Result := 'uitvoer';
     'voeding', 'rail':
       begin Result := 'voeding'; AAnchor := 'rails'; end;
@@ -515,6 +515,7 @@ begin
     'tjanmemory':       AControl.HelpKeyword := 'geheugen';
     'tjansimlight':     AControl.HelpKeyword := 'lamp';
     'tjansimrelais':    AControl.HelpKeyword := 'relais';
+    'tjanschakelrelais': AControl.HelpKeyword := 'schakelrelais';
     'tjansimbuzzer':    AControl.HelpKeyword := 'zoemer';
     'tjandisplay':      AControl.HelpKeyword := 'display';
     'tjanmeter':        AControl.HelpKeyword := 'meter';

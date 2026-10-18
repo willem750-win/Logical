@@ -857,7 +857,7 @@ Begin
     SettingsFrame.PropB22.DefaultPropHolder:=SettingsFrame.iniBox_schakellelementen;
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
-                                  'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelaar,'+
+                                  'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
                                   'KSensor,KTeller,KWarm,KDraad,KVoeding,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
@@ -867,7 +867,7 @@ Begin
     SettingsFrame.PropB222.DefaultPropHolder:=SettingsFrame.iniBox_Hints;
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
-                                  'HLogicAnd,HLogicNot,HLogicOr,HMemory,HPuls,HRelais,HSchakelaar,'+
+                                  'HLogicAnd,HLogicNot,HLogicOr,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
                                   'HSensor,HTeller,HWarm,HMeter,HRailPlus,HRailMin,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];

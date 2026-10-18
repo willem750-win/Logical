@@ -1,0 +1,43 @@
+<!-- titel: Les 11 - Het relais -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 11 van 11</p>
+  <h1>Het relais: een tweede stroomkring schakelen</h1>
+  <div class="goal"><strong>Doel:</strong> met een klein stuursignaal een aparte stroomkring aan- en uitzetten,
+  zoals een relais dat doet in een auto, een wasmachine of een alarminstallatie.</div>
+
+  <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les11-schakelrelais.png" alt="Drukknop, schakelrelais en lamp op voedingsrails">
+    <figcaption>De drukknop is ingedrukt: de spoel is bekrachtigd, het contact is gesloten en de 5&nbsp;V van de rail gaat naar de lamp.</figcaption>
+  </figure>
+
+  <h2>Twee stroomkringen</h2>
+  <ul>
+    <li>De <b>stuurkring</b>: de drukknop staat op de linker + rail. Zijn draad gaat naar <b>R+</b>, de spoel
+      van het <a href="uitvoer.html#schakelrelais">schakelrelais</a>. De spoel zit met <b>R&minus;</b> op een &minus; rail.</li>
+    <li>De <b>werkkring</b>: het contact van het relais zit met <b>R1</b> op een tweede + rail van 5&nbsp;V.
+      Vanaf <b>R2</b> loopt een draad naar de lamp.</li>
+  </ul>
+  <p>De twee kringen raken elkaar niet. De spoel bedient het contact met een elektromagneet: dat is de
+  stippellijn in het symbool. Zo kan een klein knopje een groot toestel schakelen. In een auto zet je met een
+  licht schakelaartje via een relais de zware koplampen aan.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en druk op de drukknop: het ledje van het relais wordt rood, het contact sluit en de lamp brandt.</li>
+    <li>Laat los: het contact gaat open en de lamp gaat uit.</li>
+    <li>Stop de simulatie. Rechtsklik op de korte + rail van het relais en kies <b>Spanning &rsaquo; 1&nbsp;V</b>.
+      Start opnieuw en druk.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Waarom blijft de lamp uit als de rail van R1 op 1&nbsp;V staat, ook al werkt de spoel nog? Zet de rail daarna
+  terug op 5&nbsp;V en voeg een zoemer toe die samen met de lamp gaat.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Het contact geeft de spanning van R1 door. 1&nbsp;V is minder dan 2&nbsp;V, dus voor de lamp is dat
+    &bdquo;uit&rdquo; (zie <a href="les10.html">les 10</a>). De spoel werkt wel, want die krijgt haar signaal van de
+    drukknop op de andere rail van 5&nbsp;V. Voor de zoemer: zet hem met zijn rechterkant tegen een &minus; rail en
+    leg een tweede draad vanaf R2 naar zijn ingang. Een uitgang mag meerdere draden hebben.</p>
+  </details>
+
+  <div class="pager"><a href="les10.html">&larr; Les 10: Voeding en spanning</a><a href="leerpad.html">Leerpad &rarr;</a></div>

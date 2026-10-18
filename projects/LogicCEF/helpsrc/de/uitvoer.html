@@ -16,7 +16,25 @@
     <li>Eingang ein: Die Spule wird erregt, die rote LED wird grün und der Kontakt schaltet um.</li>
   </ul>
   <p>Das Relais zeigt so, wie ein kleines Steuersignal einen Kontakt umschaltet. R1 und R2 sind nur
-  Beschriftungen am Symbol: Sie können dort keinen Draht anschließen.</p>
+  Beschriftungen am Symbol: Sie können dort keinen Draht anschließen. Um mit dem Kontakt wirklich etwas zu schalten, verwenden Sie das <a href="#schakelrelais">Schaltrelais</a>.</p>
+
+  <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Schaltrelais</h2>
+  <p>Ein Relais, dessen Kontakt Sie wirklich benutzen können: Die Spule betätigt einen Schalter, der einen
+  zweiten Stromkreis ein- und ausschaltet, zum Beispiel eine Lampe oder einen Summer.</p>
+  <figure>
+    <img src="../img/schakelrelais-voorbeeld.png" alt="Zwei Schalter, ein Schaltrelais und eine Lampe">
+    <figcaption>Der untere Schalter legt ein Signal an R1, der obere erregt die Spule (R+): Der Kontakt schließt und die Lampe leuchtet.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Anschluss</th><th>Bedeutung</th></tr>
+    <tr><td><b>R+</b> (unten)</td><td>Eingang der Spule: das Steuersignal, zum Beispiel von einem Gatter</td></tr>
+    <tr><td><b>R&minus;</b> (rechts)</td><td>andere Seite der Spule, zur &minus;-Schiene (mit <a href="voeding.html">Versorgungsschienen</a>)</td></tr>
+    <tr><td><b>R1</b> (oben links)</td><td>Eingang des Kontakts: Schließen Sie hier einen Schalter oder eine andere Quelle an, oder stecken Sie das Relais links auf eine +-Schiene: Der Kontakt erhält dann die Spannung dieser Schiene</td></tr>
+    <tr><td><b>R2</b> (oben rechts)</td><td>Ausgang des Kontakts: Von hier führt ein Draht zu einer Lampe, einem Summer, ...</td></tr>
+  </table>
+  <p>Solange die Spule erregt ist (die LED wird rot), ist der Kontakt geschlossen und R2 gibt das Signal und
+  die Spannung von R1 weiter. Ist die Spule nicht erregt, ist R2 aus, egal was an R1 anliegt.
+  Einen Draht an R2 beginnen Sie wie an jedem Ausgang: mit der Draht-Schaltfläche auf das Kästchen von R2 klicken.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Summer</h2>
   <p>Ertönt, solange der Eingang ein ist. Praktisch als Alarm.</p>

@@ -1,0 +1,12 @@
+TjanRail;300;80;80;23;+;50;
+TjanRail;80;230;95;23;+;50;
+TjanRail;66;344;135;23;-;0;
+TjanRail;140;520;80;23;-;0;
+TjanSimLight;23;450;126;69;
+TjanSchakelRelais;80;253;120;90;
+TjanConnector;9;333;128;126;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;25;152;190;146;jcmBR;jcpBL;jcsTRBL;0,5;-1;
+TjanSimButton;32;103;200;58;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;

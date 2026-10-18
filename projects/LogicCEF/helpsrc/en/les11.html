@@ -1,0 +1,43 @@
+<!-- titel: Lesson 11 - The relay -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 11 of 11</p>
+  <h1>The relay: switching a second circuit</h1>
+  <div class="goal"><strong>Goal:</strong> switch a separate circuit on and off with a small control signal,
+  the way a relay does in a car, a washing machine or an alarm system.</div>
+
+  <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les11-schakelrelais.png" alt="Push button, switching relay and lamp on power rails">
+    <figcaption>The push button is pressed: the coil is energized, the contact is closed and the 5&nbsp;V of the rail goes to the lamp.</figcaption>
+  </figure>
+
+  <h2>Two circuits</h2>
+  <ul>
+    <li>The <b>control circuit</b>: the push button sits on the left + rail. Its wire goes to <b>R+</b>, the coil
+      of the <a href="uitvoer.html#schakelrelais">switching relay</a>. The coil sits on a &minus; rail with <b>R&minus;</b>.</li>
+    <li>The <b>load circuit</b>: the contact of the relay sits on a second 5&nbsp;V + rail with <b>R1</b>.
+      From <b>R2</b> a wire runs to the lamp.</li>
+  </ul>
+  <p>The two circuits do not touch. The coil operates the contact with an electromagnet: that is the dashed
+  line in the symbol. This way a small button can switch a big device. In a car, a light switch turns on the
+  heavy headlights through a relay.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and press the push button: the LED of the relay turns red, the contact closes and the lamp lights up.</li>
+    <li>Release it: the contact opens and the lamp goes out.</li>
+    <li>Stop the simulation. Right-click the short + rail of the relay and choose <b>Voltage &rsaquo; 1&nbsp;V</b>.
+      Start again and press.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Why does the lamp stay off when the rail of R1 is at 1&nbsp;V, even though the coil still works? Then set the
+  rail back to 5&nbsp;V and add a buzzer that comes on together with the lamp.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>The contact passes on the voltage of R1. 1&nbsp;V is less than 2&nbsp;V, so for the lamp it means
+    &ldquo;off&rdquo; (see <a href="les10.html">lesson 10</a>). The coil still works, because it gets its signal from the
+    push button on the other 5&nbsp;V rail. For the buzzer: put it with its right side against a &minus; rail and
+    run a second wire from R2 to its input. An output may have several wires.</p>
+  </details>
+
+  <div class="pager"><a href="les10.html">&larr; Lesson 10: Power and voltage</a><a href="leerpad.html">Learning path &rarr;</a></div>

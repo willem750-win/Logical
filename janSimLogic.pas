@@ -1647,6 +1647,31 @@ type
      property HelpKeyword;
   end;
 
+  // Schakelrelais: relais met een bruikbaar maakcontact. De spoel (R+ onderaan,
+  // R- rechts naar de - rail) bedient het contact bovenaan: R2 geeft het signaal
+  // (en de spanning) van R1 door zolang de spoel bekrachtigd is (Lit).
+  TjanSchakelRelais = class (TjanSimRelais)
+  private
+    FContactIn: Boolean;     // signaal op R1
+    FContactVolt: Double;    // spanning op R1
+    procedure SetContactIn(const Value: Boolean);
+    // ingang van het contact: draad op R1, of links op een gevoede + rail
+    function EffIn(out AVolt: Double): Boolean;
+  protected
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure Resize; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    // R1 krijgt een signaal met spanning AVolt
+    procedure SetContact(AOn: Boolean; AVolt: Double);
+    function ContactOut: Boolean;        // signaal op R2
+    function ContactVolt: Double;        // spanning op R2
+    // ligt punt P (paneelcoordinaten) bij de ingang R1 van het contact?
+    function IsContactInput(const P: TPoint): Boolean;
+    property ContactIn: Boolean read FContactIn write SetContactIn;
+  end;
+
 
   TjanSimBuzzer = class (TGraphicControl)
   private
@@ -1766,6 +1791,7 @@ type
     FLogicNot:Boolean;
     FDraad:Boolean;
     FRelais:Boolean;
+    FSchakelRelais:Boolean;   // knop schakelrelais in de balk
     FGrid:Boolean;
     FBuzzer:Boolean;
     FTeller:Boolean;
@@ -1839,6 +1865,8 @@ type
     bmRelais:Tbitmap;
     RRelais:TRect;
     DRelais:boolean;
+    RSchakel:TRect;
+    DSchakel:boolean;
 
     bmBuzzer:Tbitmap;
     RBuzzer:TRect;
@@ -1894,6 +1922,7 @@ type
     FHLogicNot:String;
     FHDraad:String;
     FHRelais:String;
+    FHSchakel:String;
     FHBuzzer:String;
     FHSensor:String;
     FHWarm:String;
@@ -1944,6 +1973,7 @@ type
     PROCEDURE SetLogicNot(const Value: Boolean);
     PROCEDURE SetDraad(const Value: Boolean);
     PROCEDURE SetRelais(const Value: Boolean);
+    procedure SetSchakelRelais(const Value: Boolean);
     PROCEDURE SetNewObject(const Value: Boolean);
     PROCEDURE SetTeller(const Value: Boolean);
     PROCEDURE SetMemory(const Value: Boolean);
@@ -2075,6 +2105,7 @@ type
     property KLogicNot:Boolean read FLogicNot write SetLogicNot;
     property KDraad:Boolean read FDraad write SetDraad;
     property KRelais:Boolean read Frelais write Setrelais;
+    property KSchakelRelais:Boolean read FSchakelRelais write SetSchakelRelais;
     property KGrid:Boolean read FGrid write SetGrid;
     property KBuzzer:Boolean read FBuzzer write SetBuzzer;
     property KSensor:Boolean read FSensor write SetSensor;
@@ -2104,6 +2135,7 @@ type
     property HLogicNot:String read FHLogicNot write SetHLogicNot;
     property HDraad:String read FHDraad write SetHDraad;
     property HRelais:String read FHrelais write SetHrelais;
+    property HSchakelRelais: string read FHSchakel write FHSchakel;
     property HBuzzer:String read FHBuzzer write SetHBuzzer;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
@@ -2271,6 +2303,8 @@ function IsRailOutput(C: TControl): Boolean;
 function PanelHasRails(P: TWinControl): Boolean;
 // de rail waarop C (invoer of uitvoer) ingeplugd is, anders nil
 function RailOf(C: TControl): TjanRail;
+// schakelrelais: de + rail links, waarop R1 (het contact) is ingeplugd
+function SchakelPlusRail(C: TControl): TjanRail;
 function RailPlugged(C: TControl): Boolean;
 // mag C werken? (geen rails op het paneel, geen rail-component, of
 // ingeplugd; invoer bovendien op een + rail met genoeg spanning)
@@ -4348,7 +4382,10 @@ begin
   if (Y < R.SpanTop) or (Y > R.SpanBottom) then Exit;
   OnPlus := ALeft = R.LineX + RailGap;
   OnMin := ALeft + C.Width + RailGap = R.LineX;
-  if IsRailInput(C) then
+  if C is TjanSchakelRelais then
+    // links een + rail (R1, contact), rechts een - rail (R-, spoel)
+    Result := (R.Plus and OnPlus) or ((not R.Plus) and OnMin)
+  else   if IsRailInput(C) then
     Result := R.Plus and OnPlus
   else if IsRailOutput(C) then
     Result := (not R.Plus) and OnMin
@@ -4367,6 +4404,23 @@ begin
   if P = nil then Exit;
   for i := 0 to P.ControlCount - 1 do
     if (P.Controls[i] is TjanRail) and P.Controls[i].Visible and
+       RailFits(TjanRail(P.Controls[i]), C, C.Left, C.Top) and
+       (not ((C is TjanSchakelRelais) and TjanRail(P.Controls[i]).Plus)) then
+      Exit(TjanRail(P.Controls[i]));
+end;
+
+// schakelrelais: de + rail links, waarop R1 (het contact) is ingeplugd
+function SchakelPlusRail(C: TControl): TjanRail;
+var
+  i: Integer;
+  P: TWinControl;
+begin
+  Result := nil;
+  P := C.Parent;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible and
+       TjanRail(P.Controls[i]).Plus and
        RailFits(TjanRail(P.Controls[i]), C, C.Left, C.Top) then
       Exit(TjanRail(P.Controls[i]));
 end;
@@ -4411,7 +4465,7 @@ var
   R: TjanRail;
   CanPlus, CanMin: Boolean;
 begin
-  CanPlus := IsRailInput(C) or (C is TjanMeter);
+  CanPlus := IsRailInput(C) or (C is TjanMeter) or (C is TjanSchakelRelais);
   CanMin := IsRailOutput(C) or (C is TjanMeter);
   if not (CanPlus or CanMin) then Exit;
   P := C.Parent;
@@ -4465,6 +4519,9 @@ procedure DrawRailOverlay(Grid: TjanGridS);
       if C is TjanSimLight then Y := C.Top + 6
       else if C is TjanSimBuzzer then Y := C.Top + 32;   // BuzzerLegY(21, 13)
     end;
+    // schakelrelais: R- zit altijd rechts op hoogte 38
+    if (not APlusSide) and (C is TjanSchakelRelais) then Y := C.Top + 38;
+    if APlusSide and (C is TjanSchakelRelais) then Y := C.Top + 12;   // R1
     if APlusSide then
       DotX := C.Left - 4                  // midden bolletje, links van het component
     else
@@ -4499,7 +4556,13 @@ begin
   begin
     C := Grid.Controls[i];
     if not C.Visible then Continue;
-    if IsRailInput(C) then
+    if C is TjanSchakelRelais then
+    begin
+      Plug(RailOf(C), C, False);                         // R- (spoel)
+      if SchakelPlusRail(C) <> nil then
+        Plug(SchakelPlusRail(C), C, True);               // R1 (contact)
+    end
+    else     if IsRailInput(C) then
       Plug(RailOf(C), C, True)
     else if IsRailOutput(C) then
       Plug(RailOf(C), C, False)
@@ -4948,6 +5011,11 @@ begin
     Add(58, 35); Add(82, 35); Add(107, 35); Add(132, 35); Add(157, 35); // adres
     Add(19, 123);                                                         // data
   end
+  else if C is TjanSchakelRelais then
+  begin
+    Add(2, 9);     // R1 (contact)
+    Add(37, 71);   // R+ (spoel)
+  end
   else if C is TjanSimRelais then Add(1, 28)
   else if C is TjanSimLight then Add(1, 3)
   else if C is TjanSimBuzzer then Add(1, 18)
@@ -5334,6 +5402,7 @@ var Pi,Po:TPoint;
     sMeter:TjanMeter;
     sLight:TjanSimLight;
     sDisplay:TjanDisplay;
+    sSchakel:TjanSchakelRelais;
     sRelais:TjanSimRelais;
     sBuzzer:TjanSimBuzzer;
     pl:TPoint;
@@ -5355,7 +5424,20 @@ var Pi,Po:TPoint;
     SrcVolt:=-1;
     for ii:=0 to wc.ControlCount-1 do
     begin
-      if (wc.controls[ii] is TjanSimButton) then
+      // schakelrelais: een draad die bij R2 begint, krijgt het contact als bron
+      if (wc.controls[ii] is TjanSchakelRelais) then
+      begin
+        R:=wc.Controls[ii].BoundsRect;
+        inflaterect(R,d,0);
+        if ptinrect(R,Pi) then
+        begin
+          sSchakel:=TjanSchakelRelais(wc.controls[ii]);
+          vi:=sSchakel.ContactOut;
+          SrcVolt:=sSchakel.ContactVolt;
+          exit;
+        end;
+      end
+      else if (wc.controls[ii] is TjanSimButton) then
       begin
         R:=wc.Controls[ii].BoundsRect;
         inflaterect(R,d,0);
@@ -5617,6 +5699,20 @@ var Pi,Po:TPoint;
           exit;
         end;
       end
+      else if(wc.controls[ii] is TjanSchakelRelais) then
+      begin
+        R:=wc.Controls[ii].BoundsRect;
+        inflaterect(R,d,0);
+        if ptinrect(R,Po) then
+        begin
+          sSchakel:=TjanSchakelRelais(wc.controls[ii]);
+          if sSchakel.IsContactInput(Po) then
+            sSchakel.SetContact(Vi, SrcVolt)                          // R1: contact
+          else if sSchakel.Lit <> (Vi and RailOK(sSchakel)) then
+            sSchakel.Lit:=Vi and RailOK(sSchakel);                   // R+: spoel
+          exit;
+        end;
+      end
       else if(wc.controls[ii] is TjanSimRelais) then
       begin
         R:=wc.Controls[ii].BoundsRect;
@@ -5810,6 +5906,7 @@ var Pi,Po:TPoint;
     sMeter:TjanMeter;
     sLight:TjanSimLight;
     sDisplay:TjanDisplay;
+    sSchakel:TjanSchakelRelais;
     sRelais:TjanSimRelais;
     sBuzzer:TjanSimBuzzer;
   // convert a corner point to a parent point
@@ -5861,6 +5958,23 @@ var Pi,Po:TPoint;
           sDisplay:=TjanDisplay(wc.controls[ii]);
           SDisplay.digit:='0';
           DisCon:=sDisplay;
+          exit;
+        end;
+      end
+      else if (wc.controls[ii] is TjanSchakelRelais) then
+      begin
+        R:=wc.Controls[ii].BoundsRect;
+        inflaterect(R,d,0);
+        if ptinrect(R,Po) then
+        begin
+          sSchakel:=TjanSchakelRelais(wc.controls[ii]);
+          if sSchakel.IsContactInput(Po) then
+            sSchakel.SetContact(False, 0)                             // R1 los
+          else
+          begin
+            sSchakel.Lit:=false;                                      // spoel los
+            DisCon:=sSchakel;
+          end;
           exit;
         end;
       end
@@ -15692,6 +15806,266 @@ begin
   end;
 end;
 
+{ TjanSchakelRelais }
+
+// Plaatsen (in het onderdeel, 90 x 80):
+//   R1  ingang contact   blokje (1,8)    contactlijn op y = 12
+//   R2  uitgang contact  blokje (80,8)
+//   R+  ingang spoel     blokje (36,70), pijl omhoog naar ledje en spoel
+//   R-  spoel naar de - rail, rechts op y = 38
+const
+  SR_W = 90; SR_H = 80;
+  SR_CY = 12;                 // hoogte van de contactlijn
+  SR_COIL: TRect = (Left: 33; Top: 28; Right: 48; Bottom: 49);
+  SR_RMIN_Y = 38;             // hoogte van R- (railbolletje)
+
+constructor TjanSchakelRelais.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := SR_W;
+  Height := SR_H;
+  FContactIn := False;
+  FContactVolt := 0;
+  Naam := 'Schakelrelais';
+  Info := 'Schakelrelais';
+end;
+
+procedure TjanSchakelRelais.Resize;
+begin
+  Width := SR_W;
+  Height := SR_H;
+end;
+
+procedure TjanSchakelRelais.SetContactIn(const Value: Boolean);
+begin
+  SetContact(Value, FContactVolt);
+end;
+
+procedure TjanSchakelRelais.SetContact(AOn: Boolean; AVolt: Double);
+begin
+  if not AOn then AVolt := 0;
+  if (AOn <> FContactIn) or (AVolt <> FContactVolt) then
+  begin
+    FContactIn := AOn;
+    FContactVolt := AVolt;
+    Invalidate;
+  end;
+end;
+
+function TjanSchakelRelais.EffIn(out AVolt: Double): Boolean;
+var R: TjanRail;
+begin
+  AVolt := 0;
+  Result := FContactIn;
+  if Result then
+  begin
+    AVolt := FContactVolt;
+    Exit;
+  end;
+  R := SchakelPlusRail(Self);
+  if (R <> nil) and R.Powered then
+  begin
+    Result := True;
+    AVolt := R.Volt;
+  end;
+end;
+
+function TjanSchakelRelais.ContactOut: Boolean;
+var V: Double;
+begin
+  Result := EffIn(V) and Lit;
+end;
+
+function TjanSchakelRelais.ContactVolt: Double;
+var V: Double;
+begin
+  if EffIn(V) and Lit then Result := V else Result := 0;
+end;
+
+function TjanSchakelRelais.IsContactInput(const P: TPoint): Boolean;
+begin
+  // bovenste strook = contact (R1); de rest = spoel (R+)
+  Result := (P.Y - Top) < 25;
+end;
+
+procedure TjanSchakelRelais.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  // draad maken vanaf de uitgang R2
+  if (Button = mbLeft) and (Screen.Cursor = crDraad) and
+     PtInRect(Rect(78, 6, SR_W, 19), Point(X, Y)) and (Parent <> nil) then
+  begin
+    Maakdraad(Top + SR_CY - 3, Left + 81, Parent);
+    doMove := False;
+    movecursor;
+    BringToFront;
+    Exit;
+  end;
+  inherited MouseDown(Button, Shift, X, Y);
+end;
+
+procedure TjanSchakelRelais.Paint;
+var
+  S: TjanSymbolen;
+  V: Double;
+  Closed, OutOn: Boolean;
+  cx, xm, ym, i: Integer;
+  ColIn, ColOut: TColor;
+  R: TRect;
+
+  procedure Pin(X, Y: Integer; Fill: TColor);
+  begin
+    Canvas.Pen.Color := clGray;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Brush.Color := Fill;
+    Canvas.Rectangle(X, Y, X + 9, Y + 9);
+  end;
+
+  procedure ArrowRight(X, Y: Integer; Col: TColor);
+  begin
+    Canvas.Pen.Color := Col;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Brush.Color := Col;
+    Canvas.Polygon([Point(X, Y - 3), Point(X + 5, Y), Point(X, Y + 3)]);
+  end;
+
+  procedure ArrowUp(X, Y: Integer; Col: TColor);
+  begin
+    Canvas.Pen.Color := Col;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Brush.Color := Col;
+    Canvas.Polygon([Point(X - 3, Y), Point(X, Y - 5), Point(X + 3, Y)]);
+  end;
+
+  procedure Lbl(X, Y: Integer; const T: string);
+  begin
+    Canvas.Brush.Style := bsClear;
+    Canvas.Font.Name := 'Arial';
+    Canvas.Font.Size := 7;
+    Canvas.Font.Style := [];
+    Canvas.Font.Color := clNavy;
+    Canvas.TextOut(X, Y, T);
+  end;
+
+begin
+  S := SymOf(Self);
+  Closed := Lit;
+  OutOn := ContactOut;
+  if EffIn(V) then ColIn := clRed else ColIn := clBlack;
+  if OutOn then ColOut := clRed else ColOut := clBlack;
+  cx := (SR_COIL.Left + SR_COIL.Right) div 2;
+  with Canvas do
+  begin
+    Lock;
+    try
+      Pen.Width := 1;
+      Pen.Style := psSolid;
+
+      // behuizing (alleen bij Afbeelding)
+      if S = Afbeelding then
+      begin
+        Brush.Style := bsSolid;
+        Brush.Color := $8CE6E6;
+        Pen.Color := clBlack;
+        Rectangle(22, 1, 62, 54);
+      end;
+
+      // ---- contact bovenaan ----
+      Pin(1, SR_CY - 4, clLime);                       // R1
+      Pen.Color := ColIn;
+      Line(10, SR_CY, 18, SR_CY);
+      ArrowRight(18, SR_CY, ColIn);
+      Pen.Color := ColIn;
+      Line(23, SR_CY, 27, SR_CY);
+      Pen.Color := clBlack;
+      Line(54, SR_CY, 54, SR_CY - 5);                  // vast contact
+      if Closed then
+      begin
+        Pen.Color := ColIn;
+        Line(27, SR_CY, 55, SR_CY);
+        Line(27, SR_CY - 1, 55, SR_CY - 1);
+        ym := SR_CY;
+      end
+      else
+      begin
+        Pen.Color := ColIn;
+        Line(27, SR_CY, 52, SR_CY - 9);
+        ym := SR_CY - 5;
+      end;
+      Pen.Color := ColOut;
+      Line(54, SR_CY, 72, SR_CY);
+      ArrowRight(72, SR_CY, ColOut);
+      if OutOn then Pin(80, SR_CY - 4, clRed) else Pin(80, SR_CY - 4, clLime);  // R2
+
+      // ---- mechanische koppeling: stippellijn van het mes naar de spoel ----
+      xm := cx;
+      for i := ym + 2 to SR_COIL.Top - 1 do
+        if ((i - ym) mod 3) <> 0 then Pixels[xm, i] := clBlack;
+
+      // ---- spoel ----
+      Pen.Color := clBlack;
+      Brush.Style := bsSolid;
+      if S = Afbeelding then
+      begin
+        if Closed then Brush.Color := $0040E040 else Brush.Color := $0000C0C0;
+        Rectangle(SR_COIL);
+        // wikkelingen
+        Pen.Color := clBlack;
+        for i := 0 to 3 do
+          Line(SR_COIL.Left, SR_COIL.Top + 3 + i * 5, SR_COIL.Right, SR_COIL.Top + 6 + i * 5);
+      end
+      else
+      begin
+        if Closed then Brush.Color := $80FF80 else Brush.Color := clWhite;
+        Rectangle(SR_COIL);
+      end;
+
+      // R- : spoel naar de - rail (rechts)
+      Pen.Color := clBlue;
+      Line(SR_COIL.Right, SR_RMIN_Y, SR_W, SR_RMIN_Y);
+
+      // ---- spoel naar ledje en R+ onderaan ----
+      Pen.Color := clBlack;
+      Line(cx, SR_COIL.Bottom, cx, 52);
+      R := Rect(cx - 6, 52, cx + 7, 64);               // ledje
+      Pen.Color := clGray;
+      if Closed then Brush.Color := clRed else Brush.Color := clGreen;
+      Ellipse(R);
+      Pen.Color := clBlack;
+      Line(cx, 64, cx, 70);
+      ArrowUp(cx, 70, clBlack);
+      Pin(cx - 4, 70, clLime);                         // R+
+
+      Lbl(1, SR_CY + 6, 'R1');
+      Lbl(76, SR_CY + 6, 'R2');
+      Lbl(cx - 20, 70, 'R+');
+      Lbl(70, SR_RMIN_Y + 2, 'R-');
+    finally
+      Unlock;
+    end;
+  end;
+
+  // selectiekaders zoals bij het gewone relais
+  if Select then
+  begin
+    R := ClientRect;
+    Canvas.Pen.Color := clBlack;
+    Canvas.Pen.Style := psDot;
+    Canvas.Brush.Style := bsClear;
+    Canvas.Rectangle(R);
+    Canvas.Pen.Style := psSolid;
+  end;
+  if Selected then
+  begin
+    R := ClientRect;
+    Canvas.Brush.Style := bsClear;
+    Canvas.Pen.Color := clRed;
+    Canvas.Pen.Style := psDot;
+    Canvas.Rectangle(R);
+    Canvas.Pen.Style := psSolid;
+    Canvas.Brush.Style := bsSolid;
+  end;
+end;
+
 
 {TjanSimBuzzer}
 
@@ -16388,14 +16762,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=5;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FBuzzer:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FDisplay:=true;
   FVoeding:=True;
-  FOutputAantal:=4;
+  FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DBuzzer:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -16754,6 +17128,12 @@ begin
           lijn := Format('TjanSimLight;%d;%d;%d;%d;', [Height, Left, Top, Width]);
         SFile.Add(lijn);
       end
+      else if c is TjanSchakelRelais then
+      begin
+        with TjanSchakelRelais(c) do
+          lijn := Format('TjanSchakelRelais;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+        SFile.Add(lijn);
+      end
       else if c is TjanSimRelais then
       begin
         with TjanSimRelais(c) do
@@ -16962,6 +17342,12 @@ begin
     begin
       with TjanSimLight(c) do
         lijn := Format('TjanSimLight;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+      TempFile.Add(lijn);
+    end
+    else if c is TjanSchakelRelais then
+    begin
+      with TjanSchakelRelais(c) do
+        lijn := Format('TjanSchakelRelais;%d;%d;%d;%d;', [Height, Left, Top, Width]);
       TempFile.Add(lijn);
     end
     else if c is TjanSimRelais then
@@ -17583,6 +17969,29 @@ begin
         Continue;
       end;
 
+      // ---- TjanSchakelRelais ----
+      if obj[1] = 'TjanSchakelRelais' then
+      begin
+        with TjanSchakelRelais.Create(self) do
+        begin
+          Parent := wc; Tag := wc.ControlCount;
+          Left   := StrToInt(Trim(obj[3]));
+          Top    := StrToInt(Trim(obj[4]));
+          FObjectID := wc.ControlCount; Lock := True;
+
+          if Language = stDutch   then BTaal := 'NL'  else
+          if Language = stEnglish then BTaal := 'ENG' else
+          if Language = stFrench  then BTaal := 'FR' else
+          if Language = stGerman  then BTaal := 'DU';
+          OnEnter := ChildMouseEnter;  // Delphi-mode: GEEN @
+          OnExit  := ChildMouseExit;
+          OnStatus := StatusFromChild;
+
+          AddCommonSimProps('TjanSchakelRelais');
+        end;
+        Continue;
+      end;
+
       // ---- TjanSimRelais ----
       if obj[1] = 'TjanSimRelais' then
       begin
@@ -18019,6 +18428,23 @@ templijst.LoadFromStream(welke);
              s:='TjanSimLight.width';AddFilter (s);s:='TjanSimLight.Height';AddFilter (s);
             end;
         end;
+     If obj[1] = 'TjanSchakelRelais' then
+        begin
+          with TjanSchakelRelais.create(self) do
+            begin
+             parent:=wc;tag:= wc.ControlCount;
+             left:=StrToInt(obj[3]);top:=StrToInt(obj[4]);
+             FObjectID:= wc.ControlCount;Lock:=true;
+             if Language = stDutch   then BTaal := 'NL'  else
+             if Language = stEnglish then BTaal := 'ENG' else
+             if Language = stFrench  then BTaal := 'FR' else
+             if Language = stGerman  then BTaal := 'DU';
+             OnStatus := StatusFromChild;
+             if (Inf=true) then showhint:=true else showhint:=false;
+             s:='TjanSchakelRelais.Left';AddFilter (s);s:='TjanSchakelRelais.Top';AddFilter (s);
+             s:='TjanSchakelRelais.width';AddFilter (s);s:='TjanSchakelRelais.Height';AddFilter (s);
+            end;
+        end;
      If obj[1] = 'TjanSimRelais' then
         begin
           with TjanSimRelais.create(self) do
@@ -18152,7 +18578,7 @@ begin
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
-  DMeter:=false;DRelais:=false;DWarm:=false;
+  DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
   else if ptinrect(RCon,p) then Dcon:=true
@@ -18162,6 +18588,7 @@ begin
   else if ptinrect(RButton,p) and (KDrukknop=true) then DButton:=true
   else if ptinrect(RLight,p) and (KLamp=true) then DLight:=true
   else if ptinrect(RRelais,p) and (KRelais=true) then DRelais:=true
+  else if ptinrect(RSchakel,p) and (KSchakelRelais=true) then DSchakel:=true
   else if ptinrect(RBuzzer,p) and (KBuzzer=true) then DBuzzer:=true
   else if ptinrect(RSensor,p) and (KSensor=true) then DSensor:=true
   else if ptinrect(RWarm,p) and (KWarm=true) then DWarm:=true
@@ -18197,6 +18624,7 @@ begin
   else if PtInRect(RButton, P) then NewHint := FHDrukknop
   else if PtInRect(RLight, P) then NewHint := FHLamp
   else if PtInRect(RRelais, P) then NewHint := FHRelais
+  else if PtInRect(RSchakel, P) then NewHint := FHSchakel
   else if PtInRect(RBuzzer, P) then NewHint := FHBuzzer
   else if PtInRect(RSensor, P) then NewHint := FHSensor
   else if PtInRect(RWarm, P) then NewHint := FHWarm
@@ -18238,6 +18666,7 @@ begin
   else if ptinrect(RSquare,p) then DoStatusText(FHKader , 0)
   else if ptinrect(RLight,p) then DoStatusText(FHLamp , 0)
   else if ptinrect(RRelais,p) then DoStatusText(FHRelais , 0)
+  else if ptinrect(RSchakel,p) then DoStatusText(FHSchakel , 0)
   else if ptinrect(RBuzzer,p) then DoStatusText(FHBuzzer , 0)
   else if ptinrect(RSensor,p) then DoStatusText(FHSensor , 0)
 
@@ -18610,7 +19039,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DBuzzer := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -18860,6 +19289,15 @@ begin
 
     AddF('TjanSimRelais.Left');  AddF('TjanSimRelais.Top');
     AddF('TjanSimRelais.Width'); AddF('TjanSimRelais.Height');
+  end
+  else if DSchakel then
+  with TjanSchakelRelais.Create(self) do
+  begin
+    Parent := wc; FNew := True; Tag := wc.ControlCount;
+    FObjectID := wc.ControlCount; Visible := False; Screen.Cursor := crRelais;
+
+    AddF('TjanSchakelRelais.Left');  AddF('TjanSchakelRelais.Top');
+    AddF('TjanSchakelRelais.Width'); AddF('TjanSchakelRelais.Height');
   end;
 
   ResetDownStates;
@@ -19304,6 +19742,7 @@ if FBoxTaal=stDutch then
   HMemory:='maak Geheugenblok';
   HPuls:='maak Impulsgenerator';
   HRelais:='maak Relais';
+  HSchakelRelais:='maak Schakelrelais (relais met contact)';
   HSchakelaar:='maak Schakelaar';
   HSensor:='maak Lichtsensor';
   HTeller:='maak Tellerblok';
@@ -19328,6 +19767,7 @@ if FBoxTaal=stEnglish then
   HMemory:='create Memory block';
   HPuls:='create Impuls generator';
   HRelais:='create Relay';
+  HSchakelRelais:='create Switching relay (relay with contact)';
   HSchakelaar:='create Switsh';
   HSensor:='create Light sensor';
   HTeller:='create Counter block';
@@ -19351,6 +19791,7 @@ if FBoxTaal=stFrench then
   HMemory:='faire Bloc mémoire';
   HPuls:='faire Générateur d"impulsions';
   HRelais:='faire Relais';
+  HSchakelRelais:='faire Relais avec contact';
   HSchakelaar:='faire un changement';
   HSensor:='faire Capteur de lumière';
   HTeller:='faire Bloc compteur';
@@ -19375,6 +19816,7 @@ if FBoxTaal=stFrench then
   HMemory:='Speicherblock erstellen';
   HPuls:='Impulsgenerator herstellen';
   HRelais:='Relais erstellen';
+  HSchakelRelais:='Schaltrelais (Relais mit Kontakt) erstellen';
   HSchakelaar:='Schalter machen';
   HSensor:='Lichtsensor herstellen';
   HTeller:='Gegenblock erstellen';
@@ -19468,6 +19910,32 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 4 then
+  begin
+    // schakelrelais: geen plaatje, altijd getekend (contact boven, spoel onder)
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    if FSymbolen <> Afbeelding then
+    begin
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := SymKnopKleur;
+      Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+    end;
+    SymPen(Canvas, clBlack);
+    Canvas.Line(X + 1, Y + 4, X + 6, Y + 4);          // contact: R1
+    Canvas.Line(X + 6, Y + 4, X + 15, Y);             // mes
+    Canvas.Line(X + 16, Y + 4, X + 16, Y + 1);        // vast contact
+    Canvas.Line(X + 16, Y + 4, X + 23, Y + 4);        // R2
+    Canvas.Pixels[X + 11, Y + 5] := clBlack;          // stippellijn
+    Canvas.Pixels[X + 11, Y + 7] := clBlack;
+    Canvas.Brush.Style := bsSolid;
+    if FSymbolen = Afbeelding then Canvas.Brush.Color := $0000C0C0
+    else Canvas.Brush.Color := clWhite;
+    Canvas.Rectangle(X + 7, Y + 9, X + 16, Y + 19);   // spoel
+    Canvas.Line(X + 11, Y + 19, X + 11, Y + 23);      // R+
+    Canvas.Line(X + 16, Y + 14, X + 22, Y + 14);      // R-
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if FSymbolen = Afbeelding then
   begin
     Canvas.Draw(X, Y, Bm);
@@ -19652,6 +20120,16 @@ begin
   begin
     FRelais := Value;
   if Value=true then FOutputAantal:= FOutputAantal+1 else FOutputAantal:= FOutputAantal-1;
+  end;
+  invalidate;
+end;
+
+procedure TjanSimLogicBox.SetSchakelRelais(const Value: Boolean);
+begin
+  if value<>FSchakelRelais then
+  begin
+    FSchakelRelais := Value;
+    if Value then FOutputAantal:= FOutputAantal+1 else FOutputAantal:= FOutputAantal-1;
   end;
   invalidate;
 end;
@@ -20069,6 +20547,20 @@ begin
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
         DrawOutputIcon(1, bmRelais, Lk+1, top+2);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
+      If FSchakelRelais=true then
+      Begin
+        RSchakel:= rect(LK,TOP,BK,HK);
+        Rb:=RSchakel;
+        if not DSchakel then
+          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
+        else
+          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
+        fillrect(Rb);
+        DrawOutputIcon(4, bmRelais, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -20514,6 +21006,17 @@ begin
         NextX(B + SPATIE);
       end;
 
+      if FSchakelRelais = True then
+      begin
+        RSchakel := Rect(LK, TOP, BK, HK);
+        Rb := RSchakel;
+        if not DSchakel then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(4, bmRelais, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
       if FBuzzer = True then
       begin
         RBuzzer := Rect(LK, TOP, BK, HK);
@@ -20889,6 +21392,17 @@ begin
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
         DrawOutputIcon(1, bmRelais, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
+      if FSchakelRelais = True then
+      begin
+        RSchakel := Rect(LK, TOP, BK, HK);
+        Rb := RSchakel;
+        if not DSchakel then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(4, bmRelais, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 
