@@ -1,0 +1,136 @@
+# Bouwt Logic voor Windows volledig uit de broncode: programma, zip,
+# installatieprogramma en help-PDF's. Nodig voor ondertekening via SignPath
+# (het ondertekende bestand moet aantoonbaar uit deze broncode komen).
+#
+# Start: bij een tag v* of met de hand (Actions > Windows build > Run workflow).
+# Resultaat: als artefact "Logic-windows" bij de run.
+
+name: Windows build
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+env:
+  LAZARUS_URL: https://downloads.sourceforge.net/project/lazarus/Lazarus%20Windows%2064%20bits/Lazarus%204.2/lazarus-4.2-fpc-3.2.2-win64.exe
+  LAZARUS_DIR: C:\lazarus
+  CEF_URL: https://cef-builds.spotifycdn.com/cef_binary_108.4.13%2Bga98cd4c%2Bchromium-108.0.5359.125_windows64_minimal.tar.bz2
+  OPM_URL: https://packages.lazarus-ide.org
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Logic ophalen
+        uses: actions/checkout@v4
+        with:
+          path: Logic
+
+      - name: PropertyGridAdvante ophalen
+        uses: actions/checkout@v4
+        with:
+          repository: willem750-win/PropertyGridAdvante
+          path: deps/PropertyGridAdvante
+
+      - name: ScreenCapture ophalen
+        uses: actions/checkout@v4
+        with:
+          repository: willem750-win/ScreenCapture
+          path: deps/ScreenCapture
+
+      - name: CEF4Delphi 108 ophalen
+        uses: actions/checkout@v4
+        with:
+          repository: salvadordf/CEF4Delphi
+          ref: '108.0.5359.125'
+          path: deps/CEF4Delphi
+
+      - name: Lazarus uit de cache
+        id: cache-laz
+        uses: actions/cache@v4
+        with:
+          path: C:\lazarus
+          key: lazarus-4.2-fpc-3.2.2-win64
+
+      - name: Lazarus 4.2 installeren
+        if: steps.cache-laz.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          curl.exe -L --fail --retry 3 -o lazarus-setup.exe $env:LAZARUS_URL
+          Start-Process .\lazarus-setup.exe -Wait -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-',"/DIR=$env:LAZARUS_DIR"
+          if (-not (Test-Path "$env:LAZARUS_DIR\lazbuild.exe")) { throw 'Lazarus niet geinstalleerd' }
+
+      - name: Pakketten uit de Online Package Manager
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory deps\opm -Force | Out-Null
+          foreach ($z in 'DCPcrypt','Rx','RichMemo','HtmlViewer') {
+            curl.exe -L --fail --retry 3 -o "deps\opm\$z.zip" "$env:OPM_URL/$z.zip"
+            Expand-Archive "deps\opm\$z.zip" -DestinationPath deps\opm -Force
+          }
+
+      - name: Pakketten aanmelden bij Lazarus
+        shell: pwsh
+        run: |
+          $lazbuild = "$env:LAZARUS_DIR\lazbuild.exe"
+          $lpks = @(
+            'deps\opm\DCPcrypt\dcpcrypt.lpk',
+            'deps\opm\Rx\rxtools.lpk',
+            'deps\opm\Rx\rx.lpk',
+            'deps\opm\Rx\rxnew.lpk',
+            'deps\opm\richmemo\richmemopackage.lpk',
+            'deps\opm\HtmlViewer\package\FrameViewer09.lpk',
+            'deps\CEF4Delphi\packages\cef4delphi_lazarus.lpk',
+            'deps\PropertyGridAdvante\propadvance.lpk',
+            'deps\ScreenCapture\screencaputre.lpk',
+            'Logic\jwlogic.lpk'
+          )
+          foreach ($p in $lpks) {
+            $full = (Resolve-Path $p).Path
+            & $lazbuild --add-package-link=$full
+            if ($LASTEXITCODE -ne 0) { throw "aanmelden mislukt: $p" }
+          }
+
+      - name: Logic bouwen
+        shell: pwsh
+        run: |
+          & "$env:LAZARUS_DIR\lazbuild.exe" --build-mode=Default Logic\projects\LogicCEF\logic.lpi
+          if ($LASTEXITCODE -ne 0) { throw "lazbuild faalde ($LASTEXITCODE)" }
+
+      - name: CEF-runtime 108 ophalen
+        shell: pwsh
+        run: |
+          curl.exe -L --fail --retry 3 -o cef.tar.bz2 $env:CEF_URL
+          New-Item -ItemType Directory cef -Force | Out-Null
+          tar -xjf cef.tar.bz2 -C cef
+          $root = (Get-ChildItem cef -Directory | Select-Object -First 1).FullName
+          $dst = 'Logic\projects\LogicCEF\Resultaat\ceflib'
+          New-Item -ItemType Directory $dst -Force | Out-Null
+          Copy-Item "$root\Release\*" $dst -Recurse -Force
+          Copy-Item "$root\Resources\*" $dst -Recurse -Force
+          Get-ChildItem $dst | Select-Object Name, Length | Format-Table -AutoSize
+
+      - name: Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe')) {
+            choco install innosetup -y --no-progress
+          }
+
+      - name: Zip, installatieprogramma en help-PDF's maken
+        shell: pwsh
+        run: |
+          $ver = (Select-String -Path Logic\projects\LogicCEF\uabout.pas -Pattern "AppVersion\s*=\s*'([^']+)'").Matches[0].Groups[1].Value
+          "Versie: $ver"
+          & Logic\projects\LogicCEF\tools\make-release.ps1 -Version $ver -NoBuild -OutDir "$env:GITHUB_WORKSPACE\out"
+
+      - name: Resultaat bewaren
+        uses: actions/upload-artifact@v4
+        with:
+          name: Logic-windows
+          path: out\*
+          if-no-files-found: error
