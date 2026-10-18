@@ -119,9 +119,12 @@ try {
   Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
   $archive = [IO.Compression.ZipFile]::Open($zip, 'Create')
   try {
-    foreach ($item in Get-ChildItem $stage -Recurse -File) {
-      $entry = $item.FullName.Substring($stage.Length + 1).Replace('\', '/')
-      [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $item.FullName, $entry, 'Optimal') | Out-Null
+    # .NET geeft de paden terug met exact $stage als begin, ook als TEMP een
+    # korte 8.3-naam bevat (zoals RUNNER~1 op GitHub); Get-ChildItem kan dan
+    # de lange naam teruggeven en klopt het afknippen niet meer.
+    foreach ($file in [IO.Directory]::EnumerateFiles($stage, '*', 'AllDirectories')) {
+      $entry = $file.Substring($stage.Length + 1).Replace('\', '/')
+      [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $file, $entry, 'Optimal') | Out-Null
     }
   } finally {
     $archive.Dispose()
