@@ -91,7 +91,7 @@ jobs:
           )
           foreach ($p in $lpks) {
             $full = (Resolve-Path $p).Path
-            & $lazbuild --add-package-link=$full
+            & $lazbuild --add-package-link $full
             if ($LASTEXITCODE -ne 0) { throw "aanmelden mislukt: $p" }
           }
 
