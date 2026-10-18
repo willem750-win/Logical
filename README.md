@@ -24,6 +24,7 @@ Voor Linux (Debian, Ubuntu, Mint ...): installeer `logical_<versie>_amd64.deb` m
 start `./logicCEF`.
 
 Logic staat ook op [SourceForge](https://sourceforge.net/projects/logic-simulator/).
+Ondertekening van de Windows-bestanden: zie de [Code signing policy](#code-signing-policy).
 Vind je Logic handig? Laat dan een
 [review achter op SourceForge](https://sourceforge.net/projects/logic-simulator/reviews/).
 
@@ -115,15 +116,23 @@ Contact: [willyjansen@telenet.be](mailto:willyjansen@telenet.be)
 
 ## Met dank aan
 
-De `jan*`-componenten (`janSimLogic`, `janLed`, `janToggle`, `janSimIndicator`,
-`janSimPID`, `janSimPIDLinker`) zijn gebaseerd op de freeware-componenten
-van **Jan Verhoeven**. Ze zijn omgezet naar Lazarus en sterk uitgebreid
-(teller, geheugen, display, panelen, meertaligheid, Linux ...).
+De simulatiecomponenten `janSimLogic`, `janSimIndicator`, `janSimPID` en
+`janSimPIDLinker` zijn afgeleid van de componenten van **Jan Verhoeven**, die hij
+in 2002 onder de Mozilla Public License 1.1 aan Project JEDI (JVCL) schonk
+(JvSimLogic, JvSimIndicator, JvSimPID, JvSimPIDLinker). Ze zijn omgezet naar
+Lazarus en sterk uitgebreid (teller, geheugen, display, voedingsrails,
+schemasymbolen, panelen, meertaligheid, Linux ...).
 
 ## Licentie
 
-MIT, zie [LICENSE](LICENSE). Uitzondering: `SZCodeBaseX.pas` (Sasa Zeman)
-valt onder de Mozilla Public License 1.1, zoals in dat bestand vermeld.
+MIT, zie [LICENSE](LICENSE). Uitzonderingen, zoals bovenaan in die bestanden
+vermeld: `janSimLogic.pas`, `janSimIndicator.pas`, `janSimPID.pas`,
+`janSimPIDLinker.pas` (afgeleid van JVCL, Jan Verhoeven) en `SZCodeBaseX.pas`
+(Sasa Zeman) vallen onder de Mozilla Public License 1.1.
+
+## Ondertekening
+
+Zie de [Code signing policy](#code-signing-policy) hieronder (in het Engels).
 
 ---
 
@@ -144,7 +153,31 @@ To build: install `jwlogic.lpk` in Lazarus 4.x, then open
 the matching CEF binaries copied into `projects/LogicCEF/Resultaat/ceflib/`).
 Generate the help with `projects/LogicCEF/helpsrc/make-help.ps1`.
 
-The `jan*` components are based on the freeware components by Jan Verhoeven,
-ported to Lazarus and extended by **Willy Jansen** (willyjansen@telenet.be), the author of this version.
+The simulation components `janSimLogic`, `janSimIndicator`, `janSimPID` and
+`janSimPIDLinker` are derived from the components by Jan Verhoeven, which he
+contributed to Project JEDI (JVCL) under the Mozilla Public License 1.1 in 2002.
+They were ported to Lazarus and extended by **Willy Jansen** (willyjansen@telenet.be),
+the author of this version.
 
-License: MIT, see [LICENSE](LICENSE), except `SZCodeBaseX.pas` (MPL 1.1).
+License: MIT, see [LICENSE](LICENSE), except `janSimLogic.pas`, `janSimIndicator.pas`,
+`janSimPID.pas`, `janSimPIDLinker.pas` and `SZCodeBaseX.pas`, which are under the
+Mozilla Public License 1.1 (see the header of each file).
+
+## Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io),
+certificate by [SignPath Foundation](https://signpath.org).
+
+- Committers and reviewers: [Willy Jansen (willem750-win)](https://github.com/willem750-win)
+- Approvers: [Willy Jansen (willem750-win)](https://github.com/willem750-win)
+
+The Windows release files (`Logic-<version>-setup.exe`, `Logic-<version>-win64.zip`)
+are built from this repository by the GitHub Actions workflow
+[`windows-build.yml`](.github/workflows/windows-build.yml).
+Every signing request is approved manually.
+
+### Privacy policy
+
+This program will not transfer any information to other networked systems
+unless specifically requested by the user or the person installing or operating it.
+The built-in help browser only opens the local help files; links to the internet are blocked.
