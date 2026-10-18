@@ -1,3 +1,6 @@
+{ janToggle - Copyright (c) 2026 Willy Jansen (willem750-win).
+  Part of Logic; released under the MIT License, see LICENSE. }
+
 unit janToggle;
 
 {$mode ObjFPC}{$H+}

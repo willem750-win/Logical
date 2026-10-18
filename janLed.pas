@@ -1,3 +1,6 @@
+{ janLed - Copyright (c) 2026 Willy Jansen (willem750-win).
+  Part of Logic; released under the MIT License, see LICENSE. }
+
 unit janLed;
 
 {$mode ObjFPC}{$H+}
