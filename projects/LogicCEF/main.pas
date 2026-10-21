@@ -1408,6 +1408,8 @@ begin
 end;
 
 procedure TmainForm.CreateUndoButtons;
+var
+  i, OldRight: Integer;
 
   function MakeButton(ALeft: Integer; ARedo: Boolean; AClick: TNotifyEvent): TSpeedButton;
   var
@@ -1438,8 +1440,15 @@ begin
   FUndoList := TStringList.Create;
   FRedoList := TStringList.Create;
   FUndoKill := -1;   // de eerste UndoCheck begint met lege lijsten
-  // rechts van de knop Instellingen in de werkbalk
+  // rechts van de knop Instellingen in de werkbalk; de knoppen die rechts
+  // van de bewerkbalk op een vaste plaats staan (Bewaren, Openen, ...)
+  // schuiven evenveel mee, anders liggen ze onder de nieuwe knoppen
+  OldRight := Panel2.Left + Panel2.Width;
   Panel2.Width := Panel2.Width + 56;
+  for i := 0 to Panel2.Parent.ControlCount - 1 do
+    with Panel2.Parent.Controls[i] do
+      if (Align = alNone) and (Left >= OldRight) then
+        Left := Left + 56;
   btUndo := MakeButton(BSettings2.Left + BSettings2.Width + 2, False, @btUndoClick);
   btRedo := MakeButton(btUndo.Left + btUndo.Width + 2, True, @btRedoClick);
   UpdateUndoHints;
