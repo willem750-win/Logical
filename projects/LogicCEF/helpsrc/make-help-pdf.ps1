@@ -31,7 +31,7 @@ $Edge = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
 if (-not $Edge) { throw 'Microsoft Edge niet gevonden: nodig om de PDF te maken.' }
 
 # zelfde volgorde als de navigatie in make-help.ps1; de lessen na 'leerpad'
-$Order = @('index', 'werkwijze', 'leerpad', 'LESSEN', 'knoppen', 'paneel', 'onderdelenbalk',
+$Order = @('index', 'installeren', 'werkwijze', 'leerpad', 'LESSEN', 'knoppen', 'paneel', 'onderdelenbalk',
            'invoer', 'verwerking', 'uitvoer', 'voeding', 'verbindingen', 'objecten', 'simulatie', 'instellingen')
 
 # teksten op het titelblad (HTML-entiteiten: dit script blijft ASCII)

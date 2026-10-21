@@ -1,0 +1,68 @@
+<!-- titel: Logic installieren -->
+  <h1>Logic installieren</h1>
+  <p class="lead">Logic ist kostenlos und läuft auf einem Windows-PC und unter Linux. Sie können es
+  installieren oder, ohne Installation, einfach entpacken. Administratorrechte brauchen Sie nicht.</p>
+
+  <h2>Herunterladen</h2>
+  <p>Die neueste Version finden Sie auf
+  <a href="https://sourceforge.net/projects/logic-simulator/files/">SourceForge</a> und auf
+  <a href="https://github.com/willem750-win/Logical/releases">GitHub</a>. Wählen Sie die Datei für Ihren Computer:</p>
+  <table>
+    <tr><th>Computer</th><th>Datei</th><th>Was ist das?</th></tr>
+    <tr><td>Windows</td><td><code>Logic-&lt;Version&gt;-setup.exe</code></td><td>Installationsprogramm (empfohlen).</td></tr>
+    <tr><td>Windows</td><td><code>Logic-&lt;Version&gt;-win64.zip</code></td><td>Ohne Installation: entpacken und starten.</td></tr>
+    <tr><td>Linux (Debian, Ubuntu, Mint ...)</td><td><code>logical_&lt;Version&gt;_amd64.deb</code></td><td>Installationspaket (empfohlen).</td></tr>
+    <tr><td>Anderes Linux</td><td><code>Logic-&lt;Version&gt;-linux-x86_64.tar.gz</code></td><td>Ohne Installation: entpacken und starten.</td></tr>
+  </table>
+  <p>Mac, Tablets und Smartphones werden nicht unterstützt.</p>
+
+  <h2>Windows: installieren</h2>
+  <ol class="steps">
+    <li>Doppelklicken Sie auf <code>Logic-&lt;Version&gt;-setup.exe</code> in Ihrem Ordner <i>Downloads</i>.</li>
+    <li>Erscheint ein blaues Fenster <i>Der Computer wurde durch Windows geschützt</i>? Klicken Sie auf
+      <b>Weitere Informationen</b> und dann auf <b>Trotzdem ausführen</b>. Windows zeigt diese Meldung bei
+      Programmen, die noch nicht oft heruntergeladen wurden.</li>
+    <li>Folgen Sie den Schritten des Installationsprogramms. Logic erscheint im Startmenü und, wenn Sie
+      die Option ankreuzen, auf dem Desktop.</li>
+  </ol>
+  <p>Eine neuere Version installieren Sie genauso, über die alte. Ihre eigenen Panels
+  und Einstellungen bleiben erhalten.</p>
+
+  <h2>Windows: ohne Installation (Zip)</h2>
+  <p>Praktisch, wenn Sie nichts installieren dürfen, zum Beispiel auf einem Schullaptop, oder wenn Sie
+  Logic auf einem USB-Stick mitnehmen möchten.</p>
+  <ol class="steps">
+    <li>Klicken Sie mit der rechten Maustaste auf <code>Logic-&lt;Version&gt;-win64.zip</code> und wählen Sie
+      <b>Alle extrahieren...</b>. Wählen Sie einen Ordner, in den Sie schreiben dürfen, zum Beispiel
+      <i>Dokumente\Logic</i> oder einen USB-Stick.</li>
+    <li>Öffnen Sie den entpackten Ordner und doppelklicken Sie auf <code>logicCEF.exe</code>. Bei der blauen
+      Meldung klicken Sie wieder auf <b>Weitere Informationen</b> und <b>Trotzdem ausführen</b>.</li>
+  </ol>
+  <div class="tip"><strong>Achtung:</strong> starten Sie Logic nicht direkt aus der Zip-Datei, ohne sie zu
+  entpacken. Dann kann Logic Ihre Panels nicht speichern und die Hilfe funktioniert nicht.</div>
+
+  <h2>Linux</h2>
+  <ol class="steps">
+    <li>Installieren Sie das Paket: Doppelklick auf <code>logical_&lt;Version&gt;_amd64.deb</code>
+      (Software installieren) oder in einem Terminal:<br>
+      <code>sudo apt install ./logical_&lt;Version&gt;_amd64.deb</code></li>
+    <li>Starten Sie Logic aus dem Menü, unter <i>Bildung</i>, oder mit <code>logical</code>.</li>
+  </ol>
+  <p>Ohne Installation: Entpacken Sie <code>Logic-&lt;Version&gt;-linux-x86_64.tar.gz</code> in Ihrem
+  Home-Ordner und starten Sie <code>./logicCEF</code> im entpackten Ordner.</p>
+  <p>Unter Linux öffnet sich die Hilfe in Ihrem normalen Browser.</p>
+
+  <h2>Wo sind meine Panels?</h2>
+  <p>Ein Panel, das Sie speichern, landet standardmäßig im Ordner <code>panels</code> von Logic:</p>
+  <table>
+    <tr><th>Installiert mit</th><th>Ordner</th></tr>
+    <tr><td>Windows-Installationsprogramm</td><td><code>%LOCALAPPDATA%\Programs\Logic\panels</code></td></tr>
+    <tr><td>Zip</td><td>der Ordner <code>panels</code> in dem Ordner, in den Sie Logic entpackt haben</td></tr>
+    <tr><td>Linux-Paket</td><td><code>~/.local/share/logical/panels</code></td></tr>
+  </table>
+  <p>Müssen Sie ein Panel abgeben? Speichern Sie es mit <b>Speichern</b> an einem Ort, den Sie leicht
+  wiederfinden, zum Beispiel <i>Dokumente</i>, und schicken Sie diese <code>.lpl</code>-Datei.</p>
+
+  <h2>Und dann?</h2>
+  <p>Beginnen Sie mit <a href="werkwijze.html">Erste Schritte</a> oder gleich mit der ersten Lektion des
+  <a href="leerpad.html">Lernpfads</a>.</p>

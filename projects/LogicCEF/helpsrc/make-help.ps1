@@ -24,32 +24,32 @@ $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
 
 # Volgorde en groepen van de navigatie. 'group:' = tussenkop.
 $Pages = @(
-  'index', 'werkwijze', 'leerpad',
+  'index', 'installeren', 'werkwijze', 'leerpad',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
   'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding',
   'group:werken', 'verbindingen', 'objecten', 'simulatie', 'instellingen'
 )
 
 $Nav = @{
-  nl = @{ index = 'Start'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
+  nl = @{ index = 'Start'; installeren = 'Installeren'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
           voeding = 'Voeding &amp; voltmeter';
           verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
-  en = @{ index = 'Start'; werkwijze = 'Getting started'; leerpad = 'Learning path'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
+  en = @{ index = 'Start'; installeren = 'Installing'; werkwijze = 'Getting started'; leerpad = 'Learning path'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
           voeding = 'Power &amp; voltmeter';
           verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
-  fr = @{ index = 'Accueil'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
+  fr = @{ index = 'Accueil'; installeren = 'Installation'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
           voeding = 'Alimentation &amp; voltmètre';
           verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
-  de = @{ index = 'Start'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
+  de = @{ index = 'Start'; installeren = 'Installation'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
           voeding = 'Versorgung &amp; Voltmeter';
           verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation';

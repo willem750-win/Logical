@@ -70,9 +70,12 @@ const
   MINIBROWSER_MEDIAACCESSRQST = WM_APP + $10F;
   MINIBROWSER_BLOCKED         = WM_APP + $110;   // internetadres tegengehouden
   MINIBROWSER_OPENPANEL       = WM_APP + $111;   // link naar een .lpl-paneel
+  MINIBROWSER_OPENEXTERNAL    = WM_APP + $112;   // internetlink: in de gewone browser openen
 
   // Alleen lokale pagina's (de help en de html-pagina's van Logic): geen
   // internet, zodat leerlingen via de help niet kunnen gaan surfen.
+  // Een internetlink die je zelf aanklikt, opent wel in de gewone browser
+  // van het systeem (zoals de link in het Info-venster).
   MINIBROWSER_LOCALONLY = True;
 
 
@@ -284,6 +287,7 @@ type
       out Result: Boolean);
     procedure BlockedMsg(var aMessage: TMessage); message MINIBROWSER_BLOCKED;
     procedure OpenPanelMsg(var aMessage: TMessage); message MINIBROWSER_OPENPANEL;
+    procedure OpenExternalMsg(var aMessage: TMessage); message MINIBROWSER_OPENEXTERNAL;
 
   protected
     FResponse           : TStringList;
@@ -307,6 +311,7 @@ type
     FStartURL: string;
     FPendingURL : string;
     FPanelToOpen : string;   // .lpl uit een link in de help (zie OpenPanelMsg)
+    FExternalURL : string;   // internetlink uit de help (zie OpenExternalMsg)
 
     procedure AddURL(const aURL : string);
 
@@ -364,7 +369,7 @@ implementation
 
 uses
   uPreferences, uCefStringMultimap, uCEFMiscFunctions, uSimpleTextViewer,
-  uCefClient, uCEFDictionaryValue;
+  uCefClient, uCEFDictionaryValue, LCLIntf;
 
 // Destruction steps
 // =================
@@ -524,6 +529,15 @@ begin
             (Pos('chrome-error:', U) = 1);
 end;
 
+// Een internetadres (http of https)?
+function IsWebURL(const aURL: ustring): Boolean;
+var
+  U: string;
+begin
+  U := LowerCase(Trim(string(aURL)));
+  Result := (Pos('http://', U) = 1) or (Pos('https://', U) = 1);
+end;
+
 procedure TMiniBrowserFrm.GoBtnClick(Sender: TObject);
 begin
   if not IsAllowedURL(URLCbx.Text) then
@@ -553,6 +567,15 @@ begin
       Result := True;
       Exit;
     end;
+
+    // Zelf aangeklikte internetlink: in de gewone browser openen
+    if MINIBROWSER_LOCALONLY and user_gesture and IsWebURL(request.Url) then
+    begin
+      FExternalURL := U;
+      PostMessage(Handle, MINIBROWSER_OPENEXTERNAL, 0, 0);
+      Result := True;
+      Exit;
+    end;
   end;
 
   // Result = True: navigatie annuleren
@@ -571,7 +594,12 @@ procedure TMiniBrowserFrm.GuardBeforePopup(Sender: TObject; const browser: ICefB
 begin
   // Result = True: geen nieuw venster openen
   Result := not IsAllowedURL(targetUrl);
-  if Result then
+  if Result and userGesture and IsWebURL(targetUrl) then
+  begin
+    FExternalURL := string(targetUrl);
+    PostMessage(Handle, MINIBROWSER_OPENEXTERNAL, 0, 0);
+  end
+  else if Result then
     PostMessage(Handle, MINIBROWSER_BLOCKED, 0, 0);
 end;
 
@@ -581,13 +609,25 @@ procedure TMiniBrowserFrm.GuardOpenUrlFromTab(Sender: TObject; const browser: IC
   out Result: Boolean);
 begin
   Result := not IsAllowedURL(targetUrl);
-  if Result then
+  if Result and userGesture and IsWebURL(targetUrl) then
+  begin
+    FExternalURL := string(targetUrl);
+    PostMessage(Handle, MINIBROWSER_OPENEXTERNAL, 0, 0);
+  end
+  else if Result then
     PostMessage(Handle, MINIBROWSER_BLOCKED, 0, 0);
 end;
 
 procedure TMiniBrowserFrm.BlockedMsg(var aMessage: TMessage);
 begin
   ShowStatusText('Internet is uitgeschakeld in de help / Internet is disabled in the help');
+end;
+
+procedure TMiniBrowserFrm.OpenExternalMsg(var aMessage: TMessage);
+begin
+  if FExternalURL <> '' then
+    OpenURL(FExternalURL);
+  FExternalURL := '';
 end;
 
 procedure TMiniBrowserFrm.OpenPanelMsg(var aMessage: TMessage);
