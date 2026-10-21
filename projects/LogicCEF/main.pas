@@ -154,6 +154,23 @@ type
      FCurrentFile: string;      // '' = ingebouwd of nog niet bewaard paneel
      FDirtyTimer: TTimer;
      FcbSymbolen: TComboBox;      // keuze Afbeelding / IEC / ANSI in TitelBar2
+     // Ongedaan maken / opnieuw: momentopnamen van het paneel (tekst zoals
+     // in een .lpl-bestand). FUndoCur is de huidige toestand; FUndoKill
+     // onthoudt Box.KillCount, zodat laden of een nieuw paneel de lijsten leegt.
+     FUndoList, FRedoList: TStringList;
+     FUndoCur, FUndoCurSorted: string;
+     FUndoKill: Integer;
+     btUndo, btRedo: TSpeedButton;
+     procedure CreateUndoButtons;
+     procedure UpdateUndoHints;
+     procedure UpdateUndoButtons;
+     procedure UndoReset;
+     procedure UndoCheck;
+     procedure UndoRestore(const AText: string);
+     procedure DoUndo;
+     procedure DoRedo;
+     procedure btUndoClick(Sender: TObject);
+     procedure btRedoClick(Sender: TObject);
      function BuiltinPanelName(AKind: Integer): string;
      procedure ShowBuiltinPanelTitle(AKind: Integer);
      procedure SetPanelTitle(const ATitle: string);
@@ -1276,6 +1293,7 @@ end;
   AppHelpManager.BTaal := LangToBTaal(Grid.Language);
   if Assigned(FGroup) then
     FGroup.BTaal := LangToBTaal(Grid.Language);
+  UpdateUndoHints;
 
   // menu met de ingebouwde panelen, en de titel van het open ingebouwde paneel
   MBeslissen.Caption            := BuiltinPanelName(1);
@@ -1337,12 +1355,232 @@ begin
   Result := Box.PanelSignature(Grid) <> FCleanSignature;
 end;
 
+{ ---------------------------------------------------------------------------
+  Ongedaan maken / opnieuw
+  Na elke afgeronde wijziging (muis los, geen object meer aan de muis)
+  bewaart UndoCheck een momentopname van het paneel. Ongedaan maken laadt de
+  vorige momentopname, opnieuw de volgende. Alleen in de ontwerpmodus.
+  --------------------------------------------------------------------------- }
+const
+  MaxUndo = 50;
+
+// Volgorde van de regels doet er niet toe: bij de simulatie verandert
+// BringToFront de volgorde van de objecten zonder dat er iets gewijzigd is.
+function SortedPanelText(const S: string): string;
+var
+  L: TStringList;
+begin
+  L := TStringList.Create;
+  try
+    L.Text := S;
+    L.Sort;
+    Result := L.Text;
+  finally
+    L.Free;
+  end;
+end;
+
+// Pijl in een halve cirkel; ARedo spiegelt hem (pijl naar rechts).
+function MakeUndoGlyph(ARedo: Boolean): TBitmap;
+
+  function X(AValue: Integer): Integer;
+  begin
+    if ARedo then Result := 15 - AValue else Result := AValue;
+  end;
+
+begin
+  Result := TBitmap.Create;
+  Result.SetSize(16, 16);
+  Result.Canvas.Brush.Color := clFuchsia;
+  Result.Canvas.FillRect(0, 0, 16, 16);
+  Result.Canvas.Pen.Color := clNavy;
+  Result.Canvas.Pen.Width := 2;
+  // boog van onder via rechts en boven naar links (gespiegeld voor opnieuw)
+  if ARedo then
+    Result.Canvas.Arc(X(14), 3, X(3), 14, X(3), 8, X(8), 14)
+  else
+    Result.Canvas.Arc(3, 3, 14, 14, 8, 14, 3, 8);
+  Result.Canvas.Pen.Width := 1;
+  Result.Canvas.Brush.Color := clNavy;
+  Result.Canvas.Polygon([Point(X(0), 7), Point(X(6), 7), Point(X(3), 11)]);
+  Result.TransparentColor := clFuchsia;
+  Result.Transparent := True;
+end;
+
+procedure TmainForm.CreateUndoButtons;
+
+  function MakeButton(ALeft: Integer; ARedo: Boolean; AClick: TNotifyEvent): TSpeedButton;
+  var
+    G: TBitmap;
+  begin
+    Result := TSpeedButton.Create(Self);
+    Result.Parent := Panel2;
+    Result.SetBounds(ALeft, 2, 26, 22);
+    Result.Flat := True;
+    Result.ShowHint := True;
+    Result.ParentShowHint := False;
+    G := MakeUndoGlyph(ARedo);
+    try
+      Result.Glyph := G;
+    finally
+      G.Free;
+    end;
+    Result.OnClick := AClick;
+    // F1 boven de knop: help bij de knop (zie TAppHelpManager.HelpPageForKeyword)
+    Result.OnMouseEnter := @btSimulateMouseEnter;
+    if ARedo then
+      Result.HelpKeyword := 'opnieuw'
+    else
+      Result.HelpKeyword := 'ongedaan';
+  end;
+
+begin
+  FUndoList := TStringList.Create;
+  FRedoList := TStringList.Create;
+  FUndoKill := -1;   // de eerste UndoCheck begint met lege lijsten
+  // rechts van de knop Instellingen in de werkbalk
+  Panel2.Width := Panel2.Width + 56;
+  btUndo := MakeButton(BSettings2.Left + BSettings2.Width + 2, False, @btUndoClick);
+  btRedo := MakeButton(btUndo.Left + btUndo.Width + 2, True, @btRedoClick);
+  UpdateUndoHints;
+  UpdateUndoButtons;
+end;
+
+procedure TmainForm.UpdateUndoHints;
+begin
+  if not Assigned(btUndo) then Exit;
+  case Grid.Language of
+    chatgridpcodeSmall.lgEnglish:
+      begin
+        btUndo.Hint := 'Undo (Ctrl+Z)';
+        btRedo.Hint := 'Redo (Ctrl+Y)';
+      end;
+    chatgridpcodeSmall.lgFrench:
+      begin
+        btUndo.Hint := 'Annuler (Ctrl+Z)';
+        btRedo.Hint := 'Rétablir (Ctrl+Y)';
+      end;
+    chatgridpcodeSmall.lgGerman:
+      begin
+        btUndo.Hint := 'Rückgängig (Strg+Z)';
+        btRedo.Hint := 'Wiederholen (Strg+Y)';
+      end;
+  else
+    btUndo.Hint := 'Ongedaan maken (Ctrl+Z)';
+    btRedo.Hint := 'Opnieuw (Ctrl+Y)';
+  end;
+end;
+
+procedure TmainForm.UpdateUndoButtons;
+begin
+  if not Assigned(btUndo) then Exit;
+  btUndo.Enabled := (not FRunMode) and (FUndoList.Count > 0);
+  btRedo.Enabled := (not FRunMode) and (FRedoList.Count > 0);
+end;
+
+procedure TmainForm.UndoReset;
+begin
+  FUndoList.Clear;
+  FRedoList.Clear;
+  FUndoCur := Box.PanelText(Grid);
+  FUndoCurSorted := SortedPanelText(FUndoCur);
+  FUndoKill := Box.KillCount;
+  UpdateUndoButtons;
+end;
+
+procedure TmainForm.UndoCheck;
+var
+  S, Sorted: string;
+begin
+  if not Assigned(FUndoList) or not Assigned(Box) or not Assigned(Grid) then Exit;
+  // tijdens de simulatie, met een object aan de muis of met de muisknop
+  // ingedrukt (slepen) is een wijziging nog niet af
+  if FRunMode or Box.NewObject or (GetKeyState(VK_LBUTTON) < 0) then
+  begin
+    UpdateUndoButtons;
+    Exit;
+  end;
+  // ander paneel geladen of nieuw paneel: opnieuw beginnen
+  if Box.KillCount <> FUndoKill then
+  begin
+    UndoReset;
+    Exit;
+  end;
+  S := Box.PanelText(Grid);
+  if S = FUndoCur then
+  begin
+    UpdateUndoButtons;
+    Exit;
+  end;
+  Sorted := SortedPanelText(S);
+  if Sorted <> FUndoCurSorted then
+  begin
+    FUndoList.Add(FUndoCur);
+    while FUndoList.Count > MaxUndo do
+      FUndoList.Delete(0);
+    FRedoList.Clear;
+    FUndoCurSorted := Sorted;
+  end;
+  FUndoCur := S;
+  UpdateUndoButtons;
+end;
+
+procedure TmainForm.UndoRestore(const AText: string);
+begin
+  FGroup.Clear;
+  Box.NewObject := False;
+  Box.LoadPanelText(AText, Grid);
+  btStatusBalk.Down := Grid.ShowStatusBar;
+  FUndoCur := Box.PanelText(Grid);
+  FUndoCurSorted := SortedPanelText(FUndoCur);
+  FUndoKill := Box.KillCount;
+  Grid.Invalidate;
+  UpdateUndoButtons;
+  DirtyTimerTick(nil);   // sterretje in de titel bijwerken
+end;
+
+procedure TmainForm.DoUndo;
+var
+  S: string;
+begin
+  if FRunMode or not Assigned(FUndoList) then Exit;
+  UndoCheck;   // een wijziging van net nog meenemen
+  if FUndoList.Count = 0 then Exit;
+  S := FUndoList[FUndoList.Count - 1];
+  FUndoList.Delete(FUndoList.Count - 1);
+  FRedoList.Add(FUndoCur);
+  UndoRestore(S);
+end;
+
+procedure TmainForm.DoRedo;
+var
+  S: string;
+begin
+  if FRunMode or not Assigned(FRedoList) then Exit;
+  if FRedoList.Count = 0 then Exit;
+  S := FRedoList[FRedoList.Count - 1];
+  FRedoList.Delete(FRedoList.Count - 1);
+  FUndoList.Add(FUndoCur);
+  UndoRestore(S);
+end;
+
+procedure TmainForm.btUndoClick(Sender: TObject);
+begin
+  DoUndo;
+end;
+
+procedure TmainForm.btRedoClick(Sender: TObject);
+begin
+  DoRedo;
+end;
+
 // Zet " *" achter de titel zolang het paneel gewijzigd is.
 procedure TmainForm.DirtyTimerTick(Sender: TObject);
 var
   Wanted: string;
 begin
   if not Assigned(Grid) or not Assigned(Box) then Exit;
+  UndoCheck;   // momentopname voor ongedaan maken (zie UndoCheck)
   // In het instellingenvenster kan de titel bewerkt (en bewaard) worden:
   // dan geen sterretje tonen.
   if fr_Settingsbestaat then
@@ -1667,6 +1905,7 @@ var
 begin
  huidigeGuideLines:= Grid.GuideLinesAll;
   FRunMode := btSimulate.Down;
+  UpdateUndoButtons;
   if FRunMode then
     FGroup.Clear;   // geen groepsselectie tijdens de simulatie
 
@@ -1826,6 +2065,9 @@ begin
   FGroup := TjanGroupSelect.Create(Self);
   FGroup.Parent := Grid;
 
+  // knoppen ongedaan maken / opnieuw in de werkbalk
+  CreateUndoButtons;
+
   Application.OnShowHint := @AppShowHint;
   Application.HintColor := clYellow;
   // Zwarte hinttekst. Zolang HintFont gelijk is aan het systeemfont tekent
@@ -1947,6 +2189,19 @@ begin
   begin
     FGroup.SelectAll;
     FocusPanel;   // pijltjestoetsen daarna naar de selectie
+    Key := 0;
+    Exit;
+  end;
+
+  // Ctrl+Z: ongedaan maken; Ctrl+Y of Ctrl+Shift+Z: opnieuw (niet in een
+  // invoerveld, dat zijn eigen ongedaan maken heeft)
+  if (ssCtrl in Shift) and ((Key = VK_Z) or (Key = VK_Y)) and (not FRunMode) and
+     (not fr_Settingsbestaat) and not (ActiveControl is TCustomEdit) then
+  begin
+    if (Key = VK_Y) or (ssShift in Shift) then
+      DoRedo
+    else
+      DoUndo;
     Key := 0;
     Exit;
   end;

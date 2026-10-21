@@ -1768,6 +1768,8 @@ type
     Fx:Integer;
     Fy:Integer;
     TempFile:TStringlist;
+    // telt hoe vaak het paneel leeggemaakt werd (laden, nieuw paneel)
+    FKillCount: Integer;
     templijst:TStringlist;
     FFilterLijst: TStringList;
     FFirst:Boolean;
@@ -2045,6 +2047,13 @@ type
 
     procedure InternalLoadFromList(AList: TStrings; Paneel: TjanGridS);
     PROCEDURE SavePanel(waar:String; paneel:TjanGridS; codec:Boolean);
+    // De inhoud van het paneel als regels (zelfde als een .lpl-bestand), en
+    // zo'n tekst weer laden. Gebruikt voor ongedaan maken / opnieuw.
+    procedure SavePanelToList(SFile: TStrings; Paneel: TjanGridS);
+    function PanelText(Paneel: TjanGridS): string;
+    procedure LoadPanelText(const AText: string; Paneel: TjanGridS);
+    // telt hoe vaak het paneel leeggemaakt werd (laden, nieuw paneel)
+    property KillCount: Integer read FKillCount;
     // Samenvatting van de inhoud van het paneel (objecten, draden en de
     // paneelinstellingen die SavePanel bewaart), los van de volgorde.
     // Verschilt ze van een eerdere samenvatting, dan is het paneel gewijzigd.
@@ -17007,16 +17016,58 @@ END; // AddFilter
 
 procedure TjanSimLogicBox.SavePanel(waar: string; Paneel: TjanGridS; codec: Boolean);
 var
+  SFile: TStringList;
+begin
+  SFile := TStringList.Create;
+  try
+    SavePanelToList(SFile, Paneel);
+
+    if codec then
+      Decode(SFile); // of Encode, afhankelijk van jouw implementatie
+
+    SFile.SaveToFile(waar);
+  finally
+    SFile.Free;
+  end;
+end;
+
+function TjanSimLogicBox.PanelText(Paneel: TjanGridS): string;
+var
+  L: TStringList;
+begin
+  L := TStringList.Create;
+  try
+    SavePanelToList(L, Paneel);
+    Result := L.Text;
+  finally
+    L.Free;
+  end;
+end;
+
+procedure TjanSimLogicBox.LoadPanelText(const AText: string; Paneel: TjanGridS);
+var
+  L: TStringList;
+begin
+  L := TStringList.Create;
+  try
+    L.Text := AText;
+    InternalLoadFromList(L, Paneel);
+  finally
+    L.Free;
+  end;
+end;
+
+procedure TjanSimLogicBox.SavePanelToList(SFile: TStrings; Paneel: TjanGridS);
+var
   wc: TWinControl;
   i: Integer;
   c: TControl;
-  SFile: TStringList;
   lijn, modeStr, posStr, shapeStr, edgeStr, ltypeStr: string;
 begin
   wc := FParent;
+  SFile.Clear;
 
-  SFile := TStringList.Create;
-  try
+  begin
     // Alle controls serialiseren
     for i := 0 to wc.ControlCount - 1 do
     begin
@@ -17168,13 +17219,6 @@ begin
       SFile.Add('Grid;False;');
     if not Paneel.ShowStatusBar then
       SFile.Add('Statusbalk;False;');
-
-    if codec then
-      Decode(SFile); // of Encode, afhankelijk van jouw implementatie
-
-    SFile.SaveToFile(waar);
-  finally
-    SFile.Free;
   end;
 end;
 
@@ -18877,6 +18921,7 @@ var
 wc:TWinControl;
 i:integer;
 begin
+   Inc(FKillCount);   // zie KillCount (ongedaan maken begint opnieuw)
    wc:=Fparent;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanRail) then

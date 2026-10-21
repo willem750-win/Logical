@@ -121,7 +121,8 @@ begin
       Result := 'paneel';
     'openen':
       begin Result := 'paneel'; AAnchor := 'opslaan'; end;
-    'schermkopie', 'info', 'afsluiten', 'browser', 'draden', 'sbutton1':
+    'schermkopie', 'info', 'afsluiten', 'browser', 'draden', 'sbutton1',
+    'ongedaan', 'opnieuw':
       Result := 'knoppen';
     'logicbox':
       Result := 'onderdelenbalk';
