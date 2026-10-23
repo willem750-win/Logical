@@ -33,6 +33,8 @@
     <li><a href="uitvoer.html">Outputs</a> (lamp, relay, buzzer and display) sit on the <b>left</b> of a
       <b>&minus; rail</b>.</li>
   </ul>
+  <p>Instead of plugging a component in, you can also connect it to a rail with a wire: see
+  <a href="#draad">Connecting with a power wire</a>.</p>
   <p>A plugged-in component gets a thin plug with a dot in the colour of the rail. A component that is not
   plugged in gets a <b>grey dot</b> and does not work: an input gives no signal, an output stays off and a
   display stays dark.</p>
@@ -47,6 +49,25 @@
     <li>The <b>middle</b> of the component must be next to the drawn part of the rail, not above or below it.
       Make the rail longer if needed.</li>
     <li>The arrow keys move one pixel at a time; that way you can also pull a component off again.</li>
+  </ul>
+
+  <h2 id="draad">Connecting with a power wire</h2>
+  <p>Instead of plugging a component in, you can also connect it to a rail with a wire, as in a real circuit.
+  The component can then be anywhere on the panel.</p>
+  <ol class="steps">
+    <li>Click <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>.</li>
+    <li>Click the line of the rail, at the height where the wire should start. A wire appears.</li>
+    <li>Drag the end of the wire to the <b>grey dot</b> of the component: on the left for inputs (from a + rail),
+      on the right for outputs and for the &minus; side of the voltmeter (from a &minus; rail). From a &minus; rail the wire appears on the left of the rail. Within 12 pixels the end snaps onto the dot.</li>
+  </ol>
+  <p>The dot takes the colour of the rail and the component works. A wire from a + rail turns red during the
+  simulation when there is enough voltage on it; a wire to a &minus; rail is blue.</p>
+  <ul>
+    <li>If you drag the rail, the start of the wire stays on the rail. If you drag the component, the end of the
+      wire moves along.</li>
+    <li>A wire from a + rail to an input (of a gate, the voltmeter or R1 of the switching relay) works like a
+      normal wire carrying the voltage of the rail.</li>
+    <li>You delete a power wire like any other <a href="verbindingen.html#verwijderen">wire</a>.</li>
   </ul>
 
   <h2 id="bewerken">Moving and resizing rails</h2>
@@ -77,13 +98,14 @@
   <ul>
     <li><b>+</b> (left): connect a wire, or plug the meter in on the right of a + rail. It then shows the
       voltage of that rail.</li>
-    <li><b>&minus;</b> (right): may stay open, or plug the meter in on the left of a &minus; rail. The reading
+    <li><b>&minus;</b> (right): may stay open, or plug the meter in on the left of a &minus; rail, or run a wire from a &minus; rail to the dot on the right (parallel connection). The reading
       stays the same; it only makes the circuit clearer.</li>
   </ul>
   <p>A wire carries the voltage of its source:</p>
   <table>
     <tr><th>Source</th><th>Voltage on the wire</th></tr>
     <tr><td>input on a + rail, on</td><td>the voltage of that rail</td></tr>
+    <tr><td>wire starting on a + rail</td><td>the voltage of that rail</td></tr>
     <tr><td>input without rails on the panel, on</td><td>5&nbsp;V</td></tr>
     <tr><td>gate, counter or memory, output on</td><td>5&nbsp;V</td></tr>
     <tr><td>anything that is off</td><td>0&nbsp;V</td></tr>

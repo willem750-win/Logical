@@ -33,6 +33,8 @@
     <li><a href="uitvoer.html">Uitvoer</a> (lamp, relais, zoemer en display) zit <b>links</b> van een
       <b>&minus; rail</b>.</li>
   </ul>
+  <p>In plaats van in te pluggen kan je een onderdeel ook met een draad op een rail aansluiten: zie
+  <a href="#draad">Aansluiten met een voedingsdraad</a>.</p>
   <p>Een ingeplugd onderdeel krijgt een dunne stekker met een bolletje in de kleur van de rail. Een onderdeel
   dat niet ingeplugd is, krijgt een <b>grijs bolletje</b> en werkt niet: invoer geeft geen signaal, uitvoer
   blijft uit en een display blijft donker.</p>
@@ -47,6 +49,25 @@
     <li>Het <b>midden</b> van het onderdeel moet naast het getekende stuk rail liggen, niet erboven of eronder.
       Maak de rail zo nodig langer.</li>
     <li>Met de pijltjestoetsen verschuif je per pixel; zo kan je een onderdeel ook weer lostrekken.</li>
+  </ul>
+
+  <h2 id="draad">Aansluiten met een voedingsdraad</h2>
+  <p>In plaats van een onderdeel in te pluggen, kan je het ook met een draad op een rail aansluiten, zoals in een
+  echte schakeling. Het onderdeel mag dan overal op het paneel staan.</p>
+  <ol class="steps">
+    <li>Klik op <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbinding</b>.</li>
+    <li>Klik op de lijn van de rail, op de hoogte waar de draad moet beginnen. Er verschijnt een draad.</li>
+    <li>Sleep het einde van de draad naar het <b>grijze bolletje</b> van het onderdeel: links bij invoer (vanaf een
+      + rail), rechts bij uitvoer en bij de &minus; kant van de voltmeter (vanaf een &minus; rail). Vanaf een &minus; rail verschijnt de draad links van de rail. Binnen 12 pixels springt het einde vanzelf op het bolletje.</li>
+  </ol>
+  <p>Het bolletje krijgt de kleur van de rail en het onderdeel werkt. Een draad van een + rail wordt tijdens de
+  simulatie rood als er genoeg spanning op staat; een draad naar een &minus; rail is blauw.</p>
+  <ul>
+    <li>Versleep je de rail, dan blijft het begin van de draad op de rail. Versleep je het onderdeel, dan gaat het
+      einde van de draad mee.</li>
+    <li>Een draad van een + rail naar een ingang (van een poort, de voltmeter of R1 van het schakelrelais) werkt als
+      een gewone draad met de spanning van de rail.</li>
+    <li>Een voedingsdraad verwijder je zoals elke andere <a href="verbindingen.html#verwijderen">draad</a>.</li>
   </ul>
 
   <h2 id="bewerken">Rails verplaatsen en verlengen</h2>
@@ -79,13 +100,14 @@
   <ul>
     <li><b>+</b> (links): sluit er een draad op aan, of plug de meter rechts van een + rail in. Dan toont hij
       de spanning van die rail.</li>
-    <li><b>&minus;</b> (rechts): mag open blijven, of plug de meter links van een &minus; rail in. De meting
+    <li><b>&minus;</b> (rechts): mag open blijven, of plug de meter links van een &minus; rail in, of leg een draad van een &minus; rail naar het bolletje rechts (parallel aansluiten). De meting
       blijft dezelfde; het maakt de schakeling alleen duidelijker.</li>
   </ul>
   <p>Een draad brengt de spanning van zijn bron mee:</p>
   <table>
     <tr><th>Bron</th><th>Spanning op de draad</th></tr>
     <tr><td>invoer op een + rail, aan</td><td>de spanning van die rail</td></tr>
+    <tr><td>draad die op een + rail begint</td><td>de spanning van die rail</td></tr>
     <tr><td>invoer zonder rails op het paneel, aan</td><td>5&nbsp;V</td></tr>
     <tr><td>poort, teller of geheugen, uitgang aan</td><td>5&nbsp;V</td></tr>
     <tr><td>alles wat uit staat</td><td>0&nbsp;V</td></tr>

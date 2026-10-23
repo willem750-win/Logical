@@ -33,6 +33,8 @@
     <li><a href="uitvoer.html">Ausgänge</a> (Lampe, Relais, Summer und Anzeige) sitzen <b>links</b> an einer
       <b>&minus; Schiene</b>.</li>
   </ul>
+  <p>Statt ein Bauteil anzustecken, können Sie es auch mit einem Draht an eine Schiene anschließen: siehe
+  <a href="#draad">Mit einem Versorgungsdraht anschließen</a>.</p>
   <p>Ein angestecktes Bauteil bekommt einen dünnen Stecker mit einem Punkt in der Farbe der Schiene. Ein
   Bauteil, das nicht angesteckt ist, bekommt einen <b>grauen Punkt</b> und funktioniert nicht: Ein Eingang
   gibt kein Signal, ein Ausgang bleibt aus und eine Anzeige bleibt dunkel.</p>
@@ -47,6 +49,26 @@
     <li>Die <b>Mitte</b> des Bauteils muss neben dem gezeichneten Teil der Schiene liegen, nicht darüber oder
       darunter. Verlängern Sie die Schiene bei Bedarf.</li>
     <li>Mit den Pfeiltasten verschieben Sie pixelweise; so können Sie ein Bauteil auch wieder abziehen.</li>
+  </ul>
+
+  <h2 id="draad">Mit einem Versorgungsdraht anschließen</h2>
+  <p>Statt ein Bauteil anzustecken, können Sie es auch mit einem Draht an eine Schiene anschließen, wie in einer
+  echten Schaltung. Das Bauteil darf dann überall auf dem Panel stehen.</p>
+  <ol class="steps">
+    <li>Klicken Sie auf <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>.</li>
+    <li>Klicken Sie auf die Linie der Schiene, in der Höhe, in der der Draht beginnen soll. Ein Draht erscheint.</li>
+    <li>Ziehen Sie das Ende des Drahts zum <b>grauen Punkt</b> des Bauteils: links bei Eingängen (von einer
+      + Schiene), rechts bei Ausgängen und bei der &minus; Seite des Voltmeters (von einer &minus; Schiene). Von einer &minus; Schiene aus erscheint der Draht links der Schiene. Innerhalb von 12 Pixeln springt das Ende von selbst
+      auf den Punkt.</li>
+  </ol>
+  <p>Der Punkt bekommt die Farbe der Schiene und das Bauteil funktioniert. Ein Draht von einer + Schiene wird in der
+  Simulation rot, wenn genug Spannung anliegt; ein Draht zu einer &minus; Schiene ist blau.</p>
+  <ul>
+    <li>Verschieben Sie die Schiene, bleibt der Anfang des Drahts auf der Schiene. Verschieben Sie das Bauteil, wandert
+      das Ende des Drahts mit.</li>
+    <li>Ein Draht von einer + Schiene zu einem Eingang (eines Gatters, des Voltmeters oder R1 des Schaltrelais) wirkt
+      wie ein normaler Draht mit der Spannung der Schiene.</li>
+    <li>Einen Versorgungsdraht löschen Sie wie jeden anderen <a href="verbindingen.html#verwijderen">Draht</a>.</li>
   </ul>
 
   <h2 id="bewerken">Schienen verschieben und verlängern</h2>
@@ -78,13 +100,14 @@
   <ul>
     <li><b>+</b> (links): einen Draht anschließen oder das Messgerät rechts an eine + Schiene stecken. Dann
       zeigt es die Spannung dieser Schiene.</li>
-    <li><b>&minus;</b> (rechts): darf offen bleiben, oder das Messgerät links an eine &minus; Schiene stecken.
+    <li><b>&minus;</b> (rechts): darf offen bleiben, oder das Messgerät links an eine &minus; Schiene stecken, oder einen Draht von einer &minus; Schiene zum Punkt rechts legen (parallel anschließen).
       Die Messung bleibt gleich; die Schaltung wird nur übersichtlicher.</li>
   </ul>
   <p>Ein Draht führt die Spannung seiner Quelle mit:</p>
   <table>
     <tr><th>Quelle</th><th>Spannung auf dem Draht</th></tr>
     <tr><td>Eingang an einer + Schiene, ein</td><td>die Spannung dieser Schiene</td></tr>
+    <tr><td>Draht, der an einer + Schiene beginnt</td><td>die Spannung dieser Schiene</td></tr>
     <tr><td>Eingang ohne Schienen auf dem Panel, ein</td><td>5&nbsp;V</td></tr>
     <tr><td>Gatter, Zähler oder Speicher, Ausgang ein</td><td>5&nbsp;V</td></tr>
     <tr><td>alles, was aus ist</td><td>0&nbsp;V</td></tr>

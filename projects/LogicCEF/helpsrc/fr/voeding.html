@@ -33,6 +33,8 @@
     <li>les <a href="uitvoer.html">sorties</a> (lampe, relais, buzzer et afficheur) se placent à <b>gauche</b>
       d&rsquo;un <b>rail &minus;</b>.</li>
   </ul>
+  <p>Au lieu de brancher un composant, vous pouvez aussi le relier à un rail par un fil : voir
+  <a href="#draad">Relier par un fil d&rsquo;alimentation</a>.</p>
   <p>Un composant branché reçoit une fine fiche avec un point de la couleur du rail. Un composant non branché
   reçoit un <b>point gris</b> et ne fonctionne pas : une entrée ne donne pas de signal, une sortie reste
   éteinte et un afficheur reste sombre.</p>
@@ -47,6 +49,26 @@
     <li>Le <b>milieu</b> du composant doit se trouver à côté de la partie dessinée du rail, pas au-dessus ni
       en dessous. Allongez le rail si nécessaire.</li>
     <li>Les touches fléchées déplacent d&rsquo;un pixel ; vous pouvez ainsi aussi débrancher un composant.</li>
+  </ul>
+
+  <h2 id="draad">Relier par un fil d&rsquo;alimentation</h2>
+  <p>Au lieu de brancher un composant, vous pouvez aussi le relier à un rail par un fil, comme dans un vrai
+  circuit. Le composant peut alors se trouver n&rsquo;importe où sur le panneau.</p>
+  <ol class="steps">
+    <li>Cliquez sur <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>.</li>
+    <li>Cliquez sur la ligne du rail, à la hauteur où le fil doit commencer. Un fil apparaît.</li>
+    <li>Faites glisser l&rsquo;extrémité du fil vers le <b>point gris</b> du composant : à gauche pour une entrée
+      (depuis un rail +), à droite pour une sortie et pour le côté &minus; du voltmètre (depuis un rail &minus;). Depuis un rail &minus;, le fil apparaît à gauche du rail. À moins de 12 pixels, l&rsquo;extrémité
+      se place d&rsquo;elle-même sur le point.</li>
+  </ol>
+  <p>Le point prend la couleur du rail et le composant fonctionne. Pendant la simulation, un fil venant d&rsquo;un
+  rail + devient rouge s&rsquo;il y a assez de tension ; un fil vers un rail &minus; est bleu.</p>
+  <ul>
+    <li>Si vous déplacez le rail, le début du fil reste sur le rail. Si vous déplacez le composant, l&rsquo;extrémité
+      du fil suit.</li>
+    <li>Un fil d&rsquo;un rail + vers une entrée (d&rsquo;une porte, du voltmètre ou R1 du relais de commutation)
+      fonctionne comme un fil normal qui porte la tension du rail.</li>
+    <li>Un fil d&rsquo;alimentation se supprime comme n&rsquo;importe quel autre <a href="verbindingen.html#verwijderen">fil</a>.</li>
   </ul>
 
   <h2 id="bewerken">Déplacer et allonger les rails</h2>
@@ -77,13 +99,14 @@
   <ul>
     <li><b>+</b> (à gauche) : reliez un fil, ou branchez le voltmètre à droite d&rsquo;un rail +. Il affiche
       alors la tension de ce rail.</li>
-    <li><b>&minus;</b> (à droite) : peut rester libre, ou branchez le voltmètre à gauche d&rsquo;un rail &minus;.
+    <li><b>&minus;</b> (à droite) : peut rester libre, ou branchez le voltmètre à gauche d&rsquo;un rail &minus;, ou tirez un fil d&rsquo;un rail &minus; vers le point de droite (branchement en parallèle).
       La mesure reste la même ; le schéma devient seulement plus clair.</li>
   </ul>
   <p>Un fil transporte la tension de sa source :</p>
   <table>
     <tr><th>Source</th><th>Tension sur le fil</th></tr>
     <tr><td>entrée sur un rail +, activée</td><td>la tension de ce rail</td></tr>
+    <tr><td>fil qui part d&rsquo;un rail +</td><td>la tension de ce rail</td></tr>
     <tr><td>entrée sans rails sur le panneau, activée</td><td>5&nbsp;V</td></tr>
     <tr><td>porte, compteur ou mémoire, sortie activée</td><td>5&nbsp;V</td></tr>
     <tr><td>tout ce qui est éteint</td><td>0&nbsp;V</td></tr>

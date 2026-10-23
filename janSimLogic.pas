@@ -2314,6 +2314,12 @@ function PanelHasRails(P: TWinControl): Boolean;
 function RailOf(C: TControl): TjanRail;
 // schakelrelais: de + rail links, waarop R1 (het contact) is ingeplugd
 function SchakelPlusRail(C: TControl): TjanRail;
+// voedingsdraad: midden van het voedingsbolletje van C (+ kant links,
+// - kant rechts) en de rail die er met een draad op aangesloten is
+function PowerDot(C: TControl; APlusSide: Boolean): TPoint;
+function WiredRail(C: TControl; APlusSide: Boolean): TjanRail;
+// de rail waarvan de lijn door Pt loopt, anders nil
+function RailAtPoint(P: TWinControl; const Pt: TPoint): TjanRail;
 function RailPlugged(C: TControl): Boolean;
 // mag C werken? (geen rails op het paneel, geen rail-component, of
 // ingeplugd; invoer bovendien op een + rail met genoeg spanning)
@@ -3711,6 +3717,9 @@ if not doEdge then
     DisConnectFinal;
     //SendToBack;
     select:=false;invalidate;
+// voedingsbolletjes bijwerken (een voedingsdraad kan aan- of losgekoppeld zijn)
+if Parent<>nil then
+  Parent.Invalidate;
 end;
 
 procedure TjanConnector.DisConnectFinal;
@@ -3787,12 +3796,23 @@ procedure TjanConnector.Paint;
 var
   d, d2, w2, xw, yh: Integer;
   R: TRect;
+  EndA, EndB: TPoint;
+  MinWire: Boolean;
 begin
   d  := conSize;
   d2 := d div 2;
   w2 := Round(Edge * Width);
   xw := Width - 1;
   yh := Height - 1;
+
+  // voedingsdraad naar de - rail: blauw, zoals de rail
+  MinWire := False;
+  if Parent <> nil then
+  begin
+    EndCenters(EndA, EndB);
+    MinWire := ((RailAtPoint(Parent, EndA) <> nil) and not RailAtPoint(Parent, EndA).Plus) or
+               ((RailAtPoint(Parent, EndB) <> nil) and not RailAtPoint(Parent, EndB).Plus);
+  end;
 
   with Canvas do
   begin
@@ -3801,6 +3821,8 @@ begin
       Brush.Color := clLime;
       if FPower = True then
         Pen.Color := clRed
+      else if MinWire then
+        Pen.Color := clBlue
       else
         Pen.Color := clBlack;
       case Shape of
@@ -4378,6 +4400,175 @@ begin
       Exit(True);
 end;
 
+// ------------------------------------------------------------
+// Voedingsdraden: een gewone draad (TjanConnector) van de lijn van een
+// rail naar het voedingsbolletje van een component werkt als inpluggen.
+// ------------------------------------------------------------
+const
+  RailWireTol = 3;   // zo dicht bij de raillijn / het bolletje telt een draadeinde
+
+// midden van het voedingsbolletje van C: links (+ kant, invoer en R1 van het
+// schakelrelais) of rechts (- kant, uitvoer), op de hoogte van de
+// ingangs- of uitgangsdraad
+function PowerDotSym(C: TControl; APlusSide: Boolean; S: TjanSymbolen): TPoint;
+var
+  Y: Integer;
+begin
+  Y := C.Top + C.Height div 2;
+  // schemasymbolen: het bolletje op de hoogte van de ingangsdraad
+  if APlusSide and (S <> Afbeelding) then
+  begin
+    if C is TjanSimButton then Y := C.Top + 29
+    else if C is TjanSimKnop then Y := C.Top + 47
+    else if C is TjanSimWarm then Y := C.Top + 17;
+  end;
+  // en bij de uitvoer op de hoogte van de uitgangsdraad naar de - rail
+  if (not APlusSide) and (S <> Afbeelding) then
+  begin
+    if C is TjanSimLight then Y := C.Top + 6
+    else if C is TjanSimBuzzer then Y := C.Top + 32;   // BuzzerLegY(21, 13)
+  end;
+  // schakelrelais: R- zit altijd rechts op hoogte 38, R1 links op 12
+  if (not APlusSide) and (C is TjanSchakelRelais) then Y := C.Top + 38;
+  if APlusSide and (C is TjanSchakelRelais) then Y := C.Top + 12;
+  if APlusSide then
+    Result := Point(C.Left - 4, Y)
+  else
+    Result := Point(C.Left + C.Width + 4, Y);
+end;
+
+function PowerDot(C: TControl; APlusSide: Boolean): TPoint;
+begin
+  Result := PowerDotSym(C, APlusSide, SymOf(C));
+end;
+
+// de rail waarvan de lijn door Pt loopt (binnen RailWireTol), anders nil
+function RailAtPoint(P: TWinControl; const Pt: TPoint): TjanRail;
+var
+  i: Integer;
+  R: TjanRail;
+begin
+  Result := nil;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible then
+    begin
+      R := TjanRail(P.Controls[i]);
+      if (Abs(Pt.X - R.LineX) <= RailWireTol) and
+         (Pt.Y >= R.SpanTop) and (Pt.Y <= R.SpanBottom) then
+        Exit(R);
+    end;
+end;
+
+function NearPoint(const A, B: TPoint): Boolean;
+begin
+  Result := (Abs(A.X - B.X) <= RailWireTol) and (Abs(A.Y - B.Y) <= RailWireTol);
+end;
+
+// ligt Pt op het voedingsbolletje van C, bij welke tekenwijze ook? (een
+// paneel kan bewaard zijn met Afbeelding en geopend met IEC, of omgekeerd)
+function OnPowerDot(C: TControl; APlusSide: Boolean; const Pt: TPoint): Boolean;
+var
+  S: TjanSymbolen;
+begin
+  for S := Low(TjanSymbolen) to High(TjanSymbolen) do
+    if NearPoint(Pt, PowerDotSym(C, APlusSide, S)) then
+      Exit(True);
+  Result := False;
+end;
+
+// de rail (+ of -) die met een draad op het voedingsbolletje van C zit
+function WiredRail(C: TControl; APlusSide: Boolean): TjanRail;
+var
+  i: Integer;
+  A, B, Dot: TPoint;
+  P: TWinControl;
+  R: TjanRail;
+begin
+  Result := nil;
+  P := C.Parent;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
+    begin
+      TjanConnector(P.Controls[i]).EndCenters(A, B);
+      R := nil;
+      if OnPowerDot(C, APlusSide, B) then
+        R := RailAtPoint(P, A)
+      else if OnPowerDot(C, APlusSide, A) then
+        R := RailAtPoint(P, B);
+      if (R <> nil) and (R.Plus = APlusSide) then
+        Exit(R);
+    end;
+end;
+
+// ligt Pt op het voedingsbolletje van een component?
+function PowerDotAt(P: TWinControl; const Pt: TPoint): Boolean;
+var
+  i: Integer;
+  C: TControl;
+begin
+  Result := False;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+  begin
+    C := P.Controls[i];
+    if not C.Visible then Continue;
+    // (R1 van het schakelrelais niet: een draad van de + rail naar R1 is
+    // een gewone ingangsdraad met de spanning van de rail)
+    if IsRailInput(C) and OnPowerDot(C, True, Pt) then
+      Exit(True);
+    if (IsRailOutput(C) or (C is TjanMeter)) and OnPowerDot(C, False, Pt) then
+      Exit(True);
+  end;
+end;
+
+// Voedingsdraden laten eindigen op het bolletje van de huidige tekenwijze
+// (na omschakelen Afbeelding <-> IEC/ANSI, en na het laden van een paneel)
+procedure RealignPowerWires(P: TWinControl);
+var
+  i, k: Integer;
+  Con: TjanConnector;
+  A, B, Dot: TPoint;
+  R: TjanRail;
+  C: TControl;
+  RailAtStart: Boolean;
+begin
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+  begin
+    if not (P.Controls[i] is TjanConnector) then Continue;
+    Con := TjanConnector(P.Controls[i]);
+    Con.EndCenters(A, B);
+    R := RailAtPoint(P, A);
+    RailAtStart := R <> nil;
+    if not RailAtStart then
+      R := RailAtPoint(P, B);
+    if R = nil then Continue;
+    for k := 0 to P.ControlCount - 1 do
+    begin
+      C := P.Controls[k];
+      if not C.Visible then Continue;
+      if not ((R.Plus and IsRailInput(C)) or
+              ((not R.Plus) and (IsRailOutput(C) or (C is TjanMeter)))) then Continue;
+      Dot := PowerDot(C, R.Plus);
+      if RailAtStart then
+      begin
+        if OnPowerDot(C, R.Plus, B) then
+        begin
+          if not NearPoint(B, Dot) then Con.PlaceEnds(A, Dot);
+          Break;
+        end;
+      end
+      else if OnPowerDot(C, R.Plus, A) then
+      begin
+        if not NearPoint(A, Dot) then Con.PlaceEnds(Dot, B);
+        Break;
+      end;
+    end;
+  end;
+end;
+
 // zou C met linkerkant ALeft en bovenkant ATop op rail R ingeplugd zijn?
 // Invoer zit rechts van een + rail, uitvoer links van een - rail. De
 // voltmeter kan beide: + (links) op een + rail, - (rechts) op een - rail.
@@ -4416,6 +4607,8 @@ begin
        RailFits(TjanRail(P.Controls[i]), C, C.Left, C.Top) and
        (not ((C is TjanSchakelRelais) and TjanRail(P.Controls[i]).Plus)) then
       Exit(TjanRail(P.Controls[i]));
+  // niet ingeplugd: misschien met een voedingsdraad aangesloten
+  Result := WiredRail(C, IsRailInput(C));
 end;
 
 // schakelrelais: de + rail links, waarop R1 (het contact) is ingeplugd
@@ -4432,6 +4625,7 @@ begin
        TjanRail(P.Controls[i]).Plus and
        RailFits(TjanRail(P.Controls[i]), C, C.Left, C.Top) then
       Exit(TjanRail(P.Controls[i]));
+  Result := WiredRail(C, True);
 end;
 
 function RailPlugged(C: TControl): Boolean;
@@ -4513,36 +4707,24 @@ procedure DrawRailOverlay(Grid: TjanGridS);
   procedure Plug(R: TjanRail; C: TControl; APlusSide: Boolean);
   var
     Y, DotX: Integer;
+    Dot: TPoint;
   begin
-    Y := C.Top + C.Height div 2;
-    // schemasymbolen: het bolletje op de hoogte van de ingangsdraad
-    if APlusSide and (SymOf(C) <> Afbeelding) then
-    begin
-      if C is TjanSimButton then Y := C.Top + 29
-      else if C is TjanSimKnop then Y := C.Top + 47
-      else if C is TjanSimWarm then Y := C.Top + 17;
-    end;
-    // en bij de uitvoer op de hoogte van de uitgangsdraad naar de - rail
-    if (not APlusSide) and (SymOf(C) <> Afbeelding) then
-    begin
-      if C is TjanSimLight then Y := C.Top + 6
-      else if C is TjanSimBuzzer then Y := C.Top + 32;   // BuzzerLegY(21, 13)
-    end;
-    // schakelrelais: R- zit altijd rechts op hoogte 38
-    if (not APlusSide) and (C is TjanSchakelRelais) then Y := C.Top + 38;
-    if APlusSide and (C is TjanSchakelRelais) then Y := C.Top + 12;   // R1
-    if APlusSide then
-      DotX := C.Left - 4                  // midden bolletje, links van het component
-    else
-      DotX := C.Left + C.Width + 4;       // midden bolletje, rechts van het component
+    Dot := PowerDot(C, APlusSide);
+    DotX := Dot.X;
+    Y := Dot.Y;
     if R <> nil then
     begin
       Grid.Canvas.Pen.Color := R.RailColor;
-      if APlusSide then
-        Grid.Canvas.MoveTo(R.LineX + 2, Y)
-      else
-        Grid.Canvas.MoveTo(R.LineX - 1, Y);
-      Grid.Canvas.LineTo(DotX, Y);
+      // stekker alleen als het component echt ingeplugd is (met een
+      // voedingsdraad loopt de draad al naar het bolletje)
+      if RailFits(R, C, C.Left, C.Top) then
+      begin
+        if APlusSide then
+          Grid.Canvas.MoveTo(R.LineX + 2, Y)
+        else
+          Grid.Canvas.MoveTo(R.LineX - 1, Y);
+        Grid.Canvas.LineTo(DotX, Y);
+      end;
       Grid.Canvas.Brush.Color := R.RailColor;
     end
     else
@@ -4556,6 +4738,7 @@ procedure DrawRailOverlay(Grid: TjanGridS);
 var
   i, k: Integer;
   C: TControl;
+  MinPlugged: Boolean;
 begin
   if not PanelHasRails(Grid) then Exit;
   Grid.Canvas.Pen.Width := 1;
@@ -4576,11 +4759,21 @@ begin
     else if IsRailOutput(C) then
       Plug(RailOf(C), C, False)
     else if C is TjanMeter then
-      // voltmeter: alleen de kanten die echt op een rail zitten
+    begin
+      // voltmeter: de kanten die echt op een rail zitten
+      MinPlugged := False;
       for k := 0 to Grid.ControlCount - 1 do
         if (Grid.Controls[k] is TjanRail) and Grid.Controls[k].Visible and
            RailFits(TjanRail(Grid.Controls[k]), C, C.Left, C.Top) then
+        begin
           Plug(TjanRail(Grid.Controls[k]), C, TjanRail(Grid.Controls[k]).Plus);
+          if not TjanRail(Grid.Controls[k]).Plus then
+            MinPlugged := True;
+        end;
+      // de - kant: met een draad aan een - rail (blauw), anders grijs
+      if not MinPlugged then
+        Plug(WiredRail(C, False), C, False);
+    end;
   end;
 end;
 
@@ -4878,6 +5071,7 @@ end;
 procedure TjanRail.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   P: TPoint;
+  Con: TjanConnector;
 begin
   inherited MouseDown(Button, Shift, X, Y);
   if Parent = nil then Exit;
@@ -4886,6 +5080,37 @@ begin
     BuildPopup;
     P := Mouse.CursorPos;
     PopupMenu.PopUp(P.X, P.Y);
+    Exit;
+  end;
+  // met de knop Verbinding: een voedingsdraad vanaf de rail beginnen
+  if (Button = mbLeft) and (Screen.Cursor = crDraad) then
+  begin
+    P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+    if (P.Y >= SpanTop) and (P.Y <= SpanBottom) then
+    begin
+      FDragMode := 0;
+      if FPlus then
+      begin
+        // het begin van de draad (midden van het blokje) precies op de lijn;
+        // de draad wijst naar rechts, naar de invoer
+        Maakdraad(P.Y - 4, LineX - 4, Parent);
+        movecursor;
+      end
+      else
+      begin
+        // - rail: de uitvoer staat links, dus de draad wijst naar links
+        Con := TjanConnector.Create(Parent);
+        Con.Parent := Parent;
+        Con.SetBounds(LineX - 4, P.Y - 4, 35, 25);
+        Con.Tag := Parent.ControlCount;
+        Con.PlaceEnds(Point(LineX, P.Y), Point(LineX - 30, P.Y + 16));
+        Con.Visible := True;
+        Con.BringToFront;
+        // muisaanwijzer op het einde, zoals bij movecursor
+        Application.ProcessMessages;
+        Mouse.CursorPos := Parent.ClientToScreen(Point(LineX - 30, P.Y + 16));
+      end;
+    end;
     Exit;
   end;
   if (Button <> mbLeft) or FLock then Exit;
@@ -5102,6 +5327,8 @@ var PiC,PoC,Best,P:TPoint;
     C:TControl;
     Pins:TPinArray;
     EndMode:TjanConMode;
+    FromRail:TjanRail;
+    HasDot:Boolean;
 begin
   if Parent=nil then exit;
   // alleen als het EINDE van de draad versleept werd (niet het begin)
@@ -5114,12 +5341,36 @@ begin
   if Mode<>EndMode then exit;
 
   EndCenters(PiC,PoC);
+  // begint de draad op een voedingsrail, dan ook naar de voedingsbolletjes
+  FromRail:=RailAtPoint(Parent,PiC);
   BestDist:=InputSnapTol+1;
   Best:=PoC;
   for i:=0 to Parent.ControlCount-1 do
   begin
     C:=Parent.Controls[i];
     if (C=Self) or (C is TjanConnector) or not C.Visible then continue;
+    if FromRail<>nil then
+    begin
+      HasDot:=False;
+      if FromRail.Plus and IsRailInput(C) then
+      begin
+        P:=PowerDot(C,True); HasDot:=True;
+      end
+      else if (not FromRail.Plus) and (IsRailOutput(C) or (C is TjanMeter)) then
+      begin
+        P:=PowerDot(C,False); HasDot:=True;
+      end;
+      if HasDot then
+      begin
+        Dist:=Abs(P.x-PoC.x);
+        if Abs(P.y-PoC.y)>Dist then Dist:=Abs(P.y-PoC.y);
+        if Dist<BestDist then
+        begin
+          BestDist:=Dist;
+          Best:=P;
+        end;
+      end;
+    end;
     Pins:=InputPins(C);
     for j:=0 to High(Pins) do
     begin
@@ -5415,6 +5666,7 @@ var Pi,Po:TPoint;
     sRelais:TjanSimRelais;
     sBuzzer:TjanSimBuzzer;
     pl:TPoint;
+    RailSrc:TjanRail;   // de draad begint op deze voedingsrail (of nil)
 
   // convert a corner point to a parent point
   function pp(x,y:integer):TPoint;
@@ -5431,6 +5683,13 @@ var Pi,Po:TPoint;
   begin
     result:=true;
     SrcVolt:=-1;
+    // draad vanaf een rail naar een ingang: de rail is de bron
+    if RailSrc<>nil then
+    begin
+      vi:=RailSrc.Powered;
+      if RailSrc.Plus then SrcVolt:=RailSrc.Volt else SrcVolt:=0;
+      exit;
+    end;
     for ii:=0 to wc.ControlCount-1 do
     begin
       // schakelrelais: een draad die bij R2 begint, krijgt het contact als bron
@@ -5886,6 +6145,23 @@ begin
         Pi:=pp(d2,yh-d2);
         Po:=pp(xw-d2,d2);
       end;
+  end;
+  // draad vanaf een voedingsrail (eventueel achterstevoren gelegd)
+  RailSrc:=RailAtPoint(wc,Pi);
+  if RailSrc=nil then
+  begin
+    RailSrc:=RailAtPoint(wc,Po);
+    if RailSrc<>nil then
+    begin
+      pl:=Pi; Pi:=Po; Po:=pl;
+    end;
+  end;
+  // voedingsdraad (rail -> voedingsbolletje): geen signaal, RailOf regelt
+  // de voeding van het component
+  if (RailSrc<>nil) and (PowerDotAt(wc,Po) or (RailAtPoint(wc,Po)<>nil)) then
+  begin
+    SetPower(RailSrc.Powered);
+    exit;
   end;
   LedW:=#0; // enkel teller/geheugen vullen dit in; anders toont het display 0/1
   if getvi then
@@ -10075,6 +10351,9 @@ begin
           else
             UM := 0;                  // - ingeplugd op de massa
       end;
+  if WiredRail(Self, False) <> nil then
+    UM := 0;                          // - met een draad aan de massa
+  // (zonder - aansluiting meet de meter ook tegen de massa)
   Result := UP - UM;
   if Result < 0 then Result := 0;     // omgekeerd aangesloten: 0 V
 end;
@@ -18128,6 +18407,8 @@ begin
   FNew := False;
   FObjectID := -1;
   BlokkeerObjecten(False);
+  // paneel bewaard met een andere tekenwijze: voedingsdraden bijstellen
+  RealignPowerWires(wc);
 end;
 
 function TjanSimLogicBox.AddRail(ALeft, ATop, AHeight: Integer; APlus: Boolean;
@@ -19917,6 +20198,8 @@ var i: Integer;
 begin
   if Value = FSymbolen then Exit;
   FSymbolen := Value;
+  // het voedingsbolletje verhuist mee met de tekenwijze
+  RealignPowerWires(FParent);
   invalidate;
   for i := 0 to ComponentCount - 1 do
     if Components[i] is TControl then
@@ -22126,6 +22409,10 @@ var
 begin
   Clear;
   if Parent = nil then Exit;
+  // de rail zelf ook: dan schuiven de draden die op de rail beginnen
+  // (voedingsdraden) mee
+  FItems.Add(ARail);
+  ARail.FreeNotification(Self);
   for i := 0 to Parent.ControlCount - 1 do
   begin
     C := Parent.Controls[i];
