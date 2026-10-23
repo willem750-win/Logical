@@ -5137,7 +5137,11 @@ begin
   if Parent = nil then Exit;
   if FDragMode = 0 then
   begin
-    if FLock then
+    // met de knop Verbinding: het pen-symbool houden (onder GTK2 wint de
+    // cursor van het besturingselement van Screen.Cursor)
+    if Screen.Cursor = crDraad then
+      Cursor := crDraad
+    else if FLock then
       Cursor := crDefault
     else if HitMode(Y) = 1 then
       Cursor := crSizeAll
