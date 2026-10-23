@@ -2129,7 +2129,7 @@ type
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
-    property NewObject:Boolean read FNew write SetNewObject;
+    property NewObject:Boolean read FNew write SetNewObject stored False;   // tijdelijke toestand: nooit in een formulier bewaren
     property HDrukknop:String read FHDrukknop write SetHDrukknop;
 
     property HSchakelaar:String read FHSchakelaar write SetHSchakelaar;

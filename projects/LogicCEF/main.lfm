@@ -369,7 +369,6 @@ object mainForm: TmainForm
       KDisplay = True
       KMeter = True
       PStandaard = False
-      NewObject = True
       HDrukknop = 'maak Drukknop'
       HSchakelaar = 'maak Schakelaar'
       HMeter = 'maak Voltmeter'
