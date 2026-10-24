@@ -6,15 +6,15 @@
 
   <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les12-logicrun.png" alt="Bloc LogicRun avec deux boutons-poussoirs et trois lampes">
-    <figcaption>Le programme tourne : UIT0 est active, la lampe du haut (rouge) est allumée.</figcaption>
+    <img src="../img/les12-logicrun.png" alt="Bloc LogicRun avec deux boutons-poussoirs et trois LED">
+    <figcaption>Le programme tourne : UIT0 est active, la LED du haut (rouge) est allumée.</figcaption>
   </figure>
 
   <h2>Que voyez-vous ?</h2>
   <ul>
     <li>Le <a href="logicrun.html">bloc LogicRun</a> au milieu.</li>
     <li>À gauche, deux boutons-poussoirs : celui du haut est sur <b>DIN1</b> (marche/arrêt), celui du bas sur <b>DIN3</b> (+1).</li>
-    <li>À droite, trois lampes, comme un feu tricolore : <b>UIT0</b> rouge (en haut), <b>UIT1</b> orange (au milieu)
+    <li>À droite, trois LED, comme un feu tricolore : <b>UIT0</b> rouge (en haut), <b>UIT1</b> orange (au milieu)
       et <b>UIT2</b> vert (en bas).</li>
   </ul>
 
@@ -37,13 +37,13 @@
   </ol>
 
   <h2>Exercice</h2>
-  <p>Faites rester le feu vert allumé 5 secondes au lieu de 3. Ajoutez ensuite un feu pour piétons : une
-  quatrième lampe sur <b>UIT3</b> qui ne s&rsquo;allume que lorsque le feu est rouge.</p>
+  <p>Faites rester le feu vert allumé 5 secondes au lieu de 3. Ajoutez ensuite un feu pour piétons : une LED verte
+  sur <b>UIT3</b> qui ne s&rsquo;allume que lorsque le feu est rouge.</p>
   <details>
     <summary>Solution</summary>
     <p>Avec une durée de 500&nbsp;ms, 5 secondes font 10 fois la durée : mettez la <b>durée x</b> du pas 2 à 10.
-    Dans le pas 1 (rouge), cliquez aussi sur le rond de UIT3. Placez une lampe sur le panneau et tirez un fil de
-    UIT3 vers cette lampe. Ainsi, un seul programme commande plusieurs lampes à la fois.</p>
+    Dans le pas 1 (rouge), cliquez aussi sur le rond de UIT3. Placez une lampe sur le panneau, faites-en une LED verte avec le bouton droit
+    (<b>Couleur</b> &rsaquo; <b>LED verte</b>) et tirez un fil de UIT3 vers cette LED. Ainsi, un seul programme commande plusieurs LED à la fois.</p>
   </details>
 
   <div class="pager"><a href="les11.html">&larr; Leçon 11 : Le relais</a><a href="leerpad.html">Parcours &rarr;</a></div>

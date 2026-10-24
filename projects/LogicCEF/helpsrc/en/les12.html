@@ -6,15 +6,15 @@
 
   <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les12-logicrun.png" alt="LogicRun block with two push buttons and three lamps">
-    <figcaption>The program is running: UIT0 is on, the top lamp (red) is lit.</figcaption>
+    <img src="../img/les12-logicrun.png" alt="LogicRun block with two push buttons and three LEDs">
+    <figcaption>The program is running: UIT0 is on, the top LED (red) is lit.</figcaption>
   </figure>
 
   <h2>What do you see?</h2>
   <ul>
     <li>The <a href="logicrun.html">LogicRun block</a> in the middle.</li>
     <li>On the left two push buttons: the top one is on <b>DIN1</b> (start/stop), the bottom one on <b>DIN3</b> (+1).</li>
-    <li>On the right three lamps, like a traffic light: <b>UIT0</b> red (top), <b>UIT1</b> amber (middle) and
+    <li>On the right three LEDs, like a traffic light: <b>UIT0</b> red (top), <b>UIT1</b> amber (middle) and
       <b>UIT2</b> green (bottom).</li>
   </ul>
 
@@ -37,13 +37,13 @@
   </ol>
 
   <h2>Exercise</h2>
-  <p>Make the green light stay on for 5 seconds instead of 3. Then add a pedestrian light: a fourth lamp on
+  <p>Make the green light stay on for 5 seconds instead of 3. Then add a pedestrian light: a green LED on
   <b>UIT3</b> that is only lit when the traffic light is red.</p>
   <details>
     <summary>Solution</summary>
     <p>With a step time of 500&nbsp;ms, 5 seconds is 10 times the step time: set <b>time x</b> of step 2 to 10.
-    In step 1 (red) also click the circle of UIT3. Put a lamp on the panel and run a wire from UIT3 to that lamp.
-    That way one program controls several lamps at the same time.</p>
+    In step 1 (red) also click the circle of UIT3. Put a lamp on the panel, turn it into a green LED with the right mouse button
+    (<b>Colour</b> &rsaquo; <b>Green LED</b>) and run a wire from UIT3 to that LED. That way one program controls several LEDs at the same time.</p>
   </details>
 
   <div class="pager"><a href="les11.html">&larr; Lesson 11: The relay</a><a href="leerpad.html">Learning path &rarr;</a></div>

@@ -97,6 +97,8 @@ type
   // tekenwijze van de onderdelen: Afbeelding (plaatjes, poorten als woord in een
   // rechthoek), IEC 60617 of ANSI/IEEE 91 (schemasymbolen; verschillen bij de poorten)
   TjanSymbolen=(Afbeelding,IEC,ANSI);
+  // uitvoer TjanSimLight: een gewone lamp of een led in een kleur
+  TLampKleur=(lkLamp,lkRood,lkGroen,lkOranje);
   TjanMeterFunc=(jlfEN);
 
 
@@ -1508,12 +1510,15 @@ type
     FSelected: Boolean; //xxx
     FOnStatus: TSimStatusEvent;// xxx doorgeven van strings naan StatusBar1 panels
     FBox: TjanSimLogicBox;//xxxx  nodig voor selectie van object
+    FKleur: TLampKleur;      // lamp of led (rood, groen, oranje)
 
     procedure SendStatusToBar;//xxx
     procedure SetNaam(const Value: String);//xxx
     procedure SetTaal(const Value: String);//xxx
     procedure SetDown(const Value: boolean);//xxx
     procedure UpdateHintText; //xxxx
+    procedure SetKleur(const Value: TLampKleur);
+    procedure KleurClick(Sender: TObject);
 
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
@@ -1549,6 +1554,8 @@ type
     procedure Paint; override;  //xxx
   published
     property Lit:boolean read FLit write SetLit;
+    // lkLamp: gewone lamp; anders een led in die kleur (rechtsklikmenu Kleur)
+    property Kleur:TLampKleur read FKleur write SetKleur default lkLamp;
     property Lock:boolean read FLock write SetLock;
     property Info:String read FInfo write SetInfo;
     property ShowHint;
@@ -7516,6 +7523,91 @@ begin
        end;
   end;
   C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
+end;
+
+// kleur van een lamp uit de rest van de regel in het paneelbestand
+// (S = 'breedte;kleur;', zonder kleur een gewone lamp)
+function LampKleurUitRest(const S: string): TLampKleur;
+var p, v: Integer;
+    Rest: string;
+begin
+  Result := lkLamp;
+  p := Pos(';', S);
+  if p = 0 then Exit;
+  Rest := Copy(S, p + 1, MaxInt);
+  p := Pos(';', Rest);
+  if p > 0 then Rest := Copy(Rest, 1, p - 1);
+  v := StrToIntDef(Trim(Rest), 0);
+  if (v >= Ord(Low(TLampKleur))) and (v <= Ord(High(TLampKleur))) then
+    Result := TLampKleur(v);
+end;
+
+// Kleur van een led (lkRood/lkGroen/lkOranje): fel als hij brandt, een lichte
+// tint van dezelfde kleur als hij uit is (zo zie je welke kleur hij heeft)
+function LedColor(K: TLampKleur; On: Boolean): TColor;
+begin
+  case K of
+    lkRood:   if On then Result := RGBToColor(255, 30, 30) else Result := RGBToColor(205, 140, 140);
+    lkGroen:  if On then Result := RGBToColor(40, 220, 40) else Result := RGBToColor(140, 195, 140);
+    lkOranje: if On then Result := RGBToColor(255, 150, 0) else Result := RGBToColor(230, 190, 130);
+  else
+    if On then Result := clYellow else Result := clWhite;
+  end;
+end;
+
+// Led op de plaats van het lampsymbool (rechts van X = L, tot R). Bij
+// Afbeelding een gekleurd bolletje met een glans als hij brandt; bij
+// schemasymbolen een diode (driehoek en streep) op de lijn Y met twee
+// pijltjes voor het licht.
+procedure DrawLedSymbol(C: TCanvas; L, R, Y: Integer; K: TLampKleur; On: Boolean; S: TjanSymbolen);
+var x0, x1, cx, cy, i: Integer;
+    Col: TColor;
+begin
+  Col := LedColor(K, On);
+  if S = Afbeelding then
+  begin
+    cx := L + 15; cy := 11;
+    SymPen(C, clGray);
+    C.Line(L, Y, cx - 6, cy - 3);
+    C.Line(cx + 8, cy, R + 1, cy);
+    if On then
+    begin
+      // gloed rond de led
+      C.Brush.Style := bsClear;
+      C.Pen.Color := LedColor(K, True);
+      C.Ellipse(cx - 10, cy - 10, cx + 11, cy + 11);
+    end;
+    C.Brush.Style := bsSolid;
+    C.Brush.Color := Col;
+    C.Pen.Color := clBlack;
+    C.Ellipse(cx - 8, cy - 8, cx + 9, cy + 9);
+    if On then
+    begin
+      C.Brush.Color := clWhite;
+      C.Pen.Color := clWhite;
+      C.Ellipse(cx - 5, cy - 5, cx - 1, cy - 1);
+    end;
+    SymPen(C, clBlack);
+    Exit;
+  end;
+  x0 := L + 4; x1 := x0 + 10;
+  SymPen(C, clBlack);
+  C.Line(L, Y, x0, Y);
+  C.Line(x1, Y, R + 1, Y);
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := Col;
+  C.Polygon([Point(x0, Y - 5), Point(x0, Y + 5), Point(x1, Y)]);
+  C.Line(x1, Y - 5, x1, Y + 6);
+  // twee pijltjes naar rechtsonder: het licht
+  if On then SymPen(C, Col) else SymPen(C, clBlack);
+  for i := 0 to 1 do
+  begin
+    cx := x0 + 2 + i * 5;
+    C.Line(cx, Y + 7, cx + 5, Y + 12);
+    C.Line(cx + 5, Y + 12, cx + 2, Y + 12);
+    C.Line(cx + 5, Y + 12, cx + 5, Y + 9);
+  end;
+  SymPen(C, clBlack);
 end;
 
 // Lichaam van een blok (teller, geheugen): bij Afbeelding een vlak met 3D-rand,
@@ -15443,7 +15535,8 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
 
   procedure TjanSimLight.BuildPopup;
   var
-    miLock, miName, miInfo, miSelect: TMenuItem;
+    miLock, miName, miInfo, miSelect, miKleur, mi: TMenuItem;
+    k: TLampKleur;
   begin
     if not Assigned(PopupMenu) then
       PopupMenu := TPopupMenu.Create(Self)
@@ -15473,6 +15566,38 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
     miSelect.Name := 'miSelect';
     miSelect.OnClick := ButtonClick4;     // Delphi-mode: geen @
     PopupMenu.Items.Add(miSelect);
+
+    // --- Kleur: lamp of led (rood, groen, oranje)
+    miKleur := TMenuItem.Create(PopupMenu);
+    miKleur.Caption := Tr(BTaal, 'Kleur', 'Colour', 'Couleur', 'Farbe');
+    PopupMenu.Items.Add(miKleur);
+    for k := Low(TLampKleur) to High(TLampKleur) do
+    begin
+      mi := TMenuItem.Create(PopupMenu);
+      case k of
+        lkLamp:   mi.Caption := Tr(BTaal, 'Lamp', 'Lamp', 'Lampe', 'Lampe');
+        lkRood:   mi.Caption := Tr(BTaal, 'Rode led', 'Red LED', 'LED rouge', 'Rote LED');
+        lkGroen:  mi.Caption := Tr(BTaal, 'Groene led', 'Green LED', 'LED verte', 'Grüne LED');
+        lkOranje: mi.Caption := Tr(BTaal, 'Oranje led', 'Orange LED', 'LED orange', 'Orange LED');
+      end;
+      mi.Tag := Ord(k);
+      mi.RadioItem := True;
+      mi.Checked := k = FKleur;
+      mi.OnClick := KleurClick;
+      miKleur.Add(mi);
+    end;
+  end;
+
+  procedure TjanSimLight.KleurClick(Sender: TObject);
+  begin
+    Kleur := TLampKleur(TMenuItem(Sender).Tag);
+  end;
+
+  procedure TjanSimLight.SetKleur(const Value: TLampKleur);
+  begin
+    if Value = FKleur then Exit;
+    FKleur := Value;
+    Invalidate;
   end;
 
   procedure TjanSimLight.UpdatePopupCaptions;
@@ -15586,7 +15711,16 @@ begin
  begin
    Lock;
    lUit.Transparent:=true; lAan.Transparent:=true;
-   If FLit=false then
+   if FKleur<>lkLamp then
+   begin
+     // led: links het aansluitblokje met pijl van het lampje, rechts de led
+     if FLit then
+       DrawBitmapPart(Canvas,lAan,Rect(0,0,37,Self.Height))
+     else
+       DrawBitmapPart(Canvas,lUit,Rect(0,0,37,Self.Height));
+     DrawLedSymbol(Canvas,37,Self.Width-1,6,FKleur,FLit,SymOf(Self));
+   end
+   else If FLit=false then
      PaintOutputSymbol(Self,Canvas,lUit,0,False)
      else
      PaintOutputSymbol(Self,Canvas,lAan,0,True);
@@ -15595,7 +15729,7 @@ begin
      Font.Size:=9;
      Font.Style:= [];
      Font.Color:=clNavy;
-     TextOut(1,11,'La');
+     if FKleur<>lkLamp then TextOut(1,11,'Led') else TextOut(1,11,'La');
    UnLock;
  end;
  if select=true then
@@ -17630,6 +17764,9 @@ begin
       begin
         with TjanSimLight(c) do
           lijn := Format('TjanSimLight;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+        // led: de kleur als extra veld (een oudere Logic toont een lamp)
+        if TjanSimLight(c).Kleur <> lkLamp then
+          lijn := lijn + IntToStr(Ord(TjanSimLight(c).Kleur)) + ';';
         SFile.Add(lijn);
       end
       else if c is TjanSchakelRelais then
@@ -17711,7 +17848,9 @@ begin
       else if c is TjanLogic then
         s := s + Format(';%d', [Ord(TjanLogic(c).LogicFunc)])
       else if c is TjanLogicRun then
-        s := s + ';' + TjanLogicRun(c).ProgramText;
+        s := s + ';' + TjanLogicRun(c).ProgramText
+      else if c is TjanSimLight then
+        s := s + Format(';%d', [Ord(TjanSimLight(c).Kleur)]);
       L.Add(s);
     end;
     // volgorde doet er niet toe (BringToFront bij de simulatie verandert ze)
@@ -17844,6 +17983,8 @@ begin
     begin
       with TjanSimLight(c) do
         lijn := Format('TjanSimLight;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+      if TjanSimLight(c).Kleur <> lkLamp then
+        lijn := lijn + IntToStr(Ord(TjanSimLight(c).Kleur)) + ';';
       TempFile.Add(lijn);
     end
     else if c is TjanSchakelRelais then
@@ -18458,6 +18599,7 @@ begin
           Top    := StrToInt(Trim(obj[4]));
           Height := StrToInt(Trim(obj[2]));
           Width  := StrToInt(Trim(obj[5]));
+          Kleur  := LampKleurUitRest(S);   // led: kleur na de breedte
           FObjectID := wc.ControlCount; Lock := True;
 
           if Language = stDutch   then BTaal := 'NL'  else

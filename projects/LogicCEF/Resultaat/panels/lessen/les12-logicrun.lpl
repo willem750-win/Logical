@@ -1,7 +1,7 @@
 TjanLogicRun;150;260;110;120;500;1;1;2;3;0;1:6,4:6,2:2;
-TjanSimLight;23;470;200;69;
-TjanSimLight;23;470;160;69;
-TjanSimLight;23;470;120;69;
+TjanSimLight;23;470;200;69;2;
+TjanSimLight;23;470;160;69;3;
+TjanSimLight;23;470;120;69;1;
 TjanSimButton;32;100;185;58;
 TjanSimButton;32;100;135;58;
 TjanConnector;13;149;137;120;jcmTL;jcpBL;jcsTRBL;0,5;-1;

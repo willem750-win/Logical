@@ -6,15 +6,15 @@
 
   <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les12-logicrun.png" alt="LogicRun-Block mit zwei Tastern und drei Lampen">
-    <figcaption>Das Programm läuft: UIT0 ist ein, die obere Lampe (rot) leuchtet.</figcaption>
+    <img src="../img/les12-logicrun.png" alt="LogicRun-Block mit zwei Tastern und drei LEDs">
+    <figcaption>Das Programm läuft: UIT0 ist ein, die obere LED (rot) leuchtet.</figcaption>
   </figure>
 
   <h2>Was sehen Sie?</h2>
   <ul>
     <li>Den <a href="logicrun.html">LogicRun-Block</a> in der Mitte.</li>
     <li>Links zwei Taster: der obere ist an <b>DIN1</b> (Start/Stopp), der untere an <b>DIN3</b> (+1).</li>
-    <li>Rechts drei Lampen wie eine Ampel: <b>UIT0</b> rot (oben), <b>UIT1</b> gelb (Mitte) und
+    <li>Rechts drei LEDs wie eine Ampel: <b>UIT0</b> rot (oben), <b>UIT1</b> gelb (Mitte) und
       <b>UIT2</b> grün (unten).</li>
   </ul>
 
@@ -37,14 +37,14 @@
   </ol>
 
   <h2>Aufgabe</h2>
-  <p>Lassen Sie das grüne Licht 5 statt 3 Sekunden leuchten. Fügen Sie danach eine Fußgängerampel hinzu: eine
-  vierte Lampe an <b>UIT3</b>, die nur leuchtet, wenn die Ampel rot ist.</p>
+  <p>Lassen Sie das grüne Licht 5 statt 3 Sekunden leuchten. Fügen Sie danach eine Fußgängerampel hinzu: eine grüne LED
+  an <b>UIT3</b>, die nur leuchtet, wenn die Ampel rot ist.</p>
   <details>
     <summary>Lösung</summary>
     <p>Bei einer Schrittzeit von 500&nbsp;ms sind 5 Sekunden das 10-fache der Schrittzeit: setzen Sie
     <b>Zeit x</b> von Schritt 2 auf 10. Klicken Sie in Schritt 1 (rot) auch den Kreis von UIT3 an. Setzen Sie eine
-    Lampe auf das Panel und legen Sie einen Draht von UIT3 zu dieser Lampe. So steuert ein einziges Programm
-    mehrere Lampen gleichzeitig.</p>
+    Lampe auf das Panel, machen Sie mit der rechten Maustaste eine grüne LED daraus (<b>Farbe</b> &rsaquo; <b>Grüne LED</b>)
+    und legen Sie einen Draht von UIT3 zu dieser LED. So steuert ein einziges Programm mehrere LEDs gleichzeitig.</p>
   </details>
 
   <div class="pager"><a href="les11.html">&larr; Lektion 11: Das Relais</a><a href="leerpad.html">Lernpfad &rarr;</a></div>
