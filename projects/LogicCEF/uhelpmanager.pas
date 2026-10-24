@@ -150,6 +150,8 @@ begin
       Result := 'simulatie';
     'settings', 'taal':
       Result := 'instellingen';
+    'logicrun':
+      begin Result := 'logicrun'; AAnchor := ''; end;
   else
     begin Result := 'index'; AAnchor := ''; end;
   end;
@@ -524,6 +526,7 @@ begin
     'tjanconnector':    AControl.HelpKeyword := 'connector';
     'tjansimlogicbox':  AControl.HelpKeyword := 'logicbox';
     'tjangrids':        AControl.HelpKeyword := 'grid';
+    'tjanlogicrun':     AControl.HelpKeyword := 'logicrun';
   end;
 end;
 

@@ -153,7 +153,7 @@ begin
     CbDin[i] := TComboBox.Create(Self);
     CbDin[i].Parent := PnlBottom;
     CbDin[i].Style := csDropDownList;
-    CbDin[i].SetBounds(48 + i * 136, 40, 84, 28);
+    CbDin[i].SetBounds(42 + i * 136, 40, 98, 28);
     CbDin[i].Tag := i;
     CbDin[i].OnChange := @DinChange;
   end;

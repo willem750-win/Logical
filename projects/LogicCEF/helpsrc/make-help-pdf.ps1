@@ -32,7 +32,7 @@ if (-not $Edge) { throw 'Microsoft Edge niet gevonden: nodig om de PDF te maken.
 
 # zelfde volgorde als de navigatie in make-help.ps1; de lessen na 'leerpad'
 $Order = @('index', 'installeren', 'werkwijze', 'leerpad', 'LESSEN', 'knoppen', 'paneel', 'onderdelenbalk',
-           'invoer', 'verwerking', 'uitvoer', 'voeding', 'verbindingen', 'objecten', 'simulatie', 'instellingen')
+           'invoer', 'verwerking', 'uitvoer', 'voeding', 'verbindingen', 'objecten', 'simulatie', 'logicrun', 'instellingen')
 
 # teksten op het titelblad (HTML-entiteiten: dit script blijft ASCII)
 $Txt = @{

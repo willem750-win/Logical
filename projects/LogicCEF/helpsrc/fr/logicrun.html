@@ -1,0 +1,84 @@
+<!-- titel: LogicRun -->
+  <h1 id="logicrun"><img src="../img/knop-logicrun.png" class="ico" alt="">LogicRun : programmer par pas</h1>
+  <p class="lead">LogicRun est un bloc que vous ne câblez pas mais que vous <b>programmez</b>. Vous écrivez une
+  suite de pas ; chaque pas allume un certain nombre de sorties. Vous réalisez ainsi un feu tricolore, un
+  chenillard ou un compteur sans utiliser une seule porte.</p>
+
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="Bloc LogicRun avec deux boutons-poussoirs et trois lampes">
+    <figcaption>Un bloc LogicRun : les boutons-poussoirs sont sur DIN1 (marche/arrêt) et DIN3 (+1), les lampes
+    sur UIT0, UIT1 et UIT2.</figcaption>
+  </figure>
+
+  <h2 id="blok">Le bloc</h2>
+  <ul>
+    <li><b>À gauche : 4 entrées</b> DIN1 à DIN4. Sous chaque entrée figure ce qu&rsquo;elle fait (voir <a href="#ingangen">Les entrées</a>).</li>
+    <li><b>À droite : 8 sorties</b> UIT0 à UIT7, chacune avec un petit voyant qui devient rouge quand la sortie est active.</li>
+    <li><b>En bas</b> le pas où se trouve le programme, ou <i>arrêté</i>.</li>
+  </ul>
+  <p>Vous reliez le bloc avec des <a href="verbindingen.html">fils</a> ordinaires : les interrupteurs et les
+  capteurs vers les entrées, les sorties vers des lampes, des relais, un buzzer ou les entrées d&rsquo;autres composants.</p>
+  <ol class="steps">
+    <li>Cliquez sur <img src="../img/knop-logicrun.png" class="ico" alt=""><b>LogicRun</b> dans la barre de boutons.
+      La fenêtre LogicRun s&rsquo;ouvre à côté de Logic.</li>
+    <li>S&rsquo;il n&rsquo;y a pas encore de bloc sur le panneau, cliquez sur <b>Placer le bloc sur le panneau</b>, puis sur le panneau.</li>
+  </ol>
+  <p>Il ne peut y avoir qu&rsquo;<b>un seul</b> bloc LogicRun sur un panneau. Double-cliquez sur le bloc, ou choisissez
+  <b>Modifier le programme...</b> dans le menu du clic droit, pour ouvrir la fenêtre. Le menu du clic droit permet
+  aussi de verrouiller le bloc ou de le <a href="objecten.html#verwijderen">supprimer</a>.</p>
+
+  <h2 id="venster">La fenêtre LogicRun</h2>
+  <figure>
+    <img src="../img/logicrun-venster-fr.png" alt="La fenêtre LogicRun avec le feu tricolore">
+    <figcaption>Le programme du feu tricolore : trois pas.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Bouton ou champ</th><th>Que fait-il ?</th></tr>
+    <tr><td><b>Marche</b></td><td>Le programme s&rsquo;exécute, pas après pas.</td></tr>
+    <tr><td><b>Pause</b></td><td>Le programme reste au pas actuel ; les sorties restent comme elles sont.</td></tr>
+    <tr><td><b>Arrêt</b></td><td>Le programme s&rsquo;arrête et revient au début ; toutes les sorties s&rsquo;éteignent.</td></tr>
+    <tr><td><b>Pas</b></td><td>Un pas plus loin, pratique pour vérifier votre programme pas à pas.</td></tr>
+    <tr><td><b>Durée</b></td><td>La durée d&rsquo;une unité de temps, en millisecondes (500&nbsp;ms = une demi-seconde).</td></tr>
+    <tr><td><b>Répéter</b></td><td>Coché : après le dernier pas, le programme recommence. Décoché : il s&rsquo;arrête au dernier pas.</td></tr>
+    <tr><td><b>Exemple</b> et <b>Charger</b></td><td>Charger un programme tout fait (voir <a href="#voorbeelden">Exemples</a>).</td></tr>
+    <tr><td><b>+ pas</b> et <b>- pas</b></td><td>Ajouter un pas après le pas choisi, ou supprimer le pas choisi.</td></tr>
+    <tr><td><b>DIN1</b> à <b>DIN4</b></td><td>Ce que fait chaque entrée.</td></tr>
+  </table>
+  <p>En haut, vous voyez si le programme tourne et à quel pas il se trouve. Le pas actuel est bleu clair dans le tableau.</p>
+
+  <h2 id="programma">Créer un programme</h2>
+  <ul>
+    <li>Chaque <b>ligne</b> du tableau est un pas. Le programme exécute les pas de haut en bas.</li>
+    <li>Cliquez sur un <b>rond</b> pour activer (rouge) ou désactiver (blanc) cette sortie dans ce pas.</li>
+    <li><b>durée x</b> indique combien de temps dure le pas, en nombre de fois la durée. Avec une durée de 500&nbsp;ms,
+      un pas avec la valeur&nbsp;6 dure trois secondes.</li>
+  </ul>
+  <p>Un programme compte au maximum 64 pas.</p>
+
+  <h2 id="ingangen">Les entrées</h2>
+  <p>Une entrée réagit au moment où elle passe à <b>1</b>. C&rsquo;est pourquoi un
+  <a href="invoer.html#drukknop">bouton-poussoir</a> convient le mieux.</p>
+  <table>
+    <tr><th>Fonction</th><th>Que se passe-t-il quand l&rsquo;entrée passe à 1 ?</th></tr>
+    <tr><td><b>marche/arrêt</b></td><td>Si le programme est arrêté, il démarre ; s&rsquo;il tourne, il se met en pause.</td></tr>
+    <tr><td><b>remise à 0</b></td><td>Le programme revient au premier pas.</td></tr>
+    <tr><td><b>+1</b></td><td>Le programme avance d&rsquo;un pas.</td></tr>
+    <tr><td><b>-</b></td><td>Rien : l&rsquo;entrée n&rsquo;est pas utilisée.</td></tr>
+  </table>
+
+  <h2 id="voorbeelden">Exemples</h2>
+  <table>
+    <tr><th>Exemple</th><th>Sorties</th></tr>
+    <tr><td>Feu tricolore</td><td>UIT0 rouge, UIT1 orange, UIT2 vert.</td></tr>
+    <tr><td>Chenillard</td><td>UIT0 à UIT7 s&rsquo;allument l&rsquo;une après l&rsquo;autre.</td></tr>
+    <tr><td>Moteur gauche/droite</td><td>UIT0 moteur à gauche, UIT1 moteur à droite, avec un court arrêt entre les deux.</td></tr>
+    <tr><td>Compteur 4 bits</td><td>UIT0 à UIT3 comptent en binaire de 0 à 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+  </table>
+  <div class="tip"><strong>Astuce :</strong> charger un exemple remplace le programme. Avec <kbd>Ctrl</kbd>+<kbd>Z</kbd>,
+  vous retrouvez le programme précédent.</div>
+
+  <h2 id="bewaren">Enregistrer</h2>
+  <p>Le programme est enregistré avec le panneau dans le fichier du panneau (<code>.lpl</code>).
+  L&rsquo;<a href="knoppen.html#ongedaan">annulation</a> fonctionne aussi pour les modifications du programme. Une
+  version plus ancienne de Logic ignore le bloc LogicRun.</p>
+  <p>Essayez vous-même dans la <a href="les12.html">leçon 12 : Programmer avec LogicRun</a>.</p>

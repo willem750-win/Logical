@@ -1,0 +1,84 @@
+<!-- titel: LogicRun -->
+  <h1 id="logicrun"><img src="../img/knop-logicrun.png" class="ico" alt="">LogicRun: in Schritten programmieren</h1>
+  <p class="lead">LogicRun ist ein Block, den Sie nicht verdrahten, sondern <b>programmieren</b>. Sie schreiben
+  eine Folge von Schritten; jeder Schritt schaltet einige Ausgänge ein. So bauen Sie eine Ampel, ein Lauflicht
+  oder einen Zähler, ohne ein einziges Gatter zu verwenden.</p>
+
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="LogicRun-Block mit zwei Tastern und drei Lampen">
+    <figcaption>Ein LogicRun-Block: die Taster sind an DIN1 (Start/Stopp) und DIN3 (+1), die Lampen an
+    UIT0, UIT1 und UIT2.</figcaption>
+  </figure>
+
+  <h2 id="blok">Der Block</h2>
+  <ul>
+    <li><b>Links: 4 Eingänge</b> DIN1 bis DIN4. Unter jedem Eingang steht, was er tut (siehe <a href="#ingangen">Die Eingänge</a>).</li>
+    <li><b>Rechts: 8 Ausgänge</b> UIT0 bis UIT7, jeder mit einem Lämpchen, das rot wird, wenn der Ausgang ein ist.</li>
+    <li><b>Unten</b> der Schritt, bei dem das Programm ist, oder <i>gestoppt</i>.</li>
+  </ul>
+  <p>Sie verbinden den Block mit gewöhnlichen <a href="verbindingen.html">Drähten</a>: Schalter und Sensoren
+  mit den Eingängen, die Ausgänge mit Lampen, Relais, einem Summer oder den Eingängen anderer Bauteile.</p>
+  <ol class="steps">
+    <li>Klicken Sie in der Schaltflächenleiste auf <img src="../img/knop-logicrun.png" class="ico" alt=""><b>LogicRun</b>.
+      Das LogicRun-Fenster öffnet sich neben Logic.</li>
+    <li>Steht noch kein Block auf dem Panel, klicken Sie auf <b>Block auf das Panel setzen</b> und dann auf das Panel.</li>
+  </ol>
+  <p>Auf einem Panel kann nur <b>ein</b> LogicRun-Block stehen. Doppelklicken Sie auf den Block oder wählen Sie
+  <b>Programm bearbeiten...</b> im Rechtsklickmenü, um das Fenster zu öffnen. Über das Rechtsklickmenü können Sie
+  den Block auch sperren oder <a href="objecten.html#verwijderen">löschen</a>.</p>
+
+  <h2 id="venster">Das LogicRun-Fenster</h2>
+  <figure>
+    <img src="../img/logicrun-venster-de.png" alt="Das LogicRun-Fenster mit der Ampel">
+    <figcaption>Das Programm der Ampel: drei Schritte.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Schaltfläche oder Feld</th><th>Was macht es?</th></tr>
+    <tr><td><b>Start</b></td><td>Das Programm läuft, Schritt für Schritt.</td></tr>
+    <tr><td><b>Pause</b></td><td>Das Programm bleibt beim aktuellen Schritt stehen; die Ausgänge bleiben, wie sie sind.</td></tr>
+    <tr><td><b>Stopp</b></td><td>Das Programm hält an und geht zum Anfang zurück; alle Ausgänge gehen aus.</td></tr>
+    <tr><td><b>Schritt</b></td><td>Einen Schritt weiter, praktisch, um Ihr Programm Schritt für Schritt zu prüfen.</td></tr>
+    <tr><td><b>Schrittzeit</b></td><td>Wie lange eine Zeiteinheit dauert, in Millisekunden (500&nbsp;ms = eine halbe Sekunde).</td></tr>
+    <tr><td><b>Wiederholen</b></td><td>Ein: nach dem letzten Schritt beginnt das Programm von vorn. Aus: es hält beim letzten Schritt an.</td></tr>
+    <tr><td><b>Beispiel</b> und <b>Laden</b></td><td>Ein fertiges Programm laden (siehe <a href="#voorbeelden">Beispiele</a>).</td></tr>
+    <tr><td><b>+ Schritt</b> und <b>- Schritt</b></td><td>Einen Schritt nach dem gewählten Schritt einfügen oder den gewählten Schritt löschen.</td></tr>
+    <tr><td><b>DIN1</b> bis <b>DIN4</b></td><td>Was jeder Eingang tut.</td></tr>
+  </table>
+  <p>Oben sehen Sie, ob das Programm läuft und bei welchem Schritt es ist. Der aktuelle Schritt ist in der Tabelle hellblau.</p>
+
+  <h2 id="programma">Ein Programm erstellen</h2>
+  <ul>
+    <li>Jede <b>Zeile</b> der Tabelle ist ein Schritt. Das Programm führt die Schritte von oben nach unten aus.</li>
+    <li>Klicken Sie auf einen <b>Kreis</b>, um diesen Ausgang in diesem Schritt ein- (rot) oder auszuschalten (weiß).</li>
+    <li><b>Zeit x</b> gibt an, wie lange der Schritt dauert, in Vielfachen der Schrittzeit. Bei einer Schrittzeit von
+      500&nbsp;ms dauert ein Schritt mit Zeit&nbsp;6 drei Sekunden.</li>
+  </ul>
+  <p>Ein Programm hat höchstens 64 Schritte.</p>
+
+  <h2 id="ingangen">Die Eingänge</h2>
+  <p>Ein Eingang reagiert in dem Moment, in dem er <b>eingeschaltet</b> wird. Deshalb eignet sich ein
+  <a href="invoer.html#drukknop">Taster</a> am besten.</p>
+  <table>
+    <tr><th>Funktion</th><th>Was passiert, wenn der Eingang eingeschaltet wird?</th></tr>
+    <tr><td><b>Start/Stopp</b></td><td>Steht das Programm, startet es; läuft es, geht es in Pause.</td></tr>
+    <tr><td><b>Reset</b></td><td>Das Programm geht zum ersten Schritt.</td></tr>
+    <tr><td><b>+1</b></td><td>Das Programm geht einen Schritt weiter.</td></tr>
+    <tr><td><b>-</b></td><td>Nichts: der Eingang wird nicht verwendet.</td></tr>
+  </table>
+
+  <h2 id="voorbeelden">Beispiele</h2>
+  <table>
+    <tr><th>Beispiel</th><th>Ausgänge</th></tr>
+    <tr><td>Ampel</td><td>UIT0 rot, UIT1 gelb, UIT2 grün.</td></tr>
+    <tr><td>Lauflicht</td><td>UIT0 bis UIT7 gehen nacheinander an.</td></tr>
+    <tr><td>Motor links/rechts</td><td>UIT0 Motor links, UIT1 Motor rechts, mit einem kurzen Halt dazwischen.</td></tr>
+    <tr><td>4-Bit-Zähler</td><td>UIT0 bis UIT3 zählen binär von 0 bis 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+  </table>
+  <div class="tip"><strong>Tipp:</strong> ein Beispiel zu laden ersetzt das Programm. Mit <kbd>Strg</kbd>+<kbd>Z</kbd>
+  bekommen Sie das vorherige Programm zurück.</div>
+
+  <h2 id="bewaren">Speichern</h2>
+  <p>Das Programm wird zusammen mit dem Panel in der Paneldatei (<code>.lpl</code>) gespeichert.
+  <a href="knoppen.html#ongedaan">Rückgängig</a> funktioniert auch für Änderungen am Programm. Eine ältere
+  Version von Logic überspringt den LogicRun-Block.</p>
+  <p>Probieren Sie es selbst in <a href="les12.html">Lektion 12: Programmieren mit LogicRun</a>.</p>

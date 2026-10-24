@@ -1,0 +1,50 @@
+<!-- titel: Lektion 12 - Programmieren mit LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 12 von 12</p>
+  <h1>Programmieren mit LogicRun</h1>
+  <div class="goal"><strong>Ziel:</strong> eine Ampel mit einem Programm statt mit Gattern und Drähten betreiben,
+  so wie es ein kleiner Computer oder eine SPS tut.</div>
+
+  <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="LogicRun-Block mit zwei Tastern und drei Lampen">
+    <figcaption>Das Programm läuft: UIT0 ist ein, die obere Lampe (rot) leuchtet.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Den <a href="logicrun.html">LogicRun-Block</a> in der Mitte.</li>
+    <li>Links zwei Taster: der obere ist an <b>DIN1</b> (Start/Stopp), der untere an <b>DIN3</b> (+1).</li>
+    <li>Rechts drei Lampen wie eine Ampel: <b>UIT0</b> rot (oben), <b>UIT1</b> gelb (Mitte) und
+      <b>UIT2</b> grün (unten).</li>
+  </ul>
+
+  <h2>Das Programm</h2>
+  <p>Doppelklicken Sie auf den Block: das LogicRun-Fenster öffnet sich. Das Programm hat drei Schritte:</p>
+  <table>
+    <tr><th>Schritt</th><th>Ein</th><th>Zeit x</th><th>Dauer (Schrittzeit 500&nbsp;ms)</th></tr>
+    <tr><td>1</td><td>UIT0 (rot)</td><td>6</td><td>3 Sekunden</td></tr>
+    <tr><td>2</td><td>UIT2 (grün)</td><td>6</td><td>3 Sekunden</td></tr>
+    <tr><td>3</td><td>UIT1 (gelb)</td><td>2</td><td>1 Sekunde</td></tr>
+  </table>
+  <p>Weil <b>Wiederholen</b> eingeschaltet ist, beginnt das Programm nach Schritt 3 wieder bei Schritt 1.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und drücken Sie den oberen Taster: die Ampel beginnt zu laufen.</li>
+    <li>Drücken Sie noch einmal: das Programm macht Pause. Drücken Sie dann einige Male den unteren Taster:
+      bei jedem Druck geht das Programm einen Schritt weiter.</li>
+    <li>Schauen Sie im Fenster mit: der aktuelle Schritt ist hellblau.</li>
+  </ol>
+
+  <h2>Aufgabe</h2>
+  <p>Lassen Sie das grüne Licht 5 statt 3 Sekunden leuchten. Fügen Sie danach eine Fußgängerampel hinzu: eine
+  vierte Lampe an <b>UIT3</b>, die nur leuchtet, wenn die Ampel rot ist.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Bei einer Schrittzeit von 500&nbsp;ms sind 5 Sekunden das 10-fache der Schrittzeit: setzen Sie
+    <b>Zeit x</b> von Schritt 2 auf 10. Klicken Sie in Schritt 1 (rot) auch den Kreis von UIT3 an. Setzen Sie eine
+    Lampe auf das Panel und legen Sie einen Draht von UIT3 zu dieser Lampe. So steuert ein einziges Programm
+    mehrere Lampen gleichzeitig.</p>
+  </details>
+
+  <div class="pager"><a href="les11.html">&larr; Lektion 11: Das Relais</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

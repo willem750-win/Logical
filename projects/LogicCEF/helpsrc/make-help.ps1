@@ -27,32 +27,32 @@ $Pages = @(
   'index', 'installeren', 'werkwijze', 'leerpad',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
   'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding',
-  'group:werken', 'verbindingen', 'objecten', 'simulatie', 'instellingen'
+  'group:werken', 'verbindingen', 'objecten', 'simulatie', 'logicrun', 'instellingen'
 )
 
 $Nav = @{
   nl = @{ index = 'Start'; installeren = 'Installeren'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
           voeding = 'Voeding &amp; voltmeter';
-          verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie';
+          verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie'; logicrun = 'LogicRun';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
   en = @{ index = 'Start'; installeren = 'Installing'; werkwijze = 'Getting started'; leerpad = 'Learning path'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
           voeding = 'Power &amp; voltmeter';
-          verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation';
+          verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation'; logicrun = 'LogicRun';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
   fr = @{ index = 'Accueil'; installeren = 'Installation'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
           voeding = 'Alimentation &amp; voltmètre';
-          verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation';
+          verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation'; logicrun = 'LogicRun';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
   de = @{ index = 'Start'; installeren = 'Installation'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
           voeding = 'Versorgung &amp; Voltmeter';
-          verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation';
+          verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation'; logicrun = 'LogicRun';
           instellingen = 'Einstellungen &amp; Sprache';
           'group:scherm' = 'Das Fenster'; 'group:onderdelen' = 'Bauteile'; 'group:werken' = 'Arbeiten mit Logic' }
 }
@@ -62,7 +62,7 @@ $NavIcon = @{
   leerpad = 'knop-paneelkeuze';
   knoppen = 'knop-simuleren'; paneel = 'knop-raster'; onderdelenbalk = 'pal-verbinding';
   invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus';
-  verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren';
+  verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren'; logicrun = 'knop-logicrun';
   instellingen = 'knop-instellingen'
 }
 

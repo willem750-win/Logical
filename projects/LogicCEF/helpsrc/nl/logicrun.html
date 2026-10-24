@@ -1,0 +1,84 @@
+<!-- titel: LogicRun -->
+  <h1 id="logicrun"><img src="../img/knop-logicrun.png" class="ico" alt="">LogicRun: programmeren in stappen</h1>
+  <p class="lead">LogicRun is een blok dat je niet bedraadt maar <b>programmeert</b>. Je schrijft een reeks
+  stappen; elke stap zet een aantal uitgangen aan. Zo maak je een verkeerslicht, een looplicht of een
+  teller zonder één poort te gebruiken.</p>
+
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="LogicRun-blok met twee drukknoppen en drie lampen">
+    <figcaption>Een LogicRun-blok: de drukknoppen zitten op DIN1 (start/stop) en DIN3 (+1), de lampen op
+    UIT0, UIT1 en UIT2.</figcaption>
+  </figure>
+
+  <h2 id="blok">Het blok</h2>
+  <ul>
+    <li><b>Links: 4 ingangen</b> DIN1 tot DIN4. Onder elke ingang staat wat hij doet (zie <a href="#ingangen">De ingangen</a>).</li>
+    <li><b>Rechts: 8 uitgangen</b> UIT0 tot UIT7, elk met een lampje dat rood wordt als de uitgang aan is.</li>
+    <li><b>Onderaan</b> de stap waar het programma is, of <i>gestopt</i>.</li>
+  </ul>
+  <p>Je verbindt het blok met gewone <a href="verbindingen.html">draden</a>: schakelaars en sensoren naar de
+  ingangen, de uitgangen naar lampen, relais, een zoemer of de ingangen van andere onderdelen.</p>
+  <ol class="steps">
+    <li>Klik in de knoppenbalk op <img src="../img/knop-logicrun.png" class="ico" alt=""><b>LogicRun</b>. Het
+      LogicRun-venster gaat open naast Logic.</li>
+    <li>Staat er nog geen blok op het paneel, klik dan op <b>Blok op het paneel zetten</b> en daarna op het paneel.</li>
+  </ol>
+  <p>Er kan maar <b>één</b> LogicRun-blok op een paneel staan. Dubbelklik op het blok, of kies
+  <b>Programma bewerken...</b> in het rechtsklikmenu, om het venster te openen. Via het rechtsklikmenu kan je
+  het blok ook vergrendelen of <a href="objecten.html#verwijderen">verwijderen</a>.</p>
+
+  <h2 id="venster">Het LogicRun-venster</h2>
+  <figure>
+    <img src="../img/logicrun-venster.png" alt="Het LogicRun-venster met het verkeerslicht">
+    <figcaption>Het programma van het verkeerslicht: drie stappen.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Knop of vak</th><th>Wat doet het?</th></tr>
+    <tr><td><b>Start</b></td><td>Het programma loopt, stap na stap.</td></tr>
+    <tr><td><b>Pauze</b></td><td>Het programma blijft staan op de huidige stap; de uitgangen blijven zoals ze zijn.</td></tr>
+    <tr><td><b>Stop</b></td><td>Het programma stopt en gaat terug naar het begin; alle uitgangen gaan uit.</td></tr>
+    <tr><td><b>Stap</b></td><td>Eén stap verder, handig om je programma stap voor stap te controleren.</td></tr>
+    <tr><td><b>Stapduur</b></td><td>Hoe lang één tijdseenheid duurt, in milliseconden (500&nbsp;ms = een halve seconde).</td></tr>
+    <tr><td><b>Herhalen</b></td><td>Aan: na de laatste stap begint het programma opnieuw. Uit: het stopt bij de laatste stap.</td></tr>
+    <tr><td><b>Voorbeeld</b> en <b>Laden</b></td><td>Een kant-en-klaar programma laden (zie <a href="#voorbeelden">Voorbeelden</a>).</td></tr>
+    <tr><td><b>+ stap</b> en <b>- stap</b></td><td>Een stap toevoegen na de gekozen stap, of de gekozen stap verwijderen.</td></tr>
+    <tr><td><b>DIN1</b> tot <b>DIN4</b></td><td>Wat elke ingang doet.</td></tr>
+  </table>
+  <p>Bovenaan zie je of het programma loopt en bij welke stap het is. De huidige stap is in de tabel lichtblauw.</p>
+
+  <h2 id="programma">Een programma maken</h2>
+  <ul>
+    <li>Elke <b>rij</b> in de tabel is een stap. Het programma doet de stappen van boven naar onder.</li>
+    <li>Klik op een <b>rondje</b> om die uitgang in die stap aan (rood) of uit (wit) te zetten.</li>
+    <li><b>tijd x</b> zegt hoe lang de stap duurt, in keer de stapduur. Met een stapduur van 500&nbsp;ms duurt een
+      stap met tijd&nbsp;6 drie seconden.</li>
+  </ul>
+  <p>Een programma heeft hoogstens 64 stappen.</p>
+
+  <h2 id="ingangen">De ingangen</h2>
+  <p>Een ingang reageert op het moment dat hij <b>aan</b> gaat. Gebruik er daarom bij voorkeur een
+  <a href="invoer.html#drukknop">drukknop</a> voor.</p>
+  <table>
+    <tr><th>Functie</th><th>Wat gebeurt er als de ingang aan gaat?</th></tr>
+    <tr><td><b>start/stop</b></td><td>Staat het programma stil, dan start het; loopt het, dan pauzeert het.</td></tr>
+    <tr><td><b>reset</b></td><td>Het programma gaat naar de eerste stap.</td></tr>
+    <tr><td><b>+1</b></td><td>Het programma gaat één stap verder.</td></tr>
+    <tr><td><b>-</b></td><td>Niets: de ingang wordt niet gebruikt.</td></tr>
+  </table>
+
+  <h2 id="voorbeelden">Voorbeelden</h2>
+  <table>
+    <tr><th>Voorbeeld</th><th>Uitgangen</th></tr>
+    <tr><td>Verkeerslicht</td><td>UIT0 rood, UIT1 oranje, UIT2 groen.</td></tr>
+    <tr><td>Looplicht</td><td>UIT0 tot UIT7 gaan één voor één aan.</td></tr>
+    <tr><td>Motor links/rechts</td><td>UIT0 motor links, UIT1 motor rechts, met een korte stop ertussen.</td></tr>
+    <tr><td>4-bitteller</td><td>UIT0 tot UIT3 tellen binair van 0 tot 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> een voorbeeld laden vervangt het programma. Met <kbd>Ctrl</kbd>+<kbd>Z</kbd>
+  krijg je het vorige programma terug.</div>
+
+  <h2 id="bewaren">Opslaan</h2>
+  <p>Het programma wordt samen met het paneel bewaard in het paneelbestand (<code>.lpl</code>). Ook
+  <a href="knoppen.html#ongedaan">ongedaan maken</a> werkt voor wijzigingen in het programma. Een oudere versie van
+  Logic slaat het LogicRun-blok over.</p>
+  <p>Probeer het zelf in <a href="les12.html">les 12: Programmeren met LogicRun</a>.</p>
