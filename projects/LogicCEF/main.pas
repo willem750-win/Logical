@@ -13,7 +13,7 @@ uses
   // wordt de help in de standaardbrowser van het systeem geopend.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   // Frames om in te laden
-  FSettings;
+  FSettings, uLogicRun;
 const
   IniFileName = 'taal.ini';
 
@@ -161,6 +161,11 @@ type
      FUndoCur, FUndoCurSorted: string;
      FUndoKill: Integer;
      btUndo, btRedo: TSpeedButton;
+     btLogicRun: TSpeedButton;          // LogicRun-venster openen
+     FLogicRunForm: TLogicRunForm;
+     procedure btLogicRunClick(Sender: TObject);
+     procedure LogicRunEdit(Sender: TObject);
+     function LogicRunTaal: string;
      procedure CreateUndoButtons;
      procedure UpdateUndoHints;
      procedure UpdateUndoButtons;
@@ -1407,9 +1412,34 @@ begin
   Result.Transparent := True;
 end;
 
+// Knop LogicRun: een lijstje (het programma) met een groene startpijl.
+function MakeLogicRunGlyph: TBitmap;
+var
+  i: Integer;
+begin
+  Result := TBitmap.Create;
+  Result.SetSize(16, 16);
+  Result.Canvas.Brush.Color := clFuchsia;
+  Result.Canvas.FillRect(0, 0, 16, 16);
+  Result.Canvas.Pen.Color := clNavy;
+  Result.Canvas.Pen.Width := 2;
+  for i := 0 to 2 do
+  begin
+    Result.Canvas.MoveTo(1, 3 + i * 5);
+    Result.Canvas.LineTo(8, 3 + i * 5);
+  end;
+  Result.Canvas.Pen.Width := 1;
+  Result.Canvas.Pen.Color := clGreen;
+  Result.Canvas.Brush.Color := clLime;
+  Result.Canvas.Polygon([Point(10, 3), Point(15, 8), Point(10, 13)]);
+  Result.TransparentColor := clFuchsia;
+  Result.Transparent := True;
+end;
+
 procedure TmainForm.CreateUndoButtons;
 var
   i, OldRight: Integer;
+  G: TBitmap;
 
   function MakeButton(ALeft: Integer; ARedo: Boolean; AClick: TNotifyEvent): TSpeedButton;
   var
@@ -1444,13 +1474,29 @@ begin
   // van de bewerkbalk op een vaste plaats staan (Bewaren, Openen, ...)
   // schuiven evenveel mee, anders liggen ze onder de nieuwe knoppen
   OldRight := Panel2.Left + Panel2.Width;
-  Panel2.Width := Panel2.Width + 56;
+  Panel2.Width := Panel2.Width + 84;
   for i := 0 to Panel2.Parent.ControlCount - 1 do
     with Panel2.Parent.Controls[i] do
       if (Align = alNone) and (Left >= OldRight) then
-        Left := Left + 56;
+        Left := Left + 84;
   btUndo := MakeButton(BSettings2.Left + BSettings2.Width + 2, False, @btUndoClick);
   btRedo := MakeButton(btUndo.Left + btUndo.Width + 2, True, @btRedoClick);
+  // LogicRun (programmeermodule) rechts daarvan
+  btLogicRun := TSpeedButton.Create(Self);
+  btLogicRun.Parent := Panel2;
+  btLogicRun.SetBounds(btRedo.Left + btRedo.Width + 2, 2, 26, 22);
+  btLogicRun.Flat := True;
+  btLogicRun.ShowHint := True;
+  btLogicRun.ParentShowHint := False;
+  G := MakeLogicRunGlyph;
+  try
+    btLogicRun.Glyph := G;
+  finally
+    G.Free;
+  end;
+  btLogicRun.OnClick := @btLogicRunClick;
+  btLogicRun.OnMouseEnter := @btSimulateMouseEnter;
+  btLogicRun.HelpKeyword := 'logicrun';
   UpdateUndoHints;
   UpdateUndoButtons;
 end;
@@ -1478,6 +1524,53 @@ begin
     btUndo.Hint := 'Ongedaan maken (Ctrl+Z)';
     btRedo.Hint := 'Opnieuw (Ctrl+Y)';
   end;
+  if Assigned(btLogicRun) then
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: btLogicRun.Hint := 'LogicRun: program in steps';
+      chatgridpcodeSmall.lgFrench:  btLogicRun.Hint := 'LogicRun : programme par pas';
+      chatgridpcodeSmall.lgGerman:  btLogicRun.Hint := 'LogicRun: Programm in Schritten';
+    else
+      btLogicRun.Hint := 'LogicRun: programma in stappen';
+    end;
+  if Assigned(FLogicRunForm) then
+    FLogicRunForm.SetTaal(LogicRunTaal);
+end;
+
+// taal voor het LogicRun-venster (zoals BTaal van de onderdelen)
+function TmainForm.LogicRunTaal: string;
+begin
+  case Grid.Language of
+    chatgridpcodeSmall.lgEnglish: Result := 'ENG';
+    chatgridpcodeSmall.lgFrench:  Result := 'FR';
+    chatgridpcodeSmall.lgGerman:  Result := 'DU';
+  else
+    Result := 'NL';
+  end;
+end;
+
+// LogicRun-venster tonen (knop in de werkbalk, dubbelklik of rechtsklikmenu
+// van het blok); het venster wordt één keer gemaakt en daarna hergebruikt
+procedure TmainForm.LogicRunEdit(Sender: TObject);
+var
+  L: Integer;
+begin
+  if FLogicRunForm = nil then
+  begin
+    FLogicRunForm := TLogicRunForm.CreateFor(Self, Grid, Box);
+    FLogicRunForm.SetTaal(LogicRunTaal);
+    // naast het hoofdvenster, zolang het op het scherm past
+    L := Left + Width;
+    if L + FLogicRunForm.Width > Screen.WorkAreaRect.Right then
+      L := Screen.WorkAreaRect.Right - FLogicRunForm.Width;
+    FLogicRunForm.SetBounds(L, Top, FLogicRunForm.Width, FLogicRunForm.Height);
+  end;
+  FLogicRunForm.Show;
+  FLogicRunForm.BringToFront;
+end;
+
+procedure TmainForm.btLogicRunClick(Sender: TObject);
+begin
+  LogicRunEdit(nil);
 end;
 
 procedure TmainForm.UpdateUndoButtons;
@@ -1827,7 +1920,7 @@ begin
          (C is TjanDipSwitsh) or (C is TjanLogic) or (C is TjanTeller) or
          (C is TjanMemory) or (C is TjanSimLight) or (C is TjanSimRelais) or
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
-         (C is TjanMeter))  then
+         (C is TjanMeter) or (C is TjanLogicRun))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 
@@ -2076,6 +2169,8 @@ begin
 
   // knoppen ongedaan maken / opnieuw in de werkbalk
   CreateUndoButtons;
+  // dubbelklik / rechtsklikmenu van het LogicRun-blok
+  LogicRunEditHook := @LogicRunEdit;
 
   Application.OnShowHint := @AppShowHint;
   Application.HintColor := clYellow;
