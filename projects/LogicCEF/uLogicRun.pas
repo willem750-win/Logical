@@ -41,6 +41,7 @@ type
     procedure FillAll;
     procedure FillStatus;
     procedure FillTexts;
+    procedure Relayout;
     procedure StartClick(Sender: TObject);
     procedure PauseClick(Sender: TObject);
     procedure StopClick(Sender: TObject);
@@ -178,10 +179,11 @@ begin
   SG.FixedCols := 1;
   SG.FixedRows := 1;
   SG.DefaultColWidth := 44;
-  SG.ColWidths[0] := 46;
+  SG.ColWidths[0] := 58;
   SG.ColWidths[ColTijd] := 64;
   SG.DefaultRowHeight := 24;
   SG.Options := [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing];
+  SG.ScrollBars := ssAutoVertical;
   SG.OnDrawCell := @GridDrawCell;
   SG.OnMouseUp := @GridMouseUp;
   SG.OnSelectEditor := @GridSelectEditor;
@@ -254,6 +256,69 @@ begin
     CbDin[i].Items.Add('+1');
     CbDin[i].ItemIndex := Keep;
   end;
+  Relayout;
+end;
+
+// Rij 2 bovenaan en de rij met de ingangen onderaan schuiven op volgens de
+// echte breedte van de teksten (die verschilt per taal en per systeem; onder
+// Linux/GTK2 zijn letters en keuzelijsten breder).
+procedure TLogicRunForm.Relayout;
+var
+  B: TBitmap;
+  X, i, j, W, Need: Integer;
+
+  function TW(const S: string): Integer;
+  begin
+    Result := B.Canvas.TextWidth(S);
+  end;
+
+begin
+  B := TBitmap.Create;
+  try
+    B.SetSize(4, 4);
+    B.Canvas.Font.Assign(Font);
+    // bovenaan, tweede rij: stapduur, ms, herhalen, voorbeeld
+    X := 8;
+    LbDuur.Left := X;
+    X := X + TW(LbDuur.Caption) + 8;
+    SpDuur.Left := X;
+    X := X + SpDuur.Width + 4;
+    LbMs.Left := X;
+    X := X + TW(LbMs.Caption) + 14;
+    CkHerhalen.Left := X;
+    CkHerhalen.Width := TW(CkHerhalen.Caption) + 30;
+    X := X + CkHerhalen.Width + 14;
+    LbEx.Left := X;
+    X := X + TW(LbEx.Caption) + 8;
+    W := 0;
+    for i := 0 to CbEx.Items.Count - 1 do
+      if TW(CbEx.Items[i]) > W then W := TW(CbEx.Items[i]);
+    CbEx.Left := X;
+    CbEx.Width := W + 40;
+    X := X + CbEx.Width + 6;
+    BtLoadEx.Left := X;
+    BtLoadEx.Width := TW(BtLoadEx.Caption) + 24;
+    Need := X + BtLoadEx.Width + 8;
+    // onderaan: DIN1..DIN4 met hun keuzelijst
+    W := 0;
+    for j := 0 to CbDin[0].Items.Count - 1 do
+      if TW(CbDin[0].Items[j]) > W then W := TW(CbDin[0].Items[j]);
+    X := 8;
+    for i := 0 to 3 do
+    begin
+      LbDin[i].Left := X;
+      X := X + TW(LbDin[i].Caption) + 6;
+      CbDin[i].Left := X;
+      CbDin[i].Width := W + 40;
+      X := X + CbDin[i].Width + 12;
+    end;
+    if X > Need then Need := X;
+  finally
+    B.Free;
+  end;
+  // het venster breed genoeg voor alles
+  Constraints.MinWidth := Need;
+  if Width < Need then Width := Need;
 end;
 
 procedure TLogicRunForm.Bind(ABlock: TjanLogicRun);
