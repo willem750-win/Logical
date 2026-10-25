@@ -2455,7 +2455,11 @@ Box.NewObject:=false;
   begin
      for a := wc.ControlCount - 1 downto 0 do
      begin
-       Child := wc.controls[a];Child.visible:=true;screen.cursor:=crDefault;
+       Child := wc.controls[a];
+       // de onderdelenbalk (Box) zit zelf ook op het paneel: die blijft
+       // verborgen tijdens de simulatie
+       if Child <> Box then Child.visible:=true;
+       screen.cursor:=crDefault;
      end;
   end;
 if Grid.Capture then   Grid.CaptureSelectedRegion;
