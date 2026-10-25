@@ -1,13 +1,13 @@
-TjanLogicRun;150;270;100;120;500;1;4;0;0;0;1:1:3:1:5,2:4,4:1;
+TjanLogicRun;150;270;100;120;500;1;4;0;0;0;1:1:3:1:5,6:4;
 TjanSimMotor;52;490;80;80;
 TjanSimLight;23;490;150;69;3;
-TjanSimButton;32;110;270;58;
 TjanSimKnop;50;110;100;51;
+TjanSimPuls;80;110;250;50;
 TjanTeller;84;490;240;150;
 TjanDisplay;90;670;240;74;
 TjanConnector;16;152;120;127;jcmTL;jcpTL;jcsTLBR;0,5;-1;
-TjanConnector;134;159;151;120;jcmTL;jcpBL;jcsTRBL;0,5;-1;
-TjanConnector;24;159;276;340;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;129;152;151;127;jcmTL;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;29;152;271;347;jcmTL;jcpTL;jcsTLBR;0,5;-1;
 TjanConnector;15;381;115;118;jcmTL;jcpBL;jcsTRBL;0,5;-1;
 TjanConnector;26;381;135;118;jcmTL;jcpTL;jcsTLBR;0,5;-1;
 TjanConnector;111;381;149;118;jcmTL;jcpTL;jcsTLBR;0,5;-1;

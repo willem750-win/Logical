@@ -487,6 +487,7 @@ type
   TjanTeller = class(TGraphicControl)
   private
     Select:Boolean;
+    FResetRonde: Cardinal;  // simulatieronde waarin Re laatst hoog was
     FStat1  : TStat1;
     FOnStat1Change            : TBit1ChangeEvent;
     FStat2  : TStat2;
@@ -1279,6 +1280,7 @@ type
     procedure ButtonClick3(sender:TObject);  // info Ja/Nee
     procedure ButtonNClick(sender:TObject); //wijzig naam
     procedure ButtonClick4(sender:TObject);  // xxxx selecteer object voor verwijdering
+    procedure FrequentieClick(Sender: TObject);
     procedure SetInfo(const Value: String); //xxx
 
     procedure mTimer(sender: TObject);
@@ -2563,6 +2565,8 @@ procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer); f
 function SymOf(C: TComponent): TjanSymbolen; forward;
 
   var
+    // nummer van de huidige simulatieronde (cpuOnTimer, alle draden één keer)
+    SimRonde: Cardinal = 0;
     GlobalSimBox: TjanSimLogicBox;
 
 CONST
@@ -7646,6 +7650,33 @@ begin
   C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
 end;
 
+// impulsgenerator: halve periode in ms (zo lang is de puls hoog en ook laag)
+const
+  PulsIntervalStandaard = 300;
+  PulsIntervallen: array[0..4] of Integer = (1000, 500, 300, 200, 100);
+
+function PulsFrequentieText(AInterval: Integer): string;
+begin
+  if AInterval <= 0 then AInterval := PulsIntervalStandaard;
+  Result := FormatFloat('0.#', 1000 / (2 * AInterval)) + ' Hz';
+end;
+
+// halve periode van een impulsgenerator uit de rest van de regel
+// (S = 'breedte;interval;', zonder interval de standaard)
+function PulsIntervalUitRest(const S: string): Integer;
+var p: Integer;
+    Rest: string;
+begin
+  Result := PulsIntervalStandaard;
+  p := Pos(';', S);
+  if p = 0 then Exit;
+  Rest := Copy(S, p + 1, MaxInt);
+  p := Pos(';', Rest);
+  if p > 0 then Rest := Copy(Rest, 1, p - 1);
+  Result := StrToIntDef(Trim(Rest), PulsIntervalStandaard);
+  if (Result < 20) or (Result > 10000) then Result := PulsIntervalStandaard;
+end;
+
 // kleur van een lamp uit de rest van de regel in het paneelbestand
 // (S = 'breedte;kleur;', zonder kleur een gewone lamp)
 function LampKleurUitRest(const S: string): TLampKleur;
@@ -9108,6 +9139,7 @@ procedure TjanTeller.SetInput1(const Value: boolean);
 begin
   if value=true then
   begin
+    FResetRonde := SimRonde;
     FBits := 0;FBitsChar:='0';
     FOutPutBit1:=false;FOutPutBit2:=false;FOutPutBit4:=false;FOutPutBit8:=false;
     invalidate;
@@ -9118,6 +9150,9 @@ end;
 procedure TjanTeller.SetLoop(const Value: boolean);
 begin
   FLoop := value;
+  // reset gaat voor: een telpuls in dezelfde ronde als Re hoog telt niet
+  if value and (SimRonde <> 0) and (FResetRonde = SimRonde) then
+    Exit;
   if value=true then
   begin
      inc(FBits);
@@ -13833,7 +13868,8 @@ end;
 
 procedure TjanSimPuls.BuildPopup;
         var
-        miLock, miName, miInfo, miPuls, miSelect: TMenuItem;
+        miLock, miName, miInfo, miPuls, miSelect, mi: TMenuItem;
+        i: Integer;
        begin
          if not Assigned(PopupMenu) then
            PopupMenu := TPopupMenu.Create(Self)
@@ -13862,6 +13898,30 @@ procedure TjanSimPuls.BuildPopup;
            miSelect.Name := 'miSelect';
            miSelect.OnClick := ButtonClick4;     // Delphi-mode: geen @
            popupMenu.Items.Add(miSelect);
+
+           // --- Frequentie: hoe snel de pulsen komen
+           miPuls := TMenuItem.Create(PopupMenu);
+           miPuls.Caption := Tr(BTaal, 'Frequentie', 'Frequency', 'Fréquence', 'Frequenz');
+           PopupMenu.Items.Add(miPuls);
+           for i := Low(PulsIntervallen) to High(PulsIntervallen) do
+           begin
+             mi := TMenuItem.Create(PopupMenu);
+             mi.Caption := PulsFrequentieText(PulsIntervallen[i]) + '  (' +
+               Tr(BTaal, 'elke ', 'every ', 'toutes les ', 'alle ') +
+               FormatFloat('0.##', 2 * PulsIntervallen[i] / 1000) + ' s)';
+             if PulsIntervallen[i] = PulsIntervalStandaard then
+               mi.Caption := mi.Caption + ' - ' + Tr(BTaal, 'standaard', 'default', 'par défaut', 'Standard');
+             mi.Tag := PulsIntervallen[i];
+             mi.RadioItem := True;
+             mi.Checked := PulsIntervallen[i] = FPulsinterval;
+             mi.OnClick := FrequentieClick;
+             miPuls.Add(mi);
+           end;
+       end;
+
+       procedure TjanSimPuls.FrequentieClick(Sender: TObject);
+       begin
+         PulsInterval := TMenuItem(Sender).Tag;
        end;
 
        procedure TjanSimPuls.UpdatePopupCaptions;
@@ -13995,7 +14055,12 @@ begin
        else
        PaintLed(p,FPuls);
 
-     Pu:=IntToStr(pulsinterval);
+     // de frequentie klein onder de pulstekst
+     Pu:=PulsFrequentieText(FPulsinterval);
+     brush.style:=bsClear;
+     Font.Name:='Arial';Font.Size:=7;Font.Style:=[];
+     Font.Color:=clNavy;
+     TextOut((Self.Width - TextWidth(Pu)) div 2, 53, Pu);
 
     Unlock;
     end;
@@ -14207,6 +14272,7 @@ begin
   if value<>FPulsinterval then
   begin
     FPulsinterval := Value;
+    puls.Interval := Value;   // loopt hij al, dan meteen het nieuwe tempo
  end;
 invalidate;
 end;
@@ -17440,6 +17506,7 @@ procedure TjanSimLogicBox.cpuOnTimer(sender: TObject);
 var wc:TWinControl;
     i:integer;
 begin
+  Inc(SimRonde);
   wc:=parent;
   for i:=0 to wc.ControlCount-1 do
     if (wc.controls[i] is TjanConnector) then
@@ -17969,6 +18036,9 @@ begin
       begin
         with TjanSimPuls(c) do
           lijn := Format('TjanSimPuls;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+        // frequentie als extra veld, alleen als ze niet de standaard is
+        if TjanSimPuls(c).PulsInterval <> PulsIntervalStandaard then
+          lijn := lijn + IntToStr(TjanSimPuls(c).PulsInterval) + ';';
         SFile.Add(lijn);
       end
       else if c is TjanDipSwitsh then
@@ -18075,7 +18145,9 @@ begin
       else if c is TjanLogicRun then
         s := s + ';' + TjanLogicRun(c).ProgramText
       else if c is TjanSimLight then
-        s := s + Format(';%d', [Ord(TjanSimLight(c).Kleur)]);
+        s := s + Format(';%d', [Ord(TjanSimLight(c).Kleur)])
+      else if c is TjanSimPuls then
+        s := s + Format(';%d', [TjanSimPuls(c).PulsInterval]);
       L.Add(s);
     end;
     // volgorde doet er niet toe (BringToFront bij de simulatie verandert ze)
@@ -18190,6 +18262,9 @@ begin
     begin
       with TjanSimPuls(c) do
         lijn := Format('TjanSimPuls;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+      // frequentie als extra veld, alleen als ze niet de standaard is
+      if TjanSimPuls(c).PulsInterval <> PulsIntervalStandaard then
+        lijn := lijn + IntToStr(TjanSimPuls(c).PulsInterval) + ';';
       TempFile.Add(lijn);
     end
     else if c is TjanDipSwitsh then
@@ -18745,6 +18820,7 @@ begin
           Top    := StrToInt(Trim(obj[4]));
           Height := StrToInt(Trim(obj[2]));
           Width  := StrToInt(Trim(obj[5]));
+          PulsInterval := PulsIntervalUitRest(S);   // frequentie na de breedte
           FObjectID := wc.ControlCount; Lock := True;
 
           if Language = stDutch   then BTaal := 'NL'  else
@@ -23630,7 +23706,9 @@ begin
     case Wacht of
       lrwAan:    Result := FIn[WachtDin];
       lrwUit:    Result := not FIn[WachtDin];
-      lrwPulsen: Result := FPulses >= WachtN;
+      // pas verder als de laatste puls voorbij is: zo krijgen andere
+      // onderdelen op dezelfde ingang (bv. een teller) die puls nog mee
+      lrwPulsen: Result := (FPulses >= WachtN) and not FIn[WachtDin];
     else
       Result := True;
     end;
