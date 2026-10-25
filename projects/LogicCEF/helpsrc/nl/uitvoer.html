@@ -48,6 +48,23 @@ $1  <p id="led"><b>Led:</b> klik met de rechtermuisknop op een lamp en kies <b>K
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Zoemer</h2>
   <p>Gaat af zolang de ingang aan is. Handig als alarm.</p>
 
+  <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Motor</h2>
+  <p>Een motor met twee ingangen: <b>L</b> laat hem linksom draaien, <b>R</b> rechtsom. Je ziet de rotor
+  ronddraaien en een groene pijl toont de draairichting.</p>
+  <figure>
+    <img src="../img/motor-voorbeeld.png" alt="Een motor die linksom draait">
+    <figcaption>De motor draait linksom: L is aan.</figcaption>
+  </figure>
+  <ul>
+    <li>Allebei uit: de motor staat stil.</li>
+    <li>L en R <b>allebei aan</b>: de motor draait niet en krijgt een rode rand met een <b>!</b>. In het echt zou dat
+      kortsluiting of schade geven: zorg dat L en R nooit samen aan zijn.</li>
+    <li>Met <a href="voeding.html">voedingsrails</a> zit de motor, net als andere uitvoer, met zijn rechterkant tegen
+      een &minus; rail (of met een voedingsdraad). Zonder voeding draait hij niet.</li>
+  </ul>
+  <p>Met <a href="logicrun.html">LogicRun</a> kan je de motor laten draaien volgens een programma, bijvoorbeeld met het
+  voorbeeld <b>Motor links/rechts</b>: UIT0 naar L, UIT1 naar R.</p>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segmentdisplay</h2>
   <p>Het display heeft één ingang. Wat het toont, hangt af van wat je erop aansluit:</p>
   <ul>

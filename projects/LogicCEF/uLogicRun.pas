@@ -254,6 +254,7 @@ begin
     CbDin[i].Items.Add(T('start/stop', 'start/stop', 'marche/arrêt', 'Start/Stopp'));
     CbDin[i].Items.Add(T('reset', 'reset', 'remise à 0', 'Reset'));
     CbDin[i].Items.Add('+1');
+    CbDin[i].Items.Add(T('aan/uit', 'on/off', 'actif/inactif', 'Ein/Aus'));
     CbDin[i].ItemIndex := Keep;
   end;
   Relayout;

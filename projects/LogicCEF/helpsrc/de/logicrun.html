@@ -56,13 +56,14 @@
   <p>Ein Programm hat höchstens 64 Schritte.</p>
 
   <h2 id="ingangen">Die Eingänge</h2>
-  <p>Ein Eingang reagiert in dem Moment, in dem er <b>eingeschaltet</b> wird. Deshalb eignet sich ein
-  <a href="invoer.html#drukknop">Taster</a> am besten.</p>
+  <p>Die meisten Funktionen reagieren in dem Moment, in dem der Eingang <b>eingeschaltet</b> wird: verwenden Sie dafür einen
+  <a href="invoer.html#drukknop">Taster</a>. Für einen <a href="invoer.html#schakelaar">Schalter</a> gibt es die Funktion <b>Ein/Aus</b>.</p>
   <table>
     <tr><th>Funktion</th><th>Was passiert, wenn der Eingang eingeschaltet wird?</th></tr>
     <tr><td><b>Start/Stopp</b></td><td>Steht das Programm, startet es; läuft es, geht es in Pause.</td></tr>
     <tr><td><b>Reset</b></td><td>Das Programm geht zum ersten Schritt.</td></tr>
     <tr><td><b>+1</b></td><td>Das Programm geht einen Schritt weiter.</td></tr>
+    <tr><td><b>Ein/Aus</b></td><td>Das Programm läuft, solange der Eingang ein ist. Geht er aus, hält das Programm an und alle Ausgänge gehen aus (praktisch mit einem Schalter).</td></tr>
     <tr><td><b>-</b></td><td>Nichts: der Eingang wird nicht verwendet.</td></tr>
   </table>
 
@@ -71,7 +72,7 @@
     <tr><th>Beispiel</th><th>Ausgänge</th></tr>
     <tr><td>Ampel</td><td>UIT0 rot, UIT1 gelb, UIT2 grün.</td></tr>
     <tr><td>Lauflicht</td><td>UIT0 bis UIT7 gehen nacheinander an.</td></tr>
-    <tr><td>Motor links/rechts</td><td>UIT0 Motor links, UIT1 Motor rechts, mit einem kurzen Halt dazwischen.</td></tr>
+    <tr><td>Motor links/rechts</td><td>UIT0 Motor links, UIT1 Motor rechts, mit einem kurzen Halt dazwischen. Verbinden Sie sie mit L und R eines <a href="uitvoer.html#motor">Motors</a>.</td></tr>
     <tr><td>4-Bit-Zähler</td><td>UIT0 bis UIT3 zählen binär von 0 bis 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
   </table>
   <div class="tip"><strong>Tipp:</strong> ein Beispiel zu laden ersetzt das Programm. Mit <kbd>Strg</kbd>+<kbd>Z</kbd>

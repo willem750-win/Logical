@@ -56,13 +56,14 @@
   <p>Een programma heeft hoogstens 64 stappen.</p>
 
   <h2 id="ingangen">De ingangen</h2>
-  <p>Een ingang reageert op het moment dat hij <b>aan</b> gaat. Gebruik er daarom bij voorkeur een
-  <a href="invoer.html#drukknop">drukknop</a> voor.</p>
+  <p>De meeste functies reageren op het moment dat de ingang <b>aan</b> gaat: gebruik daarvoor een
+  <a href="invoer.html#drukknop">drukknop</a>. Voor een <a href="invoer.html#schakelaar">schakelaar</a> is er de functie <b>aan/uit</b>.</p>
   <table>
     <tr><th>Functie</th><th>Wat gebeurt er als de ingang aan gaat?</th></tr>
     <tr><td><b>start/stop</b></td><td>Staat het programma stil, dan start het; loopt het, dan pauzeert het.</td></tr>
     <tr><td><b>reset</b></td><td>Het programma gaat naar de eerste stap.</td></tr>
     <tr><td><b>+1</b></td><td>Het programma gaat één stap verder.</td></tr>
+    <tr><td><b>aan/uit</b></td><td>Het programma loopt zolang de ingang aan is. Gaat hij uit, dan stopt het en gaan alle uitgangen uit (handig met een schakelaar).</td></tr>
     <tr><td><b>-</b></td><td>Niets: de ingang wordt niet gebruikt.</td></tr>
   </table>
 
@@ -71,7 +72,7 @@
     <tr><th>Voorbeeld</th><th>Uitgangen</th></tr>
     <tr><td>Verkeerslicht</td><td>UIT0 rood, UIT1 oranje, UIT2 groen.</td></tr>
     <tr><td>Looplicht</td><td>UIT0 tot UIT7 gaan één voor één aan.</td></tr>
-    <tr><td>Motor links/rechts</td><td>UIT0 motor links, UIT1 motor rechts, met een korte stop ertussen.</td></tr>
+    <tr><td>Motor links/rechts</td><td>UIT0 motor links, UIT1 motor rechts, met een korte stop ertussen. Verbind ze met L en R van een <a href="uitvoer.html#motor">motor</a>.</td></tr>
     <tr><td>4-bitteller</td><td>UIT0 tot UIT3 tellen binair van 0 tot 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> een voorbeeld laden vervangt het programma. Met <kbd>Ctrl</kbd>+<kbd>Z</kbd>

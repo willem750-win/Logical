@@ -878,7 +878,7 @@ Begin
     SettingsFrame.PropB22.Note:= SettingsFrame.Note;  // Belangrijk om een capture te doen van PropB22
     SettingsFrame.PropB22.DefaultPropHolder:=SettingsFrame.iniBox_schakellelementen;
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
-    SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
+    SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
                                   'KSensor,KTeller,KWarm,KDraad,KVoeding,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
@@ -888,7 +888,7 @@ Begin
     SettingsFrame.PropB222.Note:= SettingsFrame.Note;  // Belangrijk om een capture te doen van PropB222
     SettingsFrame.PropB222.DefaultPropHolder:=SettingsFrame.iniBox_Hints;
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
-    SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
+    SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
                                   'HSensor,HTeller,HWarm,HMeter,HRailPlus,HRailMin,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
@@ -1920,7 +1920,7 @@ begin
          (C is TjanDipSwitsh) or (C is TjanLogic) or (C is TjanTeller) or
          (C is TjanMemory) or (C is TjanSimLight) or (C is TjanSimRelais) or
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
-         (C is TjanMeter) or (C is TjanLogicRun))  then
+         (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 
@@ -2550,7 +2550,11 @@ Box.NewObject:=false;
   begin
      for a := wc.ControlCount - 1 downto 0 do
      begin
-       Child := wc.controls[a];Child.visible:=true;screen.cursor:=crDefault;
+       Child := wc.controls[a];
+       // de onderdelenbalk (Box) zit zelf ook op het paneel: die blijft
+       // verborgen tijdens de simulatie
+       if Child <> Box then Child.visible:=true;
+       screen.cursor:=crDefault;
      end;
   end;
 if Grid.Capture then   Grid.CaptureSelectedRegion;

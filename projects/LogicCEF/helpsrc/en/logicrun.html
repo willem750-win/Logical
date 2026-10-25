@@ -56,13 +56,14 @@
   <p>A program has at most 64 steps.</p>
 
   <h2 id="ingangen">The inputs</h2>
-  <p>An input reacts at the moment it switches <b>on</b>. That is why a
-  <a href="invoer.html#drukknop">push button</a> works best.</p>
+  <p>Most functions react at the moment the input switches <b>on</b>: use a
+  <a href="invoer.html#drukknop">push button</a> for them. For a <a href="invoer.html#schakelaar">switch</a> there is the <b>on/off</b> function.</p>
   <table>
     <tr><th>Function</th><th>What happens when the input switches on?</th></tr>
     <tr><td><b>start/stop</b></td><td>If the program is not running, it starts; if it is running, it pauses.</td></tr>
     <tr><td><b>reset</b></td><td>The program goes to the first step.</td></tr>
     <tr><td><b>+1</b></td><td>The program goes one step further.</td></tr>
+    <tr><td><b>on/off</b></td><td>The program runs as long as the input is on. When it goes off, the program stops and all outputs go off (handy with a switch).</td></tr>
     <tr><td><b>-</b></td><td>Nothing: the input is not used.</td></tr>
   </table>
 
@@ -71,7 +72,7 @@
     <tr><th>Example</th><th>Outputs</th></tr>
     <tr><td>Traffic light</td><td>UIT0 red, UIT1 amber, UIT2 green.</td></tr>
     <tr><td>Running light</td><td>UIT0 to UIT7 switch on one by one.</td></tr>
-    <tr><td>Motor left/right</td><td>UIT0 motor left, UIT1 motor right, with a short stop in between.</td></tr>
+    <tr><td>Motor left/right</td><td>UIT0 motor left, UIT1 motor right, with a short stop in between. Connect them to L and R of a <a href="uitvoer.html#motor">motor</a>.</td></tr>
     <tr><td>4-bit counter</td><td>UIT0 to UIT3 count in binary from 0 to 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> loading an example replaces the program. With <kbd>Ctrl</kbd>+<kbd>Z</kbd>

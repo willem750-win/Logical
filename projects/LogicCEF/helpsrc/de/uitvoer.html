@@ -45,6 +45,23 @@ $1  <p id="led"><b>LED:</b> Klicken Sie mit der rechten Maustaste auf eine Lampe
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Summer</h2>
   <p>Ertönt, solange der Eingang ein ist. Praktisch als Alarm.</p>
 
+  <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Motor</h2>
+  <p>Ein Motor mit zwei Eingängen: <b>L</b> lässt ihn links herum drehen (gegen den Uhrzeigersinn), <b>R</b> rechts
+  herum (im Uhrzeigersinn). Sie sehen den Rotor drehen, und ein grüner Pfeil zeigt die Richtung.</p>
+  <figure>
+    <img src="../img/motor-voorbeeld.png" alt="Ein Motor, der links herum dreht">
+    <figcaption>Der Motor dreht links herum: L ist ein.</figcaption>
+  </figure>
+  <ul>
+    <li>Beide aus: der Motor steht still.</li>
+    <li>L und R <b>beide ein</b>: der Motor dreht nicht und bekommt einen roten Rand mit einem <b>!</b>. In Wirklichkeit
+      gäbe das einen Kurzschluss oder Schaden: sorgen Sie dafür, dass L und R nie zusammen ein sind.</li>
+    <li>Mit <a href="voeding.html">Versorgungsschienen</a> sitzt der Motor wie andere Ausgänge mit seiner rechten Seite
+      an einer &minus; Schiene (oder mit einem Versorgungsdraht). Ohne Versorgung dreht er nicht.</li>
+  </ul>
+  <p>Mit <a href="logicrun.html">LogicRun</a> können Sie den Motor nach einem Programm drehen lassen, zum Beispiel mit dem
+  Beispiel <b>Motor links/rechts</b>: UIT0 an L, UIT1 an R.</p>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-Segment-Anzeige</h2>
   <p>Die Anzeige hat einen Eingang. Was sie zeigt, hängt davon ab, was Sie anschließen:</p>
   <ul>

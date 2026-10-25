@@ -56,13 +56,14 @@
   <p>Un programme compte au maximum 64 pas.</p>
 
   <h2 id="ingangen">Les entrées</h2>
-  <p>Une entrée réagit au moment où elle passe à <b>1</b>. C&rsquo;est pourquoi un
-  <a href="invoer.html#drukknop">bouton-poussoir</a> convient le mieux.</p>
+  <p>La plupart des fonctions réagissent au moment où l&rsquo;entrée passe à <b>1</b> : utilisez pour elles un
+  <a href="invoer.html#drukknop">bouton-poussoir</a>. Pour un <a href="invoer.html#schakelaar">interrupteur</a>, il y a la fonction <b>actif/inactif</b>.</p>
   <table>
     <tr><th>Fonction</th><th>Que se passe-t-il quand l&rsquo;entrée passe à 1 ?</th></tr>
     <tr><td><b>marche/arrêt</b></td><td>Si le programme est arrêté, il démarre ; s&rsquo;il tourne, il se met en pause.</td></tr>
     <tr><td><b>remise à 0</b></td><td>Le programme revient au premier pas.</td></tr>
     <tr><td><b>+1</b></td><td>Le programme avance d&rsquo;un pas.</td></tr>
+    <tr><td><b>actif/inactif</b></td><td>Le programme tourne tant que l&rsquo;entrée est active. Quand elle repasse à 0, le programme s&rsquo;arrête et toutes les sorties s&rsquo;éteignent (pratique avec un interrupteur).</td></tr>
     <tr><td><b>-</b></td><td>Rien : l&rsquo;entrée n&rsquo;est pas utilisée.</td></tr>
   </table>
 
@@ -71,7 +72,7 @@
     <tr><th>Exemple</th><th>Sorties</th></tr>
     <tr><td>Feu tricolore</td><td>UIT0 rouge, UIT1 orange, UIT2 vert.</td></tr>
     <tr><td>Chenillard</td><td>UIT0 à UIT7 s&rsquo;allument l&rsquo;une après l&rsquo;autre.</td></tr>
-    <tr><td>Moteur gauche/droite</td><td>UIT0 moteur à gauche, UIT1 moteur à droite, avec un court arrêt entre les deux.</td></tr>
+    <tr><td>Moteur gauche/droite</td><td>UIT0 moteur à gauche, UIT1 moteur à droite, avec un court arrêt entre les deux. Reliez-les à L et R d&rsquo;un <a href="uitvoer.html#motor">moteur</a>.</td></tr>
     <tr><td>Compteur 4 bits</td><td>UIT0 à UIT3 comptent en binaire de 0 à 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
   </table>
   <div class="tip"><strong>Astuce :</strong> charger un exemple remplace le programme. Avec <kbd>Ctrl</kbd>+<kbd>Z</kbd>,

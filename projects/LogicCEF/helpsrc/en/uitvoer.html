@@ -45,6 +45,23 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
   <p>Sounds as long as the input is on. Handy as an alarm.</p>
 
+  <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Motor</h2>
+  <p>A motor with two inputs: <b>L</b> makes it turn left (anticlockwise), <b>R</b> right (clockwise). You see the
+  rotor turn and a green arrow shows the direction.</p>
+  <figure>
+    <img src="../img/motor-voorbeeld.png" alt="A motor turning left">
+    <figcaption>The motor turns left: L is on.</figcaption>
+  </figure>
+  <ul>
+    <li>Both off: the motor stands still.</li>
+    <li>L and R <b>both on</b>: the motor does not turn and gets a red rim with a <b>!</b>. In reality that would cause
+      a short circuit or damage: make sure L and R are never on together.</li>
+    <li>With <a href="voeding.html">power rails</a> the motor, like other outputs, sits with its right side against a
+      &minus; rail (or uses a power wire). Without power it does not turn.</li>
+  </ul>
+  <p>With <a href="logicrun.html">LogicRun</a> you can make the motor turn according to a program, for example with
+  the <b>Motor left/right</b> example: UIT0 to L, UIT1 to R.</p>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>
   <p>The display has one input. What it shows depends on what you connect to it:</p>
   <ul>
