@@ -1,0 +1,55 @@
+<!-- titel: Les 14 - Een inpakmachine -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 14 van 14</p>
+  <h1>Een inpakmachine: tellen met LogicRun</h1>
+  <div class="goal"><strong>Doel:</strong> tellen hoeveel dozen er voorbij komen en na 5 dozen iets anders doen,
+  met LogicRun en de teller samen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les14-inpakmachine.png" alt="Inpakmachine met LogicRun, motor, led, teller en display">
+    <figcaption>De band draait; er zijn al 4 dozen geteld.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): de machine aan of uit.</li>
+    <li>Een <a href="invoer.html#drukknop">drukknop</a>: elke druk is een <b>doos</b> die voorbij komt. De drukknop heeft
+      twee draden: naar <b>DIN2</b> van LogicRun en naar <b>Te</b> van de <a href="verwerking.html#teller">teller</a>.
+      Een uitgang mag meerdere draden hebben.</li>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> met drie uitgangen:
+      <b>UIT0</b> naar <b>R</b> van de <a href="uitvoer.html#motor">motor</a> (de lopende band),
+      <b>UIT1</b> naar een oranje <a href="uitvoer.html#led">led</a> (inpakken) en
+      <b>UIT2</b> naar <b>Re</b> van de teller (op nul zetten).</li>
+    <li>De teller met een display, zodat je ziet hoeveel dozen er al zijn.</li>
+  </ul>
+
+  <h2>Het programma</h2>
+  <table>
+    <tr><th>Stap</th><th>Aan</th><th>Wat gebeurt er?</th><th>Hoe lang?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>de band draait</td><td><b>wacht op 5 x DIN2</b>: tot er 5 dozen voorbij zijn</td></tr>
+    <tr><td>2</td><td>UIT1</td><td>de band staat stil, de led brandt: inpakken</td><td>4 x 500&nbsp;ms = 2 seconden</td></tr>
+    <tr><td>3</td><td>UIT2</td><td>de teller gaat terug naar 0</td><td>1 x 500&nbsp;ms</td></tr>
+  </table>
+  <p>Stap 1 duurt geen vaste tijd: in de kolom <b>wacht op</b> staat <b>5 x DIN2</b>. Het programma telt de pulsen
+  op DIN2 en gaat pas verder bij de vijfde (zie <a href="logicrun.html#wacht">Wachten</a>). Bovenaan in het venster en
+  onderaan het blok zie je hoeveel er al geteld zijn, bijvoorbeeld <i>DIN2 4/5</i>.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: de band draait.</li>
+    <li>Druk vijf keer op de drukknop. Het display telt mee.</li>
+    <li>Na de vijfde doos stopt de band en brandt de led 2 seconden. Daarna gaat de teller terug naar 0 en draait de
+      band weer.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Maak dozen van 3 in plaats van 5. Laat de band daarna pas opnieuw starten als iemand op een tweede drukknop
+  <b>klaar</b> drukt.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Klik in stap 1 op <b>5 x DIN2</b> en kies <b>Tot aantal pulsen op ingang</b> &rsaquo; <b>DIN2</b> en vul 3 in.
+    Voeg na stap 3 een stap toe zonder uitgangen en kies bij <b>wacht op</b>: <b>Tot ingang aan</b> &rsaquo; <b>DIN3</b>.
+    Zet een tweede drukknop op het paneel en verbind die met DIN3. Laat DIN3 bij de ingangsfuncties op <b>-</b> staan.</p>
+  </details>
+
+  <div class="pager"><a href="les13.html">&larr; Les 13: Een motor sturen</a><a href="leerpad.html">Leerpad &rarr;</a></div>

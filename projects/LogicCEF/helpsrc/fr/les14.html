@@ -1,0 +1,57 @@
+<!-- titel: Leçon 14 - Une emballeuse -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 14 sur 14</p>
+  <h1>Une emballeuse : compter avec LogicRun</h1>
+  <div class="goal"><strong>Objectif :</strong> compter combien de boîtes passent et faire autre chose après 5 boîtes,
+  avec LogicRun et le compteur ensemble.</div>
+
+  <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les14-inpakmachine.png" alt="Emballeuse avec LogicRun, moteur, LED, compteur et afficheur">
+    <figcaption>Le tapis tourne ; 4 boîtes ont déjà été comptées.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous ?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>) : la machine
+      en marche ou à l&rsquo;arrêt.</li>
+    <li>Un <a href="invoer.html#drukknop">bouton-poussoir</a> : chaque appui est une <b>boîte</b> qui passe. Le bouton a
+      deux fils : vers <b>DIN2</b> de LogicRun et vers <b>Te</b> du <a href="verwerking.html#teller">compteur</a>.
+      Une sortie peut avoir plusieurs fils.</li>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> avec trois sorties :
+      <b>UIT0</b> vers <b>R</b> du <a href="uitvoer.html#motor">moteur</a> (le tapis roulant),
+      <b>UIT1</b> vers une <a href="uitvoer.html#led">LED</a> orange (emballage) et
+      <b>UIT2</b> vers <b>Re</b> du compteur (remise à zéro).</li>
+    <li>Le compteur avec un afficheur, pour voir combien de boîtes il y a.</li>
+  </ul>
+
+  <h2>Le programme</h2>
+  <table>
+    <tr><th>Pas</th><th>Actif</th><th>Que se passe-t-il ?</th><th>Combien de temps ?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>le tapis tourne</td><td><b>attendre 5 x DIN2</b> : jusqu&rsquo;à ce que 5 boîtes soient passées</td></tr>
+    <tr><td>2</td><td>UIT1</td><td>le tapis s&rsquo;arrête, la LED est allumée : emballage</td><td>4 x 500&nbsp;ms = 2 secondes</td></tr>
+    <tr><td>3</td><td>UIT2</td><td>le compteur revient à 0</td><td>1 x 500&nbsp;ms</td></tr>
+  </table>
+  <p>Le pas 1 n&rsquo;a pas de durée fixe : la colonne <b>attendre</b> indique <b>5 x DIN2</b>. Le programme compte les
+  impulsions sur DIN2 et ne continue qu&rsquo;à la cinquième (voir <a href="logicrun.html#wacht">Attendre</a>). En haut de
+  la fenêtre et en bas du bloc, vous voyez combien ont déjà été comptées, par exemple <i>DIN2 4/5</i>.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et fermez l&rsquo;interrupteur : le tapis tourne.</li>
+    <li>Appuyez cinq fois sur le bouton-poussoir. L&rsquo;afficheur compte.</li>
+    <li>Après la cinquième boîte, le tapis s&rsquo;arrête et la LED s&rsquo;allume pendant 2 secondes. Ensuite, le
+      compteur revient à 0 et le tapis tourne à nouveau.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Faites des boîtes de 3 au lieu de 5. Faites ensuite redémarrer le tapis seulement quand quelqu&rsquo;un appuie sur un
+  deuxième bouton-poussoir <b>prêt</b>.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Dans le pas 1, cliquez sur <b>5 x DIN2</b>, choisissez <b>Jusqu&rsquo;à un nombre d&rsquo;impulsions</b> &rsaquo;
+    <b>DIN2</b> et entrez 3. Ajoutez après le pas 3 un pas sans sorties et choisissez dans <b>attendre</b> :
+    <b>Jusqu&rsquo;à entrée active</b> &rsaquo; <b>DIN3</b>. Placez un deuxième bouton-poussoir sur le panneau et reliez-le
+    à DIN3. Laissez DIN3 sur <b>-</b> dans les fonctions des entrées.</p>
+  </details>
+
+  <div class="pager"><a href="les13.html">&larr; Leçon 13 : Commander un moteur</a><a href="leerpad.html">Parcours &rarr;</a></div>

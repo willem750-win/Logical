@@ -43,6 +43,7 @@
     <tr><td><b>Voorbeeld</b> en <b>Laden</b></td><td>Een kant-en-klaar programma laden (zie <a href="#voorbeelden">Voorbeelden</a>).</td></tr>
     <tr><td><b>+ stap</b> en <b>- stap</b></td><td>Een stap toevoegen na de gekozen stap, of de gekozen stap verwijderen.</td></tr>
     <tr><td><b>DIN1</b> tot <b>DIN4</b></td><td>Wat elke ingang doet.</td></tr>
+    <tr><td><b>wacht op</b></td><td>Klik in deze kolom om een stap te laten wachten op een ingang of op een aantal pulsen (zie <a href="#wacht">Wachten</a>).</td></tr>
   </table>
   <p>Bovenaan zie je of het programma loopt en bij welke stap het is. De huidige stap is in de tabel lichtblauw.</p>
 
@@ -54,6 +55,26 @@
       stap met tijd&nbsp;6 drie seconden.</li>
   </ul>
   <p>Een programma heeft hoogstens 64 stappen.</p>
+
+  <h2 id="wacht">Wachten op een ingang of op pulsen</h2>
+  <p>Een stap duurt normaal <b>tijd x</b> keer de stapduur. In de kolom <b>wacht op</b> kan je een stap in plaats
+  daarvan laten <b>wachten</b>. Klik in die kolom en kies:</p>
+  <table>
+    <tr><th>Keuze</th><th>De stap duurt tot ...</th><th>Bijvoorbeeld</th></tr>
+    <tr><td><b>Geen</b></td><td>de tijd om is (zoals gewoonlijk)</td><td>een verkeerslicht</td></tr>
+    <tr><td><b>Tot ingang aan</b></td><td>de gekozen ingang aan is</td><td>een eindschakelaar: het wagentje rijdt tot hij aan de muur komt</td></tr>
+    <tr><td><b>Tot ingang uit</b></td><td>de gekozen ingang uit is</td><td>wachten tot iemand een knop loslaat</td></tr>
+    <tr><td><b>Tot aantal pulsen op ingang</b></td><td>er zoveel pulsen op de ingang geweest zijn</td><td>dozen tellen: na 5 dozen stopt de band</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-wacht.png" alt="LogicRun-venster met een stap die op 5 pulsen wacht">
+    <figcaption>De inpakmachine: stap 1 wacht op 5 pulsen op DIN2; er zijn er al 2 geteld.</figcaption>
+  </figure>
+  <p>Een stap die wacht, heeft geen tijd: in de kolom <b>tijd x</b> staat dan een streepje. Bovenaan in het venster en
+  onderaan het blok zie je waarop de stap wacht en hoeveel pulsen er al geteld zijn.</p>
+  <div class="tip"><strong>Tip:</strong> zet een ingang waarop een stap wacht bij de ingangsfuncties op <b>-</b>, zodat
+  hij het programma niet ook start of stopt. Wil je de pulsen ook zien, verbind de ingang dan ook met de
+  <a href="verwerking.html#teller">teller</a> en zijn display (zie <a href="les14.html">les 14</a>).</div>
 
   <h2 id="ingangen">De ingangen</h2>
   <p>De meeste functies reageren op het moment dat de ingang <b>aan</b> gaat: gebruik daarvoor een
@@ -74,6 +95,8 @@
     <tr><td>Looplicht</td><td>UIT0 tot UIT7 gaan één voor één aan.</td></tr>
     <tr><td>Motor links/rechts</td><td>UIT0 motor links, UIT1 motor rechts, met een korte stop ertussen. Verbind ze met L en R van een <a href="uitvoer.html#motor">motor</a>.</td></tr>
     <tr><td>4-bitteller</td><td>UIT0 tot UIT3 tellen binair van 0 tot 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+    <tr><td>Wagentje</td><td>UIT0 vooruit tot DIN3 aan is (eindschakelaar), even stil, UIT1 achteruit tot DIN4 aan is; DIN1 aan/uit. Verbind UIT0 met R en UIT1 met L van een motor.</td></tr>
+    <tr><td>Inpakmachine</td><td>UIT0 lopende band tot er 5 pulsen op DIN2 geweest zijn (dozen), UIT1 inpakken (2 s), UIT2 zet een teller op nul; DIN1 aan/uit.</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> een voorbeeld laden vervangt het programma. Met <kbd>Ctrl</kbd>+<kbd>Z</kbd>
   krijg je het vorige programma terug.</div>

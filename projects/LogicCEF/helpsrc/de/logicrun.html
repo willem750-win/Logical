@@ -43,6 +43,7 @@
     <tr><td><b>Beispiel</b> und <b>Laden</b></td><td>Ein fertiges Programm laden (siehe <a href="#voorbeelden">Beispiele</a>).</td></tr>
     <tr><td><b>+ Schritt</b> und <b>- Schritt</b></td><td>Einen Schritt nach dem gewählten Schritt einfügen oder den gewählten Schritt löschen.</td></tr>
     <tr><td><b>DIN1</b> bis <b>DIN4</b></td><td>Was jeder Eingang tut.</td></tr>
+    <tr><td><b>warten auf</b></td><td>Klicken Sie in diese Spalte, damit ein Schritt auf einen Eingang oder eine Anzahl Impulse wartet (siehe <a href="#wacht">Warten</a>).</td></tr>
   </table>
   <p>Oben sehen Sie, ob das Programm läuft und bei welchem Schritt es ist. Der aktuelle Schritt ist in der Tabelle hellblau.</p>
 
@@ -54,6 +55,27 @@
       500&nbsp;ms dauert ein Schritt mit Zeit&nbsp;6 drei Sekunden.</li>
   </ul>
   <p>Ein Programm hat höchstens 64 Schritte.</p>
+
+  <h2 id="wacht">Auf einen Eingang oder auf Impulse warten</h2>
+  <p>Ein Schritt dauert normalerweise <b>Zeit x</b> mal die Schrittzeit. In der Spalte <b>warten auf</b> können Sie
+  einen Schritt stattdessen <b>warten</b> lassen. Klicken Sie in diese Spalte und wählen Sie:</p>
+  <table>
+    <tr><th>Auswahl</th><th>Der Schritt dauert, bis ...</th><th>Zum Beispiel</th></tr>
+    <tr><td><b>Nichts</b></td><td>die Zeit um ist (wie üblich)</td><td>eine Ampel</td></tr>
+    <tr><td><b>Bis Eingang ein</b></td><td>der gewählte Eingang ein ist</td><td>ein Endschalter: der Wagen fährt, bis er die Wand erreicht</td></tr>
+    <tr><td><b>Bis Eingang aus</b></td><td>der gewählte Eingang aus ist</td><td>warten, bis jemand einen Taster loslässt</td></tr>
+    <tr><td><b>Bis Anzahl Impulse am Eingang</b></td><td>so viele Impulse am Eingang angekommen sind</td><td>Kartons zählen: nach 5 Kartons hält das Band an</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-wacht-de.png" alt="LogicRun-Fenster mit einem Schritt, der auf 5 Impulse wartet">
+    <figcaption>Die Verpackungsmaschine: Schritt 1 wartet auf 5 Impulse an DIN2; 2 sind schon gezählt.</figcaption>
+  </figure>
+  <p>Ein Schritt, der wartet, hat keine Zeit: in der Spalte <b>Zeit x</b> steht dann ein Strich. Oben im Fenster und
+  unten im Block sehen Sie, worauf der Schritt wartet und wie viele Impulse schon gezählt sind.</p>
+  <div class="tip"><strong>Tipp:</strong> stellen Sie einen Eingang, auf den ein Schritt wartet, bei den
+  Eingangsfunktionen auf <b>-</b>, damit er das Programm nicht auch startet oder stoppt. Um die Impulse auch zu sehen,
+  verbinden Sie den Eingang auch mit dem <a href="verwerking.html#teller">Zähler</a> und seiner Anzeige (siehe
+  <a href="les14.html">Lektion 14</a>).</div>
 
   <h2 id="ingangen">Die Eingänge</h2>
   <p>Die meisten Funktionen reagieren in dem Moment, in dem der Eingang <b>eingeschaltet</b> wird: verwenden Sie dafür einen
@@ -74,6 +96,8 @@
     <tr><td>Lauflicht</td><td>UIT0 bis UIT7 gehen nacheinander an.</td></tr>
     <tr><td>Motor links/rechts</td><td>UIT0 Motor links, UIT1 Motor rechts, mit einem kurzen Halt dazwischen. Verbinden Sie sie mit L und R eines <a href="uitvoer.html#motor">Motors</a>.</td></tr>
     <tr><td>4-Bit-Zähler</td><td>UIT0 bis UIT3 zählen binär von 0 bis 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+    <tr><td>Wagen</td><td>UIT0 vorwärts, bis DIN3 ein ist (Endschalter), kurzer Halt, UIT1 rückwärts bis DIN4; DIN1 Ein/Aus. Verbinden Sie UIT0 mit R und UIT1 mit L eines Motors.</td></tr>
+    <tr><td>Verpackungsmaschine</td><td>UIT0 Förderband, bis 5 Impulse an DIN2 angekommen sind (Kartons), UIT1 Verpacken (2 s), UIT2 setzt einen Zähler auf null; DIN1 Ein/Aus.</td></tr>
   </table>
   <div class="tip"><strong>Tipp:</strong> ein Beispiel zu laden ersetzt das Programm. Mit <kbd>Strg</kbd>+<kbd>Z</kbd>
   bekommen Sie das vorherige Programm zurück.</div>

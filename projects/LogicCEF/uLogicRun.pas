@@ -13,7 +13,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, StdCtrls, ExtCtrls, Grids,
-  Spin, janSimLogic, chatgridpcodeSmall;
+  Spin, Menus, Dialogs, janSimLogic, chatgridpcodeSmall;
 
 type
   TLogicRunForm = class(TForm)
@@ -25,6 +25,8 @@ type
     FShownProgram: string;     // programma zoals het nu in de tabel staat
     FUpdating: Boolean;
     FPoll: TTimer;
+    FWachtMenu: TPopupMenu;
+    FWachtStep: Integer;       // stap waarvoor het menu Wacht op open staat
     PnlTop, PnlBottom, PnlNoBlock: TPanel;
     BtStart, BtPause, BtStop, BtStep, BtLoadEx, BtAdd, BtDel, BtPlace: TButton;
     LbStatus, LbDuur, LbMs, LbEx, LbNoBlock: TLabel;
@@ -47,6 +49,9 @@ type
     procedure StopClick(Sender: TObject);
     procedure StepClick(Sender: TObject);
     procedure LoadExClick(Sender: TObject);
+    function WachtText(const St: TLogicRunStep): string;
+    procedure ShowWachtMenu(AStep: Integer);
+    procedure WachtClick(Sender: TObject);
     procedure AddClick(Sender: TObject);
     procedure DelClick(Sender: TObject);
     procedure PlaceClick(Sender: TObject);
@@ -69,7 +74,8 @@ type
 implementation
 
 const
-  ColTijd = 9;          // kolommen: 0 = stap, 1..8 = UIT0..UIT7, 9 = tijd
+  ColTijd = 9;          // kolommen: 0 = stap, 1..8 = UIT0..UIT7, 9 = tijd,
+  ColWacht = 10;        // 10 = voorwaarde (wacht op)
 
 constructor TLogicRunForm.CreateFor(AOwner: TComponent; AGrid: TjanGridS; ABox: TjanSimLogicBox);
 
@@ -174,13 +180,14 @@ begin
   SG := TStringGrid.Create(Self);
   SG.Parent := Self;
   SG.Align := alClient;
-  SG.ColCount := ColTijd + 1;
+  SG.ColCount := ColWacht + 1;
   SG.RowCount := 2;
   SG.FixedCols := 1;
   SG.FixedRows := 1;
   SG.DefaultColWidth := 44;
   SG.ColWidths[0] := 58;
   SG.ColWidths[ColTijd] := 64;
+  SG.ColWidths[ColWacht] := 104;
   SG.DefaultRowHeight := 24;
   SG.Options := [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing];
   SG.ScrollBars := ssAutoVertical;
@@ -238,12 +245,15 @@ begin
     'Auf dem Panel steht noch kein LogicRun-Block. Klicken Sie auf die Schaltfläche unten und dann auf das Panel, um ihn zu platzieren.');
   SG.Cells[0, 0] := T('stap', 'step', 'pas', 'Schritt');
   SG.Cells[ColTijd, 0] := T('tijd x', 'time x', 'durée x', 'Zeit x');
+  SG.Cells[ColWacht, 0] := T('wacht op', 'wait for', 'attendre', 'warten auf');
   Keep := CbEx.ItemIndex;
   CbEx.Items.Clear;
   CbEx.Items.Add(T('Verkeerslicht', 'Traffic light', 'Feu tricolore', 'Ampel'));
   CbEx.Items.Add(T('Looplicht', 'Running light', 'Chenillard', 'Lauflicht'));
   CbEx.Items.Add(T('Motor links/rechts', 'Motor left/right', 'Moteur gauche/droite', 'Motor links/rechts'));
   CbEx.Items.Add(T('4-bitteller', '4-bit counter', 'Compteur 4 bits', '4-Bit-Zähler'));
+  CbEx.Items.Add(T('Wagentje', 'Cart', 'Chariot', 'Wagen'));
+  CbEx.Items.Add(T('Inpakmachine', 'Packing machine', 'Emballeuse', 'Verpackungsmaschine'));
   if Keep < 0 then Keep := 0;
   CbEx.ItemIndex := Keep;
   for i := 0 to 3 do
@@ -318,6 +328,7 @@ begin
     B.Free;
   end;
   // het venster breed genoeg voor alles
+  if Need < 620 then Need := 620;   // de tabel met de kolom wacht op
   Constraints.MinWidth := Need;
   if Width < Need then Width := Need;
 end;
@@ -382,6 +393,17 @@ begin
   else
     LbStatus.Caption := Format('%s %d/%d', [T('pauze: stap', 'paused: step', 'en pause : pas', 'Pause: Schritt'),
       FBlock.CurrentStep + 1, FBlock.StepCount]);
+  // waarop de huidige stap wacht
+  if (FBlock <> nil) and (FBlock.CurrentStep >= 0) then
+    with FBlock.Steps[FBlock.CurrentStep] do
+      case Wacht of
+        lrwAan, lrwUit:
+          LbStatus.Caption := LbStatus.Caption + ' - ' +
+            T('wacht op ', 'waiting for ', 'attend ', 'wartet auf ') + WachtText(FBlock.Steps[FBlock.CurrentStep]);
+        lrwPulsen:
+          LbStatus.Caption := LbStatus.Caption + Format(' - %d/%d %s DIN%d',
+            [FBlock.Pulses, WachtN, T('pulsen op', 'pulses on', 'impulsions sur', 'Impulse an'), WachtDin + 1]);
+      end;
 end;
 
 procedure TLogicRunForm.FillAll;
@@ -402,6 +424,7 @@ begin
       begin
         SG.Cells[0, i + 1] := IntToStr(i + 1);
         SG.Cells[ColTijd, i + 1] := IntToStr(FBlock.Steps[i].Tijd);
+        SG.Cells[ColWacht, i + 1] := WachtText(FBlock.Steps[i]);
       end;
       if SpDuur.Value <> FBlock.StapDuur then
         SpDuur.Value := FBlock.StapDuur;
@@ -431,6 +454,18 @@ begin
     if aCol = ColTijd then
       C.TextOut(aRect.Left + 6, aRect.Top + 4, SG.Cells[aCol, aRow]);
   end;
+  // stap met een voorwaarde: de tijd geldt niet (grijs)
+  if (aCol = ColTijd) and (FBlock.Steps[aRow - 1].Wacht <> lrwGeen) then
+  begin
+    if aRow - 1 = FBlock.CurrentStep then C.Brush.Color := RGBToColor(200, 225, 255)
+    else C.Brush.Color := clWhite;
+    C.FillRect(aRect);
+    C.Font.Color := clGray;
+    C.TextOut(aRect.Left + 6, aRect.Top + 4, '-');
+    C.Font.Color := clBlack;
+  end;
+  if (aCol = ColWacht) and (aRow - 1 = FBlock.CurrentStep) then
+    C.TextOut(aRect.Left + 6, aRect.Top + 4, SG.Cells[aCol, aRow]);
   if (aCol >= 1) and (aCol <= 8) then
   begin
     On := (FBlock.Steps[aRow - 1].Bits and (1 shl (aCol - 1))) <> 0;
@@ -449,6 +484,11 @@ var
 begin
   if (FBlock = nil) or (Button <> mbLeft) then Exit;
   SG.MouseToCell(X, Y, aCol, aRow);
+  if (aRow >= 1) and (aRow <= FBlock.StepCount) and (aCol = ColWacht) then
+  begin
+    ShowWachtMenu(aRow - 1);
+    Exit;
+  end;
   if (aRow < 1) or (aRow > FBlock.StepCount) or (aCol < 1) or (aCol > 8) then Exit;
   // klik op een vakje: die uitgang in die stap aan/uit
   St := FBlock.Steps[aRow - 1];
@@ -581,7 +621,89 @@ begin
     2: Fill([1, 0, 2, 0], [4, 1, 4, 1], 500);
     3: Fill([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 500);
+    // wagentje: UIT0 vooruit tot DIN3 (eindschakelaar), 1 s stil, UIT1 achteruit
+    // tot DIN4, 1 s stil; DIN1 aan/uit
+    4: FBlock.SetProgramText('500;1;4;0;0;0;1:1:1:2:1,0:2,2:1:1:3:1,0:2');
+    // inpakmachine: UIT0 band tot 5 pulsen op DIN2 (dozen), UIT1 lamp
+    // inpakken 2 s, UIT2 teller op nul; DIN1 aan/uit
+    5: FBlock.SetProgramText('500;1;4;0;0;0;1:1:3:1:5,2:4,4:1');
   end;
+end;
+
+function TLogicRunForm.WachtText(const St: TLogicRunStep): string;
+begin
+  case St.Wacht of
+    lrwAan:    Result := Format('DIN%d %s', [St.WachtDin + 1, T('aan', 'on', 'actif', 'ein')]);
+    lrwUit:    Result := Format('DIN%d %s', [St.WachtDin + 1, T('uit', 'off', 'inactif', 'aus')]);
+    lrwPulsen: Result := Format('%d x DIN%d', [St.WachtN, St.WachtDin + 1]);
+  else
+    Result := '-';
+  end;
+end;
+
+// menu voor de voorwaarde van stap AStep: geen, ingang aan, ingang uit of
+// pulsen op een ingang (Tag = 10 x voorwaarde + ingang)
+procedure TLogicRunForm.ShowWachtMenu(AStep: Integer);
+
+  procedure AddSub(const ACaption: string; AWacht: TLogicRunWacht);
+  var
+    Sub, Mi: TMenuItem;
+    d: Integer;
+  begin
+    Sub := TMenuItem.Create(FWachtMenu);
+    Sub.Caption := ACaption;
+    FWachtMenu.Items.Add(Sub);
+    for d := 0 to 3 do
+    begin
+      Mi := TMenuItem.Create(FWachtMenu);
+      Mi.Caption := 'DIN' + IntToStr(d + 1);
+      Mi.Tag := Ord(AWacht) * 10 + d;
+      Mi.OnClick := @WachtClick;
+      Sub.Add(Mi);
+    end;
+  end;
+
+var
+  Mi: TMenuItem;
+  P: TPoint;
+begin
+  FWachtStep := AStep;
+  if FWachtMenu = nil then
+    FWachtMenu := TPopupMenu.Create(Self)
+  else
+    FWachtMenu.Items.Clear;
+  Mi := TMenuItem.Create(FWachtMenu);
+  Mi.Caption := T('Geen (de tijd telt)', 'None (the time counts)', 'Rien (la durée compte)', 'Nichts (die Zeit zählt)');
+  Mi.Tag := 0;
+  Mi.OnClick := @WachtClick;
+  FWachtMenu.Items.Add(Mi);
+  AddSub(T('Tot ingang aan', 'Until input on', 'Jusqu''à entrée active', 'Bis Eingang ein'), lrwAan);
+  AddSub(T('Tot ingang uit', 'Until input off', 'Jusqu''à entrée inactive', 'Bis Eingang aus'), lrwUit);
+  AddSub(T('Tot aantal pulsen op ingang', 'Until number of pulses on input', 'Jusqu''à un nombre d''impulsions', 'Bis Anzahl Impulse am Eingang'), lrwPulsen);
+  P := Mouse.CursorPos;
+  FWachtMenu.PopUp(P.X, P.Y);
+end;
+
+procedure TLogicRunForm.WachtClick(Sender: TObject);
+var
+  St: TLogicRunStep;
+  W: TLogicRunWacht;
+  S: string;
+begin
+  if (FBlock = nil) or (FWachtStep < 0) or (FWachtStep >= FBlock.StepCount) then Exit;
+  St := FBlock.Steps[FWachtStep];
+  W := TLogicRunWacht(TMenuItem(Sender).Tag div 10);
+  if W = lrwPulsen then
+  begin
+    if St.Wacht = lrwPulsen then S := IntToStr(St.WachtN) else S := '5';
+    if not InputQuery('LogicRun', T('Aantal pulsen:', 'Number of pulses:', 'Nombre d''impulsions :', 'Anzahl Impulse:'), S) then
+      Exit;
+    St.WachtN := StrToIntDef(Trim(S), 0);
+    if St.WachtN < 1 then St.WachtN := 1;
+  end;
+  St.Wacht := W;
+  St.WachtDin := TMenuItem(Sender).Tag mod 10;
+  FBlock.Steps[FWachtStep] := St;
 end;
 
 procedure TLogicRunForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

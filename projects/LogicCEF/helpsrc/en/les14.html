@@ -1,0 +1,55 @@
+<!-- titel: Lesson 14 - A packing machine -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 14 of 14</p>
+  <h1>A packing machine: counting with LogicRun</h1>
+  <div class="goal"><strong>Goal:</strong> count how many boxes pass by and do something else after 5 boxes,
+  with LogicRun and the counter together.</div>
+
+  <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les14-inpakmachine.png" alt="Packing machine with LogicRun, motor, LED, counter and display">
+    <figcaption>The belt is running; 4 boxes have been counted already.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): the machine on or off.</li>
+    <li>A <a href="invoer.html#drukknop">push button</a>: each press is a <b>box</b> passing by. The push button has
+      two wires: to <b>DIN2</b> of LogicRun and to <b>Te</b> of the <a href="verwerking.html#teller">counter</a>.
+      An output may have several wires.</li>
+    <li>The <a href="logicrun.html">LogicRun block</a> with three outputs:
+      <b>UIT0</b> to <b>R</b> of the <a href="uitvoer.html#motor">motor</a> (the conveyor belt),
+      <b>UIT1</b> to an orange <a href="uitvoer.html#led">LED</a> (packing) and
+      <b>UIT2</b> to <b>Re</b> of the counter (reset to zero).</li>
+    <li>The counter with a display, so you see how many boxes there are.</li>
+  </ul>
+
+  <h2>The program</h2>
+  <table>
+    <tr><th>Step</th><th>On</th><th>What happens?</th><th>How long?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>the belt runs</td><td><b>wait for 5 x DIN2</b>: until 5 boxes have passed</td></tr>
+    <tr><td>2</td><td>UIT1</td><td>the belt stops, the LED is lit: packing</td><td>4 x 500&nbsp;ms = 2 seconds</td></tr>
+    <tr><td>3</td><td>UIT2</td><td>the counter goes back to 0</td><td>1 x 500&nbsp;ms</td></tr>
+  </table>
+  <p>Step 1 has no fixed time: the <b>wait for</b> column shows <b>5 x DIN2</b>. The program counts the pulses on DIN2
+  and only continues at the fifth (see <a href="logicrun.html#wacht">Waiting</a>). At the top of the window and at the
+  bottom of the block you see how many have been counted, for example <i>DIN2 4/5</i>.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on: the belt runs.</li>
+    <li>Press the push button five times. The display counts along.</li>
+    <li>After the fifth box the belt stops and the LED is lit for 2 seconds. Then the counter goes back to 0 and the
+      belt runs again.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Make boxes of 3 instead of 5. Then make the belt only start again when someone presses a second push button
+  <b>ready</b>.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>In step 1 click <b>5 x DIN2</b>, choose <b>Until number of pulses on input</b> &rsaquo; <b>DIN2</b> and enter 3.
+    Add a step after step 3 without outputs and choose in <b>wait for</b>: <b>Until input on</b> &rsaquo; <b>DIN3</b>.
+    Put a second push button on the panel and connect it to DIN3. Leave DIN3 on <b>-</b> in the input functions.</p>
+  </details>
+
+  <div class="pager"><a href="les13.html">&larr; Lesson 13: Controlling a motor</a><a href="leerpad.html">Learning path &rarr;</a></div>

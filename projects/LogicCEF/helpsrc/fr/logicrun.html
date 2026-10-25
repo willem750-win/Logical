@@ -43,6 +43,7 @@
     <tr><td><b>Exemple</b> et <b>Charger</b></td><td>Charger un programme tout fait (voir <a href="#voorbeelden">Exemples</a>).</td></tr>
     <tr><td><b>+ pas</b> et <b>- pas</b></td><td>Ajouter un pas après le pas choisi, ou supprimer le pas choisi.</td></tr>
     <tr><td><b>DIN1</b> à <b>DIN4</b></td><td>Ce que fait chaque entrée.</td></tr>
+    <tr><td><b>attendre</b></td><td>Cliquez dans cette colonne pour faire attendre un pas une entrée ou un nombre d&rsquo;impulsions (voir <a href="#wacht">Attendre</a>).</td></tr>
   </table>
   <p>En haut, vous voyez si le programme tourne et à quel pas il se trouve. Le pas actuel est bleu clair dans le tableau.</p>
 
@@ -54,6 +55,26 @@
       un pas avec la valeur&nbsp;6 dure trois secondes.</li>
   </ul>
   <p>Un programme compte au maximum 64 pas.</p>
+
+  <h2 id="wacht">Attendre une entrée ou des impulsions</h2>
+  <p>Un pas dure normalement <b>durée x</b> fois la durée. Dans la colonne <b>attendre</b>, vous pouvez à la place
+  faire <b>attendre</b> un pas. Cliquez dans cette colonne et choisissez :</p>
+  <table>
+    <tr><th>Choix</th><th>Le pas dure jusqu&rsquo;à ce que ...</th><th>Par exemple</th></tr>
+    <tr><td><b>Rien</b></td><td>la durée soit écoulée (comme d&rsquo;habitude)</td><td>un feu tricolore</td></tr>
+    <tr><td><b>Jusqu&rsquo;à entrée active</b></td><td>l&rsquo;entrée choisie soit active</td><td>un fin de course : le chariot roule jusqu&rsquo;au mur</td></tr>
+    <tr><td><b>Jusqu&rsquo;à entrée inactive</b></td><td>l&rsquo;entrée choisie soit inactive</td><td>attendre que quelqu&rsquo;un relâche un bouton</td></tr>
+    <tr><td><b>Jusqu&rsquo;à un nombre d&rsquo;impulsions</b></td><td>ce nombre d&rsquo;impulsions soit arrivé sur l&rsquo;entrée</td><td>compter des boîtes : après 5 boîtes, le tapis s&rsquo;arrête</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-wacht-fr.png" alt="Fenêtre LogicRun avec un pas qui attend 5 impulsions">
+    <figcaption>L&rsquo;emballeuse : le pas 1 attend 5 impulsions sur DIN2 ; 2 sont déjà comptées.</figcaption>
+  </figure>
+  <p>Un pas qui attend n&rsquo;a pas de durée : la colonne <b>durée x</b> affiche alors un tiret. En haut de la fenêtre
+  et en bas du bloc, vous voyez ce que le pas attend et combien d&rsquo;impulsions ont déjà été comptées.</p>
+  <div class="tip"><strong>Astuce :</strong> mettez une entrée qu&rsquo;un pas attend sur <b>-</b> dans les fonctions des
+  entrées, pour qu&rsquo;elle ne démarre ni n&rsquo;arrête aussi le programme. Pour voir aussi les impulsions, reliez
+  l&rsquo;entrée au <a href="verwerking.html#teller">compteur</a> et à son afficheur (voir la <a href="les14.html">leçon 14</a>).</div>
 
   <h2 id="ingangen">Les entrées</h2>
   <p>La plupart des fonctions réagissent au moment où l&rsquo;entrée passe à <b>1</b> : utilisez pour elles un
@@ -74,6 +95,8 @@
     <tr><td>Chenillard</td><td>UIT0 à UIT7 s&rsquo;allument l&rsquo;une après l&rsquo;autre.</td></tr>
     <tr><td>Moteur gauche/droite</td><td>UIT0 moteur à gauche, UIT1 moteur à droite, avec un court arrêt entre les deux. Reliez-les à L et R d&rsquo;un <a href="uitvoer.html#motor">moteur</a>.</td></tr>
     <tr><td>Compteur 4 bits</td><td>UIT0 à UIT3 comptent en binaire de 0 à 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+    <tr><td>Chariot</td><td>UIT0 en avant jusqu&rsquo;à ce que DIN3 soit active (fin de course), un court arrêt, UIT1 en arrière jusqu&rsquo;à DIN4 ; DIN1 actif/inactif. Reliez UIT0 à R et UIT1 à L d&rsquo;un moteur.</td></tr>
+    <tr><td>Emballeuse</td><td>UIT0 tapis roulant jusqu&rsquo;à 5 impulsions sur DIN2 (boîtes), UIT1 emballage (2 s), UIT2 remet un compteur à zéro ; DIN1 actif/inactif.</td></tr>
   </table>
   <div class="tip"><strong>Astuce :</strong> charger un exemple remplace le programme. Avec <kbd>Ctrl</kbd>+<kbd>Z</kbd>,
   vous retrouvez le programme précédent.</div>

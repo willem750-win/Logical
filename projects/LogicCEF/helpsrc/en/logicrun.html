@@ -43,6 +43,7 @@
     <tr><td><b>Example</b> and <b>Load</b></td><td>Load a ready-made program (see <a href="#voorbeelden">Examples</a>).</td></tr>
     <tr><td><b>+ step</b> and <b>- step</b></td><td>Add a step after the selected step, or delete the selected step.</td></tr>
     <tr><td><b>DIN1</b> to <b>DIN4</b></td><td>What each input does.</td></tr>
+    <tr><td><b>wait for</b></td><td>Click in this column to make a step wait for an input or a number of pulses (see <a href="#wacht">Waiting</a>).</td></tr>
   </table>
   <p>At the top you see whether the program is running and which step it is at. The current step is light blue in the table.</p>
 
@@ -54,6 +55,26 @@
       with time&nbsp;6 lasts three seconds.</li>
   </ul>
   <p>A program has at most 64 steps.</p>
+
+  <h2 id="wacht">Waiting for an input or for pulses</h2>
+  <p>A step normally lasts <b>time x</b> times the step time. In the <b>wait for</b> column you can make a step
+  <b>wait</b> instead. Click in that column and choose:</p>
+  <table>
+    <tr><th>Choice</th><th>The step lasts until ...</th><th>For example</th></tr>
+    <tr><td><b>None</b></td><td>the time is up (as usual)</td><td>a traffic light</td></tr>
+    <tr><td><b>Until input on</b></td><td>the chosen input is on</td><td>a limit switch: the cart drives until it reaches the wall</td></tr>
+    <tr><td><b>Until input off</b></td><td>the chosen input is off</td><td>waiting until someone releases a button</td></tr>
+    <tr><td><b>Until number of pulses on input</b></td><td>that many pulses have arrived on the input</td><td>counting boxes: after 5 boxes the belt stops</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-wacht-en.png" alt="LogicRun window with a step that waits for 5 pulses">
+    <figcaption>The packing machine: step 1 waits for 5 pulses on DIN2; 2 have been counted already.</figcaption>
+  </figure>
+  <p>A step that waits has no time: the <b>time x</b> column then shows a dash. At the top of the window and at the
+  bottom of the block you see what the step is waiting for and how many pulses have been counted.</p>
+  <div class="tip"><strong>Tip:</strong> set an input that a step waits for to <b>-</b> in the input functions, so that
+  it does not also start or stop the program. To see the pulses too, also connect the input to the
+  <a href="verwerking.html#teller">counter</a> and its display (see <a href="les14.html">lesson 14</a>).</div>
 
   <h2 id="ingangen">The inputs</h2>
   <p>Most functions react at the moment the input switches <b>on</b>: use a
@@ -74,6 +95,8 @@
     <tr><td>Running light</td><td>UIT0 to UIT7 switch on one by one.</td></tr>
     <tr><td>Motor left/right</td><td>UIT0 motor left, UIT1 motor right, with a short stop in between. Connect them to L and R of a <a href="uitvoer.html#motor">motor</a>.</td></tr>
     <tr><td>4-bit counter</td><td>UIT0 to UIT3 count in binary from 0 to 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+    <tr><td>Cart</td><td>UIT0 forward until DIN3 is on (limit switch), a short stop, UIT1 backward until DIN4 is on; DIN1 on/off. Connect UIT0 to R and UIT1 to L of a motor.</td></tr>
+    <tr><td>Packing machine</td><td>UIT0 conveyor belt until 5 pulses have arrived on DIN2 (boxes), UIT1 packing (2 s), UIT2 resets a counter; DIN1 on/off.</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> loading an example replaces the program. With <kbd>Ctrl</kbd>+<kbd>Z</kbd>
   you get the previous program back.</div>

@@ -2277,9 +2277,15 @@ end;
   // lrdStartStop wisselt bij elk aanzetten (drukknop); lrdAanUit loopt zolang
   // de ingang aan is en stopt als hij uit gaat (schakelaar)
   TLogicRunDin = (lrdGeen, lrdStartStop, lrdReset, lrdStap, lrdAanUit);
+  // voorwaarde van een stap: geen (de stap duurt Tijd x StapDuur), wachten tot
+  // een ingang aan of uit is, of tot er N pulsen op een ingang geweest zijn
+  TLogicRunWacht = (lrwGeen, lrwAan, lrwUit, lrwPulsen);
   TLogicRunStep = record
     Bits: Byte;      // bit i = uitgang UITi
-    Tijd: Integer;   // aantal keer de stapduur
+    Tijd: Integer;   // aantal keer de stapduur (als Wacht = lrwGeen)
+    Wacht: TLogicRunWacht;
+    WachtDin: Integer;   // 0..3 = DIN1..DIN4
+    WachtN: Integer;     // aantal pulsen (lrwPulsen)
   end;
 
   TjanLogicRun = class(TGraphicControl)
@@ -2291,6 +2297,7 @@ end;
     FIn: array[0..3] of Boolean;
     FStep: Integer;            // huidige stap, -1 = gestopt (uitgangen uit)
     FCount: Integer;           // tikken in de huidige stap
+    FPulses: Integer;          // pulsen in de huidige stap (voorwaarde lrwPulsen)
     FRunning: Boolean;
     FTimer: TTimer;
     FLock: Boolean;
@@ -2320,6 +2327,8 @@ end;
     procedure SetTaal(const Value: string);
     procedure TimerTick(Sender: TObject);
     procedure Changed;
+    procedure NextStep;
+    function ConditionMet: Boolean;
     procedure AnchorConnectors;
     procedure MoveConnectors;
     procedure SendStatusToBar;
@@ -2367,6 +2376,8 @@ end;
     property Inputs[I: Integer]: Boolean read GetInput;
     property Outputs[I: Integer]: Boolean read GetOutput;
     property CurrentStep: Integer read FStep;
+    // pulsen geteld in de huidige stap (voor een stap die op pulsen wacht)
+    property Pulses: Integer read FPulses;
     property Running: Boolean read FRunning;
     // na elke wijziging van programma of toestand (het LogicRun-venster)
     property OnChange: TNotifyEvent read FOnChange write FOnChange;
@@ -23356,6 +23367,9 @@ procedure TjanLogicRun.SetStep(I: Integer; const Value: TLogicRunStep);
 begin
   FSteps[I] := Value;
   if FSteps[I].Tijd < 1 then FSteps[I].Tijd := 1;
+  if (FSteps[I].WachtDin < 0) or (FSteps[I].WachtDin > 3) then FSteps[I].WachtDin := 0;
+  if FSteps[I].WachtN < 1 then FSteps[I].WachtN := 1;
+  if FSteps[I].WachtN > 999 then FSteps[I].WachtN := 999;
   Changed;
 end;
 
@@ -23442,6 +23456,9 @@ begin
   FSteps[AIndex].Bits := ABits;
   if ATijd < 1 then ATijd := 1;
   FSteps[AIndex].Tijd := ATijd;
+  FSteps[AIndex].Wacht := lrwGeen;
+  FSteps[AIndex].WachtDin := 0;
+  FSteps[AIndex].WachtN := 1;
   Changed;
 end;
 
@@ -23458,6 +23475,7 @@ begin
 end;
 
 // stapduur;herhalen;din1;din2;din3;din4;bits:tijd,bits:tijd,...
+// (een stap met een voorwaarde: bits:tijd:wacht:din:n)
 function TjanLogicRun.ProgramText: string;
 var
   i: Integer;
@@ -23468,6 +23486,8 @@ begin
   begin
     if i > 0 then S := S + ',';
     S := S + Format('%d:%d', [FSteps[i].Bits, FSteps[i].Tijd]);
+    if FSteps[i].Wacht <> lrwGeen then
+      S := S + Format(':%d:%d:%d', [Ord(FSteps[i].Wacht), FSteps[i].WachtDin, FSteps[i].WachtN]);
   end;
   Result := Format('%d;%d;%d;%d;%d;%d;%s',
     [FStapDuur, Ord(FHerhalen), Ord(FDin[0]), Ord(FDin[1]), Ord(FDin[2]), Ord(FDin[3]), S]);
@@ -23475,12 +23495,13 @@ end;
 
 procedure TjanLogicRun.SetProgramText(const S: string);
 var
-  Parts, StepList: TStringList;
+  Parts, StepList, Fields: TStringList;
   i, p, D: Integer;
   Item: string;
 begin
   Parts := TStringList.Create;
   StepList := TStringList.Create;
+  Fields := TStringList.Create;
   try
     Parts.Delimiter := ';';
     Parts.StrictDelimiter := True;
@@ -23506,10 +23527,29 @@ begin
       p := Pos(':', Item);
       if p = 0 then Continue;
       if Length(FSteps) >= LR_MaxSteps then Break;
+      Fields.Delimiter := ':';
+      Fields.StrictDelimiter := True;
+      Fields.DelimitedText := Item;
       SetLength(FSteps, Length(FSteps) + 1);
-      FSteps[High(FSteps)].Bits := Byte(StrToIntDef(Copy(Item, 1, p - 1), 0));
-      FSteps[High(FSteps)].Tijd := StrToIntDef(Copy(Item, p + 1, MaxInt), 1);
-      if FSteps[High(FSteps)].Tijd < 1 then FSteps[High(FSteps)].Tijd := 1;
+      with FSteps[High(FSteps)] do
+      begin
+        Bits := Byte(StrToIntDef(Fields[0], 0));
+        Tijd := StrToIntDef(Fields[1], 1);
+        if Tijd < 1 then Tijd := 1;
+        Wacht := lrwGeen;
+        WachtDin := 0;
+        WachtN := 1;
+        if Fields.Count >= 5 then
+        begin
+          D := StrToIntDef(Fields[2], 0);
+          if (D >= Ord(Low(TLogicRunWacht))) and (D <= Ord(High(TLogicRunWacht))) then
+            Wacht := TLogicRunWacht(D);
+          WachtDin := StrToIntDef(Fields[3], 0);
+          if (WachtDin < 0) or (WachtDin > 3) then WachtDin := 0;
+          WachtN := StrToIntDef(Fields[4], 1);
+          if WachtN < 1 then WachtN := 1;
+        end;
+      end;
     end;
     if Length(FSteps) = 0 then
     begin
@@ -23518,9 +23558,11 @@ begin
       FSteps[0].Tijd := 1;
     end;
   finally
+    Fields.Free;
     StepList.Free;
     Parts.Free;
   end;
+  FPulses := 0;
   FStep := -1;
   FCount := 0;
   Changed;
@@ -23533,6 +23575,7 @@ begin
   begin
     FStep := 0;
     FCount := 0;
+    FPulses := 0;
   end;
   FRunning := True;
   FTimer.Interval := FStapDuur;
@@ -23549,6 +23592,7 @@ end;
 
 procedure TjanLogicRun.StopRun;
 begin
+  FPulses := 0;
   FRunning := False;
   FTimer.Enabled := False;
   FStep := -1;
@@ -23558,6 +23602,7 @@ end;
 
 procedure TjanLogicRun.StepOnce;
 begin
+  FPulses := 0;
   if Length(FSteps) = 0 then Exit;
   FCount := 0;
   if (FStep < 0) or (FStep >= High(FSteps)) then
@@ -23569,20 +23614,33 @@ end;
 
 procedure TjanLogicRun.ResetRun;
 begin
+  FPulses := 0;
   if Length(FSteps) = 0 then Exit;
   FStep := 0;
   FCount := 0;
   Changed;
 end;
 
-procedure TjanLogicRun.TimerTick(Sender: TObject);
+// is de voorwaarde van de huidige stap vervuld?
+function TjanLogicRun.ConditionMet: Boolean;
 begin
-  if (not FRunning) or (Length(FSteps) = 0) then Exit;
-  if (FStep < 0) or (FStep > High(FSteps)) then
-    FStep := 0;
-  Inc(FCount);
-  if FCount < FSteps[FStep].Tijd then Exit;
+  Result := False;
+  if (FStep < 0) or (FStep > High(FSteps)) then Exit;
+  with FSteps[FStep] do
+    case Wacht of
+      lrwAan:    Result := FIn[WachtDin];
+      lrwUit:    Result := not FIn[WachtDin];
+      lrwPulsen: Result := FPulses >= WachtN;
+    else
+      Result := True;
+    end;
+end;
+
+// naar de volgende stap (of opnieuw beginnen, of stoppen na de laatste)
+procedure TjanLogicRun.NextStep;
+begin
   FCount := 0;
+  FPulses := 0;
   if FStep < High(FSteps) then
     Inc(FStep)
   else if FHerhalen then
@@ -23594,6 +23652,22 @@ begin
     FTimer.Enabled := False;
   end;
   Changed;
+end;
+
+procedure TjanLogicRun.TimerTick(Sender: TObject);
+begin
+  if (not FRunning) or (Length(FSteps) = 0) then Exit;
+  if (FStep < 0) or (FStep > High(FSteps)) then
+    FStep := 0;
+  // een stap met een voorwaarde wacht daarop, niet op de tijd
+  if FSteps[FStep].Wacht <> lrwGeen then
+  begin
+    if ConditionMet then NextStep;
+    Exit;
+  end;
+  Inc(FCount);
+  if FCount < FSteps[FStep].Tijd then Exit;
+  NextStep;
 end;
 
 procedure TjanLogicRun.SetInput(I: Integer; Value: Boolean);
@@ -23609,6 +23683,15 @@ begin
     end
   else if FDin[I] = lrdAanUit then
     StopRun;   // schakelaar uit: stoppen, uitgangen uit
+  // voorwaarde van de huidige stap: puls tellen en meteen nakijken
+  if FRunning and (FStep >= 0) and (FStep <= High(FSteps)) and
+     (FSteps[FStep].Wacht <> lrwGeen) then
+  begin
+    if Value and (FSteps[FStep].Wacht = lrwPulsen) and (FSteps[FStep].WachtDin = I) then
+      Inc(FPulses);
+    if ConditionMet then
+      NextStep;
+  end;
   Invalidate;
 end;
 
@@ -23687,6 +23770,10 @@ begin
     begin
       S := Format('%s %d/%d', [Tr(FTaal, 'stap', 'step', 'pas', 'Schritt'), FStep + 1, Length(FSteps)]);
       if FRunning then S := '> ' + S else S := '|| ' + S;
+      if FSteps[FStep].Wacht = lrwPulsen then
+        S := S + Format('  DIN%d %d/%d', [FSteps[FStep].WachtDin + 1, FPulses, FSteps[FStep].WachtN])
+      else if FSteps[FStep].Wacht in [lrwAan, lrwUit] then
+        S := S + Format('  DIN%d?', [FSteps[FStep].WachtDin + 1]);
     end;
     TextOut(11, BH - 14, S);
   end;
