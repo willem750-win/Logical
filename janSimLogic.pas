@@ -2366,12 +2366,16 @@ end;
     procedure ResetRun;    // naar stap 0
     // ingang i (0..3) aan/uit, door de draden (Connect); reageert op het aanzetten
     procedure SetInput(I: Integer; Value: Boolean);
-    // aansluitingen: index van de uitgang/ingang bij punt P (paneel), anders -1
+    // aansluitingen: index van de uitgang/ingang bij punt P (paneel), anders -1;
+    // uitgang 8 = T1 en 9 = T2 (display-uitgangen, zie DisplayChar)
     function OutputPinAt(const P: TPoint): Integer;
     function InputPinAt(const P: TPoint): Integer;
     // Y van het aansluitvierkantje (7x7) binnen het blok
     class function InputPinY(I: Integer): Integer;
     class function OutputPinY(I: Integer): Integer;
+    // cijfer voor een display: T1 (I=0) = UIT0..UIT3, T2 (I=1) = UIT4..UIT7,
+    // als 0..9 en A..F
+    function DisplayChar(I: Integer): Char;
     property StepCount: Integer read GetStepCount;
     property Steps[I: Integer]: TLogicRunStep read GetStep write SetStep;
     property Din[I: Integer]: TLogicRunDin read GetDin write SetDin;
@@ -5945,6 +5949,11 @@ var Pi,Po:TPoint;
       if (wc.controls[ii] is TjanLogicRun) then
       begin
         Q:=TjanLogicRun(wc.controls[ii]).OutputPinAt(Pi);
+        if Q>=8 then
+        begin  // T1/T2: cijfer voor een display
+          vi:=true;LedW:=TjanLogicRun(wc.controls[ii]).DisplayChar(Q-8);
+          exit;
+        end;
         if Q>=0 then
         begin
           vi:=TjanLogicRun(wc.controls[ii]).Outputs[Q];
@@ -18340,6 +18349,8 @@ var
   S: string;
   obj: array[1..10] of string;
   wc: TWinControl;
+  EdgeFS: TFormatSettings;
+  EdgeVal: Double;
 
   procedure AddCommonSimProps(const AClassName: string);
   var
@@ -18577,8 +18588,12 @@ begin
         if obj[8] = 'jcsTLBR' then V_ConShape := jcsTLBR else
         if obj[8] = 'jcsTRBL' then V_ConShape := jcsTRBL;
 
-        // edge (met komma/punt fix)
-      //  V_Edge := StrToFloatSmart(obj[9]);
+        // edge: waar de middenlijn staat (0..1), met komma of punt bewaard
+        EdgeFS := DefaultFormatSettings;
+        EdgeFS.DecimalSeparator := '.';
+        if TryStrToFloat(StringReplace(Trim(obj[9]), ',', '.', []), EdgeVal, EdgeFS) and
+           (EdgeVal >= 0) and (EdgeVal <= 1) then
+          V_Edge := EdgeVal;
 
         FObjectID := wc.ControlCount;
 
@@ -23340,7 +23355,7 @@ end;
 
 const
   LR_W = 120;           // breedte van het blok
-  LR_H = 150;           // hoogte van het blok
+  LR_H = 184;           // hoogte van het blok (met T1/T2 onder UIT7)
   LR_MaxSteps = 64;
 
 function FindLogicRun(P: TWinControl): TjanLogicRun;
@@ -23404,7 +23419,21 @@ end;
 
 class function TjanLogicRun.OutputPinY(I: Integer): Integer;
 begin
-  Result := 22 + I * 14;
+  if I < 8 then
+    Result := 22 + I * 14
+  else
+    Result := 140 + (I - 8) * 16;   // T1 en T2, iets lager dan UIT7
+end;
+
+function TjanLogicRun.DisplayChar(I: Integer): Char;
+const
+  Hex: array[0..15] of Char = '0123456789ABCDEF';
+var
+  B: Byte;
+begin
+  if (FStep < 0) or (FStep >= Length(FSteps)) then B := 0
+  else B := FSteps[FStep].Bits;
+  Result := Hex[(B shr (4 * I)) and $0F];
 end;
 
 function TjanLogicRun.OutputPinAt(const P: TPoint): Integer;
@@ -23413,7 +23442,7 @@ var
 begin
   Result := -1;
   if (P.X < Left + Width - 18) or (P.X > Left + Width + 8) then Exit;
-  for i := 0 to 7 do
+  for i := 0 to 9 do
     if Abs(P.Y - (Top + OutputPinY(i) + 3)) <= 6 then
       Exit(i);
 end;
@@ -23836,6 +23865,28 @@ begin
       S := 'UIT' + IntToStr(i);
       w := TextWidth(S);
       TextOut(BW - 23 - w, y - 2, S);
+    end;
+
+    // display-uitgangen: T1 = UIT0..3, T2 = UIT4..7, met het cijfer erbij
+    MoveTo(BW - 60, OutputPinY(8) - 6);
+    LineTo(BW - 5, OutputPinY(8) - 6);
+    for i := 0 to 1 do
+    begin
+      y := OutputPinY(8 + i);
+      Brush.Style := bsSolid;
+      Brush.Color := clBlack;
+      Pen.Color := clGray;
+      Rectangle(BW - 22, y - 3, BW - 10, y + 11);
+      Brush.Color := clLime;
+      Rectangle(BW - 8, y, BW - 1, y + 7);
+      Brush.Style := bsClear;
+      Font.Style := [fsBold];
+      Font.Color := clRed;
+      S := DisplayChar(i);
+      TextOut(BW - 16 - TextWidth(S) div 2, y - 2, S);
+      Font.Color := clNavy;
+      S := 'T' + IntToStr(i + 1);
+      TextOut(BW - 25 - TextWidth(S), y - 2, S);
     end;
 
     // onderaan: stap of gestopt

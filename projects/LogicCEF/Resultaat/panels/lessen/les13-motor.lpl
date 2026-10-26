@@ -1,4 +1,4 @@
-TjanLogicRun;150;260;110;120;500;1;4;2;3;0;1:4,0:1,2:4,0:1;
+TjanLogicRun;184;260;110;120;500;1;4;2;3;0;1:4,0:1,2:4,0:1;
 TjanSimMotor;52;470;124;80;
 TjanSimKnop;50;100;135;51;
 TjanConnector;27;142;137;127;jcmTL;jcpBL;jcsTRBL;0,5;-1;

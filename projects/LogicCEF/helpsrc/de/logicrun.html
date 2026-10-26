@@ -14,6 +14,7 @@
   <ul>
     <li><b>Links: 4 Eingänge</b> DIN1 bis DIN4. Unter jedem Eingang steht, was er tut (siehe <a href="#ingangen">Die Eingänge</a>).</li>
     <li><b>Rechts: 8 Ausgänge</b> UIT0 bis UIT7, jeder mit einem Lämpchen, das rot wird, wenn der Ausgang ein ist.</li>
+    <li><b>Darunter: T1 und T2</b>, zwei Anschlüsse für eine <a href="uitvoer.html#display">Anzeige</a>. Die rote Ziffer daneben ist das, was die Anzeige zeigt (siehe <a href="#displays">Anzeigen</a>).</li>
     <li><b>Unten</b> der Schritt, bei dem das Programm ist, oder <i>gestoppt</i>.</li>
   </ul>
   <p>Sie verbinden den Block mit gewöhnlichen <a href="verbindingen.html">Drähten</a>: Schalter und Sensoren
@@ -44,6 +45,7 @@
     <tr><td><b>+ Schritt</b> und <b>- Schritt</b></td><td>Einen Schritt nach dem gewählten Schritt einfügen oder den gewählten Schritt löschen.</td></tr>
     <tr><td><b>DIN1</b> bis <b>DIN4</b></td><td>Was jeder Eingang tut.</td></tr>
     <tr><td><b>warten auf</b></td><td>Klicken Sie in diese Spalte, damit ein Schritt auf einen Eingang oder eine Anzahl Impulse wartet (siehe <a href="#wacht">Warten</a>).</td></tr>
+    <tr><td><b>T1</b> und <b>T2</b></td><td>Die Ziffer, die T1 und T2 in diesem Schritt auf einer Anzeige zeigen. Klicken Sie darauf, um eine Ziffer von 0 bis F zu wählen; LogicRun setzt dann selbst die 4 Ausgänge (siehe <a href="#displays">Anzeigen</a>).</td></tr>
   </table>
   <p>Oben sehen Sie, ob das Programm läuft und bei welchem Schritt es ist. Der aktuelle Schritt ist in der Tabelle hellblau.</p>
 
@@ -77,6 +79,28 @@
   verbinden Sie den Eingang auch mit dem <a href="verwerking.html#teller">Zähler</a> und seiner Anzeige (siehe
   <a href="les14.html">Lektion 14</a>).</div>
 
+  <h2 id="displays">Anzeigen: T1 und T2</h2>
+  <p>Unter UIT7 hat der Block zwei zusätzliche Anschlüsse für eine <a href="uitvoer.html#display">Anzeige</a>, genau wie
+  der Ausgang eines <a href="verwerking.html#teller">Zählers</a>. Sie lesen die Ausgänge als Binärzahl:</p>
+  <table>
+    <tr><th>Anschluss</th><th>Liest</th><th>Zeigt</th></tr>
+    <tr><td><b>T1</b></td><td>UIT0 bis UIT3 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8)</td><td>0 bis 9 und A bis F</td></tr>
+    <tr><td><b>T2</b></td><td>UIT4 bis UIT7 (UIT4 = 1, UIT5 = 2, UIT6 = 4, UIT7 = 8)</td><td>0 bis 9 und A bis F</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-displays.png" alt="LogicRun-Block mit zwei Anzeigen an T1 und T2">
+    <figcaption>Schritt 6 von <i>Auf- und abwärts zählen</i>: T1 zeigt 5, T2 zeigt A.</figcaption>
+  </figure>
+  <p>Im Fenster zeigen die Spalten <b>T1</b> und <b>T2</b> die Ziffer jedes Schritts. Klicken Sie auf eine Ziffer und
+  wählen Sie eine andere: LogicRun schaltet dann selbst die 4 Ausgänge ein oder aus. Neben jeder Ziffer im Menü sehen Sie
+  die 4 Bits, z.&nbsp;B. 5&nbsp;=&nbsp;0101. Die normalen Ausgänge funktionieren weiter: Sie können also gleichzeitig
+  Lämpchen und eine Anzeige ansteuern.</p>
+  <figure>
+    <img src="../img/logicrun-tellers-de.png" alt="LogicRun-Fenster mit den Spalten T1 und T2">
+    <figcaption>Das Beispiel <i>Auf- und abwärts zählen</i>: T1 zählt aufwärts, T2 abwärts.</figcaption>
+  </figure>
+  <p class="tip">Stellen Sie zwei Anzeigen nebeneinander, T2 links und T1 rechts, dann erhalten Sie eine zweistellige Zahl (von 00 bis FF).</p>
+
   <h2 id="ingangen">Die Eingänge</h2>
   <p>Die meisten Funktionen reagieren in dem Moment, in dem der Eingang <b>eingeschaltet</b> wird: verwenden Sie dafür einen
   <a href="invoer.html#drukknop">Taster</a>. Für einen <a href="invoer.html#schakelaar">Schalter</a> gibt es die Funktion <b>Ein/Aus</b>.</p>
@@ -98,6 +122,7 @@
     <tr><td>4-Bit-Zähler</td><td>UIT0 bis UIT3 zählen binär von 0 bis 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
     <tr><td>Wagen</td><td>UIT0 vorwärts, bis DIN3 ein ist (Endschalter), kurzer Halt, UIT1 rückwärts bis DIN4; DIN1 Ein/Aus. Verbinden Sie UIT0 mit R und UIT1 mit L eines Motors.</td></tr>
     <tr><td>Verpackungsmaschine</td><td>UIT0 Förderband, bis 5 Impulse an DIN2 angekommen sind (Kartons), UIT1 Verpacken (2 s), UIT2 setzt einen Zähler auf null; DIN1 Ein/Aus.</td></tr>
+    <tr><td>Auf- und abwärts zählen</td><td>T1 zählt von 0 bis F aufwärts, T2 gleichzeitig von F bis 0 abwärts. Verbinden Sie T1 und T2 mit einer Anzeige.</td></tr>
   </table>
   <div class="tip"><strong>Tipp:</strong> ein Beispiel zu laden ersetzt das Programm. Mit <kbd>Strg</kbd>+<kbd>Z</kbd>
   bekommen Sie das vorherige Programm zurück.</div>

@@ -27,6 +27,8 @@ type
     FPoll: TTimer;
     FWachtMenu: TPopupMenu;
     FWachtStep: Integer;       // stap waarvoor het menu Wacht op open staat
+    FCijferMenu: TPopupMenu;
+    FCijferStep: Integer;      // stap waarvoor het menu met cijfers open staat
     PnlTop, PnlBottom, PnlNoBlock: TPanel;
     BtStart, BtPause, BtStop, BtStep, BtLoadEx, BtAdd, BtDel, BtPlace: TButton;
     LbStatus, LbDuur, LbMs, LbEx, LbNoBlock: TLabel;
@@ -52,6 +54,8 @@ type
     function WachtText(const St: TLogicRunStep): string;
     procedure ShowWachtMenu(AStep: Integer);
     procedure WachtClick(Sender: TObject);
+    procedure ShowCijferMenu(AStep, ADisplay: Integer);
+    procedure CijferClick(Sender: TObject);
     procedure AddClick(Sender: TObject);
     procedure DelClick(Sender: TObject);
     procedure PlaceClick(Sender: TObject);
@@ -74,8 +78,13 @@ type
 implementation
 
 const
-  ColTijd = 9;          // kolommen: 0 = stap, 1..8 = UIT0..UIT7, 9 = tijd,
-  ColWacht = 10;        // 10 = voorwaarde (wacht op)
+  // kolommen: 0 = stap, 1..8 = UIT0..UIT7, 9 = T1 (cijfer van UIT0..3),
+  // 10 = T2 (cijfer van UIT4..7), 11 = tijd, 12 = voorwaarde (wacht op)
+  ColT1 = 9;
+  ColT2 = 10;
+  ColTijd = 11;
+  ColWacht = 12;
+  HexCijfers = '0123456789ABCDEF';
 
 constructor TLogicRunForm.CreateFor(AOwner: TComponent; AGrid: TjanGridS; ABox: TjanSimLogicBox);
 
@@ -186,6 +195,8 @@ begin
   SG.FixedRows := 1;
   SG.DefaultColWidth := 44;
   SG.ColWidths[0] := 58;
+  SG.ColWidths[ColT1] := 36;
+  SG.ColWidths[ColT2] := 36;
   SG.ColWidths[ColTijd] := 64;
   SG.ColWidths[ColWacht] := 104;
   SG.DefaultRowHeight := 24;
@@ -197,6 +208,8 @@ begin
   SG.OnEditingDone := @GridEditingDone;
   for i := 0 to 7 do
     SG.Cells[i + 1, 0] := 'UIT' + IntToStr(i);
+  SG.Cells[ColT1, 0] := 'T1';
+  SG.Cells[ColT2, 0] := 'T2';
 
   FPoll := TTimer.Create(Self);
   FPoll.Interval := 300;
@@ -254,6 +267,7 @@ begin
   CbEx.Items.Add(T('4-bitteller', '4-bit counter', 'Compteur 4 bits', '4-Bit-Zähler'));
   CbEx.Items.Add(T('Wagentje', 'Cart', 'Chariot', 'Wagen'));
   CbEx.Items.Add(T('Inpakmachine', 'Packing machine', 'Emballeuse', 'Verpackungsmaschine'));
+  CbEx.Items.Add(T('Op en neer tellen', 'Count up and down', 'Compter et décompter', 'Auf- und abwärts zählen'));
   if Keep < 0 then Keep := 0;
   CbEx.ItemIndex := Keep;
   for i := 0 to 3 do
@@ -328,7 +342,7 @@ begin
     B.Free;
   end;
   // het venster breed genoeg voor alles
-  if Need < 620 then Need := 620;   // de tabel met de kolom wacht op
+  if Need < 700 then Need := 700;   // de tabel met T1, T2 en de kolom wacht op
   Constraints.MinWidth := Need;
   if Width < Need then Width := Need;
 end;
@@ -442,7 +456,7 @@ procedure TLogicRunForm.GridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect
 var
   C: TCanvas;
   On: Boolean;
-  cx, cy: Integer;
+  cx, cy, Nib: Integer;
 begin
   if (FBlock = nil) or (aRow < 1) or (aRow > FBlock.StepCount) then Exit;
   C := SG.Canvas;
@@ -466,6 +480,23 @@ begin
   end;
   if (aCol = ColWacht) and (aRow - 1 = FBlock.CurrentStep) then
     C.TextOut(aRect.Left + 6, aRect.Top + 4, SG.Cells[aCol, aRow]);
+  // T1/T2: het cijfer zoals op een display (rood op zwart)
+  if (aCol = ColT1) or (aCol = ColT2) then
+  begin
+    Nib := (FBlock.Steps[aRow - 1].Bits shr (4 * (aCol - ColT1))) and $0F;
+    cx := (aRect.Left + aRect.Right) div 2;
+    cy := (aRect.Top + aRect.Bottom) div 2;
+    C.Brush.Color := clBlack;
+    C.Pen.Color := clGray;
+    C.Rectangle(cx - 9, cy - 10, cx + 9, cy + 10);
+    C.Font.Color := clRed;
+    C.Font.Style := [fsBold];
+    C.Brush.Style := bsClear;
+    C.TextOut(cx - C.TextWidth(HexCijfers[Nib + 1]) div 2, cy - C.TextHeight('0') div 2, HexCijfers[Nib + 1]);
+    C.Brush.Style := bsSolid;
+    C.Font.Style := [];
+    C.Font.Color := clBlack;
+  end;
   if (aCol >= 1) and (aCol <= 8) then
   begin
     On := (FBlock.Steps[aRow - 1].Bits and (1 shl (aCol - 1))) <> 0;
@@ -487,6 +518,11 @@ begin
   if (aRow >= 1) and (aRow <= FBlock.StepCount) and (aCol = ColWacht) then
   begin
     ShowWachtMenu(aRow - 1);
+    Exit;
+  end;
+  if (aRow >= 1) and (aRow <= FBlock.StepCount) and ((aCol = ColT1) or (aCol = ColT2)) then
+  begin
+    ShowCijferMenu(aRow - 1, aCol - ColT1);
     Exit;
   end;
   if (aRow < 1) or (aRow > FBlock.StepCount) or (aCol < 1) or (aCol > 8) then Exit;
@@ -627,6 +663,9 @@ begin
     // inpakmachine: UIT0 band tot 5 pulsen op DIN2 (dozen), UIT1 lamp
     // inpakken 2 s, UIT2 teller op nul; DIN1 aan/uit
     5: FBlock.SetProgramText('500;1;4;0;0;0;1:1:3:1:5,2:4,4:1');
+    // twee displays: T1 (UIT0..3) telt op van 0 tot F, T2 (UIT4..7) telt af
+    6: Fill([$F0, $E1, $D2, $C3, $B4, $A5, $96, $87, $78, $69, $5A, $4B, $3C, $2D, $1E, $0F],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 500);
   end;
 end;
 
@@ -704,6 +743,52 @@ begin
   St.Wacht := W;
   St.WachtDin := TMenuItem(Sender).Tag mod 10;
   FBlock.Steps[FWachtStep] := St;
+end;
+
+// menu met de cijfers 0..F voor T1 (ADisplay = 0, UIT0..3) of T2 (1, UIT4..7);
+// Tag = 16 x display + cijfer
+procedure TLogicRunForm.ShowCijferMenu(AStep, ADisplay: Integer);
+var
+  Mi: TMenuItem;
+  P: TPoint;
+  v, b, Cur: Integer;
+  S: string;
+begin
+  FCijferStep := AStep;
+  if FCijferMenu = nil then
+    FCijferMenu := TPopupMenu.Create(Self)
+  else
+    FCijferMenu.Items.Clear;
+  Cur := (FBlock.Steps[AStep].Bits shr (4 * ADisplay)) and $0F;
+  for v := 0 to 15 do
+  begin
+    // het cijfer met de 4 bits erbij, bv. 5 = 0101
+    S := '';
+    for b := 3 downto 0 do
+      if (v and (1 shl b)) <> 0 then S := S + '1' else S := S + '0';
+    Mi := TMenuItem.Create(FCijferMenu);
+    Mi.Caption := HexCijfers[v + 1] + '   = ' + S;
+    Mi.Tag := ADisplay * 16 + v;
+    Mi.RadioItem := True;
+    Mi.Checked := v = Cur;
+    Mi.OnClick := @CijferClick;
+    FCijferMenu.Items.Add(Mi);
+  end;
+  P := Mouse.CursorPos;
+  FCijferMenu.PopUp(P.X, P.Y);
+end;
+
+procedure TLogicRunForm.CijferClick(Sender: TObject);
+var
+  St: TLogicRunStep;
+  D, V: Integer;
+begin
+  if (FBlock = nil) or (FCijferStep < 0) or (FCijferStep >= FBlock.StepCount) then Exit;
+  D := TMenuItem(Sender).Tag div 16;
+  V := TMenuItem(Sender).Tag mod 16;
+  St := FBlock.Steps[FCijferStep];
+  St.Bits := (St.Bits and not ($0F shl (4 * D))) or (V shl (4 * D));
+  FBlock.Steps[FCijferStep] := St;
 end;
 
 procedure TLogicRunForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

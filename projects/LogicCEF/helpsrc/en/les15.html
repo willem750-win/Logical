@@ -1,0 +1,71 @@
+<!-- titel: Lesson 15 - Counting in binary -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 15 of 15</p>
+  <h1>Counting in binary with LogicRun</h1>
+  <div class="goal"><strong>Goal:</strong> understand how a binary number works: four lamps and a display show the same
+  number, in two different ways.</div>
+
+  <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun counts; four LEDs show 1011 and the display shows B">
+    <figcaption>Step 12: LEDs 8, 2 and 1 are lit: 8 + 2 + 1 = 11. The display shows B.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): counting on or off.</li>
+    <li>The <a href="logicrun.html">LogicRun block</a> with 16 steps: step 1 is 0, step 2 is 1, &hellip; step 16 is 15.
+      Each step lasts 1 second.</li>
+    <li>Four red <a href="uitvoer.html#led">LEDs</a> on <b>UIT0</b> to <b>UIT3</b>. Each LED has its own value:
+      UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>A <a href="uitvoer.html#display">display</a> on <b>T1</b>: it reads UIT0 to UIT3 as one number (see
+      <a href="logicrun.html#displays">Displays</a>).</li>
+  </ul>
+
+  <h2>How does a binary number work?</h2>
+  <p>A computer only knows <i>on</i> (1) and <i>off</i> (0). Still, four lamps make 16 numbers: add up the values of
+  the lamps that are lit. Write them down with the 8 on the left and you get the binary number.</p>
+  <table>
+    <tr><th>Number</th><th>8</th><th>4</th><th>2</th><th>1</th><th>Binary</th><th>Display</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0000</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0001</td><td>1</td></tr>
+    <tr><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0010</td><td>2</td></tr>
+    <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0011</td><td>3</td></tr>
+    <tr><td>5</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0101</td><td>5</td></tr>
+    <tr><td>9</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1001</td><td>9</td></tr>
+    <tr><td>10</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1010</td><td>A</td></tr>
+    <tr><td>11</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1011</td><td>B</td></tr>
+    <tr><td>15</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1111</td><td>F</td></tr>
+  </table>
+  <p>After 9 the display runs out of digits: 10 to 15 become the letters <b>A</b> to <b>F</b>. Such a number is called
+  <i>hexadecimal</i>: one character for each group of four bits.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on: LogicRun starts counting.</li>
+    <li>Look at which LEDs are lit and add up their values. Does it match the display?</li>
+    <li>Open the LogicRun window (double-click the block) and click <b>Pause</b>. <b>Step</b> moves on one number.
+      The <b>T1</b> column shows the display digit for each step.</li>
+    <li>After 15 it starts again at 0. Switch the switch off: everything stops.</li>
+  </ol>
+
+  <h2>Exercise 1: a countdown</h2>
+  <p>Make the display count down from 9 to 0, and then stop.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Use <b>- step</b> to remove steps until 10 are left. Click the <b>T1</b> column of step 1 and choose <b>9</b>,
+    for step 2 <b>8</b>, &hellip; up to step 10 <b>0</b>. LogicRun switches on the right LEDs itself. Untick
+    <b>Repeat</b>: after the last step the program stays where it is.</p>
+  </details>
+
+  <h2>Exercise 2: counting to 15 with two digits</h2>
+  <p>The display shows A to F, but we would rather write 10 to 15. Put a second display to the left of the first one
+  and connect it to <b>T2</b>. Make it count from <b>00</b> to <b>15</b>.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>T2 is the tens digit, T1 the units digit. Leave steps 1 to 10 as they are (T2 = 0, T1 = 0 to 9). In steps 11 to
+    16 choose <b>1</b> for <b>T2</b> and <b>0</b>, <b>1</b>, <b>2</b>, <b>3</b>, <b>4</b> and <b>5</b> for <b>T1</b>.
+    The display now shows 10 to 15. In the window you can see that T2 = 1 switches on output <b>UIT4</b>: it has the
+    value 1 for the second digit.</p>
+  </details>
+
+  <div class="pager"><a href="les14.html">&larr; Lesson 14: A packing machine</a><a href="leerpad.html">Learning path &rarr;</a></div>

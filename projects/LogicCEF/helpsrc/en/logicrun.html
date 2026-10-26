@@ -14,6 +14,7 @@
   <ul>
     <li><b>Left: 4 inputs</b> DIN1 to DIN4. Under each input you see what it does (see <a href="#ingangen">The inputs</a>).</li>
     <li><b>Right: 8 outputs</b> UIT0 to UIT7, each with a small lamp that turns red when the output is on.</li>
+    <li><b>Below: T1 and T2</b>, two connections for a <a href="uitvoer.html#display">display</a>. The red digit next to them is what the display shows (see <a href="#displays">Displays</a>).</li>
     <li><b>At the bottom</b> the step the program is at, or <i>stopped</i>.</li>
   </ul>
   <p>You connect the block with ordinary <a href="verbindingen.html">wires</a>: switches and sensors to the
@@ -44,6 +45,7 @@
     <tr><td><b>+ step</b> and <b>- step</b></td><td>Add a step after the selected step, or delete the selected step.</td></tr>
     <tr><td><b>DIN1</b> to <b>DIN4</b></td><td>What each input does.</td></tr>
     <tr><td><b>wait for</b></td><td>Click in this column to make a step wait for an input or a number of pulses (see <a href="#wacht">Waiting</a>).</td></tr>
+    <tr><td><b>T1</b> and <b>T2</b></td><td>The digit T1 and T2 show on a display in that step. Click it to choose a digit from 0 to F; LogicRun then sets the 4 outputs itself (see <a href="#displays">Displays</a>).</td></tr>
   </table>
   <p>At the top you see whether the program is running and which step it is at. The current step is light blue in the table.</p>
 
@@ -76,6 +78,27 @@
   it does not also start or stop the program. To see the pulses too, also connect the input to the
   <a href="verwerking.html#teller">counter</a> and its display (see <a href="les14.html">lesson 14</a>).</div>
 
+  <h2 id="displays">Displays: T1 and T2</h2>
+  <p>Below UIT7 the block has two extra connections for a <a href="uitvoer.html#display">display</a>, just like the
+  output of a <a href="verwerking.html#teller">counter</a>. They read the outputs as a binary number:</p>
+  <table>
+    <tr><th>Connection</th><th>Reads</th><th>Shows</th></tr>
+    <tr><td><b>T1</b></td><td>UIT0 to UIT3 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8)</td><td>0 to 9 and A to F</td></tr>
+    <tr><td><b>T2</b></td><td>UIT4 to UIT7 (UIT4 = 1, UIT5 = 2, UIT6 = 4, UIT7 = 8)</td><td>0 to 9 and A to F</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-displays.png" alt="LogicRun block with two displays on T1 and T2">
+    <figcaption>Step 6 of <i>Count up and down</i>: T1 shows 5, T2 shows A.</figcaption>
+  </figure>
+  <p>In the window, the <b>T1</b> and <b>T2</b> columns show the digit of each step. Click such a digit and choose
+  another one: LogicRun then switches the 4 outputs on or off itself. Next to each digit in the menu you see the 4 bits,
+  e.g. 5&nbsp;=&nbsp;0101. The normal outputs keep working, so you can drive lamps and a display at the same time.</p>
+  <figure>
+    <img src="../img/logicrun-tellers-en.png" alt="LogicRun window with the T1 and T2 columns">
+    <figcaption>The example <i>Count up and down</i>: T1 counts up, T2 counts down.</figcaption>
+  </figure>
+  <p class="tip">Put two displays side by side, T2 on the left and T1 on the right, to get a two-digit number (from 00 to FF).</p>
+
   <h2 id="ingangen">The inputs</h2>
   <p>Most functions react at the moment the input switches <b>on</b>: use a
   <a href="invoer.html#drukknop">push button</a> for them. For a <a href="invoer.html#schakelaar">switch</a> there is the <b>on/off</b> function.</p>
@@ -97,6 +120,7 @@
     <tr><td>4-bit counter</td><td>UIT0 to UIT3 count in binary from 0 to 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
     <tr><td>Cart</td><td>UIT0 forward until DIN3 is on (limit switch), a short stop, UIT1 backward until DIN4 is on; DIN1 on/off. Connect UIT0 to R and UIT1 to L of a motor.</td></tr>
     <tr><td>Packing machine</td><td>UIT0 conveyor belt until 5 pulses have arrived on DIN2 (boxes), UIT1 packing (2 s), UIT2 resets a counter; DIN1 on/off.</td></tr>
+    <tr><td>Count up and down</td><td>T1 counts up from 0 to F, T2 counts down from F to 0 at the same time. Connect T1 and T2 to a display.</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> loading an example replaces the program. With <kbd>Ctrl</kbd>+<kbd>Z</kbd>
   you get the previous program back.</div>

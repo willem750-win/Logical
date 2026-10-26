@@ -14,6 +14,7 @@
   <ul>
     <li><b>Links: 4 ingangen</b> DIN1 tot DIN4. Onder elke ingang staat wat hij doet (zie <a href="#ingangen">De ingangen</a>).</li>
     <li><b>Rechts: 8 uitgangen</b> UIT0 tot UIT7, elk met een lampje dat rood wordt als de uitgang aan is.</li>
+    <li><b>Daaronder: T1 en T2</b>, twee aansluitingen voor een <a href="uitvoer.html#display">display</a>. Het rode cijfer ernaast is wat het display toont (zie <a href="#displays">Displays</a>).</li>
     <li><b>Onderaan</b> de stap waar het programma is, of <i>gestopt</i>.</li>
   </ul>
   <p>Je verbindt het blok met gewone <a href="verbindingen.html">draden</a>: schakelaars en sensoren naar de
@@ -44,6 +45,7 @@
     <tr><td><b>+ stap</b> en <b>- stap</b></td><td>Een stap toevoegen na de gekozen stap, of de gekozen stap verwijderen.</td></tr>
     <tr><td><b>DIN1</b> tot <b>DIN4</b></td><td>Wat elke ingang doet.</td></tr>
     <tr><td><b>wacht op</b></td><td>Klik in deze kolom om een stap te laten wachten op een ingang of op een aantal pulsen (zie <a href="#wacht">Wachten</a>).</td></tr>
+    <tr><td><b>T1</b> en <b>T2</b></td><td>Het cijfer dat T1 en T2 in die stap op een display tonen. Klik erop om een cijfer van 0 tot F te kiezen; LogicRun zet dan zelf de 4 uitgangen (zie <a href="#displays">Displays</a>).</td></tr>
   </table>
   <p>Bovenaan zie je of het programma loopt en bij welke stap het is. De huidige stap is in de tabel lichtblauw.</p>
 
@@ -76,6 +78,27 @@
   hij het programma niet ook start of stopt. Wil je de pulsen ook zien, verbind de ingang dan ook met de
   <a href="verwerking.html#teller">teller</a> en zijn display (zie <a href="les14.html">les 14</a>).</div>
 
+  <h2 id="displays">Displays: T1 en T2</h2>
+  <p>Onder UIT7 heeft het blok twee extra aansluitingen voor een <a href="uitvoer.html#display">display</a>, net zoals de
+  uitgang van een <a href="verwerking.html#teller">teller</a>. Ze lezen de uitgangen als een binair getal:</p>
+  <table>
+    <tr><th>Aansluiting</th><th>Leest</th><th>Toont</th></tr>
+    <tr><td><b>T1</b></td><td>UIT0 tot UIT3 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8)</td><td>0 tot 9 en A tot F</td></tr>
+    <tr><td><b>T2</b></td><td>UIT4 tot UIT7 (UIT4 = 1, UIT5 = 2, UIT6 = 4, UIT7 = 8)</td><td>0 tot 9 en A tot F</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-displays.png" alt="LogicRun-blok met twee displays aan T1 en T2">
+    <figcaption>Stap 6 van <i>Op en neer tellen</i>: T1 toont 5, T2 toont A.</figcaption>
+  </figure>
+  <p>In het venster tonen de kolommen <b>T1</b> en <b>T2</b> het cijfer van elke stap. Klik op zo&rsquo;n cijfer en kies
+  een ander: LogicRun zet dan zelf de 4 uitgangen aan of uit. Naast elk cijfer in het menu zie je de 4 bits, bv. 5&nbsp;=&nbsp;0101.
+  De gewone uitgangen blijven werken: je kan dus tegelijk lampjes en een display aansturen.</p>
+  <figure>
+    <img src="../img/logicrun-tellers.png" alt="LogicRun-venster met de kolommen T1 en T2">
+    <figcaption>Het voorbeeld <i>Op en neer tellen</i>: T1 telt op, T2 telt af.</figcaption>
+  </figure>
+  <p class="tip">Zet twee displays naast elkaar, T2 links en T1 rechts, dan krijg je een getal van twee cijfers (van 00 tot FF).</p>
+
   <h2 id="ingangen">De ingangen</h2>
   <p>De meeste functies reageren op het moment dat de ingang <b>aan</b> gaat: gebruik daarvoor een
   <a href="invoer.html#drukknop">drukknop</a>. Voor een <a href="invoer.html#schakelaar">schakelaar</a> is er de functie <b>aan/uit</b>.</p>
@@ -97,6 +120,7 @@
     <tr><td>4-bitteller</td><td>UIT0 tot UIT3 tellen binair van 0 tot 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
     <tr><td>Wagentje</td><td>UIT0 vooruit tot DIN3 aan is (eindschakelaar), even stil, UIT1 achteruit tot DIN4 aan is; DIN1 aan/uit. Verbind UIT0 met R en UIT1 met L van een motor.</td></tr>
     <tr><td>Inpakmachine</td><td>UIT0 lopende band tot er 5 pulsen op DIN2 geweest zijn (dozen), UIT1 inpakken (2 s), UIT2 zet een teller op nul; DIN1 aan/uit.</td></tr>
+    <tr><td>Op en neer tellen</td><td>T1 telt op van 0 tot F, T2 telt tegelijk af van F tot 0. Verbind T1 en T2 met een display.</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> een voorbeeld laden vervangt het programma. Met <kbd>Ctrl</kbd>+<kbd>Z</kbd>
   krijg je het vorige programma terug.</div>

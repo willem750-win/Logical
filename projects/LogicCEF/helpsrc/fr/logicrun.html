@@ -14,6 +14,7 @@
   <ul>
     <li><b>À gauche : 4 entrées</b> DIN1 à DIN4. Sous chaque entrée figure ce qu&rsquo;elle fait (voir <a href="#ingangen">Les entrées</a>).</li>
     <li><b>À droite : 8 sorties</b> UIT0 à UIT7, chacune avec un petit voyant qui devient rouge quand la sortie est active.</li>
+    <li><b>En dessous : T1 et T2</b>, deux connexions pour un <a href="uitvoer.html#display">afficheur</a>. Le chiffre rouge à côté est ce que l&rsquo;afficheur montre (voir <a href="#displays">Afficheurs</a>).</li>
     <li><b>En bas</b> le pas où se trouve le programme, ou <i>arrêté</i>.</li>
   </ul>
   <p>Vous reliez le bloc avec des <a href="verbindingen.html">fils</a> ordinaires : les interrupteurs et les
@@ -44,6 +45,7 @@
     <tr><td><b>+ pas</b> et <b>- pas</b></td><td>Ajouter un pas après le pas choisi, ou supprimer le pas choisi.</td></tr>
     <tr><td><b>DIN1</b> à <b>DIN4</b></td><td>Ce que fait chaque entrée.</td></tr>
     <tr><td><b>attendre</b></td><td>Cliquez dans cette colonne pour faire attendre un pas une entrée ou un nombre d&rsquo;impulsions (voir <a href="#wacht">Attendre</a>).</td></tr>
+    <tr><td><b>T1</b> et <b>T2</b></td><td>Le chiffre que T1 et T2 montrent sur un afficheur à ce pas. Cliquez dessus pour choisir un chiffre de 0 à F&nbsp;; LogicRun règle alors lui-même les 4 sorties (voir <a href="#displays">Afficheurs</a>).</td></tr>
   </table>
   <p>En haut, vous voyez si le programme tourne et à quel pas il se trouve. Le pas actuel est bleu clair dans le tableau.</p>
 
@@ -76,6 +78,28 @@
   entrées, pour qu&rsquo;elle ne démarre ni n&rsquo;arrête aussi le programme. Pour voir aussi les impulsions, reliez
   l&rsquo;entrée au <a href="verwerking.html#teller">compteur</a> et à son afficheur (voir la <a href="les14.html">leçon 14</a>).</div>
 
+  <h2 id="displays">Afficheurs : T1 et T2</h2>
+  <p>Sous UIT7, le bloc a deux connexions supplémentaires pour un <a href="uitvoer.html#display">afficheur</a>, comme la
+  sortie d&rsquo;un <a href="verwerking.html#teller">compteur</a>. Elles lisent les sorties comme un nombre binaire&nbsp;:</p>
+  <table>
+    <tr><th>Connexion</th><th>Lit</th><th>Affiche</th></tr>
+    <tr><td><b>T1</b></td><td>UIT0 à UIT3 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8)</td><td>0 à 9 et A à F</td></tr>
+    <tr><td><b>T2</b></td><td>UIT4 à UIT7 (UIT4 = 1, UIT5 = 2, UIT6 = 4, UIT7 = 8)</td><td>0 à 9 et A à F</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-displays.png" alt="Bloc LogicRun avec deux afficheurs sur T1 et T2">
+    <figcaption>Pas 6 de <i>Compter et décompter</i>&nbsp;: T1 affiche 5, T2 affiche A.</figcaption>
+  </figure>
+  <p>Dans la fenêtre, les colonnes <b>T1</b> et <b>T2</b> montrent le chiffre de chaque pas. Cliquez sur un chiffre et
+  choisissez-en un autre&nbsp;: LogicRun active ou désactive alors lui-même les 4 sorties. À côté de chaque chiffre du menu,
+  vous voyez les 4 bits, p.&nbsp;ex. 5&nbsp;=&nbsp;0101. Les sorties normales continuent de fonctionner&nbsp;: vous pouvez
+  commander des voyants et un afficheur en même temps.</p>
+  <figure>
+    <img src="../img/logicrun-tellers-fr.png" alt="Fenêtre LogicRun avec les colonnes T1 et T2">
+    <figcaption>L&rsquo;exemple <i>Compter et décompter</i>&nbsp;: T1 compte, T2 décompte.</figcaption>
+  </figure>
+  <p class="tip">Placez deux afficheurs côte à côte, T2 à gauche et T1 à droite, pour obtenir un nombre de deux chiffres (de 00 à FF).</p>
+
   <h2 id="ingangen">Les entrées</h2>
   <p>La plupart des fonctions réagissent au moment où l&rsquo;entrée passe à <b>1</b> : utilisez pour elles un
   <a href="invoer.html#drukknop">bouton-poussoir</a>. Pour un <a href="invoer.html#schakelaar">interrupteur</a>, il y a la fonction <b>actif/inactif</b>.</p>
@@ -97,6 +121,7 @@
     <tr><td>Compteur 4 bits</td><td>UIT0 à UIT3 comptent en binaire de 0 à 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
     <tr><td>Chariot</td><td>UIT0 en avant jusqu&rsquo;à ce que DIN3 soit active (fin de course), un court arrêt, UIT1 en arrière jusqu&rsquo;à DIN4 ; DIN1 actif/inactif. Reliez UIT0 à R et UIT1 à L d&rsquo;un moteur.</td></tr>
     <tr><td>Emballeuse</td><td>UIT0 tapis roulant jusqu&rsquo;à 5 impulsions sur DIN2 (boîtes), UIT1 emballage (2 s), UIT2 remet un compteur à zéro ; DIN1 actif/inactif.</td></tr>
+    <tr><td>Compter et décompter</td><td>T1 compte de 0 à F, T2 décompte en même temps de F à 0. Reliez T1 et T2 à un afficheur.</td></tr>
   </table>
   <div class="tip"><strong>Astuce :</strong> charger un exemple remplace le programme. Avec <kbd>Ctrl</kbd>+<kbd>Z</kbd>,
   vous retrouvez le programme précédent.</div>

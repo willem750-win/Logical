@@ -1,0 +1,72 @@
+<!-- titel: Leçon 15 - Compter en binaire -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 15 sur 15</p>
+  <h1>Compter en binaire avec LogicRun</h1>
+  <div class="goal"><strong>Objectif :</strong> comprendre comment fonctionne un nombre binaire&nbsp;: quatre voyants et un
+  afficheur montrent le même nombre, de deux manières.</div>
+
+  <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun compte ; quatre LED montrent 1011 et l'afficheur montre B">
+    <figcaption>Pas 12&nbsp;: les LED 8, 2 et 1 sont allumées&nbsp;: 8 + 2 + 1 = 11. L&rsquo;afficheur montre B.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous ?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>)&nbsp;: le
+      comptage en marche ou à l&rsquo;arrêt.</li>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 16 pas&nbsp;: le pas 1 vaut 0, le pas 2 vaut 1, &hellip; le
+      pas 16 vaut 15. Chaque pas dure 1 seconde.</li>
+    <li>Quatre <a href="uitvoer.html#led">LED</a> rouges sur <b>UIT0</b> à <b>UIT3</b>. Chaque LED a sa propre valeur&nbsp;:
+      UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Un <a href="uitvoer.html#display">afficheur</a> sur <b>T1</b>&nbsp;: il lit UIT0 à UIT3 comme un seul nombre (voir
+      <a href="logicrun.html#displays">Afficheurs</a>).</li>
+  </ul>
+
+  <h2>Comment fonctionne un nombre binaire ?</h2>
+  <p>Un ordinateur ne connaît que <i>actif</i> (1) et <i>inactif</i> (0). Pourtant, quatre voyants donnent 16 nombres&nbsp;:
+  additionnez les valeurs des voyants allumés. Écrivez-les avec le 8 à gauche et vous obtenez le nombre binaire.</p>
+  <table>
+    <tr><th>Nombre</th><th>8</th><th>4</th><th>2</th><th>1</th><th>Binaire</th><th>Afficheur</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0000</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0001</td><td>1</td></tr>
+    <tr><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0010</td><td>2</td></tr>
+    <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0011</td><td>3</td></tr>
+    <tr><td>5</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0101</td><td>5</td></tr>
+    <tr><td>9</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1001</td><td>9</td></tr>
+    <tr><td>10</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1010</td><td>A</td></tr>
+    <tr><td>11</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1011</td><td>B</td></tr>
+    <tr><td>15</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1111</td><td>F</td></tr>
+  </table>
+  <p>Après 9, l&rsquo;afficheur n&rsquo;a plus de chiffres&nbsp;: 10 à 15 deviennent les lettres <b>A</b> à <b>F</b>. Un tel
+  nombre s&rsquo;appelle <i>hexadécimal</i>&nbsp;: un caractère pour chaque groupe de quatre bits.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et fermez l&rsquo;interrupteur&nbsp;: LogicRun commence à compter.</li>
+    <li>Regardez quelles LED sont allumées et additionnez leurs valeurs. Est-ce que cela correspond à l&rsquo;afficheur&nbsp;?</li>
+    <li>Ouvrez la fenêtre LogicRun (double-clic sur le bloc) et cliquez sur <b>Pause</b>. Avec <b>Pas</b>, vous passez au
+      nombre suivant. La colonne <b>T1</b> montre le chiffre de l&rsquo;afficheur pour chaque pas.</li>
+    <li>Après 15, tout recommence à 0. Ouvrez l&rsquo;interrupteur&nbsp;: tout s&rsquo;arrête.</li>
+  </ol>
+
+  <h2>Exercice 1 : un compte à rebours</h2>
+  <p>Faites décompter l&rsquo;afficheur de 9 à 0, puis arrêtez-le.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Supprimez des pas avec <b>- pas</b> jusqu&rsquo;à ce qu&rsquo;il en reste 10. Cliquez dans la colonne <b>T1</b> du
+    pas 1 et choisissez <b>9</b>, pour le pas 2 <b>8</b>, &hellip; jusqu&rsquo;au pas 10 <b>0</b>. LogicRun allume lui-même
+    les bonnes LED. Décochez <b>Répéter</b>&nbsp;: après le dernier pas, le programme reste arrêté.</p>
+  </details>
+
+  <h2>Exercice 2 : compter jusqu&rsquo;à 15 avec deux chiffres</h2>
+  <p>L&rsquo;afficheur montre A à F, mais nous préférons écrire 10 à 15. Placez un deuxième afficheur à gauche du premier
+  et reliez-le à <b>T2</b>. Faites compter de <b>00</b> à <b>15</b>.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>T2 est le chiffre des dizaines, T1 celui des unités. Laissez les pas 1 à 10 tels quels (T2 = 0, T1 = 0 à 9). Aux
+    pas 11 à 16, choisissez <b>1</b> pour <b>T2</b> et <b>0</b>, <b>1</b>, <b>2</b>, <b>3</b>, <b>4</b> et <b>5</b> pour
+    <b>T1</b>. L&rsquo;afficheur montre maintenant 10 à 15. Dans la fenêtre, vous voyez que T2 = 1 active la sortie
+    <b>UIT4</b>&nbsp;: elle a la valeur 1 pour le deuxième chiffre.</p>
+  </details>
+
+  <div class="pager"><a href="les14.html">&larr; Leçon 14 : Une emballeuse</a><a href="leerpad.html">Parcours &rarr;</a></div>
