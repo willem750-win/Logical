@@ -149,3 +149,15 @@ try {
 finally {
   if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 }
+
+# ----------------------------------------------------------------
+# latest.txt (in de repo) zegt aan Logic welke versie de nieuwste is.
+# Pas na commit + push naar main zien gebruikers de update-melding.
+# ----------------------------------------------------------------
+$latest = Join-Path $repo 'latest.txt'
+$lines = Get-Content $latest
+$new = $lines | ForEach-Object { if ($_ -match '^version=') { "version=$Version" } else { $_ } }
+if (($lines -join "`n") -ne ($new -join "`n")) {
+  [IO.File]::WriteAllText($latest, (($new -join "`n") + "`n"))
+  Write-Host "latest.txt staat nu op $($Version): commit en push hem naar main, dan krijgen gebruikers de melding." -ForegroundColor Yellow
+}

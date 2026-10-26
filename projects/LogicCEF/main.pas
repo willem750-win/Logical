@@ -13,7 +13,7 @@ uses
   // wordt de help in de standaardbrowser van het systeem geopend.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun;
+  FSettings, uLogicRun, uUpdate;
 const
   IniFileName = 'taal.ini';
 
@@ -2364,6 +2364,9 @@ begin
    FDirtyTimer.Interval := 500;
    FDirtyTimer.OnTimer := @DirtyTimerTick;
    FDirtyTimer.Enabled := True;
+
+   // nieuwe versie? (op de achtergrond, hoogstens 1 keer per dag)
+   StartAutoUpdateCheck(Self, TitelBar2, Grid.Language);
  end;
 end;
 
