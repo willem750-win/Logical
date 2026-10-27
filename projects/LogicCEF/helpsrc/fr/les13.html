@@ -1,0 +1,53 @@
+<!-- titel: Leçon 13 - Commander un moteur -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 13 sur 15</p>
+  <h1>Commander un moteur avec LogicRun</h1>
+  <div class="goal"><strong>Objectif :</strong> faire tourner un moteur à gauche et à droite avec un programme, comme
+  pour un volet roulant, une porte de garage ou un petit chariot.</div>
+
+  <p><a class="open" href="../../panels/lessen/les13-motor.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les13-motor.png" alt="Interrupteur, bloc LogicRun et moteur">
+    <figcaption>L&rsquo;interrupteur est fermé : le programme tourne et le moteur tourne à gauche.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous ?</h2>
+  <ul>
+    <li>À gauche, un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b>. DIN1 a la fonction
+      <b>actif/inactif</b> : tant que l&rsquo;interrupteur est fermé, le programme tourne. Ouvrez-le, et le programme
+      s&rsquo;arrête et toutes les sorties s&rsquo;éteignent.</li>
+    <li>Au milieu, le <a href="logicrun.html">bloc LogicRun</a>.</li>
+    <li>À droite, un <a href="uitvoer.html#motor">moteur</a> : <b>UIT0</b> va vers <b>L</b> (à gauche), <b>UIT1</b> vers
+      <b>R</b> (à droite).</li>
+  </ul>
+
+  <h2>Le programme</h2>
+  <table>
+    <tr><th>Pas</th><th>Actif</th><th>Moteur</th><th>durée x</th><th>Durée (500&nbsp;ms par unité)</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>tourne à gauche</td><td>4</td><td>2 secondes</td></tr>
+    <tr><td>2</td><td>-</td><td>à l&rsquo;arrêt</td><td>1</td><td>0,5 seconde</td></tr>
+    <tr><td>3</td><td>UIT1</td><td>tourne à droite</td><td>4</td><td>2 secondes</td></tr>
+    <tr><td>4</td><td>-</td><td>à l&rsquo;arrêt</td><td>1</td><td>0,5 seconde</td></tr>
+  </table>
+  <p>Pourquoi ce court arrêt entre gauche et droite ? Un vrai moteur doit d&rsquo;abord s&rsquo;arrêter avant de changer
+  de sens, sinon il subit un choc brutal.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et fermez l&rsquo;interrupteur : le moteur tourne à gauche, s&rsquo;arrête un instant, puis
+      tourne à droite.</li>
+    <li>Ouvrez l&rsquo;interrupteur : le moteur s&rsquo;arrête aussitôt. Refermez-le : le programme recommence au pas 1.</li>
+    <li>Double-cliquez sur le bloc et suivez dans la fenêtre LogicRun : le pas actuel est bleu clair.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Dans le pas 2, activez les ronds de UIT0 <b>et</b> de UIT1. Que se passe-t-il avec le moteur ? Remettez ensuite
+  comme avant et faites tourner le moteur 3 secondes à gauche et 1 seconde à droite.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Avec L et R actives en même temps, le moteur ne tourne pas et reçoit un bord rouge avec un <b>!</b>. En réalité,
+    cela provoquerait un court-circuit ou des dégâts : un bon programme n&rsquo;active donc jamais L et R ensemble. Pour
+    3 secondes à gauche, mettez la <b>durée x</b> du pas 1 à 6 (6 &times; 500&nbsp;ms) ; pour 1 seconde à droite, mettez
+    le pas 3 à 2.</p>
+  </details>
+
+  <div class="pager"><a href="les12.html">&larr; Leçon 12 : Programmer avec LogicRun</a><a href="les14.html">Leçon 14 : Une emballeuse &rarr;</a></div>

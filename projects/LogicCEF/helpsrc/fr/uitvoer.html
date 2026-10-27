@@ -6,7 +6,13 @@
   <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a> S&rsquo;il y a des <a href="voeding.html">rails d&rsquo;alimentation</a> sur le panneau, branchez les sorties à gauche d&rsquo;un rail &minus; (masse).</p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</h2>
-  <p>S&rsquo;allume tant que l&rsquo;entrée est active.</p>
+$1  <p id="led"><b>LED :</b> cliquez avec le bouton droit sur une lampe et choisissez <b>Couleur</b> &rsaquo; <b>LED rouge</b>,
+  <b>LED verte</b> ou <b>LED orange</b>. La lampe devient alors une LED de cette couleur et fonctionne pour le reste comme une lampe.
+  Une LED éteinte montre une teinte claire de sa couleur. <b>Couleur</b> &rsaquo; <b>Lampe</b> en refait une lampe ordinaire.</p>
+  <figure>
+    <img src="../img/led-voorbeeld.png" alt="Une LED rouge, une orange et une verte">
+    <figcaption>Une LED rouge allumée, et une LED orange et une LED verte éteintes.</figcaption>
+  </figure>
 
   <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relais</h2>
   <p>Un relais est un interrupteur commandé par un électroaimant. À gauche se trouve l&rsquo;entrée <b>R</b> vers
@@ -38,6 +44,23 @@
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
   <p>Sonne tant que l&rsquo;entrée est active. Pratique comme alarme.</p>
+
+  <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Moteur</h2>
+  <p>Un moteur à deux entrées&nbsp;: <b>L</b> le fait tourner à gauche (sens antihoraire), <b>R</b> à droite (sens
+  horaire). Vous voyez tourner le rotor et une flèche verte indique le sens.</p>
+  <figure>
+    <img src="../img/motor-voorbeeld.png" alt="Un moteur qui tourne à gauche">
+    <figcaption>Le moteur tourne à gauche&nbsp;: L est active.</figcaption>
+  </figure>
+  <ul>
+    <li>Les deux inactives&nbsp;: le moteur est à l&rsquo;arrêt.</li>
+    <li>L et R <b>actives ensemble</b>&nbsp;: le moteur ne tourne pas et reçoit un bord rouge avec un <b>!</b>. En réalité,
+      cela provoquerait un court-circuit ou des dégâts&nbsp;: veillez à ce que L et R ne soient jamais actives ensemble.</li>
+    <li>Avec des <a href="voeding.html">rails d&rsquo;alimentation</a>, le moteur, comme les autres sorties, se place
+      avec son côté droit contre un rail &minus; (ou avec un fil d&rsquo;alimentation). Sans alimentation, il ne tourne pas.</li>
+  </ul>
+  <p>Avec <a href="logicrun.html">LogicRun</a>, vous pouvez faire tourner le moteur selon un programme, par exemple avec
+  l&rsquo;exemple <b>Moteur gauche/droite</b>&nbsp;: UIT0 vers L, UIT1 vers R.</p>
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">Afficheur 7 segments</h2>
   <p>L&rsquo;afficheur a une seule entrée. Ce qu&rsquo;il affiche dépend de ce que vous y reliez&nbsp;:</p>

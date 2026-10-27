@@ -1,0 +1,49 @@
+<!-- titel: Leçon 12 - Programmer avec LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 12 sur 15</p>
+  <h1>Programmer avec LogicRun</h1>
+  <div class="goal"><strong>Objectif :</strong> faire fonctionner un feu tricolore avec un programme plutôt
+  qu&rsquo;avec des portes et des fils, comme le fait un petit ordinateur ou un automate (PLC).</div>
+
+  <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="Bloc LogicRun avec deux boutons-poussoirs et trois LED">
+    <figcaption>Le programme tourne : UIT0 est active, la LED du haut (rouge) est allumée.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous ?</h2>
+  <ul>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> au milieu.</li>
+    <li>À gauche, deux boutons-poussoirs : celui du haut est sur <b>DIN1</b> (marche/arrêt), celui du bas sur <b>DIN3</b> (+1).</li>
+    <li>À droite, trois LED, comme un feu tricolore : <b>UIT0</b> rouge (en haut), <b>UIT1</b> orange (au milieu)
+      et <b>UIT2</b> vert (en bas).</li>
+  </ul>
+
+  <h2>Le programme</h2>
+  <p>Double-cliquez sur le bloc : la fenêtre LogicRun s&rsquo;ouvre. Le programme compte trois pas :</p>
+  <table>
+    <tr><th>Pas</th><th>Actif</th><th>durée x</th><th>Durée (500&nbsp;ms par unité)</th></tr>
+    <tr><td>1</td><td>UIT0 (rouge)</td><td>6</td><td>3 secondes</td></tr>
+    <tr><td>2</td><td>UIT2 (vert)</td><td>6</td><td>3 secondes</td></tr>
+    <tr><td>3</td><td>UIT1 (orange)</td><td>2</td><td>1 seconde</td></tr>
+  </table>
+  <p>Comme <b>Répéter</b> est coché, le programme recommence au pas 1 après le pas 3.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et appuyez sur le bouton-poussoir du haut : le feu tricolore se met en marche.</li>
+    <li>Appuyez encore une fois : le programme se met en pause. Appuyez ensuite plusieurs fois sur le bouton du
+      bas : à chaque appui, le programme avance d&rsquo;un pas.</li>
+    <li>Suivez dans la fenêtre : le pas actuel est bleu clair.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Faites rester le feu vert allumé 5 secondes au lieu de 3. Ajoutez ensuite un feu pour piétons : une LED verte
+  sur <b>UIT3</b> qui ne s&rsquo;allume que lorsque le feu est rouge.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Avec une durée de 500&nbsp;ms, 5 secondes font 10 fois la durée : mettez la <b>durée x</b> du pas 2 à 10.
+    Dans le pas 1 (rouge), cliquez aussi sur le rond de UIT3. Placez une lampe sur le panneau, faites-en une LED verte avec le bouton droit
+    (<b>Couleur</b> &rsaquo; <b>LED verte</b>) et tirez un fil de UIT3 vers cette LED. Ainsi, un seul programme commande plusieurs LED à la fois.</p>
+  </details>
+
+  <div class="pager"><a href="les11.html">&larr; Leçon 11 : Le relais</a><a href="les13.html">Leçon 13 : Commander un moteur &rarr;</a></div>

@@ -81,6 +81,7 @@ type
 
   TjanSimLogicBox = class;  // forward
   TjanRail = class;         // forward (voedingsrail)
+  TjanLogicRun = class;     // forward (programmeermodule)
 
 
   // Event doorgeven van Strings naar TStatusBar panels in main
@@ -96,6 +97,8 @@ type
   // tekenwijze van de onderdelen: Afbeelding (plaatjes, poorten als woord in een
   // rechthoek), IEC 60617 of ANSI/IEEE 91 (schemasymbolen; verschillen bij de poorten)
   TjanSymbolen=(Afbeelding,IEC,ANSI);
+  // uitvoer TjanSimLight: een gewone lamp of een led in een kleur
+  TLampKleur=(lkLamp,lkRood,lkGroen,lkOranje);
   TjanMeterFunc=(jlfEN);
 
 
@@ -484,6 +487,7 @@ type
   TjanTeller = class(TGraphicControl)
   private
     Select:Boolean;
+    FResetRonde: Cardinal;  // simulatieronde waarin Re laatst hoog was
     FStat1  : TStat1;
     FOnStat1Change            : TBit1ChangeEvent;
     FStat2  : TStat2;
@@ -1276,6 +1280,7 @@ type
     procedure ButtonClick3(sender:TObject);  // info Ja/Nee
     procedure ButtonNClick(sender:TObject); //wijzig naam
     procedure ButtonClick4(sender:TObject);  // xxxx selecteer object voor verwijdering
+    procedure FrequentieClick(Sender: TObject);
     procedure SetInfo(const Value: String); //xxx
 
     procedure mTimer(sender: TObject);
@@ -1507,12 +1512,15 @@ type
     FSelected: Boolean; //xxx
     FOnStatus: TSimStatusEvent;// xxx doorgeven van strings naan StatusBar1 panels
     FBox: TjanSimLogicBox;//xxxx  nodig voor selectie van object
+    FKleur: TLampKleur;      // lamp of led (rood, groen, oranje)
 
     procedure SendStatusToBar;//xxx
     procedure SetNaam(const Value: String);//xxx
     procedure SetTaal(const Value: String);//xxx
     procedure SetDown(const Value: boolean);//xxx
     procedure UpdateHintText; //xxxx
+    procedure SetKleur(const Value: TLampKleur);
+    procedure KleurClick(Sender: TObject);
 
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
@@ -1548,6 +1556,8 @@ type
     procedure Paint; override;  //xxx
   published
     property Lit:boolean read FLit write SetLit;
+    // lkLamp: gewone lamp; anders een led in die kleur (rechtsklikmenu Kleur)
+    property Kleur:TLampKleur read FKleur write SetKleur default lkLamp;
     property Lock:boolean read FLock write SetLock;
     property Info:String read FInfo write SetInfo;
     property ShowHint;
@@ -1796,6 +1806,7 @@ type
     FSchakelRelais:Boolean;   // knop schakelrelais in de balk
     FGrid:Boolean;
     FBuzzer:Boolean;
+    FMotor:Boolean;
     FTeller:Boolean;
     FMemory:Boolean;
     FDipSwitsh:Boolean;
@@ -1873,6 +1884,8 @@ type
     bmBuzzer:Tbitmap;
     RBuzzer:TRect;
     DBuzzer:boolean;
+    RMotor:TRect;
+    DMotor:boolean;
 
     bmSensor:Tbitmap;
     RSensor:TRect;
@@ -1926,6 +1939,7 @@ type
     FHRelais:String;
     FHSchakel:String;
     FHBuzzer:String;
+    FHMotor:String;
     FHSensor:String;
     FHWarm:String;
     FHLock:String;
@@ -1956,6 +1970,7 @@ type
     PROCEDURE SetHDraad(const Value: String);
     PROCEDURE SetHRelais(const Value: String);
     PROCEDURE SetHBuzzer(const Value: String);
+    PROCEDURE SetHMotor(const Value: String);
     PROCEDURE SetHSensor(const Value: String);
     PROCEDURE SetHWarm(const Value: String);
     PROCEDURE SetHTeller(const Value: String);
@@ -1981,6 +1996,7 @@ type
     PROCEDURE SetMemory(const Value: Boolean);
     PROCEDURE SetDipSwitsh(const Value: Boolean);
     PROCEDURE SetBuzzer(const Value: Boolean);
+    PROCEDURE SetMotor(const Value: Boolean);
     PROCEDURE SetSensor(const Value: Boolean);
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
@@ -2067,6 +2083,8 @@ type
     function AddRail(ALeft, ATop, AHeight: Integer; APlus: Boolean; AVolt: Double): TjanRail;
     // nieuwe rail aan de muis hangen om te plaatsen (zoals een component uit de balk)
     procedure NewRail(APlus: Boolean);
+    // nieuw LogicRun-blok aan de muis hangen (alleen als er nog geen is)
+    procedure NewLogicRun;
     // ophalen van paneelopbouw uit exe
     PROCEDURE LoadStream(welke:TStream;inf:Boolean);
     procedure LoadStreamNew(welke: TStream; Paneel: TjanGridS; Inf: Boolean);
@@ -2117,6 +2135,7 @@ type
     property KSchakelRelais:Boolean read FSchakelRelais write SetSchakelRelais;
     property KGrid:Boolean read FGrid write SetGrid;
     property KBuzzer:Boolean read FBuzzer write SetBuzzer;
+    property KMotor:Boolean read FMotor write SetMotor default True;
     property KSensor:Boolean read FSensor write SetSensor;
     property KWarm:Boolean read FWarm write SetWarm;
     property KTeller:Boolean read FTeller write SetTeller;
@@ -2146,6 +2165,7 @@ type
     property HRelais:String read FHrelais write SetHrelais;
     property HSchakelRelais: string read FHSchakel write FHSchakel;
     property HBuzzer:String read FHBuzzer write SetHBuzzer;
+    property HMotor:String read FHMotor write SetHMotor;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
     property HLock:String read FHLock write SetHlock;
@@ -2180,6 +2200,207 @@ type
      property HelpKeyword;
    // property LastStatusSender: TObject read FLastStatusSender;
 end;
+
+  { TjanSimMotor: motor met twee ingangen, L (linksom) en R (rechtsom). De
+    rotor draait zichtbaar zolang precies één ingang aan is; staan ze allebei
+    aan, dan draait hij niet en toont hij een rood uitroepteken (in het echt
+    kortsluiting). Voeding zoals andere uitvoer: rechts op een - rail. }
+  TjanSimMotor = class(TGraphicControl)
+  private
+    FIn: array[0..1] of Boolean;   // 0 = L (linksom), 1 = R (rechtsom)
+    FAngle: Integer;               // stand van de rotor in graden
+    FTimer: TTimer;
+    FLock: Boolean;
+    FSelected: Boolean;
+    FSelect: Boolean;
+    FMouseOver: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FNaam: string;
+    FOnEnter: TNotifyEvent;
+    FOnExit: TNotifyEvent;
+    FOnStatus: TSimStatusEvent;
+    Connectors: TList;
+    doMove: Boolean;
+    mdp: TPoint;
+    newLeft, newTop: Integer;
+    function GetInput(I: Integer): Boolean;
+    procedure SetTaal(const Value: string);
+    procedure TimerTick(Sender: TObject);
+    procedure UpdateTimer;
+    procedure AnchorConnectors;
+    procedure MoveConnectors;
+    procedure SendStatusToBar;
+    function StatusText: string;
+    procedure LockClick(Sender: TObject);
+    procedure SelectClick(Sender: TObject);
+    procedure BuildPopup;
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+  protected
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure Paint; override;
+    procedure UpdateHintText;
+    // ingang 0 (L) of 1 (R) aan/uit, door de draden (Connect)
+    procedure SetInput(I: Integer; Value: Boolean);
+    // index van de ingang bij punt P (paneel), anders -1
+    function InputPinAt(const P: TPoint): Integer;
+    // Y van het aansluitvierkantje (7x7) van ingang I binnen het blok
+    class function InputPinY(I: Integer): Integer;
+    // -1 linksom, 1 rechtsom, 0 stil (ook als L en R samen aan zijn)
+    function Direction: Integer;
+    function Fault: Boolean;       // L en R tegelijk aan
+    property Inputs[I: Integer]: Boolean read GetInput;
+    property Angle: Integer read FAngle;
+  published
+    property Lock: Boolean read FLock write FLock;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write SetTaal;
+    property Naam: string read FNaam write FNaam;
+    property OnEnter: TNotifyEvent read FOnEnter write FOnEnter;
+    property OnExit: TNotifyEvent read FOnExit write FOnExit;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
+    property ShowHint;
+    property HelpKeyword;
+  end;
+
+  { TjanLogicRun: programmeermodule met een stappenprogramma (LogicRun).
+    Links 4 ingangen (DIN1-DIN4), rechts 8 uitgangen (UIT0-UIT7). Elke stap
+    zet een bitpatroon op de uitgangen en duurt Tijd x StapDuur ms. Een
+    ingang kan het programma starten/stoppen, op stap 0 zetten of een stap
+    verder zetten (bij het aanzetten). Er staat er hoogstens één op een
+    paneel; het programma wordt bewerkt in het LogicRun-venster. }
+  // lrdStartStop wisselt bij elk aanzetten (drukknop); lrdAanUit loopt zolang
+  // de ingang aan is en stopt als hij uit gaat (schakelaar)
+  TLogicRunDin = (lrdGeen, lrdStartStop, lrdReset, lrdStap, lrdAanUit);
+  // voorwaarde van een stap: geen (de stap duurt Tijd x StapDuur), wachten tot
+  // een ingang aan of uit is, of tot er N pulsen op een ingang geweest zijn
+  TLogicRunWacht = (lrwGeen, lrwAan, lrwUit, lrwPulsen);
+  TLogicRunStep = record
+    Bits: Byte;      // bit i = uitgang UITi
+    Tijd: Integer;   // aantal keer de stapduur (als Wacht = lrwGeen)
+    Wacht: TLogicRunWacht;
+    WachtDin: Integer;   // 0..3 = DIN1..DIN4
+    WachtN: Integer;     // aantal pulsen (lrwPulsen)
+  end;
+
+  TjanLogicRun = class(TGraphicControl)
+  private
+    FSteps: array of TLogicRunStep;
+    FStapDuur: Integer;
+    FHerhalen: Boolean;
+    FDin: array[0..3] of TLogicRunDin;
+    FIn: array[0..3] of Boolean;
+    FStep: Integer;            // huidige stap, -1 = gestopt (uitgangen uit)
+    FCount: Integer;           // tikken in de huidige stap
+    FPulses: Integer;          // pulsen in de huidige stap (voorwaarde lrwPulsen)
+    FRunning: Boolean;
+    FTimer: TTimer;
+    FLock: Boolean;
+    FSelected: Boolean;
+    FSelect: Boolean;          // muis erboven: dikkere rand
+    FMouseOver: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FNaam: string;
+    FOnEnter: TNotifyEvent;
+    FOnExit: TNotifyEvent;
+    FOnStatus: TSimStatusEvent;
+    FOnChange: TNotifyEvent;
+    Connectors: TList;
+    doMove: Boolean;
+    mdp: TPoint;
+    newLeft, newTop: Integer;
+    function GetStepCount: Integer;
+    function GetStep(I: Integer): TLogicRunStep;
+    procedure SetStep(I: Integer; const Value: TLogicRunStep);
+    function GetDin(I: Integer): TLogicRunDin;
+    procedure SetDin(I: Integer; Value: TLogicRunDin);
+    function GetInput(I: Integer): Boolean;
+    function GetOutput(I: Integer): Boolean;
+    procedure SetStapDuur(Value: Integer);
+    procedure SetHerhalen(Value: Boolean);
+    procedure SetTaal(const Value: string);
+    procedure TimerTick(Sender: TObject);
+    procedure Changed;
+    procedure NextStep;
+    function ConditionMet: Boolean;
+    procedure AnchorConnectors;
+    procedure MoveConnectors;
+    procedure SendStatusToBar;
+    procedure EditClick(Sender: TObject);
+    procedure LockClick(Sender: TObject);
+    procedure SelectClick(Sender: TObject);
+    procedure BuildPopup;
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+  protected
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure DblClick; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    destructor Destroy; override;
+    procedure UpdateHintText;
+    // programma
+    procedure ClearSteps;
+    procedure AddStep(ABits: Byte; ATijd: Integer);
+    procedure InsertStep(AIndex: Integer; ABits: Byte; ATijd: Integer);
+    procedure DeleteStep(AIndex: Integer);
+    // het hele programma als tekst (zoals in het paneelbestand) en terug
+    function ProgramText: string;
+    procedure SetProgramText(const S: string);
+    // uitvoeren
+    procedure Start;
+    procedure Pause;
+    procedure StopRun;     // stoppen en terug naar het begin (uitgangen uit)
+    procedure StepOnce;    // één stap verder (ook als het programma stilstaat)
+    procedure ResetRun;    // naar stap 0
+    // ingang i (0..3) aan/uit, door de draden (Connect); reageert op het aanzetten
+    procedure SetInput(I: Integer; Value: Boolean);
+    // aansluitingen: index van de uitgang/ingang bij punt P (paneel), anders -1;
+    // uitgang 8 = T1 en 9 = T2 (display-uitgangen, zie DisplayChar)
+    function OutputPinAt(const P: TPoint): Integer;
+    function InputPinAt(const P: TPoint): Integer;
+    // Y van het aansluitvierkantje (7x7) binnen het blok
+    class function InputPinY(I: Integer): Integer;
+    class function OutputPinY(I: Integer): Integer;
+    // cijfer voor een display: T1 (I=0) = UIT0..UIT3, T2 (I=1) = UIT4..UIT7,
+    // als 0..9 en A..F
+    function DisplayChar(I: Integer): Char;
+    property StepCount: Integer read GetStepCount;
+    property Steps[I: Integer]: TLogicRunStep read GetStep write SetStep;
+    property Din[I: Integer]: TLogicRunDin read GetDin write SetDin;
+    property Inputs[I: Integer]: Boolean read GetInput;
+    property Outputs[I: Integer]: Boolean read GetOutput;
+    property CurrentStep: Integer read FStep;
+    // pulsen geteld in de huidige stap (voor een stap die op pulsen wacht)
+    property Pulses: Integer read FPulses;
+    property Running: Boolean read FRunning;
+    // na elke wijziging van programma of toestand (het LogicRun-venster)
+    property OnChange: TNotifyEvent read FOnChange write FOnChange;
+  published
+    property StapDuur: Integer read FStapDuur write SetStapDuur;
+    property Herhalen: Boolean read FHerhalen write SetHerhalen;
+    property Lock: Boolean read FLock write FLock;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write SetTaal;
+    property Naam: string read FNaam write FNaam;
+    property OnEnter: TNotifyEvent read FOnEnter write FOnEnter;
+    property OnExit: TNotifyEvent read FOnExit write FOnExit;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
+    property ShowHint;
+    property HelpKeyword;
+  end;
 
   { TjanRail: verticale voedingsrail. Een + rail (rood, instelbare spanning)
     voedt de invoer die er rechts op ingeplugd is, een - rail (blauw, massa)
@@ -2329,6 +2550,14 @@ procedure SnapToRail(C: TControl; var NewLeft: Integer; Tol: Integer = RailSnapT
 // stekkers en bolletjes tekenen; voor TjanGridS.OnPaintOverlay
 procedure DrawRailOverlay(Grid: TjanGridS);
 
+// het LogicRun-blok op paneel P, anders nil (er is er hoogstens één)
+function FindLogicRun(P: TWinControl): TjanLogicRun;
+
+var
+  // opent het LogicRun-venster voor het blok (Sender); gezet door het
+  // programma, gebruikt bij dubbelklik en in het rechtsklikmenu van het blok
+  LogicRunEditHook: TNotifyEvent = nil;
+
 implementation
 
   {$R janSimImages.res}
@@ -2340,6 +2569,8 @@ procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer); f
 function SymOf(C: TComponent): TjanSymbolen; forward;
 
   var
+    // nummer van de huidige simulatieronde (cpuOnTimer, alle draden één keer)
+    SimRonde: Cardinal = 0;
     GlobalSimBox: TjanSimLogicBox;
 
 CONST
@@ -3725,7 +3956,15 @@ end;
 procedure TjanConnector.DisConnectFinal;
 begin
   if DisCon=nil then exit;
-  if (Discon is TjanSimLight) then
+  if (DisCon is TjanLogicRun) then
+  begin
+    TjanLogicRun(DisCon).SetInput(DisConI-1, false);
+  end
+  else if (DisCon is TjanSimMotor) then
+  begin
+    TjanSimMotor(DisCon).SetInput(DisConI-1, false);
+  end
+  else if (Discon is TjanSimLight) then
   begin
     TjanSimLight(Discon).lit:=false;
   end
@@ -4386,7 +4625,7 @@ end;
 function IsRailOutput(C: TControl): Boolean;
 begin
   Result := (C is TjanSimLight) or (C is TjanSimRelais) or
-            (C is TjanSimBuzzer) or (C is TjanDisplay);
+            (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanSimMotor);
 end;
 
 function PanelHasRails(P: TWinControl): Boolean;
@@ -5229,7 +5468,17 @@ function InputPins(C: TControl): TPinArray;
 var i: Integer;
 begin
   Result := nil;
-  if C is TjanLogic then
+  if C is TjanLogicRun then
+  begin
+    for i := 0 to 3 do
+      Add(1, TjanLogicRun.InputPinY(i));
+  end
+  else if C is TjanSimMotor then
+  begin
+    Add(1, TjanSimMotor.InputPinY(0));
+    Add(1, TjanSimMotor.InputPinY(1));
+  end
+  else if C is TjanLogic then
   begin
     for i := 0 to 2 do
       if TjanLogic(C).Gates[i].Active then
@@ -5683,7 +5932,7 @@ var Pi,Po:TPoint;
 
   function getvi:boolean;
   var p:Tpoint;
-      ii:integer;
+      ii,Q:integer;
   begin
     result:=true;
     SrcVolt:=-1;
@@ -5696,6 +5945,22 @@ var Pi,Po:TPoint;
     end;
     for ii:=0 to wc.ControlCount-1 do
     begin
+      // LogicRun: een draad die op een uitgang begint
+      if (wc.controls[ii] is TjanLogicRun) then
+      begin
+        Q:=TjanLogicRun(wc.controls[ii]).OutputPinAt(Pi);
+        if Q>=8 then
+        begin  // T1/T2: cijfer voor een display
+          vi:=true;LedW:=TjanLogicRun(wc.controls[ii]).DisplayChar(Q-8);
+          exit;
+        end;
+        if Q>=0 then
+        begin
+          vi:=TjanLogicRun(wc.controls[ii]).Outputs[Q];
+          exit;
+        end;
+        continue;
+      end;
       // schakelrelais: een draad die bij R2 begint, krijgt het contact als bron
       if (wc.controls[ii] is TjanSchakelRelais) then
       begin
@@ -5929,6 +6194,28 @@ var Pi,Po:TPoint;
     if vi=true then setpower(true) else setpower(false);
     for ii:=0 to wc.ControlCount-1 do
     begin
+      // LogicRun: een draad die op een ingang eindigt
+      if (wc.controls[ii] is TjanLogicRun) then
+      begin
+        Q:=TjanLogicRun(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          TjanLogicRun(wc.controls[ii]).SetInput(Q, vi);
+          exit;
+        end;
+        continue;
+      end;
+      // motor: L of R, alleen met voeding (zoals een lamp)
+      if (wc.controls[ii] is TjanSimMotor) then
+      begin
+        Q:=TjanSimMotor(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          TjanSimMotor(wc.controls[ii]).SetInput(Q, vi and RailOK(TjanSimMotor(wc.controls[ii])));
+          exit;
+        end;
+        continue;
+      end;
       if (wc.controls[ii] is TjanSimLight) then
       begin
         R:=wc.Controls[ii].BoundsRect;
@@ -6209,11 +6496,34 @@ var Pi,Po:TPoint;
 
   procedure setVo;
   var p:Tpoint;
-      ii:integer;
+      ii,Q:integer;
   begin
     if vi=true then setpower(true) else setpower(false);
     for ii:=0 to wc.ControlCount-1 do
     begin
+      // LogicRun: ingang wordt na het loskoppelen uitgezet (DisConnectFinal)
+      if (wc.controls[ii] is TjanLogicRun) then
+      begin
+        Q:=TjanLogicRun(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          DisCon:=TjanLogicRun(wc.controls[ii]);
+          DisConI:=Q+1;
+          exit;
+        end;
+        continue;
+      end;
+      if (wc.controls[ii] is TjanSimMotor) then
+      begin
+        Q:=TjanSimMotor(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          DisCon:=TjanSimMotor(wc.controls[ii]);
+          DisConI:=Q+1;
+          exit;
+        end;
+        continue;
+      end;
       if (wc.controls[ii] is TjanSimLight) then
       begin
         R:=wc.Controls[ii].BoundsRect;
@@ -7347,6 +7657,220 @@ begin
        end;
   end;
   C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
+end;
+
+// impulsgenerator: halve periode in ms (zo lang is de puls hoog en ook laag)
+const
+  PulsIntervalStandaard = 300;
+  PulsIntervallen: array[0..4] of Integer = (1000, 500, 300, 200, 100);
+
+function PulsFrequentieText(AInterval: Integer): string;
+begin
+  if AInterval <= 0 then AInterval := PulsIntervalStandaard;
+  Result := FormatFloat('0.#', 1000 / (2 * AInterval)) + ' Hz';
+end;
+
+// halve periode van een impulsgenerator uit de rest van de regel
+// (S = 'breedte;interval;', zonder interval de standaard)
+function PulsIntervalUitRest(const S: string): Integer;
+var p: Integer;
+    Rest: string;
+begin
+  Result := PulsIntervalStandaard;
+  p := Pos(';', S);
+  if p = 0 then Exit;
+  Rest := Copy(S, p + 1, MaxInt);
+  p := Pos(';', Rest);
+  if p > 0 then Rest := Copy(Rest, 1, p - 1);
+  Result := StrToIntDef(Trim(Rest), PulsIntervalStandaard);
+  if (Result < 20) or (Result > 10000) then Result := PulsIntervalStandaard;
+end;
+
+// kleur van een lamp uit de rest van de regel in het paneelbestand
+// (S = 'breedte;kleur;', zonder kleur een gewone lamp)
+function LampKleurUitRest(const S: string): TLampKleur;
+var p, v: Integer;
+    Rest: string;
+begin
+  Result := lkLamp;
+  p := Pos(';', S);
+  if p = 0 then Exit;
+  Rest := Copy(S, p + 1, MaxInt);
+  p := Pos(';', Rest);
+  if p > 0 then Rest := Copy(Rest, 1, p - 1);
+  v := StrToIntDef(Trim(Rest), 0);
+  if (v >= Ord(Low(TLampKleur))) and (v <= Ord(High(TLampKleur))) then
+    Result := TLampKleur(v);
+end;
+
+// Kleur van een led (lkRood/lkGroen/lkOranje): fel als hij brandt, een lichte
+// tint van dezelfde kleur als hij uit is (zo zie je welke kleur hij heeft)
+function LedColor(K: TLampKleur; On: Boolean): TColor;
+begin
+  case K of
+    lkRood:   if On then Result := RGBToColor(255, 30, 30) else Result := RGBToColor(205, 140, 140);
+    lkGroen:  if On then Result := RGBToColor(40, 220, 40) else Result := RGBToColor(140, 195, 140);
+    lkOranje: if On then Result := RGBToColor(255, 150, 0) else Result := RGBToColor(230, 190, 130);
+  else
+    if On then Result := clYellow else Result := clWhite;
+  end;
+end;
+
+// Led op de plaats van het lampsymbool (rechts van X = L, tot R). Bij
+// Afbeelding een gekleurd bolletje met een glans als hij brandt; bij
+// schemasymbolen een diode (driehoek en streep) op de lijn Y met twee
+// pijltjes voor het licht.
+procedure DrawLedSymbol(C: TCanvas; L, R, Y: Integer; K: TLampKleur; On: Boolean; S: TjanSymbolen);
+var x0, x1, cx, cy, i: Integer;
+    Col: TColor;
+begin
+  Col := LedColor(K, On);
+  if S = Afbeelding then
+  begin
+    cx := L + 15; cy := 11;
+    SymPen(C, clGray);
+    C.Line(L, Y, cx - 6, cy - 3);
+    C.Line(cx + 8, cy, R + 1, cy);
+    if On then
+    begin
+      // gloed rond de led
+      C.Brush.Style := bsClear;
+      C.Pen.Color := LedColor(K, True);
+      C.Ellipse(cx - 10, cy - 10, cx + 11, cy + 11);
+    end;
+    C.Brush.Style := bsSolid;
+    C.Brush.Color := Col;
+    C.Pen.Color := clBlack;
+    C.Ellipse(cx - 8, cy - 8, cx + 9, cy + 9);
+    if On then
+    begin
+      C.Brush.Color := clWhite;
+      C.Pen.Color := clWhite;
+      C.Ellipse(cx - 5, cy - 5, cx - 1, cy - 1);
+    end;
+    SymPen(C, clBlack);
+    Exit;
+  end;
+  x0 := L + 4; x1 := x0 + 10;
+  SymPen(C, clBlack);
+  C.Line(L, Y, x0, Y);
+  C.Line(x1, Y, R + 1, Y);
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := Col;
+  C.Polygon([Point(x0, Y - 5), Point(x0, Y + 5), Point(x1, Y)]);
+  C.Line(x1, Y - 5, x1, Y + 6);
+  // twee pijltjes naar rechtsonder: het licht
+  if On then SymPen(C, Col) else SymPen(C, clBlack);
+  for i := 0 to 1 do
+  begin
+    cx := x0 + 2 + i * 5;
+    C.Line(cx, Y + 7, cx + 5, Y + 12);
+    C.Line(cx + 5, Y + 12, cx + 2, Y + 12);
+    C.Line(cx + 5, Y + 12, cx + 5, Y + 9);
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Motor: cirkel met middelpunt (CX,CY) en straal Rad. Bij Afbeelding een
+// metalen schijf met een rotor van drie spaken op hoek Angle (graden); bij
+// schemasymbolen een cirkel met M en een rondlopend puntje. Dir: -1 linksom,
+// 1 rechtsom, 0 stil; als hij draait een gebogen pijl bovenaan in de
+// draairichting. Fault: rode rand (L en R samen aan).
+procedure DrawMotorSymbol(C: TCanvas; CX, CY, Rad, Angle, Dir: Integer; Fault: Boolean; S: TjanSymbolen);
+
+  function P(R: Integer; ADeg: Double): TPoint;
+  begin
+    Result := Point(CX + Round(R * Cos(ADeg * Pi / 180)), CY - Round(R * Sin(ADeg * Pi / 180)));
+  end;
+
+var
+  k, R2: Integer;
+  A, Ux, Uy: Double;
+  Tip, Q: TPoint;
+begin
+  C.Pen.Width := 1;
+  C.Pen.Style := psSolid;
+  C.Brush.Style := bsSolid;
+  if S = Afbeelding then
+    C.Brush.Color := RGBToColor(205, 210, 220)
+  else
+    C.Brush.Color := clWhite;
+  if Fault then
+  begin
+    C.Pen.Color := clRed;
+    C.Pen.Width := 2;
+  end
+  else
+    C.Pen.Color := clBlack;
+  C.Ellipse(CX - Rad, CY - Rad, CX + Rad + 1, CY + Rad + 1);
+  C.Pen.Width := 1;
+  if S = Afbeelding then
+  begin
+    // rotor: drie spaken en een naaf (dunner op het kleine knopicoon)
+    C.Pen.Color := clNavy;
+    if Rad >= 14 then C.Pen.Width := 3 else C.Pen.Width := 2;
+    for k := 0 to 2 do
+    begin
+      if Rad >= 14 then Q := P(Rad - 4, Angle + k * 120) else Q := P(Rad - 2, Angle + k * 120);
+      C.Line(CX, CY, Q.X, Q.Y);
+    end;
+    C.Pen.Width := 1;
+    C.Brush.Color := clNavy;
+    if Rad >= 14 then C.Ellipse(CX - 3, CY - 3, CX + 4, CY + 4);
+  end
+  else
+  begin
+    C.Brush.Style := bsClear;
+    C.Font.Name := 'Arial';
+    C.Font.Size := 10;
+    C.Font.Style := [fsBold];
+    C.Font.Color := clBlack;
+    C.TextOut(CX - C.TextWidth('M') div 2, CY - C.TextHeight('M') div 2, 'M');
+    if Dir <> 0 then
+    begin
+      // rondlopend puntje op de rand
+      Q := P(Rad - 3, Angle);
+      C.Brush.Style := bsSolid;
+      C.Brush.Color := clRed;
+      C.Pen.Color := clRed;
+      C.Ellipse(Q.X - 2, Q.Y - 2, Q.X + 3, Q.Y + 3);
+    end;
+  end;
+  if Dir <> 0 then
+  begin
+    // gebogen pijl bovenaan, van 130 naar 50 graden (rechtsom) of omgekeerd
+    R2 := Rad + 4;
+    C.Pen.Color := clGreen;
+    C.Pen.Width := 2;
+    Q := P(R2, 130);
+    C.MoveTo(Q.X, Q.Y);
+    A := 130;
+    while A > 50 do
+    begin
+      A := A - 10;
+      Q := P(R2, A);
+      C.LineTo(Q.X, Q.Y);
+    end;
+    C.Pen.Width := 1;
+    // pijlpunt aan het einde in de draairichting
+    if Dir > 0 then
+    begin
+      A := 50; Ux := Sin(A * Pi / 180); Uy := Cos(A * Pi / 180);
+    end
+    else
+    begin
+      A := 130; Ux := -Sin(A * Pi / 180); Uy := -Cos(A * Pi / 180);
+    end;
+    Q := P(R2, A);
+    Tip := Point(Q.X + Round(5 * Ux), Q.Y + Round(5 * Uy));
+    C.Brush.Style := bsSolid;
+    C.Brush.Color := clGreen;
+    C.Polygon([Tip, Point(Q.X - Round(4 * Uy), Q.Y + Round(4 * Ux)),
+                    Point(Q.X + Round(4 * Uy), Q.Y - Round(4 * Ux))]);
+  end;
+  C.Pen.Color := clBlack;
+  C.Pen.Width := 1;
+  C.Brush.Style := bsSolid;
 end;
 
 // Lichaam van een blok (teller, geheugen): bij Afbeelding een vlak met 3D-rand,
@@ -8624,6 +9148,7 @@ procedure TjanTeller.SetInput1(const Value: boolean);
 begin
   if value=true then
   begin
+    FResetRonde := SimRonde;
     FBits := 0;FBitsChar:='0';
     FOutPutBit1:=false;FOutPutBit2:=false;FOutPutBit4:=false;FOutPutBit8:=false;
     invalidate;
@@ -8634,6 +9159,9 @@ end;
 procedure TjanTeller.SetLoop(const Value: boolean);
 begin
   FLoop := value;
+  // reset gaat voor: een telpuls in dezelfde ronde als Re hoog telt niet
+  if value and (SimRonde <> 0) and (FResetRonde = SimRonde) then
+    Exit;
   if value=true then
   begin
      inc(FBits);
@@ -13349,7 +13877,8 @@ end;
 
 procedure TjanSimPuls.BuildPopup;
         var
-        miLock, miName, miInfo, miPuls, miSelect: TMenuItem;
+        miLock, miName, miInfo, miPuls, miSelect, mi: TMenuItem;
+        i: Integer;
        begin
          if not Assigned(PopupMenu) then
            PopupMenu := TPopupMenu.Create(Self)
@@ -13378,6 +13907,30 @@ procedure TjanSimPuls.BuildPopup;
            miSelect.Name := 'miSelect';
            miSelect.OnClick := ButtonClick4;     // Delphi-mode: geen @
            popupMenu.Items.Add(miSelect);
+
+           // --- Frequentie: hoe snel de pulsen komen
+           miPuls := TMenuItem.Create(PopupMenu);
+           miPuls.Caption := Tr(BTaal, 'Frequentie', 'Frequency', 'Fréquence', 'Frequenz');
+           PopupMenu.Items.Add(miPuls);
+           for i := Low(PulsIntervallen) to High(PulsIntervallen) do
+           begin
+             mi := TMenuItem.Create(PopupMenu);
+             mi.Caption := PulsFrequentieText(PulsIntervallen[i]) + '  (' +
+               Tr(BTaal, 'elke ', 'every ', 'toutes les ', 'alle ') +
+               FormatFloat('0.##', 2 * PulsIntervallen[i] / 1000) + ' s)';
+             if PulsIntervallen[i] = PulsIntervalStandaard then
+               mi.Caption := mi.Caption + ' - ' + Tr(BTaal, 'standaard', 'default', 'par défaut', 'Standard');
+             mi.Tag := PulsIntervallen[i];
+             mi.RadioItem := True;
+             mi.Checked := PulsIntervallen[i] = FPulsinterval;
+             mi.OnClick := FrequentieClick;
+             miPuls.Add(mi);
+           end;
+       end;
+
+       procedure TjanSimPuls.FrequentieClick(Sender: TObject);
+       begin
+         PulsInterval := TMenuItem(Sender).Tag;
        end;
 
        procedure TjanSimPuls.UpdatePopupCaptions;
@@ -13511,7 +14064,12 @@ begin
        else
        PaintLed(p,FPuls);
 
-     Pu:=IntToStr(pulsinterval);
+     // de frequentie klein onder de pulstekst
+     Pu:=PulsFrequentieText(FPulsinterval);
+     brush.style:=bsClear;
+     Font.Name:='Arial';Font.Size:=7;Font.Style:=[];
+     Font.Color:=clNavy;
+     TextOut((Self.Width - TextWidth(Pu)) div 2, 53, Pu);
 
     Unlock;
     end;
@@ -13723,6 +14281,7 @@ begin
   if value<>FPulsinterval then
   begin
     FPulsinterval := Value;
+    puls.Interval := Value;   // loopt hij al, dan meteen het nieuwe tempo
  end;
 invalidate;
 end;
@@ -15274,7 +15833,8 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
 
   procedure TjanSimLight.BuildPopup;
   var
-    miLock, miName, miInfo, miSelect: TMenuItem;
+    miLock, miName, miInfo, miSelect, miKleur, mi: TMenuItem;
+    k: TLampKleur;
   begin
     if not Assigned(PopupMenu) then
       PopupMenu := TPopupMenu.Create(Self)
@@ -15304,6 +15864,38 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
     miSelect.Name := 'miSelect';
     miSelect.OnClick := ButtonClick4;     // Delphi-mode: geen @
     PopupMenu.Items.Add(miSelect);
+
+    // --- Kleur: lamp of led (rood, groen, oranje)
+    miKleur := TMenuItem.Create(PopupMenu);
+    miKleur.Caption := Tr(BTaal, 'Kleur', 'Colour', 'Couleur', 'Farbe');
+    PopupMenu.Items.Add(miKleur);
+    for k := Low(TLampKleur) to High(TLampKleur) do
+    begin
+      mi := TMenuItem.Create(PopupMenu);
+      case k of
+        lkLamp:   mi.Caption := Tr(BTaal, 'Lamp', 'Lamp', 'Lampe', 'Lampe');
+        lkRood:   mi.Caption := Tr(BTaal, 'Rode led', 'Red LED', 'LED rouge', 'Rote LED');
+        lkGroen:  mi.Caption := Tr(BTaal, 'Groene led', 'Green LED', 'LED verte', 'Grüne LED');
+        lkOranje: mi.Caption := Tr(BTaal, 'Oranje led', 'Orange LED', 'LED orange', 'Orange LED');
+      end;
+      mi.Tag := Ord(k);
+      mi.RadioItem := True;
+      mi.Checked := k = FKleur;
+      mi.OnClick := KleurClick;
+      miKleur.Add(mi);
+    end;
+  end;
+
+  procedure TjanSimLight.KleurClick(Sender: TObject);
+  begin
+    Kleur := TLampKleur(TMenuItem(Sender).Tag);
+  end;
+
+  procedure TjanSimLight.SetKleur(const Value: TLampKleur);
+  begin
+    if Value = FKleur then Exit;
+    FKleur := Value;
+    Invalidate;
   end;
 
   procedure TjanSimLight.UpdatePopupCaptions;
@@ -15417,7 +16009,16 @@ begin
  begin
    Lock;
    lUit.Transparent:=true; lAan.Transparent:=true;
-   If FLit=false then
+   if FKleur<>lkLamp then
+   begin
+     // led: links het aansluitblokje met pijl van het lampje, rechts de led
+     if FLit then
+       DrawBitmapPart(Canvas,lAan,Rect(0,0,37,Self.Height))
+     else
+       DrawBitmapPart(Canvas,lUit,Rect(0,0,37,Self.Height));
+     DrawLedSymbol(Canvas,37,Self.Width-1,6,FKleur,FLit,SymOf(Self));
+   end
+   else If FLit=false then
      PaintOutputSymbol(Self,Canvas,lUit,0,False)
      else
      PaintOutputSymbol(Self,Canvas,lAan,0,True);
@@ -15426,7 +16027,7 @@ begin
      Font.Size:=9;
      Font.Style:= [];
      Font.Color:=clNavy;
-     TextOut(1,11,'La');
+     if FKleur<>lkLamp then TextOut(1,11,'Led') else TextOut(1,11,'La');
    UnLock;
  end;
  if select=true then
@@ -16914,6 +17515,7 @@ procedure TjanSimLogicBox.cpuOnTimer(sender: TObject);
 var wc:TWinControl;
     i:integer;
 begin
+  Inc(SimRonde);
   wc:=parent;
   for i:=0 to wc.ControlCount-1 do
     if (wc.controls[i] is TjanConnector) then
@@ -17055,14 +17657,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=5;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FDisplay:=true;
   FVoeding:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DSchakel:=false;DBuzzer:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -17443,6 +18045,9 @@ begin
       begin
         with TjanSimPuls(c) do
           lijn := Format('TjanSimPuls;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+        // frequentie als extra veld, alleen als ze niet de standaard is
+        if TjanSimPuls(c).PulsInterval <> PulsIntervalStandaard then
+          lijn := lijn + IntToStr(TjanSimPuls(c).PulsInterval) + ';';
         SFile.Add(lijn);
       end
       else if c is TjanDipSwitsh then
@@ -17461,6 +18066,9 @@ begin
       begin
         with TjanSimLight(c) do
           lijn := Format('TjanSimLight;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+        // led: de kleur als extra veld (een oudere Logic toont een lamp)
+        if TjanSimLight(c).Kleur <> lkLamp then
+          lijn := lijn + IntToStr(Ord(TjanSimLight(c).Kleur)) + ';';
         SFile.Add(lijn);
       end
       else if c is TjanSchakelRelais then
@@ -17487,6 +18095,11 @@ begin
           lijn := Format('TjanDisplay;%d;%d;%d;%d;', [Height, Left, Top, Width]);
         SFile.Add(lijn);
       end
+      else if c is TjanSimMotor then
+        SFile.Add(Format('TjanSimMotor;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+      else if c is TjanLogicRun then
+        SFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
+          TjanLogicRun(c).ProgramText + ';')
       else if c is TjanMeter then
         SFile.Add(Format('TjanMeter;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
       else if c is TjanRail then
@@ -17528,7 +18141,7 @@ begin
               (c is TjanSimKnop) or (c is TjanDipSwitsh) or (c is TjanSimPuls) or
               (c is TjanSimSensor) or (c is TjanSimWarm) or (c is TjanSimLight) or
               (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay) or
-              (c is TjanRail)) then
+              (c is TjanRail) or (c is TjanLogicRun) or (c is TjanSimMotor)) then
         Continue;
       s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
       if c is TjanRail then
@@ -17537,7 +18150,13 @@ begin
         with TjanConnector(c) do
           s := s + Format(';%d;%d;%.3f', [Ord(V_ConPos), Ord(V_ConShape), V_Edge])
       else if c is TjanLogic then
-        s := s + Format(';%d', [Ord(TjanLogic(c).LogicFunc)]);
+        s := s + Format(';%d', [Ord(TjanLogic(c).LogicFunc)])
+      else if c is TjanLogicRun then
+        s := s + ';' + TjanLogicRun(c).ProgramText
+      else if c is TjanSimLight then
+        s := s + Format(';%d', [Ord(TjanSimLight(c).Kleur)])
+      else if c is TjanSimPuls then
+        s := s + Format(';%d', [TjanSimPuls(c).PulsInterval]);
       L.Add(s);
     end;
     // volgorde doet er niet toe (BringToFront bij de simulatie verandert ze)
@@ -17652,6 +18271,9 @@ begin
     begin
       with TjanSimPuls(c) do
         lijn := Format('TjanSimPuls;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+      // frequentie als extra veld, alleen als ze niet de standaard is
+      if TjanSimPuls(c).PulsInterval <> PulsIntervalStandaard then
+        lijn := lijn + IntToStr(TjanSimPuls(c).PulsInterval) + ';';
       TempFile.Add(lijn);
     end
     else if c is TjanDipSwitsh then
@@ -17670,6 +18292,8 @@ begin
     begin
       with TjanSimLight(c) do
         lijn := Format('TjanSimLight;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+      if TjanSimLight(c).Kleur <> lkLamp then
+        lijn := lijn + IntToStr(Ord(TjanSimLight(c).Kleur)) + ';';
       TempFile.Add(lijn);
     end
     else if c is TjanSchakelRelais then
@@ -17696,6 +18320,11 @@ begin
         lijn := Format('TjanDisplay;%d;%d;%d;%d;', [Height, Left, Top, Width]);
       TempFile.Add(lijn);
     end
+    else if c is TjanSimMotor then
+      TempFile.Add(Format('TjanSimMotor;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+    else if c is TjanLogicRun then
+      TempFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
+        TjanLogicRun(c).ProgramText + ';')
     else if c is TjanMeter then
       TempFile.Add(Format('TjanMeter;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
     else if c is TjanRail then
@@ -17716,9 +18345,12 @@ end;
 procedure TjanSimLogicBox.InternalLoadFromList(AList: TStrings; Paneel: TjanGridS);
 var
   i, positie: Integer;
+  LR: TjanLogicRun;
   S: string;
   obj: array[1..10] of string;
   wc: TWinControl;
+  EdgeFS: TFormatSettings;
+  EdgeVal: Double;
 
   procedure AddCommonSimProps(const AClassName: string);
   var
@@ -17956,8 +18588,12 @@ begin
         if obj[8] = 'jcsTLBR' then V_ConShape := jcsTLBR else
         if obj[8] = 'jcsTRBL' then V_ConShape := jcsTRBL;
 
-        // edge (met komma/punt fix)
-      //  V_Edge := StrToFloatSmart(obj[9]);
+        // edge: waar de middenlijn staat (0..1), met komma of punt bewaard
+        EdgeFS := DefaultFormatSettings;
+        EdgeFS.DecimalSeparator := '.';
+        if TryStrToFloat(StringReplace(Trim(obj[9]), ',', '.', []), EdgeVal, EdgeFS) and
+           (EdgeVal >= 0) and (EdgeVal <= 1) then
+          V_Edge := EdgeVal;
 
         FObjectID := wc.ControlCount;
 
@@ -18199,6 +18835,7 @@ begin
           Top    := StrToInt(Trim(obj[4]));
           Height := StrToInt(Trim(obj[2]));
           Width  := StrToInt(Trim(obj[5]));
+          PulsInterval := PulsIntervalUitRest(S);   // frequentie na de breedte
           FObjectID := wc.ControlCount; Lock := True;
 
           if Language = stDutch   then BTaal := 'NL'  else
@@ -18280,6 +18917,7 @@ begin
           Top    := StrToInt(Trim(obj[4]));
           Height := StrToInt(Trim(obj[2]));
           Width  := StrToInt(Trim(obj[5]));
+          Kleur  := LampKleurUitRest(S);   // led: kleur na de breedte
           FObjectID := wc.ControlCount; Lock := True;
 
           if Language = stDutch   then BTaal := 'NL'  else
@@ -18375,6 +19013,42 @@ begin
         Continue;
       end;
 
+      // ---- TjanSimMotor ----
+      if obj[1] = 'TjanSimMotor' then
+      begin
+        with TjanSimMotor.Create(self) do
+        begin
+          Parent := wc; Tag := wc.ControlCount;
+          Left := StrToInt(Trim(obj[3]));
+          Top  := StrToInt(Trim(obj[4]));
+          FObjectID := wc.ControlCount; Lock := True;
+          BTaal := StatTaalToBTaal(Language);
+        end;
+        Continue;
+      end;
+
+      // ---- TjanLogicRun;height;left;top;width;programma ----
+      if obj[1] = 'TjanLogicRun' then
+      begin
+        // hoogte, links, boven en breedte staan al in obj[2..5]; de rest
+        // van de regel na de breedte is het programma
+        positie := Pos(';', S);
+        Delete(S, 1, positie);
+        // er is er hoogstens één op een paneel
+        if (positie > 0) and (FindLogicRun(wc) = nil) then
+        begin
+          LR := TjanLogicRun.Create(Self);
+          LR.Parent := wc;
+          LR.Tag := wc.ControlCount;
+          LR.Left := StrToIntDef(Trim(obj[3]), 0);
+          LR.Top := StrToIntDef(Trim(obj[4]), 0);
+          LR.SetProgramText(S);
+          LR.BTaal := StatTaalToBTaal(Language);
+          LR.Lock := True;
+        end;
+        Continue;
+      end;
+
       // ---- TjanDisplay ----
       if obj[1] = 'TjanDisplay' then
       begin
@@ -18428,6 +19102,24 @@ begin
   Result.Box := Self;
   Result.BTaal := StatTaalToBTaal(Language);
   Result.OnStatus := StatusFromChild;
+end;
+
+procedure TjanSimLogicBox.NewLogicRun;
+var
+  LR: TjanLogicRun;
+begin
+  if (FParent = nil) or (FindLogicRun(FParent) <> nil) then Exit;
+  LR := TjanLogicRun.Create(Self);
+  LR.Parent := FParent;
+  LR.BTaal := StatTaalToBTaal(Language);
+  // zoals een nieuw component uit de balk: volgt de muis tot de klik
+  // (zie GridMouseMove/GridMouseDown/GridMouseUp in main.pas)
+  LR.Visible := False;
+  LR.Left := -200;
+  LR.Tag := FParent.ControlCount;
+  FObjectID := LR.Tag;
+  FNew := True;
+  Screen.Cursor := crCross;
 end;
 
 procedure TjanSimLogicBox.NewRail(APlus: Boolean);
@@ -18906,7 +19598,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -18920,6 +19612,7 @@ begin
   else if ptinrect(RRelais,p) and (KRelais=true) then DRelais:=true
   else if ptinrect(RSchakel,p) and (KSchakelRelais=true) then DSchakel:=true
   else if ptinrect(RBuzzer,p) and (KBuzzer=true) then DBuzzer:=true
+  else if ptinrect(RMotor,p) and (KMotor=true) then DMotor:=true
   else if ptinrect(RSensor,p) and (KSensor=true) then DSensor:=true
   else if ptinrect(RWarm,p) and (KWarm=true) then DWarm:=true
   else if ptinrect(RKnop,p) and (KSchakelaar=true) then DKnop:=true
@@ -18956,6 +19649,7 @@ begin
   else if PtInRect(RRelais, P) then NewHint := FHRelais
   else if PtInRect(RSchakel, P) then NewHint := FHSchakel
   else if PtInRect(RBuzzer, P) then NewHint := FHBuzzer
+  else if PtInRect(RMotor, P) then NewHint := FHMotor
   else if PtInRect(RSensor, P) then NewHint := FHSensor
   else if PtInRect(RWarm, P) then NewHint := FHWarm
   else if PtInRect(RKnop, P) then NewHint := FHSchakelaar
@@ -18998,6 +19692,7 @@ begin
   else if ptinrect(RRelais,p) then DoStatusText(FHRelais , 0)
   else if ptinrect(RSchakel,p) then DoStatusText(FHSchakel , 0)
   else if ptinrect(RBuzzer,p) then DoStatusText(FHBuzzer , 0)
+  else if ptinrect(RMotor,p) then DoStatusText(FHMotor , 0)
   else if ptinrect(RSensor,p) then DoStatusText(FHSensor , 0)
 
   else if ptinrect(RWarm,p) then DoStatusText(FHWarm , 0)
@@ -19113,6 +19808,12 @@ begin
       if (wc.controls[i] is TjanRail) then
         TjanRail(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanLogicRun) then
+        TjanLogicRun(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanSimMotor) then
+        TjanSimMotor(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanMeter) then
         TjanMeter(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
@@ -19208,6 +19909,12 @@ i:integer;
 begin
    Inc(FKillCount);   // zie KillCount (ongedaan maken begint opnieuw)
    wc:=Fparent;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanLogicRun) then
+        wc.Controls[i].Free;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanSimMotor) then
+        wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanRail) then
         wc.Controls[i].Free;
@@ -19370,7 +20077,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -19583,6 +20290,13 @@ begin
     AddF('TjanSimBuzzer.Left');  AddF('TjanSimBuzzer.Top');
     AddF('TjanSimBuzzer.Width'); AddF('TjanSimBuzzer.Height');
   end
+  else if DMotor then
+  with TjanSimMotor.Create(self) do
+  begin
+    Parent := wc; FNew := True; Tag := wc.ControlCount;
+    FObjectID := wc.ControlCount; Visible := False; Left := -100; Screen.Cursor := crCross;
+    BTaal := StatTaalToBTaal(Language);
+  end
   else if DSensor then
   with TjanSimSensor.Create(self) do
   begin
@@ -19646,6 +20360,10 @@ end;
 procedure TjanSimLogicBox.SetHBuzzer(const Value: String);
 begin
   if value<>FHBuzzer then FHBuzzer := Value;
+end;
+procedure TjanSimLogicBox.SetHMotor(const Value: String);
+begin
+  if value<>FHMotor then FHMotor := Value;
 end;
 procedure TjanSimLogicBox.SetHDipSwitsh(const Value: String);
 begin
@@ -19864,6 +20582,16 @@ begin
   invalidate;
 end;
 
+procedure TjanSimLogicBox.SetMotor(const Value: Boolean);
+begin
+  if value<>FMotor then
+  begin
+    FMotor:= Value;
+    if Value=true then FOutputAantal:= FOutputAantal+1 else FOutputAantal:= FOutputAantal-1;
+  end;
+  invalidate;
+end;
+
 procedure TjanSimLogicBox.SetBuzzer(const Value: Boolean);
 begin
   if value<>FBuzzer then
@@ -19958,7 +20686,9 @@ procedure TjanSimLogicBox.SelectObject(AObj: TObject);
     else if Obj is TjanSimBuzzer then TjanSimBuzzer(Obj).Selected := AValue
     else if Obj is TjanDisplay then TjanDisplay(Obj).Selected := AValue
     else if Obj is TjanRail then TjanRail(Obj).Selected := AValue
-    else if Obj is TjanMeter then TjanMeter(Obj).Selected := AValue;
+    else if Obj is TjanMeter then TjanMeter(Obj).Selected := AValue
+    else if Obj is TjanLogicRun then TjanLogicRun(Obj).Selected := AValue
+    else if Obj is TjanSimMotor then TjanSimMotor(Obj).Selected := AValue;
     // aanpassen voor volgend object
   end;
 
@@ -20030,6 +20760,10 @@ begin
       TjanSimPuls(c).BTaal := s
     else if c is TjanMeter then
       TjanMeter(c).BTaal := s
+    else if c is TjanLogicRun then
+      TjanLogicRun(c).BTaal := s
+    else if c is TjanSimMotor then
+      TjanSimMotor(c).BTaal := s
     else if c is TjanRail then
       TjanRail(c).BTaal := s
     else if c is TjanDipSwitsh then
@@ -20062,6 +20796,7 @@ if FBoxTaal=stDutch then
  Begin
   Taal:='NL';
   HBuzzer:='maak Zoemer';
+  HMotor:='maak Motor';
   HDipSwitsh:='maak DipSwitsh';
   HDisplay:='maak 7 segmentdisplay';
   HDraad:='maak Verbinding';
@@ -20087,6 +20822,7 @@ if FBoxTaal=stEnglish then
  Begin
   Taal:='ENG';
   HBuzzer:='create Buzzer';
+  HMotor:='create Motor';
   HDipSwitsh:='create DipSwitsh';
   HDisplay:='create 7 segment display';
   HDraad:='create Connection';
@@ -20111,6 +20847,7 @@ if FBoxTaal=stFrench then
  Begin
   Taal:='FR' ;
   HBuzzer:='faire Ronfleur';
+  HMotor:='faire Moteur';
   HDipSwitsh:='faire DipSwitsh';
   HDisplay:='faire Affichage à 7 segments';
   HDraad:='faire Connexion';
@@ -20136,6 +20873,7 @@ if FBoxTaal=stFrench then
   Begin
   Taal:='DU';
   HBuzzer:='Buzzer erstellen';
+  HMotor:='Motor erstellen';
   HDipSwitsh:='DipSwitsh erstellen';
   HDisplay:='Erstellen Sie eine 7-Segment-Anzeige';
   HDraad:='Verbindung herstellen';
@@ -20243,6 +20981,20 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 5 then
+  begin
+    // motor: geen plaatje, altijd getekend
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    if FSymbolen <> Afbeelding then
+    begin
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := SymKnopKleur;
+      Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+    end;
+    DrawMotorSymbol(Canvas, X + 12, Y + 11, 9, 30, 0, False, FSymbolen);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 4 then
   begin
     // schakelrelais: geen plaatje, altijd getekend (contact boven, spoel onder)
@@ -20748,7 +21500,7 @@ begin
         HK:= H+TOP;
       end;
 
-      TOP:=TOP+20; HK:=HK+20;
+      TOP:=TOP+12; HK:=HK+12;   // was 20: plaats voor de knop Motor
       //einde invoer
 
       //begin verwerking
@@ -20837,7 +21589,7 @@ begin
         HK:= H+TOP;
       end;
 
-      Top:=Top+20; HK:=HK+20;
+      Top:=Top+12; HK:=HK+12;   // was 20: plaats voor de knop Motor
       // einde verwerking
 
       //uitvoer
@@ -20912,6 +21664,20 @@ begin
         HK:= H+TOP;
       end;
 
+      If FMotor=true then
+      Begin
+        RMotor:= rect(LK,TOP,BK,HK);
+        Rb:=RMotor;
+        if not DMotor then
+          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
+        else
+          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
+        fillrect(Rb);
+        DrawOutputIcon(5, nil, Lk+1, top+2);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
       If FDisplay=true then
       Begin
         RDisplay:= rect(LK,TOP,BK,HK);
@@ -20922,7 +21688,7 @@ begin
           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
         fillrect(Rb);
         DrawPlainIcon(bmDisplay, Lk, top, Lk+1, top+2);
-        TOP:=TOP+H+6; // 6 in de plaats van SPATIE
+        TOP:=TOP+H+4; // 4 in de plaats van SPATIE
         HK:= H+TOP;
       end;
 
@@ -20947,7 +21713,7 @@ begin
       RRailMin := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
-      TOP := TOP + 8;
+      TOP := TOP + 6;
       RRailPlus := Rect(LK - 4, TOP, LK + 13, TOP + H);
       RRailMin := Rect(LK + 15, TOP, LK + 32, TOP + H);
       DrawRailButton(RRailPlus, True, DRailPlus);
@@ -21361,6 +22127,17 @@ begin
         NextX(B + SPATIE);
       end;
 
+      if FMotor = True then
+      begin
+        RMotor := Rect(LK, TOP, BK, HK);
+        Rb := RMotor;
+        if not DMotor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(5, nil, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
       if FDisplay = True then
       begin
         RDisplay := Rect(LK, TOP, BK, HK);
@@ -21750,6 +22527,17 @@ begin
         NextX(B + SPATIE);
       end;
 
+      if FMotor = True then
+      begin
+        RMotor := Rect(LK, TOP, BK, HK);
+        Rb := RMotor;
+        if not DMotor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(5, nil, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
       if FDisplay = True then
       begin
         RDisplay := Rect(LK, TOP, BK, HK);
@@ -21846,6 +22634,10 @@ begin
     TjanSimPuls(AComponent).BTaal := Taal;
     TjanSimPuls(AComponent).UpdateHintText;
   end
+  else if AComponent is TjanLogicRun then
+    TjanLogicRun(AComponent).BTaal := Taal
+  else if AComponent is TjanSimMotor then
+    TjanSimMotor(AComponent).BTaal := Taal
   else if AComponent is TjanRail then
     TjanRail(AComponent).BTaal := Taal
   else if AComponent is TjanMeter then
@@ -22056,6 +22848,32 @@ procedure TjanSimLogicBox.Notification(AComponent: TComponent; Operation: TOpera
       Exit;
     end;
 
+    // Motor
+    if AObj is TjanSimMotor then
+    begin
+      with TjanSimMotor(AObj) do
+      begin
+        Box := Self;
+        if not Assigned(OnEnter)  then OnEnter  := ChildMouseEnter;
+        if not Assigned(OnExit)   then OnExit   := ChildMouseExit;
+        if not Assigned(OnStatus) then OnStatus := StatusFromChild;
+      end;
+      Exit;
+    end;
+
+    // LogicRun
+    if AObj is TjanLogicRun then
+    begin
+      with TjanLogicRun(AObj) do
+      begin
+        Box := Self;
+        if not Assigned(OnEnter)  then OnEnter  := ChildMouseEnter;
+        if not Assigned(OnExit)   then OnExit   := ChildMouseExit;
+        if not Assigned(OnStatus) then OnStatus := StatusFromChild;
+      end;
+      Exit;
+    end;
+
     // TjanDisplay
     if AObj is TjanDisplay then
     begin
@@ -22176,7 +22994,8 @@ begin
      (C is TjanSimButton) or (C is TjanSimKnop) or (C is TjanSimSensor) or
      (C is TjanSimWarm) or (C is TjanSimPuls) or (C is TjanDipSwitsh) or
      (C is TjanSimLight) or (C is TjanSimRelais) or (C is TjanSimBuzzer) or
-     (C is TjanDisplay) or (C is TjanMeter) or (C is TjanRail));
+     (C is TjanDisplay) or (C is TjanMeter) or (C is TjanRail) or (C is TjanLogicRun) or
+     (C is TjanSimMotor));
   // vergrendelde objecten blijven staan
   if Result and IsPublishedProp(C, 'Lock') then
     Result := GetOrdProp(C, 'Lock') = 0;
@@ -22527,6 +23346,1125 @@ begin
   FDragging := False;
   if Assigned(Parent) then
     Parent.Invalidate;
+end;
+
+
+// ============================================================
+// TjanLogicRun: programmeermodule (stappenprogramma)
+// ============================================================
+
+const
+  LR_W = 120;           // breedte van het blok
+  LR_H = 184;           // hoogte van het blok (met T1/T2 onder UIT7)
+  LR_MaxSteps = 64;
+
+function FindLogicRun(P: TWinControl): TjanLogicRun;
+var
+  i: Integer;
+begin
+  Result := nil;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if P.Controls[i] is TjanLogicRun then
+      Exit(TjanLogicRun(P.Controls[i]));
+end;
+
+function LogicRunDinText(D: TLogicRunDin; const ATaal: string): string;
+begin
+  case D of
+    lrdStartStop: Result := Tr(ATaal, 'start/stop', 'start/stop', 'marche/arrêt', 'Start/Stopp');
+    lrdReset:     Result := Tr(ATaal, 'reset', 'reset', 'remise à 0', 'Reset');
+    lrdStap:      Result := '+1';
+    lrdAanUit:    Result := Tr(ATaal, 'aan/uit', 'on/off', 'actif/inactif', 'Ein/Aus');
+  else
+    Result := '';
+  end;
+end;
+
+constructor TjanLogicRun.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := LR_W;
+  Height := LR_H;
+  Connectors := TList.Create;
+  FTimer := TTimer.Create(Self);
+  FTimer.Enabled := False;
+  FTimer.OnTimer := TimerTick;
+  FStapDuur := 500;
+  FTimer.Interval := FStapDuur;
+  FHerhalen := True;
+  FDin[0] := lrdStartStop;
+  FDin[1] := lrdReset;
+  FDin[2] := lrdStap;
+  FDin[3] := lrdGeen;
+  FStep := -1;
+  AddStep(0, 1);
+  FTaal := 'NL';
+  FNaam := 'LogicRun';
+  HelpKeyword := 'logicrun';
+  ShowHint := True;
+end;
+
+destructor TjanLogicRun.Destroy;
+begin
+  FTimer.Enabled := False;
+  Connectors.Free;
+  inherited;
+end;
+
+class function TjanLogicRun.InputPinY(I: Integer): Integer;
+begin
+  Result := 28 + I * 24;
+end;
+
+class function TjanLogicRun.OutputPinY(I: Integer): Integer;
+begin
+  if I < 8 then
+    Result := 22 + I * 14
+  else
+    Result := 140 + (I - 8) * 16;   // T1 en T2, iets lager dan UIT7
+end;
+
+function TjanLogicRun.DisplayChar(I: Integer): Char;
+const
+  Hex: array[0..15] of Char = '0123456789ABCDEF';
+var
+  B: Byte;
+begin
+  if (FStep < 0) or (FStep >= Length(FSteps)) then B := 0
+  else B := FSteps[FStep].Bits;
+  Result := Hex[(B shr (4 * I)) and $0F];
+end;
+
+function TjanLogicRun.OutputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left + Width - 18) or (P.X > Left + Width + 8) then Exit;
+  for i := 0 to 9 do
+    if Abs(P.Y - (Top + OutputPinY(i) + 3)) <= 6 then
+      Exit(i);
+end;
+
+function TjanLogicRun.InputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
+  for i := 0 to 3 do
+    if Abs(P.Y - (Top + InputPinY(i) + 3)) <= 10 then
+      Exit(i);
+end;
+
+function TjanLogicRun.GetStepCount: Integer;
+begin
+  Result := Length(FSteps);
+end;
+
+function TjanLogicRun.GetStep(I: Integer): TLogicRunStep;
+begin
+  Result := FSteps[I];
+end;
+
+procedure TjanLogicRun.SetStep(I: Integer; const Value: TLogicRunStep);
+begin
+  FSteps[I] := Value;
+  if FSteps[I].Tijd < 1 then FSteps[I].Tijd := 1;
+  if (FSteps[I].WachtDin < 0) or (FSteps[I].WachtDin > 3) then FSteps[I].WachtDin := 0;
+  if FSteps[I].WachtN < 1 then FSteps[I].WachtN := 1;
+  if FSteps[I].WachtN > 999 then FSteps[I].WachtN := 999;
+  Changed;
+end;
+
+function TjanLogicRun.GetDin(I: Integer): TLogicRunDin;
+begin
+  Result := FDin[I];
+end;
+
+procedure TjanLogicRun.SetDin(I: Integer; Value: TLogicRunDin);
+begin
+  FDin[I] := Value;
+  Changed;
+end;
+
+function TjanLogicRun.GetInput(I: Integer): Boolean;
+begin
+  Result := FIn[I];
+end;
+
+function TjanLogicRun.GetOutput(I: Integer): Boolean;
+begin
+  Result := (FStep >= 0) and (FStep < Length(FSteps)) and
+            ((FSteps[FStep].Bits and (1 shl I)) <> 0);
+end;
+
+procedure TjanLogicRun.SetStapDuur(Value: Integer);
+begin
+  if Value < 50 then Value := 50;
+  if Value > 10000 then Value := 10000;
+  FStapDuur := Value;
+  FTimer.Interval := Value;
+  Changed;
+end;
+
+procedure TjanLogicRun.SetHerhalen(Value: Boolean);
+begin
+  FHerhalen := Value;
+  Changed;
+end;
+
+procedure TjanLogicRun.SetTaal(const Value: string);
+begin
+  FTaal := Value;
+  UpdateHintText;
+  if FMouseOver then
+    SendStatusToBar;
+  Invalidate;
+end;
+
+procedure TjanLogicRun.Changed;
+begin
+  if FStep >= Length(FSteps) then
+    FStep := Length(FSteps) - 1;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+  if Assigned(FOnChange) then
+    FOnChange(Self);
+end;
+
+procedure TjanLogicRun.ClearSteps;
+begin
+  SetLength(FSteps, 0);
+  FStep := -1;
+  FCount := 0;
+  Changed;
+end;
+
+procedure TjanLogicRun.AddStep(ABits: Byte; ATijd: Integer);
+begin
+  InsertStep(Length(FSteps), ABits, ATijd);
+end;
+
+procedure TjanLogicRun.InsertStep(AIndex: Integer; ABits: Byte; ATijd: Integer);
+var
+  i: Integer;
+begin
+  if Length(FSteps) >= LR_MaxSteps then Exit;
+  if AIndex < 0 then AIndex := 0;
+  if AIndex > Length(FSteps) then AIndex := Length(FSteps);
+  SetLength(FSteps, Length(FSteps) + 1);
+  for i := High(FSteps) downto AIndex + 1 do
+    FSteps[i] := FSteps[i - 1];
+  FSteps[AIndex].Bits := ABits;
+  if ATijd < 1 then ATijd := 1;
+  FSteps[AIndex].Tijd := ATijd;
+  FSteps[AIndex].Wacht := lrwGeen;
+  FSteps[AIndex].WachtDin := 0;
+  FSteps[AIndex].WachtN := 1;
+  Changed;
+end;
+
+procedure TjanLogicRun.DeleteStep(AIndex: Integer);
+var
+  i: Integer;
+begin
+  // er blijft altijd minstens één stap
+  if (AIndex < 0) or (AIndex > High(FSteps)) or (Length(FSteps) <= 1) then Exit;
+  for i := AIndex to High(FSteps) - 1 do
+    FSteps[i] := FSteps[i + 1];
+  SetLength(FSteps, Length(FSteps) - 1);
+  Changed;
+end;
+
+// stapduur;herhalen;din1;din2;din3;din4;bits:tijd,bits:tijd,...
+// (een stap met een voorwaarde: bits:tijd:wacht:din:n)
+function TjanLogicRun.ProgramText: string;
+var
+  i: Integer;
+  S: string;
+begin
+  S := '';
+  for i := 0 to High(FSteps) do
+  begin
+    if i > 0 then S := S + ',';
+    S := S + Format('%d:%d', [FSteps[i].Bits, FSteps[i].Tijd]);
+    if FSteps[i].Wacht <> lrwGeen then
+      S := S + Format(':%d:%d:%d', [Ord(FSteps[i].Wacht), FSteps[i].WachtDin, FSteps[i].WachtN]);
+  end;
+  Result := Format('%d;%d;%d;%d;%d;%d;%s',
+    [FStapDuur, Ord(FHerhalen), Ord(FDin[0]), Ord(FDin[1]), Ord(FDin[2]), Ord(FDin[3]), S]);
+end;
+
+procedure TjanLogicRun.SetProgramText(const S: string);
+var
+  Parts, StepList, Fields: TStringList;
+  i, p, D: Integer;
+  Item: string;
+begin
+  Parts := TStringList.Create;
+  StepList := TStringList.Create;
+  Fields := TStringList.Create;
+  try
+    Parts.Delimiter := ';';
+    Parts.StrictDelimiter := True;
+    Parts.DelimitedText := S;
+    if Parts.Count < 7 then Exit;
+    FStapDuur := StrToIntDef(Parts[0], 500);
+    if FStapDuur < 50 then FStapDuur := 50;
+    FTimer.Interval := FStapDuur;
+    FHerhalen := StrToIntDef(Parts[1], 1) <> 0;
+    for i := 0 to 3 do
+    begin
+      D := StrToIntDef(Parts[2 + i], 0);
+      if (D < Ord(Low(TLogicRunDin))) or (D > Ord(High(TLogicRunDin))) then D := 0;
+      FDin[i] := TLogicRunDin(D);
+    end;
+    StepList.Delimiter := ',';
+    StepList.StrictDelimiter := True;
+    StepList.DelimitedText := Parts[6];
+    SetLength(FSteps, 0);
+    for i := 0 to StepList.Count - 1 do
+    begin
+      Item := Trim(StepList[i]);
+      p := Pos(':', Item);
+      if p = 0 then Continue;
+      if Length(FSteps) >= LR_MaxSteps then Break;
+      Fields.Delimiter := ':';
+      Fields.StrictDelimiter := True;
+      Fields.DelimitedText := Item;
+      SetLength(FSteps, Length(FSteps) + 1);
+      with FSteps[High(FSteps)] do
+      begin
+        Bits := Byte(StrToIntDef(Fields[0], 0));
+        Tijd := StrToIntDef(Fields[1], 1);
+        if Tijd < 1 then Tijd := 1;
+        Wacht := lrwGeen;
+        WachtDin := 0;
+        WachtN := 1;
+        if Fields.Count >= 5 then
+        begin
+          D := StrToIntDef(Fields[2], 0);
+          if (D >= Ord(Low(TLogicRunWacht))) and (D <= Ord(High(TLogicRunWacht))) then
+            Wacht := TLogicRunWacht(D);
+          WachtDin := StrToIntDef(Fields[3], 0);
+          if (WachtDin < 0) or (WachtDin > 3) then WachtDin := 0;
+          WachtN := StrToIntDef(Fields[4], 1);
+          if WachtN < 1 then WachtN := 1;
+        end;
+      end;
+    end;
+    if Length(FSteps) = 0 then
+    begin
+      SetLength(FSteps, 1);
+      FSteps[0].Bits := 0;
+      FSteps[0].Tijd := 1;
+    end;
+  finally
+    Fields.Free;
+    StepList.Free;
+    Parts.Free;
+  end;
+  FPulses := 0;
+  FStep := -1;
+  FCount := 0;
+  Changed;
+end;
+
+procedure TjanLogicRun.Start;
+begin
+  if Length(FSteps) = 0 then Exit;
+  if (FStep < 0) or (FStep > High(FSteps)) then
+  begin
+    FStep := 0;
+    FCount := 0;
+    FPulses := 0;
+  end;
+  FRunning := True;
+  FTimer.Interval := FStapDuur;
+  FTimer.Enabled := True;
+  Changed;
+end;
+
+procedure TjanLogicRun.Pause;
+begin
+  FRunning := False;
+  FTimer.Enabled := False;
+  Changed;
+end;
+
+procedure TjanLogicRun.StopRun;
+begin
+  FPulses := 0;
+  FRunning := False;
+  FTimer.Enabled := False;
+  FStep := -1;
+  FCount := 0;
+  Changed;
+end;
+
+procedure TjanLogicRun.StepOnce;
+begin
+  FPulses := 0;
+  if Length(FSteps) = 0 then Exit;
+  FCount := 0;
+  if (FStep < 0) or (FStep >= High(FSteps)) then
+    FStep := 0
+  else
+    Inc(FStep);
+  Changed;
+end;
+
+procedure TjanLogicRun.ResetRun;
+begin
+  FPulses := 0;
+  if Length(FSteps) = 0 then Exit;
+  FStep := 0;
+  FCount := 0;
+  Changed;
+end;
+
+// is de voorwaarde van de huidige stap vervuld?
+function TjanLogicRun.ConditionMet: Boolean;
+begin
+  Result := False;
+  if (FStep < 0) or (FStep > High(FSteps)) then Exit;
+  with FSteps[FStep] do
+    case Wacht of
+      lrwAan:    Result := FIn[WachtDin];
+      lrwUit:    Result := not FIn[WachtDin];
+      // pas verder als de laatste puls voorbij is: zo krijgen andere
+      // onderdelen op dezelfde ingang (bv. een teller) die puls nog mee
+      lrwPulsen: Result := (FPulses >= WachtN) and not FIn[WachtDin];
+    else
+      Result := True;
+    end;
+end;
+
+// naar de volgende stap (of opnieuw beginnen, of stoppen na de laatste)
+procedure TjanLogicRun.NextStep;
+begin
+  FCount := 0;
+  FPulses := 0;
+  if FStep < High(FSteps) then
+    Inc(FStep)
+  else if FHerhalen then
+    FStep := 0
+  else
+  begin
+    // laatste stap blijft staan
+    FRunning := False;
+    FTimer.Enabled := False;
+  end;
+  Changed;
+end;
+
+procedure TjanLogicRun.TimerTick(Sender: TObject);
+begin
+  if (not FRunning) or (Length(FSteps) = 0) then Exit;
+  if (FStep < 0) or (FStep > High(FSteps)) then
+    FStep := 0;
+  // een stap met een voorwaarde wacht daarop, niet op de tijd
+  if FSteps[FStep].Wacht <> lrwGeen then
+  begin
+    if ConditionMet then NextStep;
+    Exit;
+  end;
+  Inc(FCount);
+  if FCount < FSteps[FStep].Tijd then Exit;
+  NextStep;
+end;
+
+procedure TjanLogicRun.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I > 3) or (FIn[I] = Value) then Exit;
+  FIn[I] := Value;
+  if Value then
+    case FDin[I] of
+      lrdStartStop: if FRunning then Pause else Start;
+      lrdReset: ResetRun;
+      lrdStap: StepOnce;
+      lrdAanUit: Start;
+    end
+  else if FDin[I] = lrdAanUit then
+    StopRun;   // schakelaar uit: stoppen, uitgangen uit
+  // voorwaarde van de huidige stap: puls tellen en meteen nakijken
+  if FRunning and (FStep >= 0) and (FStep <= High(FSteps)) and
+     (FSteps[FStep].Wacht <> lrwGeen) then
+  begin
+    if Value and (FSteps[FStep].Wacht = lrwPulsen) and (FSteps[FStep].WachtDin = I) then
+      Inc(FPulses);
+    if ConditionMet then
+      NextStep;
+  end;
+  Invalidate;
+end;
+
+procedure TjanLogicRun.Paint;
+var
+  i, y, w: Integer;
+  BW, BH: Integer;   // maten van het blok (in 'with Canvas' zijn Width/Height die van het canvas)
+  S: string;
+  Body: TRect;
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    // behuizing
+    Body := Rect(4, 0, BW - 4, BH);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(250, 250, 150);
+    Pen.Color := clBlack;
+    if FSelect then Pen.Width := 2 else Pen.Width := 1;
+    Rectangle(Body);
+    Pen.Width := 1;
+    Font.Name := 'Arial';
+    Font.Style := [fsBold];
+    Font.Size := 9;
+    Font.Color := clNavy;
+    Brush.Style := bsClear;
+    S := 'LogicRun';
+    TextOut((BW - TextWidth(S)) div 2, 2, S);
+    MoveTo(5, 17);
+    LineTo(BW - 5, 17);
+
+    // ingangen links: aansluiting, naam en functie
+    Font.Size := 7;
+    for i := 0 to 3 do
+    begin
+      y := InputPinY(i);
+      Brush.Style := bsSolid;
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(1, y, 8, y + 7);
+      Brush.Style := bsClear;
+      Font.Style := [fsBold];
+      if FIn[i] then Font.Color := clRed else Font.Color := clNavy;
+      TextOut(11, y - 3, 'DIN' + IntToStr(i + 1));
+      Font.Style := [];
+      Font.Color := clGray;
+      TextOut(11, y + 7, LogicRunDinText(FDin[i], FTaal));
+    end;
+
+    // uitgangen rechts: lampje, naam en aansluiting
+    for i := 0 to 7 do
+    begin
+      y := OutputPinY(i);
+      Brush.Style := bsSolid;
+      if Outputs[i] then Brush.Color := clRed else Brush.Color := clWhite;
+      Pen.Color := clGray;
+      Ellipse(BW - 20, y, BW - 12, y + 8);
+      Brush.Color := clLime;
+      Rectangle(BW - 8, y, BW - 1, y + 7);
+      Brush.Style := bsClear;
+      Font.Style := [fsBold];
+      if Outputs[i] then Font.Color := clRed else Font.Color := clNavy;
+      S := 'UIT' + IntToStr(i);
+      w := TextWidth(S);
+      TextOut(BW - 23 - w, y - 2, S);
+    end;
+
+    // display-uitgangen: T1 = UIT0..3, T2 = UIT4..7, met het cijfer erbij
+    MoveTo(BW - 60, OutputPinY(8) - 6);
+    LineTo(BW - 5, OutputPinY(8) - 6);
+    for i := 0 to 1 do
+    begin
+      y := OutputPinY(8 + i);
+      Brush.Style := bsSolid;
+      Brush.Color := clBlack;
+      Pen.Color := clGray;
+      Rectangle(BW - 22, y - 3, BW - 10, y + 11);
+      Brush.Color := clLime;
+      Rectangle(BW - 8, y, BW - 1, y + 7);
+      Brush.Style := bsClear;
+      Font.Style := [fsBold];
+      Font.Color := clRed;
+      S := DisplayChar(i);
+      TextOut(BW - 16 - TextWidth(S) div 2, y - 2, S);
+      Font.Color := clNavy;
+      S := 'T' + IntToStr(i + 1);
+      TextOut(BW - 25 - TextWidth(S), y - 2, S);
+    end;
+
+    // onderaan: stap of gestopt
+    Font.Style := [];
+    Font.Size := 7;
+    Font.Color := clBlack;
+    if FStep < 0 then
+      S := Tr(FTaal, 'gestopt', 'stopped', 'arrêté', 'gestoppt')
+    else
+    begin
+      S := Format('%s %d/%d', [Tr(FTaal, 'stap', 'step', 'pas', 'Schritt'), FStep + 1, Length(FSteps)]);
+      if FRunning then S := '> ' + S else S := '|| ' + S;
+      if FSteps[FStep].Wacht = lrwPulsen then
+        S := S + Format('  DIN%d %d/%d', [FSteps[FStep].WachtDin + 1, FPulses, FSteps[FStep].WachtN])
+      else if FSteps[FStep].Wacht in [lrwAan, lrwUit] then
+        S := S + Format('  DIN%d?', [FSteps[FStep].WachtDin + 1]);
+    end;
+    TextOut(11, BH - 14, S);
+  end;
+end;
+
+procedure TjanLogicRun.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'Dubbelklik: programma bewerken', 'Double-click: edit program',
+              'Double-clic : modifier le programme', 'Doppelklick: Programm bearbeiten');
+end;
+
+procedure TjanLogicRun.SendStatusToBar;
+var
+  S: string;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, FNaam + ' > ', 0);
+  if FStep < 0 then
+    S := Tr(FTaal, 'gestopt', 'stopped', 'arrêté', 'gestoppt')
+  else
+    S := Format('%s %d/%d', [Tr(FTaal, 'stap', 'step', 'pas', 'Schritt'), FStep + 1, Length(FSteps)]);
+  FOnStatus(Self, S, 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+procedure TjanLogicRun.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  if Assigned(FOnEnter) then
+    FOnEnter(Self);
+  FMouseOver := True;
+  SendStatusToBar;
+  if not FLock then
+  begin
+    FSelect := True;
+    Invalidate;
+  end;
+end;
+
+procedure TjanLogicRun.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if Assigned(FOnExit) then
+    FOnExit(Self);
+  if not FMouseOver then Exit;
+  FMouseOver := False;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+  FSelect := False;
+  Invalidate;
+end;
+
+procedure TjanLogicRun.BuildPopup;
+var
+  Mi: TMenuItem;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Programma bewerken...', 'Edit program...',
+                          'Modifier le programme...', 'Programm bearbeiten...');
+  Mi.OnClick := EditClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+procedure TjanLogicRun.EditClick(Sender: TObject);
+begin
+  if Assigned(LogicRunEditHook) then
+    LogicRunEditHook(Self);
+end;
+
+procedure TjanLogicRun.LockClick(Sender: TObject);
+begin
+  FLock := not FLock;
+  Invalidate;
+end;
+
+procedure TjanLogicRun.SelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanLogicRun.DblClick;
+begin
+  inherited;
+  doMove := False;
+  if Assigned(LogicRunEditHook) then
+    LogicRunEditHook(Self);
+end;
+
+procedure TjanLogicRun.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  P: TPoint;
+  k: Integer;
+begin
+  inherited;
+  if (Button = mbRight) and not FLock then
+  begin
+    BuildPopup;
+    P := ClientToScreen(Point(0, Height));
+    PopupMenu.Popup(P.X, P.Y - 1);
+    Exit;
+  end;
+  doMove := False;
+  mdp := Point(X, Y);
+
+  // met de knop Verbinding: een draad beginnen op een uitgang
+  if (Button = mbLeft) and (Screen.Cursor = crDraad) and (Parent <> nil) then
+  begin
+    k := OutputPinAt(Point(Left + X, Top + Y));
+    if k >= 0 then
+    begin
+      // begin van de draad (midden van het blokje) op het midden van de aansluiting
+      Maakdraad(Top + OutputPinY(k) + 3 - 4, Left + Width - 5 - 4, Parent);
+      movecursor;
+      BringToFront;
+      Exit;
+    end;
+  end;
+
+  Screen.Cursor := crDefault;
+  if Button <> mbLeft then Exit;
+  doMove := True;
+  AnchorConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).BeginGuideLines(Left + Width div 2, Top + Height div 2);
+end;
+
+procedure TjanLogicRun.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, SnapP: TPoint;
+  Grid: TjanGridS;
+  WorkR: TRect;
+begin
+  inherited;
+  if FLock or (Parent = nil) then Exit;
+  if not ((ssLeft in Shift) and doMove) then Exit;
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  NewLeft := P.X - mdp.X;
+  NewTop := P.Y - mdp.Y;
+  if Parent is TjanGridS then
+  begin
+    Grid := TjanGridS(Parent);
+    WorkR := Grid.GetWorkAreaRect;
+    SnapP := Grid.SnapPointToRuler(Point(NewLeft + Width div 2, NewTop + Height div 2), WorkR);
+    NewLeft := SnapP.X - Width div 2;
+    NewTop := SnapP.Y - Height div 2;
+  end;
+  StraightenWires(Connectors, NewLeft, NewTop);
+  Left := NewLeft;
+  Top := NewTop;
+  MoveConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).UpdateGuideLines(Left + Width div 2, Top + Height div 2);
+  FMouseOver := True;
+  SendStatusToBar;
+end;
+
+procedure TjanLogicRun.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).EndGuideLines;
+  doMove := False;
+  Invalidate;
+end;
+
+procedure TjanLogicRun.AnchorConnectors;
+var
+  i: Integer;
+  Con: TjanConnector;
+  R: TRect;
+begin
+  Connectors.Clear;
+  if Parent = nil then Exit;
+  R := BoundsRect;
+  InflateRect(R, 8, 0);
+  for i := 0 to Parent.ControlCount - 1 do
+    if Parent.Controls[i] is TjanConnector then
+    begin
+      Con := TjanConnector(Parent.Controls[i]);
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if Con.AnchorToRect(R, Point(Left, Top)) then
+        Connectors.Add(Con);
+    end;
+end;
+
+procedure TjanLogicRun.MoveConnectors;
+var
+  i: Integer;
+begin
+  for i := 0 to Connectors.Count - 1 do
+    TjanConnector(Connectors[i]).MoveConnector(Point(NewLeft, NewTop));
+end;
+
+
+// ============================================================
+// TjanSimMotor: motor met ingangen L (linksom) en R (rechtsom)
+// ============================================================
+
+const
+  MO_W = 80;            // breedte van de motor
+  MO_H = 52;            // hoogte van de motor
+  MO_CX = 50;           // middelpunt en straal van de motorcirkel
+  MO_CY = 26;
+  MO_R = 17;
+
+constructor TjanSimMotor.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := MO_W;
+  Height := MO_H;
+  Connectors := TList.Create;
+  FTimer := TTimer.Create(Self);
+  FTimer.Enabled := False;
+  FTimer.Interval := 60;
+  FTimer.OnTimer := TimerTick;
+  FAngle := 90;
+  FTaal := 'NL';
+  FNaam := 'Motor';
+  HelpKeyword := 'motor';
+  ShowHint := True;
+end;
+
+destructor TjanSimMotor.Destroy;
+begin
+  FTimer.Enabled := False;
+  Connectors.Free;
+  inherited;
+end;
+
+class function TjanSimMotor.InputPinY(I: Integer): Integer;
+begin
+  if I = 0 then Result := 8 else Result := 36;
+end;
+
+function TjanSimMotor.InputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
+  for i := 0 to 1 do
+    if Abs(P.Y - (Top + InputPinY(i) + 3)) <= 10 then
+      Exit(i);
+end;
+
+function TjanSimMotor.GetInput(I: Integer): Boolean;
+begin
+  Result := FIn[I];
+end;
+
+function TjanSimMotor.Fault: Boolean;
+begin
+  Result := FIn[0] and FIn[1];
+end;
+
+function TjanSimMotor.Direction: Integer;
+begin
+  if FIn[0] and not FIn[1] then Result := -1
+  else if FIn[1] and not FIn[0] then Result := 1
+  else Result := 0;
+end;
+
+procedure TjanSimMotor.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I > 1) or (FIn[I] = Value) then Exit;
+  FIn[I] := Value;
+  UpdateTimer;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimMotor.UpdateTimer;
+begin
+  FTimer.Enabled := Direction <> 0;
+end;
+
+procedure TjanSimMotor.TimerTick(Sender: TObject);
+begin
+  // rechtsom = met de klok mee: de hoek (tegen de klok in gemeten) daalt
+  FAngle := (FAngle - Direction * 15 + 360) mod 360;
+  Invalidate;
+end;
+
+procedure TjanSimMotor.SetTaal(const Value: string);
+begin
+  FTaal := Value;
+  UpdateHintText;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimMotor.Paint;
+var
+  i, y: Integer;
+  BW, BH: Integer;   // maten van de motor (in 'with Canvas' zijn Width/Height die van het canvas)
+  S: TjanSymbolen;
+  Q: TPoint;
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  S := SymOf(Self);
+  with Canvas do
+  begin
+    // aansluitdraden: L en R naar de motor, rechts naar de - kant
+    SymPen(Canvas, clBlack);
+    for i := 0 to 1 do
+    begin
+      y := InputPinY(i) + 3;
+      Line(8, y, 24, y);
+      if i = 0 then
+        Q := Point(MO_CX - Round(MO_R * 0.82), MO_CY - Round(MO_R * 0.57))
+      else
+        Q := Point(MO_CX - Round(MO_R * 0.82), MO_CY + Round(MO_R * 0.57));
+      Line(24, y, Q.X, Q.Y);
+    end;
+    Line(MO_CX + MO_R, MO_CY, BW, MO_CY);
+
+    DrawMotorSymbol(Canvas, MO_CX, MO_CY, MO_R, FAngle, Direction, Fault, S);
+
+    // aansluitingen en letters
+    for i := 0 to 1 do
+    begin
+      y := InputPinY(i);
+      Brush.Style := bsSolid;
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(1, y, 8, y + 7);
+      Brush.Style := bsClear;
+      Font.Name := 'Arial';
+      Font.Size := 7;
+      Font.Style := [fsBold];
+      if FIn[i] then Font.Color := clRed else Font.Color := clNavy;
+      if i = 0 then TextOut(11, y - 9, 'L') else TextOut(11, y + 6, 'R');
+    end;
+    if Fault then
+    begin
+      Brush.Style := bsClear;
+      Font.Name := 'Arial';
+      Font.Size := 12;
+      Font.Style := [fsBold];
+      Font.Color := clRed;
+      TextOut(BW - 10, 0, '!');
+    end;
+    if FSelect or FSelected then
+    begin
+      Brush.Style := bsClear;
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+  end;
+end;
+
+function TjanSimMotor.StatusText: string;
+begin
+  if Fault then
+    Result := Tr(FTaal, 'L en R samen aan: fout!', 'L and R on together: fault!',
+                        'L et R ensemble : défaut !', 'L und R zusammen ein: Fehler!')
+  else if Direction < 0 then
+    Result := Tr(FTaal, 'draait linksom', 'turning left', 'tourne à gauche', 'dreht links')
+  else if Direction > 0 then
+    Result := Tr(FTaal, 'draait rechtsom', 'turning right', 'tourne à droite', 'dreht rechts')
+  else
+    Result := Tr(FTaal, 'stil', 'stopped', 'arrêté', 'steht still');
+end;
+
+procedure TjanSimMotor.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'L: linksom, R: rechtsom', 'L: turn left, R: turn right',
+              'L : à gauche, R : à droite', 'L: links, R: rechts');
+end;
+
+procedure TjanSimMotor.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, FNaam + ' > ', 0);
+  FOnStatus(Self, StatusText, 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+procedure TjanSimMotor.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  if Assigned(FOnEnter) then
+    FOnEnter(Self);
+  FMouseOver := True;
+  SendStatusToBar;
+  if not FLock then
+  begin
+    FSelect := True;
+    Invalidate;
+  end;
+end;
+
+procedure TjanSimMotor.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if Assigned(FOnExit) then
+    FOnExit(Self);
+  if not FMouseOver then Exit;
+  FMouseOver := False;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+  FSelect := False;
+  Invalidate;
+end;
+
+procedure TjanSimMotor.BuildPopup;
+var
+  Mi: TMenuItem;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+procedure TjanSimMotor.LockClick(Sender: TObject);
+begin
+  FLock := not FLock;
+  Invalidate;
+end;
+
+procedure TjanSimMotor.SelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanSimMotor.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  P: TPoint;
+begin
+  inherited;
+  if (Button = mbRight) and not FLock then
+  begin
+    BuildPopup;
+    P := ClientToScreen(Point(0, Height));
+    PopupMenu.Popup(P.X, P.Y - 1);
+    Exit;
+  end;
+  doMove := False;
+  mdp := Point(X, Y);
+  Screen.Cursor := crDefault;
+  if Button <> mbLeft then Exit;
+  doMove := True;
+  AnchorConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).BeginGuideLines(Left + Width div 2, Top + Height div 2);
+end;
+
+procedure TjanSimMotor.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, SnapP: TPoint;
+  Grid: TjanGridS;
+  WorkR: TRect;
+begin
+  inherited;
+  if FLock or (Parent = nil) then Exit;
+  if not ((ssLeft in Shift) and doMove) then Exit;
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  NewLeft := P.X - mdp.X;
+  NewTop := P.Y - mdp.Y;
+  if Parent is TjanGridS then
+  begin
+    Grid := TjanGridS(Parent);
+    WorkR := Grid.GetWorkAreaRect;
+    SnapP := Grid.SnapPointToRuler(Point(NewLeft + Width div 2, NewTop + Height div 2), WorkR);
+    NewLeft := SnapP.X - Width div 2;
+    NewTop := SnapP.Y - Height div 2;
+  end;
+  StraightenWires(Connectors, NewLeft, NewTop);
+  SnapToRail(Self, NewLeft);
+  Left := NewLeft;
+  Top := NewTop;
+  MoveConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).UpdateGuideLines(Left + Width div 2, Top + Height div 2);
+  FMouseOver := True;
+  SendStatusToBar;
+end;
+
+procedure TjanSimMotor.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).EndGuideLines;
+  doMove := False;
+  if Assigned(Parent) then
+    Parent.Invalidate;   // stekker en bolletje van de voedingsrail
+end;
+
+procedure TjanSimMotor.AnchorConnectors;
+var
+  i: Integer;
+  Con: TjanConnector;
+  R: TRect;
+begin
+  Connectors.Clear;
+  if Parent = nil then Exit;
+  R := BoundsRect;
+  InflateRect(R, 8, 8);
+  for i := 0 to Parent.ControlCount - 1 do
+    if Parent.Controls[i] is TjanConnector then
+    begin
+      Con := TjanConnector(Parent.Controls[i]);
+      // alleen de echte uiteinden van de draad (zie TjanConnector.AnchorToRect)
+      if Con.AnchorToRect(R, Point(Left, Top)) then
+        Connectors.Add(Con);
+    end;
+end;
+
+procedure TjanSimMotor.MoveConnectors;
+var
+  i: Integer;
+begin
+  for i := 0 to Connectors.Count - 1 do
+    TjanConnector(Connectors[i]).MoveConnector(Point(NewLeft, NewTop));
 end;
 
 

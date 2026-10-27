@@ -1,0 +1,71 @@
+<!-- titel: Les 15 - Binair tellen -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 15 van 15</p>
+  <h1>Binair tellen met LogicRun</h1>
+  <div class="goal"><strong>Doel:</strong> begrijpen hoe een binair getal werkt: vier lampjes en een display tonen
+  hetzelfde getal, op twee manieren.</div>
+
+  <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun telt; vier leds tonen 1011 en het display toont B">
+    <figcaption>Stap 12: de leds 8, 2 en 1 branden: 8 + 2 + 1 = 11. Het display toont B.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): het tellen aan of uit.</li>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> met 16 stappen: stap 1 is 0, stap 2 is 1, &hellip; stap 16 is 15.
+      Elke stap duurt 1 seconde.</li>
+    <li>Vier rode <a href="uitvoer.html#led">leds</a> op <b>UIT0</b> tot <b>UIT3</b>. Elke led heeft een eigen
+      waarde: UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Een <a href="uitvoer.html#display">display</a> aan <b>T1</b>: dat leest UIT0 tot UIT3 als één getal (zie
+      <a href="logicrun.html#displays">Displays</a>).</li>
+  </ul>
+
+  <h2>Hoe werkt een binair getal?</h2>
+  <p>Een computer kent alleen <i>aan</i> (1) en <i>uit</i> (0). Met vier lampjes maak je toch 16 getallen: tel de
+  waarden op van de lampjes die branden. Schrijf je ze op met de 8 links, dan krijg je het binaire getal.</p>
+  <table>
+    <tr><th>Getal</th><th>8</th><th>4</th><th>2</th><th>1</th><th>Binair</th><th>Display</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0000</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0001</td><td>1</td></tr>
+    <tr><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0010</td><td>2</td></tr>
+    <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0011</td><td>3</td></tr>
+    <tr><td>5</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0101</td><td>5</td></tr>
+    <tr><td>9</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1001</td><td>9</td></tr>
+    <tr><td>10</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1010</td><td>A</td></tr>
+    <tr><td>11</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1011</td><td>B</td></tr>
+    <tr><td>15</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1111</td><td>F</td></tr>
+  </table>
+  <p>Na 9 heeft het display geen cijfer meer: 10 tot 15 worden de letters <b>A</b> tot <b>F</b>. Zo&rsquo;n getal heet
+  <i>hexadecimaal</i>: één teken voor elke groep van vier bits.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: LogicRun begint te tellen.</li>
+    <li>Kijk welke leds branden en tel hun waarden op. Klopt het met het display?</li>
+    <li>Open het LogicRun-venster (dubbelklik op het blok) en klik op <b>Pauze</b>. Met <b>Stap</b> ga je één getal
+      verder. In de kolom <b>T1</b> zie je per stap het cijfer van het display.</li>
+    <li>Na 15 begint het opnieuw bij 0. Zet de schakelaar uit: alles stopt.</li>
+  </ol>
+
+  <h2>Opdracht 1: een aftelklok</h2>
+  <p>Laat het display aftellen van 9 naar 0, en laat het daarna stoppen.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Verwijder met <b>- stap</b> stappen tot je er 10 over hebt. Klik in de kolom <b>T1</b> van stap 1 en kies
+    <b>9</b>, bij stap 2 <b>8</b>, &hellip; tot stap 10 <b>0</b>. LogicRun zet zelf de juiste leds aan. Haal het vinkje
+    bij <b>Herhalen</b> weg: na de laatste stap blijft het programma staan.</p>
+  </details>
+
+  <h2>Opdracht 2: tellen tot 15 met twee cijfers</h2>
+  <p>Het display toont A tot F, maar wij schrijven liever 10 tot 15. Zet een tweede display links van het eerste en
+  verbind het met <b>T2</b>. Laat het tellen van <b>00</b> tot <b>15</b>.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>T2 is het cijfer van de tientallen, T1 dat van de eenheden. Laat stap 1 tot 10 zoals ze zijn (T2 = 0,
+    T1 = 0 tot 9). Kies in stap 11 tot 16 bij <b>T2</b> een <b>1</b> en bij <b>T1</b> <b>0</b>, <b>1</b>, <b>2</b>,
+    <b>3</b>, <b>4</b> en <b>5</b>. Zo toont het display 10 tot 15. In het venster zie je dat T2 = 1 de uitgang
+    <b>UIT4</b> aanzet: die heeft de waarde 1 voor het tweede cijfer.</p>
+  </details>
+
+  <div class="pager"><a href="les14.html">&larr; Les 14: Een inpakmachine</a><a href="leerpad.html">Leerpad &rarr;</a></div>

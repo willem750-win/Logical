@@ -1,0 +1,48 @@
+<!-- titel: Les 12 - Programmeren met LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 12 van 15</p>
+  <h1>Programmeren met LogicRun</h1>
+  <div class="goal"><strong>Doel:</strong> een verkeerslicht laten werken met een programma in plaats van met
+  poorten en draden, zoals een kleine computer of een PLC dat doet.</div>
+
+  <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="LogicRun-blok met twee drukknoppen en drie leds">
+    <figcaption>Het programma loopt: UIT0 is aan, de bovenste led (rood) brandt.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> in het midden.</li>
+    <li>Links twee drukknoppen: de bovenste zit op <b>DIN1</b> (start/stop), de onderste op <b>DIN3</b> (+1).</li>
+    <li>Rechts drie leds, zoals een verkeerslicht: <b>UIT0</b> rood (boven), <b>UIT1</b> oranje (midden) en
+      <b>UIT2</b> groen (onder).</li>
+  </ul>
+
+  <h2>Het programma</h2>
+  <p>Dubbelklik op het blok: het LogicRun-venster gaat open. Het programma heeft drie stappen:</p>
+  <table>
+    <tr><th>Stap</th><th>Aan</th><th>tijd x</th><th>Duur (stapduur 500&nbsp;ms)</th></tr>
+    <tr><td>1</td><td>UIT0 (rood)</td><td>6</td><td>3 seconden</td></tr>
+    <tr><td>2</td><td>UIT2 (groen)</td><td>6</td><td>3 seconden</td></tr>
+    <tr><td>3</td><td>UIT1 (oranje)</td><td>2</td><td>1 seconde</td></tr>
+  </table>
+  <p>Omdat <b>Herhalen</b> aan staat, begint het programma na stap 3 weer bij stap 1.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en druk op de bovenste drukknop: het verkeerslicht begint te lopen.</li>
+    <li>Druk nog eens: het programma pauzeert. Druk dan een paar keer op de onderste drukknop: bij elke druk
+      gaat het programma één stap verder.</li>
+    <li>Kijk in het venster mee: de huidige stap is lichtblauw.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Laat het groene licht 5 seconden branden in plaats van 3. Voeg daarna een voetgangerslicht toe: een groene led op <b>UIT3</b> die alleen brandt als het verkeerslicht rood is.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Met een stapduur van 500&nbsp;ms zijn 5 seconden 10 keer de stapduur: zet bij stap 2 <b>tijd x</b> op 10.
+    Klik in stap 1 (rood) ook het rondje van UIT3 aan. Zet een lamp op het paneel, maak er met de rechtermuisknop een groene led van
+    (<b>Kleur</b> &rsaquo; <b>Groene led</b>) en leg een draad van UIT3 naar die led. Zo stuurt één programma meerdere leds tegelijk.</p>
+  </details>
+
+  <div class="pager"><a href="les11.html">&larr; Les 11: Het relais</a><a href="les13.html">Les 13: Een motor sturen &rarr;</a></div>

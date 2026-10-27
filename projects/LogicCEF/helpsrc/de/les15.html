@@ -1,0 +1,72 @@
+<!-- titel: Lektion 15 - Binär zählen -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 15 von 15</p>
+  <h1>Binär zählen mit LogicRun</h1>
+  <div class="goal"><strong>Ziel:</strong> verstehen, wie eine Binärzahl funktioniert: vier Lämpchen und eine Anzeige
+  zeigen dieselbe Zahl, auf zwei Arten.</div>
+
+  <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun zählt; vier LEDs zeigen 1011 und die Anzeige zeigt B">
+    <figcaption>Schritt 12: Die LEDs 8, 2 und 1 leuchten: 8 + 2 + 1 = 11. Die Anzeige zeigt B.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Ein <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): das Zählen ein oder aus.</li>
+    <li>Der <a href="logicrun.html">LogicRun-Block</a> mit 16 Schritten: Schritt 1 ist 0, Schritt 2 ist 1, &hellip;
+      Schritt 16 ist 15. Jeder Schritt dauert 1 Sekunde.</li>
+    <li>Vier rote <a href="uitvoer.html#led">LEDs</a> an <b>UIT0</b> bis <b>UIT3</b>. Jede LED hat ihren eigenen Wert:
+      UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Eine <a href="uitvoer.html#display">Anzeige</a> an <b>T1</b>: Sie liest UIT0 bis UIT3 als eine Zahl (siehe
+      <a href="logicrun.html#displays">Anzeigen</a>).</li>
+  </ul>
+
+  <h2>Wie funktioniert eine Binärzahl?</h2>
+  <p>Ein Computer kennt nur <i>ein</i> (1) und <i>aus</i> (0). Trotzdem ergeben vier Lämpchen 16 Zahlen: Zählen Sie die
+  Werte der leuchtenden Lämpchen zusammen. Schreiben Sie sie mit der 8 links auf, dann erhalten Sie die Binärzahl.</p>
+  <table>
+    <tr><th>Zahl</th><th>8</th><th>4</th><th>2</th><th>1</th><th>Binär</th><th>Anzeige</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0000</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0001</td><td>1</td></tr>
+    <tr><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0010</td><td>2</td></tr>
+    <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0011</td><td>3</td></tr>
+    <tr><td>5</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0101</td><td>5</td></tr>
+    <tr><td>9</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1001</td><td>9</td></tr>
+    <tr><td>10</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1010</td><td>A</td></tr>
+    <tr><td>11</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1011</td><td>B</td></tr>
+    <tr><td>15</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1111</td><td>F</td></tr>
+  </table>
+  <p>Nach 9 hat die Anzeige keine Ziffern mehr: 10 bis 15 werden zu den Buchstaben <b>A</b> bis <b>F</b>. So eine Zahl
+  heißt <i>hexadezimal</i>: ein Zeichen für jede Gruppe von vier Bits.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein: LogicRun beginnt zu zählen.</li>
+    <li>Schauen Sie, welche LEDs leuchten, und zählen Sie ihre Werte zusammen. Stimmt es mit der Anzeige überein?</li>
+    <li>Öffnen Sie das LogicRun-Fenster (Doppelklick auf den Block) und klicken Sie auf <b>Pause</b>. Mit <b>Schritt</b>
+      gehen Sie eine Zahl weiter. Die Spalte <b>T1</b> zeigt für jeden Schritt die Ziffer der Anzeige.</li>
+    <li>Nach 15 beginnt es wieder bei 0. Schalten Sie den Schalter aus: alles hält an.</li>
+  </ol>
+
+  <h2>Aufgabe 1: ein Countdown</h2>
+  <p>Lassen Sie die Anzeige von 9 bis 0 rückwärts zählen und danach anhalten.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Entfernen Sie mit <b>- Schritt</b> Schritte, bis 10 übrig sind. Klicken Sie in der Spalte <b>T1</b> von Schritt 1
+    und wählen Sie <b>9</b>, bei Schritt 2 <b>8</b>, &hellip; bis Schritt 10 <b>0</b>. LogicRun schaltet selbst die
+    richtigen LEDs ein. Entfernen Sie das Häkchen bei <b>Wiederholen</b>: Nach dem letzten Schritt bleibt das Programm
+    stehen.</p>
+  </details>
+
+  <h2>Aufgabe 2: bis 15 zählen mit zwei Ziffern</h2>
+  <p>Die Anzeige zeigt A bis F, aber wir schreiben lieber 10 bis 15. Stellen Sie eine zweite Anzeige links neben die
+  erste und verbinden Sie sie mit <b>T2</b>. Lassen Sie von <b>00</b> bis <b>15</b> zählen.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>T2 ist die Zehnerziffer, T1 die Einerziffer. Lassen Sie die Schritte 1 bis 10 so, wie sie sind (T2 = 0, T1 = 0
+    bis 9). Wählen Sie in den Schritten 11 bis 16 bei <b>T2</b> eine <b>1</b> und bei <b>T1</b> <b>0</b>, <b>1</b>,
+    <b>2</b>, <b>3</b>, <b>4</b> und <b>5</b>. Jetzt zeigt die Anzeige 10 bis 15. Im Fenster sehen Sie, dass T2 = 1 den
+    Ausgang <b>UIT4</b> einschaltet: Er hat den Wert 1 für die zweite Ziffer.</p>
+  </details>
+
+  <div class="pager"><a href="les14.html">&larr; Lektion 14: Eine Verpackungsmaschine</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

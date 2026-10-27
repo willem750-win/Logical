@@ -1,0 +1,53 @@
+<!-- titel: Lektion 13 - Einen Motor steuern -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 13 von 15</p>
+  <h1>Einen Motor mit LogicRun steuern</h1>
+  <div class="goal"><strong>Ziel:</strong> einen Motor mit einem Programm links und rechts herum drehen lassen, wie bei
+  einem Rollladen, einem Garagentor oder einem kleinen Wagen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les13-motor.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les13-motor.png" alt="Schalter, LogicRun-Block und Motor">
+    <figcaption>Der Schalter ist ein: das Programm läuft und der Motor dreht links herum.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Links ein <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b>. DIN1 hat die Funktion <b>Ein/Aus</b>:
+      solange der Schalter ein ist, läuft das Programm. Schalten Sie ihn aus, hält das Programm an und alle Ausgänge
+      gehen aus.</li>
+    <li>In der Mitte der <a href="logicrun.html">LogicRun-Block</a>.</li>
+    <li>Rechts ein <a href="uitvoer.html#motor">Motor</a>: <b>UIT0</b> geht an <b>L</b> (links herum), <b>UIT1</b> an
+      <b>R</b> (rechts herum).</li>
+  </ul>
+
+  <h2>Das Programm</h2>
+  <table>
+    <tr><th>Schritt</th><th>Ein</th><th>Motor</th><th>Zeit x</th><th>Dauer (Schrittzeit 500&nbsp;ms)</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>dreht links</td><td>4</td><td>2 Sekunden</td></tr>
+    <tr><td>2</td><td>-</td><td>steht still</td><td>1</td><td>0,5 Sekunden</td></tr>
+    <tr><td>3</td><td>UIT1</td><td>dreht rechts</td><td>4</td><td>2 Sekunden</td></tr>
+    <tr><td>4</td><td>-</td><td>steht still</td><td>1</td><td>0,5 Sekunden</td></tr>
+  </table>
+  <p>Warum der kurze Halt zwischen links und rechts? Ein echter Motor muss erst stillstehen, bevor er die Richtung
+  wechselt, sonst bekommt er einen harten Stoß.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein: der Motor dreht links herum, steht kurz still und
+      dreht dann rechts herum.</li>
+    <li>Schalten Sie ihn aus: der Motor hält sofort an. Schalten Sie ihn wieder ein: das Programm beginnt wieder bei
+      Schritt 1.</li>
+    <li>Doppelklicken Sie auf den Block und schauen Sie im LogicRun-Fenster mit: der aktuelle Schritt ist hellblau.</li>
+  </ol>
+
+  <h2>Aufgabe</h2>
+  <p>Schalten Sie in Schritt 2 die Kreise von UIT0 <b>und</b> UIT1 ein. Was passiert mit dem Motor? Stellen Sie es danach
+  zurück und lassen Sie den Motor 3 Sekunden links und 1 Sekunde rechts herum drehen.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Mit L und R gleichzeitig ein dreht der Motor nicht und bekommt einen roten Rand mit einem <b>!</b>. In Wirklichkeit
+    gäbe das einen Kurzschluss oder Schaden: ein gutes Programm schaltet L und R also nie zusammen ein. Für 3 Sekunden
+    links setzen Sie <b>Zeit x</b> von Schritt 1 auf 6 (6 &times; 500&nbsp;ms), für 1 Sekunde rechts Schritt 3 auf 2.</p>
+  </details>
+
+  <div class="pager"><a href="les12.html">&larr; Lektion 12: Programmieren mit LogicRun</a><a href="les14.html">Lektion 14: Eine Verpackungsmaschine &rarr;</a></div>

@@ -1,0 +1,132 @@
+<!-- titel: LogicRun -->
+  <h1 id="logicrun"><img src="../img/knop-logicrun.png" class="ico" alt="">LogicRun: programming in steps</h1>
+  <p class="lead">LogicRun is a block that you do not wire but <b>program</b>. You write a series of
+  steps; each step switches a number of outputs on. That way you build a traffic light, a running light or a
+  counter without using a single gate.</p>
+
+  <figure>
+    <img src="../img/les12-logicrun.png" alt="LogicRun block with two push buttons and three LEDs">
+    <figcaption>A LogicRun block: the push buttons are on DIN1 (start/stop) and DIN3 (+1), the LEDs on
+    UIT0, UIT1 and UIT2.</figcaption>
+  </figure>
+
+  <h2 id="blok">The block</h2>
+  <ul>
+    <li><b>Left: 4 inputs</b> DIN1 to DIN4. Under each input you see what it does (see <a href="#ingangen">The inputs</a>).</li>
+    <li><b>Right: 8 outputs</b> UIT0 to UIT7, each with a small lamp that turns red when the output is on.</li>
+    <li><b>Below: T1 and T2</b>, two connections for a <a href="uitvoer.html#display">display</a>. The red digit next to them is what the display shows (see <a href="#displays">Displays</a>).</li>
+    <li><b>At the bottom</b> the step the program is at, or <i>stopped</i>.</li>
+  </ul>
+  <p>You connect the block with ordinary <a href="verbindingen.html">wires</a>: switches and sensors to the
+  inputs, the outputs to lamps, relays, a buzzer or the inputs of other components.</p>
+  <ol class="steps">
+    <li>Click <img src="../img/knop-logicrun.png" class="ico" alt=""><b>LogicRun</b> in the button bar. The
+      LogicRun window opens next to Logic.</li>
+    <li>If there is no block on the panel yet, click <b>Put the block on the panel</b> and then on the panel.</li>
+  </ol>
+  <p>There can be only <b>one</b> LogicRun block on a panel. Double-click the block, or choose
+  <b>Edit program...</b> in the right-click menu, to open the window. The right-click menu also lets you lock
+  the block or <a href="objecten.html#verwijderen">delete</a> it.</p>
+
+  <h2 id="venster">The LogicRun window</h2>
+  <figure>
+    <img src="../img/logicrun-venster-en.png" alt="The LogicRun window with the traffic light">
+    <figcaption>The traffic light program: three steps.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Button or field</th><th>What does it do?</th></tr>
+    <tr><td><b>Start</b></td><td>The program runs, step after step.</td></tr>
+    <tr><td><b>Pause</b></td><td>The program stays at the current step; the outputs stay as they are.</td></tr>
+    <tr><td><b>Stop</b></td><td>The program stops and goes back to the beginning; all outputs switch off.</td></tr>
+    <tr><td><b>Step</b></td><td>One step further, useful to check your program step by step.</td></tr>
+    <tr><td><b>Step time</b></td><td>How long one time unit lasts, in milliseconds (500&nbsp;ms = half a second).</td></tr>
+    <tr><td><b>Repeat</b></td><td>On: after the last step the program starts again. Off: it stops at the last step.</td></tr>
+    <tr><td><b>Example</b> and <b>Load</b></td><td>Load a ready-made program (see <a href="#voorbeelden">Examples</a>).</td></tr>
+    <tr><td><b>+ step</b> and <b>- step</b></td><td>Add a step after the selected step, or delete the selected step.</td></tr>
+    <tr><td><b>DIN1</b> to <b>DIN4</b></td><td>What each input does.</td></tr>
+    <tr><td><b>wait for</b></td><td>Click in this column to make a step wait for an input or a number of pulses (see <a href="#wacht">Waiting</a>).</td></tr>
+    <tr><td><b>T1</b> and <b>T2</b></td><td>The digit T1 and T2 show on a display in that step. Click it to choose a digit from 0 to F; LogicRun then sets the 4 outputs itself (see <a href="#displays">Displays</a>).</td></tr>
+  </table>
+  <p>At the top you see whether the program is running and which step it is at. The current step is light blue in the table.</p>
+
+  <h2 id="programma">Making a program</h2>
+  <ul>
+    <li>Each <b>row</b> in the table is a step. The program runs the steps from top to bottom.</li>
+    <li>Click a <b>circle</b> to switch that output on (red) or off (white) in that step.</li>
+    <li><b>time x</b> says how long the step lasts, in times the step time. With a step time of 500&nbsp;ms, a step
+      with time&nbsp;6 lasts three seconds.</li>
+  </ul>
+  <p>A program has at most 64 steps.</p>
+
+  <h2 id="wacht">Waiting for an input or for pulses</h2>
+  <p>A step normally lasts <b>time x</b> times the step time. In the <b>wait for</b> column you can make a step
+  <b>wait</b> instead. Click in that column and choose:</p>
+  <table>
+    <tr><th>Choice</th><th>The step lasts until ...</th><th>For example</th></tr>
+    <tr><td><b>None</b></td><td>the time is up (as usual)</td><td>a traffic light</td></tr>
+    <tr><td><b>Until input on</b></td><td>the chosen input is on</td><td>a limit switch: the cart drives until it reaches the wall</td></tr>
+    <tr><td><b>Until input off</b></td><td>the chosen input is off</td><td>waiting until someone releases a button</td></tr>
+    <tr><td><b>Until number of pulses on input</b></td><td>that many pulses have arrived on the input</td><td>counting boxes: after 5 boxes the belt stops</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-wacht-en.png" alt="LogicRun window with a step that waits for 5 pulses">
+    <figcaption>The packing machine: step 1 waits for 5 pulses on DIN2; 2 have been counted already.</figcaption>
+  </figure>
+  <p>A step that waits has no time: the <b>time x</b> column then shows a dash. At the top of the window and at the
+  bottom of the block you see what the step is waiting for and how many pulses have been counted.</p>
+  <div class="tip"><strong>Tip:</strong> set an input that a step waits for to <b>-</b> in the input functions, so that
+  it does not also start or stop the program. To see the pulses too, also connect the input to the
+  <a href="verwerking.html#teller">counter</a> and its display (see <a href="les14.html">lesson 14</a>).</div>
+
+  <h2 id="displays">Displays: T1 and T2</h2>
+  <p>Below UIT7 the block has two extra connections for a <a href="uitvoer.html#display">display</a>, just like the
+  output of a <a href="verwerking.html#teller">counter</a>. They read the outputs as a binary number:</p>
+  <table>
+    <tr><th>Connection</th><th>Reads</th><th>Shows</th></tr>
+    <tr><td><b>T1</b></td><td>UIT0 to UIT3 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8)</td><td>0 to 9 and A to F</td></tr>
+    <tr><td><b>T2</b></td><td>UIT4 to UIT7 (UIT4 = 1, UIT5 = 2, UIT6 = 4, UIT7 = 8)</td><td>0 to 9 and A to F</td></tr>
+  </table>
+  <figure>
+    <img src="../img/logicrun-displays.png" alt="LogicRun block with two displays on T1 and T2">
+    <figcaption>Step 6 of <i>Count up and down</i>: T1 shows 5, T2 shows A.</figcaption>
+  </figure>
+  <p>In the window, the <b>T1</b> and <b>T2</b> columns show the digit of each step. Click such a digit and choose
+  another one: LogicRun then switches the 4 outputs on or off itself. Next to each digit in the menu you see the 4 bits,
+  e.g. 5&nbsp;=&nbsp;0101. The normal outputs keep working, so you can drive lamps and a display at the same time.</p>
+  <figure>
+    <img src="../img/logicrun-tellers-en.png" alt="LogicRun window with the T1 and T2 columns">
+    <figcaption>The example <i>Count up and down</i>: T1 counts up, T2 counts down.</figcaption>
+  </figure>
+  <p class="tip">Put two displays side by side, T2 on the left and T1 on the right, to get a two-digit number (from 00 to FF).</p>
+
+  <h2 id="ingangen">The inputs</h2>
+  <p>Most functions react at the moment the input switches <b>on</b>: use a
+  <a href="invoer.html#drukknop">push button</a> for them. For a <a href="invoer.html#schakelaar">switch</a> there is the <b>on/off</b> function.</p>
+  <table>
+    <tr><th>Function</th><th>What happens when the input switches on?</th></tr>
+    <tr><td><b>start/stop</b></td><td>If the program is not running, it starts; if it is running, it pauses.</td></tr>
+    <tr><td><b>reset</b></td><td>The program goes to the first step.</td></tr>
+    <tr><td><b>+1</b></td><td>The program goes one step further.</td></tr>
+    <tr><td><b>on/off</b></td><td>The program runs as long as the input is on. When it goes off, the program stops and all outputs go off (handy with a switch).</td></tr>
+    <tr><td><b>-</b></td><td>Nothing: the input is not used.</td></tr>
+  </table>
+
+  <h2 id="voorbeelden">Examples</h2>
+  <table>
+    <tr><th>Example</th><th>Outputs</th></tr>
+    <tr><td>Traffic light</td><td>UIT0 red, UIT1 amber, UIT2 green.</td></tr>
+    <tr><td>Running light</td><td>UIT0 to UIT7 switch on one by one.</td></tr>
+    <tr><td>Motor left/right</td><td>UIT0 motor left, UIT1 motor right, with a short stop in between. Connect them to L and R of a <a href="uitvoer.html#motor">motor</a>.</td></tr>
+    <tr><td>4-bit counter</td><td>UIT0 to UIT3 count in binary from 0 to 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
+    <tr><td>Cart</td><td>UIT0 forward until DIN3 is on (limit switch), a short stop, UIT1 backward until DIN4 is on; DIN1 on/off. Connect UIT0 to R and UIT1 to L of a motor.</td></tr>
+    <tr><td>Packing machine</td><td>UIT0 conveyor belt until 5 pulses have arrived on DIN2 (boxes), UIT1 packing (2 s), UIT2 resets a counter; DIN1 on/off.</td></tr>
+    <tr><td>Count up and down</td><td>T1 counts up from 0 to F, T2 counts down from F to 0 at the same time. Connect T1 and T2 to a display.</td></tr>
+  </table>
+  <div class="tip"><strong>Tip:</strong> loading an example replaces the program. With <kbd>Ctrl</kbd>+<kbd>Z</kbd>
+  you get the previous program back.</div>
+
+  <h2 id="bewaren">Saving</h2>
+  <p>The program is saved together with the panel in the panel file (<code>.lpl</code>).
+  <a href="knoppen.html#ongedaan">Undo</a> also works for changes to the program. An older version of Logic
+  skips the LogicRun block.</p>
+  <p>Try it yourself in <a href="les12.html">lesson 12: Programming with LogicRun</a>.</p>

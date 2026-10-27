@@ -145,6 +145,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uHelpManager"/>
       </Unit>
+      <Unit>
+        <Filename Value="uLogicRun.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uLogicRun"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

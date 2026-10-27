@@ -1,0 +1,51 @@
+<!-- titel: Les 13 - Een motor sturen -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 13 van 15</p>
+  <h1>Een motor sturen met LogicRun</h1>
+  <div class="goal"><strong>Doel:</strong> een motor met een programma linksom en rechtsom laten draaien, zoals bij
+  een rolluik, een garagepoort of een wagentje.</div>
+
+  <p><a class="open" href="../../panels/lessen/les13-motor.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les13-motor.png" alt="Schakelaar, LogicRun-blok en motor">
+    <figcaption>De schakelaar staat aan: het programma loopt en de motor draait linksom.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Links een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b>. Bij DIN1 staat de functie
+      <b>aan/uit</b>: zolang de schakelaar aan staat, loopt het programma. Zet je hem uit, dan stopt het en gaan alle
+      uitgangen uit.</li>
+    <li>In het midden het <a href="logicrun.html">LogicRun-blok</a>.</li>
+    <li>Rechts een <a href="uitvoer.html#motor">motor</a>: <b>UIT0</b> gaat naar <b>L</b> (linksom), <b>UIT1</b> naar
+      <b>R</b> (rechtsom).</li>
+  </ul>
+
+  <h2>Het programma</h2>
+  <table>
+    <tr><th>Stap</th><th>Aan</th><th>Motor</th><th>tijd x</th><th>Duur (stapduur 500&nbsp;ms)</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>draait linksom</td><td>4</td><td>2 seconden</td></tr>
+    <tr><td>2</td><td>-</td><td>staat stil</td><td>1</td><td>0,5 seconde</td></tr>
+    <tr><td>3</td><td>UIT1</td><td>draait rechtsom</td><td>4</td><td>2 seconden</td></tr>
+    <tr><td>4</td><td>-</td><td>staat stil</td><td>1</td><td>0,5 seconde</td></tr>
+  </table>
+  <p>Waarom die korte stilstand tussen linksom en rechtsom? Een echte motor moet eerst stilvallen voor hij van
+  richting verandert, anders krijgt hij een harde schok.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: de motor draait linksom, staat even stil en draait dan rechtsom.</li>
+    <li>Zet de schakelaar uit: de motor stopt meteen. Zet hem weer aan: het programma begint opnieuw bij stap 1.</li>
+    <li>Dubbelklik op het blok en kijk in het LogicRun-venster mee: de huidige stap is lichtblauw.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Zet in stap 2 de rondjes van UIT0 <b>en</b> UIT1 aan. Wat gebeurt er met de motor? Zet het daarna terug en laat de
+  motor 3 seconden linksom en 1 seconde rechtsom draaien.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Met L en R tegelijk aan draait de motor niet en krijgt hij een rode rand met een <b>!</b>. In het echt zou dat
+    kortsluiting of schade geven: een goed programma zet L en R dus nooit samen aan. Voor 3 seconden linksom zet je
+    <b>tijd x</b> van stap 1 op 6 (6 &times; 500&nbsp;ms), voor 1 seconde rechtsom zet je stap 3 op 2.</p>
+  </details>
+
+  <div class="pager"><a href="les12.html">&larr; Les 12: Programmeren met LogicRun</a><a href="les14.html">Les 14: Een inpakmachine &rarr;</a></div>

@@ -136,6 +136,8 @@ begin
       Result := 'verwerking';
     'lamp', 'relais', 'schakelrelais', 'zoemer', 'display':
       Result := 'uitvoer';
+    'motor':
+      begin Result := 'uitvoer'; AAnchor := 'motor'; end;
     'voeding', 'rail':
       begin Result := 'voeding'; AAnchor := 'rails'; end;
     'meter':
@@ -150,6 +152,8 @@ begin
       Result := 'simulatie';
     'settings', 'taal':
       Result := 'instellingen';
+    'logicrun':
+      begin Result := 'logicrun'; AAnchor := ''; end;
   else
     begin Result := 'index'; AAnchor := ''; end;
   end;
@@ -524,6 +528,8 @@ begin
     'tjanconnector':    AControl.HelpKeyword := 'connector';
     'tjansimlogicbox':  AControl.HelpKeyword := 'logicbox';
     'tjangrids':        AControl.HelpKeyword := 'grid';
+    'tjanlogicrun':     AControl.HelpKeyword := 'logicrun';
+    'tjansimmotor':     AControl.HelpKeyword := 'motor';
   end;
 end;
 

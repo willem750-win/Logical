@@ -1,0 +1,51 @@
+<!-- titel: Lesson 13 - Controlling a motor -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 13 of 15</p>
+  <h1>Controlling a motor with LogicRun</h1>
+  <div class="goal"><strong>Goal:</strong> make a motor turn left and right with a program, as in a roller shutter,
+  a garage door or a small cart.</div>
+
+  <p><a class="open" href="../../panels/lessen/les13-motor.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les13-motor.png" alt="Switch, LogicRun block and motor">
+    <figcaption>The switch is on: the program is running and the motor turns left.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>On the left a <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b>. DIN1 has the function
+      <b>on/off</b>: as long as the switch is on, the program runs. Switch it off and the program stops and all
+      outputs go off.</li>
+    <li>In the middle the <a href="logicrun.html">LogicRun block</a>.</li>
+    <li>On the right a <a href="uitvoer.html#motor">motor</a>: <b>UIT0</b> goes to <b>L</b> (turn left), <b>UIT1</b> to
+      <b>R</b> (turn right).</li>
+  </ul>
+
+  <h2>The program</h2>
+  <table>
+    <tr><th>Step</th><th>On</th><th>Motor</th><th>time x</th><th>Duration (step time 500&nbsp;ms)</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>turns left</td><td>4</td><td>2 seconds</td></tr>
+    <tr><td>2</td><td>-</td><td>stands still</td><td>1</td><td>0.5 second</td></tr>
+    <tr><td>3</td><td>UIT1</td><td>turns right</td><td>4</td><td>2 seconds</td></tr>
+    <tr><td>4</td><td>-</td><td>stands still</td><td>1</td><td>0.5 second</td></tr>
+  </table>
+  <p>Why the short stop between left and right? A real motor has to come to a standstill before it changes
+  direction, otherwise it gets a hard jolt.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on: the motor turns left, stops for a moment and then turns right.</li>
+    <li>Switch it off: the motor stops at once. Switch it on again: the program starts again at step 1.</li>
+    <li>Double-click the block and follow along in the LogicRun window: the current step is light blue.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>In step 2, switch on the circles of UIT0 <b>and</b> UIT1. What happens to the motor? Then undo it and make the
+  motor turn left for 3 seconds and right for 1 second.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>With L and R on at the same time the motor does not turn and gets a red rim with a <b>!</b>. In reality that
+    would cause a short circuit or damage, so a good program never switches L and R on together. For 3 seconds left,
+    set <b>time x</b> of step 1 to 6 (6 &times; 500&nbsp;ms); for 1 second right, set step 3 to 2.</p>
+  </details>
+
+  <div class="pager"><a href="les12.html">&larr; Lesson 12: Programming with LogicRun</a><a href="les14.html">Lesson 14: A packing machine &rarr;</a></div>
