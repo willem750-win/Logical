@@ -62,6 +62,23 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
   <p>With <a href="logicrun.html">LogicRun</a> you can make the motor turn according to a program, for example with
   the <b>Motor left/right</b> example: UIT0 to L, UIT1 to R.</p>
 
+  <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Person</h2>
+  <p>A person who walks left and right across a floor. You place him with the <a href="onderdelenbalk.html">Person</a>
+  button in the component bar, below the voltmeter. His inputs are on the right: <b>L</b> makes him walk left, <b>R</b> right. At both ends of the
+  floor there is a limit switch with a lamp; their outputs are on the left: <b>S1</b> is on when he is all the way to the
+  left, <b>S2</b> when he is all the way to the right.</p>
+  <figure>
+    <img src="../img/persoon-voorbeeld.png" alt="A person walking to the right between two limit switches">
+    <figcaption>The person walks to the right: R is on. At S2 he stops and S2 goes on.</figcaption>
+  </figure>
+  <ul>
+    <li>Both off: he stands still. L and R <b>both on</b>: he stays where he is and a red <b>!</b> appears.</li>
+    <li>Connect S1 and S2 to an input of <a href="logicrun.html">LogicRun</a> (for example DIN3 and DIN4): a step can then
+      wait until the person has arrived. See <a href="les16.html">lesson 16</a>.</li>
+    <li>The person needs no power supply. After opening a panel he is always on the left. Right-click and choose
+      <b>Back to the left (S1)</b> to put him back yourself.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>
   <p>The display has one input. What it shows depends on what you connect to it:</p>
   <ul>

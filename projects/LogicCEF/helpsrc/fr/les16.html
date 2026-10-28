@@ -1,0 +1,76 @@
+<!-- titel: Leçon 16 - Une personne fait des allers-retours -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 16 sur 16</p>
+  <h1>Une personne fait des allers-retours</h1>
+  <div class="goal"><strong>Objectif :</strong> comprendre pourquoi une machine a des fins de course&nbsp;: LogicRun fait
+  marcher une personne, et les fins de course signalent quand elle est arrivée au bout.</div>
+
+  <p><a class="open" href="../../panels/lessen/les16-persoon.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les16-persoon.png" alt="Interrupteur, bloc LogicRun et une personne qui marche vers la droite">
+    <figcaption>Pas 1&nbsp;: UIT1 est active, la personne marche vers la droite jusqu&rsquo;à S2.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous ?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>)&nbsp;: le
+      programme en marche ou à l&rsquo;arrêt.</li>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 4 pas.</li>
+    <li>Une <a href="uitvoer.html#persoon">personne</a> sur un sol. Ses entrées sont à droite&nbsp;: <b>L</b> (marcher vers
+      la gauche) et <b>R</b> (marcher vers la droite). À gauche se trouvent les sorties des deux fins de course&nbsp;:
+      <b>S1</b> est active quand elle est tout à gauche, <b>S2</b> quand elle est tout à droite.</li>
+    <li>Les fils&nbsp;: <b>UIT0</b> vers L, <b>UIT1</b> vers R, <b>S1</b> vers DIN3 et <b>S2</b> vers DIN4.</li>
+  </ul>
+
+  <h2>Le programme</h2>
+  <table>
+    <tr><th>Pas</th><th>Sortie</th><th>Attendre</th><th>Que se passe-t-il ?</th></tr>
+    <tr><td>1</td><td>UIT1</td><td>DIN4 active</td><td>La personne marche vers la droite jusqu&rsquo;à ce que S2 soit active.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>Elle se repose 2 secondes (durée 4 &times; 500 ms).</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN3 active</td><td>Elle marche vers la gauche jusqu&rsquo;à ce que S1 soit active.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>Elle se repose encore 2 secondes, puis tout recommence.</td></tr>
+  </table>
+
+  <h2>Pourquoi des fins de course ?</h2>
+  <p>On pourrait aussi dire&nbsp;: &laquo;&nbsp;marche 3 secondes vers la droite&nbsp;&raquo;. Mais si elle marche un peu
+  moins vite ou ne part pas tout à gauche, elle s&rsquo;arrête trop tôt ou heurte le mur. Une fin de course
+  <i>signale</i> que le bout est atteint. Le programme l&rsquo;attend dans la colonne <b>attendre</b>. Une porte de
+  garage, un ascenseur ou une porte coulissante fonctionnent de la même manière.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et fermez l&rsquo;interrupteur&nbsp;: la personne marche vers la droite.</li>
+    <li>Regardez le voyant au-dessus de S2&nbsp;: il devient rouge quand elle arrive. LogicRun passe aussitôt au pas 2.</li>
+    <li>Ouvrez la fenêtre LogicRun (double-clic sur le bloc). Aux pas 1 et 3, la colonne <b>attendre</b> montre
+      <b>DIN4 active</b> et <b>DIN3 active</b>.</li>
+    <li>Ouvrez l&rsquo;interrupteur&nbsp;: tout s&rsquo;arrête et la personne reste où elle est. Clic droit sur la
+      personne, puis <b>Retour à gauche (S1)</b> pour la remettre au départ.</li>
+  </ol>
+
+  <h2>Exercice 1 : un repos plus long</h2>
+  <p>Faites reposer la personne 5 secondes à droite et seulement 1 seconde à gauche.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>La durée d&rsquo;un pas est de 500 ms. Mettez la <b>durée</b> du pas 2 sur <b>10</b> (10 &times; 500 ms = 5 s) et
+    celle du pas 4 sur <b>2</b>.</p>
+  </details>
+
+  <h2>Exercice 2 : une lampe d&rsquo;avertissement</h2>
+  <p>Une lampe doit s&rsquo;allumer pendant que la personne marche, et s&rsquo;éteindre quand elle se repose.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Placez une <a href="uitvoer.html#led">lampe ou une LED</a> à droite du bloc LogicRun et reliez-la à <b>UIT2</b>.
+    Dans la fenêtre LogicRun, cliquez aussi dans la colonne <b>UIT2</b> des pas 1 et 3&nbsp;: cette sortie est alors
+    active pendant que la personne marche.</p>
+  </details>
+
+  <h2>Exercice 3 : et si les fils sont inversés ?</h2>
+  <p>Reliez S1 à DIN4 et S2 à DIN3. Que se passe-t-il ? Réfléchissez d&rsquo;abord, puis essayez.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Au départ, la personne est à gauche, donc S1 est déjà active. Le pas 1 attend DIN4, qui est maintenant S1&nbsp;: le
+    pas est terminé tout de suite et la personne bouge à peine. Au pas 3, elle marche vers la gauche et attend S2, qui ne
+    devient jamais active&nbsp;: elle continue à marcher contre le mur de gauche. Une machine dont les fins de course sont
+    mal raccordées ne fonctionne donc pas bien. C&rsquo;est pourquoi on les teste toujours d&rsquo;abord.</p>
+  </details>
+
+  <div class="pager"><a href="les15.html">&larr; Leçon 15 : Compter en binaire</a><a href="leerpad.html">Parcours &rarr;</a></div>

@@ -1,0 +1,76 @@
+<!-- titel: Lektion 16 - Eine Person geht hin und her -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 16 von 16</p>
+  <h1>Eine Person geht hin und her</h1>
+  <div class="goal"><strong>Ziel:</strong> verstehen, warum eine Maschine Endschalter hat: LogicRun lässt eine Person
+  gehen, und die Endschalter melden, wann sie am Ende angekommen ist.</div>
+
+  <p><a class="open" href="../../panels/lessen/les16-persoon.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les16-persoon.png" alt="Schalter, LogicRun-Block und eine Person, die nach rechts geht">
+    <figcaption>Schritt 1: UIT1 ist ein, die Person geht nach rechts, bis sie bei S2 ankommt.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Ein <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): das Programm ein oder
+      aus.</li>
+    <li>Der <a href="logicrun.html">LogicRun-Block</a> mit 4 Schritten.</li>
+    <li>Eine <a href="uitvoer.html#persoon">Person</a> auf einem Boden. Rechts sind ihre Eingänge: <b>L</b> (nach links
+      gehen) und <b>R</b> (nach rechts gehen). Links sind die Ausgänge der beiden Endschalter: <b>S1</b> ist ein, wenn sie
+      ganz links steht, <b>S2</b>, wenn sie ganz rechts steht.</li>
+    <li>Die Drähte: <b>UIT0</b> zu L, <b>UIT1</b> zu R, <b>S1</b> zu DIN3 und <b>S2</b> zu DIN4.</li>
+  </ul>
+
+  <h2>Das Programm</h2>
+  <table>
+    <tr><th>Schritt</th><th>Ausgang</th><th>Warten auf</th><th>Was passiert?</th></tr>
+    <tr><td>1</td><td>UIT1</td><td>DIN4 ein</td><td>Die Person geht nach rechts, bis S2 eingeschaltet wird.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>Sie ruht 2 Sekunden (Zeit 4 &times; 500 ms).</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN3 ein</td><td>Sie geht nach links, bis S1 eingeschaltet wird.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>Sie ruht wieder 2 Sekunden; dann beginnt alles von vorn.</td></tr>
+  </table>
+
+  <h2>Warum Endschalter?</h2>
+  <p>Man könnte auch sagen: &bdquo;Geh 3 Sekunden nach rechts.&ldquo; Geht sie aber etwas langsamer oder steht sie nicht
+  ganz links, dann bleibt sie zu früh stehen oder stößt gegen die Wand. Ein Endschalter <i>meldet</i>, dass das Ende
+  erreicht ist. Das Programm wartet darauf in der Spalte <b>warten auf</b>. Ein Garagentor, ein Aufzug oder eine
+  Schiebetür funktionieren genauso.</p>
+
+  <h2>Probieren Sie es aus</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein: Die Person geht nach rechts.</li>
+    <li>Achten Sie auf das Lämpchen über S2: Es wird rot, wenn sie ankommt. LogicRun geht sofort zu Schritt 2.</li>
+    <li>Öffnen Sie das LogicRun-Fenster (Doppelklick auf den Block). Bei Schritt 1 und 3 steht in der Spalte
+      <b>warten auf</b> <b>DIN4 ein</b> und <b>DIN3 ein</b>.</li>
+    <li>Schalten Sie den Schalter aus: Alles hält an und die Person bleibt stehen, wo sie ist. Mit der rechten Maustaste
+      auf die Person und <b>Zurück nach links (S1)</b> stellen Sie sie wieder an den Anfang.</li>
+  </ol>
+
+  <h2>Übung 1: länger ausruhen</h2>
+  <p>Lassen Sie die Person rechts 5 Sekunden ausruhen und links nur 1 Sekunde.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Die Schrittdauer ist 500 ms. Setzen Sie die <b>Zeit</b> von Schritt 2 auf <b>10</b> (10 &times; 500 ms = 5 s) und
+    die von Schritt 4 auf <b>2</b>.</p>
+  </details>
+
+  <h2>Übung 2: eine Warnlampe</h2>
+  <p>Eine Lampe soll leuchten, solange die Person geht, und aus sein, wenn sie ruht.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Setzen Sie eine <a href="uitvoer.html#led">Lampe oder LED</a> rechts neben den LogicRun-Block und verbinden Sie
+    sie mit <b>UIT2</b>. Klicken Sie im LogicRun-Fenster bei Schritt 1 und 3 auch in die Spalte <b>UIT2</b>, damit dieser
+    Ausgang ein ist, während die Person geht.</p>
+  </details>
+
+  <h2>Übung 3: Was, wenn die Drähte vertauscht sind?</h2>
+  <p>Verbinden Sie S1 mit DIN4 und S2 mit DIN3. Was passiert? Denken Sie zuerst nach und probieren Sie es dann aus.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Am Anfang steht die Person links, also ist S1 schon ein. Schritt 1 wartet auf DIN4, und das ist jetzt S1: Der
+    Schritt ist sofort fertig und die Person kommt kaum vom Fleck. In Schritt 3 geht sie nach links und wartet auf S2,
+    aber der wird nie eingeschaltet: Sie läuft weiter gegen die linke Wand. Eine Maschine mit falsch angeschlossenen
+    Endschaltern funktioniert also nicht richtig. Darum testet man sie immer zuerst.</p>
+  </details>
+
+  <div class="pager"><a href="les15.html">&larr; Lektion 15: Binär zählen</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

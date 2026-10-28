@@ -62,6 +62,25 @@ $1  <p id="led"><b>LED :</b> cliquez avec le bouton droit sur une lampe et chois
   <p>Avec <a href="logicrun.html">LogicRun</a>, vous pouvez faire tourner le moteur selon un programme, par exemple avec
   l&rsquo;exemple <b>Moteur gauche/droite</b>&nbsp;: UIT0 vers L, UIT1 vers R.</p>
 
+  <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Personne</h2>
+  <p>Une personne qui marche vers la gauche et vers la droite sur un sol. Vous la placez avec le bouton
+  <a href="onderdelenbalk.html">Personne</a> de la barre des composants, sous le voltmètre. Ses entrées sont à droite&nbsp;: <b>L</b> la fait
+  marcher vers la gauche, <b>R</b> vers la droite. Aux deux bouts du sol se trouve une fin de course avec un voyant&nbsp;;
+  leurs sorties sont à gauche&nbsp;: <b>S1</b> est active quand elle est tout à gauche, <b>S2</b> quand elle est tout à
+  droite.</p>
+  <figure>
+    <img src="../img/persoon-voorbeeld.png" alt="Une personne qui marche vers la droite entre deux fins de course">
+    <figcaption>La personne marche vers la droite&nbsp;: R est active. À S2, elle s&rsquo;arrête et S2 devient active.</figcaption>
+  </figure>
+  <ul>
+    <li>Les deux inactives&nbsp;: elle reste immobile. L et R <b>actives ensemble</b>&nbsp;: elle reste sur place et un
+      <b>!</b> rouge apparaît.</li>
+    <li>Reliez S1 et S2 à une entrée de <a href="logicrun.html">LogicRun</a> (par exemple DIN3 et DIN4)&nbsp;: un pas peut
+      alors attendre que la personne soit arrivée. Voir la <a href="les16.html">leçon 16</a>.</li>
+    <li>La personne n&rsquo;a pas besoin d&rsquo;alimentation. Après l&rsquo;ouverture d&rsquo;un panneau, elle est toujours à
+      gauche. Clic droit, puis <b>Retour à gauche (S1)</b> pour la remettre vous-même au départ.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">Afficheur 7 segments</h2>
   <p>L&rsquo;afficheur a une seule entrée. Ce qu&rsquo;il affiche dépend de ce que vous y reliez&nbsp;:</p>
   <ul>

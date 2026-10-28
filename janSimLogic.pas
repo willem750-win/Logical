@@ -1818,6 +1818,7 @@ type
     cpu:TTimer;
     Fdraden:Boolean;
     FMeter:Boolean;
+    FPersoon:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
@@ -1886,6 +1887,7 @@ type
     DBuzzer:boolean;
     RMotor:TRect;
     DMotor:boolean;
+    DPersoon:boolean;
 
     bmSensor:Tbitmap;
     RSensor:TRect;
@@ -1915,6 +1917,7 @@ type
 
     bmMeter:TBitmap; //icon voor V-Meter
     RMeter:TRect;
+    RPersoon:TRect;
     DMeter:boolean;
 
     // voedingsrails (+ en - naast elkaar)
@@ -1951,6 +1954,7 @@ type
     FKnopTop:Integer;
     FHGrid:String;
     FHMeter:String;
+    FHPersoon:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
     FBoxTaal:TStatTaal;
@@ -1997,6 +2001,7 @@ type
     PROCEDURE SetDipSwitsh(const Value: Boolean);
     PROCEDURE SetBuzzer(const Value: Boolean);
     PROCEDURE SetMotor(const Value: Boolean);
+    PROCEDURE SetPersoon(const Value: Boolean);
     PROCEDURE SetSensor(const Value: Boolean);
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
@@ -2085,6 +2090,8 @@ type
     procedure NewRail(APlus: Boolean);
     // nieuw LogicRun-blok aan de muis hangen (alleen als er nog geen is)
     procedure NewLogicRun;
+    // nieuwe persoon (met vloer en eindschakelaars) aan de muis hangen
+    procedure NewPersoon;
     // ophalen van paneelopbouw uit exe
     PROCEDURE LoadStream(welke:TStream;inf:Boolean);
     procedure LoadStreamNew(welke: TStream; Paneel: TjanGridS; Inf: Boolean);
@@ -2143,6 +2150,7 @@ type
     property KDipSwitsh:Boolean read FDipSwitsh write SetDipSwitsh;
     property KDisplay:Boolean read FDisplay write SetDisplay;
     property KMeter:Boolean read FMeter write SetMeter;
+    property KPersoon:Boolean read FPersoon write SetPersoon default True;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
@@ -2166,6 +2174,7 @@ type
     property HSchakelRelais: string read FHSchakel write FHSchakel;
     property HBuzzer:String read FHBuzzer write SetHBuzzer;
     property HMotor:String read FHMotor write SetHMotor;
+    property HPersoon:String read FHPersoon write FHPersoon;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
     property HLock:String read FHLock write SetHlock;
@@ -2257,6 +2266,87 @@ end;
     function Fault: Boolean;       // L en R tegelijk aan
     property Inputs[I: Integer]: Boolean read GetInput;
     property Angle: Integer read FAngle;
+  published
+    property Lock: Boolean read FLock write FLock;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write SetTaal;
+    property Naam: string read FNaam write FNaam;
+    property OnEnter: TNotifyEvent read FOnEnter write FOnEnter;
+    property OnExit: TNotifyEvent read FOnExit write FOnExit;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
+    property ShowHint;
+    property HelpKeyword;
+  end;
+
+  { TjanSimPersoon: een persoon die over een vloer heen en weer loopt.
+    Ingangen L (naar links) en R (naar rechts); staan ze allebei aan, dan
+    blijft hij staan en toont hij een rood uitroepteken. Aan beide uiteinden
+    staat een eindschakelaar: uitgang S1 is aan als hij links staat, S2 als
+    hij rechts staat (bv. naar een ingang van LogicRun). Geen voeding nodig. }
+  TjanSimPersoon = class(TGraphicControl)
+  private
+    FIn: array[0..1] of Boolean;   // 0 = L (naar links), 1 = R (naar rechts)
+    FPos: Integer;                 // afstand vanaf de linker eindschakelaar (px)
+    FFrame: Integer;               // stand van de benen tijdens het lopen
+    FKijk: Integer;                // -1 kijkt naar links, 1 naar rechts
+    FTimer: TTimer;
+    FLock: Boolean;
+    FSelected: Boolean;
+    FSelect: Boolean;
+    FMouseOver: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FNaam: string;
+    FOnEnter: TNotifyEvent;
+    FOnExit: TNotifyEvent;
+    FOnStatus: TSimStatusEvent;
+    Connectors: TList;
+    doMove: Boolean;
+    mdp: TPoint;
+    newLeft, newTop: Integer;
+    function GetInput(I: Integer): Boolean;
+    function GetOutput(I: Integer): Boolean;
+    function Range: Integer;
+    procedure SetTaal(const Value: string);
+    procedure TimerTick(Sender: TObject);
+    procedure UpdateTimer;
+    procedure AnchorConnectors;
+    procedure MoveConnectors;
+    procedure SendStatusToBar;
+    function StatusText: string;
+    procedure LockClick(Sender: TObject);
+    procedure SelectClick(Sender: TObject);
+    procedure StartClick(Sender: TObject);
+    procedure BuildPopup;
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+  protected
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure Paint; override;
+    procedure UpdateHintText;
+    // ingang 0 (L) of 1 (R) aan/uit, door de draden (Connect)
+    procedure SetInput(I: Integer; Value: Boolean);
+    // index van de ingang/uitgang bij punt P (paneel), anders -1
+    function InputPinAt(const P: TPoint): Integer;
+    function OutputPinAt(const P: TPoint): Integer;
+    // Y van het aansluitvierkantje (7x7) van ingang/uitgang I binnen het blok
+    class function PinY(I: Integer): Integer;
+    // -1 naar links, 1 naar rechts, 0 stil (ook als L en R samen aan zijn)
+    function Direction: Integer;
+    function Fault: Boolean;       // L en R tegelijk aan
+    // terug naar de linker eindschakelaar
+    procedure ToStart;
+    // een stap verder (zoals de timer); voor testen
+    procedure Tick;
+    property Inputs[I: Integer]: Boolean read GetInput;
+    property Outputs[I: Integer]: Boolean read GetOutput;   // 0 = S1, 1 = S2
+    property Position: Integer read FPos;
   published
     property Lock: Boolean read FLock write FLock;
     property Selected: Boolean read FSelected write FSelected;
@@ -3964,6 +4054,10 @@ begin
   begin
     TjanSimMotor(DisCon).SetInput(DisConI-1, false);
   end
+  else if (DisCon is TjanSimPersoon) then
+  begin
+    TjanSimPersoon(DisCon).SetInput(DisConI-1, false);
+  end
   else if (Discon is TjanSimLight) then
   begin
     TjanSimLight(Discon).lit:=false;
@@ -5478,6 +5572,12 @@ begin
     Add(1, TjanSimMotor.InputPinY(0));
     Add(1, TjanSimMotor.InputPinY(1));
   end
+  else if C is TjanSimPersoon then
+  begin
+    // L en R zitten rechts; S1 en S2 (links) zijn uitgangen
+    Add(C.Width - 8, TjanSimPersoon.PinY(0));
+    Add(C.Width - 8, TjanSimPersoon.PinY(1));
+  end
   else if C is TjanLogic then
   begin
     for i := 0 to 2 do
@@ -5961,6 +6061,17 @@ var Pi,Po:TPoint;
         end;
         continue;
       end;
+      // persoon: een draad die op eindschakelaar S1 of S2 begint
+      if (wc.controls[ii] is TjanSimPersoon) then
+      begin
+        Q:=TjanSimPersoon(wc.controls[ii]).OutputPinAt(Pi);
+        if Q>=0 then
+        begin
+          vi:=TjanSimPersoon(wc.controls[ii]).Outputs[Q];
+          exit;
+        end;
+        continue;
+      end;
       // schakelrelais: een draad die bij R2 begint, krijgt het contact als bron
       if (wc.controls[ii] is TjanSchakelRelais) then
       begin
@@ -6212,6 +6323,17 @@ var Pi,Po:TPoint;
         if Q>=0 then
         begin
           TjanSimMotor(wc.controls[ii]).SetInput(Q, vi and RailOK(TjanSimMotor(wc.controls[ii])));
+          exit;
+        end;
+        continue;
+      end;
+      // persoon: L of R (geen voeding nodig, zoals LogicRun)
+      if (wc.controls[ii] is TjanSimPersoon) then
+      begin
+        Q:=TjanSimPersoon(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          TjanSimPersoon(wc.controls[ii]).SetInput(Q, vi);
           exit;
         end;
         continue;
@@ -6519,6 +6641,17 @@ var Pi,Po:TPoint;
         if Q>=0 then
         begin
           DisCon:=TjanSimMotor(wc.controls[ii]);
+          DisConI:=Q+1;
+          exit;
+        end;
+        continue;
+      end;
+      if (wc.controls[ii] is TjanSimPersoon) then
+      begin
+        Q:=TjanSimPersoon(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          DisCon:=TjanSimPersoon(wc.controls[ii]);
           DisConI:=Q+1;
           exit;
         end;
@@ -17657,14 +17790,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=5;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FDisplay:=true;
   FVoeding:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -18097,6 +18230,8 @@ begin
       end
       else if c is TjanSimMotor then
         SFile.Add(Format('TjanSimMotor;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+      else if c is TjanSimPersoon then
+        SFile.Add(Format('TjanSimPersoon;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
       else if c is TjanLogicRun then
         SFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
           TjanLogicRun(c).ProgramText + ';')
@@ -18141,7 +18276,8 @@ begin
               (c is TjanSimKnop) or (c is TjanDipSwitsh) or (c is TjanSimPuls) or
               (c is TjanSimSensor) or (c is TjanSimWarm) or (c is TjanSimLight) or
               (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay) or
-              (c is TjanRail) or (c is TjanLogicRun) or (c is TjanSimMotor)) then
+              (c is TjanRail) or (c is TjanLogicRun) or (c is TjanSimMotor) or
+              (c is TjanSimPersoon)) then
         Continue;
       s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
       if c is TjanRail then
@@ -18322,6 +18458,8 @@ begin
     end
     else if c is TjanSimMotor then
       TempFile.Add(Format('TjanSimMotor;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+    else if c is TjanSimPersoon then
+      TempFile.Add(Format('TjanSimPersoon;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
     else if c is TjanLogicRun then
       TempFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
         TjanLogicRun(c).ProgramText + ';')
@@ -19027,6 +19165,20 @@ begin
         Continue;
       end;
 
+      // ---- TjanSimPersoon (begint altijd links, bij S1) ----
+      if obj[1] = 'TjanSimPersoon' then
+      begin
+        with TjanSimPersoon.Create(self) do
+        begin
+          Parent := wc; Tag := wc.ControlCount;
+          Left := StrToInt(Trim(obj[3]));
+          Top  := StrToInt(Trim(obj[4]));
+          FObjectID := wc.ControlCount; Lock := True;
+          BTaal := StatTaalToBTaal(Language);
+        end;
+        Continue;
+      end;
+
       // ---- TjanLogicRun;height;left;top;width;programma ----
       if obj[1] = 'TjanLogicRun' then
       begin
@@ -19118,6 +19270,23 @@ begin
   LR.Left := -200;
   LR.Tag := FParent.ControlCount;
   FObjectID := LR.Tag;
+  FNew := True;
+  Screen.Cursor := crCross;
+end;
+
+procedure TjanSimLogicBox.NewPersoon;
+var
+  P: TjanSimPersoon;
+begin
+  if FParent = nil then Exit;
+  P := TjanSimPersoon.Create(Self);
+  P.Parent := FParent;
+  P.BTaal := StatTaalToBTaal(Language);
+  // zoals een nieuw component uit de balk: volgt de muis tot de klik
+  P.Visible := False;
+  P.Left := -300;
+  P.Tag := FParent.ControlCount;
+  FObjectID := P.Tag;
   FNew := True;
   Screen.Cursor := crCross;
 end;
@@ -19598,7 +19767,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -19622,6 +19791,7 @@ begin
   else if ptinrect(RMemory,p) and (KMemory=true)then DMemory:=true
   else if ptinrect(RDipSwitsh,p) and (KDipSwitsh=true)then DDipSwitsh:=true
   else if ptinrect(RMeter,p) and (KMeter=true)then DMeter:=true
+  else if ptinrect(RPersoon,p) and (KPersoon=true) then DPersoon:=true
   else if PtInRect(RRailPlus, P) then DRailPlus := True
   else if PtInRect(RRailMin, P) then DRailMin := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
@@ -19659,6 +19829,7 @@ begin
   else if PtInRect(RMemory, P) then NewHint := FHMemory
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
   else if PtInRect(RMeter, P) then NewHint := FHMeter
+  else if PtInRect(RPersoon, P) then NewHint := FHPersoon
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -19814,6 +19985,9 @@ begin
       if (wc.controls[i] is TjanSimMotor) then
         TjanSimMotor(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanSimPersoon) then
+        TjanSimPersoon(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanMeter) then
         TjanMeter(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
@@ -19914,6 +20088,9 @@ begin
         wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanSimMotor) then
+        wc.Controls[i].Free;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanSimPersoon) then
         wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanRail) then
@@ -20077,7 +20254,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -20290,6 +20467,8 @@ begin
     AddF('TjanSimBuzzer.Left');  AddF('TjanSimBuzzer.Top');
     AddF('TjanSimBuzzer.Width'); AddF('TjanSimBuzzer.Height');
   end
+  else if DPersoon then
+    NewPersoon
   else if DMotor then
   with TjanSimMotor.Create(self) do
   begin
@@ -20688,7 +20867,8 @@ procedure TjanSimLogicBox.SelectObject(AObj: TObject);
     else if Obj is TjanRail then TjanRail(Obj).Selected := AValue
     else if Obj is TjanMeter then TjanMeter(Obj).Selected := AValue
     else if Obj is TjanLogicRun then TjanLogicRun(Obj).Selected := AValue
-    else if Obj is TjanSimMotor then TjanSimMotor(Obj).Selected := AValue;
+    else if Obj is TjanSimMotor then TjanSimMotor(Obj).Selected := AValue
+    else if Obj is TjanSimPersoon then TjanSimPersoon(Obj).Selected := AValue;
     // aanpassen voor volgend object
   end;
 
@@ -20764,6 +20944,8 @@ begin
       TjanLogicRun(c).BTaal := s
     else if c is TjanSimMotor then
       TjanSimMotor(c).BTaal := s
+    else if c is TjanSimPersoon then
+      TjanSimPersoon(c).BTaal := s
     else if c is TjanRail then
       TjanRail(c).BTaal := s
     else if c is TjanDipSwitsh then
@@ -20814,6 +20996,7 @@ if FBoxTaal=stDutch then
   HTeller:='maak Tellerblok';
   HWarm:='maak WarmteSensor';
   HMeter:='maak Voltmeter';
+  HPersoon:='maak Persoon (met eindschakelaars)';
   HRailPlus:='maak + rail (voeding)';
   HRailMin:='maak - rail (massa)';
  end;
@@ -20840,6 +21023,7 @@ if FBoxTaal=stEnglish then
   HTeller:='create Counter block';
   HWarm:='create HeatSensor';
   HMeter:='create Voltmeter';
+  HPersoon:='create Person (with limit switches)';
   HRailPlus:='create + rail (supply)';
   HRailMin:='create - rail (ground)';
   end ;
@@ -20865,6 +21049,7 @@ if FBoxTaal=stFrench then
   HTeller:='faire Bloc compteur';
   HWarm:='faire Capteur de chaleur';
   HMeter:='faire Voltmètre';
+  HPersoon:='faire Personne (avec fins de course)';
   HRailPlus:='faire Rail + (alimentation)';
   HRailMin:='faire Rail - (masse)';
  end;
@@ -20891,6 +21076,7 @@ if FBoxTaal=stFrench then
   HTeller:='Gegenblock erstellen';
   HWarm:='HeatSensor erstellen';
   HMeter:='Voltmeter erstellen';
+  HPersoon:='Person erstellen (mit Endschaltern)';
   HRailPlus:='+ Schiene (Versorgung) erstellen';
   HRailMin:='- Schiene (Masse) erstellen';
   end;
@@ -20981,6 +21167,36 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 6 then
+  begin
+    // persoon: geen plaatje, altijd getekend (poppetje dat stapt)
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    if FSymbolen <> Afbeelding then
+    begin
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := SymKnopKleur;
+      Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+    end;
+    Canvas.Pen.Width := 2;
+    Canvas.Pen.Color := $00404040;
+    Canvas.Line(X + 11, Y + 13, X + 7, Y + 20);     // benen
+    Canvas.Line(X + 11, Y + 13, X + 15, Y + 20);
+    Canvas.Pen.Color := $0099CCFF;
+    Canvas.Line(X + 11, Y + 8, X + 7, Y + 13);      // armen
+    Canvas.Line(X + 11, Y + 8, X + 15, Y + 13);
+    Canvas.Pen.Width := 1;
+    Canvas.Pen.Color := clNavy;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Brush.Color := $00D07020;
+    Canvas.Rectangle(X + 8, Y + 7, X + 15, Y + 14);  // shirt
+    Canvas.Brush.Color := $0099CCFF;
+    Canvas.Ellipse(X + 8, Y, X + 15, Y + 7);         // hoofd
+    // vloer
+    Canvas.Pen.Color := clGray;
+    Canvas.Line(X + 2, Y + 21, X + 21, Y + 21);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 5 then
   begin
     // motor: geen plaatje, altijd getekend
@@ -21119,6 +21335,13 @@ begin
   Canvas.Line(R.Right - 1, M, X + Bm.Width - 1, M);
   Canvas.Pen.Color := OldPen;
   DrawGateSymbol(Canvas, R, AFunc, FSymbolen, rgb(250,250,150), Y1, Y2);
+end;
+
+procedure TjanSimLogicBox.SetPersoon(const Value: Boolean);
+begin
+  if Value <> FPersoon then
+    FPersoon := Value;
+  Invalidate;
 end;
 
 procedure TjanSimLogicBox.SetMeter(const Value: Boolean);
@@ -21708,6 +21931,20 @@ begin
         HK:= H+TOP;
       end;
 
+      If FPersoon=true then
+      Begin
+        RPersoon:= rect(LK,TOP,BK,HK);
+        Rb:=RPersoon;
+        if not DPersoon then
+          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
+        else
+          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
+        fillrect(Rb);
+        DrawOutputIcon(6, nil, Lk+1, top+2);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
       // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
       RRailMin := Rect(0, 0, 0, 0);
@@ -22161,6 +22398,17 @@ begin
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
         DrawOutputIcon(3, bmMeter, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
+      if FPersoon = True then
+      begin
+        RPersoon := Rect(LK, TOP, BK, HK);
+        Rb := RPersoon;
+        if not DPersoon then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(6, nil, LK+1, TOP+2);
       end;
     end;
   end;
@@ -22561,6 +22809,17 @@ begin
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
         DrawOutputIcon(3, bmMeter, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
+      if FPersoon = True then
+      begin
+        RPersoon := Rect(LK, TOP, BK, HK);
+        Rb := RPersoon;
+        if not DPersoon then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(6, nil, LK+1, TOP+2);
       end;
     end;
   end;
@@ -22638,6 +22897,8 @@ begin
     TjanLogicRun(AComponent).BTaal := Taal
   else if AComponent is TjanSimMotor then
     TjanSimMotor(AComponent).BTaal := Taal
+  else if AComponent is TjanSimPersoon then
+    TjanSimPersoon(AComponent).BTaal := Taal
   else if AComponent is TjanRail then
     TjanRail(AComponent).BTaal := Taal
   else if AComponent is TjanMeter then
@@ -22861,6 +23122,19 @@ procedure TjanSimLogicBox.Notification(AComponent: TComponent; Operation: TOpera
       Exit;
     end;
 
+    // Persoon
+    if AObj is TjanSimPersoon then
+    begin
+      with TjanSimPersoon(AObj) do
+      begin
+        Box := Self;
+        if not Assigned(OnEnter)  then OnEnter  := ChildMouseEnter;
+        if not Assigned(OnExit)   then OnExit   := ChildMouseExit;
+        if not Assigned(OnStatus) then OnStatus := StatusFromChild;
+      end;
+      Exit;
+    end;
+
     // LogicRun
     if AObj is TjanLogicRun then
     begin
@@ -22995,7 +23269,7 @@ begin
      (C is TjanSimWarm) or (C is TjanSimPuls) or (C is TjanDipSwitsh) or
      (C is TjanSimLight) or (C is TjanSimRelais) or (C is TjanSimBuzzer) or
      (C is TjanDisplay) or (C is TjanMeter) or (C is TjanRail) or (C is TjanLogicRun) or
-     (C is TjanSimMotor));
+     (C is TjanSimMotor) or (C is TjanSimPersoon));
   // vergrendelde objecten blijven staan
   if Result and IsPublishedProp(C, 'Lock') then
     Result := GetOrdProp(C, 'Lock') = 0;
@@ -24460,6 +24734,473 @@ begin
 end;
 
 procedure TjanSimMotor.MoveConnectors;
+var
+  i: Integer;
+begin
+  for i := 0 to Connectors.Count - 1 do
+    TjanConnector(Connectors[i]).MoveConnector(Point(NewLeft, NewTop));
+end;
+
+
+// ============================================================
+// TjanSimPersoon: persoon die heen en weer loopt, met eindschakelaars
+// ============================================================
+
+const
+  PE_W = 260;           // breedte van het blok
+  PE_H = 90;            // hoogte van het blok
+  PE_TL = 40;           // linker eindschakelaar (x)
+  PE_TR = PE_W - 44;    // rechter eindschakelaar (x)
+  PE_VLOER = 82;        // hoogte van de vloer (y)
+  PE_BREED = 20;        // breedte van de persoon
+  PE_STAP = 3;          // pixels per tik van de timer
+
+constructor TjanSimPersoon.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := PE_W;
+  Height := PE_H;
+  Connectors := TList.Create;
+  FTimer := TTimer.Create(Self);
+  FTimer.Enabled := False;
+  FTimer.Interval := 60;
+  FTimer.OnTimer := TimerTick;
+  FKijk := 1;
+  FTaal := 'NL';
+  FNaam := 'Persoon';
+  HelpKeyword := 'persoon';
+  ShowHint := True;
+end;
+
+destructor TjanSimPersoon.Destroy;
+begin
+  FTimer.Enabled := False;
+  Connectors.Free;
+  inherited;
+end;
+
+// De aansluitingen zitten bovenaan: rechts L en R (ingangen), links S1 en S2
+// (uitgangen). Onder LogicRun gezet komen de draden van UIT0/UIT1 dan van
+// boven naar rechts en lopen die van S1/S2 links naar DIN, zonder te kruisen.
+class function TjanSimPersoon.PinY(I: Integer): Integer;
+begin
+  if I = 0 then Result := 6 else Result := 22;
+end;
+
+function TjanSimPersoon.InputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left + Width - 18) or (P.X > Left + Width + 8) then Exit;
+  for i := 0 to 1 do
+    if Abs(P.Y - (Top + PinY(i) + 3)) <= 6 then
+      Exit(i);
+end;
+
+function TjanSimPersoon.OutputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
+  for i := 0 to 1 do
+    if Abs(P.Y - (Top + PinY(i) + 3)) <= 6 then
+      Exit(i);
+end;
+
+function TjanSimPersoon.Range: Integer;
+begin
+  Result := PE_TR - PE_TL - PE_BREED;
+end;
+
+function TjanSimPersoon.GetInput(I: Integer): Boolean;
+begin
+  Result := FIn[I];
+end;
+
+function TjanSimPersoon.GetOutput(I: Integer): Boolean;
+begin
+  if I = 0 then Result := FPos <= 0 else Result := FPos >= Range;
+end;
+
+function TjanSimPersoon.Fault: Boolean;
+begin
+  Result := FIn[0] and FIn[1];
+end;
+
+function TjanSimPersoon.Direction: Integer;
+begin
+  if FIn[0] and not FIn[1] then Result := -1
+  else if FIn[1] and not FIn[0] then Result := 1
+  else Result := 0;
+end;
+
+procedure TjanSimPersoon.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I > 1) or (FIn[I] = Value) then Exit;
+  FIn[I] := Value;
+  if Direction <> 0 then FKijk := Direction;
+  UpdateTimer;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimPersoon.UpdateTimer;
+begin
+  FTimer.Enabled := Direction <> 0;
+  if not FTimer.Enabled then FFrame := 0;
+end;
+
+procedure TjanSimPersoon.Tick;
+var
+  NewPos: Integer;
+begin
+  if Direction = 0 then Exit;
+  NewPos := FPos + Direction * PE_STAP;
+  if NewPos < 0 then NewPos := 0;
+  if NewPos > Range then NewPos := Range;
+  // tegen de eindschakelaar: blijven staan (de benen ook)
+  if NewPos = FPos then
+    FFrame := 0
+  else
+    FFrame := (FFrame + 1) mod 4;
+  FPos := NewPos;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimPersoon.TimerTick(Sender: TObject);
+begin
+  Tick;
+end;
+
+procedure TjanSimPersoon.ToStart;
+begin
+  FPos := 0;
+  FFrame := 0;
+  FKijk := 1;
+  Invalidate;
+end;
+
+procedure TjanSimPersoon.SetTaal(const Value: string);
+begin
+  FTaal := Value;
+  UpdateHintText;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimPersoon.Paint;
+const
+  Benen: array[0..3] of Integer = (7, 4, 1, 4);   // halve spreiding per stand
+  Huid = $0099CCFF;
+var
+  i, y, cx, s, a: Integer;
+  BW, BH: Integer;
+  Aan: Boolean;
+  Lbl: string;
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+
+    // vloer met arcering
+    Pen.Width := 1;
+    Pen.Color := clGray;
+    Line(PE_TL, PE_VLOER, PE_TR + 1, PE_VLOER);
+    i := PE_TL + 4;
+    while i <= PE_TR do
+    begin
+      Line(i, PE_VLOER + 1, i - 4, PE_VLOER + 5);
+      Inc(i, 8);
+    end;
+
+    // eindschakelaars: paaltje met een lampje, rood als hij ingedrukt is
+    for i := 0 to 1 do
+    begin
+      Aan := Outputs[i];
+      if i = 0 then a := PE_TL - 6 else a := PE_TR + 1;
+      Brush.Style := bsSolid;
+      Brush.Color := clSilver;
+      Pen.Color := clGray;
+      Rectangle(a, PE_VLOER - 22, a + 6, PE_VLOER + 1);
+      if Aan then Brush.Color := clRed else Brush.Color := clWhite;
+      Ellipse(a - 1, PE_VLOER - 31, a + 7, PE_VLOER - 23);
+      Brush.Style := bsClear;
+      if Aan then Font.Color := clRed else Font.Color := clNavy;
+      Lbl := 'S' + IntToStr(i + 1);
+      TextOut(a + 3 - TextWidth(Lbl) div 2, PE_VLOER - 43, Lbl);
+    end;
+
+    // aansluitingen: links S1 en S2 (uitgangen), rechts L en R (ingangen)
+    for i := 0 to 1 do
+    begin
+      y := PinY(i);
+      Brush.Style := bsSolid;
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(1, y, 8, y + 7);
+      Rectangle(BW - 8, y, BW - 1, y + 7);
+      Brush.Style := bsClear;
+      if Outputs[i] then Font.Color := clRed else Font.Color := clNavy;
+      TextOut(18, y - 2, 'S' + IntToStr(i + 1));
+      if FIn[i] then Font.Color := clRed else Font.Color := clNavy;
+      if i = 0 then Lbl := 'L' else Lbl := 'R';
+      TextOut(BW - 18 - TextWidth(Lbl), y - 2, Lbl);
+    end;
+
+    // de persoon
+    cx := PE_TL + PE_BREED div 2 + FPos;
+    if Direction <> 0 then s := Benen[FFrame] else s := 2;
+    // benen (broek) met schoenen
+    Pen.Width := 3;
+    Pen.Color := $00404040;
+    Line(cx, PE_VLOER - 17, cx + s, PE_VLOER - 3);
+    Line(cx, PE_VLOER - 17, cx - s, PE_VLOER - 3);
+    Pen.Color := clBlack;
+    Line(cx + s, PE_VLOER - 2, cx + s + 3 * FKijk, PE_VLOER - 2);
+    Line(cx - s, PE_VLOER - 2, cx - s + 3 * FKijk, PE_VLOER - 2);
+    // armen zwaaien tegengesteld aan de benen
+    Pen.Width := 2;
+    Pen.Color := Huid;
+    Line(cx, PE_VLOER - 30, cx - s, PE_VLOER - 19);
+    Line(cx, PE_VLOER - 30, cx + s, PE_VLOER - 19);
+    // romp: blauw shirt
+    Pen.Width := 1;
+    Pen.Color := clNavy;
+    Brush.Style := bsSolid;
+    Brush.Color := $00D07020;
+    RoundRect(cx - 5, PE_VLOER - 33, cx + 6, PE_VLOER - 15, 4, 4);
+    // hoofd met haar en een oog in de kijkrichting
+    Pen.Color := $00305080;
+    Brush.Color := Huid;
+    Ellipse(cx - 6, PE_VLOER - 46, cx + 7, PE_VLOER - 33);
+    Brush.Color := $00305080;
+    Pie(cx - 6, PE_VLOER - 46, cx + 7, PE_VLOER - 33,
+        cx + 7, PE_VLOER - 41, cx - 6, PE_VLOER - 41);
+    Pen.Color := clBlack;
+    Brush.Color := clBlack;
+    Rectangle(cx + 3 * FKijk, PE_VLOER - 40, cx + 3 * FKijk + 2, PE_VLOER - 38);
+
+    if Fault then
+    begin
+      Brush.Style := bsClear;
+      Font.Size := 12;
+      Font.Color := clRed;
+      TextOut(BW div 2 - 2, 0, '!');
+    end;
+    if FSelect or FSelected then
+    begin
+      Brush.Style := bsClear;
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+    Pen.Width := 1;
+  end;
+end;
+
+function TjanSimPersoon.StatusText: string;
+begin
+  if Fault then
+    Result := Tr(FTaal, 'L en R samen aan: blijft staan', 'L and R on together: stands still',
+                        'L et R ensemble : reste immobile', 'L und R zusammen ein: bleibt stehen')
+  else if Outputs[0] and (Direction <= 0) then
+    Result := Tr(FTaal, 'staat links (S1 aan)', 'at the left (S1 on)',
+                        'à gauche (S1 actif)', 'steht links (S1 ein)')
+  else if Outputs[1] and (Direction >= 0) then
+    Result := Tr(FTaal, 'staat rechts (S2 aan)', 'at the right (S2 on)',
+                        'à droite (S2 actif)', 'steht rechts (S2 ein)')
+  else if Direction < 0 then
+    Result := Tr(FTaal, 'loopt naar links', 'walking left', 'marche vers la gauche', 'geht nach links')
+  else if Direction > 0 then
+    Result := Tr(FTaal, 'loopt naar rechts', 'walking right', 'marche vers la droite', 'geht nach rechts')
+  else
+    Result := Tr(FTaal, 'staat stil', 'standing still', 'immobile', 'steht still');
+end;
+
+procedure TjanSimPersoon.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'L: naar links, R: naar rechts' + #13#10 + 'S1/S2: eindschakelaar links/rechts',
+              'L: walk left, R: walk right' + #13#10 + 'S1/S2: limit switch left/right',
+              'L : à gauche, R : à droite' + #13#10 + 'S1/S2 : fin de course gauche/droite',
+              'L: nach links, R: nach rechts' + #13#10 + 'S1/S2: Endschalter links/rechts');
+end;
+
+procedure TjanSimPersoon.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, FNaam + ' > ', 0);
+  FOnStatus(Self, StatusText, 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+procedure TjanSimPersoon.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  if Assigned(FOnEnter) then
+    FOnEnter(Self);
+  FMouseOver := True;
+  SendStatusToBar;
+  if not FLock then
+  begin
+    FSelect := True;
+    Invalidate;
+  end;
+end;
+
+procedure TjanSimPersoon.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if Assigned(FOnExit) then
+    FOnExit(Self);
+  if not FMouseOver then Exit;
+  FMouseOver := False;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+  FSelect := False;
+  Invalidate;
+end;
+
+procedure TjanSimPersoon.BuildPopup;
+var
+  Mi: TMenuItem;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Terug naar links (S1)', 'Back to the left (S1)',
+                          'Retour à gauche (S1)', 'Zurück nach links (S1)');
+  Mi.OnClick := StartClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+procedure TjanSimPersoon.LockClick(Sender: TObject);
+begin
+  FLock := not FLock;
+  Invalidate;
+end;
+
+procedure TjanSimPersoon.SelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanSimPersoon.StartClick(Sender: TObject);
+begin
+  ToStart;
+end;
+
+procedure TjanSimPersoon.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  P: TPoint;
+begin
+  inherited;
+  if (Button = mbRight) and not FLock then
+  begin
+    BuildPopup;
+    P := ClientToScreen(Point(0, Height));
+    PopupMenu.Popup(P.X, P.Y - 1);
+    Exit;
+  end;
+  doMove := False;
+  mdp := Point(X, Y);
+  Screen.Cursor := crDefault;
+  if Button <> mbLeft then Exit;
+  doMove := True;
+  AnchorConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).BeginGuideLines(Left + Width div 2, Top + Height div 2);
+end;
+
+procedure TjanSimPersoon.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, SnapP: TPoint;
+  Grid: TjanGridS;
+  WorkR: TRect;
+begin
+  inherited;
+  if FLock or (Parent = nil) then Exit;
+  if not ((ssLeft in Shift) and doMove) then Exit;
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  NewLeft := P.X - mdp.X;
+  NewTop := P.Y - mdp.Y;
+  if Parent is TjanGridS then
+  begin
+    Grid := TjanGridS(Parent);
+    WorkR := Grid.GetWorkAreaRect;
+    SnapP := Grid.SnapPointToRuler(Point(NewLeft + Width div 2, NewTop + Height div 2), WorkR);
+    NewLeft := SnapP.X - Width div 2;
+    NewTop := SnapP.Y - Height div 2;
+  end;
+  StraightenWires(Connectors, NewLeft, NewTop);
+  Left := NewLeft;
+  Top := NewTop;
+  MoveConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).UpdateGuideLines(Left + Width div 2, Top + Height div 2);
+  FMouseOver := True;
+  SendStatusToBar;
+end;
+
+procedure TjanSimPersoon.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).EndGuideLines;
+  doMove := False;
+end;
+
+procedure TjanSimPersoon.AnchorConnectors;
+var
+  i: Integer;
+  Con: TjanConnector;
+  R: TRect;
+begin
+  Connectors.Clear;
+  if Parent = nil then Exit;
+  R := BoundsRect;
+  InflateRect(R, 8, 8);
+  for i := 0 to Parent.ControlCount - 1 do
+    if Parent.Controls[i] is TjanConnector then
+    begin
+      Con := TjanConnector(Parent.Controls[i]);
+      if Con.AnchorToRect(R, Point(Left, Top)) then
+        Connectors.Add(Con);
+    end;
+end;
+
+procedure TjanSimPersoon.MoveConnectors;
 var
   i: Integer;
 begin

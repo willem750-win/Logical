@@ -164,6 +164,7 @@ type
      btLogicRun: TSpeedButton;          // LogicRun-venster openen
      FLogicRunForm: TLogicRunForm;
      procedure btLogicRunClick(Sender: TObject);
+     procedure GridKLogicRunChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
      function LogicRunTaal: string;
      procedure CreateUndoButtons;
@@ -870,7 +871,7 @@ Begin
     SettingsFrame.PropB2.DefaultPropHolder:=SettingsFrame.iniGrid;
     SettingsFrame.PropB2.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB2.AddRelevantProperties('Color,ColorInput,ColorOutput,ColorProcessing,GridX,GridY,'+
-                                  'DotColor,Titel,SavePicFormat,ShowGrid,Capture');
+                                  'DotColor,Titel,SavePicFormat,ShowGrid,Capture,KLogicRun');
     SettingsFrame.PropB2.ConnectObject := mainForm.Grid;
     SettingsFrame.PropB2.Cols[0];
     //__________________________________
@@ -1497,6 +1498,10 @@ begin
   btLogicRun.OnClick := @btLogicRunClick;
   btLogicRun.OnMouseEnter := @btSimulateMouseEnter;
   btLogicRun.HelpKeyword := 'logicrun';
+  // Instellingen > Algemeen: knop LogicRun en balkknop Persoon aan/uit
+  btLogicRun.Visible := Grid.KLogicRun;
+  Box.KPersoon := Grid.KLogicRun;
+  Grid.OnKLogicRunChange := @GridKLogicRunChange;
   UpdateUndoHints;
   UpdateUndoButtons;
 end;
@@ -1571,6 +1576,17 @@ end;
 procedure TmainForm.btLogicRunClick(Sender: TObject);
 begin
   LogicRunEdit(nil);
+end;
+
+// Instelling KLogicRun gewijzigd: knoppen tonen of verbergen. Een LogicRun-blok
+// of persoon in een geopend paneel (zoals in les 12-16) blijft gewoon werken.
+procedure TmainForm.GridKLogicRunChange(Sender: TObject);
+begin
+  if not Assigned(btLogicRun) then Exit;
+  btLogicRun.Visible := Grid.KLogicRun;
+  Box.KPersoon := Grid.KLogicRun;
+  if (not Grid.KLogicRun) and Assigned(FLogicRunForm) then
+    FLogicRunForm.Hide;
 end;
 
 procedure TmainForm.UpdateUndoButtons;
@@ -1920,7 +1936,8 @@ begin
          (C is TjanDipSwitsh) or (C is TjanLogic) or (C is TjanTeller) or
          (C is TjanMemory) or (C is TjanSimLight) or (C is TjanSimRelais) or
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
-         (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor))  then
+         (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor) or
+         (C is TjanSimPersoon))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 

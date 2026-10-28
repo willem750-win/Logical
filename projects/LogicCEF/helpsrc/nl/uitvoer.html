@@ -65,6 +65,23 @@ $1  <p id="led"><b>Led:</b> klik met de rechtermuisknop op een lamp en kies <b>K
   <p>Met <a href="logicrun.html">LogicRun</a> kan je de motor laten draaien volgens een programma, bijvoorbeeld met het
   voorbeeld <b>Motor links/rechts</b>: UIT0 naar L, UIT1 naar R.</p>
 
+  <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Persoon</h2>
+  <p>Een persoon die over een vloer naar links en naar rechts loopt. Je plaatst hem met de knop
+  <a href="onderdelenbalk.html">Persoon</a> in de onderdelenbalk, onder de voltmeter. Rechts zitten de ingangen: <b>L</b> laat hem naar links
+  lopen, <b>R</b> naar rechts. Aan beide uiteinden van de vloer staat een eindschakelaar met een lampje; links zitten
+  hun uitgangen: <b>S1</b> is aan als hij helemaal links staat, <b>S2</b> als hij helemaal rechts staat.</p>
+  <figure>
+    <img src="../img/persoon-voorbeeld.png" alt="Een persoon die naar rechts loopt tussen twee eindschakelaars">
+    <figcaption>De persoon loopt naar rechts: R is aan. Bij S2 blijft hij staan en gaat S2 aan.</figcaption>
+  </figure>
+  <ul>
+    <li>Allebei uit: hij staat stil. L en R <b>allebei aan</b>: hij blijft staan en er verschijnt een rode <b>!</b>.</li>
+    <li>Verbind S1 en S2 met een ingang van <a href="logicrun.html">LogicRun</a> (bijvoorbeeld DIN3 en DIN4): een stap kan
+      dan wachten tot de persoon aangekomen is. Zie <a href="les16.html">les 16</a>.</li>
+    <li>De persoon heeft geen voeding nodig. Na het openen van een paneel staat hij altijd links. Met de rechtermuisknop en
+      <b>Terug naar links (S1)</b> zet je hem zelf terug.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segmentdisplay</h2>
   <p>Het display heeft één ingang. Wat het toont, hangt af van wat je erop aansluit:</p>
   <ul>

@@ -53,6 +53,8 @@ type
      FOnTitleClick: TTitleClickEvent;
     // basis
     FCapture: Boolean;
+    FKLogicRun: Boolean;
+    FOnKLogicRunChange: TNotifyEvent;
     FSaveFormat: TSaveFormat;
     FShowGrid: Boolean;
     FGridX, FGridY: NativeInt;
@@ -157,6 +159,7 @@ type
     function GetStatusBarRect: TRect;
     function BarHeight: Integer;
     procedure SetShowStatusBar(Value: Boolean);
+    procedure SetKLogicRun(Value: Boolean);
 
     // rulers helpers
     function GetTitleHeight: Integer;
@@ -191,10 +194,13 @@ type
     procedure EndGuideLines;
     // getekend na raster en kaders, onder de objecten (bv. stekkers van voedingsrails)
     property OnPaintOverlay: TNotifyEvent read FOnPaintOverlay write FOnPaintOverlay;
+    property OnKLogicRunChange: TNotifyEvent read FOnKLogicRunChange write FOnKLogicRunChange;
 
   published
     property Capture: Boolean read FCapture write FCapture;
     property ShowGrid: Boolean read FShowGrid write FShowGrid;
+    // knop LogicRun in de werkbalk tonen (uit voor beginners)
+    property KLogicRun: Boolean read FKLogicRun write SetKLogicRun default True;
     property GridX: NativeInt read FGridX write FGridX;
     property GridY: NativeInt read FGridY write FGridY;
     property DotColor: TColor read FGridColor write FGridColor;
@@ -774,6 +780,7 @@ begin
   FCapture := False;
   FSaveFormat := sfBMP;
   FShowGrid := True;
+  FKLogicRun := True;
   FGridX := 10;
   FGridY := 10;
   FGridColor := clGray;
@@ -1090,6 +1097,13 @@ begin
   if FShowStatusBar = Value then Exit;
   FShowStatusBar := Value;
   Invalidate;
+end;
+
+procedure TjanGridS.SetKLogicRun(Value: Boolean);
+begin
+  if FKLogicRun = Value then Exit;
+  FKLogicRun := Value;
+  if Assigned(FOnKLogicRunChange) then FOnKLogicRunChange(Self);
 end;
 
 procedure TjanGridS.DrawStatusBar;

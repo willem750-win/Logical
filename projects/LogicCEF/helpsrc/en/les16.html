@@ -1,0 +1,75 @@
+<!-- titel: Lesson 16 - A person walking back and forth -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 16 of 16</p>
+  <h1>A person walking back and forth</h1>
+  <div class="goal"><strong>Goal:</strong> understand why a machine has limit switches: LogicRun makes a person walk, and
+  the limit switches report when he has reached the end.</div>
+
+  <p><a class="open" href="../../panels/lessen/les16-persoon.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les16-persoon.png" alt="Switch, LogicRun block and a person walking to the right">
+    <figcaption>Step 1: UIT1 is on, the person walks to the right until he reaches S2.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): the program on or off.</li>
+    <li>The <a href="logicrun.html">LogicRun block</a> with 4 steps.</li>
+    <li>A <a href="uitvoer.html#persoon">person</a> on a floor. His inputs are on the right: <b>L</b> (walk left) and
+      <b>R</b> (walk right). On the left are the outputs of the two limit switches: <b>S1</b> is on when he is all the way
+      to the left, <b>S2</b> when he is all the way to the right.</li>
+    <li>The wires: <b>UIT0</b> to L, <b>UIT1</b> to R, <b>S1</b> to DIN3 and <b>S2</b> to DIN4.</li>
+  </ul>
+
+  <h2>The program</h2>
+  <table>
+    <tr><th>Step</th><th>Output</th><th>Wait for</th><th>What happens?</th></tr>
+    <tr><td>1</td><td>UIT1</td><td>DIN4 on</td><td>The person walks to the right until S2 goes on.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>He rests for 2 seconds (time 4 &times; 500 ms).</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN3 on</td><td>He walks to the left until S1 goes on.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>He rests for 2 seconds again; then it starts over.</td></tr>
+  </table>
+
+  <h2>Why limit switches?</h2>
+  <p>You could also say: &ldquo;walk to the right for 3 seconds&rdquo;. But if he walks a bit slower or does not start
+  all the way to the left, he stops too early or bumps into the wall. A limit switch <i>reports</i> when the end has been
+  reached. The program waits for it in the <b>wait for</b> column. A garage door, a lift or a sliding door works the same
+  way.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on: the person walks to the right.</li>
+    <li>Watch the lamp above S2: it turns red when he arrives. LogicRun goes to step 2 right away.</li>
+    <li>Open the LogicRun window (double-click the block). At steps 1 and 3 the <b>wait for</b> column shows
+      <b>DIN4 on</b> and <b>DIN3 on</b>.</li>
+    <li>Switch the switch off: everything stops and the person stays where he is. Right-click the person and choose
+      <b>Back to the left (S1)</b> to put him back at the start.</li>
+  </ol>
+
+  <h2>Exercise 1: a longer rest</h2>
+  <p>Let the person rest for 5 seconds on the right and for only 1 second on the left.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>The step duration is 500 ms. Set the <b>time</b> of step 2 to <b>10</b> (10 &times; 500 ms = 5 s) and that of
+    step 4 to <b>2</b>.</p>
+  </details>
+
+  <h2>Exercise 2: a warning lamp</h2>
+  <p>A lamp must be on while the person walks, and off while he rests.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Put a <a href="uitvoer.html#led">lamp or LED</a> to the right of the LogicRun block and connect it to <b>UIT2</b>.
+    In the LogicRun window, also click the <b>UIT2</b> column of steps 1 and 3, so that output is on while the person
+    walks.</p>
+  </details>
+
+  <h2>Exercise 3: what if the wires are swapped?</h2>
+  <p>Connect S1 to DIN4 and S2 to DIN3. What happens? Think first, then try it.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>At the start the person is on the left, so S1 is already on. Step 1 waits for DIN4, which is now S1: the step is
+    done at once and the person hardly moves. In step 3 he walks to the left and waits for S2, but that never goes on: he
+    keeps walking against the left wall. So a machine with wrongly connected limit switches does not work properly. That
+    is why you always test them first.</p>
+  </details>
+
+  <div class="pager"><a href="les15.html">&larr; Lesson 15: Counting in binary</a><a href="leerpad.html">Learning path &rarr;</a></div>

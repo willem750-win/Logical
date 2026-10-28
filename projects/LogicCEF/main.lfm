@@ -1,12 +1,12 @@
 object mainForm: TmainForm
   Left = 400
-  Height = 640
+  Height = 700
   Top = 177
-  Width = 852
+  Width = 900
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Logisch Schakelen'
-  ClientHeight = 640
-  ClientWidth = 852
+  ClientHeight = 700
+  ClientWidth = 900
   Position = poScreenCenter
   ShowHint = True
   OnActivate = FormActivate
@@ -18,18 +18,20 @@ object mainForm: TmainForm
     Left = 0
     Height = 25
     Top = 0
-    Width = 852
+    Width = 900
     Align = alTop
     BevelOuter = bvNone
-    Caption = ''
+    ClientHeight = 25
+    ClientWidth = 900
     Color = clGradientActiveCaption
     Font.Color = clHighlightText
     ParentBackground = False
     ParentColor = False
     ParentFont = False
     ParentShowHint = False
+    TabOrder = 0
     object btClose1: TSpeedButton
-      Left = 829
+      Left = 877
       Height = 25
       Top = 0
       Width = 23
@@ -73,7 +75,7 @@ object mainForm: TmainForm
       OnClick = btOpenPaneelClick
     end
     object btInfo2: TSpeedButton
-      Left = 779
+      Left = 827
       Height = 25
       Hint = 'Info'
       Top = 0
@@ -137,7 +139,7 @@ object mainForm: TmainForm
       OnMouseEnter = brInfo1MouseEnter
     end
     object btSimulate: TSpeedButton
-      Left = 804
+      Left = 852
       Height = 21
       Hint = 'Start simulatie'
       Top = 2
@@ -312,12 +314,12 @@ object mainForm: TmainForm
   end
   object Grid: TjanGridS
     Left = 0
-    Height = 593
+    Height = 653
     Top = 25
-    Width = 852
+    Width = 900
     Align = alClient
-    ClientHeight = 593
-    ClientWidth = 852
+    ClientHeight = 636
+    ClientWidth = 900
     Color = cl3DLight
     ParentBackground = False
     ParentColor = False
@@ -344,7 +346,7 @@ object mainForm: TmainForm
     OnTitleClick = GridTitleClick
     object Box: TjanSimLogicBox
       Left = 1
-      Height = 591
+      Height = 651
       Top = 1
       Width = 45
       Language = stDutch
@@ -359,6 +361,7 @@ object mainForm: TmainForm
       KLogicNot = True
       KDraad = True
       KRelais = True
+      KSchakelRelais = True
       KGrid = True
       KBuzzer = True
       KSensor = True
@@ -372,6 +375,8 @@ object mainForm: TmainForm
       HDrukknop = 'maak Drukknop'
       HSchakelaar = 'maak Schakelaar'
       HMeter = 'maak Voltmeter'
+      HRailPlus = 'maak + rail (voeding)'
+      HRailMin = 'maak - rail (massa)'
       HPuls = 'maak Impulsgenerator'
       HLamp = 'maak Lamp'
       HLogicAnd = 'maak EN-poort'
@@ -379,6 +384,7 @@ object mainForm: TmainForm
       HLogicNot = 'maak Niet-poort'
       HDraad = 'maak Verbinding'
       HRelais = 'maak Relais'
+      HSchakelRelais = 'maak Schakelrelais (relais met contact)'
       HBuzzer = 'maak Zoemer'
       HWarm = 'maak WarmteSensor'
       HSensor = 'maak Lichtsensor'
@@ -407,12 +413,12 @@ object mainForm: TmainForm
   object Panel1: TPanel
     Left = 0
     Height = 22
-    Top = 618
-    Width = 852
+    Top = 678
+    Width = 900
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 22
-    ClientWidth = 852
+    ClientWidth = 900
     TabOrder = 2
     object StatusBar1: TStatusBar
       Left = 0
@@ -455,7 +461,7 @@ object mainForm: TmainForm
     end
     object Taal: TComboBox
       Cursor = crHandPoint
-      Left = 787
+      Left = 835
       Height = 23
       Hint = 'Kies taal...'
       Top = 0

@@ -62,6 +62,23 @@ $1  <p id="led"><b>LED:</b> Klicken Sie mit der rechten Maustaste auf eine Lampe
   <p>Mit <a href="logicrun.html">LogicRun</a> können Sie den Motor nach einem Programm drehen lassen, zum Beispiel mit dem
   Beispiel <b>Motor links/rechts</b>: UIT0 an L, UIT1 an R.</p>
 
+  <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Person</h2>
+  <p>Eine Person, die auf einem Boden nach links und nach rechts geht. Sie setzen sie mit dem Knopf
+  <a href="onderdelenbalk.html">Person</a> in der Bauteilleiste ein, unter dem Voltmeter. Rechts sind ihre Eingänge: <b>L</b> lässt sie nach
+  links gehen, <b>R</b> nach rechts. An beiden Enden des Bodens steht ein Endschalter mit einem Lämpchen; links sind ihre
+  Ausgänge: <b>S1</b> ist ein, wenn sie ganz links steht, <b>S2</b>, wenn sie ganz rechts steht.</p>
+  <figure>
+    <img src="../img/persoon-voorbeeld.png" alt="Eine Person, die zwischen zwei Endschaltern nach rechts geht">
+    <figcaption>Die Person geht nach rechts: R ist ein. Bei S2 bleibt sie stehen und S2 wird eingeschaltet.</figcaption>
+  </figure>
+  <ul>
+    <li>Beide aus: Sie steht still. L und R <b>beide ein</b>: Sie bleibt stehen und ein rotes <b>!</b> erscheint.</li>
+    <li>Verbinden Sie S1 und S2 mit einem Eingang von <a href="logicrun.html">LogicRun</a> (zum Beispiel DIN3 und DIN4):
+      Ein Schritt kann dann warten, bis die Person angekommen ist. Siehe <a href="les16.html">Lektion 16</a>.</li>
+    <li>Die Person braucht keine Versorgung. Nach dem Öffnen eines Panels steht sie immer links. Mit der rechten Maustaste
+      und <b>Zurück nach links (S1)</b> stellen Sie sie selbst zurück.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-Segment-Anzeige</h2>
   <p>Die Anzeige hat einen Eingang. Was sie zeigt, hängt davon ab, was Sie anschließen:</p>
   <ul>

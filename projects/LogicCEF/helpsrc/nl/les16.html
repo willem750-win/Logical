@@ -1,0 +1,76 @@
+<!-- titel: Les 16 - Een persoon heen en weer -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 16 van 16</p>
+  <h1>Een persoon heen en weer laten lopen</h1>
+  <div class="goal"><strong>Doel:</strong> begrijpen waarom een machine eindschakelaars heeft: LogicRun laat een persoon
+  lopen, en de eindschakelaars melden wanneer hij aan de kant is.</div>
+
+  <p><a class="open" href="../../panels/lessen/les16-persoon.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les16-persoon.png" alt="Schakelaar, LogicRun-blok en een persoon die naar rechts loopt">
+    <figcaption>Stap 1: UIT1 staat aan, de persoon loopt naar rechts tot hij bij S2 komt.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): het programma aan of
+      uit.</li>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> met 4 stappen.</li>
+    <li>Een <a href="uitvoer.html#persoon">persoon</a> op een vloer. Rechts zitten zijn ingangen: <b>L</b> (naar links
+      lopen) en <b>R</b> (naar rechts lopen). Links zitten de uitgangen van de twee eindschakelaars: <b>S1</b> is aan als
+      hij helemaal links staat, <b>S2</b> als hij helemaal rechts staat.</li>
+    <li>De draden: <b>UIT0</b> naar L, <b>UIT1</b> naar R, <b>S1</b> naar DIN3 en <b>S2</b> naar DIN4.</li>
+  </ul>
+
+  <h2>Het programma</h2>
+  <table>
+    <tr><th>Stap</th><th>Uitgang</th><th>Wacht op</th><th>Wat gebeurt er?</th></tr>
+    <tr><td>1</td><td>UIT1</td><td>DIN4 aan</td><td>De persoon loopt naar rechts tot S2 aan gaat.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>Hij rust 2 seconden (tijd 4 &times; 500 ms).</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN3 aan</td><td>Hij loopt naar links tot S1 aan gaat.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>Hij rust weer 2 seconden; daarna begint het opnieuw.</td></tr>
+  </table>
+
+  <h2>Waarom eindschakelaars?</h2>
+  <p>Je zou ook kunnen zeggen: &ldquo;loop 3 seconden naar rechts&rdquo;. Maar loopt hij wat trager of staat hij niet
+  helemaal links, dan stopt hij te vroeg of botst hij tegen de muur. Een eindschakelaar <i>meldt</i> wanneer het einde
+  bereikt is. Het programma wacht daarop in de kolom <b>wacht op</b>. Zo werkt het ook bij een garagepoort, een lift of
+  een schuifdeur.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: de persoon loopt naar rechts.</li>
+    <li>Kijk naar het lampje boven S2: het wordt rood als hij aankomt. Meteen gaat LogicRun naar stap 2.</li>
+    <li>Open het LogicRun-venster (dubbelklik op het blok). Bij stap 1 en 3 zie je in de kolom <b>wacht op</b>
+      <b>DIN4 aan</b> en <b>DIN3 aan</b>.</li>
+    <li>Zet de schakelaar uit: alles stopt en de persoon blijft staan waar hij is. Met de rechtermuisknop op de persoon
+      en <b>Terug naar links (S1)</b> zet je hem weer aan het begin.</li>
+  </ol>
+
+  <h2>Opdracht 1: langer rusten</h2>
+  <p>Laat de persoon rechts 5 seconden rusten en links maar 1 seconde.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>De stapduur is 500 ms. Zet bij stap 2 de <b>tijd</b> op <b>10</b> (10 &times; 500 ms = 5 s) en bij stap 4 op
+    <b>2</b>.</p>
+  </details>
+
+  <h2>Opdracht 2: een waarschuwingslamp</h2>
+  <p>Een lamp moet branden zolang de persoon loopt, en uit zijn als hij rust.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet een <a href="uitvoer.html#led">lamp of led</a> rechts van het LogicRun-blok en verbind ze met <b>UIT2</b>.
+    Klik in het LogicRun-venster bij stap 1 en stap 3 ook in de kolom <b>UIT2</b>, zodat die uitgang aan staat terwijl de
+    persoon loopt.</p>
+  </details>
+
+  <h2>Opdracht 3: wat als de draden verwisseld zijn?</h2>
+  <p>Verbind S1 met DIN4 en S2 met DIN3. Wat gebeurt er? Denk eerst na en probeer het dan.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Bij de start staat de persoon links, dus S1 is al aan. Stap 1 wacht op DIN4, en dat is nu S1: de stap is meteen
+    klaar en de persoon komt bijna niet van zijn plaats. In stap 3 loopt hij naar links en wacht hij op S2, maar die gaat
+    nooit aan: hij blijft tegen de linkermuur lopen. Een machine met verkeerd aangesloten eindschakelaars werkt dus niet
+    goed. Daarom test je ze altijd eerst.</p>
+  </details>
+
+  <div class="pager"><a href="les15.html">&larr; Les 15: Binair tellen</a><a href="leerpad.html">Leerpad &rarr;</a></div>
