@@ -1,0 +1,83 @@
+<!-- titel: Leçon 17 - Un chariot sur un parcours -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 17 sur 17</p>
+  <h1>Faire rouler un chariot sur un parcours</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> compter avec LogicRun&nbsp;: un chariot roule sur une route sinueuse
+  et s&rsquo;arrête au troisième poteau. Start et Finish indiquent le début et la fin de la route.</div>
+
+  <p><a class="open" href="../../panels/lessen/les17-wagentje.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les17-wagentje.png" alt="Interrupteur, bloc LogicRun et un chariot sur une route sinueuse">
+    <figcaption>Pas 1&nbsp;: UIT0 est active, le chariot roule en avant et LogicRun compte les poteaux.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous&nbsp;?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>)&nbsp;: le
+      programme en marche ou à l&rsquo;arrêt.</li>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 6 pas.</li>
+    <li>Un <a href="uitvoer.html#wagen">chariot</a> sur une route sinueuse de <b>START</b> à <b>FINISH</b>, avec 5 poteaux
+      numérotés. Les entrées sont à droite&nbsp;: <b>V</b> (en avant, vers l&rsquo;arrivée) et <b>A</b> (en arrière). À
+      gauche se trouvent trois sorties&nbsp;: <b>Start</b> est active quand le chariot est au départ, <b>Finish</b> quand
+      il est à l&rsquo;arrivée, et <b>Tel</b> (compter) donne une courte impulsion chaque fois que le chariot passe un
+      poteau.</li>
+    <li>Les fils&nbsp;: <b>UIT0</b> vers V, <b>UIT1</b> vers A, <b>Start</b> vers DIN2, <b>Tel</b> vers DIN3 et
+      <b>Finish</b> vers DIN4.</li>
+  </ul>
+
+  <h2>Le programme</h2>
+  <table>
+    <tr><th>Pas</th><th>Sortie</th><th>Attendre</th><th>Que se passe-t-il&nbsp;?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3 x DIN3</td><td>Le chariot roule en avant. Après le troisième poteau, il passe au pas suivant.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>Il reste immobile 2 secondes (durée 4 &times; 500 ms), par exemple pour décharger.</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN4 actif</td><td>Il continue en avant jusqu&rsquo;à ce que Finish soit active.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>De nouveau 2 secondes immobile.</td></tr>
+    <tr><td>5</td><td>UIT1</td><td>DIN2 actif</td><td>Il revient en arrière jusqu&rsquo;à ce que Start soit active.</td></tr>
+    <tr><td>6</td><td>-</td><td>-</td><td>2 secondes immobile&nbsp;; ensuite tout recommence.</td></tr>
+  </table>
+
+  <h2>Comment LogicRun compte-t-il&nbsp;?</h2>
+  <p>Dans la colonne <b>attendre</b>, le pas 1 indique <b>3 x DIN3</b>. Chaque fois que le chariot a passé un poteau et
+  que <b>Tel</b> redevient inactive, LogicRun ajoute un. À la troisième impulsion, le pas est terminé. À chaque pas, le
+  comptage recommence à 0. C&rsquo;est ainsi qu&rsquo;une vraie machine mesure une distance&nbsp;: un capteur compte les
+  trous d&rsquo;une roue, ou un ascenseur compte les étages qu&rsquo;il passe.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et activez l&rsquo;interrupteur&nbsp;: le chariot roule en avant.</li>
+    <li>Regardez les poteaux&nbsp;: le voyant devient rouge quand le chariot passe, et <b>Tel</b> devient aussi rouge un
+      instant. Après le poteau 3, il s&rsquo;arrête.</li>
+    <li>Ouvrez la fenêtre LogicRun (double-clic sur le bloc). Au pas 1, vous voyez <b>3 x DIN3</b> dans la colonne
+      <b>attendre</b>.</li>
+    <li>Désactivez l&rsquo;interrupteur&nbsp;: tout s&rsquo;arrête et le chariot reste où il est. Clic droit sur le
+      chariot et <b>Retour au départ</b> le remet au début.</li>
+  </ol>
+
+  <h2>Exercice 1&nbsp;: deux arrêts</h2>
+  <p>Faites arrêter le chariot au poteau 2 et au poteau 4 à l&rsquo;aller.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Mettez la condition du pas 1 sur <b>2 x DIN3</b>. Choisissez le pas 2 et cliquez deux fois sur <b>+ pas</b>. Pour
+    le premier nouveau pas&nbsp;: <b>UIT0</b> active, attendre <b>2 x DIN3</b> (poteaux 3 et 4). Donnez au deuxième
+    nouveau pas la durée <b>4</b>, sans sortie&nbsp;: c&rsquo;est le deuxième arrêt.</p>
+  </details>
+
+  <h2>Exercice 2&nbsp;: s&rsquo;arrêter au retour</h2>
+  <p>Au retour, le chariot doit aussi s&rsquo;arrêter 2 secondes au poteau 3.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>En arrière, le chariot passe d&rsquo;abord le poteau 5, puis le 4 et ensuite le 3. Mettez la condition du pas 5 sur
+    <b>3 x DIN3</b>. Choisissez le pas 5 et cliquez deux fois sur <b>+ pas</b>&nbsp;: un pas de durée <b>4</b> sans
+    sortie, et un pas avec <b>UIT1</b> qui attend <b>DIN2 actif</b> (retour au départ).</p>
+  </details>
+
+  <h2>Exercice 3&nbsp;: combien d&rsquo;impulsions&nbsp;?</h2>
+  <p>Combien d&rsquo;impulsions DIN3 reçoit-elle quand le chariot roule d&rsquo;une traite du départ à l&rsquo;arrivée&nbsp;?
+  Et que se passe-t-il si vous mettez <b>6 x DIN3</b> au pas 1&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Cinq&nbsp;: il y a 5 poteaux le long de la route. Avec <b>6 x DIN3</b>, la sixième impulsion n&rsquo;arrive
+    jamais&nbsp;: le chariot roule jusqu&rsquo;à l&rsquo;arrivée et y reste, pendant que LogicRun continue d&rsquo;attendre
+    au pas 1. Quand vous faites compter une machine, vérifiez que le nombre est possible.</p>
+  </details>
+
+  <div class="pager"><a href="les16.html">&larr; Leçon 16 : Une personne fait des allers-retours</a><a href="leerpad.html">Parcours &rarr;</a></div>

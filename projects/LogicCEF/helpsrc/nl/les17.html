@@ -1,0 +1,82 @@
+<!-- titel: Les 17 - Een wagentje op een parcours -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 17 van 17</p>
+  <h1>Een wagentje over een parcours laten rijden</h1>
+  <div class="goal"><strong>Doel:</strong> tellen met LogicRun: een wagentje rijdt over een kronkelweg en stopt bij het
+  derde paaltje. Start en Finish melden het begin en het einde van de weg.</div>
+
+  <p><a class="open" href="../../panels/lessen/les17-wagentje.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les17-wagentje.png" alt="Schakelaar, LogicRun-blok en een wagentje op een kronkelweg">
+    <figcaption>Stap 1: UIT0 staat aan, het wagentje rijdt vooruit en LogicRun telt de paaltjes.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): het programma aan of
+      uit.</li>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> met 6 stappen.</li>
+    <li>Een <a href="uitvoer.html#wagen">wagentje</a> op een kronkelweg van <b>START</b> naar <b>FINISH</b>, met 5 genummerde
+      paaltjes. Rechts zitten de ingangen: <b>V</b> (vooruit, naar de finish) en <b>A</b> (achteruit). Links zitten drie
+      uitgangen: <b>Start</b> is aan als het wagentje aan de start staat, <b>Finish</b> als het aan de finish staat, en
+      <b>Tel</b> geeft een korte puls telkens het wagentje een paaltje voorbijrijdt.</li>
+    <li>De draden: <b>UIT0</b> naar V, <b>UIT1</b> naar A, <b>Start</b> naar DIN2, <b>Tel</b> naar DIN3 en <b>Finish</b>
+      naar DIN4.</li>
+  </ul>
+
+  <h2>Het programma</h2>
+  <table>
+    <tr><th>Stap</th><th>Uitgang</th><th>Wacht op</th><th>Wat gebeurt er?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3 x DIN3</td><td>Het wagentje rijdt vooruit. Na het derde paaltje gaat het naar de volgende stap.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>Het staat 2 seconden stil (tijd 4 &times; 500 ms), bijvoorbeeld om te lossen.</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN4 aan</td><td>Het rijdt verder vooruit tot Finish aan gaat.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>Weer 2 seconden stil.</td></tr>
+    <tr><td>5</td><td>UIT1</td><td>DIN2 aan</td><td>Het rijdt achteruit terug tot Start aan gaat.</td></tr>
+    <tr><td>6</td><td>-</td><td>-</td><td>2 seconden stil; daarna begint het opnieuw.</td></tr>
+  </table>
+
+  <h2>Hoe telt LogicRun?</h2>
+  <p>In de kolom <b>wacht op</b> staat bij stap 1 <b>3 x DIN3</b>. Telkens het wagentje een paaltje voorbij is en
+  <b>Tel</b> weer uit gaat, telt LogicRun er één bij. Bij de derde puls is de stap klaar. In elke stap begint het tellen
+  opnieuw bij 0. Zo meet een echte machine een afstand: een sensor telt de gaatjes in een wiel, of een lift telt de
+  verdiepingen die hij voorbijkomt.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: het wagentje rijdt vooruit.</li>
+    <li>Kijk naar de paaltjes: het lampje wordt rood als het wagentje erlangs rijdt, en ook <b>Tel</b> wordt even rood.
+      Na paaltje 3 stopt het.</li>
+    <li>Open het LogicRun-venster (dubbelklik op het blok). Bij stap 1 zie je in de kolom <b>wacht op</b>
+      <b>3 x DIN3</b>.</li>
+    <li>Zet de schakelaar uit: alles stopt en het wagentje blijft staan waar het is. Met de rechtermuisknop op het
+      wagentje en <b>Terug naar de start</b> zet je het weer aan het begin.</li>
+  </ol>
+
+  <h2>Opdracht 1: twee haltes</h2>
+  <p>Laat het wagentje op de heenweg stoppen bij paaltje 2 en bij paaltje 4.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet bij stap 1 de voorwaarde op <b>2 x DIN3</b>. Kies stap 2 en klik twee keer op <b>+ stap</b>. Maak van de eerste
+    nieuwe stap: <b>UIT0</b> aan, wacht op <b>2 x DIN3</b> (paaltjes 3 en 4). Geef de tweede nieuwe stap tijd <b>4</b>,
+    zonder uitgang: dat is de tweede halte.</p>
+  </details>
+
+  <h2>Opdracht 2: stoppen op de terugweg</h2>
+  <p>Op de terugweg moet het wagentje ook 2 seconden stoppen bij paaltje 3.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Achteruit komt het wagentje eerst langs paaltje 5, dan 4 en dan 3. Zet bij stap 5 de voorwaarde op <b>3 x DIN3</b>.
+    Kies stap 5 en klik twee keer op <b>+ stap</b>: een stap met tijd <b>4</b> zonder uitgang, en een stap met <b>UIT1</b>
+    die wacht op <b>DIN2 aan</b> (terug tot de start).</p>
+  </details>
+
+  <h2>Opdracht 3: hoeveel pulsen?</h2>
+  <p>Hoeveel pulsen krijgt DIN3 als het wagentje in één keer van de start tot de finish rijdt? En wat gebeurt er als je
+  bij stap 1 <b>6 x DIN3</b> zet?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Vijf: er staan 5 paaltjes langs de weg. Met <b>6 x DIN3</b> komt de zesde puls nooit: het wagentje rijdt tot de
+    finish en blijft daar staan, terwijl LogicRun in stap 1 blijft wachten. Wil je een machine laten tellen, controleer dan
+    of het getal kan.</p>
+  </details>
+
+  <div class="pager"><a href="les16.html">&larr; Les 16: Een persoon heen en weer</a><a href="leerpad.html">Leerpad &rarr;</a></div>

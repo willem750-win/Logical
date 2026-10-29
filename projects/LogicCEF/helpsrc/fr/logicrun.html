@@ -4,6 +4,8 @@
   suite de pas ; chaque pas allume un certain nombre de sorties. Vous réalisez ainsi un feu tricolore, un
   chenillard ou un compteur sans utiliser une seule porte.</p>
 
+  <div class="tip"><strong>Pour les avancés&nbsp;:</strong> LogicRun est une extension. Commencez-y quand vous connaissez les leçons 1 à 11 du <a href="leerpad.html">parcours</a>&nbsp;: vous y apprenez d&rsquo;abord à commuter avec des portes et des fils. Les leçons 12 à 17 portent sur LogicRun.</div>
+
   <figure>
     <img src="../img/les12-logicrun.png" alt="Bloc LogicRun avec deux boutons-poussoirs et trois LED">
     <figcaption>Un bloc LogicRun : les boutons-poussoirs sont sur DIN1 (marche/arrêt) et DIN3 (+1), les LED
@@ -41,7 +43,7 @@
     <tr><td><b>Pas</b></td><td>Un pas plus loin, pratique pour vérifier votre programme pas à pas.</td></tr>
     <tr><td><b>Durée</b></td><td>La durée d&rsquo;une unité de temps, en millisecondes (500&nbsp;ms = une demi-seconde).</td></tr>
     <tr><td><b>Répéter</b></td><td>Coché : après le dernier pas, le programme recommence. Décoché : il s&rsquo;arrête au dernier pas.</td></tr>
-    <tr><td><b>Exemple</b> et <b>Charger</b></td><td>Charger un programme tout fait (voir <a href="#voorbeelden">Exemples</a>).</td></tr>
+    <tr><td><b>Exemple</b> et <b>Charger</b></td><td>Charger un programme tout fait&nbsp;: choisissez-le dans la liste et cliquez sur <b>Charger</b>. À l&rsquo;ouverture de la fenêtre, la liste affiche <i>&mdash; choisir &mdash;</i> (voir <a href="#voorbeelden">Exemples</a>).</td></tr>
     <tr><td><b>+ pas</b> et <b>- pas</b></td><td>Ajouter un pas après le pas choisi, ou supprimer le pas choisi.</td></tr>
     <tr><td><b>DIN1</b> à <b>DIN4</b></td><td>Ce que fait chaque entrée.</td></tr>
     <tr><td><b>attendre</b></td><td>Cliquez dans cette colonne pour faire attendre un pas une entrée ou un nombre d&rsquo;impulsions (voir <a href="#wacht">Attendre</a>).</td></tr>
@@ -119,9 +121,11 @@
     <tr><td>Chenillard</td><td>UIT0 à UIT7 s&rsquo;allument l&rsquo;une après l&rsquo;autre.</td></tr>
     <tr><td>Moteur gauche/droite</td><td>UIT0 moteur à gauche, UIT1 moteur à droite, avec un court arrêt entre les deux. Reliez-les à L et R d&rsquo;un <a href="uitvoer.html#motor">moteur</a>.</td></tr>
     <tr><td>Compteur 4 bits</td><td>UIT0 à UIT3 comptent en binaire de 0 à 15 (UIT0 = 1, UIT1 = 2, UIT2 = 4, UIT3 = 8).</td></tr>
-    <tr><td>Chariot</td><td>UIT0 en avant jusqu&rsquo;à ce que DIN3 soit active (fin de course), un court arrêt, UIT1 en arrière jusqu&rsquo;à DIN4 ; DIN1 actif/inactif. Reliez UIT0 à R et UIT1 à L d&rsquo;un moteur.</td></tr>
-    <tr><td>Emballeuse</td><td>UIT0 tapis roulant jusqu&rsquo;à 5 impulsions sur DIN2 (boîtes), UIT1 emballage (2 s), UIT2 remet un compteur à zéro ; DIN1 actif/inactif.</td></tr>
+    <tr><td>Chariot</td><td>UIT0 en avant jusqu&rsquo;à ce que DIN3 soit active (fin de course), un court arrêt, UIT1 en arrière jusqu&rsquo;à DIN4&nbsp;; DIN1 actif/inactif. Reliez UIT0 à R et UIT1 à L d&rsquo;un moteur.</td></tr>
+    <tr><td>Emballeuse</td><td>UIT0 tapis roulant jusqu&rsquo;à 5 impulsions sur DIN2 (boîtes), UIT1 emballage (2 s), UIT2 remet un compteur à zéro&nbsp;; DIN1 actif/inactif.</td></tr>
     <tr><td>Compter et décompter</td><td>T1 compte de 0 à F, T2 décompte en même temps de F à 0. Reliez T1 et T2 à un afficheur.</td></tr>
+    <tr><td>Personne aller-retour</td><td>UIT1 vers la droite jusqu&rsquo;à ce que DIN4 soit active (S2), 2 s d&rsquo;arrêt, UIT0 vers la gauche jusqu&rsquo;à DIN3 (S1), 2 s d&rsquo;arrêt&nbsp;; DIN1 actif/inactif. Le même programme que dans la <a href="les16.html">leçon 16</a>&nbsp;: reliez UIT0 à L et UIT1 à R d&rsquo;une <a href="uitvoer.html#persoon">personne</a>, S1 à DIN3 et S2 à DIN4.</td></tr>
+    <tr><td>Chariot sur un parcours</td><td>UIT0 en avant jusqu&rsquo;à 3 impulsions sur DIN3 (poteau 3), 2 s d&rsquo;arrêt, en avant jusqu&rsquo;à DIN4 (Finish), 2 s d&rsquo;arrêt, UIT1 en arrière jusqu&rsquo;à DIN2 (Start)&nbsp;; DIN1 actif/inactif. Le même programme que dans la <a href="les17.html">leçon 17</a>&nbsp;: reliez UIT0 à V et UIT1 à A d&rsquo;un <a href="uitvoer.html#wagen">chariot</a>, Start à DIN2, Tel à DIN3 et Finish à DIN4.</td></tr>
   </table>
   <div class="tip"><strong>Astuce :</strong> charger un exemple remplace le programme. Avec <kbd>Ctrl</kbd>+<kbd>Z</kbd>,
   vous retrouvez le programme précédent.</div>

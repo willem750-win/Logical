@@ -1819,6 +1819,7 @@ type
     Fdraden:Boolean;
     FMeter:Boolean;
     FPersoon:Boolean;
+    FWagen:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
@@ -1888,6 +1889,7 @@ type
     RMotor:TRect;
     DMotor:boolean;
     DPersoon:boolean;
+    DWagen:boolean;
 
     bmSensor:Tbitmap;
     RSensor:TRect;
@@ -1918,6 +1920,7 @@ type
     bmMeter:TBitmap; //icon voor V-Meter
     RMeter:TRect;
     RPersoon:TRect;
+    RWagen:TRect;
     DMeter:boolean;
 
     // voedingsrails (+ en - naast elkaar)
@@ -1955,6 +1958,7 @@ type
     FHGrid:String;
     FHMeter:String;
     FHPersoon:String;
+    FHWagen:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
     FBoxTaal:TStatTaal;
@@ -2002,6 +2006,7 @@ type
     PROCEDURE SetBuzzer(const Value: Boolean);
     PROCEDURE SetMotor(const Value: Boolean);
     PROCEDURE SetPersoon(const Value: Boolean);
+    PROCEDURE SetWagen(const Value: Boolean);
     PROCEDURE SetSensor(const Value: Boolean);
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
@@ -2052,6 +2057,7 @@ type
     PROCEDURE Paint; override;
     PROCEDURE PaintBoxLeft;
     procedure DrawRailButton(const R: TRect; APlus, ADown: Boolean);
+    procedure DrawHalfKnop(const R: TRect; ADown: Boolean; Kind: Integer);
     PROCEDURE PaintBoxTop;
     PROCEDURE PaintBoxBottom;
     // kontrole of er connectors zijn gemaakt
@@ -2092,6 +2098,8 @@ type
     procedure NewLogicRun;
     // nieuwe persoon (met vloer en eindschakelaars) aan de muis hangen
     procedure NewPersoon;
+    procedure NewWagen;
+    procedure NewPersoonVan(AKlasse: TComponentClass);
     // ophalen van paneelopbouw uit exe
     PROCEDURE LoadStream(welke:TStream;inf:Boolean);
     procedure LoadStreamNew(welke: TStream; Paneel: TjanGridS; Inf: Boolean);
@@ -2151,6 +2159,7 @@ type
     property KDisplay:Boolean read FDisplay write SetDisplay;
     property KMeter:Boolean read FMeter write SetMeter;
     property KPersoon:Boolean read FPersoon write SetPersoon default True;
+    property KWagen:Boolean read FWagen write SetWagen default True;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
@@ -2175,6 +2184,7 @@ type
     property HBuzzer:String read FHBuzzer write SetHBuzzer;
     property HMotor:String read FHMotor write SetHMotor;
     property HPersoon:String read FHPersoon write FHPersoon;
+    property HWagen:String read FHWagen write FHWagen;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
     property HLock:String read FHLock write SetHlock;
@@ -2306,15 +2316,15 @@ end;
     mdp: TPoint;
     newLeft, newTop: Integer;
     function GetInput(I: Integer): Boolean;
-    function GetOutput(I: Integer): Boolean;
-    function Range: Integer;
+    function GetOutput(I: Integer): Boolean; virtual;
+    function Range: Integer; virtual;
     procedure SetTaal(const Value: string);
     procedure TimerTick(Sender: TObject);
     procedure UpdateTimer;
     procedure AnchorConnectors;
     procedure MoveConnectors;
     procedure SendStatusToBar;
-    function StatusText: string;
+    function StatusText: string; virtual;
     procedure LockClick(Sender: TObject);
     procedure SelectClick(Sender: TObject);
     procedure StartClick(Sender: TObject);
@@ -2329,21 +2339,23 @@ end;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Paint; override;
-    procedure UpdateHintText;
+    procedure UpdateHintText; virtual;
     // ingang 0 (L) of 1 (R) aan/uit, door de draden (Connect)
     procedure SetInput(I: Integer; Value: Boolean);
     // index van de ingang/uitgang bij punt P (paneel), anders -1
     function InputPinAt(const P: TPoint): Integer;
     function OutputPinAt(const P: TPoint): Integer;
+    // aantal uitgangen (links): 2 bij de persoon, 3 bij het wagentje
+    function OutputCount: Integer; virtual;
     // Y van het aansluitvierkantje (7x7) van ingang/uitgang I binnen het blok
     class function PinY(I: Integer): Integer;
     // -1 naar links, 1 naar rechts, 0 stil (ook als L en R samen aan zijn)
-    function Direction: Integer;
+    function Direction: Integer; virtual;
     function Fault: Boolean;       // L en R tegelijk aan
     // terug naar de linker eindschakelaar
     procedure ToStart;
     // een stap verder (zoals de timer); voor testen
-    procedure Tick;
+    procedure Tick; virtual;
     property Inputs[I: Integer]: Boolean read GetInput;
     property Outputs[I: Integer]: Boolean read GetOutput;   // 0 = S1, 1 = S2
     property Position: Integer read FPos;
@@ -2358,6 +2370,33 @@ end;
     property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
     property ShowHint;
     property HelpKeyword;
+  end;
+
+  { TjanSimWagen: een wagentje (bovenaanzicht) dat over een kronkelweg rijdt,
+    van START naar FINISH. Ingangen V (vooruit) en A (achteruit) rechts;
+    uitgangen links: Start (staat aan de start), Tel (een puls bij elk van de
+    5 paaltjes langs de weg) en Finish (staat aan de finish). Met "N x DIN"
+    in LogicRun rijdt het tot het N-de paaltje. Alles wat met draden,
+    bewaren en de balk te maken heeft, erft het van TjanSimPersoon. }
+  TjanSimPersoonClass = class of TjanSimPersoon;
+
+  TjanSimWagen = class(TjanSimPersoon)
+  private
+    function GetOutput(I: Integer): Boolean; override;
+    function Range: Integer; override;
+    function StatusText: string; override;
+    function PointAt(D: Integer; out Dx, Dy: Integer): TPoint;
+    function PaaltjeBij: Integer;    // nummer (1..5) van het paaltje waar hij staat, anders 0
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    function OutputCount: Integer; override;
+    // 1 vooruit (naar de finish), -1 achteruit, 0 stil
+    function Direction: Integer; override;
+    procedure Tick; override;
+    // afstand langs de weg van paaltje N (1..5)
+    class function PaaltjePos(N: Integer): Integer;
   end;
 
   { TjanLogicRun: programmeermodule met een stappenprogramma (LogicRun).
@@ -17790,14 +17829,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=5;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FDisplay:=true;
   FVoeding:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -18231,7 +18270,7 @@ begin
       else if c is TjanSimMotor then
         SFile.Add(Format('TjanSimMotor;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
       else if c is TjanSimPersoon then
-        SFile.Add(Format('TjanSimPersoon;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+        SFile.Add(Format('%s;%d;%d;%d;%d;', [c.ClassName, c.Height, c.Left, c.Top, c.Width]))
       else if c is TjanLogicRun then
         SFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
           TjanLogicRun(c).ProgramText + ';')
@@ -18459,7 +18498,7 @@ begin
     else if c is TjanSimMotor then
       TempFile.Add(Format('TjanSimMotor;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
     else if c is TjanSimPersoon then
-      TempFile.Add(Format('TjanSimPersoon;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
+      TempFile.Add(Format('%s;%d;%d;%d;%d;', [c.ClassName, c.Height, c.Left, c.Top, c.Width]))
     else if c is TjanLogicRun then
       TempFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
         TjanLogicRun(c).ProgramText + ';')
@@ -18489,6 +18528,7 @@ var
   wc: TWinControl;
   EdgeFS: TFormatSettings;
   EdgeVal: Double;
+  PersoonKlasse: TjanSimPersoonClass;
 
   procedure AddCommonSimProps(const AClassName: string);
   var
@@ -19165,10 +19205,15 @@ begin
         Continue;
       end;
 
-      // ---- TjanSimPersoon (begint altijd links, bij S1) ----
-      if obj[1] = 'TjanSimPersoon' then
+      // ---- TjanSimPersoon (begint altijd links, bij S1) en TjanSimWagen
+      // (begint altijd aan de start) ----
+      if (obj[1] = 'TjanSimPersoon') or (obj[1] = 'TjanSimWagen') then
       begin
-        with TjanSimPersoon.Create(self) do
+        if obj[1] = 'TjanSimWagen' then
+          PersoonKlasse := TjanSimWagen
+        else
+          PersoonKlasse := TjanSimPersoon;
+        with PersoonKlasse.Create(self) do
         begin
           Parent := wc; Tag := wc.ControlCount;
           Left := StrToInt(Trim(obj[3]));
@@ -19275,11 +19320,22 @@ begin
 end;
 
 procedure TjanSimLogicBox.NewPersoon;
+begin
+  NewPersoonVan(TjanSimPersoon);
+end;
+
+procedure TjanSimLogicBox.NewWagen;
+begin
+  NewPersoonVan(TjanSimWagen);
+end;
+
+// persoon of wagentje maken (zelfde soort blok)
+procedure TjanSimLogicBox.NewPersoonVan(AKlasse: TComponentClass);
 var
   P: TjanSimPersoon;
 begin
   if FParent = nil then Exit;
-  P := TjanSimPersoon.Create(Self);
+  P := TjanSimPersoon(AKlasse.Create(Self));
   P.Parent := FParent;
   P.BTaal := StatTaalToBTaal(Language);
   // zoals een nieuw component uit de balk: volgt de muis tot de klik
@@ -19767,7 +19823,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -19792,6 +19848,7 @@ begin
   else if ptinrect(RDipSwitsh,p) and (KDipSwitsh=true)then DDipSwitsh:=true
   else if ptinrect(RMeter,p) and (KMeter=true)then DMeter:=true
   else if ptinrect(RPersoon,p) and (KPersoon=true) then DPersoon:=true
+  else if ptinrect(RWagen,p) and (KWagen=true) then DWagen:=true
   else if PtInRect(RRailPlus, P) then DRailPlus := True
   else if PtInRect(RRailMin, P) then DRailMin := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
@@ -19830,6 +19887,7 @@ begin
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
   else if PtInRect(RMeter, P) then NewHint := FHMeter
   else if PtInRect(RPersoon, P) then NewHint := FHPersoon
+  else if PtInRect(RWagen, P) then NewHint := FHWagen
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -20254,7 +20312,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -20467,6 +20525,8 @@ begin
     AddF('TjanSimBuzzer.Left');  AddF('TjanSimBuzzer.Top');
     AddF('TjanSimBuzzer.Width'); AddF('TjanSimBuzzer.Height');
   end
+  else if DWagen then
+    NewWagen
   else if DPersoon then
     NewPersoon
   else if DMotor then
@@ -20997,6 +21057,7 @@ if FBoxTaal=stDutch then
   HWarm:='maak WarmteSensor';
   HMeter:='maak Voltmeter';
   HPersoon:='maak Persoon (met eindschakelaars)';
+  HWagen:='maak Wagentje (parcours met paaltjes)';
   HRailPlus:='maak + rail (voeding)';
   HRailMin:='maak - rail (massa)';
  end;
@@ -21024,6 +21085,7 @@ if FBoxTaal=stEnglish then
   HWarm:='create HeatSensor';
   HMeter:='create Voltmeter';
   HPersoon:='create Person (with limit switches)';
+  HWagen:='create Cart (road with posts)';
   HRailPlus:='create + rail (supply)';
   HRailMin:='create - rail (ground)';
   end ;
@@ -21050,6 +21112,7 @@ if FBoxTaal=stFrench then
   HWarm:='faire Capteur de chaleur';
   HMeter:='faire Voltmètre';
   HPersoon:='faire Personne (avec fins de course)';
+  HWagen:='faire Chariot (parcours avec poteaux)';
   HRailPlus:='faire Rail + (alimentation)';
   HRailMin:='faire Rail - (masse)';
  end;
@@ -21077,6 +21140,7 @@ if FBoxTaal=stFrench then
   HWarm:='HeatSensor erstellen';
   HMeter:='Voltmeter erstellen';
   HPersoon:='Person erstellen (mit Endschaltern)';
+  HWagen:='Wagen erstellen (Strecke mit Pfosten)';
   HRailPlus:='+ Schiene (Versorgung) erstellen';
   HRailMin:='- Schiene (Masse) erstellen';
   end;
@@ -21167,16 +21231,33 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 7 then
+  begin
+    // wagentje: geen plaatje, altijd getekend (zijaanzicht op een weg)
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    Canvas.Pen.Width := 1;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Pen.Color := $00000080;
+    Canvas.Brush.Color := $002828E0;
+    Canvas.Rectangle(X + 8, Y + 6, X + 16, Y + 12);   // dak
+    Canvas.Rectangle(X + 5, Y + 11, X + 19, Y + 17);  // carrosserie
+    Canvas.Brush.Color := $00F0D8A0;
+    Canvas.FillRect(Rect(X + 10, Y + 8, X + 14, Y + 11));   // raampje
+    Canvas.Pen.Color := clBlack;
+    Canvas.Brush.Color := $00404040;
+    Canvas.Ellipse(X + 6, Y + 14, X + 11, Y + 19);    // wielen
+    Canvas.Ellipse(X + 13, Y + 14, X + 18, Y + 19);
+    // weg
+    Canvas.Pen.Color := clGray;
+    Canvas.Line(X + 5, Y + 21, X + 18, Y + 21);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 6 then
   begin
-    // persoon: geen plaatje, altijd getekend (poppetje dat stapt)
+    // persoon: geen plaatje, altijd getekend (poppetje dat stapt); halve
+    // knop, de achtergrond tekent DrawHalfKnop
     OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
-    if FSymbolen <> Afbeelding then
-    begin
-      Canvas.Brush.Style := bsSolid;
-      Canvas.Brush.Color := SymKnopKleur;
-      Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
-    end;
     Canvas.Pen.Width := 2;
     Canvas.Pen.Color := $00404040;
     Canvas.Line(X + 11, Y + 13, X + 7, Y + 20);     // benen
@@ -21193,7 +21274,7 @@ begin
     Canvas.Ellipse(X + 8, Y, X + 15, Y + 7);         // hoofd
     // vloer
     Canvas.Pen.Color := clGray;
-    Canvas.Line(X + 2, Y + 21, X + 21, Y + 21);
+    Canvas.Line(X + 5, Y + 21, X + 18, Y + 21);
     Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
     Exit;
   end;
@@ -21341,6 +21422,13 @@ procedure TjanSimLogicBox.SetPersoon(const Value: Boolean);
 begin
   if Value <> FPersoon then
     FPersoon := Value;
+  Invalidate;
+end;
+
+procedure TjanSimLogicBox.SetWagen(const Value: Boolean);
+begin
+  if Value <> FWagen then
+    FWagen := Value;
   Invalidate;
 end;
 
@@ -21931,16 +22019,21 @@ begin
         HK:= H+TOP;
       end;
 
-      If FPersoon=true then
+      // persoon en wagentje: twee halve knoppen naast elkaar (zoals de rails)
+      RPersoon := Rect(0, 0, 0, 0);
+      RWagen := Rect(0, 0, 0, 0);
+      If FPersoon or FWagen then
       Begin
-        RPersoon:= rect(LK,TOP,BK,HK);
-        Rb:=RPersoon;
-        if not DPersoon then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(6, nil, Lk+1, top+2);
+        if FPersoon then
+        begin
+          RPersoon := Rect(LK - 4, TOP, LK + 13, HK);
+          DrawHalfKnop(RPersoon, DPersoon, 6);
+        end;
+        if FWagen then
+        begin
+          RWagen := Rect(LK + 15, TOP, LK + 32, HK);
+          DrawHalfKnop(RWagen, DWagen, 7);
+        end;
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -21959,6 +22052,27 @@ begin
     end;
   end;
 
+end;
+
+// halve knop in de componentenbalk (persoon, wagentje) met icoon Kind
+procedure TjanSimLogicBox.DrawHalfKnop(const R: TRect; ADown: Boolean; Kind: Integer);
+var
+  Rb: TRect;
+begin
+  Rb := R;
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    Brush.Color := clSilver;
+    if FSymbolen <> Afbeelding then Brush.Color := SymKnopKleur;
+    if not ADown then
+      Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+    else
+      Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+    FillRect(Rb);
+    Brush.Color := clSilver;
+  end;
+  DrawOutputIcon(Kind, nil, (R.Left + R.Right) div 2 - 12, R.Top + 2);
 end;
 
 // knop in de componentenbalk: verticale rail met + (rood) of massasymbool (blauw)
@@ -22401,14 +22515,18 @@ begin
         NextX(B + SPATIE);
       end;
 
-      if FPersoon = True then
+      // persoon en wagentje: twee halve knoppen naast elkaar
+      RPersoon := Rect(0, 0, 0, 0);
+      RWagen := Rect(0, 0, 0, 0);
+      if FPersoon then
       begin
-        RPersoon := Rect(LK, TOP, BK, HK);
-        Rb := RPersoon;
-        if not DPersoon then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(6, nil, LK+1, TOP+2);
+        RPersoon := Rect(LK - 4, TOP, LK + 13, HK);
+        DrawHalfKnop(RPersoon, DPersoon, 6);
+      end;
+      if FWagen then
+      begin
+        RWagen := Rect(LK + 15, TOP, LK + 32, HK);
+        DrawHalfKnop(RWagen, DWagen, 7);
       end;
     end;
   end;
@@ -22812,14 +22930,18 @@ begin
         NextX(B + SPATIE);
       end;
 
-      if FPersoon = True then
+      // persoon en wagentje: twee halve knoppen naast elkaar
+      RPersoon := Rect(0, 0, 0, 0);
+      RWagen := Rect(0, 0, 0, 0);
+      if FPersoon then
       begin
-        RPersoon := Rect(LK, TOP, BK, HK);
-        Rb := RPersoon;
-        if not DPersoon then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(6, nil, LK+1, TOP+2);
+        RPersoon := Rect(LK - 4, TOP, LK + 13, HK);
+        DrawHalfKnop(RPersoon, DPersoon, 6);
+      end;
+      if FWagen then
+      begin
+        RWagen := Rect(LK + 15, TOP, LK + 32, HK);
+        DrawHalfKnop(RWagen, DWagen, 7);
       end;
     end;
   end;
@@ -24784,7 +24906,12 @@ end;
 // boven naar rechts en lopen die van S1/S2 links naar DIN, zonder te kruisen.
 class function TjanSimPersoon.PinY(I: Integer): Integer;
 begin
-  if I = 0 then Result := 6 else Result := 22;
+  Result := 6 + 16 * I;   // 6, 22 en (wagentje) 38
+end;
+
+function TjanSimPersoon.OutputCount: Integer;
+begin
+  Result := 2;
 end;
 
 function TjanSimPersoon.InputPinAt(const P: TPoint): Integer;
@@ -24804,7 +24931,7 @@ var
 begin
   Result := -1;
   if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
-  for i := 0 to 1 do
+  for i := 0 to OutputCount - 1 do
     if Abs(P.Y - (Top + PinY(i) + 3)) <= 6 then
       Exit(i);
 end;
@@ -25098,8 +25225,12 @@ begin
   Mi.OnClick := SelectClick;
   PopupMenu.Items.Add(Mi);
   Mi := TMenuItem.Create(PopupMenu);
-  Mi.Caption := Tr(FTaal, 'Terug naar links (S1)', 'Back to the left (S1)',
-                          'Retour à gauche (S1)', 'Zurück nach links (S1)');
+  if Self is TjanSimWagen then
+    Mi.Caption := Tr(FTaal, 'Terug naar de start', 'Back to the start',
+                            'Retour au départ', 'Zurück zum Start')
+  else
+    Mi.Caption := Tr(FTaal, 'Terug naar links (S1)', 'Back to the left (S1)',
+                            'Retour à gauche (S1)', 'Zurück nach links (S1)');
   Mi.OnClick := StartClick;
   PopupMenu.Items.Add(Mi);
 end;
@@ -25206,6 +25337,303 @@ var
 begin
   for i := 0 to Connectors.Count - 1 do
     TjanConnector(Connectors[i]).MoveConnector(Point(NewLeft, NewTop));
+end;
+
+
+
+// ============================================================
+// TjanSimWagen: wagentje over een kronkelweg, met paaltjes om te tellen
+// ============================================================
+
+const
+  WG_W = 300;           // breedte van het blok
+  WG_H = 165;           // hoogte van het blok
+  WG_STAP = 4;          // pixels per tik van de timer
+  WG_TEL = 8;           // Tel is aan tot zo ver voor en na een paaltje
+  // middenlijn van de weg, van START naar FINISH (alleen rechte stukken)
+  WG_PAD: array[0..5] of TPoint = ((X: 90; Y: 62), (X: 250; Y: 62), (X: 250; Y: 102),
+                                   (X: 90; Y: 102), (X: 90; Y: 142), (X: 250; Y: 142));
+  WG_LEN = 560;         // lengte van de weg (som van de stukken)
+
+constructor TjanSimWagen.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := WG_W;
+  Height := WG_H;
+  FNaam := 'Wagentje';
+  HelpKeyword := 'wagen';
+end;
+
+function TjanSimWagen.OutputCount: Integer;
+begin
+  Result := 3;
+end;
+
+function TjanSimWagen.Range: Integer;
+begin
+  Result := WG_LEN;
+end;
+
+class function TjanSimWagen.PaaltjePos(N: Integer): Integer;
+begin
+  Result := (WG_LEN * N) div 6;
+end;
+
+function TjanSimWagen.PaaltjeBij: Integer;
+var
+  N: Integer;
+begin
+  Result := 0;
+  for N := 1 to 5 do
+    if Abs(FPos - PaaltjePos(N)) <= WG_TEL then
+      Exit(N);
+end;
+
+function TjanSimWagen.GetOutput(I: Integer): Boolean;
+begin
+  case I of
+    0: Result := FPos <= 0;
+    1: Result := PaaltjeBij > 0;
+  else
+    Result := FPos >= Range;
+  end;
+end;
+
+function TjanSimWagen.Direction: Integer;
+begin
+  if FIn[0] and not FIn[1] then Result := 1
+  else if FIn[1] and not FIn[0] then Result := -1
+  else Result := 0;
+end;
+
+procedure TjanSimWagen.Tick;
+var
+  NewPos: Integer;
+begin
+  if Direction = 0 then Exit;
+  NewPos := FPos + Direction * WG_STAP;
+  if NewPos < 0 then NewPos := 0;
+  if NewPos > Range then NewPos := Range;
+  FPos := NewPos;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+// punt op de weg op afstand D van de start, met de rijrichting (Dx, Dy)
+// van dat stuk weg
+function TjanSimWagen.PointAt(D: Integer; out Dx, Dy: Integer): TPoint;
+var
+  i, L: Integer;
+begin
+  if D < 0 then D := 0;
+  Dx := 1;
+  Dy := 0;
+  Result := WG_PAD[0];
+  for i := 0 to High(WG_PAD) - 1 do
+  begin
+    Dx := 0;
+    Dy := 0;
+    if WG_PAD[i + 1].X > WG_PAD[i].X then Dx := 1
+    else if WG_PAD[i + 1].X < WG_PAD[i].X then Dx := -1;
+    if WG_PAD[i + 1].Y > WG_PAD[i].Y then Dy := 1
+    else if WG_PAD[i + 1].Y < WG_PAD[i].Y then Dy := -1;
+    L := Abs(WG_PAD[i + 1].X - WG_PAD[i].X) + Abs(WG_PAD[i + 1].Y - WG_PAD[i].Y);
+    if (D <= L) or (i = High(WG_PAD) - 1) then
+    begin
+      if D > L then D := L;
+      Exit(Point(WG_PAD[i].X + Dx * D, WG_PAD[i].Y + Dy * D));
+    end;
+    Dec(D, L);
+  end;
+end;
+
+procedure TjanSimWagen.Paint;
+const
+  Namen: array[0..2] of string = ('Start', 'Tel', 'Finish');
+var
+  i, y, N, Dx, Dy, HalfL, HalfB: Integer;
+  P: TPoint;
+  BW, BH: Integer;
+  Lbl: string;
+
+  // rechthoek ten opzichte van het midden van de wagen: A langs de
+  // rijrichting, B dwars erop (de wagen draait mee met de weg)
+  procedure Blok(A1, B1, A2, B2: Integer);
+  begin
+    if Dx <> 0 then
+      Canvas.Rectangle(P.X + Dx * A1, P.Y + B1, P.X + Dx * A2, P.Y + B2)
+    else
+      Canvas.Rectangle(P.X + B1, P.Y + Dy * A1, P.X + B2, P.Y + Dy * A2);
+  end;
+
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+
+    // de weg met een gestippelde middenlijn
+    Pen.Style := psSolid;
+    Pen.Width := 16;
+    Pen.Color := $00A0A0A0;
+    Pen.JoinStyle := pjsRound;
+    Pen.EndCap := pecRound;
+    Polyline(WG_PAD);
+    Pen.Width := 1;
+    Pen.Color := clWhite;
+    Pen.Style := psDot;
+    Polyline(WG_PAD);
+    Pen.Style := psSolid;
+
+    // start (groene streep) en finish (geblokte vlag)
+    Brush.Style := bsSolid;
+    Pen.Color := clGreen;
+    Brush.Color := clLime;
+    Rectangle(WG_PAD[0].X - 2, WG_PAD[0].Y - 8, WG_PAD[0].X + 3, WG_PAD[0].Y + 9);
+    P := WG_PAD[High(WG_PAD)];
+    Pen.Color := clBlack;
+    Brush.Color := clWhite;
+    Rectangle(P.X - 4, P.Y - 8, P.X + 5, P.Y + 9);
+    Brush.Color := clBlack;
+    for i := 0 to 3 do
+      FillRect(Rect(P.X - 4 + 4 * (i mod 2), P.Y - 8 + 4 * i, P.X + 4 * (i mod 2), P.Y - 4 + 4 * i));
+    Brush.Style := bsClear;
+    if Outputs[0] then Font.Color := clRed else Font.Color := clGreen;
+    TextOut(WG_PAD[0].X - TextWidth('START') div 2, WG_PAD[0].Y - 22, 'START');
+    if Outputs[2] then Font.Color := clRed else Font.Color := clBlack;
+    TextOut(P.X - TextWidth('FINISH') div 2, P.Y + 9, 'FINISH');
+
+    // paaltjes 1..5 naast de weg; het lampje is rood als de wagen er staat
+    for N := 1 to 5 do
+    begin
+      P := PointAt(PaaltjePos(N), Dx, Dy);
+      if Dy = 0 then
+        Dec(P.Y, 13)
+      else if P.X > BW div 2 then
+        Inc(P.X, 13)
+      else
+        Dec(P.X, 13);
+      Brush.Style := bsSolid;
+      Pen.Color := clGray;
+      if PaaltjeBij = N then Brush.Color := clRed else Brush.Color := clWhite;
+      Ellipse(P.X - 4, P.Y - 4, P.X + 5, P.Y + 5);
+      Brush.Style := bsClear;
+      if PaaltjeBij = N then Font.Color := clRed else Font.Color := clNavy;
+      TextOut(P.X + 6, P.Y - 6, IntToStr(N));
+    end;
+
+    // aansluitingen: links Start, Tel, Finish (uitgangen), rechts V en A (ingangen)
+    for i := 0 to 2 do
+    begin
+      y := PinY(i);
+      Brush.Style := bsSolid;
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(1, y, 8, y + 7);
+      Brush.Style := bsClear;
+      if Outputs[i] then Font.Color := clRed else Font.Color := clNavy;
+      TextOut(36, y - 2, Namen[i]);
+    end;
+    for i := 0 to 1 do
+    begin
+      y := PinY(i);
+      Brush.Style := bsSolid;
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(BW - 8, y, BW - 1, y + 7);
+      Brush.Style := bsClear;
+      if FIn[i] then Font.Color := clRed else Font.Color := clNavy;
+      if i = 0 then Lbl := 'V' else Lbl := 'A';
+      TextOut(BW - 18 - TextWidth(Lbl), y - 2, Lbl);
+    end;
+
+    // de wagen (bovenaanzicht), de neus wijst altijd naar de finish
+    P := PointAt(FPos, Dx, Dy);
+    HalfL := 11;     // halve lengte
+    HalfB := 6;      // halve breedte
+    Pen.Color := clBlack;
+    Brush.Style := bsSolid;
+    Brush.Color := clBlack;
+    Blok(-9, -HalfB - 2, -3, -HalfB + 1);     // wielen
+    Blok(-9, HalfB - 1, -3, HalfB + 2);
+    Blok(3, -HalfB - 2, 9, -HalfB + 1);
+    Blok(3, HalfB - 1, 9, HalfB + 2);
+    Pen.Color := $00000080;
+    Brush.Color := $002828E0;           // rode carrosserie
+    Blok(-HalfL, -HalfB, HalfL, HalfB);
+    Brush.Color := $00F0D8A0;           // voorruit
+    Blok(3, -HalfB + 2, 7, HalfB - 2);
+    Brush.Color := $00C0A070;           // achterruit
+    Blok(-8, -HalfB + 2, -5, HalfB - 2);
+    if Direction < 0 then
+    begin
+      // achteruitrijlichten
+      Pen.Color := clGray;
+      Brush.Color := clWhite;
+      Blok(-HalfL - 2, -HalfB + 1, -HalfL + 1, -HalfB + 4);
+      Blok(-HalfL - 2, HalfB - 4, -HalfL + 1, HalfB - 1);
+    end;
+
+    if Fault then
+    begin
+      Brush.Style := bsClear;
+      Font.Size := 12;
+      Font.Color := clRed;
+      TextOut(BW div 2 - 2, 0, '!');
+    end;
+    if FSelect or FSelected then
+    begin
+      Brush.Style := bsClear;
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+    Pen.Width := 1;
+  end;
+end;
+
+function TjanSimWagen.StatusText: string;
+var
+  N: Integer;
+begin
+  N := PaaltjeBij;
+  if Fault then
+    Result := Tr(FTaal, 'V en A samen aan: blijft staan', 'V and A on together: stands still',
+                        'V et A ensemble : reste immobile', 'V und A zusammen ein: bleibt stehen')
+  else if Outputs[0] and (Direction <= 0) then
+    Result := Tr(FTaal, 'staat aan de start (Start aan)', 'at the start (Start on)',
+                        'au départ (Start actif)', 'steht am Start (Start ein)')
+  else if Outputs[2] and (Direction >= 0) then
+    Result := Tr(FTaal, 'staat aan de finish (Finish aan)', 'at the finish (Finish on)',
+                        'à l''arrivée (Finish actif)', 'steht im Ziel (Finish ein)')
+  else if N > 0 then
+    Result := Format(Tr(FTaal, 'bij paaltje %d (Tel aan)', 'at post %d (Tel on)',
+                               'au poteau %d (Tel actif)', 'an Pfosten %d (Tel ein)'), [N])
+  else if Direction > 0 then
+    Result := Tr(FTaal, 'rijdt vooruit', 'driving forward', 'roule en avant', 'fährt vorwärts')
+  else if Direction < 0 then
+    Result := Tr(FTaal, 'rijdt achteruit', 'driving backward', 'roule en arrière', 'fährt rückwärts')
+  else
+    Result := Tr(FTaal, 'staat stil', 'standing still', 'immobile', 'steht still');
+end;
+
+procedure TjanSimWagen.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'V: vooruit, A: achteruit' + #13#10 + 'Start/Finish: begin en einde van de weg' + #13#10 +
+              'Tel: een puls bij elk paaltje (1-5)',
+              'V: forward, A: backward' + #13#10 + 'Start/Finish: begin and end of the road' + #13#10 +
+              'Tel: a pulse at each post (1-5)',
+              'V : en avant, A : en arrière' + #13#10 + 'Start/Finish : début et fin de la route' + #13#10 +
+              'Tel : une impulsion à chaque poteau (1-5)',
+              'V: vorwärts, A: rückwärts' + #13#10 + 'Start/Finish: Anfang und Ende der Straße' + #13#10 +
+              'Tel: ein Impuls an jedem Pfosten (1-5)');
 end;
 
 

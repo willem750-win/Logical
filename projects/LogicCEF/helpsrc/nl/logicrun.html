@@ -4,6 +4,8 @@
   stappen; elke stap zet een aantal uitgangen aan. Zo maak je een verkeerslicht, een looplicht of een
   teller zonder één poort te gebruiken.</p>
 
+  <div class="tip"><strong>Voor gevorderden:</strong> LogicRun is een uitbreiding. Begin ermee als je de lessen 1 tot 11 van het <a href="leerpad.html">leerpad</a> kent: daar leer je eerst schakelen met poorten en draden. De lessen 12 tot 17 gaan over LogicRun.</div>
+
   <figure>
     <img src="../img/les12-logicrun.png" alt="LogicRun-blok met twee drukknoppen en drie leds">
     <figcaption>Een LogicRun-blok: de drukknoppen zitten op DIN1 (start/stop) en DIN3 (+1), de leds op
@@ -41,7 +43,7 @@
     <tr><td><b>Stap</b></td><td>Eén stap verder, handig om je programma stap voor stap te controleren.</td></tr>
     <tr><td><b>Stapduur</b></td><td>Hoe lang één tijdseenheid duurt, in milliseconden (500&nbsp;ms = een halve seconde).</td></tr>
     <tr><td><b>Herhalen</b></td><td>Aan: na de laatste stap begint het programma opnieuw. Uit: het stopt bij de laatste stap.</td></tr>
-    <tr><td><b>Voorbeeld</b> en <b>Laden</b></td><td>Een kant-en-klaar programma laden (zie <a href="#voorbeelden">Voorbeelden</a>).</td></tr>
+    <tr><td><b>Voorbeeld</b> en <b>Laden</b></td><td>Een kant-en-klaar programma laden: kies het in de lijst en klik op <b>Laden</b>. Bij het openen van het venster staat de lijst op <i>&mdash; kies &mdash;</i> (zie <a href="#voorbeelden">Voorbeelden</a>).</td></tr>
     <tr><td><b>+ stap</b> en <b>- stap</b></td><td>Een stap toevoegen na de gekozen stap, of de gekozen stap verwijderen.</td></tr>
     <tr><td><b>DIN1</b> tot <b>DIN4</b></td><td>Wat elke ingang doet.</td></tr>
     <tr><td><b>wacht op</b></td><td>Klik in deze kolom om een stap te laten wachten op een ingang of op een aantal pulsen (zie <a href="#wacht">Wachten</a>).</td></tr>
@@ -121,6 +123,8 @@
     <tr><td>Wagentje</td><td>UIT0 vooruit tot DIN3 aan is (eindschakelaar), even stil, UIT1 achteruit tot DIN4 aan is; DIN1 aan/uit. Verbind UIT0 met R en UIT1 met L van een motor.</td></tr>
     <tr><td>Inpakmachine</td><td>UIT0 lopende band tot er 5 pulsen op DIN2 geweest zijn (dozen), UIT1 inpakken (2 s), UIT2 zet een teller op nul; DIN1 aan/uit.</td></tr>
     <tr><td>Op en neer tellen</td><td>T1 telt op van 0 tot F, T2 telt tegelijk af van F tot 0. Verbind T1 en T2 met een display.</td></tr>
+    <tr><td>Persoon heen en weer</td><td>UIT1 naar rechts tot DIN4 aan is (S2), 2 s stil, UIT0 naar links tot DIN3 aan is (S1), 2 s stil; DIN1 aan/uit. Hetzelfde programma als in <a href="les16.html">les 16</a>: verbind UIT0 met L en UIT1 met R van een <a href="uitvoer.html#persoon">persoon</a>, S1 met DIN3 en S2 met DIN4.</td></tr>
+    <tr><td>Wagentje op parcours</td><td>UIT0 vooruit tot er 3 pulsen op DIN3 geweest zijn (paaltje 3), 2 s stil, vooruit tot DIN4 aan is (Finish), 2 s stil, UIT1 achteruit tot DIN2 aan is (Start); DIN1 aan/uit. Hetzelfde programma als in <a href="les17.html">les 17</a>: verbind UIT0 met V en UIT1 met A van een <a href="uitvoer.html#wagen">wagentje</a>, Start met DIN2, Tel met DIN3 en Finish met DIN4.</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> een voorbeeld laden vervangt het programma. Met <kbd>Ctrl</kbd>+<kbd>Z</kbd>
   krijg je het vorige programma terug.</div>

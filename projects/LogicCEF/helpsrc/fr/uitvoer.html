@@ -64,7 +64,7 @@ $1  <p id="led"><b>LED :</b> cliquez avec le bouton droit sur une lampe et chois
 
   <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Personne</h2>
   <p>Une personne qui marche vers la gauche et vers la droite sur un sol. Vous la placez avec le bouton
-  <a href="onderdelenbalk.html">Personne</a> de la barre des composants, sous le voltmètre. Ses entrées sont à droite&nbsp;: <b>L</b> la fait
+  <a href="onderdelenbalk.html">Personne</a> de la barre des composants, sous le voltmètre (le demi-bouton de gauche). Ses entrées sont à droite&nbsp;: <b>L</b> la fait
   marcher vers la gauche, <b>R</b> vers la droite. Aux deux bouts du sol se trouve une fin de course avec un voyant&nbsp;;
   leurs sorties sont à gauche&nbsp;: <b>S1</b> est active quand elle est tout à gauche, <b>S2</b> quand elle est tout à
   droite.</p>
@@ -79,6 +79,26 @@ $1  <p id="led"><b>LED :</b> cliquez avec le bouton droit sur une lampe et chois
       alors attendre que la personne soit arrivée. Voir la <a href="les16.html">leçon 16</a>.</li>
     <li>La personne n&rsquo;a pas besoin d&rsquo;alimentation. Après l&rsquo;ouverture d&rsquo;un panneau, elle est toujours à
       gauche. Clic droit, puis <b>Retour à gauche (S1)</b> pour la remettre vous-même au départ.</li>
+  </ul>
+
+  <h2 id="wagen"><img src="../img/pal-wagen.png" class="ico" alt="">Chariot</h2>
+  <p>Un chariot (vu de dessus) qui roule sur une route sinueuse, de <b>START</b> à <b>FINISH</b>. Vous le placez avec le
+  bouton <a href="onderdelenbalk.html">Chariot</a> de la barre des composants, à droite du bouton Personne. Les entrées
+  sont à droite&nbsp;: <b>V</b> le fait rouler en avant (vers l&rsquo;arrivée), <b>A</b> en arrière. À gauche se trouvent
+  trois sorties&nbsp;: <b>Start</b> est active quand il est au départ, <b>Finish</b> quand il est à l&rsquo;arrivée, et
+  <b>Tel</b> (compter) donne une courte impulsion chaque fois que le chariot passe l&rsquo;un des 5 poteaux le long de la
+  route.</p>
+  <figure>
+    <img src="../img/wagen-voorbeeld.png" alt="Un chariot sur une route sinueuse avec cinq poteaux">
+    <figcaption>Le chariot roule en avant&nbsp;: V est active. Le voyant d&rsquo;un poteau devient rouge quand le chariot le passe.</figcaption>
+  </figure>
+  <ul>
+    <li>Les deux inactives&nbsp;: il reste immobile. V et A <b>toutes deux actives</b>&nbsp;: il reste sur place et un
+      <b>!</b> rouge apparaît. En marche arrière, les feux de recul blancs s&rsquo;allument.</li>
+    <li>Reliez Tel à une entrée de <a href="logicrun.html">LogicRun</a> et choisissez <b>N x DIN</b> dans un pas&nbsp;: le
+      chariot roule alors jusqu&rsquo;au N-ième poteau. Voir la <a href="les17.html">leçon 17</a>.</li>
+    <li>Le chariot n&rsquo;a pas besoin d&rsquo;alimentation. Après l&rsquo;ouverture d&rsquo;un panneau, il est toujours au
+      départ. Clic droit et <b>Retour au départ</b> pour le remettre vous-même.</li>
   </ul>
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">Afficheur 7 segments</h2>

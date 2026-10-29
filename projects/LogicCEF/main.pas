@@ -1498,9 +1498,10 @@ begin
   btLogicRun.OnClick := @btLogicRunClick;
   btLogicRun.OnMouseEnter := @btSimulateMouseEnter;
   btLogicRun.HelpKeyword := 'logicrun';
-  // Instellingen > Algemeen: knop LogicRun en balkknop Persoon aan/uit
+  // Instellingen > Algemeen: knop LogicRun en balkknoppen Persoon en Wagentje aan/uit
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
+  Box.KWagen := Grid.KLogicRun;
   Grid.OnKLogicRunChange := @GridKLogicRunChange;
   UpdateUndoHints;
   UpdateUndoButtons;
@@ -1585,6 +1586,7 @@ begin
   if not Assigned(btLogicRun) then Exit;
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
+  Box.KWagen := Grid.KLogicRun;
   if (not Grid.KLogicRun) and Assigned(FLogicRunForm) then
     FLogicRunForm.Hide;
 end;
@@ -2230,14 +2232,17 @@ begin
   OnHelpOpenPanel := @OpenPanelFromHelp;
   {$ENDIF}
 
-  // keuze van de schemasymbolen, rechts in TitelBar2 naast Info
+  // keuze van de schemasymbolen, rechts in TitelBar2 links van de knop Help
+  // (brInfo1, de meest linkse van de rechts uitgelijnde knoppen)
   FcbSymbolen := TComboBox.Create(Self);
   FcbSymbolen.Parent := TitelBar2;
   FcbSymbolen.Style := csDropDownList;
   FcbSymbolen.Width := 96;
   FcbSymbolen.Top := 1;
-  FcbSymbolen.Left := btInfo2.Left - FcbSymbolen.Width - 6;
-  FcbSymbolen.Anchors := [akTop, akRight];   // blijft links van Info bij een breder venster
+  FcbSymbolen.Anchors := [akTop, akRight];   // blijft links van Help bij een breder venster
+  FcbSymbolen.AnchorSideRight.Control := brInfo1;
+  FcbSymbolen.AnchorSideRight.Side := asrLeft;
+  FcbSymbolen.BorderSpacing.Right := 6;
   FcbSymbolen.ParentFont := False;
   FcbSymbolen.Font.Color := clWindowText;
   FcbSymbolen.Items.Add('Afbeelding');

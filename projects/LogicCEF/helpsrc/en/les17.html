@@ -1,0 +1,81 @@
+<!-- titel: Lesson 17 - A cart on a road -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 17 of 17</p>
+  <h1>Driving a cart along a road</h1>
+  <div class="goal"><strong>Goal:</strong> counting with LogicRun: a cart drives along a winding road and stops at the
+  third post. Start and Finish report the beginning and the end of the road.</div>
+
+  <p><a class="open" href="../../panels/lessen/les17-wagentje.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les17-wagentje.png" alt="Switch, LogicRun block and a cart on a winding road">
+    <figcaption>Step 1: UIT0 is on, the cart drives forward and LogicRun counts the posts.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): the program on or off.</li>
+    <li>The <a href="logicrun.html">LogicRun block</a> with 6 steps.</li>
+    <li>A <a href="uitvoer.html#wagen">cart</a> on a winding road from <b>START</b> to <b>FINISH</b>, with 5 numbered
+      posts. The inputs are on the right: <b>V</b> (forward, towards the finish) and <b>A</b> (backward). On the left
+      there are three outputs: <b>Start</b> is on when the cart is at the start, <b>Finish</b> when it is at the finish,
+      and <b>Tel</b> (count) gives a short pulse each time the cart passes a post.</li>
+    <li>The wires: <b>UIT0</b> to V, <b>UIT1</b> to A, <b>Start</b> to DIN2, <b>Tel</b> to DIN3 and <b>Finish</b>
+      to DIN4.</li>
+  </ul>
+
+  <h2>The program</h2>
+  <table>
+    <tr><th>Step</th><th>Output</th><th>Wait for</th><th>What happens?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3 x DIN3</td><td>The cart drives forward. After the third post it goes to the next step.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>It stands still for 2 seconds (time 4 &times; 500 ms), for example to unload.</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN4 on</td><td>It drives on until Finish comes on.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>Another 2 seconds still.</td></tr>
+    <tr><td>5</td><td>UIT1</td><td>DIN2 on</td><td>It drives backward until Start comes on.</td></tr>
+    <tr><td>6</td><td>-</td><td>-</td><td>2 seconds still; then it starts again.</td></tr>
+  </table>
+
+  <h2>How does LogicRun count?</h2>
+  <p>In the <b>wait for</b> column, step 1 shows <b>3 x DIN3</b>. Each time the cart has passed a post and <b>Tel</b>
+  goes off again, LogicRun adds one. At the third pulse the step is done. In every step the counting starts again at 0.
+  This is how a real machine measures a distance: a sensor counts the holes in a wheel, or a lift counts the floors it
+  passes.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and turn the switch on: the cart drives forward.</li>
+    <li>Watch the posts: the lamp turns red when the cart passes, and <b>Tel</b> turns red for a moment too. After post 3
+      it stops.</li>
+    <li>Open the LogicRun window (double-click the block). In step 1 you see <b>3 x DIN3</b> in the <b>wait for</b>
+      column.</li>
+    <li>Turn the switch off: everything stops and the cart stays where it is. Right-click the cart and choose <b>Back to
+      the start</b> to put it back at the beginning.</li>
+  </ol>
+
+  <h2>Exercise 1: two stops</h2>
+  <p>Make the cart stop at post 2 and at post 4 on the way out.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Set the condition of step 1 to <b>2 x DIN3</b>. Choose step 2 and click <b>+ step</b> twice. Make the first new
+    step: <b>UIT0</b> on, wait for <b>2 x DIN3</b> (posts 3 and 4). Give the second new step time <b>4</b>, without an
+    output: that is the second stop.</p>
+  </details>
+
+  <h2>Exercise 2: stopping on the way back</h2>
+  <p>On the way back the cart must also stop for 2 seconds at post 3.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Driving backward, the cart passes post 5 first, then 4 and then 3. Set the condition of step 5 to
+    <b>3 x DIN3</b>. Choose step 5 and click <b>+ step</b> twice: a step with time <b>4</b> without an output, and a step
+    with <b>UIT1</b> that waits for <b>DIN2 on</b> (back to the start).</p>
+  </details>
+
+  <h2>Exercise 3: how many pulses?</h2>
+  <p>How many pulses does DIN3 get when the cart drives from the start to the finish in one go? And what happens if you
+  set step 1 to <b>6 x DIN3</b>?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Five: there are 5 posts along the road. With <b>6 x DIN3</b> the sixth pulse never comes: the cart drives to the
+    finish and stays there, while LogicRun keeps waiting in step 1. When you make a machine count, check that the number
+    is possible.</p>
+  </details>
+
+  <div class="pager"><a href="les16.html">&larr; Lesson 16: A person walking back and forth</a><a href="leerpad.html">Learning path &rarr;</a></div>

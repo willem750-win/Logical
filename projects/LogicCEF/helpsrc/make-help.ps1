@@ -59,7 +59,7 @@ $Nav = @{
 
 # Pictogram per navigatie-item
 $NavIcon = @{
-  leerpad = 'knop-paneelkeuze';
+  leerpad = 'knop-help';
   knoppen = 'knop-simuleren'; paneel = 'knop-raster'; onderdelenbalk = 'pal-verbinding';
   invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus';
   verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren'; logicrun = 'knop-logicrun';

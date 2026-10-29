@@ -138,6 +138,8 @@ begin
       Result := 'uitvoer';
     'motor':
       begin Result := 'uitvoer'; AAnchor := 'motor'; end;
+    'wagen':
+      begin Result := 'uitvoer'; AAnchor := 'wagen'; end;
     'persoon':
       begin Result := 'uitvoer'; AAnchor := 'persoon'; end;
     'voeding', 'rail':
@@ -533,6 +535,7 @@ begin
     'tjanlogicrun':     AControl.HelpKeyword := 'logicrun';
     'tjansimmotor':     AControl.HelpKeyword := 'motor';
     'tjansimpersoon':   AControl.HelpKeyword := 'persoon';
+    'tjansimwagen':     AControl.HelpKeyword := 'wagen';
   end;
 end;
 

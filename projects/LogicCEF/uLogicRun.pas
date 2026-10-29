@@ -69,6 +69,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    procedure DoShow; override;
   public
     constructor CreateFor(AOwner: TComponent; AGrid: TjanGridS; ABox: TjanSimLogicBox);
     // taal: 'NL', 'ENG', 'FR' of 'DU'
@@ -261,6 +262,8 @@ begin
   SG.Cells[ColWacht, 0] := T('wacht op', 'wait for', 'attendre', 'warten auf');
   Keep := CbEx.ItemIndex;
   CbEx.Items.Clear;
+  // eerste regel is geen voorbeeld: zo lijkt het niet alsof er al één geladen is
+  CbEx.Items.Add(T('— kies —', '— choose —', '— choisir —', '— wählen —'));
   CbEx.Items.Add(T('Verkeerslicht', 'Traffic light', 'Feu tricolore', 'Ampel'));
   CbEx.Items.Add(T('Looplicht', 'Running light', 'Chenillard', 'Lauflicht'));
   CbEx.Items.Add(T('Motor links/rechts', 'Motor left/right', 'Moteur gauche/droite', 'Motor links/rechts'));
@@ -268,6 +271,8 @@ begin
   CbEx.Items.Add(T('Wagentje', 'Cart', 'Chariot', 'Wagen'));
   CbEx.Items.Add(T('Inpakmachine', 'Packing machine', 'Emballeuse', 'Verpackungsmaschine'));
   CbEx.Items.Add(T('Op en neer tellen', 'Count up and down', 'Compter et décompter', 'Auf- und abwärts zählen'));
+  CbEx.Items.Add(T('Persoon heen en weer', 'Person back and forth', 'Personne aller-retour', 'Person hin und her'));
+  CbEx.Items.Add(T('Wagentje op parcours', 'Cart on a road', 'Chariot sur un parcours', 'Wagen auf der Strecke'));
   if Keep < 0 then Keep := 0;
   CbEx.ItemIndex := Keep;
   for i := 0 to 3 do
@@ -354,6 +359,8 @@ begin
     FBlock.OnChange := nil;
     FBlock.RemoveFreeNotification(Self);
   end;
+  if (FBlock <> ABlock) and (CbEx.Items.Count > 0) then
+    CbEx.ItemIndex := 0;
   FBlock := ABlock;
   if FBlock <> nil then
   begin
@@ -377,6 +384,14 @@ begin
     FBlock := nil;
     Bind(nil);
   end;
+end;
+
+// bij elke keer openen staat de voorbeeldenlijst weer op "kies"
+procedure TLogicRunForm.DoShow;
+begin
+  if CbEx.Items.Count > 0 then
+    CbEx.ItemIndex := 0;
+  inherited DoShow;
 end;
 
 procedure TLogicRunForm.PollTick(Sender: TObject);
@@ -650,22 +665,29 @@ begin
   if FBlock = nil then Exit;
   FBlock.StopRun;
   case CbEx.ItemIndex of
+    // 0 = "kies": niets laden
     // UIT0 rood, UIT1 oranje, UIT2 groen
-    0: Fill([1, 4, 2], [6, 6, 2], 500);
-    1: Fill([1, 2, 4, 8, 16, 32, 64, 128], [1, 1, 1, 1, 1, 1, 1, 1], 200);
+    1: Fill([1, 4, 2], [6, 6, 2], 500);
+    2: Fill([1, 2, 4, 8, 16, 32, 64, 128], [1, 1, 1, 1, 1, 1, 1, 1], 200);
     // UIT0 motor links, UIT1 motor rechts
-    2: Fill([1, 0, 2, 0], [4, 1, 4, 1], 500);
-    3: Fill([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    3: Fill([1, 0, 2, 0], [4, 1, 4, 1], 500);
+    4: Fill([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 500);
     // wagentje: UIT0 vooruit tot DIN3 (eindschakelaar), 1 s stil, UIT1 achteruit
     // tot DIN4, 1 s stil; DIN1 aan/uit
-    4: FBlock.SetProgramText('500;1;4;0;0;0;1:1:1:2:1,0:2,2:1:1:3:1,0:2');
+    5: FBlock.SetProgramText('500;1;4;0;0;0;1:1:1:2:1,0:2,2:1:1:3:1,0:2');
     // inpakmachine: UIT0 band tot 5 pulsen op DIN2 (dozen), UIT1 lamp
     // inpakken 2 s, UIT2 teller op nul; DIN1 aan/uit
-    5: FBlock.SetProgramText('500;1;4;0;0;0;1:1:3:1:5,2:4,4:1');
+    6: FBlock.SetProgramText('500;1;4;0;0;0;1:1:3:1:5,2:4,4:1');
     // twee displays: T1 (UIT0..3) telt op van 0 tot F, T2 (UIT4..7) telt af
-    6: Fill([$F0, $E1, $D2, $C3, $B4, $A5, $96, $87, $78, $69, $5A, $4B, $3C, $2D, $1E, $0F],
+    7: Fill([$F0, $E1, $D2, $C3, $B4, $A5, $96, $87, $78, $69, $5A, $4B, $3C, $2D, $1E, $0F],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 500);
+    // persoon (les 16): UIT1 naar rechts tot S2 (DIN4), 2 s stil, UIT0 naar
+    // links tot S1 (DIN3), 2 s stil; DIN1 aan/uit
+    8: FBlock.SetProgramText('500;1;4;0;0;0;2:1:1:3:1,0:4,1:1:1:2:1,0:4');
+    // wagentje (les 17): UIT0 vooruit tot 3 pulsen op DIN3 (Tel, paaltje 3), 2 s,
+    // vooruit tot DIN4 (Finish), 2 s, UIT1 achteruit tot DIN2 (Start), 2 s
+    9: FBlock.SetProgramText('500;1;4;0;0;0;1:1:3:2:3,0:4,1:1:1:3:1,0:4,2:1:1:1:1,0:4');
   end;
 end;
 

@@ -4,6 +4,8 @@
   steps; each step switches a number of outputs on. That way you build a traffic light, a running light or a
   counter without using a single gate.</p>
 
+  <div class="tip"><strong>For advanced users:</strong> LogicRun is an extension. Start with it once you know lessons 1 to 11 of the <a href="leerpad.html">learning path</a>: there you first learn switching with gates and wires. Lessons 12 to 17 are about LogicRun.</div>
+
   <figure>
     <img src="../img/les12-logicrun.png" alt="LogicRun block with two push buttons and three LEDs">
     <figcaption>A LogicRun block: the push buttons are on DIN1 (start/stop) and DIN3 (+1), the LEDs on
@@ -41,7 +43,7 @@
     <tr><td><b>Step</b></td><td>One step further, useful to check your program step by step.</td></tr>
     <tr><td><b>Step time</b></td><td>How long one time unit lasts, in milliseconds (500&nbsp;ms = half a second).</td></tr>
     <tr><td><b>Repeat</b></td><td>On: after the last step the program starts again. Off: it stops at the last step.</td></tr>
-    <tr><td><b>Example</b> and <b>Load</b></td><td>Load a ready-made program (see <a href="#voorbeelden">Examples</a>).</td></tr>
+    <tr><td><b>Example</b> and <b>Load</b></td><td>Load a ready-made program: choose it in the list and click <b>Load</b>. When the window opens, the list shows <i>&mdash; choose &mdash;</i> (see <a href="#voorbeelden">Examples</a>).</td></tr>
     <tr><td><b>+ step</b> and <b>- step</b></td><td>Add a step after the selected step, or delete the selected step.</td></tr>
     <tr><td><b>DIN1</b> to <b>DIN4</b></td><td>What each input does.</td></tr>
     <tr><td><b>wait for</b></td><td>Click in this column to make a step wait for an input or a number of pulses (see <a href="#wacht">Waiting</a>).</td></tr>
@@ -121,6 +123,8 @@
     <tr><td>Cart</td><td>UIT0 forward until DIN3 is on (limit switch), a short stop, UIT1 backward until DIN4 is on; DIN1 on/off. Connect UIT0 to R and UIT1 to L of a motor.</td></tr>
     <tr><td>Packing machine</td><td>UIT0 conveyor belt until 5 pulses have arrived on DIN2 (boxes), UIT1 packing (2 s), UIT2 resets a counter; DIN1 on/off.</td></tr>
     <tr><td>Count up and down</td><td>T1 counts up from 0 to F, T2 counts down from F to 0 at the same time. Connect T1 and T2 to a display.</td></tr>
+    <tr><td>Person back and forth</td><td>UIT1 to the right until DIN4 is on (S2), 2 s stop, UIT0 to the left until DIN3 is on (S1), 2 s stop; DIN1 on/off. The same program as in <a href="les16.html">lesson 16</a>: connect UIT0 to L and UIT1 to R of a <a href="uitvoer.html#persoon">person</a>, S1 to DIN3 and S2 to DIN4.</td></tr>
+    <tr><td>Cart on a road</td><td>UIT0 forward until there have been 3 pulses on DIN3 (post 3), 2 s stop, forward until DIN4 is on (Finish), 2 s stop, UIT1 backward until DIN2 is on (Start); DIN1 on/off. The same program as in <a href="les17.html">lesson 17</a>: connect UIT0 to V and UIT1 to A of a <a href="uitvoer.html#wagen">cart</a>, Start to DIN2, Tel to DIN3 and Finish to DIN4.</td></tr>
   </table>
   <div class="tip"><strong>Tip:</strong> loading an example replaces the program. With <kbd>Ctrl</kbd>+<kbd>Z</kbd>
   you get the previous program back.</div>

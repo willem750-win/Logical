@@ -1,0 +1,82 @@
+<!-- titel: Lektion 17 - Ein Wagen auf der Strecke -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 17 von 17</p>
+  <h1>Einen Wagen über eine Strecke fahren lassen</h1>
+  <div class="goal"><strong>Ziel:</strong> mit LogicRun zählen: Ein Wagen fährt über eine kurvige Straße und hält am
+  dritten Pfosten. Start und Finish melden Anfang und Ende der Straße.</div>
+
+  <p><a class="open" href="../../panels/lessen/les17-wagentje.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les17-wagentje.png" alt="Schalter, LogicRun-Block und ein Wagen auf einer kurvigen Straße">
+    <figcaption>Schritt 1: UIT0 ist ein, der Wagen fährt vorwärts und LogicRun zählt die Pfosten.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Einen <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): das Programm ein
+      oder aus.</li>
+    <li>Den <a href="logicrun.html">LogicRun-Block</a> mit 6 Schritten.</li>
+    <li>Einen <a href="uitvoer.html#wagen">Wagen</a> auf einer kurvigen Straße von <b>START</b> bis <b>FINISH</b>, mit 5
+      nummerierten Pfosten. Rechts sind die Eingänge: <b>V</b> (vorwärts, zum Ziel) und <b>A</b> (rückwärts). Links sind
+      drei Ausgänge: <b>Start</b> ist ein, wenn der Wagen am Start steht, <b>Finish</b>, wenn er im Ziel steht, und
+      <b>Tel</b> (zählen) gibt einen kurzen Impuls, jedes Mal wenn der Wagen an einem Pfosten vorbeifährt.</li>
+    <li>Die Drähte: <b>UIT0</b> zu V, <b>UIT1</b> zu A, <b>Start</b> zu DIN2, <b>Tel</b> zu DIN3 und <b>Finish</b>
+      zu DIN4.</li>
+  </ul>
+
+  <h2>Das Programm</h2>
+  <table>
+    <tr><th>Schritt</th><th>Ausgang</th><th>Warten auf</th><th>Was passiert?</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3 x DIN3</td><td>Der Wagen fährt vorwärts. Nach dem dritten Pfosten geht es zum nächsten Schritt.</td></tr>
+    <tr><td>2</td><td>-</td><td>-</td><td>Er steht 2 Sekunden still (Zeit 4 &times; 500 ms), zum Beispiel zum Abladen.</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>DIN4 ein</td><td>Er fährt weiter vorwärts, bis Finish ein ist.</td></tr>
+    <tr><td>4</td><td>-</td><td>-</td><td>Wieder 2 Sekunden still.</td></tr>
+    <tr><td>5</td><td>UIT1</td><td>DIN2 ein</td><td>Er fährt rückwärts zurück, bis Start ein ist.</td></tr>
+    <tr><td>6</td><td>-</td><td>-</td><td>2 Sekunden still; danach beginnt alles von vorn.</td></tr>
+  </table>
+
+  <h2>Wie zählt LogicRun?</h2>
+  <p>In der Spalte <b>warten auf</b> steht bei Schritt 1 <b>3 x DIN3</b>. Jedes Mal, wenn der Wagen an einem Pfosten
+  vorbei ist und <b>Tel</b> wieder aus geht, zählt LogicRun eins dazu. Beim dritten Impuls ist der Schritt fertig. In
+  jedem Schritt beginnt das Zählen wieder bei 0. So misst eine echte Maschine eine Strecke: Ein Sensor zählt die Löcher
+  in einem Rad, oder ein Aufzug zählt die Stockwerke, an denen er vorbeifährt.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein: Der Wagen fährt vorwärts.</li>
+    <li>Schauen Sie auf die Pfosten: Das Lämpchen wird rot, wenn der Wagen vorbeifährt, und auch <b>Tel</b> wird kurz rot.
+      Nach Pfosten 3 hält er an.</li>
+    <li>Öffnen Sie das LogicRun-Fenster (Doppelklick auf den Block). Bei Schritt 1 sehen Sie in der Spalte
+      <b>warten auf</b> <b>3 x DIN3</b>.</li>
+    <li>Schalten Sie den Schalter aus: Alles hält an und der Wagen bleibt stehen, wo er ist. Mit der rechten Maustaste auf
+      den Wagen und <b>Zurück zum Start</b> stellen Sie ihn wieder an den Anfang.</li>
+  </ol>
+
+  <h2>Aufgabe 1: zwei Haltestellen</h2>
+  <p>Lassen Sie den Wagen auf dem Hinweg an Pfosten 2 und an Pfosten 4 halten.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Setzen Sie die Bedingung von Schritt 1 auf <b>2 x DIN3</b>. Wählen Sie Schritt 2 und klicken Sie zweimal auf
+    <b>+ Schritt</b>. Der erste neue Schritt: <b>UIT0</b> ein, warten auf <b>2 x DIN3</b> (Pfosten 3 und 4). Geben Sie dem
+    zweiten neuen Schritt die Zeit <b>4</b>, ohne Ausgang: das ist die zweite Haltestelle.</p>
+  </details>
+
+  <h2>Aufgabe 2: auf dem Rückweg halten</h2>
+  <p>Auf dem Rückweg soll der Wagen auch 2 Sekunden an Pfosten 3 halten.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Rückwärts kommt der Wagen zuerst an Pfosten 5 vorbei, dann an 4 und dann an 3. Setzen Sie die Bedingung von
+    Schritt 5 auf <b>3 x DIN3</b>. Wählen Sie Schritt 5 und klicken Sie zweimal auf <b>+ Schritt</b>: ein Schritt mit der
+    Zeit <b>4</b> ohne Ausgang und ein Schritt mit <b>UIT1</b>, der auf <b>DIN2 ein</b> wartet (zurück zum Start).</p>
+  </details>
+
+  <h2>Aufgabe 3: wie viele Impulse?</h2>
+  <p>Wie viele Impulse bekommt DIN3, wenn der Wagen in einem Zug vom Start bis ins Ziel fährt? Und was passiert, wenn Sie
+  bei Schritt 1 <b>6 x DIN3</b> einstellen?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Fünf: An der Straße stehen 5 Pfosten. Mit <b>6 x DIN3</b> kommt der sechste Impuls nie: Der Wagen fährt bis ins
+    Ziel und bleibt dort stehen, während LogicRun in Schritt 1 weiter wartet. Wenn Sie eine Maschine zählen lassen,
+    prüfen Sie, ob die Zahl möglich ist.</p>
+  </details>
+
+  <div class="pager"><a href="les16.html">&larr; Lektion 16: Eine Person geht hin und her</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

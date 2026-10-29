@@ -64,7 +64,7 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
 
   <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Person</h2>
   <p>A person who walks left and right across a floor. You place him with the <a href="onderdelenbalk.html">Person</a>
-  button in the component bar, below the voltmeter. His inputs are on the right: <b>L</b> makes him walk left, <b>R</b> right. At both ends of the
+  button in the component bar, below the voltmeter (the left half button). His inputs are on the right: <b>L</b> makes him walk left, <b>R</b> right. At both ends of the
   floor there is a limit switch with a lamp; their outputs are on the left: <b>S1</b> is on when he is all the way to the
   left, <b>S2</b> when he is all the way to the right.</p>
   <figure>
@@ -77,6 +77,25 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
       wait until the person has arrived. See <a href="les16.html">lesson 16</a>.</li>
     <li>The person needs no power supply. After opening a panel he is always on the left. Right-click and choose
       <b>Back to the left (S1)</b> to put him back yourself.</li>
+  </ul>
+
+  <h2 id="wagen"><img src="../img/pal-wagen.png" class="ico" alt="">Cart</h2>
+  <p>A cart (seen from above) that drives along a winding road, from <b>START</b> to <b>FINISH</b>. You place it with the
+  <a href="onderdelenbalk.html">Cart</a> button in the component bar, to the right of the Person button. The inputs are on
+  the right: <b>V</b> makes it drive forward (towards the finish), <b>A</b> backward. On the left there are three outputs:
+  <b>Start</b> is on when it is at the start, <b>Finish</b> when it is at the finish, and <b>Tel</b> (count) gives a short
+  pulse each time the cart passes one of the 5 posts along the road.</p>
+  <figure>
+    <img src="../img/wagen-voorbeeld.png" alt="A cart on a winding road with five posts">
+    <figcaption>The cart drives forward: V is on. The lamp of a post turns red when the cart passes it.</figcaption>
+  </figure>
+  <ul>
+    <li>Both off: it stands still. V and A <b>both on</b>: it stays where it is and a red <b>!</b> appears. When it
+      drives backward, the white reversing lights are on.</li>
+    <li>Connect Tel to an input of <a href="logicrun.html">LogicRun</a> and choose <b>N x DIN</b> in a step: the cart
+      then drives to the N-th post. See <a href="les17.html">lesson 17</a>.</li>
+    <li>The cart needs no power supply. After opening a panel it is always at the start. Right-click and choose
+      <b>Back to the start</b> to put it back yourself.</li>
   </ul>
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>

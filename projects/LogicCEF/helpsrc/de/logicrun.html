@@ -4,6 +4,8 @@
   eine Folge von Schritten; jeder Schritt schaltet einige Ausgänge ein. So bauen Sie eine Ampel, ein Lauflicht
   oder einen Zähler, ohne ein einziges Gatter zu verwenden.</p>
 
+  <div class="tip"><strong>Für Fortgeschrittene:</strong> LogicRun ist eine Erweiterung. Beginnen Sie damit, wenn Sie die Lektionen 1 bis 11 des <a href="leerpad.html">Lernpfads</a> kennen: Dort lernen Sie zuerst das Schalten mit Gattern und Drähten. Die Lektionen 12 bis 17 behandeln LogicRun.</div>
+
   <figure>
     <img src="../img/les12-logicrun.png" alt="LogicRun-Block mit zwei Tastern und drei LEDs">
     <figcaption>Ein LogicRun-Block: die Taster sind an DIN1 (Start/Stopp) und DIN3 (+1), die LEDs an
@@ -41,7 +43,7 @@
     <tr><td><b>Schritt</b></td><td>Einen Schritt weiter, praktisch, um Ihr Programm Schritt für Schritt zu prüfen.</td></tr>
     <tr><td><b>Schrittzeit</b></td><td>Wie lange eine Zeiteinheit dauert, in Millisekunden (500&nbsp;ms = eine halbe Sekunde).</td></tr>
     <tr><td><b>Wiederholen</b></td><td>Ein: nach dem letzten Schritt beginnt das Programm von vorn. Aus: es hält beim letzten Schritt an.</td></tr>
-    <tr><td><b>Beispiel</b> und <b>Laden</b></td><td>Ein fertiges Programm laden (siehe <a href="#voorbeelden">Beispiele</a>).</td></tr>
+    <tr><td><b>Beispiel</b> und <b>Laden</b></td><td>Ein fertiges Programm laden: Wählen Sie es in der Liste und klicken Sie auf <b>Laden</b>. Beim Öffnen des Fensters zeigt die Liste <i>&mdash; wählen &mdash;</i> (siehe <a href="#voorbeelden">Beispiele</a>).</td></tr>
     <tr><td><b>+ Schritt</b> und <b>- Schritt</b></td><td>Einen Schritt nach dem gewählten Schritt einfügen oder den gewählten Schritt löschen.</td></tr>
     <tr><td><b>DIN1</b> bis <b>DIN4</b></td><td>Was jeder Eingang tut.</td></tr>
     <tr><td><b>warten auf</b></td><td>Klicken Sie in diese Spalte, damit ein Schritt auf einen Eingang oder eine Anzahl Impulse wartet (siehe <a href="#wacht">Warten</a>).</td></tr>
@@ -123,6 +125,8 @@
     <tr><td>Wagen</td><td>UIT0 vorwärts, bis DIN3 ein ist (Endschalter), kurzer Halt, UIT1 rückwärts bis DIN4; DIN1 Ein/Aus. Verbinden Sie UIT0 mit R und UIT1 mit L eines Motors.</td></tr>
     <tr><td>Verpackungsmaschine</td><td>UIT0 Förderband, bis 5 Impulse an DIN2 angekommen sind (Kartons), UIT1 Verpacken (2 s), UIT2 setzt einen Zähler auf null; DIN1 Ein/Aus.</td></tr>
     <tr><td>Auf- und abwärts zählen</td><td>T1 zählt von 0 bis F aufwärts, T2 gleichzeitig von F bis 0 abwärts. Verbinden Sie T1 und T2 mit einer Anzeige.</td></tr>
+    <tr><td>Person hin und her</td><td>UIT1 nach rechts, bis DIN4 ein ist (S2), 2 s Halt, UIT0 nach links bis DIN3 (S1), 2 s Halt; DIN1 Ein/Aus. Dasselbe Programm wie in <a href="les16.html">Lektion 16</a>: Verbinden Sie UIT0 mit L und UIT1 mit R einer <a href="uitvoer.html#persoon">Person</a>, S1 mit DIN3 und S2 mit DIN4.</td></tr>
+    <tr><td>Wagen auf der Strecke</td><td>UIT0 vorwärts, bis 3 Impulse an DIN3 waren (Pfosten 3), 2 s Halt, vorwärts bis DIN4 ein ist (Finish), 2 s Halt, UIT1 rückwärts bis DIN2 (Start); DIN1 Ein/Aus. Dasselbe Programm wie in <a href="les17.html">Lektion 17</a>: Verbinden Sie UIT0 mit V und UIT1 mit A eines <a href="uitvoer.html#wagen">Wagens</a>, Start mit DIN2, Tel mit DIN3 und Finish mit DIN4.</td></tr>
   </table>
   <div class="tip"><strong>Tipp:</strong> ein Beispiel zu laden ersetzt das Programm. Mit <kbd>Strg</kbd>+<kbd>Z</kbd>
   bekommen Sie das vorherige Programm zurück.</div>
