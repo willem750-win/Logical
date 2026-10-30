@@ -26009,6 +26009,32 @@ var
   {$IFDEF UNIX}
   MuziekProc: TProcess = nil;
   {$ENDIF}
+  // per noot de hele toon (met aanslag en uitsterven), één keer berekend:
+  // een nieuwe noot of een akkoord is dan alleen nog optellen, zodat de
+  // simulatie en LogicRun niet stilvallen tijdens het rekenen
+  MuziekToon: array[0..7] of array of Single;
+
+procedure MaakToonTabel;
+var
+  i, k, n: Integer;
+  t, Env: Double;
+begin
+  if Length(MuziekToon[0]) > 0 then Exit;
+  n := MZ_RATE * MZ_DUUR;
+  for k := 0 to 7 do
+  begin
+    SetLength(MuziekToon[k], n);
+    for i := 0 to n - 1 do
+    begin
+      t := i / MZ_RATE;
+      Env := 0.35 + 0.65 * Exp(-3 * t);
+      if t < 0.005 then Env := Env * t / 0.005;                    // geen klik bij het begin
+      if t > MZ_DUUR - 0.3 then Env := Env * (MZ_DUUR - t) / 0.3;  // uitdoven
+      MuziekToon[k][i] := Env * (Sin(2 * Pi * MZ_FREQ[k] * t) + 0.3 * Sin(4 * Pi * MZ_FREQ[k] * t)
+                                 + 0.1 * Sin(6 * Pi * MZ_FREQ[k] * t));
+    end;
+  end;
+end;
 
 // WAV (16 bit mono) met de noten van Mask: een aanslag, uitsterven tot een
 // zachtere toon en op het einde uitdoven, zoals een elektrische piano
@@ -26016,7 +26042,7 @@ function MaakNootWav(Mask: Integer): TBytes;
 var
   B: TBytes;
   i, k, n, Aantal: Integer;
-  t, v, Env: Double;
+  v, Schaal: Single;
   S: SmallInt;
 
   procedure Zet32(P: Integer; V: LongWord);
@@ -26047,18 +26073,15 @@ begin
   for k := 0 to 7 do
     if Mask and (1 shl k) <> 0 then Inc(Aantal);
   if Aantal = 0 then Aantal := 1;
+  MaakToonTabel;
+  Schaal := 0.6 * 32767 / (1.4 * Aantal);
   for i := 0 to n - 1 do
   begin
-    t := i / MZ_RATE;
     v := 0;
     for k := 0 to 7 do
       if Mask and (1 shl k) <> 0 then
-        v := v + Sin(2 * Pi * MZ_FREQ[k] * t) + 0.3 * Sin(4 * Pi * MZ_FREQ[k] * t)
-               + 0.1 * Sin(6 * Pi * MZ_FREQ[k] * t);
-    Env := 0.35 + 0.65 * Exp(-3 * t);
-    if t < 0.005 then Env := Env * t / 0.005;                    // geen klik bij het begin
-    if t > MZ_DUUR - 0.3 then Env := Env * (MZ_DUUR - t) / 0.3;  // uitdoven
-    S := Round(v / (1.4 * Aantal) * Env * 0.6 * 32767);
+        v := v + MuziekToon[k][i];
+    S := Round(v * Schaal);
     Zet16(44 + 2 * i, Word(S));
   end;
   Result := B;
@@ -26152,6 +26175,7 @@ begin
   FKlankTimer.Enabled := False;
   FKlankTimer.Interval := 20;
   FKlankTimer.OnTimer := KlankTick;
+  MaakToonTabel;   // meteen, dan hapert de eerste noot niet
 end;
 
 destructor TjanSimMuziek.Destroy;
