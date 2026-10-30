@@ -1,0 +1,91 @@
+<!-- titel: Leçon 18 - De la musique avec LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 18 sur 18</p>
+  <h1>Jouer une mélodie avec LogicRun</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> faire jouer une chanson à LogicRun sur une boîte à musique. Chaque
+  pas est une note, la durée du pas est le temps que la note sonne. Ensuite, vous faites de la musique vous-même.</div>
+
+  <p><a class="open" href="../../panels/lessen/les18-muziek.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les18-muziek.png" alt="Interrupteur, bloc LogicRun et boîte à musique avec 8 touches de piano">
+    <figcaption>UIT4 est active&nbsp;: la boîte à musique joue un sol.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous&nbsp;?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>)&nbsp;: la
+      musique en marche ou à l&rsquo;arrêt.</li>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 61 pas et une durée de 125 ms.</li>
+    <li>À droite, dans la sortie&nbsp;: une <a href="uitvoer.html#muziek">boîte à musique</a> avec 8 touches de piano. À
+      gauche se trouvent 8 entrées, une par touche.</li>
+    <li>L&rsquo;interrupteur est branché sur le rail +, la boîte à musique sur le rail &minus;&nbsp;; voir
+      <a href="voeding.html">Alimentation</a>.</li>
+    <li>Les fils&nbsp;: <b>UIT0</b> vers do, <b>UIT1</b> vers ré, et ainsi de suite jusqu&rsquo;à <b>UIT7</b> vers do'
+      (le do aigu).</li>
+  </ul>
+
+  <h2>do re mi</h2>
+  <p>Quelle sortie joue quelle note&nbsp;? Le nombre est la valeur de la sortie en tant que bit, comme dans la <a href="les15.html">leçon 15</a>.</p>
+  <table>
+    <tr><th>Note</th><td>do</td><td>re</td><td>mi</td><td>fa</td><td>sol</td><td>la</td><td>si</td><td>do'</td></tr>
+    <tr><th>Sortie</th><td>UIT0</td><td>UIT1</td><td>UIT2</td><td>UIT3</td><td>UIT4</td><td>UIT5</td><td>UIT6</td><td>UIT7</td></tr>
+    <tr><th>Nombre</th><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td></tr>
+  </table>
+  <h2>La musique en pas</h2>
+  <p>Un pas active une sortie&nbsp;: cette note sonne. La colonne <b>durée x</b> dit combien de temps. Avec une durée de
+  125 ms, la durée <b>4</b> est une noire (un temps, une demi-seconde) et la durée <b>8</b> une blanche (deux temps). Un
+  pas sans sortie est un silence.</p>
+  <p>Deux fois la même note de suite&nbsp;? La sortie reste simplement active et vous entendez une seule longue note.
+  C&rsquo;est pourquoi il y a un court silence entre les deux&nbsp;: 3 tops la note et 1 top de silence, ensemble de
+  nouveau 4. Voici le début de la chanson&nbsp;:</p>
+  <table>
+    <tr><th>Pas</th><th>Sortie</th><th>Durée</th><th>Note</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3</td><td>do</td></tr>
+    <tr><td>2</td><td>-</td><td>1</td><td>silence</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>4</td><td>do</td></tr>
+    <tr><td>4</td><td>UIT4</td><td>3</td><td>sol</td></tr>
+    <tr><td>5</td><td>-</td><td>1</td><td>silence</td></tr>
+    <tr><td>6</td><td>UIT4</td><td>4</td><td>sol</td></tr>
+    <tr><td>7</td><td>UIT5</td><td>3</td><td>la</td></tr>
+    <tr><td>8</td><td>-</td><td>1</td><td>silence</td></tr>
+    <tr><td>9</td><td>UIT5</td><td>4</td><td>la</td></tr>
+    <tr><td>10</td><td>UIT4</td><td>8</td><td>sol (blanche)</td></tr>
+  </table>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et activez l&rsquo;interrupteur&nbsp;: vous entendez <i>Ah&nbsp;! vous dirai-je,
+      maman</i> et les touches s&rsquo;allument.</li>
+    <li>Ouvrez la fenêtre LogicRun (double-clic sur le bloc) et regardez les pas suivre la musique.</li>
+    <li>Pas de son en classe&nbsp;? Clic droit sur la boîte à musique et coupez le <b>Son</b>&nbsp;: les touches
+      s&rsquo;allument toujours.</li>
+    <li>Coupez l&rsquo;interrupteur&nbsp;: la musique s&rsquo;arrête. Réactivez-le et la chanson recommence.</li>
+  </ol>
+
+  <h2>Exercice 1&nbsp;: plus vite et plus lentement</h2>
+  <p>Faites jouer la chanson plus vite, puis plus lentement.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Changez la <b>Durée</b> dans la fenêtre LogicRun. Avec 100 ms, c&rsquo;est plus rapide, avec 200 ms plus lent.
+    Toutes les notes changent ensemble, car leur durée est un multiple de la durée du pas.</p>
+  </details>
+
+  <h2>Exercice 2&nbsp;: un accord</h2>
+  <p>À la fin de la chanson, faites sonner trois notes ensemble&nbsp;: do, mi et sol.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Choisissez le dernier pas (le silence) et cochez <b>UIT0</b>, <b>UIT2</b> et <b>UIT4</b>. Donnez-lui la durée
+    <b>8</b>. Trois notes ensemble forment un accord&nbsp;; do-mi-sol est l&rsquo;accord de do majeur.</p>
+  </details>
+
+  <h2>Exercice 3&nbsp;: votre propre chanson</h2>
+  <p>Faites <i>Frère Jacques</i>&nbsp;: do ré mi do, do ré mi do, mi fa sol (long), mi fa sol (long). Ou inventez une
+  mélodie avec les 8 notes.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Sur un panneau vide, placez un interrupteur, un bloc LogicRun et une boîte à musique, et faites les fils. Créez avec
+    <b>+ pas</b> ces pas&nbsp;: do 4, ré 4, mi 4, do 3, silence 1, do 4, ré 4, mi 4, do 4, mi 4, fa 4, sol 8, mi 4, fa 4,
+    sol 8 et à la fin un silence de 8. Attention&nbsp;: après la quatrième note (do) vient encore un do, d&rsquo;où le
+    court silence. LogicRun a 64 pas au plus&nbsp;: assez pour une courte chanson.</p>
+  </details>
+
+  <div class="pager"><a href="les17.html">&larr; Leçon 17 : Un chariot sur un parcours</a><a href="leerpad.html">Parcours &rarr;</a></div>

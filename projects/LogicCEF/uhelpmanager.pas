@@ -142,6 +142,8 @@ begin
       begin Result := 'invoer'; AAnchor := 'eindschakelaar'; end;
     'wagen':
       begin Result := 'uitvoer'; AAnchor := 'wagen'; end;
+    'muziek':
+      begin Result := 'uitvoer'; AAnchor := 'muziek'; end;
     'persoon':
       begin Result := 'uitvoer'; AAnchor := 'persoon'; end;
     'voeding', 'rail':
@@ -538,6 +540,7 @@ begin
     'tjansimmotor':     AControl.HelpKeyword := 'motor';
     'tjansimpersoon':   AControl.HelpKeyword := 'persoon';
     'tjansimwagen':     AControl.HelpKeyword := 'wagen';
+    'tjansimmuziek':    AControl.HelpKeyword := 'muziek';
     'tjansimeindschakelaar': AControl.HelpKeyword := 'eindschakelaar';
   end;
 end;

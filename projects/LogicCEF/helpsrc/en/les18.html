@@ -1,0 +1,85 @@
+<!-- titel: Lesson 18 - Music with LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 18 of 18</p>
+  <h1>Playing a melody with LogicRun</h1>
+  <div class="goal"><strong>Goal:</strong> let LogicRun play a song on a music box. Each step is a note, the time of the
+  step is how long the note sounds. Then you make music yourself.</div>
+
+  <p><a class="open" href="../../panels/lessen/les18-muziek.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les18-muziek.png" alt="Switch, LogicRun block and a music box with 8 piano keys">
+    <figcaption>UIT4 is on: the music box plays a sol.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): the music on or off.</li>
+    <li>The <a href="logicrun.html">LogicRun block</a> with 61 steps and a step time of 125 ms.</li>
+    <li>On the right, in the output: a <a href="uitvoer.html#muziek">music box</a> with 8 piano keys. On the left there
+      are 8 inputs, one per key.</li>
+    <li>The switch hangs on the + rail, the music box on the &minus; rail; see <a href="voeding.html">Power supply</a>.</li>
+    <li>The wires: <b>UIT0</b> to do, <b>UIT1</b> to re, and so on up to <b>UIT7</b> to do' (the high do).</li>
+  </ul>
+
+  <h2>do re mi</h2>
+  <p>Which output plays which note? The number is the value of the output as a bit, as in <a href="les15.html">lesson 15</a>.</p>
+  <table>
+    <tr><th>Note</th><td>do</td><td>re</td><td>mi</td><td>fa</td><td>sol</td><td>la</td><td>si</td><td>do'</td></tr>
+    <tr><th>Output</th><td>UIT0</td><td>UIT1</td><td>UIT2</td><td>UIT3</td><td>UIT4</td><td>UIT5</td><td>UIT6</td><td>UIT7</td></tr>
+    <tr><th>Number</th><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td></tr>
+  </table>
+  <h2>Music in steps</h2>
+  <p>A step switches one output on: that note sounds. The <b>time x</b> column says how long. With a step time of
+  125 ms, time <b>4</b> is a quarter note (one beat, half a second) and time <b>8</b> a half note (two beats). A step
+  without an output is a rest: then it is silent.</p>
+  <p>The same note twice in a row? Then the output simply stays on and you hear one long note. That is why there is a
+  short rest in between: 3 ticks the note and 1 tick silent, together 4 again. This is how the song starts:</p>
+  <table>
+    <tr><th>Step</th><th>Output</th><th>Time</th><th>Note</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3</td><td>do</td></tr>
+    <tr><td>2</td><td>-</td><td>1</td><td>rest</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>4</td><td>do</td></tr>
+    <tr><td>4</td><td>UIT4</td><td>3</td><td>sol</td></tr>
+    <tr><td>5</td><td>-</td><td>1</td><td>rest</td></tr>
+    <tr><td>6</td><td>UIT4</td><td>4</td><td>sol</td></tr>
+    <tr><td>7</td><td>UIT5</td><td>3</td><td>la</td></tr>
+    <tr><td>8</td><td>-</td><td>1</td><td>rest</td></tr>
+    <tr><td>9</td><td>UIT5</td><td>4</td><td>la</td></tr>
+    <tr><td>10</td><td>UIT4</td><td>8</td><td>sol (half note)</td></tr>
+  </table>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch on: you hear <i>Twinkle, twinkle, little star</i> and the keys light up.</li>
+    <li>Open the LogicRun window (double-click the block) and watch the steps follow the music.</li>
+    <li>No sound in the classroom? Right-click the music box and switch <b>Sound</b> off: the keys still light up.</li>
+    <li>Switch off: the music stops. Switch on again and the song starts from the beginning.</li>
+  </ol>
+
+  <h2>Exercise 1: faster and slower</h2>
+  <p>Make the song play faster, and then slower.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Change the <b>Step time</b> in the LogicRun window. With 100 ms it goes faster, with 200 ms slower. All notes
+    change together, because their time is in times the step time.</p>
+  </details>
+
+  <h2>Exercise 2: a chord</h2>
+  <p>At the end of the song, let three notes sound together: do, mi and sol.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Choose the last step (the rest) and tick <b>UIT0</b>, <b>UIT2</b> and <b>UIT4</b>. Give it time <b>8</b>. Three
+    notes together are called a chord; do-mi-sol is the chord of do (C major).</p>
+  </details>
+
+  <h2>Exercise 3: your own song</h2>
+  <p>Make <i>Frère Jacques</i>: do re mi do, do re mi do, mi fa sol (long), mi fa sol (long). Or invent a melody of your
+  own with the 8 notes.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>On an empty panel, place a switch, a LogicRun block and a music box, and make the wires. Use <b>+ step</b> to make
+    these steps: do 4, re 4, mi 4, do 3, rest 1, do 4, re 4, mi 4, do 4, mi 4, fa 4, sol 8, mi 4, fa 4, sol 8 and at the
+    end a rest of 8. Note: after the fourth note (do) comes another do, hence the short rest. LogicRun has at most 64
+    steps: enough for a short song.</p>
+  </details>
+
+  <div class="pager"><a href="les17.html">&larr; Lesson 17: A cart on a road</a><a href="leerpad.html">Learning path &rarr;</a></div>

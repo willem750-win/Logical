@@ -1,0 +1,86 @@
+<!-- titel: Les 18 - Muziek met LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 18 van 18</p>
+  <h1>Een melodie spelen met LogicRun</h1>
+  <div class="goal"><strong>Doel:</strong> LogicRun een liedje laten spelen op een muziekdoos. Elke stap is een noot, de
+  tijd van de stap is hoe lang de noot klinkt. Daarna maak je zelf muziek.</div>
+
+  <p><a class="open" href="../../panels/lessen/les18-muziek.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les18-muziek.png" alt="Schakelaar, LogicRun-blok en een muziekdoos met 8 pianotoetsen">
+    <figcaption>UIT4 staat aan: de muziekdoos speelt een sol.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): de muziek aan of
+      uit.</li>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> met 61 stappen en een stapduur van 125 ms.</li>
+    <li>Rechts in de uitvoer: een <a href="uitvoer.html#muziek">muziekdoos</a> met 8 pianotoetsen. Links zitten 8
+      ingangen, één per toets.</li>
+    <li>De schakelaar hangt aan de + rail, de muziekdoos aan de &minus; rail; zie <a href="voeding.html">Voeding</a>.</li>
+    <li>De draden: <b>UIT0</b> naar do, <b>UIT1</b> naar re, en zo verder tot <b>UIT7</b> naar do' (de hoge do).</li>
+  </ul>
+
+  <h2>do re mi</h2>
+  <p>Welke uitgang speelt welke noot? Het getal is de waarde van de uitgang als bit, zoals in <a href="les15.html">les 15</a>.</p>
+  <table>
+    <tr><th>Noot</th><td>do</td><td>re</td><td>mi</td><td>fa</td><td>sol</td><td>la</td><td>si</td><td>do'</td></tr>
+    <tr><th>Uitgang</th><td>UIT0</td><td>UIT1</td><td>UIT2</td><td>UIT3</td><td>UIT4</td><td>UIT5</td><td>UIT6</td><td>UIT7</td></tr>
+    <tr><th>Getal</th><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td></tr>
+  </table>
+  <h2>Muziek in stappen</h2>
+  <p>Een stap zet één uitgang aan: die noot klinkt. De kolom <b>tijd x</b> zegt hoe lang. Met een stapduur van 125 ms is
+  tijd <b>4</b> een kwartnoot (een tel, een halve seconde) en tijd <b>8</b> een halve noot (twee tellen). Een stap zonder
+  uitgang is een rust: dan is het stil.</p>
+  <p>Twee keer na elkaar dezelfde noot? Dan blijft de uitgang gewoon aan en hoor je één lange noot. Daarom staat er een
+  korte rust tussen: 3 tikken de noot en 1 tik stil, samen weer 4. Zo begint het liedje:</p>
+  <table>
+    <tr><th>Stap</th><th>Uitgang</th><th>Tijd</th><th>Noot</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3</td><td>do</td></tr>
+    <tr><td>2</td><td>-</td><td>1</td><td>rust</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>4</td><td>do</td></tr>
+    <tr><td>4</td><td>UIT4</td><td>3</td><td>sol</td></tr>
+    <tr><td>5</td><td>-</td><td>1</td><td>rust</td></tr>
+    <tr><td>6</td><td>UIT4</td><td>4</td><td>sol</td></tr>
+    <tr><td>7</td><td>UIT5</td><td>3</td><td>la</td></tr>
+    <tr><td>8</td><td>-</td><td>1</td><td>rust</td></tr>
+    <tr><td>9</td><td>UIT5</td><td>4</td><td>la</td></tr>
+    <tr><td>10</td><td>UIT4</td><td>8</td><td>sol (halve noot)</td></tr>
+  </table>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: je hoort <i>Altijd is Kortjakje ziek</i> en de toetsen lichten op.</li>
+    <li>Open het LogicRun-venster (dubbelklik op het blok) en kijk hoe de stappen meelopen met de muziek.</li>
+    <li>Geen geluid in de klas? Rechtsklik op de muziekdoos en zet <b>Geluid</b> uit: de toetsen lichten nog op.</li>
+    <li>Zet de schakelaar uit: de muziek stopt. Zet je hem weer aan, dan begint het liedje opnieuw.</li>
+  </ol>
+
+  <h2>Opdracht 1: sneller en trager</h2>
+  <p>Laat het liedje sneller spelen, en daarna trager.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Verander in het LogicRun-venster de <b>Stapduur</b>. Met 100 ms gaat het sneller, met 200 ms trager. Alle noten
+    veranderen samen, want hun tijd staat in keer de stapduur.</p>
+  </details>
+
+  <h2>Opdracht 2: een akkoord</h2>
+  <p>Laat op het einde van het liedje drie noten tegelijk klinken: do, mi en sol.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Kies de laatste stap (de rust) en vink <b>UIT0</b>, <b>UIT2</b> en <b>UIT4</b> aan. Geef hem tijd <b>8</b>. Drie
+    noten samen heten een akkoord; do-mi-sol is het akkoord van do.</p>
+  </details>
+
+  <h2>Opdracht 3: je eigen liedje</h2>
+  <p>Maak <i>Vader Jacob</i>: do re mi do, do re mi do, mi fa sol (lang), mi fa sol (lang). Of verzin zelf een melodie
+  met de 8 noten.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet op een leeg paneel een schakelaar, een LogicRun-blok en een muziekdoos, en maak de draden. Maak met
+    <b>+ stap</b> deze stappen: do 4, re 4, mi 4, do 3, rust 1, do 4, re 4, mi 4, do 4, mi 4, fa 4, sol 8, mi 4, fa 4,
+    sol 8 en op het einde een rust van 8. Let op: na de vierde noot (do) komt nog een do, daarom de korte rust.
+    LogicRun heeft hoogstens 64 stappen: genoeg voor een kort liedje.</p>
+  </details>
+
+  <div class="pager"><a href="les17.html">&larr; Les 17: Een wagentje op een parcours</a><a href="leerpad.html">Leerpad &rarr;</a></div>

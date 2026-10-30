@@ -1,0 +1,88 @@
+<!-- titel: Lektion 18 - Musik mit LogicRun -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 18 von 18</p>
+  <h1>Eine Melodie mit LogicRun spielen</h1>
+  <div class="goal"><strong>Ziel:</strong> LogicRun ein Lied auf einer Spieldose spielen lassen. Jeder Schritt ist eine
+  Note, die Zeit des Schritts ist, wie lange die Note klingt. Danach machen Sie selbst Musik.</div>
+
+  <p><a class="open" href="../../panels/lessen/les18-muziek.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les18-muziek.png" alt="Schalter, LogicRun-Block und eine Spieldose mit 8 Klaviertasten">
+    <figcaption>UIT4 ist ein: Die Spieldose spielt ein G (sol).</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Ein <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): die Musik ein oder
+      aus.</li>
+    <li>Der <a href="logicrun.html">LogicRun-Block</a> mit 61 Schritten und einer Schrittzeit von 125 ms.</li>
+    <li>Rechts in der Ausgabe: eine <a href="uitvoer.html#muziek">Spieldose</a> mit 8 Klaviertasten. Links sind 8
+      Eingänge, einer pro Taste.</li>
+    <li>Der Schalter hängt an der +-Schiene, die Spieldose an der &minus;-Schiene; siehe
+      <a href="voeding.html">Versorgung</a>.</li>
+    <li>Die Drähte: <b>UIT0</b> zu C (do), <b>UIT1</b> zu D (re) und so weiter bis <b>UIT7</b> zu C' (das hohe C).</li>
+  </ul>
+
+  <h2>do re mi</h2>
+  <p>Welcher Ausgang spielt welche Note? Die Zahl ist der Wert des Ausgangs als Bit, wie in <a href="les15.html">Lektion 15</a>. In deutscher Schreibweise heißen do re mi fa sol la si do' auch C D E F G A H C'.</p>
+  <table>
+    <tr><th>Note</th><td>do</td><td>re</td><td>mi</td><td>fa</td><td>sol</td><td>la</td><td>si</td><td>do'</td></tr>
+    <tr><th>Ausgang</th><td>UIT0</td><td>UIT1</td><td>UIT2</td><td>UIT3</td><td>UIT4</td><td>UIT5</td><td>UIT6</td><td>UIT7</td></tr>
+    <tr><th>Zahl</th><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td></tr>
+  </table>
+  <h2>Musik in Schritten</h2>
+  <p>Ein Schritt schaltet einen Ausgang ein: Diese Note klingt. Die Spalte <b>Zeit x</b> sagt, wie lange. Mit einer
+  Schrittzeit von 125 ms ist Zeit <b>4</b> eine Viertelnote (ein Schlag, eine halbe Sekunde) und Zeit <b>8</b> eine halbe
+  Note (zwei Schläge). Ein Schritt ohne Ausgang ist eine Pause: Dann ist es still.</p>
+  <p>Zweimal hintereinander dieselbe Note? Dann bleibt der Ausgang einfach ein und Sie hören eine lange Note. Deshalb
+  steht eine kurze Pause dazwischen: 3 Takte die Note und 1 Takt still, zusammen wieder 4. So beginnt das Lied:</p>
+  <table>
+    <tr><th>Schritt</th><th>Ausgang</th><th>Zeit</th><th>Note</th></tr>
+    <tr><td>1</td><td>UIT0</td><td>3</td><td>do</td></tr>
+    <tr><td>2</td><td>-</td><td>1</td><td>Pause</td></tr>
+    <tr><td>3</td><td>UIT0</td><td>4</td><td>do</td></tr>
+    <tr><td>4</td><td>UIT4</td><td>3</td><td>sol</td></tr>
+    <tr><td>5</td><td>-</td><td>1</td><td>Pause</td></tr>
+    <tr><td>6</td><td>UIT4</td><td>4</td><td>sol</td></tr>
+    <tr><td>7</td><td>UIT5</td><td>3</td><td>la</td></tr>
+    <tr><td>8</td><td>-</td><td>1</td><td>Pause</td></tr>
+    <tr><td>9</td><td>UIT5</td><td>4</td><td>la</td></tr>
+    <tr><td>10</td><td>UIT4</td><td>8</td><td>sol (halbe Note)</td></tr>
+  </table>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie ein: Sie hören <i>Morgen kommt der Weihnachtsmann</i> und die Tasten
+      leuchten.</li>
+    <li>Öffnen Sie das LogicRun-Fenster (Doppelklick auf den Block) und sehen Sie, wie die Schritte der Musik folgen.</li>
+    <li>Kein Ton in der Klasse? Rechtsklick auf die Spieldose und <b>Ton</b> ausschalten: Die Tasten leuchten weiterhin.</li>
+    <li>Schalten Sie aus: Die Musik hört auf. Schalten Sie wieder ein, beginnt das Lied von vorn.</li>
+  </ol>
+
+  <h2>Aufgabe 1: schneller und langsamer</h2>
+  <p>Lassen Sie das Lied schneller spielen und danach langsamer.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Ändern Sie im LogicRun-Fenster die <b>Schrittzeit</b>. Mit 100 ms geht es schneller, mit 200 ms langsamer. Alle
+    Noten ändern sich zusammen, denn ihre Zeit steht in Vielfachen der Schrittzeit.</p>
+  </details>
+
+  <h2>Aufgabe 2: ein Akkord</h2>
+  <p>Lassen Sie am Ende des Lieds drei Noten zusammen klingen: C, E und G.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Wählen Sie den letzten Schritt (die Pause) und kreuzen Sie <b>UIT0</b>, <b>UIT2</b> und <b>UIT4</b> an. Geben Sie
+    ihm Zeit <b>8</b>. Drei Noten zusammen heißen ein Akkord; C-E-G ist der C-Dur-Akkord.</p>
+  </details>
+
+  <h2>Aufgabe 3: Ihr eigenes Lied</h2>
+  <p>Machen Sie <i>Bruder Jakob</i>: C D E C, C D E C, E F G (lang), E F G (lang). Oder erfinden Sie selbst eine Melodie
+  mit den 8 Noten.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Setzen Sie auf ein leeres Panel einen Schalter, einen LogicRun-Block und eine Spieldose und ziehen Sie die Drähte.
+    Machen Sie mit <b>+ Schritt</b> diese Schritte: C 4, D 4, E 4, C 3, Pause 1, C 4, D 4, E 4, C 4, E 4, F 4, G 8, E 4,
+    F 4, G 8 und am Ende eine Pause von 8. Achtung: Nach der vierten Note (C) kommt noch ein C, daher die kurze Pause.
+    LogicRun hat höchstens 64 Schritte: genug für ein kurzes Lied.</p>
+  </details>
+
+  <div class="pager"><a href="les17.html">&larr; Lektion 17: Ein Wagen auf der Strecke</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

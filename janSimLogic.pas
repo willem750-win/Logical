@@ -1820,6 +1820,7 @@ type
     FMeter:Boolean;
     FPersoon:Boolean;
     FWagen:Boolean;
+    FMuziek:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
@@ -1890,6 +1891,7 @@ type
     DMotor:boolean;
     DPersoon:boolean;
     DWagen:boolean;
+    DMuziek:boolean;
 
     bmSensor:Tbitmap;
     RSensor:TRect;
@@ -1921,6 +1923,7 @@ type
     RMeter:TRect;
     RPersoon:TRect;
     RWagen:TRect;
+    RMuziek:TRect;
     DMeter:boolean;
 
     // voedingsrails (+ en - naast elkaar)
@@ -1959,6 +1962,7 @@ type
     FHMeter:String;
     FHPersoon:String;
     FHWagen:String;
+    FHMuziek:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
     FBoxTaal:TStatTaal;
@@ -2007,6 +2011,7 @@ type
     PROCEDURE SetMotor(const Value: Boolean);
     PROCEDURE SetPersoon(const Value: Boolean);
     PROCEDURE SetWagen(const Value: Boolean);
+    PROCEDURE SetMuziek(const Value: Boolean);
     PROCEDURE SetSensor(const Value: Boolean);
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
@@ -2099,6 +2104,7 @@ type
     // nieuwe persoon (met vloer en eindschakelaars) aan de muis hangen
     procedure NewPersoon;
     procedure NewWagen;
+    procedure NewMuziek;
     procedure NewPersoonVan(AKlasse: TComponentClass);
     // ophalen van paneelopbouw uit exe
     PROCEDURE LoadStream(welke:TStream;inf:Boolean);
@@ -2160,6 +2166,7 @@ type
     property KMeter:Boolean read FMeter write SetMeter;
     property KPersoon:Boolean read FPersoon write SetPersoon default True;
     property KWagen:Boolean read FWagen write SetWagen default True;
+    property KMuziek:Boolean read FMuziek write SetMuziek default True;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
@@ -2185,6 +2192,7 @@ type
     property HMotor:String read FHMotor write SetHMotor;
     property HPersoon:String read FHPersoon write FHPersoon;
     property HWagen:String read FHWagen write FHWagen;
+    property HMuziek:String read FHMuziek write FHMuziek;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
     property HLock:String read FHLock write SetHlock;
@@ -2298,7 +2306,7 @@ end;
     rails hangt hij aan de - rail. }
   TjanSimPersoon = class(TGraphicControl)
   private
-    FIn: array[0..1] of Boolean;   // 0 = L (naar links), 1 = R (naar rechts)
+    FIn: array[0..7] of Boolean;   // 0 = L (naar links), 1 = R (naar rechts); muziekdoos: 8 noten
     FPos: Integer;                 // afstand vanaf de linker eindschakelaar (px)
     FFrame: Integer;               // stand van de benen tijdens het lopen
     FKijk: Integer;                // -1 kijkt naar links, 1 naar rechts
@@ -2333,7 +2341,7 @@ end;
     procedure StartClick(Sender: TObject);
     procedure EindClick(Sender: TObject);
     procedure MeldEindschakelaars;
-    procedure BuildPopup;
+    procedure BuildPopup; virtual;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
   protected
@@ -2346,7 +2354,10 @@ end;
     procedure Paint; override;
     procedure UpdateHintText; virtual;
     // ingang 0 (L) of 1 (R) aan/uit, door de draden (Connect)
-    procedure SetInput(I: Integer; Value: Boolean);
+    procedure SetInput(I: Integer; Value: Boolean); virtual;
+    // aantal ingangen (2; 8 bij de muziekdoos) en de Y van ingang I in het blok
+    function InputCount: Integer; virtual;
+    function InPinY(I: Integer): Integer; virtual;
     // index van de ingang/uitgang bij punt P (paneel), anders -1
     function InputPinAt(const P: TPoint): Integer;
     // aantal standen voor eindschakelaars: 2 bij de persoon, 3 bij het wagentje
@@ -2411,6 +2422,43 @@ end;
     procedure Tick; override;
     // afstand langs de weg van paaltje N (1..5)
     class function PaaltjePos(N: Integer): Integer;
+  end;
+
+  { TjanSimMuziek: muziekdoos, een klavier met 8 witte toetsen (do re mi fa
+    sol la si do'). De ingangen zitten links, op dezelfde hoogte als UIT0..UIT7
+    van LogicRun: staat een ingang aan, dan licht de toets op en klinkt de
+    noot zolang hij aan is (meer ingangen samen: een akkoord). Een melodie is
+    een LogicRun-programma: een stap per noot, de staptijd is de lengte. Twee
+    keer na elkaar dezelfde noot: er een korte rust (stap zonder uitgangen)
+    tussen zetten. Uitvoer: aan de - rail. Draden, bewaren en de balk erft hij
+    van TjanSimPersoon. }
+  TjanSimMuziek = class(TjanSimPersoon)
+  private
+    FGeluid: Boolean;
+    FSpeelt: Integer;              // noten (bits) die nu klinken
+    FKlankTimer: TTimer;
+    function StatusText: string; override;
+    procedure BuildPopup; override;
+    procedure GeluidClick(Sender: TObject);
+    procedure KlankTick(Sender: TObject);
+    procedure Klink;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    procedure SetInput(I: Integer; Value: Boolean); override;
+    function InputCount: Integer; override;
+    function InPinY(I: Integer): Integer; override;
+    function OutputCount: Integer; override;
+    function Direction: Integer; override;
+    // de ingangen die aan zijn, als bits (bit 0 = do)
+    function Noten: Integer;
+    // naam van noot I: do re mi (in alle talen) en de letter C D E
+    function NootNaam(I: Integer): string;
+    function NootLetter(I: Integer): string;
+    // geluid aan (standaard) of alleen de toetsen laten oplichten
+    property Geluid: Boolean read FGeluid write FGeluid;
   end;
 
   { TjanSimEindschakelaar: eindschakelaar in de invoer. Hij volgt zonder
@@ -2779,6 +2827,13 @@ var
   LogicRunEditHook: TNotifyEvent = nil;
 
 implementation
+
+{$IFDEF WINDOWS}
+uses MMSystem;
+{$ENDIF}
+{$IFDEF UNIX}
+uses Process;
+{$ENDIF}
 
   {$R janSimImages.res}
   {$R Cursors.RES}
@@ -5706,9 +5761,9 @@ begin
   end
   else if C is TjanSimPersoon then
   begin
-    // L en R (of V en A) zitten links
-    Add(1, TjanSimPersoon.PinY(0));
-    Add(1, TjanSimPersoon.PinY(1));
+    // L en R (of V en A, of de 8 noten) zitten links
+    for i := 0 to TjanSimPersoon(C).InputCount - 1 do
+      Add(1, TjanSimPersoon(C).InPinY(i));
   end
   else if C is TjanLogic then
   begin
@@ -17925,14 +17980,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=5;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FDisplay:=true;
   FVoeding:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -19307,10 +19362,12 @@ begin
 
       // ---- TjanSimPersoon (begint altijd links, bij S1) en TjanSimWagen
       // (begint altijd aan de start) ----
-      if (obj[1] = 'TjanSimPersoon') or (obj[1] = 'TjanSimWagen') then
+      if (obj[1] = 'TjanSimPersoon') or (obj[1] = 'TjanSimWagen') or (obj[1] = 'TjanSimMuziek') then
       begin
         if obj[1] = 'TjanSimWagen' then
           PersoonKlasse := TjanSimWagen
+        else if obj[1] = 'TjanSimMuziek' then
+          PersoonKlasse := TjanSimMuziek
         else
           PersoonKlasse := TjanSimPersoon;
         with PersoonKlasse.Create(self) do
@@ -19446,6 +19503,11 @@ end;
 procedure TjanSimLogicBox.NewWagen;
 begin
   NewPersoonVan(TjanSimWagen);
+end;
+
+procedure TjanSimLogicBox.NewMuziek;
+begin
+  NewPersoonVan(TjanSimMuziek);
 end;
 
 // persoon of wagentje maken (zelfde soort blok)
@@ -19942,7 +20004,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -19968,6 +20030,7 @@ begin
   else if ptinrect(RMeter,p) and (KMeter=true)then DMeter:=true
   else if ptinrect(RPersoon,p) and (KPersoon=true) then DPersoon:=true
   else if ptinrect(RWagen,p) and (KWagen=true) then DWagen:=true
+  else if ptinrect(RMuziek,p) and (KMuziek=true) then DMuziek:=true
   else if PtInRect(RRailPlus, P) then DRailPlus := True
   else if PtInRect(RRailMin, P) then DRailMin := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
@@ -20007,6 +20070,7 @@ begin
   else if PtInRect(RMeter, P) then NewHint := FHMeter
   else if PtInRect(RPersoon, P) then NewHint := FHPersoon
   else if PtInRect(RWagen, P) then NewHint := FHWagen
+  else if PtInRect(RMuziek, P) then NewHint := FHMuziek
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -20437,7 +20501,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -20652,6 +20716,8 @@ begin
   end
   else if DWagen then
     NewWagen
+  else if DMuziek then
+    NewMuziek
   else if DPersoon then
     NewPersoon
   else if DMotor then
@@ -21186,6 +21252,7 @@ if FBoxTaal=stDutch then
   HMeter:='maak Voltmeter';
   HPersoon:='maak Persoon (met eindschakelaars)';
   HWagen:='maak Wagentje (parcours met paaltjes)';
+  HMuziek:='maak Muziekdoos (8 pianotoetsen)';
   HRailPlus:='maak + rail (voeding)';
   HRailMin:='maak - rail (massa)';
  end;
@@ -21214,6 +21281,7 @@ if FBoxTaal=stEnglish then
   HMeter:='create Voltmeter';
   HPersoon:='create Person (with limit switches)';
   HWagen:='create Cart (road with posts)';
+  HMuziek:='create Music box (8 piano keys)';
   HRailPlus:='create + rail (supply)';
   HRailMin:='create - rail (ground)';
   end ;
@@ -21241,6 +21309,7 @@ if FBoxTaal=stFrench then
   HMeter:='faire Voltmètre';
   HPersoon:='faire Personne (avec fins de course)';
   HWagen:='faire Chariot (parcours avec poteaux)';
+  HMuziek:='faire Boîte à musique (8 touches de piano)';
   HRailPlus:='faire Rail + (alimentation)';
   HRailMin:='faire Rail - (masse)';
  end;
@@ -21269,6 +21338,7 @@ if FBoxTaal=stFrench then
   HMeter:='Voltmeter erstellen';
   HPersoon:='Person erstellen (mit Endschaltern)';
   HWagen:='Wagen erstellen (Strecke mit Pfosten)';
+  HMuziek:='Spieldose erstellen (8 Klaviertasten)';
   HRailPlus:='+ Schiene (Versorgung) erstellen';
   HRailMin:='- Schiene (Masse) erstellen';
   end;
@@ -21359,6 +21429,29 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 8 then
+  begin
+    // muziekdoos: geen plaatje, altijd getekend (klavier met een noot)
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    Canvas.Pen.Width := 1;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Pen.Color := clGray;
+    Canvas.Brush.Color := clWhite;
+    Canvas.Rectangle(X + 4, Y + 11, X + 21, Y + 21);
+    Canvas.Line(X + 8, Y + 11, X + 8, Y + 21);
+    Canvas.Line(X + 12, Y + 11, X + 12, Y + 21);
+    Canvas.Line(X + 16, Y + 11, X + 16, Y + 21);
+    Canvas.Pen.Color := clBlack;
+    Canvas.Brush.Color := clBlack;
+    Canvas.Rectangle(X + 7, Y + 11, X + 10, Y + 16);
+    Canvas.Rectangle(X + 11, Y + 11, X + 14, Y + 16);
+    // noot erboven
+    Canvas.Ellipse(X + 9, Y + 5, X + 13, Y + 9);
+    Canvas.Line(X + 12, Y + 7, X + 12, Y + 0);
+    Canvas.Line(X + 12, Y + 0, X + 15, Y + 2);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 7 then
   begin
     // wagentje: geen plaatje, altijd getekend (zijaanzicht op een weg)
@@ -21557,6 +21650,13 @@ procedure TjanSimLogicBox.SetWagen(const Value: Boolean);
 begin
   if Value <> FWagen then
     FWagen := Value;
+  Invalidate;
+end;
+
+procedure TjanSimLogicBox.SetMuziek(const Value: Boolean);
+begin
+  if Value <> FMuziek then
+    FMuziek := Value;
   Invalidate;
 end;
 
@@ -22166,6 +22266,16 @@ begin
         HK:= H+TOP;
       end;
 
+      // muziekdoos: halve knop op een eigen rij
+      RMuziek := Rect(0, 0, 0, 0);
+      if FMuziek then
+      begin
+        RMuziek := Rect(LK - 4, TOP, LK + 13, HK);
+        DrawHalfKnop(RMuziek, DMuziek, 8);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
       // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
       RRailMin := Rect(0, 0, 0, 0);
@@ -22656,6 +22766,12 @@ begin
         RWagen := Rect(LK + 15, TOP, LK + 32, HK);
         DrawHalfKnop(RWagen, DWagen, 7);
       end;
+      RMuziek := Rect(0, 0, 0, 0);
+      if FMuziek then
+      begin
+        RMuziek := Rect(LK + 34, TOP, LK + 51, HK);
+        DrawHalfKnop(RMuziek, DMuziek, 8);
+      end;
     end;
   end;
 end;
@@ -23070,6 +23186,12 @@ begin
       begin
         RWagen := Rect(LK + 15, TOP, LK + 32, HK);
         DrawHalfKnop(RWagen, DWagen, 7);
+      end;
+      RMuziek := Rect(0, 0, 0, 0);
+      if FMuziek then
+      begin
+        RMuziek := Rect(LK + 34, TOP, LK + 51, HK);
+        DrawHalfKnop(RMuziek, DMuziek, 8);
       end;
     end;
   end;
@@ -25067,14 +25189,24 @@ begin
   Result := -1;
 end;
 
+function TjanSimPersoon.InputCount: Integer;
+begin
+  Result := 2;
+end;
+
+function TjanSimPersoon.InPinY(I: Integer): Integer;
+begin
+  Result := PinY(I);
+end;
+
 function TjanSimPersoon.InputPinAt(const P: TPoint): Integer;
 var
   i: Integer;
 begin
   Result := -1;
   if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
-  for i := 0 to 1 do
-    if Abs(P.Y - (Top + PinY(i) + 3)) <= 6 then
+  for i := 0 to InputCount - 1 do
+    if Abs(P.Y - (Top + InPinY(i) + 3)) <= 5 then
       Exit(i);
 end;
 
@@ -25172,7 +25304,7 @@ end;
 
 procedure TjanSimPersoon.SetInput(I: Integer; Value: Boolean);
 begin
-  if (I < 0) or (I > 1) or (FIn[I] = Value) then Exit;
+  if (I < 0) or (I >= InputCount) or (FIn[I] = Value) then Exit;
   FIn[I] := Value;
   if Direction <> 0 then FKijk := Direction;
   UpdateTimer;
@@ -25861,6 +25993,458 @@ end;
 
 
 // ============================================================
+// Klank voor de muziekdoos: een toon (of akkoord) als WAV in het geheugen,
+// op Windows gespeeld met PlaySound, op Linux met aplay (of pw-play, paplay)
+// ============================================================
+
+const
+  MZ_RATE = 22050;      // samples per seconde
+  MZ_DUUR = 4;          // seconden: zo lang klinkt een noot hoogstens
+  // do re mi fa sol la si do' (C5 tot C6)
+  MZ_FREQ: array[0..7] of Double = (523.25, 587.33, 659.26, 698.46, 783.99, 880.00, 987.77, 1046.50);
+
+var
+  MuziekWav: TBytes;            // de WAV die nu speelt (PlaySound leest uit het geheugen)
+  MuziekBron: TObject = nil;    // de muziekdoos die nu klinkt
+  {$IFDEF UNIX}
+  MuziekProc: TProcess = nil;
+  {$ENDIF}
+
+// WAV (16 bit mono) met de noten van Mask: een aanslag, uitsterven tot een
+// zachtere toon en op het einde uitdoven, zoals een elektrische piano
+function MaakNootWav(Mask: Integer): TBytes;
+var
+  B: TBytes;
+  i, k, n, Aantal: Integer;
+  t, v, Env: Double;
+  S: SmallInt;
+
+  procedure Zet32(P: Integer; V: LongWord);
+  begin
+    B[P] := Byte(V); B[P + 1] := Byte(V shr 8); B[P + 2] := Byte(V shr 16); B[P + 3] := Byte(V shr 24);
+  end;
+
+  procedure Zet16(P: Integer; V: Word);
+  begin
+    B[P] := Byte(V); B[P + 1] := Byte(V shr 8);
+  end;
+
+  procedure ZetTekst(P: Integer; const T: string);
+  var
+    j: Integer;
+  begin
+    for j := 1 to 4 do B[P + j - 1] := Ord(T[j]);
+  end;
+
+begin
+  n := MZ_RATE * MZ_DUUR;
+  SetLength(B, 44 + 2 * n);
+  ZetTekst(0, 'RIFF'); Zet32(4, 36 + 2 * n); ZetTekst(8, 'WAVE');
+  ZetTekst(12, 'fmt '); Zet32(16, 16); Zet16(20, 1); Zet16(22, 1);
+  Zet32(24, MZ_RATE); Zet32(28, MZ_RATE * 2); Zet16(32, 2); Zet16(34, 16);
+  ZetTekst(36, 'data'); Zet32(40, 2 * n);
+  Aantal := 0;
+  for k := 0 to 7 do
+    if Mask and (1 shl k) <> 0 then Inc(Aantal);
+  if Aantal = 0 then Aantal := 1;
+  for i := 0 to n - 1 do
+  begin
+    t := i / MZ_RATE;
+    v := 0;
+    for k := 0 to 7 do
+      if Mask and (1 shl k) <> 0 then
+        v := v + Sin(2 * Pi * MZ_FREQ[k] * t) + 0.3 * Sin(4 * Pi * MZ_FREQ[k] * t)
+               + 0.1 * Sin(6 * Pi * MZ_FREQ[k] * t);
+    Env := 0.35 + 0.65 * Exp(-3 * t);
+    if t < 0.005 then Env := Env * t / 0.005;                    // geen klik bij het begin
+    if t > MZ_DUUR - 0.3 then Env := Env * (MZ_DUUR - t) / 0.3;  // uitdoven
+    S := Round(v / (1.4 * Aantal) * Env * 0.6 * 32767);
+    Zet16(44 + 2 * i, Word(S));
+  end;
+  Result := B;
+end;
+
+procedure MuziekStil;
+begin
+  {$IFDEF WINDOWS}
+  PlaySound(nil, 0, 0);
+  {$ENDIF}
+  {$IFDEF UNIX}
+  if Assigned(MuziekProc) then
+  begin
+    try
+      if MuziekProc.Running then
+      begin
+        MuziekProc.Terminate(0);
+        MuziekProc.WaitOnExit;
+      end;
+    except
+    end;
+    FreeAndNil(MuziekProc);
+  end;
+  {$ENDIF}
+end;
+
+procedure MuziekSpeel(Mask: Integer);
+{$IFDEF UNIX}
+const
+  Spelers: array[0..3] of string = ('aplay', 'pw-play', 'paplay', 'afplay');
+var
+  Pad, Prog: string;
+  F: TFileStream;
+  j: Integer;
+{$ENDIF}
+begin
+  MuziekStil;
+  if Mask = 0 then Exit;
+  MuziekWav := MaakNootWav(Mask);
+  {$IFDEF WINDOWS}
+  PlaySound(PChar(@MuziekWav[0]), 0, SND_MEMORY or SND_ASYNC or SND_NODEFAULT);
+  {$ENDIF}
+  {$IFDEF UNIX}
+  Prog := '';
+  for j := 0 to High(Spelers) do
+  begin
+    Prog := ExeSearch(Spelers[j], GetEnvironmentVariable('PATH'));
+    if Prog <> '' then Break;
+  end;
+  if Prog = '' then Exit;
+  Pad := GetTempDir(False) + 'logic-muziek.wav';
+  try
+    F := TFileStream.Create(Pad, fmCreate);
+    try
+      F.WriteBuffer(MuziekWav[0], Length(MuziekWav));
+    finally
+      F.Free;
+    end;
+    MuziekProc := TProcess.Create(nil);
+    MuziekProc.Executable := Prog;
+    if ExtractFileName(Prog) = 'aplay' then MuziekProc.Parameters.Add('-q');
+    MuziekProc.Parameters.Add(Pad);
+    MuziekProc.Execute;
+  except
+    FreeAndNil(MuziekProc);
+  end;
+  {$ENDIF}
+end;
+
+// ============================================================
+// TjanSimMuziek: muziekdoos met 8 pianotoetsen
+// ============================================================
+
+const
+  MZ_W = 260;           // breedte van het blok (zoals de persoon)
+  MZ_H = 140;           // hoogte van het blok
+  MZ_X = 40;            // eerste toets (x)
+  MZ_TOETS = 26;        // breedte van een witte toets
+  MZ_BOVEN = 22;        // bovenkant van de toetsen
+  MZ_ONDER = 128;       // onderkant van de toetsen
+
+constructor TjanSimMuziek.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := MZ_W;
+  Height := MZ_H;
+  FNaam := 'Muziekdoos';
+  HelpKeyword := 'muziek';
+  FGeluid := True;
+  FKlankTimer := TTimer.Create(Self);
+  FKlankTimer.Enabled := False;
+  FKlankTimer.Interval := 20;
+  FKlankTimer.OnTimer := KlankTick;
+end;
+
+destructor TjanSimMuziek.Destroy;
+begin
+  FKlankTimer.Enabled := False;
+  if MuziekBron = Self then
+  begin
+    MuziekStil;
+    MuziekBron := nil;
+  end;
+  inherited;
+end;
+
+function TjanSimMuziek.InputCount: Integer;
+begin
+  Result := 8;
+end;
+
+// zelfde hoogte als UIT0..UIT7 van LogicRun: met de bovenkant gelijk lopen
+// de draden recht
+function TjanSimMuziek.InPinY(I: Integer): Integer;
+begin
+  Result := TjanLogicRun.OutputPinY(I);
+end;
+
+function TjanSimMuziek.OutputCount: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanSimMuziek.Direction: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanSimMuziek.Noten: Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+  for i := 0 to 7 do
+    if FIn[i] then Result := Result or (1 shl i);
+end;
+
+// do re mi in alle talen (zo leren de leerlingen de noten), met ré in het Frans
+function TjanSimMuziek.NootNaam(I: Integer): string;
+const
+  NL: array[0..7] of string = ('do', 're', 'mi', 'fa', 'sol', 'la', 'si', 'do''');
+begin
+  if (I < 0) or (I > 7) then Exit('');
+  if (FTaal = 'FR') and (I = 1) then Result := 'ré'
+  else Result := NL[I];
+end;
+
+// lettername (C D E ...; in het Duits H in plaats van B), klein onder op de toets
+function TjanSimMuziek.NootLetter(I: Integer): string;
+const
+  EN: array[0..7] of string = ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'C''');
+begin
+  if (I < 0) or (I > 7) then Exit('');
+  if (FTaal = 'DU') and (I = 6) then Result := 'H'
+  else Result := EN[I];
+end;
+
+procedure TjanSimMuziek.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I >= InputCount) or (FIn[I] = Value) then Exit;
+  FIn[I] := Value;
+  Invalidate;
+  // pas klinken als alle draden van deze stap er zijn (geen kort akkoord
+  // tussen twee noten)
+  FKlankTimer.Enabled := False;
+  FKlankTimer.Enabled := True;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimMuziek.KlankTick(Sender: TObject);
+begin
+  FKlankTimer.Enabled := False;
+  Klink;
+end;
+
+procedure TjanSimMuziek.Klink;
+var
+  M: Integer;
+begin
+  if FGeluid then M := Noten else M := 0;
+  if (M = FSpeelt) and ((M = 0) or (MuziekBron = Self)) then Exit;
+  FSpeelt := M;
+  if M = 0 then
+  begin
+    if MuziekBron = Self then
+    begin
+      MuziekStil;
+      MuziekBron := nil;
+    end;
+  end
+  else
+  begin
+    MuziekSpeel(M);
+    MuziekBron := Self;
+  end;
+end;
+
+procedure TjanSimMuziek.GeluidClick(Sender: TObject);
+begin
+  FGeluid := not FGeluid;
+  Klink;
+  Invalidate;
+end;
+
+procedure TjanSimMuziek.BuildPopup;
+var
+  Mi: TMenuItem;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Geluid', 'Sound', 'Son', 'Ton');
+  Mi.Checked := FGeluid;
+  Mi.OnClick := GeluidClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+function TjanSimMuziek.StatusText: string;
+var
+  i: Integer;
+  S: string;
+begin
+  S := '';
+  for i := 0 to 7 do
+    if FIn[i] then
+    begin
+      if S <> '' then S := S + ' ';
+      S := S + NootNaam(i);
+    end;
+  if S = '' then
+    Result := Tr(FTaal, 'stil', 'silent', 'silence', 'still')
+  else
+    Result := Tr(FTaal, 'speelt ', 'plays ', 'joue ', 'spielt ') + S;
+  if not FGeluid then
+    Result := Result + Tr(FTaal, ' (geluid uit)', ' (sound off)', ' (son coupé)', ' (Ton aus)');
+end;
+
+procedure TjanSimMuziek.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'een ingang per noot (do re mi fa sol la si do'')' + #13#10 + 'aan: de toets licht op en de noot klinkt' + #13#10 + 'rechtsklik: geluid aan/uit',
+              'one input per note (C D E F G A B C'')' + #13#10 + 'on: the key lights up and the note sounds' + #13#10 + 'right-click: sound on/off',
+              'une entrée par note (do ré mi fa sol la si do'')' + #13#10 + 'actif : la touche s''allume et la note sonne' + #13#10 + 'clic droit : son activé/coupé',
+              'ein Eingang pro Note (C D E F G A H C'')' + #13#10 + 'ein: die Taste leuchtet und die Note klingt' + #13#10 + 'Rechtsklick: Ton ein/aus');
+end;
+
+procedure TjanSimMuziek.Paint;
+const
+  // zwarte toetsen staan op de grens na witte toets 1, 2, 4, 5 en 6
+  Zwart: array[0..4] of Integer = (1, 2, 4, 5, 6);
+  Kast = $00305878;      // bruin hout
+  Licht = $0000D0FF;     // geel-oranje: speelt
+var
+  i, x, y: Integer;
+  BW, BH: Integer;
+  Lbl: string;
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+
+    // kast
+    Pen.Width := 1;
+    Pen.Color := $00203848;
+    Brush.Style := bsSolid;
+    Brush.Color := Kast;
+    RoundRect(MZ_X - 6, 4, MZ_X + 8 * MZ_TOETS + 6, BH - 4, 8, 8);
+    Brush.Style := bsClear;
+    Font.Color := clWhite;
+    Lbl := FNaam;
+    if not FGeluid then
+      Lbl := Lbl + Tr(FTaal, ' (geluid uit)', ' (sound off)', ' (son coupé)', ' (Ton aus)');
+    TextOut(MZ_X, 7, Lbl);
+
+    // de noot (of het akkoord) die nu speelt, groot rechts in de kop
+    Lbl := '';
+    for i := 0 to 7 do
+      if FIn[i] then
+      begin
+        if Lbl <> '' then Lbl := Lbl + ' ';
+        Lbl := Lbl + NootNaam(i);
+      end;
+    if Lbl <> '' then
+    begin
+      Font.Size := 9;
+      Font.Color := Licht;
+      x := MZ_X + 8 * MZ_TOETS - TextWidth(Lbl);
+      TextOut(x, 5, Lbl);
+      // muzieknootje ervoor
+      Brush.Style := bsSolid;
+      Brush.Color := Licht;
+      Pen.Color := Licht;
+      Ellipse(x - 12, 13, x - 6, 18);
+      Line(x - 7, 15, x - 7, 6);
+      Line(x - 7, 6, x - 3, 9);
+      Brush.Style := bsClear;
+      Font.Size := 7;
+    end;
+
+    // witte toetsen met de naam van de noot, en klein de letter eronder
+    for i := 0 to 7 do
+    begin
+      x := MZ_X + i * MZ_TOETS;
+      Brush.Style := bsSolid;
+      if FIn[i] then Brush.Color := Licht else Brush.Color := clWhite;
+      Pen.Color := clGray;
+      Rectangle(x, MZ_BOVEN, x + MZ_TOETS + 1, MZ_ONDER);
+      Brush.Style := bsClear;
+      if FIn[i] then Font.Color := clRed else Font.Color := clNavy;
+      Font.Size := 7;
+      Lbl := NootNaam(i);
+      TextOut(x + (MZ_TOETS - TextWidth(Lbl)) div 2, MZ_ONDER - 25, Lbl);
+      Font.Size := 6;
+      Font.Style := [];
+      Font.Color := clGray;
+      Lbl := NootLetter(i);
+      TextOut(x + (MZ_TOETS - TextWidth(Lbl)) div 2, MZ_ONDER - 13, Lbl);
+      Font.Style := [fsBold];
+      Font.Size := 7;
+      // muzieknootje boven een toets die speelt
+      if FIn[i] then
+      begin
+        Brush.Style := bsSolid;
+        Brush.Color := clBlack;
+        Pen.Color := clBlack;
+        Ellipse(x + 8, MZ_ONDER - 38, x + 15, MZ_ONDER - 32);
+        Line(x + 14, MZ_ONDER - 35, x + 14, MZ_ONDER - 50);
+        Line(x + 14, MZ_ONDER - 50, x + 18, MZ_ONDER - 46);
+      end;
+    end;
+
+    // zwarte toetsen (alleen versiering)
+    Brush.Style := bsSolid;
+    Brush.Color := $00202020;
+    Pen.Color := clBlack;
+    for i := 0 to High(Zwart) do
+    begin
+      x := MZ_X + Zwart[i] * MZ_TOETS;
+      Rectangle(x - 8, MZ_BOVEN, x + 9, MZ_BOVEN + 50);
+    end;
+
+    // ingangen links, met de naam van de noot
+    for i := 0 to 7 do
+    begin
+      y := InPinY(i);
+      Brush.Style := bsSolid;
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(1, y, 8, y + 7);
+      Brush.Style := bsClear;
+      if FIn[i] then Font.Color := clRed else Font.Color := clNavy;
+      TextOut(11, y - 3, NootNaam(i));
+    end;
+
+    if FSelect or FSelected then
+    begin
+      Brush.Style := bsClear;
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+    Pen.Width := 1;
+  end;
+end;
+
+// ============================================================
 // TjanSimEindschakelaar: eindschakelaar in de invoer, volgt de persoon of
 // het wagentje zonder draad
 // ============================================================
@@ -25910,7 +26494,7 @@ begin
   Result := nil;
   if Parent = nil then Exit;
   for i := 0 to Parent.ControlCount - 1 do
-    if Parent.Controls[i] is TjanSimPersoon then
+    if (Parent.Controls[i] is TjanSimPersoon) and (TjanSimPersoon(Parent.Controls[i]).OutputCount > 0) then
       Exit(TjanSimPersoon(Parent.Controls[i]));
 end;
 

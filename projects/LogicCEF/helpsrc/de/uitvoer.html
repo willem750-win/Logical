@@ -106,6 +106,28 @@ $1  <p id="led"><b>LED:</b> Klicken Sie mit der rechten Maustaste auf eine Lampe
       <b>Zurück zum Start</b> stellen Sie ihn selbst zurück.</li>
   </ul>
 
+  <h2 id="muziek"><img src="../img/pal-muziek.png" class="ico" alt="">Spieldose</h2>
+  <p>Eine Tastatur mit 8 weißen Klaviertasten: <b>do re mi fa sol la si do'</b> (darunter klein C D E F G A H C'; do' ist das hohe C).
+  Sie setzen sie mit dem Knopf <a href="onderdelenbalk.html">Spieldose</a> in der Bauteilleiste ein, unter den Knöpfen
+  Person und Wagen. Links sind 8 Eingänge, einer pro Taste, auf derselben Höhe wie UIT0 bis UIT7 von
+  <a href="logicrun.html">LogicRun</a>: Setzen Sie die Spieldose auf dieselbe Höhe wie den LogicRun-Block, dann laufen die
+  Drähte gerade.</p>
+  <figure>
+    <img src="../img/muziek-voorbeeld.png" alt="Eine Spieldose mit 8 Klaviertasten; die Taste G leuchtet gelb">
+    <figcaption>Der Eingang G (sol) ist ein: Die Taste leuchtet, eine Note erscheint und Sie hören das G.</figcaption>
+  </figure>
+  <ul>
+    <li>Ein Eingang ein: Die Taste leuchtet gelb und die Note klingt, solange der Eingang ein ist (höchstens 4 Sekunden).
+      Mehrere Eingänge gleichzeitig ein: Sie hören einen Akkord.</li>
+    <li>Eine Melodie machen Sie mit LogicRun: ein Schritt pro Note, die Zeit des Schritts ist die Länge der Note. Siehe
+      <a href="les18.html">Lektion 18</a>.</li>
+    <li>Rechtsklick und <b>Ton</b>: den Ton aus- oder einschalten. Ohne Ton leuchten die Tasten weiterhin, praktisch in
+      einer stillen Klasse.</li>
+    <li>Unter Windows spielt Logic den Ton selbst. Unter Linux verwendet es <code>aplay</code>, <code>pw-play</code> oder
+      <code>paplay</code> (eines davon ist fast immer installiert).</li>
+    <li>Auf einem Panel mit Schienen hängt die Spieldose an der &minus;-Schiene, wie die anderen Ausgaben.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-Segment-Anzeige</h2>
   <p>Die Anzeige hat einen Eingang. Was sie zeigt, hängt davon ab, was Sie anschließen:</p>
   <ul>

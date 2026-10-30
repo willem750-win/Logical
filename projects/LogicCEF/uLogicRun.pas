@@ -273,6 +273,7 @@ begin
   CbEx.Items.Add(T('Op en neer tellen', 'Count up and down', 'Compter et décompter', 'Auf- und abwärts zählen'));
   CbEx.Items.Add(T('Persoon heen en weer', 'Person back and forth', 'Personne aller-retour', 'Person hin und her'));
   CbEx.Items.Add(T('Wagentje op parcours', 'Cart on a road', 'Chariot sur un parcours', 'Wagen auf der Strecke'));
+  CbEx.Items.Add(T('Muziek: Altijd is Kortjakje ziek', 'Music: Twinkle, twinkle, little star', 'Musique : Ah ! vous dirai-je, maman', 'Musik: Morgen kommt der Weihnachtsmann'));
   if Keep < 0 then Keep := 0;
   CbEx.ItemIndex := Keep;
   for i := 0 to 3 do
@@ -688,6 +689,10 @@ begin
     // wagentje (les 17): UIT0 vooruit tot 3 pulsen op DIN3 (Tel, paaltje 3), 2 s,
     // vooruit tot DIN4 (Finish), 2 s, UIT1 achteruit tot DIN2 (Start), 2 s
     9: FBlock.SetProgramText('500;1;4;0;0;0;1:1:3:2:3,0:4,1:1:1:3:1,0:4,2:1:1:1:1,0:4');
+    // muziekdoos (les 18): Altijd is Kortjakje ziek, een stap per noot op
+    // UIT0..UIT7 (do..do''), een kwartnoot is 4 x 125 ms; twee keer dezelfde
+    // noot: 3 tikken noot en 1 tik rust; DIN1 aan/uit
+    10: FBlock.SetProgramText('125;1;4;0;0;0;1:3,0:1,1:4,16:3,0:1,16:4,32:3,0:1,32:4,16:8,8:3,0:1,8:4,4:3,0:1,4:4,2:3,0:1,2:4,1:8,16:3,0:1,16:4,8:3,0:1,8:4,4:3,0:1,4:4,2:8,16:3,0:1,16:4,8:3,0:1,8:4,4:3,0:1,4:4,2:8,1:3,0:1,1:4,16:3,0:1,16:4,32:3,0:1,32:4,16:8,8:3,0:1,8:4,4:3,0:1,4:4,2:3,0:1,2:4,1:8,0:8');
   end;
 end;
 

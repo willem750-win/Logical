@@ -1502,6 +1502,7 @@ begin
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
   Box.KWagen := Grid.KLogicRun;
+  Box.KMuziek := Grid.KLogicRun;
   Grid.OnKLogicRunChange := @GridKLogicRunChange;
   UpdateUndoHints;
   UpdateUndoButtons;
@@ -1587,6 +1588,7 @@ begin
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
   Box.KWagen := Grid.KLogicRun;
+  Box.KMuziek := Grid.KLogicRun;
   if (not Grid.KLogicRun) and Assigned(FLogicRunForm) then
     FLogicRunForm.Hide;
 end;

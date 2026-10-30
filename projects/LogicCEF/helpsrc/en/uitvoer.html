@@ -104,6 +104,28 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
       start</b> to put it back yourself.</li>
   </ul>
 
+  <h2 id="muziek"><img src="../img/pal-muziek.png" class="ico" alt="">Music box</h2>
+  <p>A keyboard with 8 white piano keys: <b>do re mi fa sol la si do'</b> (C D E F G A B C', do' is the high do). You
+  place it with the <a href="onderdelenbalk.html">Music box</a> button in the component bar, below the Person and Cart
+  buttons. On the left there are 8 inputs, one per key, at the same height as UIT0 to UIT7 of
+  <a href="logicrun.html">LogicRun</a>: place the music box at the same height as the LogicRun block and the wires run
+  straight.</p>
+  <figure>
+    <img src="../img/muziek-voorbeeld.png" alt="A music box with 8 piano keys; the key sol lights up yellow">
+    <figcaption>The input sol is on: the key lights up, a note appears and you hear the sol.</figcaption>
+  </figure>
+  <ul>
+    <li>An input on: the key lights up yellow and the note sounds as long as the input is on (at most 4 seconds). More
+      inputs on at the same time: you hear a chord.</li>
+    <li>You make a melody with LogicRun: one step per note, the time of the step is the length of the note. See
+      <a href="les18.html">lesson 18</a>.</li>
+    <li>Right-click and <b>Sound</b>: switch the sound off or on. Without sound the keys still light up, handy in a quiet
+      classroom.</li>
+    <li>On Windows, Logic plays the sound itself. On Linux it uses <code>aplay</code>, <code>pw-play</code> or
+      <code>paplay</code> (one of them is almost always installed).</li>
+    <li>On a panel with rails the music box hangs on the &minus; rail, like the other outputs.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>
   <p>The display has one input. What it shows depends on what you connect to it:</p>
   <ul>
