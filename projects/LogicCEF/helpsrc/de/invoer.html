@@ -44,3 +44,22 @@
 
   <div class="tip"><strong>Tipp:</strong> Geben Sie Eingangsbauteilen über das Kontextmenü einen klaren Namen
   (<i>Namen ändern</i>), zum Beispiel &bdquo;Tür offen&ldquo;. Der Name erscheint im Hinweis und in der Statusleiste.</div>
+
+  <h2 id="eindschakelaar">Endschalter</h2>
+  <p>Ein Endschalter meldet, wo eine <a href="uitvoer.html#persoon">Person</a> oder ein <a href="uitvoer.html#wagen">Wagen</a>
+  steht. Er steht im Eingang, wie bei einer echten Maschine mit einer SPS: Die Maschine selbst ist ein Ausgang, ihre
+  Endschalter sind Eingänge. Er folgt der Person oder dem Wagen auf dem Panel ohne Draht. Rechts ist sein Ausgang; den
+  verbinden Sie mit einem Eingang von <a href="logicrun.html">LogicRun</a>.</p>
+  <figure>
+    <img src="../img/eindschakelaar-voorbeeld.png" alt="Zwei Endschalter S1 und S2 an der + Schiene">
+    <figcaption>Zwei Endschalter an der + Schiene. Sie sind offen: Die Person ist unterwegs zwischen S1 und S2.</figcaption>
+  </figure>
+  <ul>
+    <li>Sie setzen sie mit der rechten Maustaste auf die Person oder den Wagen: <b>Endschalter setzen</b>. Logic setzt
+      einen für jede Stellung, untereinander links auf dem Panel. Danach können Sie sie verschieben.</li>
+    <li>Mit der rechten Maustaste auf einen Endschalter wählen Sie, welcher Stellung er folgt: <b>S1</b> oder <b>S2</b>
+      bei der Person, <b>Start</b>, <b>Tel</b> oder <b>Finish</b> beim Wagen.</li>
+    <li>Geschlossen und rot: Die Stellung ist erreicht und der Ausgang ist ein. Steht keine Person und kein Wagen auf dem
+      Panel, zeigt er ein rotes <b>?</b>.</li>
+    <li>Auf einem Panel mit <a href="voeding.html">Schienen</a> hängt er an der + Schiene, wie ein Schalter.</li>
+  </ul>

@@ -15,12 +15,15 @@
     <li>Einen <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): das Programm ein
       oder aus.</li>
     <li>Den <a href="logicrun.html">LogicRun-Block</a> mit 6 Schritten.</li>
-    <li>Einen <a href="uitvoer.html#wagen">Wagen</a> auf einer kurvigen Straße von <b>START</b> bis <b>FINISH</b>, mit 5
-      nummerierten Pfosten. Rechts sind die Eingänge: <b>V</b> (vorwärts, zum Ziel) und <b>A</b> (rückwärts). Links sind
-      drei Ausgänge: <b>Start</b> ist ein, wenn der Wagen am Start steht, <b>Finish</b>, wenn er im Ziel steht, und
-      <b>Tel</b> (zählen) gibt einen kurzen Impuls, jedes Mal wenn der Wagen an einem Pfosten vorbeifährt.</li>
-    <li>Die Drähte: <b>UIT0</b> zu V, <b>UIT1</b> zu A, <b>Start</b> zu DIN2, <b>Tel</b> zu DIN3 und <b>Finish</b>
-      zu DIN4.</li>
+    <li>Links, im Eingang: drei <a href="invoer.html#eindschakelaar">Endschalter</a>, die dem Wagen ohne Draht folgen.
+      <b>Start</b> ist ein, wenn der Wagen am Start steht, <b>Finish</b>, wenn er im Ziel steht, und <b>Tel</b> (zählen)
+      gibt einen kurzen Impuls, jedes Mal wenn der Wagen an einem Pfosten vorbeifährt.</li>
+    <li>Rechts, im Ausgang: ein <a href="uitvoer.html#wagen">Wagen</a> auf einer kurvigen Straße von <b>START</b> bis
+      <b>FINISH</b>, mit 5 nummerierten Pfosten. Seine Eingänge sind links am Block: <b>V</b> (vorwärts, zum Ziel) und
+      <b>A</b> (rückwärts).</li>
+    <li>Die Eingänge hängen an der + Schiene, der Wagen an der &minus; Schiene; siehe <a href="voeding.html">Versorgung</a>.</li>
+    <li>Die Drähte: <b>Start</b> zu DIN2, <b>Tel</b> zu DIN3, <b>Finish</b> zu DIN4, <b>UIT0</b> zu V und <b>UIT1</b>
+      zu A.</li>
   </ul>
 
   <h2>Das Programm</h2>

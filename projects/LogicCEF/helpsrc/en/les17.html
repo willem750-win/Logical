@@ -14,12 +14,15 @@
   <ul>
     <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): the program on or off.</li>
     <li>The <a href="logicrun.html">LogicRun block</a> with 6 steps.</li>
-    <li>A <a href="uitvoer.html#wagen">cart</a> on a winding road from <b>START</b> to <b>FINISH</b>, with 5 numbered
-      posts. The inputs are on the right: <b>V</b> (forward, towards the finish) and <b>A</b> (backward). On the left
-      there are three outputs: <b>Start</b> is on when the cart is at the start, <b>Finish</b> when it is at the finish,
-      and <b>Tel</b> (count) gives a short pulse each time the cart passes a post.</li>
-    <li>The wires: <b>UIT0</b> to V, <b>UIT1</b> to A, <b>Start</b> to DIN2, <b>Tel</b> to DIN3 and <b>Finish</b>
-      to DIN4.</li>
+    <li>On the left, in the input: three <a href="invoer.html#eindschakelaar">limit switches</a> that follow the cart
+      without a wire. <b>Start</b> is on when the cart is at the start, <b>Finish</b> when it is at the finish, and
+      <b>Tel</b> (count) gives a short pulse each time the cart passes a post.</li>
+    <li>On the right, in the output: a <a href="uitvoer.html#wagen">cart</a> on a winding road from <b>START</b> to
+      <b>FINISH</b>, with 5 numbered posts. Its inputs are on the left of the block: <b>V</b> (forward, towards the finish)
+      and <b>A</b> (backward).</li>
+    <li>The inputs hang on the + rail, the cart on the &minus; rail; see <a href="voeding.html">Power supply</a>.</li>
+    <li>The wires: <b>Start</b> to DIN2, <b>Tel</b> to DIN3, <b>Finish</b> to DIN4, <b>UIT0</b> to V and <b>UIT1</b>
+      to A.</li>
   </ul>
 
   <h2>The program</h2>

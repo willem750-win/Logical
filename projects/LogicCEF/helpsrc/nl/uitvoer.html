@@ -67,38 +67,44 @@ $1  <p id="led"><b>Led:</b> klik met de rechtermuisknop op een lamp en kies <b>K
 
   <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Persoon</h2>
   <p>Een persoon die over een vloer naar links en naar rechts loopt. Je plaatst hem met de knop
-  <a href="onderdelenbalk.html">Persoon</a> in de onderdelenbalk, onder de voltmeter (de linkse halve knop). Rechts zitten de ingangen: <b>L</b> laat hem naar links
-  lopen, <b>R</b> naar rechts. Aan beide uiteinden van de vloer staat een eindschakelaar met een lampje; links zitten
-  hun uitgangen: <b>S1</b> is aan als hij helemaal links staat, <b>S2</b> als hij helemaal rechts staat.</p>
+  <a href="onderdelenbalk.html">Persoon</a> in de onderdelenbalk, onder de voltmeter (de linkse halve knop). Links op het
+  blok zitten de ingangen: <b>L</b> laat hem naar links lopen, <b>R</b> naar rechts. Aan beide uiteinden van de vloer staat
+  een eindschakelaar met een lampje: <b>S1</b> links en <b>S2</b> rechts.</p>
   <figure>
     <img src="../img/persoon-voorbeeld.png" alt="Een persoon die naar rechts loopt tussen twee eindschakelaars">
-    <figcaption>De persoon loopt naar rechts: R is aan. Bij S2 blijft hij staan en gaat S2 aan.</figcaption>
+    <figcaption>De persoon loopt naar rechts: R is aan. Bij S2 blijft hij staan en gaat het lampje van S2 aan.</figcaption>
   </figure>
   <ul>
     <li>Allebei uit: hij staat stil. L en R <b>allebei aan</b>: hij blijft staan en er verschijnt een rode <b>!</b>.</li>
-    <li>Verbind S1 en S2 met een ingang van <a href="logicrun.html">LogicRun</a> (bijvoorbeeld DIN3 en DIN4): een stap kan
-      dan wachten tot de persoon aangekomen is. Zie <a href="les16.html">les 16</a>.</li>
-    <li>De persoon heeft geen voeding nodig. Na het openen van een paneel staat hij altijd links. Met de rechtermuisknop en
-      <b>Terug naar links (S1)</b> zet je hem zelf terug.</li>
+    <li>Wil je weten waar hij staat, klik dan met de rechtermuisknop op de persoon en kies <b>Eindschakelaars
+      plaatsen</b>. Links in de invoer komen dan twee <a href="invoer.html#eindschakelaar">eindschakelaars</a>, S1 en S2.
+      Verbind ze met een ingang van <a href="logicrun.html">LogicRun</a> (bijvoorbeeld DIN3 en DIN4): een stap kan dan
+      wachten tot de persoon aangekomen is. Zie <a href="les16.html">les 16</a>.</li>
+    <li>De persoon is uitvoer: op een paneel met <a href="voeding.html">rails</a> moet hij aan de &minus; rail hangen
+      (ingeplugd of met een voedingsdraad), anders loopt hij niet. Zonder rails werkt hij gewoon.</li>
+    <li>Na het openen van een paneel staat hij altijd links. Met de rechtermuisknop en <b>Terug naar links (S1)</b> zet je
+      hem zelf terug.</li>
   </ul>
 
   <h2 id="wagen"><img src="../img/pal-wagen.png" class="ico" alt="">Wagentje</h2>
   <p>Een wagentje (van boven gezien) dat over een kronkelweg rijdt, van <b>START</b> naar <b>FINISH</b>. Je plaatst het met
-  de knop <a href="onderdelenbalk.html">Wagentje</a> in de onderdelenbalk, rechts naast de knop Persoon. Rechts zitten de
-  ingangen: <b>V</b> laat het vooruit rijden (naar de finish), <b>A</b> achteruit. Links zitten drie uitgangen:
-  <b>Start</b> is aan als het aan de start staat, <b>Finish</b> als het aan de finish staat, en <b>Tel</b> geeft een korte
-  puls telkens het wagentje een van de 5 paaltjes langs de weg voorbijrijdt.</p>
+  de knop <a href="onderdelenbalk.html">Wagentje</a> in de onderdelenbalk, rechts naast de knop Persoon. Links op het blok
+  zitten de ingangen: <b>V</b> laat het vooruit rijden (naar de finish), <b>A</b> achteruit. Langs de weg staan 5
+  genummerde paaltjes; hun lampje wordt rood als het wagentje erlangs rijdt.</p>
   <figure>
     <img src="../img/wagen-voorbeeld.png" alt="Een wagentje op een kronkelweg met vijf paaltjes">
-    <figcaption>Het wagentje rijdt vooruit: V is aan. Het lampje van een paaltje wordt rood als het wagentje erlangs rijdt.</figcaption>
+    <figcaption>Het wagentje rijdt vooruit: V is aan. Het lampje van paaltje 1 is rood.</figcaption>
   </figure>
   <ul>
     <li>Allebei uit: het staat stil. V en A <b>allebei aan</b>: het blijft staan en er verschijnt een rode <b>!</b>.
       Achteruit branden de witte achteruitrijlichten.</li>
-    <li>Verbind Tel met een ingang van <a href="logicrun.html">LogicRun</a> en kies bij een stap <b>N x DIN</b>: dan rijdt
-      het wagentje tot het N-de paaltje. Zie <a href="les17.html">les 17</a>.</li>
-    <li>Het wagentje heeft geen voeding nodig. Na het openen van een paneel staat het altijd aan de start. Met de
-      rechtermuisknop en <b>Terug naar de start</b> zet je het zelf terug.</li>
+    <li>Met de rechtermuisknop en <b>Eindschakelaars plaatsen</b> komen er links in de invoer drie
+      <a href="invoer.html#eindschakelaar">eindschakelaars</a>: <b>Start</b> (aan de start), <b>Tel</b> (een korte puls bij
+      elk paaltje) en <b>Finish</b> (aan de finish). Verbind Tel met een ingang van <a href="logicrun.html">LogicRun</a> en
+      kies bij een stap <b>N x DIN</b>: dan rijdt het wagentje tot het N-de paaltje. Zie <a href="les17.html">les 17</a>.</li>
+    <li>Het wagentje is uitvoer: op een paneel met <a href="voeding.html">rails</a> moet het aan de &minus; rail hangen,
+      anders rijdt het niet. Na het openen van een paneel staat het altijd aan de start. Met de rechtermuisknop en
+      <b>Terug naar de start</b> zet je het zelf terug.</li>
   </ul>
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segmentdisplay</h2>

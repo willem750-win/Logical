@@ -14,10 +14,15 @@
   <ul>
     <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b> (function <b>on/off</b>): the program on or off.</li>
     <li>The <a href="logicrun.html">LogicRun block</a> with 4 steps.</li>
-    <li>A <a href="uitvoer.html#persoon">person</a> on a floor. His inputs are on the right: <b>L</b> (walk left) and
-      <b>R</b> (walk right). On the left are the outputs of the two limit switches: <b>S1</b> is on when he is all the way
-      to the left, <b>S2</b> when he is all the way to the right.</li>
-    <li>The wires: <b>UIT0</b> to L, <b>UIT1</b> to R, <b>S1</b> to DIN3 and <b>S2</b> to DIN4.</li>
+    <li>On the left, in the input: two <a href="invoer.html#eindschakelaar">limit switches</a>. <b>S1</b> is on when the
+      person is all the way to the left, <b>S2</b> when he is all the way to the right. They follow the person without a
+      wire.</li>
+    <li>On the right, in the output: a <a href="uitvoer.html#persoon">person</a> on a floor. His inputs are on the left of
+      the block: <b>L</b> (walk left) and <b>R</b> (walk right).</li>
+    <li>The inputs hang on the + rail (5&nbsp;V), the person on the &minus; rail (0&nbsp;V); see
+      <a href="voeding.html">Power supply</a>.</li>
+    <li>The wires: <b>S1</b> to DIN3, <b>S2</b> to DIN4, <b>UIT0</b> to L and <b>UIT1</b> to R. Everything runs from the
+      left (input) through LogicRun (processing) to the right (output).</li>
   </ul>
 
   <h2>The program</h2>

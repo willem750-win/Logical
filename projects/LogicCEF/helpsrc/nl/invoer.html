@@ -44,3 +44,22 @@
 
   <div class="tip"><strong>Tip:</strong> geef invoeronderdelen een duidelijke naam via het rechtsklikmenu
   (<i>Wijzig naam</i>), bijvoorbeeld &ldquo;Deur open&rdquo;. De naam verschijnt in de hint en in de statusbalk.</div>
+
+  <h2 id="eindschakelaar">Eindschakelaar</h2>
+  <p>Een eindschakelaar meldt waar een <a href="uitvoer.html#persoon">persoon</a> of een
+  <a href="uitvoer.html#wagen">wagentje</a> staat. Hij staat in de invoer, zoals bij een echte machine met een PLC: de
+  machine zelf is uitvoer, haar eindschakelaars zijn ingangen. Hij volgt de persoon of het wagentje op het paneel zonder
+  draad. Rechts zit zijn uitgang; die verbind je met een ingang van <a href="logicrun.html">LogicRun</a>.</p>
+  <figure>
+    <img src="../img/eindschakelaar-voorbeeld.png" alt="Twee eindschakelaars S1 en S2 aan de + rail">
+    <figcaption>Twee eindschakelaars aan de + rail. Ze staan open: de persoon is onderweg tussen S1 en S2.</figcaption>
+  </figure>
+  <ul>
+    <li>Je plaatst ze met de rechtermuisknop op de persoon of het wagentje: <b>Eindschakelaars plaatsen</b>. Logic zet er
+      één voor elke stand, onder elkaar links op het paneel. Daarna kan je ze verslepen.</li>
+    <li>Met de rechtermuisknop op een eindschakelaar kies je welke stand hij volgt: <b>S1</b> of <b>S2</b> bij de persoon,
+      <b>Start</b>, <b>Tel</b> of <b>Finish</b> bij het wagentje.</li>
+    <li>Dicht en rood: de stand is bereikt en de uitgang is aan. Staat er geen persoon of wagentje op het paneel, dan toont
+      hij een rode <b>?</b>.</li>
+    <li>Op een paneel met <a href="voeding.html">rails</a> hangt hij aan de + rail, zoals een schakelaar.</li>
+  </ul>

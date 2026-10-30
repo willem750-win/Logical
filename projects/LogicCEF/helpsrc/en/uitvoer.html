@@ -64,38 +64,44 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
 
   <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Person</h2>
   <p>A person who walks left and right across a floor. You place him with the <a href="onderdelenbalk.html">Person</a>
-  button in the component bar, below the voltmeter (the left half button). His inputs are on the right: <b>L</b> makes him walk left, <b>R</b> right. At both ends of the
-  floor there is a limit switch with a lamp; their outputs are on the left: <b>S1</b> is on when he is all the way to the
-  left, <b>S2</b> when he is all the way to the right.</p>
+  button in the component bar, below the voltmeter (the left half button). His inputs are on the left of the block:
+  <b>L</b> makes him walk left, <b>R</b> right. At both ends of the floor there is a limit switch with a lamp: <b>S1</b>
+  on the left and <b>S2</b> on the right.</p>
   <figure>
-    <img src="../img/persoon-voorbeeld.png" alt="A person walking to the right between two limit switches">
-    <figcaption>The person walks to the right: R is on. At S2 he stops and S2 goes on.</figcaption>
+    <img src="../img/persoon-voorbeeld.png" alt="A person walking right between two limit switches">
+    <figcaption>The person walks to the right: R is on. At S2 he stops and the lamp of S2 comes on.</figcaption>
   </figure>
   <ul>
     <li>Both off: he stands still. L and R <b>both on</b>: he stays where he is and a red <b>!</b> appears.</li>
-    <li>Connect S1 and S2 to an input of <a href="logicrun.html">LogicRun</a> (for example DIN3 and DIN4): a step can then
-      wait until the person has arrived. See <a href="les16.html">lesson 16</a>.</li>
-    <li>The person needs no power supply. After opening a panel he is always on the left. Right-click and choose
-      <b>Back to the left (S1)</b> to put him back yourself.</li>
+    <li>To know where he is, right-click the person and choose <b>Place limit switches</b>. Two
+      <a href="invoer.html#eindschakelaar">limit switches</a>, S1 and S2, then appear on the left, in the input. Connect
+      them to an input of <a href="logicrun.html">LogicRun</a> (for example DIN3 and DIN4): a step can then wait until the
+      person has arrived. See <a href="les16.html">lesson 16</a>.</li>
+    <li>The person is an output: on a panel with <a href="voeding.html">rails</a> he must hang on the &minus; rail
+      (plugged in or with a power wire), otherwise he does not walk. Without rails he simply works.</li>
+    <li>After opening a panel he is always on the left. Right-click and choose <b>Back to the left (S1)</b> to put him
+      back yourself.</li>
   </ul>
 
   <h2 id="wagen"><img src="../img/pal-wagen.png" class="ico" alt="">Cart</h2>
   <p>A cart (seen from above) that drives along a winding road, from <b>START</b> to <b>FINISH</b>. You place it with the
-  <a href="onderdelenbalk.html">Cart</a> button in the component bar, to the right of the Person button. The inputs are on
-  the right: <b>V</b> makes it drive forward (towards the finish), <b>A</b> backward. On the left there are three outputs:
-  <b>Start</b> is on when it is at the start, <b>Finish</b> when it is at the finish, and <b>Tel</b> (count) gives a short
-  pulse each time the cart passes one of the 5 posts along the road.</p>
+  <a href="onderdelenbalk.html">Cart</a> button in the component bar, to the right of the Person button. Its inputs are on
+  the left of the block: <b>V</b> makes it drive forward (towards the finish), <b>A</b> backward. Along the road there are
+  5 numbered posts; their lamp turns red when the cart passes.</p>
   <figure>
     <img src="../img/wagen-voorbeeld.png" alt="A cart on a winding road with five posts">
-    <figcaption>The cart drives forward: V is on. The lamp of a post turns red when the cart passes it.</figcaption>
+    <figcaption>The cart drives forward: V is on. The lamp of post 1 is red.</figcaption>
   </figure>
   <ul>
     <li>Both off: it stands still. V and A <b>both on</b>: it stays where it is and a red <b>!</b> appears. When it
       drives backward, the white reversing lights are on.</li>
-    <li>Connect Tel to an input of <a href="logicrun.html">LogicRun</a> and choose <b>N x DIN</b> in a step: the cart
-      then drives to the N-th post. See <a href="les17.html">lesson 17</a>.</li>
-    <li>The cart needs no power supply. After opening a panel it is always at the start. Right-click and choose
-      <b>Back to the start</b> to put it back yourself.</li>
+    <li>Right-click and choose <b>Place limit switches</b>: three <a href="invoer.html#eindschakelaar">limit
+      switches</a> appear on the left, in the input: <b>Start</b> (at the start), <b>Tel</b> (a short pulse at each post)
+      and <b>Finish</b> (at the finish). Connect Tel to an input of <a href="logicrun.html">LogicRun</a> and choose
+      <b>N x DIN</b> in a step: the cart then drives to the N-th post. See <a href="les17.html">lesson 17</a>.</li>
+    <li>The cart is an output: on a panel with <a href="voeding.html">rails</a> it must hang on the &minus; rail,
+      otherwise it does not drive. After opening a panel it is always at the start. Right-click and choose <b>Back to the
+      start</b> to put it back yourself.</li>
   </ul>
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>

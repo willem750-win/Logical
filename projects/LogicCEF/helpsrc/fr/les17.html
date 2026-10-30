@@ -15,13 +15,15 @@
     <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>)&nbsp;: le
       programme en marche ou à l&rsquo;arrêt.</li>
     <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 6 pas.</li>
-    <li>Un <a href="uitvoer.html#wagen">chariot</a> sur une route sinueuse de <b>START</b> à <b>FINISH</b>, avec 5 poteaux
-      numérotés. Les entrées sont à droite&nbsp;: <b>V</b> (en avant, vers l&rsquo;arrivée) et <b>A</b> (en arrière). À
-      gauche se trouvent trois sorties&nbsp;: <b>Start</b> est active quand le chariot est au départ, <b>Finish</b> quand
-      il est à l&rsquo;arrivée, et <b>Tel</b> (compter) donne une courte impulsion chaque fois que le chariot passe un
-      poteau.</li>
-    <li>Les fils&nbsp;: <b>UIT0</b> vers V, <b>UIT1</b> vers A, <b>Start</b> vers DIN2, <b>Tel</b> vers DIN3 et
-      <b>Finish</b> vers DIN4.</li>
+    <li>À gauche, dans l&rsquo;entrée&nbsp;: trois <a href="invoer.html#eindschakelaar">fins de course</a> qui suivent le
+      chariot sans fil. <b>Start</b> est active quand le chariot est au départ, <b>Finish</b> quand il est à
+      l&rsquo;arrivée, et <b>Tel</b> (compter) donne une courte impulsion chaque fois que le chariot passe un poteau.</li>
+    <li>À droite, dans la sortie&nbsp;: un <a href="uitvoer.html#wagen">chariot</a> sur une route sinueuse de
+      <b>START</b> à <b>FINISH</b>, avec 5 poteaux numérotés. Ses entrées sont à gauche du bloc&nbsp;: <b>V</b> (en
+      avant, vers l&rsquo;arrivée) et <b>A</b> (en arrière).</li>
+    <li>Les entrées sont sur le rail +, le chariot sur le rail &minus;&nbsp;; voir <a href="voeding.html">Alimentation</a>.</li>
+    <li>Les fils&nbsp;: <b>Start</b> vers DIN2, <b>Tel</b> vers DIN3, <b>Finish</b> vers DIN4, <b>UIT0</b> vers V et
+      <b>UIT1</b> vers A.</li>
   </ul>
 
   <h2>Le programme</h2>

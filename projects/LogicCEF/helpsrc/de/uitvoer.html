@@ -64,38 +64,46 @@ $1  <p id="led"><b>LED:</b> Klicken Sie mit der rechten Maustaste auf eine Lampe
 
   <h2 id="persoon"><img src="../img/pal-persoon.png" class="ico" alt="">Person</h2>
   <p>Eine Person, die auf einem Boden nach links und nach rechts geht. Sie setzen sie mit dem Knopf
-  <a href="onderdelenbalk.html">Person</a> in der Bauteilleiste ein, unter dem Voltmeter (der linke halbe Knopf). Rechts sind ihre Eingänge: <b>L</b> lässt sie nach
-  links gehen, <b>R</b> nach rechts. An beiden Enden des Bodens steht ein Endschalter mit einem Lämpchen; links sind ihre
-  Ausgänge: <b>S1</b> ist ein, wenn sie ganz links steht, <b>S2</b>, wenn sie ganz rechts steht.</p>
+  <a href="onderdelenbalk.html">Person</a> in der Bauteilleiste ein, unter dem Voltmeter (der linke halbe Knopf). Ihre
+  Eingänge sind links am Block: <b>L</b> lässt sie nach links gehen, <b>R</b> nach rechts. An beiden Enden des Bodens
+  steht ein Endschalter mit einem Lämpchen: <b>S1</b> links und <b>S2</b> rechts.</p>
   <figure>
-    <img src="../img/persoon-voorbeeld.png" alt="Eine Person, die zwischen zwei Endschaltern nach rechts geht">
-    <figcaption>Die Person geht nach rechts: R ist ein. Bei S2 bleibt sie stehen und S2 wird eingeschaltet.</figcaption>
+    <img src="../img/persoon-voorbeeld.png" alt="Eine Person geht zwischen zwei Endschaltern nach rechts">
+    <figcaption>Die Person geht nach rechts: R ist ein. Bei S2 bleibt sie stehen und das Lämpchen von S2 geht an.</figcaption>
   </figure>
   <ul>
     <li>Beide aus: Sie steht still. L und R <b>beide ein</b>: Sie bleibt stehen und ein rotes <b>!</b> erscheint.</li>
-    <li>Verbinden Sie S1 und S2 mit einem Eingang von <a href="logicrun.html">LogicRun</a> (zum Beispiel DIN3 und DIN4):
-      Ein Schritt kann dann warten, bis die Person angekommen ist. Siehe <a href="les16.html">Lektion 16</a>.</li>
-    <li>Die Person braucht keine Versorgung. Nach dem Öffnen eines Panels steht sie immer links. Mit der rechten Maustaste
-      und <b>Zurück nach links (S1)</b> stellen Sie sie selbst zurück.</li>
+    <li>Um zu wissen, wo sie steht, klicken Sie mit der rechten Maustaste auf die Person und wählen Sie <b>Endschalter
+      setzen</b>. Links im Eingang erscheinen dann zwei <a href="invoer.html#eindschakelaar">Endschalter</a>, S1 und S2.
+      Verbinden Sie sie mit einem Eingang von <a href="logicrun.html">LogicRun</a> (zum Beispiel DIN3 und DIN4): Ein
+      Schritt kann dann warten, bis die Person angekommen ist. Siehe <a href="les16.html">Lektion 16</a>.</li>
+    <li>Die Person ist ein Ausgang: Auf einem Panel mit <a href="voeding.html">Schienen</a> muss sie an der &minus;
+      Schiene hängen (eingesteckt oder mit einem Versorgungsdraht), sonst geht sie nicht. Ohne Schienen funktioniert sie
+      einfach.</li>
+    <li>Nach dem Öffnen eines Panels steht sie immer links. Mit der rechten Maustaste und <b>Zurück nach links (S1)</b>
+      stellen Sie sie selbst zurück.</li>
   </ul>
 
   <h2 id="wagen"><img src="../img/pal-wagen.png" class="ico" alt="">Wagen</h2>
   <p>Ein Wagen (von oben gesehen), der über eine kurvige Straße fährt, von <b>START</b> bis <b>FINISH</b>. Sie setzen ihn
-  mit dem Knopf <a href="onderdelenbalk.html">Wagen</a> in der Bauteilleiste ein, rechts neben dem Knopf Person. Rechts
-  sind die Eingänge: <b>V</b> lässt ihn vorwärts fahren (zum Ziel), <b>A</b> rückwärts. Links sind drei Ausgänge:
-  <b>Start</b> ist ein, wenn er am Start steht, <b>Finish</b>, wenn er im Ziel steht, und <b>Tel</b> (zählen) gibt einen
-  kurzen Impuls, jedes Mal wenn der Wagen an einem der 5 Pfosten an der Straße vorbeifährt.</p>
+  mit dem Knopf <a href="onderdelenbalk.html">Wagen</a> in der Bauteilleiste ein, rechts neben dem Knopf Person. Seine
+  Eingänge sind links am Block: <b>V</b> lässt ihn vorwärts fahren (zum Ziel), <b>A</b> rückwärts. An der Straße stehen 5
+  nummerierte Pfosten; ihr Lämpchen wird rot, wenn der Wagen vorbeifährt.</p>
   <figure>
     <img src="../img/wagen-voorbeeld.png" alt="Ein Wagen auf einer kurvigen Straße mit fünf Pfosten">
-    <figcaption>Der Wagen fährt vorwärts: V ist ein. Das Lämpchen eines Pfostens wird rot, wenn der Wagen vorbeifährt.</figcaption>
+    <figcaption>Der Wagen fährt vorwärts: V ist ein. Das Lämpchen von Pfosten 1 ist rot.</figcaption>
   </figure>
   <ul>
     <li>Beide aus: Er steht still. V und A <b>beide ein</b>: Er bleibt stehen und ein rotes <b>!</b> erscheint.
       Rückwärts leuchten die weißen Rückfahrlichter.</li>
-    <li>Verbinden Sie Tel mit einem Eingang von <a href="logicrun.html">LogicRun</a> und wählen Sie bei einem Schritt
-      <b>N x DIN</b>: Dann fährt der Wagen bis zum N-ten Pfosten. Siehe <a href="les17.html">Lektion 17</a>.</li>
-    <li>Der Wagen braucht keine Versorgung. Nach dem Öffnen eines Panels steht er immer am Start. Mit der rechten
-      Maustaste und <b>Zurück zum Start</b> stellen Sie ihn selbst zurück.</li>
+    <li>Mit der rechten Maustaste und <b>Endschalter setzen</b> erscheinen links im Eingang drei
+      <a href="invoer.html#eindschakelaar">Endschalter</a>: <b>Start</b> (am Start), <b>Tel</b> (ein kurzer Impuls an
+      jedem Pfosten) und <b>Finish</b> (im Ziel). Verbinden Sie Tel mit einem Eingang von <a href="logicrun.html">LogicRun</a>
+      und wählen Sie bei einem Schritt <b>N x DIN</b>: Dann fährt der Wagen bis zum N-ten Pfosten. Siehe
+      <a href="les17.html">Lektion 17</a>.</li>
+    <li>Der Wagen ist ein Ausgang: Auf einem Panel mit <a href="voeding.html">Schienen</a> muss er an der &minus; Schiene
+      hängen, sonst fährt er nicht. Nach dem Öffnen eines Panels steht er immer am Start. Mit der rechten Maustaste und
+      <b>Zurück zum Start</b> stellen Sie ihn selbst zurück.</li>
   </ul>
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-Segment-Anzeige</h2>

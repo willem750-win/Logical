@@ -15,12 +15,15 @@
     <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): het programma aan of
       uit.</li>
     <li>Het <a href="logicrun.html">LogicRun-blok</a> met 6 stappen.</li>
-    <li>Een <a href="uitvoer.html#wagen">wagentje</a> op een kronkelweg van <b>START</b> naar <b>FINISH</b>, met 5 genummerde
-      paaltjes. Rechts zitten de ingangen: <b>V</b> (vooruit, naar de finish) en <b>A</b> (achteruit). Links zitten drie
-      uitgangen: <b>Start</b> is aan als het wagentje aan de start staat, <b>Finish</b> als het aan de finish staat, en
+    <li>Links in de invoer: drie <a href="invoer.html#eindschakelaar">eindschakelaars</a> die het wagentje volgen zonder
+      draad. <b>Start</b> is aan als het wagentje aan de start staat, <b>Finish</b> als het aan de finish staat, en
       <b>Tel</b> geeft een korte puls telkens het wagentje een paaltje voorbijrijdt.</li>
-    <li>De draden: <b>UIT0</b> naar V, <b>UIT1</b> naar A, <b>Start</b> naar DIN2, <b>Tel</b> naar DIN3 en <b>Finish</b>
-      naar DIN4.</li>
+    <li>Rechts in de uitvoer: een <a href="uitvoer.html#wagen">wagentje</a> op een kronkelweg van <b>START</b> naar
+      <b>FINISH</b>, met 5 genummerde paaltjes. Links op het blok zitten de ingangen: <b>V</b> (vooruit, naar de finish)
+      en <b>A</b> (achteruit).</li>
+    <li>De invoer hangt aan de + rail, het wagentje aan de &minus; rail; zie <a href="voeding.html">Voeding</a>.</li>
+    <li>De draden: <b>Start</b> naar DIN2, <b>Tel</b> naar DIN3, <b>Finish</b> naar DIN4, <b>UIT0</b> naar V en
+      <b>UIT1</b> naar A.</li>
   </ul>
 
   <h2>Het programma</h2>

@@ -138,6 +138,8 @@ begin
       Result := 'uitvoer';
     'motor':
       begin Result := 'uitvoer'; AAnchor := 'motor'; end;
+    'eindschakelaar':
+      begin Result := 'invoer'; AAnchor := 'eindschakelaar'; end;
     'wagen':
       begin Result := 'uitvoer'; AAnchor := 'wagen'; end;
     'persoon':
@@ -536,6 +538,7 @@ begin
     'tjansimmotor':     AControl.HelpKeyword := 'motor';
     'tjansimpersoon':   AControl.HelpKeyword := 'persoon';
     'tjansimwagen':     AControl.HelpKeyword := 'wagen';
+    'tjansimeindschakelaar': AControl.HelpKeyword := 'eindschakelaar';
   end;
 end;
 

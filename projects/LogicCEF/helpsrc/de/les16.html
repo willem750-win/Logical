@@ -15,10 +15,14 @@
     <li>Ein <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): das Programm ein oder
       aus.</li>
     <li>Der <a href="logicrun.html">LogicRun-Block</a> mit 4 Schritten.</li>
-    <li>Eine <a href="uitvoer.html#persoon">Person</a> auf einem Boden. Rechts sind ihre Eingänge: <b>L</b> (nach links
-      gehen) und <b>R</b> (nach rechts gehen). Links sind die Ausgänge der beiden Endschalter: <b>S1</b> ist ein, wenn sie
-      ganz links steht, <b>S2</b>, wenn sie ganz rechts steht.</li>
-    <li>Die Drähte: <b>UIT0</b> zu L, <b>UIT1</b> zu R, <b>S1</b> zu DIN3 und <b>S2</b> zu DIN4.</li>
+    <li>Links, im Eingang: zwei <a href="invoer.html#eindschakelaar">Endschalter</a>. <b>S1</b> ist ein, wenn die Person
+      ganz links steht, <b>S2</b>, wenn sie ganz rechts steht. Sie folgen der Person ohne Draht.</li>
+    <li>Rechts, im Ausgang: eine <a href="uitvoer.html#persoon">Person</a> auf einem Boden. Ihre Eingänge sind links am
+      Block: <b>L</b> (nach links gehen) und <b>R</b> (nach rechts gehen).</li>
+    <li>Die Eingänge hängen an der + Schiene (5&nbsp;V), die Person an der &minus; Schiene (0&nbsp;V); siehe
+      <a href="voeding.html">Versorgung</a>.</li>
+    <li>Die Drähte: <b>S1</b> zu DIN3, <b>S2</b> zu DIN4, <b>UIT0</b> zu L und <b>UIT1</b> zu R. Alles läuft von links
+      (Eingang) über LogicRun (Verarbeitung) nach rechts (Ausgang).</li>
   </ul>
 
   <h2>Das Programm</h2>

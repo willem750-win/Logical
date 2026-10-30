@@ -1939,7 +1939,7 @@ begin
          (C is TjanMemory) or (C is TjanSimLight) or (C is TjanSimRelais) or
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
          (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor) or
-         (C is TjanSimPersoon))  then
+         (C is TjanSimPersoon) or (C is TjanSimEindschakelaar))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 

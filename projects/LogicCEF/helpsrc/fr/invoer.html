@@ -45,3 +45,22 @@
 
   <div class="tip"><strong>Astuce&nbsp;:</strong> donnez aux composants d&rsquo;entrée un nom clair via le menu contextuel
   (<i>Changer le nom</i>), par exemple &laquo;&nbsp;Porte ouverte&nbsp;&raquo;. Le nom apparaît dans l&rsquo;info-bulle et dans la barre d&rsquo;état.</div>
+
+  <h2 id="eindschakelaar">Fin de course</h2>
+  <p>Une fin de course indique où se trouve une <a href="uitvoer.html#persoon">personne</a> ou un
+  <a href="uitvoer.html#wagen">chariot</a>. Elle est dans l&rsquo;entrée, comme pour une vraie machine avec un
+  automate&nbsp;: la machine elle-même est une sortie, ses fins de course sont des entrées. Elle suit la personne ou le
+  chariot du panneau sans fil. Sa sortie est à droite&nbsp;; reliez-la à une entrée de <a href="logicrun.html">LogicRun</a>.</p>
+  <figure>
+    <img src="../img/eindschakelaar-voorbeeld.png" alt="Deux fins de course S1 et S2 sur le rail +">
+    <figcaption>Deux fins de course sur le rail +. Elles sont ouvertes&nbsp;: la personne est en route entre S1 et S2.</figcaption>
+  </figure>
+  <ul>
+    <li>Vous les placez par un clic droit sur la personne ou le chariot&nbsp;: <b>Placer les fins de course</b>. Logic en
+      met une pour chaque position, l&rsquo;une sous l&rsquo;autre à gauche du panneau. Vous pouvez ensuite les déplacer.</li>
+    <li>Un clic droit sur une fin de course permet de choisir la position suivie&nbsp;: <b>S1</b> ou <b>S2</b> pour la
+      personne, <b>Start</b>, <b>Tel</b> ou <b>Finish</b> pour le chariot.</li>
+    <li>Fermée et rouge&nbsp;: la position est atteinte et la sortie est active. S&rsquo;il n&rsquo;y a ni personne ni
+      chariot sur le panneau, elle affiche un <b>?</b> rouge.</li>
+    <li>Sur un panneau avec des <a href="voeding.html">rails</a>, elle est sur le rail +, comme un interrupteur.</li>
+  </ul>

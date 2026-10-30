@@ -15,10 +15,15 @@
     <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b> (fonction <b>actif/inactif</b>)&nbsp;: le
       programme en marche ou à l&rsquo;arrêt.</li>
     <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 4 pas.</li>
-    <li>Une <a href="uitvoer.html#persoon">personne</a> sur un sol. Ses entrées sont à droite&nbsp;: <b>L</b> (marcher vers
-      la gauche) et <b>R</b> (marcher vers la droite). À gauche se trouvent les sorties des deux fins de course&nbsp;:
-      <b>S1</b> est active quand elle est tout à gauche, <b>S2</b> quand elle est tout à droite.</li>
-    <li>Les fils&nbsp;: <b>UIT0</b> vers L, <b>UIT1</b> vers R, <b>S1</b> vers DIN3 et <b>S2</b> vers DIN4.</li>
+    <li>À gauche, dans l&rsquo;entrée&nbsp;: deux <a href="invoer.html#eindschakelaar">fins de course</a>. <b>S1</b> est
+      active quand la personne est tout à gauche, <b>S2</b> quand elle est tout à droite. Elles suivent la personne sans
+      fil.</li>
+    <li>À droite, dans la sortie&nbsp;: une <a href="uitvoer.html#persoon">personne</a> sur un sol. Ses entrées sont à
+      gauche du bloc&nbsp;: <b>L</b> (marcher vers la gauche) et <b>R</b> (marcher vers la droite).</li>
+    <li>Les entrées sont sur le rail + (5&nbsp;V), la personne sur le rail &minus; (0&nbsp;V)&nbsp;; voir
+      <a href="voeding.html">Alimentation</a>.</li>
+    <li>Les fils&nbsp;: <b>S1</b> vers DIN3, <b>S2</b> vers DIN4, <b>UIT0</b> vers L et <b>UIT1</b> vers R. Tout va de la
+      gauche (entrée) par LogicRun (traitement) vers la droite (sortie).</li>
   </ul>
 
   <h2>Le programme</h2>

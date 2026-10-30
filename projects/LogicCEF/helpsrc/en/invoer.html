@@ -43,3 +43,22 @@
 
   <div class="tip"><strong>Tip:</strong> give input components a clear name through the right-click menu
   (<i>Change name</i>), for example &ldquo;Door open&rdquo;. The name appears in the hint and in the status bar.</div>
+
+  <h2 id="eindschakelaar">Limit switch</h2>
+  <p>A limit switch reports where a <a href="uitvoer.html#persoon">person</a> or a <a href="uitvoer.html#wagen">cart</a>
+  is. It is in the input, as with a real machine and a PLC: the machine itself is an output, its limit switches are
+  inputs. It follows the person or the cart on the panel without a wire. Its output is on the right; connect it to an
+  input of <a href="logicrun.html">LogicRun</a>.</p>
+  <figure>
+    <img src="../img/eindschakelaar-voorbeeld.png" alt="Two limit switches S1 and S2 on the + rail">
+    <figcaption>Two limit switches on the + rail. They are open: the person is on the way between S1 and S2.</figcaption>
+  </figure>
+  <ul>
+    <li>You place them by right-clicking the person or the cart: <b>Place limit switches</b>. Logic puts one for each
+      position, one below the other on the left of the panel. You can drag them afterwards.</li>
+    <li>Right-click a limit switch to choose which position it follows: <b>S1</b> or <b>S2</b> for the person,
+      <b>Start</b>, <b>Tel</b> or <b>Finish</b> for the cart.</li>
+    <li>Closed and red: the position is reached and the output is on. If there is no person or cart on the panel, it
+      shows a red <b>?</b>.</li>
+    <li>On a panel with <a href="voeding.html">rails</a> it hangs on the + rail, like a switch.</li>
+  </ul>
