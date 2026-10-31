@@ -371,7 +371,7 @@ implementation
 
 uses
   uPreferences, uCefStringMultimap, uCEFMiscFunctions, uSimpleTextViewer,
-  uCefClient, uCEFDictionaryValue, LCLIntf;
+  uCefClient, uCEFDictionaryValue, LCLIntf, FileUtil;
 
 // Destruction steps
 // =================
@@ -397,20 +397,77 @@ begin
 end;
 
 
+const
+  EXTRA_CACHE = 'cache-extra';   // + pid: cache van een tweede Logic
+
+var
+  // blijft open zolang Logic draait; Windows geeft het vrij als het proces
+  // stopt, ook na een crash
+  CacheSlot: THandle = feInvalidHandle;
+
+// Open een slotbestand exclusief (maakt het aan als het er nog niet is).
+function NeemSlot(const SlotFile: string): THandle;
+begin
+  if not FileExists(SlotFile) then
+    FileClose(FileCreate(SlotFile));
+  Result := FileOpen(SlotFile, fmOpenReadWrite or fmShareExclusive);
+end;
+
+// Kies de cachemap. Chromium laat maar één programma tegelijk een cachemap
+// gebruiken: een tweede Logic met dezelfde map kreeg geen help. De eerste
+// Logic krijgt de vaste map 'cache' (slot: cache.lock), een volgende een
+// eigen map cache-extra<pid> (slot: slot.lock daarin). Een extra map
+// waarvan het slot vrij is, hoort bij een gestopte Logic en gaat weg.
+function KiesCache(const AppDir: string): string;
+var
+  SR: TSearchRec;
+  H: THandle;
+begin
+  if FindFirst(AppDir + EXTRA_CACHE + '*', faDirectory, SR) = 0 then
+  begin
+    repeat
+      if (SR.Attr and faDirectory) = 0 then Continue;
+      H := FileOpen(AppDir + SR.Name + PathDelim + 'slot.lock', fmOpenReadWrite or fmShareExclusive);
+      if (H <> feInvalidHandle) or not FileExists(AppDir + SR.Name + PathDelim + 'slot.lock') then
+      begin
+        if H <> feInvalidHandle then FileClose(H);
+        DeleteDirectory(AppDir + SR.Name, False);
+      end;
+    until FindNext(SR) <> 0;
+    FindClose(SR);
+  end;
+
+  CacheSlot := NeemSlot(AppDir + 'cache.lock');
+  if CacheSlot <> feInvalidHandle then
+    Exit(AppDir + 'cache');
+
+  Result := AppDir + EXTRA_CACHE + IntToStr(GetProcessID);
+  ForceDirectories(Result);
+  CacheSlot := NeemSlot(Result + PathDelim + 'slot.lock');
+end;
+
 procedure CreateGlobalCEFApp;
 var
   AppDir, CefDir: string;
+  I: Integer;
+  SubProces: Boolean;
 begin
   // De CEF-runtime staat in de submap ceflib naast logicCEF.exe.
   // Paden absoluut maken: bij een andere werkmap vindt CEF anders niets.
   AppDir := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
   CefDir := AppDir + 'ceflib';
 
+  SubProces := False;
+  for I := 1 to ParamCount do
+    if Pos('--type=', ParamStr(I)) = 1 then SubProces := True;
+
   GlobalCEFApp                     := TCefApplication.Create;
   GlobalCEFApp.FrameworkDirPath    := CefDir;
   GlobalCEFApp.ResourcesDirPath    := CefDir;
   GlobalCEFApp.LocalesDirPath      := CefDir + PathDelim + 'locales';
-  GlobalCEFApp.cache               := AppDir + 'cache';
+  // subprocessen krijgen de cachemap van het hoofdproces mee van Chromium
+  if not SubProces then
+    GlobalCEFApp.cache             := KiesCache(AppDir);
   GlobalCEFApp.LogFile             := AppDir + 'debug.log';
   GlobalCEFApp.LogSeverity         := LOGSEVERITY_INFO;
   GlobalCEFApp.EnablePrintPreview  := True;          

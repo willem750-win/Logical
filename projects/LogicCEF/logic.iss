@@ -127,4 +127,6 @@ Type: filesandordirs; Name: "{app}\locales"
 [UninstallDelete]
 ; Door het programma aangemaakt
 Type: filesandordirs; Name: "{app}\cache"
+Type: filesandordirs; Name: "{app}\cache-extra*"
+Type: files;          Name: "{app}\cache.lock"
 Type: files;          Name: "{app}\debug.log"
