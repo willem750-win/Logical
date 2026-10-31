@@ -1,4 +1,4 @@
 # Nieuwste versie van Logic. Logic leest dit bestand om te melden dat er een
 # update is (zie projects/LogicCEF/uUpdate.pas). make-release.ps1 werkt het bij.
-version=1.7.0
+version=1.8.0
 url=https://github.com/willem750-win/Logical/releases/latest
