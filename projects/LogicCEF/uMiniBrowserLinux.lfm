@@ -1,0 +1,213 @@
+object MiniBrowserFrm: TMiniBrowserFrm
+  Left = 300
+  Height = 650
+  Top = 150
+  Width = 900
+  Caption = 'Browser LogicNew'
+  ClientHeight = 650
+  ClientWidth = 900
+  Position = poScreenCenter
+  OnActivate = FormActivate
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object NavControlPnl: TPanel
+    Left = 0
+    Height = 30
+    Top = 0
+    Width = 900
+    Align = alTop
+    BevelOuter = bvNone
+    BorderSpacing.Around = 2
+    ClientHeight = 30
+    ClientWidth = 900
+    Enabled = False
+    TabOrder = 0
+    object NavButtonPnl: TPanel
+      Left = 0
+      Height = 30
+      Top = 0
+      Width = 128
+      Align = alLeft
+      BevelOuter = bvNone
+      ClientHeight = 30
+      ClientWidth = 128
+      TabOrder = 0
+      object BackBtn: TButton
+        Left = 0
+        Height = 30
+        Hint = 'Back'
+        Top = 0
+        Width = 30
+        Caption = '◀'
+        OnClick = BackBtnClick
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+      end
+      object ForwardBtn: TButton
+        Left = 32
+        Height = 30
+        Hint = 'Forward'
+        Top = 0
+        Width = 30
+        Caption = '▶'
+        OnClick = ForwardBtnClick
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+      end
+      object ReloadBtn: TButton
+        Left = 64
+        Height = 30
+        Hint = 'Reload'
+        Top = 0
+        Width = 30
+        Caption = '⟳'
+        OnClick = ReloadBtnClick
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+      end
+      object StopBtn: TButton
+        Left = 96
+        Height = 30
+        Hint = 'Stop'
+        Top = 0
+        Width = 30
+        Caption = '■'
+        OnClick = StopBtnClick
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 3
+      end
+    end
+    object URLEditPnl: TPanel
+      Left = 128
+      Height = 30
+      Top = 0
+      Width = 738
+      Align = alClient
+      BevelOuter = bvNone
+      BorderSpacing.Left = 4
+      BorderSpacing.Right = 4
+      ClientHeight = 30
+      ClientWidth = 738
+      TabOrder = 1
+      object URLCbx: TComboBox
+        Left = 0
+        Height = 28
+        Top = 1
+        Width = 738
+        Align = alClient
+        ItemHeight = 0
+        TabOrder = 0
+      end
+    end
+    object ConfigPnl: TPanel
+      Left = 870
+      Height = 30
+      Top = 0
+      Width = 30
+      Align = alRight
+      BevelOuter = bvNone
+      ClientHeight = 30
+      ClientWidth = 30
+      TabOrder = 2
+      object ConfigBtn: TButton
+        Left = 0
+        Height = 30
+        Top = 0
+        Width = 30
+        Caption = '≡'
+        OnClick = ConfigBtnClick
+        TabOrder = 0
+      end
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 22
+    Top = 628
+    Width = 900
+    Panels = <
+      item
+        Width = 500
+      end>
+    SimplePanel = False
+  end
+  object CEFLinkedWindowParent1: TCEFLinkedWindowParent
+    Left = 0
+    Height = 594
+    Top = 34
+    Width = 900
+    Align = alClient
+    TabStop = True
+    TabOrder = 1
+    OnEnter = CEFLinkedWindowParent1Enter
+    OnExit = CEFLinkedWindowParent1Exit
+    Chromium = Chromium1
+  end
+  object Chromium1: TChromium
+    OnPdfPrintFinished = Chromium1PdfPrintFinished
+    OnLoadingStateChange = Chromium1LoadingStateChange
+    OnGotFocus = Chromium1GotFocus
+    OnBeforeContextMenu = Chromium1BeforeContextMenu
+    OnAddressChange = Chromium1AddressChange
+    OnTitleChange = Chromium1TitleChange
+    OnStatusMessage = Chromium1StatusMessage
+    OnBeforePopup = Chromium1BeforePopup
+    OnAfterCreated = Chromium1AfterCreated
+    OnBeforeClose = Chromium1BeforeClose
+    OnClose = Chromium1Close
+    OnBeforeBrowse = Chromium1BeforeBrowse
+    OnOpenUrlFromTab = Chromium1OpenUrlFromTab
+    OnChromeCommand = Chromium1ChromeCommand
+    Left = 32
+    Top = 224
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 32
+    Top = 168
+    object PrintinPDF1: TMenuItem
+      Caption = 'Print to PDF'
+      OnClick = PrintinPDF1Click
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object Zoom1: TMenuItem
+      Caption = 'Zoom'
+      object Inczoom1: TMenuItem
+        Caption = 'Inc zoom'
+        OnClick = Inczoom1Click
+      end
+      object Deczoom1: TMenuItem
+        Caption = 'Dec zoom'
+        OnClick = Deczoom1Click
+      end
+      object Resetzoom1: TMenuItem
+        Caption = 'Reset zoom'
+        OnClick = Resetzoom1Click
+      end
+    end
+    object MenuItem1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'CEF info...'
+      OnClick = MenuItem2Click
+    end
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 32
+    Top = 280
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 300
+    OnTimer = Timer1Timer
+    Left = 32
+    Top = 336
+  end
+end

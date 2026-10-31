@@ -44,11 +44,11 @@ try {
   $files = @(
     'logicCEF.exe',
     'ceflib\libcef.dll', 'ceflib\chrome_elf.dll', 'ceflib\d3dcompiler_47.dll',
-    'ceflib\libEGL.dll', 'ceflib\libGLESv2.dll',
+    'ceflib\dxcompiler.dll',
     'ceflib\vk_swiftshader.dll', 'ceflib\vk_swiftshader_icd.json', 'ceflib\vulkan-1.dll',
     'ceflib\icudtl.dat', 'ceflib\resources.pak',
     'ceflib\chrome_100_percent.pak', 'ceflib\chrome_200_percent.pak',
-    'ceflib\snapshot_blob.bin', 'ceflib\v8_context_snapshot.bin'
+    'ceflib\v8_context_snapshot.bin'
   )
   foreach ($f in $files) {
     $p = Join-Path $src $f

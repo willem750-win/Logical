@@ -1,7 +1,7 @@
 unit uCefGtk2Widgetset;
 
 // Vervangt de LCL-unit Interfaces onder Linux (GTK2), voor de ingebouwde
-// help met CEF4Delphi (zie uHelpBrowserLinux). CEF moet starten vóór GTK:
+// help met CEF4Delphi (zie uMiniBrowserLinux). CEF moet starten vóór GTK:
 // in de initialization start eerst CEF (als de map ceflib er is) en pas
 // daarna de widgetset, net zoals Interfaces dat doet.
 // Naar het voorbeeld Lazarus_Linux/SimpleBrowser2 van CEF4Delphi.

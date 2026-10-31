@@ -55,6 +55,8 @@ Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
 CloseApplications=yes
+; CEF 156 werkt alleen op Windows 10 en nieuwer
+MinVersion=10.0
 
 [Languages]
 Name: "dutch";   MessagesFile: "compiler:Languages\Dutch.isl"
@@ -72,8 +74,7 @@ Source: "{#Src}\{#MyAppExeName}";           DestDir: "{app}"; Flags: ignoreversi
 Source: "{#Src}\ceflib\libcef.dll";              DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\chrome_elf.dll";          DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\d3dcompiler_47.dll";      DestDir: "{app}\ceflib"; Flags: ignoreversion
-Source: "{#Src}\ceflib\libEGL.dll";              DestDir: "{app}\ceflib"; Flags: ignoreversion
-Source: "{#Src}\ceflib\libGLESv2.dll";           DestDir: "{app}\ceflib"; Flags: ignoreversion
+Source: "{#Src}\ceflib\dxcompiler.dll";          DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\vk_swiftshader.dll";      DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\vk_swiftshader_icd.json"; DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\vulkan-1.dll";            DestDir: "{app}\ceflib"; Flags: ignoreversion
@@ -81,7 +82,6 @@ Source: "{#Src}\ceflib\icudtl.dat";              DestDir: "{app}\ceflib"; Flags:
 Source: "{#Src}\ceflib\resources.pak";           DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\chrome_100_percent.pak";  DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\chrome_200_percent.pak";  DestDir: "{app}\ceflib"; Flags: ignoreversion
-Source: "{#Src}\ceflib\snapshot_blob.bin";       DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\v8_context_snapshot.bin"; DestDir: "{app}\ceflib"; Flags: ignoreversion
 Source: "{#Src}\ceflib\locales\*";               DestDir: "{app}\ceflib\locales"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#Src}\help\*";                    DestDir: "{app}\help"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -118,6 +118,10 @@ Type: files; Name: "{app}\chrome_100_percent.pak"
 Type: files; Name: "{app}\chrome_200_percent.pak"
 Type: files; Name: "{app}\snapshot_blob.bin"
 Type: files; Name: "{app}\v8_context_snapshot.bin"
+; Bij een update van 1.7.x of ouder (CEF 108): bestanden die CEF 156 niet meer heeft
+Type: files; Name: "{app}\ceflib\libEGL.dll"
+Type: files; Name: "{app}\ceflib\libGLESv2.dll"
+Type: files; Name: "{app}\ceflib\snapshot_blob.bin"
 Type: filesandordirs; Name: "{app}\locales"
 
 [UninstallDelete]

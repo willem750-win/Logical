@@ -10,7 +10,7 @@ uses
   athreads,
   {$ENDIF}
   // Onder Linux (GTK2) start uCefGtk2Widgetset eerst CEF (ingebouwde help,
-  // zie uHelpBrowserLinux) en maakt pas daarna de widgetset aan.
+  // zie uMiniBrowserLinux) en maakt pas daarna de widgetset aan.
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
   uCefGtk2Widgetset,
   {$ELSE}

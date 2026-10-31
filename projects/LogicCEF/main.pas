@@ -9,11 +9,11 @@ uses
   Menus,StrHolder, ScreenCapture, chatgridpcodeSmall,
   janSimLogic,AdvancedPropertyGridComponent, IniFiles,LCLIntf,LCLType,
   TypInfo, LCLProc, ExtCtrls, StdCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
-  // De help opent in een ingebouwde CEF-browser: onder Windows uMiniBrowser,
-  // onder Linux (GTK2) uHelpBrowserLinux als de map ceflib er is; anders
-  // in de standaardbrowser van het systeem.
+  // De help opent in een ingebouwde CEF-browser (MiniBrowser): onder Windows
+  // uMiniBrowser, onder Linux (GTK2) uMiniBrowserLinux als de map ceflib er
+  // is; anders in de standaardbrowser van het systeem.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
-  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uHelpBrowserLinux,{$ENDIF}
+  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
   FSettings, uLogicRun, uUpdate;
 const
@@ -2176,7 +2176,7 @@ begin
     MiniBrowserFrm.Hide;
   {$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
-  CloseHelpBrowser;
+  CloseMiniBrowser;
   {$ENDIF}
 end;
 
@@ -2234,12 +2234,9 @@ begin
   KeyPreview := True;
   // bij afsluiten vragen of een gewijzigd paneel bewaard moet worden
   OnCloseQuery := @MainFormCloseQuery;
-  {$IFDEF WINDOWS}
+  {$IF DEFINED(WINDOWS) OR (DEFINED(LINUX) AND DEFINED(LCLGTK2))}
   // een link "Open dit voorbeeld" in de help opent het paneel hier
   OnHelpOpenPanel := @OpenPanelFromHelp;
-  {$ENDIF}
-  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
-  uHelpBrowserLinux.OnHelpOpenPanel := @OpenPanelFromHelp;
   {$ENDIF}
 
   // keuze van de schemasymbolen, rechts in TitelBar2 links van de knop Help
@@ -2496,7 +2493,13 @@ begin
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
   if HelpBrowserAvailable then
   begin
-    ShowHelpBrowser(URL, AppHelpManager.BTaal, Self);
+    if not Assigned(MiniBrowserFrm) then
+    begin
+      MiniBrowserFrm := TMiniBrowserFrm.Create(Application);
+      MiniBrowserFrm.PopupMode := pmExplicit;
+      MiniBrowserFrm.PopupParent := Self;
+    end;
+    MiniBrowserFrm.LoadURLString(URL);
     Exit;
   end;
   {$ENDIF}

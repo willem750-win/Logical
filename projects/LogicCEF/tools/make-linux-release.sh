@@ -20,8 +20,9 @@
 # uit de Windows-zip van dezelfde release op GitHub. Alleen als dat allebei
 # niet lukt, wordt Resultaat/help gebruikt (met een waarschuwing).
 #
-# Onder Linux gebruikt Logic geen CEF (de help opent in de standaardbrowser),
-# dus de CEF-runtime hoort niet in het pakket.
+# CEF-runtime: Resultaat/ceflib gaat mee (de help opent dan in de ingebouwde
+# MiniBrowser). libcef.so wordt gestript (1,4 GB -> ca. 280 MB). Zonder
+# ceflib opent de help in de standaardbrowser.
 #
 # Resultaat in projects/LogicCEF/release/:
 #   Logic-<versie>-linux-<arch>.tar.gz   uitpakken en ./logicCEF starten
@@ -35,7 +36,8 @@
 # In /opt mag een gewone gebruiker niet schrijven. Het startscript kopieert
 # het programma daarom per gebruiker naar ~/.local/share/logical en start
 # het vandaar. Instellingen en eigen panelen blijven bij een update behouden;
-# programma, help en html worden vervangen.
+# programma, help en html worden vervangen. ceflib wordt niet gekopieerd maar
+# gelinkt naar /opt (te groot om per gebruiker te kopiëren).
 # ---------------------------------------------------------------------------
 set -e
 
@@ -86,6 +88,15 @@ chmod 755 "$DST/logicCEF"
 # Vaste taal.ini: nieuwe gebruikers starten in het Nederlands, los van de
 # taal die je zelf laatst koos (bestaande installaties houden hun keuze).
 printf '[Settings]\nLanguage=0\n' > "$DST/taal.ini"
+
+# CEF-runtime voor de ingebouwde help (zie uCefGtk2Widgetset.pas)
+if [ -f "$SRC/ceflib/libcef.so" ]; then
+  cp -r "$SRC/ceflib" "$DST/ceflib"
+  strip "$DST/ceflib/libcef.so" "$DST/ceflib/libvk_swiftshader.so" \
+        "$DST/ceflib/libvulkan.so.1" 2>/dev/null || true
+else
+  echo "LET OP: $SRC/ceflib ontbreekt; de help opent dan in de standaardbrowser."
+fi
 
 # ------------------------------------------------------------------
 # panels, ini en html uit Git (HEAD)
@@ -189,6 +200,9 @@ if [ "\$(cat "\$DST/VERSION" 2>/dev/null)" != "\$(cat "\$SRC/VERSION")" ]; then
   cp -f "\$SRC/logicCEF" "\$SRC/LICENSE" "\$SRC/README.md" "\$DST/"
   rm -rf "\$DST/help" "\$DST/html"
   cp -r "\$SRC/help" "\$SRC/html" "\$DST/"
+  # CEF-runtime niet kopiëren maar linken naar /opt
+  rm -rf "\$DST/ceflib"
+  [ ! -d "\$SRC/ceflib" ] || ln -s "\$SRC/ceflib" "\$DST/ceflib"
   # Instellingen en panelen: alleen wat nog ontbreekt (eigen werk blijft)
   [ -f "\$DST/taal.ini" ] || [ ! -f "\$SRC/taal.ini" ] || cp "\$SRC/taal.ini" "\$DST/"
   for D in ini panels; do
@@ -227,6 +241,7 @@ Section: education
 Priority: optional
 Architecture: $DARCH
 Depends: libc6, libgtk2.0-0, xdg-utils
+Recommends: libnss3, libnspr4, libatk1.0-0 | libatk1.0-0t64, libatk-bridge2.0-0 | libatk-bridge2.0-0t64, libcups2 | libcups2t64, libasound2 | libasound2t64, libgbm1, libxkbcommon0, libxcomposite1, libxdamage1, libxrandr2, libpango-1.0-0, libcairo2
 Installed-Size: $SIZE
 Maintainer: Willy Jansen <willyjansen@telenet.be>
 Homepage: https://github.com/willem750-win/Logical
@@ -256,6 +271,7 @@ EOF
   find "$ROOT" -type f -exec chmod 644 {} +
   chmod 755 "$ROOT/usr/bin/$PKG" "$ROOT/opt/$PKG/logicCEF" \
             "$ROOT/DEBIAN/postinst" "$ROOT/DEBIAN/postrm"
+  [ ! -f "$ROOT/opt/$PKG/ceflib/chrome-sandbox" ] || chmod 755 "$ROOT/opt/$PKG/ceflib/chrome-sandbox"
 
   dpkg-deb --root-owner-group --build "$ROOT" "$DEB"
   echo "Klaar: $DEB ($(du -h "$DEB" | cut -f1))"

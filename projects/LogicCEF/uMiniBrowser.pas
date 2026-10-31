@@ -275,7 +275,7 @@ type
       const frame: ICefFrame; const request: ICefRequest;
       user_gesture, isRedirect: Boolean; out Result: Boolean);
     procedure GuardBeforePopup(Sender: TObject; const browser: ICefBrowser;
-      const frame: ICefFrame; const targetUrl, targetFrameName: ustring;
+      const frame: ICefFrame; popup_id: Integer; const targetUrl, targetFrameName: ustring;
       targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
       const popupFeatures: TCefPopupFeatures; var windowInfo: TCefWindowInfo;
       var client: ICefClient; var settings: TCefBrowserSettings;
@@ -476,14 +476,9 @@ begin
 end;
 
 procedure TMiniBrowserFrm.MenuItem4Click(Sender: TObject);
-var
-  TempLanguageList : ustring;
 begin
-  TempLanguageList := Chromium1.AcceptLanguageList;
-  if (length(TempLanguageList) = 0) then TempLanguageList := Chromium1.Options.AcceptLanguageList;
-  if (length(TempLanguageList) = 0) then TempLanguageList := GlobalCEFApp.AcceptLanguageList;
-
-  Chromium1.AcceptLanguageList := InputBox('Language', 'Accept language list', TempLanguageList);
+  // sinds CEF 156 alleen nog voor de hele toepassing, bij het starten
+  ShowMessage('Accept language list : ' + GlobalCEFApp.AcceptLanguageList);
 end;
 
 procedure TMiniBrowserFrm.MenuItem5Click(Sender: TObject);
@@ -492,9 +487,9 @@ var
 begin
   TempInfo := 'libcef.dll : '         + CRLF + GlobalCEFApp.LibCefVersion    + CRLF + CRLF +
               'chrome_elf.dll : '     + CRLF + GlobalCEFApp.ChromeVersion    + CRLF + CRLF +
-              'Universal API hash : ' + CRLF + GlobalCEFApp.ApiHashUniversal + CRLF + CRLF +
               'Platform API hash : '  + CRLF + GlobalCEFApp.ApiHashPlatform  + CRLF + CRLF +
-              'Commit API hash : '    + CRLF + GlobalCEFApp.ApiHashCommit;
+              'Commit API hash : '    + CRLF + GlobalCEFApp.ApiHashCommit    + CRLF + CRLF +
+              'Full CEF version : '   + CRLF + GlobalCEFApp.VersionFull;
 
   showmessage(TempInfo);
 end;
@@ -585,7 +580,7 @@ begin
 end;
 
 procedure TMiniBrowserFrm.GuardBeforePopup(Sender: TObject; const browser: ICefBrowser;
-  const frame: ICefFrame; const targetUrl, targetFrameName: ustring;
+  const frame: ICefFrame; popup_id: Integer; const targetUrl, targetFrameName: ustring;
   targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
   const popupFeatures: TCefPopupFeatures; var windowInfo: TCefWindowInfo;
   var client: ICefClient; var settings: TCefBrowserSettings;
@@ -1866,26 +1861,14 @@ end;
 
 procedure TMiniBrowserFrm.CopyFramesIDsMsg(var aMessage : TMessage);
 var
-  i          : NativeUInt;
-  TempCount  : NativeUInt;
-  TempArray  : TCefFrameIdentifierArray;
-  TempString : string;
+  TempSL : TStringList;
 begin
-  TempCount := Chromium1.FrameCount;
+  TempSL := TStringList.Create;
 
-  if Chromium1.GetFrameIdentifiers(TempCount, TempArray) then
-    begin
-      TempString := '';
-      i          := 0;
+  if Chromium1.GetFrameIdentifiers(TStrings(TempSL)) then
+    clipboard.AsText := TempSL.Text;
 
-      while (i < TempCount) do
-        begin
-          TempString := TempString + inttostr(TempArray[i]) + CRLF;
-          inc(i);
-        end;
-
-      clipboard.AsText := TempString;
-    end;
+  TempSL.Free;
 end;
 
 procedure TMiniBrowserFrm.CopyFramesNamesMsg(var aMessage : TMessage);
