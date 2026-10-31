@@ -18,16 +18,57 @@ function HelpBrowserAvailable: Boolean;
 implementation
 
 uses
-  SysUtils, gtk2DisableLibOverlay, Gtk2Int, InterfaceBase, Forms, xlib,
-  uCEFApplication, uCEFConstants, uCEFTypes;
+  SysUtils, BaseUnix, Unix, FileUtil, gtk2DisableLibOverlay, Gtk2Int,
+  InterfaceBase, Forms, xlib, uCEFApplication, uCEFConstants, uCEFTypes;
+
+const
+  EXTRA_CACHE = 'cache-pid';   // + pid: cache van een tweede Logic
+  FD_CLOEXEC  = 1;             // niet in de FPC-RTL
 
 var
   CefGestart: Boolean = False;
   EigenWidgetset: Boolean = False;
+  CacheSlot: cint = -1;        // open zolang de vaste cache van ons is
+  EigenExtraCache: string = '';
 
 function HelpBrowserAvailable: Boolean;
 begin
   Result := CefGestart;
+end;
+
+// Kies de cachemap. Chromium laat maar één programma tegelijk een cachemap
+// gebruiken: een tweede Logic met dezelfde map kreeg geen help ("Opening in
+// existing browser session"). De eerste Logic krijgt de vaste map 'cache'
+// (vergrendeld met flock, dat vrijkomt als het proces stopt, ook na een
+// crash); een volgende krijgt een eigen map, die bij het afsluiten weer weg
+// gaat. Achtergebleven mappen van gestopte processen worden hier opgeruimd.
+function KiesCache(const DataDir: string): string;
+var
+  SR: TSearchRec;
+  Pid: Integer;
+begin
+  if FindFirst(DataDir + PathDelim + EXTRA_CACHE + '*', faDirectory, SR) = 0 then
+  begin
+    repeat
+      Pid := StrToIntDef(Copy(SR.Name, Length(EXTRA_CACHE) + 1, MaxInt), 0);
+      if (Pid > 0) and not DirectoryExists('/proc/' + IntToStr(Pid)) then
+        DeleteDirectory(DataDir + PathDelim + SR.Name, False);
+    until FindNext(SR) <> 0;
+    FindClose(SR);
+  end;
+
+  CacheSlot := FpOpen(DataDir + PathDelim + 'cache.lock', O_RDWR or O_CREAT, &644);
+  // niet doorgeven aan de CEF-subprocessen: het slot moet vrijkomen met Logic
+  if CacheSlot >= 0 then
+    FpFcntl(CacheSlot, F_SETFD, FD_CLOEXEC);
+  if (CacheSlot >= 0) and (FpFlock(CacheSlot, LOCK_EX or LOCK_NB) = 0) then
+    Exit(DataDir + PathDelim + 'cache');
+
+  if CacheSlot >= 0 then
+    FpClose(CacheSlot);
+  CacheSlot := -1;
+  EigenExtraCache := DataDir + PathDelim + EXTRA_CACHE + IntToStr(FpGetPid);
+  Result := EigenExtraCache;
 end;
 
 // Start CEF als ceflib naast het programma staat.
@@ -55,7 +96,9 @@ begin
   GlobalCEFApp.FrameworkDirPath := CefDir;
   GlobalCEFApp.ResourcesDirPath := CefDir;
   GlobalCEFApp.LocalesDirPath   := CefDir + PathDelim + 'locales';
-  GlobalCEFApp.cache            := DataDir + PathDelim + 'cache';
+  // subprocessen krijgen de cachemap van het hoofdproces mee van Chromium
+  if not SubProces then
+    GlobalCEFApp.cache          := KiesCache(DataDir);
   GlobalCEFApp.LogFile          := DataDir + PathDelim + 'debug.log';
   GlobalCEFApp.LogSeverity      := LOGSEVERITY_ERROR;
   GlobalCEFApp.ShowMessageDlg   := False;
@@ -108,5 +151,10 @@ finalization
     FreeWidgetSet;
   if GlobalCEFApp <> nil then
     DestroyGlobalCEFApp;
+  // CEF is gestopt: de eigen cache van een tweede Logic mag weg
+  if EigenExtraCache <> '' then
+    DeleteDirectory(EigenExtraCache, False);
+  if CacheSlot >= 0 then
+    FpClose(CacheSlot);
 
 end.
