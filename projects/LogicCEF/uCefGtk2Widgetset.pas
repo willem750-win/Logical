@@ -19,7 +19,7 @@ implementation
 
 uses
   SysUtils, gtk2DisableLibOverlay, Gtk2Int, InterfaceBase, Forms, xlib,
-  uCEFApplication, uCEFConstants;
+  uCEFApplication, uCEFConstants, uCEFTypes;
 
 var
   CefGestart: Boolean = False;
@@ -59,6 +59,10 @@ begin
   GlobalCEFApp.LogFile          := DataDir + PathDelim + 'debug.log';
   GlobalCEFApp.LogSeverity      := LOGSEVERITY_ERROR;
   GlobalCEFApp.ShowMessageDlg   := False;
+  // Logic (GTK2) draait onder X11, ook in een Wayland-sessie (Xwayland).
+  // Zonder dit kiest Chromium daar zelf Wayland: de pagina komt dan in een
+  // los venster linksboven en de ingebedde browser blijft zwart.
+  GlobalCEFApp.OzonePlatform    := ozpX11;
 
   if GlobalCEFApp.StartMainProcess then
   begin

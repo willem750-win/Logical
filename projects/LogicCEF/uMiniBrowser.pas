@@ -41,9 +41,11 @@ unit uMiniBrowser;
 
 interface
 
+// Alleen voor Windows (onder Linux: uMiniBrowserLinux). De IFDEF houdt de
+// controle van de Lazarus-IDE onder Linux stil ("Units not found").
 uses
-  Windows, Messages, LMessages, SysUtils, Variants, Classes, Graphics, Menus,
-  Controls, Forms, Dialogs, StdCtrls, ExtCtrls, Types, ComCtrls, ClipBrd, ActiveX, ShlObj,
+  {$IFDEF MSWINDOWS}Windows,{$ENDIF} Messages, LMessages, SysUtils, Variants, Classes, Graphics, Menus,
+  Controls, Forms, Dialogs, StdCtrls, ExtCtrls, Types, ComCtrls, ClipBrd, {$IFDEF MSWINDOWS}ActiveX, ShlObj,{$ENDIF}
   uCEFChromium, uCEFWindowParent, uCEFInterfaces, uCEFApplication, uCEFTypes, uCEFConstants,
   uCEFWinControl, uCEFChromiumEvents, URIParser;
 type
