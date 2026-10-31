@@ -9,9 +9,11 @@ uses
   Menus,StrHolder, ScreenCapture, chatgridpcodeSmall,
   janSimLogic,AdvancedPropertyGridComponent, IniFiles,LCLIntf,LCLType,
   TypInfo, LCLProc, ExtCtrls, StdCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
-  // De ingebouwde CEF-browser bestaat enkel onder Windows; onder Linux
-  // wordt de help in de standaardbrowser van het systeem geopend.
+  // De help opent in een ingebouwde CEF-browser: onder Windows uMiniBrowser,
+  // onder Linux (GTK2) uHelpBrowserLinux als de map ceflib er is; anders
+  // in de standaardbrowser van het systeem.
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
+  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uHelpBrowserLinux,{$ENDIF}
   // Frames om in te laden
   FSettings, uLogicRun, uUpdate;
 const
@@ -2173,6 +2175,9 @@ begin
   if Assigned(MiniBrowserFrm) then
     MiniBrowserFrm.Hide;
   {$ENDIF}
+  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
+  CloseHelpBrowser;
+  {$ENDIF}
 end;
 
 procedure TmainForm.FormCreate(Sender: TObject);
@@ -2232,6 +2237,9 @@ begin
   {$IFDEF WINDOWS}
   // een link "Open dit voorbeeld" in de help opent het paneel hier
   OnHelpOpenPanel := @OpenPanelFromHelp;
+  {$ENDIF}
+  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
+  uHelpBrowserLinux.OnHelpOpenPanel := @OpenPanelFromHelp;
   {$ENDIF}
 
   // keuze van de schemasymbolen, rechts in TitelBar2 links van de knop Help
@@ -2485,6 +2493,13 @@ begin
   {$ELSE}
   // FileName is een absoluut pad (/home/...), eventueel met #anker.
   URL := 'file://' + FileName;
+  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
+  if HelpBrowserAvailable then
+  begin
+    ShowHelpBrowser(URL, AppHelpManager.BTaal, Self);
+    Exit;
+  end;
+  {$ENDIF}
   if not OpenURL(URL) then
     ShowMessage('Kan de help niet openen:' + LineEnding + FileName);
   {$ENDIF}

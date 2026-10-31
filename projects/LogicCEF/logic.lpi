@@ -137,10 +137,6 @@
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="uCEFApplication.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="uhelpmanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uHelpManager"/>
