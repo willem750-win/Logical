@@ -1,7 +1,7 @@
 ﻿; Inno Setup-script voor Logic (Windows-installatieprogramma).
 ;
 ; Compileren (Inno Setup 6):
-;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=1.8.0 projects\LogicCEF\logic.iss
+;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=1.8.1 projects\LogicCEF\logic.iss
 ; of via tools\make-release.ps1, dat ook de zip maakt.
 ;
 ; Resultaat: C:\fpcupdeluxe\publish\release\Logic-<versie>-setup.exe
@@ -14,7 +14,7 @@
 ; behouden; programma, CEF-runtime, help en html worden vervangen.
 
 #ifndef MyAppVersion
-  #define MyAppVersion "1.8.0"
+  #define MyAppVersion "1.8.1"
 #endif
 #define MyAppName      "Logic"
 #define MyAppPublisher "Willy Jansen"
@@ -89,11 +89,15 @@ Source: "{#Src}\html\*";                    DestDir: "{app}\html"; Flags: ignore
 Source: "..\..\LICENSE";                    DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\README.md";                  DestDir: "{app}"; Flags: ignoreversion
 
-; Instellingen en panelen: alleen als ze nog niet bestaan (eigen werk blijft),
-; en niet verwijderen bij het verwijderen van Logic
+; Lespanelen horen bij de help (knop "Open dit voorbeeld"): altijd vervangen,
+; anders blijft na een update de oude versie van een les staan
+Source: "{#Src}\panels\lessen\*"; DestDir: "{app}\panels\lessen"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+; Instellingen en overige panelen: alleen als ze nog niet bestaan (eigen werk
+; blijft), en niet verwijderen bij het verwijderen van Logic
 Source: "{#Src}\taal.ini";  DestDir: "{app}"; Flags: onlyifdoesntexist uninsneveruninstall
 Source: "{#Src}\ini\*";     DestDir: "{app}\ini"; Excludes: "comboColor.ini"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
-Source: "{#Src}\panels\*";  DestDir: "{app}\panels"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
+Source: "{#Src}\panels\*";  DestDir: "{app}\panels"; Excludes: "\lessen"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"
