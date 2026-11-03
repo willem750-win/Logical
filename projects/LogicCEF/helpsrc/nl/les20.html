@@ -1,0 +1,63 @@
+<!-- titel: Les 20 - Schakelen op tijd -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 20 van 20</p>
+  <h1>Schakelen op tijd met de stopwatch</h1>
+  <div class="goal"><strong>Doel:</strong> de tijd meten met een stopwatch en een lamp of motor laten schakelen als een
+  ingestelde tijd voorbij is, zoals bij een kookwekker of een trappenhuisverlichting.</div>
+
+  <p><a class="open" href="../../panels/lessen/les20-stopwatch.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les20-stopwatch.png" alt="Schakelaar en drukknop op een stopwatch, met een lamp op de uitgang Q">
+    <figcaption>De schakelaar op S staat aan: na 00:10 is de eindtijd bereikt en brandt de lamp.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op de ingang <b>S</b> van de stopwatch: zolang die aan staat,
+      loopt de tijd.</li>
+    <li>Een <a href="invoer.html#drukknop">drukknop</a> op <b>R</b>: zet de tijd terug op 00:00.</li>
+    <li>De <a href="verwerking.html#stopwatch">stopwatch</a> met een display in minuten en seconden (<b>MM:SS</b>).
+      Onderaan staat de eindtijd: <b>tot 00:10</b>.</li>
+    <li>Een <a href="uitvoer.html#lamp">lamp</a> op de uitgang <b>Q</b>: die gaat aan als de eindtijd bereikt is.</li>
+  </ul>
+
+  <h2>Tellen of tijd meten?</h2>
+  <p>De <a href="verwerking.html#stappenteller">stappenteller</a> uit <a href="les19.html">les 19</a> telt pulsen: hoe snel
+  die komen, maakt niet uit. De stopwatch meet hoe <b>lang</b> de ingang S aan is. Daarom hoeft er geen impulsgenerator
+  op: een gewone schakelaar is genoeg.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: de tijd loopt en de dubbelpunt knippert.</li>
+    <li>Zet de schakelaar even uit: de tijd blijft staan (pauze). Zet hem weer aan: de tijd loopt verder.</li>
+    <li>Bij <b>00:10</b> gaat de lamp aan en blijft de stopwatch staan.</li>
+    <li>Druk op de drukknop: de tijd staat weer op 00:00 en de lamp gaat uit.</li>
+  </ol>
+  <p>Kijk ook naar de statusbalk onderaan: als de muis op de stopwatch staat, lees je er de tijd en de eindtijd.</p>
+
+  <h2>Opdracht 1: na een minuut</h2>
+  <p>Laat de lamp pas na 1 minuut aangaan. En na 2 minuten en 30 seconden?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Stop de simulatie, ontgrendel de stopwatch (rechtsklik, <b>Ontgrendel</b>) en kies met de rechtermuisknop
+    <b>Tot 01:00</b>. Voor 2 minuten en 30 seconden kies je <b>Andere eindtijd...</b> en typ je <b>02:30</b>.</p>
+  </details>
+
+  <h2>Opdracht 2: minuten tellen</h2>
+  <p>Tel hoeveel minuten de schakelaar al aan staat, met een stopwatch en een stappenteller.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Kies bij de stopwatch <b>Tot 01:00</b> en zet <b>Herhalen</b> aan. Na elke minuut begint hij weer bij 00:01 en
+    geeft Q een seintje van een seconde. Verbind Q met de ingang <b>T</b> van een
+    <a href="verwerking.html#stappenteller">stappenteller</a>: die telt nu de minuten.</p>
+  </details>
+
+  <h2>Opdracht 3: een motor die stopt</h2>
+  <p>Laat een <a href="uitvoer.html#motor">motor</a> draaien tot de tijd om is. Daarna moet hij stilstaan.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Q is pas aan als de tijd om is; de motor moet juist het omgekeerde doen. Zet daarom een
+    <a href="verwerking.html#niet">NIET-poort</a> tussen Q en de ingang <b>L</b> van de motor. Zolang de tijd loopt, is Q uit
+    en de uitgang van de NIET-poort aan: de motor draait. Bij de eindtijd gaat Q aan en stopt de motor.</p>
+  </details>
+
+  <div class="pager"><a href="les19.html">&larr; Les 19: Tellen tot 1000</a><a href="leerpad.html">Leerpad &rarr;</a></div>

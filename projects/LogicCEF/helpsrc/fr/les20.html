@@ -1,0 +1,68 @@
+<!-- titel: Leçon 20 - Commander dans le temps -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 20 sur 20</p>
+  <h1>Commander dans le temps avec le chronomètre</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> mesurer le temps avec un chronomètre et commander une lampe ou un
+  moteur quand un temps réglé est écoulé, comme un minuteur de cuisine ou l&rsquo;éclairage d&rsquo;une cage d&rsquo;escalier.</div>
+
+  <p><a class="open" href="../../panels/lessen/les20-stopwatch.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les20-stopwatch.png" alt="Interrupteur et bouton-poussoir sur un chronomètre, avec une lampe sur la sortie Q">
+    <figcaption>L&rsquo;interrupteur sur S est en marche&nbsp;: après 00:10, l&rsquo;heure de fin est atteinte et la lampe est allumée.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous&nbsp;?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur l&rsquo;entrée <b>S</b> du chronomètre&nbsp;: tant qu&rsquo;il
+      est actif, le temps court.</li>
+    <li>Un <a href="invoer.html#drukknop">bouton-poussoir</a> sur <b>R</b>&nbsp;: remet le temps à 00:00.</li>
+    <li>Le <a href="verwerking.html#stopwatch">chronomètre</a> avec un afficheur en minutes et secondes (<b>MM:SS</b>). En
+      bas figure l&rsquo;heure de fin&nbsp;: <b>jusqu&rsquo;à 00:10</b>.</li>
+    <li>Une <a href="uitvoer.html#lamp">lampe</a> sur la sortie <b>Q</b>&nbsp;: elle s&rsquo;allume quand l&rsquo;heure de fin
+      est atteinte.</li>
+  </ul>
+
+  <h2>Compter ou mesurer le temps&nbsp;?</h2>
+  <p>Le <a href="verwerking.html#stappenteller">compteur de pas</a> de la <a href="les19.html">leçon 19</a> compte des
+  impulsions&nbsp;: leur vitesse n&rsquo;a pas d&rsquo;importance. Le chronomètre mesure <b>combien de temps</b> l&rsquo;entrée S
+  est active. C&rsquo;est pourquoi il n&rsquo;a pas besoin de générateur d&rsquo;impulsions&nbsp;: un simple interrupteur suffit.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et mettez l&rsquo;interrupteur en marche&nbsp;: le temps court et les deux-points clignotent.</li>
+    <li>Coupez l&rsquo;interrupteur un instant&nbsp;: le temps s&rsquo;arrête (pause). Remettez-le&nbsp;: le temps continue.</li>
+    <li>À <b>00:10</b>, la lampe s&rsquo;allume et le chronomètre s&rsquo;arrête.</li>
+    <li>Appuyez sur le bouton-poussoir&nbsp;: le temps revient à 00:00 et la lampe s&rsquo;éteint.</li>
+  </ol>
+  <p>Regardez aussi la barre d&rsquo;état en bas&nbsp;: avec la souris sur le chronomètre, vous y lisez le temps et
+  l&rsquo;heure de fin.</p>
+
+  <h2>Exercice 1&nbsp;: après une minute</h2>
+  <p>Faites en sorte que la lampe ne s&rsquo;allume qu&rsquo;après 1 minute. Et après 2 minutes et 30 secondes&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Arrêtez la simulation, déverrouillez le chronomètre (clic droit, <b>Déverrouiller</b>) et choisissez
+    <b>Jusqu&rsquo;à 01:00</b> avec le bouton droit. Pour 2 minutes et 30 secondes, choisissez <b>Autre heure de fin...</b>
+    et tapez <b>02:30</b>.</p>
+  </details>
+
+  <h2>Exercice 2&nbsp;: compter les minutes</h2>
+  <p>Comptez depuis combien de minutes l&rsquo;interrupteur est en marche, avec un chronomètre et un compteur de pas.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Choisissez <b>Jusqu&rsquo;à 01:00</b> sur le chronomètre et cochez <b>Répéter</b>. Après chaque minute, il
+    recommence à 00:01 et Q donne un signal d&rsquo;une seconde. Reliez Q à l&rsquo;entrée <b>T</b> d&rsquo;un
+    <a href="verwerking.html#stappenteller">compteur de pas</a>&nbsp;: il compte maintenant les minutes.</p>
+  </details>
+
+  <h2>Exercice 3&nbsp;: un moteur qui s&rsquo;arrête</h2>
+  <p>Faites tourner un <a href="uitvoer.html#motor">moteur</a> jusqu&rsquo;à ce que le temps soit écoulé. Ensuite, il doit
+  s&rsquo;arrêter.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Q ne s&rsquo;active que quand le temps est écoulé&nbsp;; le moteur doit faire exactement l&rsquo;inverse. Placez donc
+    une <a href="verwerking.html#niet">porte NON</a> entre Q et l&rsquo;entrée <b>L</b> du moteur. Tant que le temps court,
+    Q est inactif et la sortie de la porte NON est active&nbsp;: le moteur tourne. À l&rsquo;heure de fin, Q s&rsquo;active et
+    le moteur s&rsquo;arrête.</p>
+  </details>
+
+  <div class="pager"><a href="les19.html">&larr; Leçon 19 : Compter jusqu&rsquo;à 1000</a><a href="leerpad.html">Parcours &rarr;</a></div>

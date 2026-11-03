@@ -1,0 +1,65 @@
+<!-- titel: Lektion 20 - Nach Zeit schalten -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 20 von 20</p>
+  <h1>Nach Zeit schalten mit der Stoppuhr</h1>
+  <div class="goal"><strong>Ziel:</strong> die Zeit mit einer Stoppuhr messen und eine Lampe oder einen Motor schalten,
+  wenn eine eingestellte Zeit vorbei ist, wie bei einem Küchenwecker oder einer Treppenhausbeleuchtung.</div>
+
+  <p><a class="open" href="../../panels/lessen/les20-stopwatch.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les20-stopwatch.png" alt="Schalter und Taster an einer Stoppuhr, mit einer Lampe am Ausgang Q">
+    <figcaption>Der Schalter an S ist ein: Nach 00:10 ist die Endzeit erreicht und die Lampe leuchtet.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Einen <a href="invoer.html#schakelaar">Schalter</a> am Eingang <b>S</b> der Stoppuhr: Solange er ein ist, läuft
+      die Zeit.</li>
+    <li>Einen <a href="invoer.html#drukknop">Taster</a> an <b>R</b>: setzt die Zeit auf 00:00 zurück.</li>
+    <li>Die <a href="verwerking.html#stopwatch">Stoppuhr</a> mit einer Anzeige in Minuten und Sekunden (<b>MM:SS</b>).
+      Unten steht die Endzeit: <b>bis 00:10</b>.</li>
+    <li>Eine <a href="uitvoer.html#lamp">Lampe</a> am Ausgang <b>Q</b>: Sie geht an, wenn die Endzeit erreicht ist.</li>
+  </ul>
+
+  <h2>Zählen oder Zeit messen?</h2>
+  <p>Der <a href="verwerking.html#stappenteller">Schrittzähler</a> aus <a href="les19.html">Lektion 19</a> zählt Impulse:
+  Wie schnell sie kommen, spielt keine Rolle. Die Stoppuhr misst, wie <b>lange</b> der Eingang S ein ist. Darum braucht
+  sie keinen Impulsgeber: Ein gewöhnlicher Schalter genügt.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein: Die Zeit läuft und der Doppelpunkt blinkt.</li>
+    <li>Schalten Sie ihn kurz aus: Die Zeit bleibt stehen (Pause). Schalten Sie ihn wieder ein: Die Zeit läuft weiter.</li>
+    <li>Bei <b>00:10</b> geht die Lampe an und die Stoppuhr bleibt stehen.</li>
+    <li>Drücken Sie den Taster: Die Zeit steht wieder auf 00:00 und die Lampe geht aus.</li>
+  </ol>
+  <p>Schauen Sie auch auf die Statusleiste unten: Steht die Maus auf der Stoppuhr, lesen Sie dort die Zeit und die
+  Endzeit.</p>
+
+  <h2>Aufgabe 1: nach einer Minute</h2>
+  <p>Lassen Sie die Lampe erst nach 1 Minute angehen. Und nach 2 Minuten und 30 Sekunden?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Stoppen Sie die Simulation, entsperren Sie die Stoppuhr (Rechtsklick, <b>Entsperren</b>) und wählen Sie mit der
+    rechten Maustaste <b>Bis 01:00</b>. Für 2 Minuten und 30 Sekunden wählen Sie <b>Andere Endzeit...</b> und tippen
+    <b>02:30</b>.</p>
+  </details>
+
+  <h2>Aufgabe 2: Minuten zählen</h2>
+  <p>Zählen Sie, wie viele Minuten der Schalter schon ein ist, mit einer Stoppuhr und einem Schrittzähler.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Wählen Sie bei der Stoppuhr <b>Bis 01:00</b> und schalten Sie <b>Wiederholen</b> ein. Nach jeder Minute beginnt
+    sie wieder bei 00:01 und Q gibt ein Signal von einer Sekunde. Verbinden Sie Q mit dem Eingang <b>T</b> eines
+    <a href="verwerking.html#stappenteller">Schrittzählers</a>: Er zählt jetzt die Minuten.</p>
+  </details>
+
+  <h2>Aufgabe 3: ein Motor, der anhält</h2>
+  <p>Lassen Sie einen <a href="uitvoer.html#motor">Motor</a> laufen, bis die Zeit um ist. Danach soll er stillstehen.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Q geht erst an, wenn die Zeit um ist; der Motor soll genau das Gegenteil tun. Setzen Sie darum ein
+    <a href="verwerking.html#niet">NICHT-Gatter</a> zwischen Q und den Eingang <b>L</b> des Motors. Solange die Zeit läuft,
+    ist Q aus und der Ausgang des NICHT-Gatters ein: Der Motor läuft. Bei der Endzeit geht Q an und der Motor hält an.</p>
+  </details>
+
+  <div class="pager"><a href="les19.html">&larr; Lektion 19: Bis 1000 zählen</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

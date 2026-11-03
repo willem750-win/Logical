@@ -1,0 +1,62 @@
+<!-- titel: Lesson 20 - Switching on time -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 20 of 20</p>
+  <h1>Switching on time with the stopwatch</h1>
+  <div class="goal"><strong>Goal:</strong> measure time with a stopwatch and switch a lamp or motor when a set time has
+  passed, like a kitchen timer or staircase lighting.</div>
+
+  <p><a class="open" href="../../panels/lessen/les20-stopwatch.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les20-stopwatch.png" alt="Switch and push button on a stopwatch, with a lamp on output Q">
+    <figcaption>The switch on S is on: after 00:10 the end time is reached and the lamp is on.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on input <b>S</b> of the stopwatch: while it is on, the time runs.</li>
+    <li>A <a href="invoer.html#drukknop">push button</a> on <b>R</b>: sets the time back to 00:00.</li>
+    <li>The <a href="verwerking.html#stopwatch">stopwatch</a> with a display in minutes and seconds (<b>MM:SS</b>). At the
+      bottom you see the end time: <b>to 00:10</b>.</li>
+    <li>A <a href="uitvoer.html#lamp">lamp</a> on output <b>Q</b>: it switches on when the end time is reached.</li>
+  </ul>
+
+  <h2>Counting or measuring time?</h2>
+  <p>The <a href="verwerking.html#stappenteller">step counter</a> from <a href="les19.html">lesson 19</a> counts pulses: how
+  fast they come does not matter. The stopwatch measures how <b>long</b> input S is on. That is why it needs no pulse
+  generator: an ordinary switch is enough.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on: the time runs and the colon blinks.</li>
+    <li>Switch it off for a moment: the time stops (pause). Switch it on again: the time continues.</li>
+    <li>At <b>00:10</b> the lamp switches on and the stopwatch stops.</li>
+    <li>Press the push button: the time is back at 00:00 and the lamp goes off.</li>
+  </ol>
+  <p>Also look at the status bar at the bottom: with the mouse on the stopwatch you read the time and the end time.</p>
+
+  <h2>Task 1: after one minute</h2>
+  <p>Make the lamp switch on only after 1 minute. And after 2 minutes and 30 seconds?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Stop the simulation, unlock the stopwatch (right-click, <b>Unlock</b>) and choose <b>To 01:00</b> with the right
+    mouse button. For 2 minutes and 30 seconds choose <b>Other end time...</b> and type <b>02:30</b>.</p>
+  </details>
+
+  <h2>Task 2: counting minutes</h2>
+  <p>Count how many minutes the switch has been on, with a stopwatch and a step counter.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Choose <b>To 01:00</b> on the stopwatch and switch on <b>Repeat</b>. After every minute it starts again at 00:01
+    and Q gives a signal of one second. Connect Q to input <b>T</b> of a
+    <a href="verwerking.html#stappenteller">step counter</a>: it now counts the minutes.</p>
+  </details>
+
+  <h2>Task 3: a motor that stops</h2>
+  <p>Make a <a href="uitvoer.html#motor">motor</a> run until the time is up. After that it must stand still.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Q only comes on when the time is up; the motor must do exactly the opposite. So put a
+    <a href="verwerking.html#niet">NOT gate</a> between Q and input <b>L</b> of the motor. While the time runs, Q is off and
+    the output of the NOT gate is on: the motor runs. At the end time Q comes on and the motor stops.</p>
+  </details>
+
+  <div class="pager"><a href="les19.html">&larr; Lesson 19: Counting to 1000</a><a href="leerpad.html">Learning path &rarr;</a></div>
