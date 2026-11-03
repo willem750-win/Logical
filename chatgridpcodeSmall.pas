@@ -161,6 +161,12 @@ type
     procedure SetShowStatusBar(Value: Boolean);
     procedure SetKLogicRun(Value: Boolean);
 
+    // knoppenbalk: links, boven of onder op het paneel
+    function BoxControl: TControl;
+    function BoxSide: TAlign;
+    function BoxTopH: Integer;
+    function BoxBottomH: Integer;
+
     // rulers helpers
     function GetTitleHeight: Integer;
     function GetGridLeftOffset: Integer;
@@ -214,7 +220,7 @@ type
 
     property ShowRulers: Boolean read FShowRulers write FShowRulers default True;
     property RulerTopHeight: Integer read FRulerTopHeight write FRulerTopHeight default 20;
-    property RulerRightWidth: Integer read FRulerRightWidth write FRulerRightWidth default 42;
+    property RulerRightWidth: Integer read FRulerRightWidth write FRulerRightWidth default 25;
     property RulerColor: TColor read FRulerColor write FRulerColor default clBtnFace;
     property RulerTextColor: TColor read FRulerTextColor write FRulerTextColor default clBlack;
     property RulerTickColor: TColor read FRulerTickColor write FRulerTickColor default clGray;
@@ -823,7 +829,7 @@ begin
   // rulers
   FShowRulers := True;
   FRulerTopHeight := 20;
-  FRulerRightWidth := 42;
+  FRulerRightWidth := 25;
   FRulerColor := clBtnFace;
   FRulerTextColor := clBlack;
   FRulerTickColor := clGray;
@@ -863,17 +869,60 @@ begin
 end;
 
 
+// De knoppenbalk is een kind van het paneel met Align links, boven of onder.
+function TjanGridS.BoxControl: TControl;
+var
+  i: Integer;
+begin
+  Result := nil;
+  for i := 0 to ControlCount - 1 do
+    if Controls[i].Align in [alLeft, alTop, alBottom] then
+      Exit(Controls[i]);
+end;
+
+// waar de knoppenbalk nu staat; alNone als hij verborgen is (simulatie)
+function TjanGridS.BoxSide: TAlign;
+var
+  C: TControl;
+begin
+  Result := alNone;
+  if not FBox then Exit;
+  C := BoxControl;
+  if Assigned(C) and C.Visible then
+    Result := C.Align;
+end;
+
+function TjanGridS.BoxTopH: Integer;
+begin
+  if BoxSide = alTop then
+    Result := BoxControl.Height
+  else
+    Result := 0;
+end;
+
+function TjanGridS.BoxBottomH: Integer;
+begin
+  if BoxSide = alBottom then
+    Result := BoxControl.Height
+  else
+    Result := 0;
+end;
+
+// links blijft ruimte vrij: 48 voor de balk links, 28 voor het vlak links
+// als de balk boven of onder staat
 function TjanGridS.GetGridLeftOffset: Integer;
 begin
-  if FBox then
-    Result := 48
+  case BoxSide of
+    alLeft:            Result := 48;
+    alTop, alBottom:   Result := 28;
   else
     Result := 3;
+  end;
 end;
 
 function TjanGridS.GetTitleTop: Integer;
 begin
-  Result := BarHeight + 3;
+  Result := BoxTopH + BarHeight + 3;
 end;
 
 function TjanGridS.GetTopRulerRect: TRect;
@@ -897,7 +946,7 @@ var
   TopY: Integer;
 begin
   TopY := GetTopRulerRect.Bottom;
-  Result := Rect(Width - 3 - FRulerRightWidth, TopY, Width - 3, Height - 3);
+  Result := Rect(Width - 3 - FRulerRightWidth, TopY, Width - 3, Height - 3 - BoxBottomH);
 end;
 
 function TjanGridS.GetWorkAreaRect: TRect;
@@ -914,7 +963,7 @@ begin
   if FShowRulers then
     Dec(R, FRulerRightWidth);
 
-  Result := Rect(L, T, R, Height - 3);
+  Result := Rect(L, T, R, Height - 3 - BoxBottomH);
 end;
 
 
@@ -1077,10 +1126,7 @@ end;
 
 function TjanGridS.GetStatusBarRect: TRect;
 begin
-  if Box then
-    Result := Rect(48, 2, Width - 3, FStatusBarHeight)
-  else
-    Result := Rect(3, 2, Width - 3, FStatusBarHeight);
+  Result := Rect(GetGridLeftOffset, 2 + BoxTopH, Width - 3, FStatusBarHeight + BoxTopH);
 end;
 
 // hoogte die de balk Invoer / Verwerken / Uitvoer inneemt (0 als verborgen)
@@ -1163,12 +1209,12 @@ begin
     TextWidth := Canvas.TextWidth(FTitel);
     TextHeight := Canvas.TextHeight(FTitel);
 
-    if not FBox then
+    if BoxSide = alNone then
       TextX := (Width - TextWidth) div 2
     else
-      TextX := ((Width - TextWidth) div 2) + 23;
+      TextX := ((Width - TextWidth) div 2) + (GetGridLeftOffset - 3) div 2;
 
-    TextY := BarHeight + 5;
+    TextY := GetTitleTop + 2;
     RectT := Rect(TextX, TextY, TextX + TextWidth, TextY + TextHeight);
     Canvas.TextRect(RectT, TextX, TextY, FTitel);
   end;
@@ -1230,17 +1276,49 @@ begin
     if (FGridY > 0) and ((Offset mod (FGridY * 5)) = 0) then
     begin
       Canvas.MoveTo(RRight.Left, y);
-      Canvas.LineTo(RRight.Left + 10, y);
+      Canvas.LineTo(RRight.Left + 5, y);
       Txt := IntToStr(Offset);
-      Canvas.TextOut(RRight.Left + 12, y - (TxtH div 2), Txt);
+      Canvas.TextOut(RRight.Left + 6, y - (TxtH div 2), Txt);
     end
     else if (FGridY > 0) and ((Offset mod FGridY) = 0) then
     begin
       Canvas.MoveTo(RRight.Left, y);
-      Canvas.LineTo(RRight.Left + 6, y);
+      Canvas.LineTo(RRight.Left + 3, y);
     end;
 
     Inc(y);
+  end;
+
+  // balk boven of onder: ook een verticale ruler op het vlak links
+  // (streepjes aan de rechterkant, tegen het werkvlak)
+  if BoxSide in [alTop, alBottom] then
+  begin
+    Canvas.Pen.Color := FRulerTickColor;
+    y := WorkR.Top;
+    while y <= WorkR.Bottom do
+    begin
+      Offset := y - WorkR.Top;
+      if (FGridY > 0) and ((Offset mod (FGridY * 5)) = 0) then
+      begin
+        Canvas.MoveTo(25, y);
+        Canvas.LineTo(20, y);
+        Txt := IntToStr(Offset);
+        Canvas.TextOut(19 - Canvas.TextWidth(Txt), y - (TxtH div 2), Txt);
+      end
+      else if (FGridY > 0) and ((Offset mod FGridY) = 0) then
+      begin
+        Canvas.MoveTo(25, y);
+        Canvas.LineTo(22, y);
+      end;
+      Inc(y);
+    end;
+    if FShowGuideLines and FHasGuidePoint and
+       (FGuidePoint.Y >= WorkR.Top) and (FGuidePoint.Y <= WorkR.Bottom) then
+    begin
+      Canvas.Pen.Color := clRed;
+      Canvas.MoveTo(2, FGuidePoint.Y);
+      Canvas.LineTo(25, FGuidePoint.Y);
+    end;
   end;
 
   // rand rond rulers
@@ -1271,11 +1349,22 @@ end;
 
 procedure TjanGridS.Paint;
 var
-  WorkR: TRect;
+  WorkR, R: TRect;
   x, y: Integer;
   i: Integer;
 begin
   inherited Paint;
+
+  // balk boven of onder: links een vlak in de kleur van de linialen,
+  // 25 pixels breed
+  if BoxSide in [alTop, alBottom] then
+  begin
+    // met een opstaande rand, zoals een TPanel
+    R := Rect(1, 1 + BoxTopH, 26, Height - 1 - BoxBottomH);
+    Canvas.Frame3D(R, clBtnHighlight, clBtnShadow, 1);
+    Canvas.Brush.Color := FRulerColor;
+    Canvas.FillRect(R);
+  end;
 
   DrawStatusBar;
   DrawRulers;
@@ -1359,12 +1448,12 @@ begin
   TxtWidth  := Canvas.TextWidth(FTitel);
   TxtHeight := Canvas.TextHeight(FTitel);
 
-  if not FBox then
+  if BoxSide = alNone then
     TextX := (Width - TxtWidth) div 2
   else
-    TextX := ((Width - TxtWidth) div 2) + 23;
+    TextX := ((Width - TxtWidth) div 2) + (GetGridLeftOffset - 3) div 2;
 
-  TextY := BarHeight + 5;
+  TextY := GetTitleTop + 2;
 
   Result := Rect(TextX, TextY, TextX + TxtWidth, TextY + TxtHeight);
 end;

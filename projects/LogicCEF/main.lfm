@@ -1,11 +1,11 @@
 object mainForm: TmainForm
   Left = 400
-  Height = 712
+  Height = 748
   Top = 177
   Width = 900
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Logisch Schakelen'
-  ClientHeight = 712
+  ClientHeight = 748
   ClientWidth = 900
   Position = poScreenCenter
   ShowHint = True
@@ -305,11 +305,11 @@ object mainForm: TmainForm
   end
   object Grid: TjanGridS
     Left = 0
-    Height = 653
+    Height = 701
     Top = 25
     Width = 900
     Align = alClient
-    ClientHeight = 653
+    ClientHeight = 701
     ClientWidth = 900
     Color = cl3DLight
     ParentBackground = False
@@ -337,9 +337,9 @@ object mainForm: TmainForm
     OnTitleClick = GridTitleClick
     object Box: TjanSimLogicBox
       Left = 1
-      Height = 651
+      Height = 36
       Top = 1
-      Width = 45
+      Width = 898
       Language = stDutch
       X = 0
       Y = 0
@@ -377,10 +377,15 @@ object mainForm: TmainForm
       HRelais = 'maak Relais'
       HSchakelRelais = 'maak Schakelrelais (relais met contact)'
       HBuzzer = 'maak Zoemer'
+      HMotor = 'maak Motor'
+      HPersoon = 'maak Persoon (met eindschakelaars)'
+      HWagen = 'maak Wagentje (parcours met paaltjes)'
+      HMuziek = 'maak Muziekdoos (8 pianotoetsen)'
       HWarm = 'maak WarmteSensor'
       HSensor = 'maak Lichtsensor'
       HTeller = 'maak Tellerblok'
       HMemory = 'maak Geheugenblok'
+      HStappen = 'maak Stappenteller (telt tot 9999)'
       HDipSwitsh = 'maak DipSwitsh'
       HDisplay = 'maak 7 segmentdisplay'
       BColor = clGradientActiveCaption
@@ -397,14 +402,14 @@ object mainForm: TmainForm
       B_Verwerking = clSilver
       Open = True
       Draden = True
-      Align = alLeft
+      Align = alTop
       ShowHint = True
     end
   end
   object Panel1: TPanel
     Left = 0
     Height = 22
-    Top = 678
+    Top = 726
     Width = 900
     Align = alBottom
     BevelOuter = bvNone

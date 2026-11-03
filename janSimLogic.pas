@@ -2088,6 +2088,11 @@ type
     // De inhoud van het paneel als regels (zelfde als een .lpl-bestand), en
     // zo'n tekst weer laden. Gebruikt voor ongedaan maken / opnieuw.
     procedure SavePanelToList(SFile: TStrings; Paneel: TjanGridS);
+    // Panelen bewaren de plaatsen zoals bij de balk links. Staat de balk
+    // boven of onder, dan schuift alles bij het laden met LayoutShift op
+    // (en bij het bewaren even terug).
+    function LayoutShift: TPoint;
+    procedure ShiftPanelObjects(DX, DY: Integer);
     function PanelText(Paneel: TjanGridS): string;
     procedure LoadPanelText(const AText: string; Paneel: TjanGridS);
     // telt hoe vaak het paneel leeggemaakt werd (laden, nieuw paneel)
@@ -18409,17 +18414,43 @@ begin
   end;
 end;
 
+function TjanSimLogicBox.LayoutShift: TPoint;
+begin
+  case Align of
+    alTop:    Result := Point(-20, Height);
+    alBottom: Result := Point(-20, 0);
+  else
+    Result := Point(0, 0);
+  end;
+end;
+
+procedure TjanSimLogicBox.ShiftPanelObjects(DX, DY: Integer);
+var
+  i: Integer;
+  c: TControl;
+begin
+  if (FParent = nil) or ((DX = 0) and (DY = 0)) then Exit;
+  for i := 0 to FParent.ControlCount - 1 do
+  begin
+    c := FParent.Controls[i];
+    if c <> Self then
+      c.SetBounds(c.Left + DX, c.Top + DY, c.Width, c.Height);
+  end;
+end;
+
 procedure TjanSimLogicBox.SavePanelToList(SFile: TStrings; Paneel: TjanGridS);
 var
   wc: TWinControl;
   i: Integer;
   c: TControl;
   lijn, modeStr, posStr, shapeStr, edgeStr, ltypeStr: string;
+  Sh: TPoint;
 begin
   wc := FParent;
   SFile.Clear;
-
-  begin
+  Sh := LayoutShift;
+  ShiftPanelObjects(-Sh.X, -Sh.Y);   // plaatsen zoals bij de balk links
+  try
     // Alle controls serialiseren
     for i := 0 to wc.ControlCount - 1 do
     begin
@@ -18589,6 +18620,8 @@ begin
       SFile.Add('Grid;False;');
     if not Paneel.ShowStatusBar then
       SFile.Add('Statusbalk;False;');
+  finally
+    ShiftPanelObjects(Sh.X, Sh.Y);
   end;
 end;
 
@@ -18654,9 +18687,13 @@ var
   i: Integer;
   c: TControl;
   lijn, modeStr, posStr, shapeStr, edgeStr, ltypeStr: string;
+  Sh: TPoint;
 begin
   wc := FParent;
   TempFile.Clear;
+  Sh := LayoutShift;
+  ShiftPanelObjects(-Sh.X, -Sh.Y);   // plaatsen zoals bij de balk links
+  try
 
   // Alle controls serialiseren
   for i := 0 to wc.ControlCount - 1 do
@@ -18825,6 +18862,9 @@ begin
     TempFile.Add('Grid;False;');
   if not Paneel.ShowStatusBar then
     TempFile.Add('Statusbalk;False;');
+  finally
+    ShiftPanelObjects(Sh.X, Sh.Y);
+  end;
 end;
 
 procedure TjanSimLogicBox.InternalLoadFromList(AList: TStrings; Paneel: TjanGridS);
@@ -19627,6 +19667,8 @@ begin
   // ingelezen object. ObjectID hoort alleen bij een nieuw geplaatst object.
   FNew := False;
   FObjectID := -1;
+  // bewaard met de balk links: bij de balk boven of onder opschuiven
+  ShiftPanelObjects(LayoutShift.X, LayoutShift.Y);
   BlokkeerObjecten(False);
   // paneel bewaard met een andere tekenwijze: voedingsdraden bijstellen
   RealignPowerWires(wc);
@@ -23011,23 +23053,25 @@ begin
         NextX(B + SPATIE);
       end;
 
-      // persoon en wagentje: twee halve knoppen naast elkaar
+      // persoon, wagentje en muziekdoos: even breed als de andere knoppen
       RPersoon := Rect(0, 0, 0, 0);
       RWagen := Rect(0, 0, 0, 0);
       if FPersoon then
       begin
-        RPersoon := Rect(LK - 4, TOP, LK + 13, HK);
+        RPersoon := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RPersoon, DPersoon, 6);
+        NextX(B + SPATIE);
       end;
       if FWagen then
       begin
-        RWagen := Rect(LK + 15, TOP, LK + 32, HK);
+        RWagen := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RWagen, DWagen, 7);
+        NextX(B + SPATIE);
       end;
       RMuziek := Rect(0, 0, 0, 0);
       if FMuziek then
       begin
-        RMuziek := Rect(LK + 34, TOP, LK + 51, HK);
+        RMuziek := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RMuziek, DMuziek, 8);
       end;
     end;
@@ -23443,23 +23487,25 @@ begin
         NextX(B + SPATIE);
       end;
 
-      // persoon en wagentje: twee halve knoppen naast elkaar
+      // persoon, wagentje en muziekdoos: even breed als de andere knoppen
       RPersoon := Rect(0, 0, 0, 0);
       RWagen := Rect(0, 0, 0, 0);
       if FPersoon then
       begin
-        RPersoon := Rect(LK - 4, TOP, LK + 13, HK);
+        RPersoon := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RPersoon, DPersoon, 6);
+        NextX(B + SPATIE);
       end;
       if FWagen then
       begin
-        RWagen := Rect(LK + 15, TOP, LK + 32, HK);
+        RWagen := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RWagen, DWagen, 7);
+        NextX(B + SPATIE);
       end;
       RMuziek := Rect(0, 0, 0, 0);
       if FMuziek then
       begin
-        RMuziek := Rect(LK + 34, TOP, LK + 51, HK);
+        RMuziek := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RMuziek, DMuziek, 8);
       end;
     end;
