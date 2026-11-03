@@ -64,6 +64,23 @@
   <div class="tip"><strong>Tip:</strong> een <a href="invoer.html#eindschakelaar">eindschakelaar</a> op de
   <a href="uitvoer.html#persoon">persoon</a> aan de telingang telt hoe vaak de persoon heen en weer loopt.</div>
 
+  <h2 id="stopwatch"><img src="../img/pal-stopwatch.png" class="ico" alt="">Stopwatch</h2>
+  <p>Meet de tijd in minuten en seconden en toont ze op een display (<b>MM:SS</b>, tot 99:59). Met de uitgang Q
+  schakel je iets na een ingestelde tijd: een lamp die na 30 seconden aangaat, een motor die 1 minuut draait ...</p>
+  <table>
+    <tr><th>Aansluiting</th><th>Betekenis</th></tr>
+    <tr><td><span class="pin in">S</span></td><td>Start: de tijd loopt zolang S aan is. Gaat S uit, dan blijft de tijd staan (pauze); gaat S weer aan, dan loopt hij verder.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset: zet de tijd terug op 00:00. Zolang R aan is, loopt de tijd niet.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Uitgang: aan zodra de eindtijd bereikt is.</td></tr>
+  </table>
+  <p>Met de rechtermuisknop (het blok mag niet vergrendeld zijn) kies je de <b>eindtijd</b>: 00:10, 00:30, 01:00, 05:00,
+  10:00 of een andere tijd (als mm:ss, bijvoorbeeld 02:30). Bij de eindtijd blijft de stopwatch staan. Zet je
+  <b>Herhalen</b> aan, dan begint hij daarna weer bij 00:01: Q geeft dan elke keer na de eindtijd een seintje van
+  een seconde. De dubbelpunt knippert zolang de tijd loopt. De stopwatch is verwerking: hij heeft geen voeding nodig.</p>
+  <div class="tip"><strong>Tip:</strong> zet een <a href="invoer.html#schakelaar">schakelaar</a> op S en een lamp op Q:
+  na de eindtijd gaat de lamp aan. Zet je de stopwatch op Herhalen en Q op de telingang van een
+  <a href="#stappenteller">stappenteller</a>, dan telt die de minuten.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Geheugenblok</h2>
   <p>Een geheugen met 32 geheugenplaatsen (adres 0 tot 31). Elke plaats bewaart een getal van 0 tot 15.
   Bij het plaatsen staat overal 0.</p>

@@ -65,6 +65,25 @@
   <div class="tip"><strong>Tipp:</strong> Ein <a href="invoer.html#eindschakelaar">Endschalter</a> der
   <a href="uitvoer.html#persoon">Person</a> am Zähleingang zählt, wie oft die Person hin und her läuft.</div>
 
+  <h2 id="stopwatch"><img src="../img/pal-stopwatch.png" class="ico" alt="">Stoppuhr</h2>
+  <p>Misst die Zeit in Minuten und Sekunden und zeigt sie auf einer Anzeige (<b>MM:SS</b>, bis 99:59). Mit dem Ausgang
+  Q schalten Sie etwas nach einer eingestellten Zeit: eine Lampe, die nach 30 Sekunden angeht, einen Motor, der
+  1 Minute läuft ...</p>
+  <table>
+    <tr><th>Anschluss</th><th>Bedeutung</th></tr>
+    <tr><td><span class="pin in">S</span></td><td>Start: Die Zeit läuft, solange S ein ist. Geht S aus, bleibt die Zeit stehen (Pause); geht S wieder an, läuft sie weiter.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset: setzt die Zeit auf 00:00 zurück. Solange R ein ist, läuft die Zeit nicht.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Ausgang: ein, sobald die Endzeit erreicht ist.</td></tr>
+  </table>
+  <p>Mit der rechten Maustaste (der Baustein darf nicht gesperrt sein) wählen Sie die <b>Endzeit</b>: 00:10, 00:30,
+  01:00, 05:00, 10:00 oder eine andere Zeit (als mm:ss, zum Beispiel 02:30). Bei der Endzeit bleibt die Stoppuhr
+  stehen. Schalten Sie <b>Wiederholen</b> ein, beginnt sie danach wieder bei 00:01: Q gibt dann nach jeder Endzeit
+  ein Signal von einer Sekunde. Der Doppelpunkt blinkt, solange die Zeit läuft. Die Stoppuhr ist Verarbeitung: Sie
+  braucht keine Stromversorgung.</p>
+  <div class="tip"><strong>Tipp:</strong> Setzen Sie einen <a href="invoer.html#schakelaar">Schalter</a> an S und eine
+  Lampe an Q: Nach der Endzeit geht die Lampe an. Stellen Sie die Stoppuhr auf Wiederholen und verbinden Sie Q mit dem
+  Zähleingang eines <a href="#stappenteller">Schrittzählers</a>, dann zählt er die Minuten.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Speicherbaustein</h2>
   <p>Ein Speicher mit 32 Speicherplätzen (Adresse 0 bis 31). Jeder Platz speichert eine Zahl von 0 bis 15.
   Beim Platzieren steht überall 0.</p>

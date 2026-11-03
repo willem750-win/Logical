@@ -1810,6 +1810,7 @@ type
     FTeller:Boolean;
     FMemory:Boolean;
     FStappen:Boolean;
+    FStopwatch:Boolean;
     FDipSwitsh:Boolean;
     FKnopLeft:Integer;
     FSpatie:Integer;
@@ -1917,6 +1918,8 @@ type
     DMemory:boolean;
     RStappen:TRect;
     DStappen:boolean;
+    RStopwatch:TRect;
+    DStopwatch:boolean;
 
     bmDisplay:TBitmap;
     RDisplay:TRect;
@@ -1958,6 +1961,7 @@ type
     FHTeller:String;
     FHMemory:String;
     FHStappen:String;
+    FHStopwatch:String;
     FHDipSwitsh:String;
     FHDisplay:String;
     FBColor:TColor;
@@ -2011,6 +2015,7 @@ type
     PROCEDURE SetTeller(const Value: Boolean);
     PROCEDURE SetMemory(const Value: Boolean);
     PROCEDURE SetStappen(const Value: Boolean);
+    PROCEDURE SetStopwatch(const Value: Boolean);
     PROCEDURE SetDipSwitsh(const Value: Boolean);
     PROCEDURE SetBuzzer(const Value: Boolean);
     PROCEDURE SetMotor(const Value: Boolean);
@@ -2069,6 +2074,7 @@ type
     procedure DrawRailButton(const R: TRect; APlus, ADown: Boolean);
     procedure DrawHalfKnop(const R: TRect; ADown: Boolean; Kind: Integer);
     procedure DrawStappenIcon(X, Y: Integer);
+    procedure DrawStopwatchIcon(X, Y: Integer);
     PROCEDURE PaintBoxTop;
     PROCEDURE PaintBoxBottom;
     // kontrole of er connectors zijn gemaakt
@@ -2173,6 +2179,7 @@ type
     property KTeller:Boolean read FTeller write SetTeller;
     property KMemory:Boolean read FMemory write SetMemory;
     property KStappen:Boolean read FStappen write SetStappen default True;
+    property KStopwatch:Boolean read FStopwatch write SetStopwatch default True;
     property KDipSwitsh:Boolean read FDipSwitsh write SetDipSwitsh;
     property KDisplay:Boolean read FDisplay write SetDisplay;
     property KMeter:Boolean read FMeter write SetMeter;
@@ -2211,6 +2218,7 @@ type
     property HTeller:String read FHTeller write SetHTeller;
     property HMemory:String read FHMemory write SetHMemory;
     property HStappen:String read FHStappen write FHStappen;
+    property HStopwatch:String read FHStopwatch write FHStopwatch;
     property HDipSwitsh:string read FHDipSwitsh write SetHDipSwitsh;
     property HDisplay:String read FHDisplay write SetHDisplay;
     property BColor:TColor read FBColor write SetBColor;
@@ -2583,14 +2591,14 @@ end;
     procedure AnchorConnectors;
     procedure MoveConnectors;
     procedure SendStatusToBar;
-    function StatusText: string;
+    function StatusText: string; virtual;
     procedure LockClick(Sender: TObject);
     procedure SelectClick(Sender: TObject);
     procedure EindClick(Sender: TObject);
     procedure EindAnderClick(Sender: TObject);
     procedure HerhalenClick(Sender: TObject);
     procedure NulClick(Sender: TObject);
-    procedure BuildPopup;
+    procedure BuildPopup; virtual;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
   protected
@@ -2601,9 +2609,9 @@ end;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Paint; override;
-    procedure UpdateHintText;
+    procedure UpdateHintText; virtual;
     // ingang 0 (T) of 1 (R) aan/uit, door de draden (Connect)
-    procedure SetInput(I: Integer; Value: Boolean);
+    procedure SetInput(I: Integer; Value: Boolean); virtual;
     // index van de ingang bij punt P (paneel), anders -1
     function InputPinAt(const P: TPoint): Integer;
     // ligt P (paneel) op de uitgang Q rechts?
@@ -2611,7 +2619,7 @@ end;
     // Y van het aansluitvierkantje (7x7) van ingang I, en van de uitgang
     class function InputPinY(I: Integer): Integer;
     class function OutputPinY: Integer;
-    function Bereikt: Boolean;     // uitgang Q
+    function Bereikt: Boolean; virtual;     // uitgang Q
     property Stand: Integer read FStand;
   published
     property Eindwaarde: Integer read FEind write SetEind default 1000;
@@ -2626,6 +2634,30 @@ end;
     property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
     property ShowHint;
     property HelpKeyword;
+  end;
+
+  { TjanSimStopwatch: stopwatch met een display MM:SS. Links de ingangen
+    S (de tijd loopt zolang S aan is) en R (terug naar 00:00; gaat voor S),
+    rechts de uitgang Q: aan als de eindtijd bereikt is. Bij de eindtijd
+    blijft hij staan, of (Herhalen) begint hij weer bij 00:01. De eindtijd
+    (Eindwaarde) is in seconden. Alles wat met draden, bewaren en de balk
+    te maken heeft, erft hij van de stappenteller. }
+  TjanSimStopwatch = class(TjanSimStappenteller)
+  private
+    FMs: Int64;                    // verstreken tijd in milliseconden
+    FLaatst: QWord;                // GetTickCount64 van de vorige tik
+    FTimer: TTimer;
+    procedure TimerTick(Sender: TObject);
+    procedure EindTijdClick(Sender: TObject);
+    procedure EindTijdAnderClick(Sender: TObject);
+    procedure NulTijdClick(Sender: TObject);
+    function StatusText: string; override;
+    procedure BuildPopup; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    procedure SetInput(I: Integer; Value: Boolean); override;
   end;
 
   { TjanLogicRun: programmeermodule met een stappenprogramma (LogicRun).
@@ -18125,9 +18157,9 @@ begin
   // aantal imputobjecten
   FImputAantal:=6;
   // opzetten van knoppen (Verwerkingsobjecten)
-  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FStappen:=True;
+  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FStappen:=True;FStopwatch:=True;
   // aantal Verwerkingobjecten
-  FVerwerkingAantal:=6;
+  FVerwerkingAantal:=7;
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FDisplay:=true;
   FVoeding:=True;
@@ -18139,7 +18171,7 @@ begin
   DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DTeller:=false;DStappen:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
+  DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
 
   cpu:=TTimer.Create(self);
   cpu.Enabled:=false;
@@ -18600,7 +18632,7 @@ begin
       else if c is TjanSimEindschakelaar then
         SFile.Add(Format('TjanSimEindschakelaar;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width, TjanSimEindschakelaar(c).Kanaal]))
       else if c is TjanSimStappenteller then
-        SFile.Add(Format('TjanSimStappenteller;%d;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width,
+        SFile.Add(Format('%s;%d;%d;%d;%d;%d;%d;', [c.ClassName, c.Height, c.Left, c.Top, c.Width,
           TjanSimStappenteller(c).Eindwaarde, Ord(TjanSimStappenteller(c).Herhalen)]))
       else if c is TjanLogicRun then
         SFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
@@ -18842,7 +18874,7 @@ begin
     else if c is TjanSimEindschakelaar then
       TempFile.Add(Format('TjanSimEindschakelaar;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width, TjanSimEindschakelaar(c).Kanaal]))
     else if c is TjanSimStappenteller then
-      TempFile.Add(Format('TjanSimStappenteller;%d;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width,
+      TempFile.Add(Format('%s;%d;%d;%d;%d;%d;%d;', [c.ClassName, c.Height, c.Left, c.Top, c.Width,
         TjanSimStappenteller(c).Eindwaarde, Ord(TjanSimStappenteller(c).Herhalen)]))
     else if c is TjanLogicRun then
       TempFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
@@ -18871,6 +18903,7 @@ procedure TjanSimLogicBox.InternalLoadFromList(AList: TStrings; Paneel: TjanGrid
 var
   i, positie: Integer;
   LR: TjanLogicRun;
+  StT: TjanSimStappenteller;
   S: string;
   obj: array[1..10] of string;
   wc: TWinControl;
@@ -19593,10 +19626,15 @@ begin
         Continue;
       end;
 
-      // ---- TjanSimStappenteller;height;left;top;width;eindwaarde;herhalen ----
-      if obj[1] = 'TjanSimStappenteller' then
+      // ---- TjanSimStappenteller (of TjanSimStopwatch);height;left;top;width;eindwaarde;herhalen ----
+      // bij de stopwatch is de eindwaarde de eindtijd in seconden
+      if (obj[1] = 'TjanSimStappenteller') or (obj[1] = 'TjanSimStopwatch') then
       begin
-        with TjanSimStappenteller.Create(self) do
+        if obj[1] = 'TjanSimStopwatch' then
+          StT := TjanSimStopwatch.Create(self)
+        else
+          StT := TjanSimStappenteller.Create(self);
+        with StT do
         begin
           Parent := wc; Tag := wc.ControlCount;
           Left := StrToInt(Trim(obj[3]));
@@ -20216,7 +20254,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DTeller:=false;DStappen:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -20238,6 +20276,7 @@ begin
   else if ptinrect(RDisplay,p) and (KDisplay=true)then DDisplay:=true
   else if ptinrect(RTeller,p) and (KTeller=true)then DTeller:=true
   else if ptinrect(RStappen,p) and (KStappen=true)then DStappen:=true
+  else if ptinrect(RStopwatch,p) and (KStopwatch=true)then DStopwatch:=true
   else if ptinrect(RMemory,p) and (KMemory=true)then DMemory:=true
   else if ptinrect(RDipSwitsh,p) and (KDipSwitsh=true)then DDipSwitsh:=true
   else if ptinrect(RMeter,p) and (KMeter=true)then DMeter:=true
@@ -20279,6 +20318,7 @@ begin
   else if PtInRect(RDisplay, P) then NewHint := FHDisplay
   else if PtInRect(RTeller, P) then NewHint := FHTeller
   else if PtInRect(RStappen, P) then NewHint := FHStappen
+  else if PtInRect(RStopwatch, P) then NewHint := FHStopwatch
   else if PtInRect(RMemory, P) then NewHint := FHMemory
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
   else if PtInRect(RMeter, P) then NewHint := FHMeter
@@ -20327,6 +20367,7 @@ begin
   else if ptinrect(RDisplay,p) then DoStatusText(FHDisplay , 0)
   else if ptinrect(RTeller,p) then DoStatusText(FHTeller , 0)
   else if ptinrect(RStappen,p) then DoStatusText(FHStappen , 0)
+  else if ptinrect(RStopwatch,p) then DoStatusText(FHStopwatch , 0)
   else if ptinrect(RMemory,p) then DoStatusText(FHMemory , 0)
   else if ptinrect(RDipSwitsh,p)then DoStatusText(FHDipSwitsh , 0)
   else if ptinrect(RGrid,p) then DoStatusText(FHGrid , 0)
@@ -20721,7 +20762,7 @@ var
     Dgrid := False;
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
-    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DMemory := False; DDipSwitsh := False;
+    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
@@ -20814,6 +20855,13 @@ begin
     AddF('TjanLogic.Left');   AddF('TjanLogic.Top');
     AddF('TjanLogic.Width');  AddF('TjanLogic.Height');
     AddF('TjanLogic.L_Type');
+  end
+  else if DStopwatch then
+  with TjanSimStopwatch.Create(self) do
+  begin
+    Parent := wc; FNew := True; Tag := wc.ControlCount;
+    FObjectID := wc.ControlCount; Visible := False; Left := -200; Screen.Cursor := crCross;
+    BTaal := StatTaalToBTaal(Language);
   end
   else if DStappen then
   with TjanSimStappenteller.Create(self) do
@@ -21480,6 +21528,7 @@ if FBoxTaal=stDutch then
   HSensor:='maak Lichtsensor';
   HTeller:='maak Tellerblok';
   HStappen:='maak Stappenteller (telt tot 9999)';
+  HStopwatch:='maak Stopwatch (tijd met eindtijd)';
   HWarm:='maak WarmteSensor';
   HMeter:='maak Voltmeter';
   HPersoon:='maak Persoon (met eindschakelaars)';
@@ -21510,6 +21559,7 @@ if FBoxTaal=stEnglish then
   HSensor:='create Light sensor';
   HTeller:='create Counter block';
   HStappen:='create Step counter (counts up to 9999)';
+  HStopwatch:='create Stopwatch (time with end time)';
   HWarm:='create HeatSensor';
   HMeter:='create Voltmeter';
   HPersoon:='create Person (with limit switches)';
@@ -21539,6 +21589,7 @@ if FBoxTaal=stFrench then
   HSensor:='faire Capteur de lumière';
   HTeller:='faire Bloc compteur';
   HStappen:='faire Compteur de pas (compte jusqu''à 9999)';
+  HStopwatch:='faire Chronomètre (temps avec heure de fin)';
   HWarm:='faire Capteur de chaleur';
   HMeter:='faire Voltmètre';
   HPersoon:='faire Personne (avec fins de course)';
@@ -21569,6 +21620,7 @@ if FBoxTaal=stFrench then
   HSensor:='Lichtsensor herstellen';
   HTeller:='Gegenblock erstellen';
   HStappen:='Stappenteller erstellen (zählt bis 9999)';
+  HStopwatch:='Stoppuhr erstellen (Zeit mit Endzeit)';
   HWarm:='HeatSensor erstellen';
   HMeter:='Voltmeter erstellen';
   HPersoon:='Person erstellen (mit Endschaltern)';
@@ -21959,6 +22011,16 @@ begin
   if value<>FStappen then
   begin
     FStappen := Value;
+    if Value=true then FVerwerkingAantal:= FVerwerkingAantal+1 else FVerwerkingAantal:= FVerwerkingAantal-1;
+  end;
+  invalidate;
+end;
+
+procedure TjanSimLogicBox.SetStopwatch(const Value: Boolean);
+begin
+  if value<>FStopwatch then
+  begin
+    FStopwatch := Value;
     if Value=true then FVerwerkingAantal:= FVerwerkingAantal+1 else FVerwerkingAantal:= FVerwerkingAantal-1;
   end;
   invalidate;
@@ -22387,6 +22449,20 @@ begin
         HK:= H+TOP;
       end;
 
+      If FStopwatch=true then
+      Begin
+        RStopwatch:= rect(LK,TOP,BK,HK);
+        Rb:=RStopwatch;
+        if not DStopwatch then
+          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
+        else
+          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
+        fillrect(Rb);
+        DrawStopwatchIcon(Lk+1, top+2);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
       Top:=Top+6; HK:=HK+6;   // was 12: plaats voor de stappenteller
       // einde verwerking
 
@@ -22578,6 +22654,31 @@ begin
   Canvas.Line(X + 10, Y + 18, X + 10, Y + 20);
   Canvas.Line(X + 10, Y + 20, X + 23, Y + 20);
   Canvas.Font.Style := []; Canvas.Font.Size := OldSize; Canvas.Font.Color := OldFont;
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+end;
+
+// knop stopwatch: wijzerplaat met knopje bovenaan en een wijzer
+procedure TjanSimLogicBox.DrawStopwatchIcon(X, Y: Integer);
+var OldBrush, OldPen: TColor;
+    OldStyle: TBrushStyle;
+begin
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+  Canvas.Pen.Width := 1;
+  Canvas.Brush.Style := bsSolid;
+  // knopje bovenaan
+  Canvas.Pen.Color := clNavy;
+  Canvas.Brush.Color := clNavy;
+  Canvas.Rectangle(X + 10, Y + 1, X + 14, Y + 4);
+  // wijzerplaat
+  Canvas.Pen.Color := clGray;
+  Canvas.Brush.Color := clCream;
+  Canvas.Ellipse(X + 3, Y + 3, X + 21, Y + 21);
+  // wijzers en het middelpunt
+  Canvas.Pen.Color := clBlue;
+  Canvas.Pen.Width := 2;
+  Canvas.Line(X + 12, Y + 12, X + 12, Y + 6);
+  Canvas.Line(X + 12, Y + 12, X + 16, Y + 12);
+  Canvas.Pen.Width := 1;
   Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
 end;
 
@@ -22950,6 +23051,17 @@ begin
         DrawStappenIcon(LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
+
+      if FStopwatch = True then
+      begin
+        RStopwatch := Rect(LK, TOP, BK, HK);
+        Rb := RStopwatch;
+        if not DStopwatch then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawStopwatchIcon(LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
       NextX(20);
 
       // ===========================================================
@@ -23073,6 +23185,20 @@ begin
       begin
         RMuziek := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RMuziek, DMuziek, 8);
+        NextX(B + SPATIE);
+      end;
+
+      // voedingsrails: + en - als aparte groep (KVoeding)
+      RRailPlus := Rect(0, 0, 0, 0);
+      RRailMin := Rect(0, 0, 0, 0);
+      if FVoeding then
+      begin
+        NextX(20 - SPATIE);
+        RRailPlus := Rect(LK, TOP, BK, HK);
+        DrawRailButton(RRailPlus, True, DRailPlus);
+        NextX(B + SPATIE);
+        RRailMin := Rect(LK, TOP, BK, HK);
+        DrawRailButton(RRailMin, False, DRailMin);
       end;
     end;
   end;
@@ -23384,6 +23510,17 @@ begin
         DrawStappenIcon(LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
+
+      if FStopwatch = True then
+      begin
+        RStopwatch := Rect(LK, TOP, BK, HK);
+        Rb := RStopwatch;
+        if not DStopwatch then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawStopwatchIcon(LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
       NextX(20);
 
       // ===========================================================
@@ -23507,6 +23644,20 @@ begin
       begin
         RMuziek := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RMuziek, DMuziek, 8);
+        NextX(B + SPATIE);
+      end;
+
+      // voedingsrails: + en - als aparte groep (KVoeding)
+      RRailPlus := Rect(0, 0, 0, 0);
+      RRailMin := Rect(0, 0, 0, 0);
+      if FVoeding then
+      begin
+        NextX(20 - SPATIE);
+        RRailPlus := Rect(LK, TOP, BK, HK);
+        DrawRailButton(RRailPlus, True, DRailPlus);
+        NextX(B + SPATIE);
+        RRailMin := Rect(LK, TOP, BK, HK);
+        DrawRailButton(RRailMin, False, DRailMin);
       end;
     end;
   end;
@@ -27705,5 +27856,331 @@ begin
     TjanConnector(Connectors[i]).MoveConnector(Point(NewLeft, NewTop));
 end;
 
+
+// ============================================================
+// TjanSimStopwatch: stopwatch met display MM:SS (tot 99:59)
+// ============================================================
+
+const
+  SW_MAX = 5999;        // 99:59
+  SW_KOLOM = 8;         // ruimte voor de dubbelpunt tussen minuten en seconden
+
+// seconden als MM:SS
+function MinSec(Sec: Integer): string;
+begin
+  Result := Format('%.2d:%.2d', [Sec div 60, Sec mod 60]);
+end;
+
+constructor TjanSimStopwatch.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FEind := 30;
+  FNaam := 'Stopwatch';
+  HelpKeyword := 'stopwatch';
+  FLaatst := GetTickCount64;
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 100;
+  FTimer.OnTimer := TimerTick;
+  FTimer.Enabled := not (csDesigning in ComponentState);
+end;
+
+procedure TjanSimStopwatch.TimerTick(Sender: TObject);
+var
+  Nu: QWord;
+  D: Int64;
+  OudeStand, OudeFase: Integer;
+begin
+  Nu := GetTickCount64;
+  D := Nu - FLaatst;
+  FLaatst := Nu;
+  if D > 1000 then D := 1000;       // na een pauze van het programma
+  // de tijd loopt zolang S aan is (en R uit)
+  if not FIn[0] or FIn[1] then Exit;
+  if (FStand >= FEind) and not FHerhalen then Exit;
+  OudeStand := FStand;
+  OudeFase := (FMs div 500) mod 2;
+  Inc(FMs, D);
+  if FHerhalen then
+  begin
+    // na de eindtijd (Q een seconde aan) weer bij 00:01
+    if FMs >= Int64(FEind + 1) * 1000 then
+      Dec(FMs, Int64(FEind) * 1000);
+  end
+  else if FMs > Int64(FEind) * 1000 then
+    FMs := Int64(FEind) * 1000;
+  FStand := FMs div 1000;
+  if (FStand <> OudeStand) or ((FMs div 500) mod 2 <> OudeFase) then
+  begin
+    Invalidate;
+    if FMouseOver and (FStand <> OudeStand) then
+      SendStatusToBar;
+  end;
+end;
+
+procedure TjanSimStopwatch.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I > 1) or (FIn[I] = Value) then Exit;
+  FIn[I] := Value;
+  FLaatst := GetTickCount64;
+  if (I = 1) and Value then
+  begin
+    FMs := 0;
+    FStand := 0;
+  end;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimStopwatch.Paint;
+var
+  BW, BH, i, y, d, x0, y0, h2, sh, HorLen, VerLen, Kx: Integer;
+  Seg: Byte;
+  Body: TRect;
+  S: string;
+  Cijfer: array[0..3] of Integer;
+  Loopt: Boolean;
+
+  // zeshoekig segment zoals bij de stappenteller
+  procedure Segment(Nr, x, y, w, h: Integer);
+  begin
+    if Seg and (1 shl Nr) <> 0 then
+    begin
+      Canvas.Brush.Color := clBlue;
+      Canvas.Pen.Color := clAqua;
+    end
+    else
+    begin
+      Canvas.Brush.Color := clCream;
+      Canvas.Pen.Color := clGray;
+    end;
+    if h > w then   // verticaal
+      Canvas.Polygon([Point(x, y + sh), Point(x + sh, y), Point(x + w, y + sh),
+                      Point(x + w, y + h - sh), Point(x + sh, y + h), Point(x, y + h - sh)])
+    else            // horizontaal
+      Canvas.Polygon([Point(x, y + sh), Point(x + sh, y), Point(x + w - sh, y),
+                      Point(x + w, y + sh), Point(x + w - sh, y + h), Point(x + sh, y + h)]);
+  end;
+
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  Loopt := FIn[0] and not FIn[1] and ((FStand < FEind) or FHerhalen);
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    // aansluitdraden naar het blok
+    Pen.Color := clBlack;
+    for i := 0 to 1 do
+    begin
+      y := InputPinY(i) + 3;
+      Line(8, y, 12, y);
+    end;
+    y := OutputPinY + 3;
+    Line(BW - 12, y, BW - 8, y);
+    // blok
+    Body := Rect(12, 0, BW - 12, BH);
+    Brush.Style := bsSolid;
+    Brush.Color := clCream;
+    Pen.Color := clGray;
+    Rectangle(Body);
+    // display MM:SS
+    Cijfer[0] := (FStand div 60) div 10;
+    Cijfer[1] := (FStand div 60) mod 10;
+    Cijfer[2] := (FStand mod 60) div 10;
+    Cijfer[3] := (FStand mod 60) mod 10;
+    h2 := ST_SH div 2;
+    sh := ST_ST div 2;
+    HorLen := ST_SW - ST_ST;
+    VerLen := h2 - ST_ST - sh;
+    for d := 0 to 3 do
+    begin
+      Seg := ST_SEG[Cijfer[d]];
+      x0 := ST_DX + d * ST_CW + 2;
+      if d >= 2 then Inc(x0, SW_KOLOM);
+      y0 := ST_DY;
+      Segment(0, x0 + sh, y0, HorLen, ST_ST);                              // a boven
+      Segment(1, x0 + ST_SW - ST_ST, y0 + ST_ST, ST_ST, VerLen);           // b rechtsboven
+      Segment(2, x0 + ST_SW - ST_ST, y0 + h2 + sh, ST_ST, VerLen);         // c rechtsonder
+      Segment(3, x0 + sh, y0 + ST_SH - ST_ST, HorLen, ST_ST);              // d onder
+      Segment(4, x0, y0 + h2 + sh, ST_ST, VerLen);                         // e linksonder
+      Segment(5, x0, y0 + ST_ST, ST_ST, VerLen);                           // f linksboven
+      Segment(6, x0 + sh, y0 + h2 - sh, HorLen, ST_ST);                    // g midden
+    end;
+    // dubbelpunt: knippert zolang de tijd loopt
+    Kx := ST_DX + 2 * ST_CW + 2 - 3;
+    if Loopt and ((FMs div 500) mod 2 = 1) then
+    begin
+      Brush.Color := clCream;
+      Pen.Color := clGray;
+    end
+    else
+    begin
+      Brush.Color := clBlue;
+      Pen.Color := clAqua;
+    end;
+    Rectangle(Kx, ST_DY + 7, Kx + 4, ST_DY + 11);
+    Rectangle(Kx, ST_DY + ST_SH - 11, Kx + 4, ST_DY + ST_SH - 7);
+    // aansluitingen
+    Brush.Color := clLime;
+    Pen.Color := clGray;
+    for i := 0 to 1 do
+      Rectangle(1, InputPinY(i), 8, InputPinY(i) + 7);
+    Rectangle(BW - 8, OutputPinY, BW - 1, OutputPinY + 7);
+    // letters en de eindtijd onderaan
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    if FIn[0] then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(14, InputPinY(0) - 2, 'S');
+    if FIn[1] then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(14, InputPinY(1) - 2, 'R');
+    if Bereikt then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(BW - 22, OutputPinY - 2, 'Q');
+    Font.Style := [];
+    Font.Color := clBlack;
+    if FHerhalen then
+      S := MinSec(1) + '..' + MinSec(FEind) + ' ' + Tr(FTaal, 'herhalen', 'repeat', 'répéter', 'wiederh.')
+    else
+      S := Tr(FTaal, 'tot ', 'to ', 'jusqu''à ', 'bis ') + MinSec(FEind);
+    TextOut(ST_DX + 4, ST_DY + ST_SH + 8, S);   // rechts van de letter R
+    if FSelect or FSelected then
+    begin
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+  end;
+end;
+
+function TjanSimStopwatch.StatusText: string;
+begin
+  Result := Tr(FTaal, 'tijd ', 'time ', 'temps ', 'Zeit ') + MinSec(FStand) +
+            Tr(FTaal, ' van ', ' of ', ' sur ', ' von ') + MinSec(FEind);
+  if Bereikt then
+    Result := Result + Tr(FTaal, ': bereikt (Q aan)', ': reached (Q on)',
+                                 ' : atteint (Q actif)', ': erreicht (Q ein)');
+end;
+
+procedure TjanSimStopwatch.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'S: de tijd loopt zolang S aan is, R: terug naar 00:00' + #13#10 + 'Q: aan als de eindtijd bereikt is' + #13#10 + 'Rechtsklik: eindtijd kiezen',
+              'S: time runs while S is on, R: back to 00:00' + #13#10 + 'Q: on when the end time is reached' + #13#10 + 'Right-click: choose the end time',
+              'S : le temps court tant que S est actif, R : retour à 00:00' + #13#10 + 'Q : actif quand l''heure de fin est atteinte' + #13#10 + 'Clic droit : choisir l''heure de fin',
+              'S: die Zeit läuft, solange S ein ist, R: zurück auf 00:00' + #13#10 + 'Q: ein, wenn die Endzeit erreicht ist' + #13#10 + 'Rechtsklick: Endzeit wählen');
+end;
+
+procedure TjanSimStopwatch.BuildPopup;
+const
+  Waarden: array[0..4] of Integer = (10, 30, 60, 300, 600);
+var
+  Mi: TMenuItem;
+  i: Integer;
+  Vast: Boolean;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := '-';
+  PopupMenu.Items.Add(Mi);
+  // eindtijd: vaste keuzes of zelf ingeven
+  Vast := False;
+  for i := 0 to High(Waarden) do
+  begin
+    Mi := TMenuItem.Create(PopupMenu);
+    Mi.Caption := Tr(FTaal, 'Tot ', 'To ', 'Jusqu''à ', 'Bis ') + MinSec(Waarden[i]);
+    Mi.Tag := Waarden[i];
+    Mi.RadioItem := True;
+    Mi.Checked := FEind = Waarden[i];
+    Vast := Vast or Mi.Checked;
+    Mi.OnClick := EindTijdClick;
+    PopupMenu.Items.Add(Mi);
+  end;
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Andere eindtijd...', 'Other end time...', 'Autre heure de fin...', 'Andere Endzeit...');
+  Mi.RadioItem := True;
+  Mi.Checked := not Vast;
+  Mi.OnClick := EindTijdAnderClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := '-';
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Herhalen (na de eindtijd weer bij 00:01)', 'Repeat (start again at 00:01 after the end time)',
+                          'Répéter (recommencer à 00:01 après l''heure de fin)', 'Wiederholen (nach der Endzeit wieder bei 00:01)');
+  Mi.Checked := FHerhalen;
+  Mi.OnClick := HerhalenClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Op 00:00 zetten', 'Set to 00:00', 'Mettre à 00:00', 'Auf 00:00 setzen');
+  Mi.OnClick := NulTijdClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+procedure TjanSimStopwatch.EindTijdClick(Sender: TObject);
+begin
+  Eindwaarde := TMenuItem(Sender).Tag;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimStopwatch.EindTijdAnderClick(Sender: TObject);
+var
+  dlg: TInputBoxForm;
+  s: string;
+  p, m, sec: Integer;
+begin
+  dlg := TInputBoxForm.Create(nil);
+  try
+    if dlg.Execute(Tr(FTaal, 'Eindtijd', 'End time', 'Heure de fin', 'Endzeit'),
+                   Tr(FTaal, 'Eindtijd als mm:ss (00:01 tot 99:59)?', 'End time as mm:ss (00:01 to 99:59)?',
+                             'Heure de fin en mm:ss (00:01 à 99:59) ?', 'Endzeit als mm:ss (00:01 bis 99:59)?'),
+                   MinSec(FEind), s) then
+    begin
+      s := Trim(s);
+      p := Pos(':', s);
+      if p > 0 then
+      begin
+        // mm:ss
+        if TryStrToInt(Trim(Copy(s, 1, p - 1)), m) and TryStrToInt(Trim(Copy(s, p + 1, MaxInt)), sec) then
+          sec := m * 60 + sec
+        else
+          Exit;
+      end
+      else if not TryStrToInt(s, sec) then   // alleen seconden
+        Exit;
+      if sec > SW_MAX then sec := SW_MAX;
+      Eindwaarde := sec;
+    end;
+  finally
+    dlg.Free;
+  end;
+end;
+
+procedure TjanSimStopwatch.NulTijdClick(Sender: TObject);
+begin
+  FMs := 0;
+  FStand := 0;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
 
 end.

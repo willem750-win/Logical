@@ -65,6 +65,25 @@
   <div class="tip"><strong>Astuce&nbsp;:</strong> une <a href="invoer.html#eindschakelaar">fin de course</a> de la
   <a href="uitvoer.html#persoon">personne</a> reliée à l&rsquo;entrée de comptage compte combien de fois la personne fait l&rsquo;aller-retour.</div>
 
+  <h2 id="stopwatch"><img src="../img/pal-stopwatch.png" class="ico" alt="">Chronomètre</h2>
+  <p>Mesure le temps en minutes et secondes et l&rsquo;affiche sur un afficheur (<b>MM:SS</b>, jusqu&rsquo;à 99:59). Avec
+  la sortie Q, vous commandez quelque chose après un temps réglé&nbsp;: une lampe qui s&rsquo;allume après 30 secondes,
+  un moteur qui tourne 1 minute ...</p>
+  <table>
+    <tr><th>Connexion</th><th>Signification</th></tr>
+    <tr><td><span class="pin in">S</span></td><td>Start&nbsp;: le temps court tant que S est actif. Quand S s&rsquo;éteint, le temps s&rsquo;arrête (pause)&nbsp;; quand S revient, il continue.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset&nbsp;: remet le temps à 00:00. Tant que R est actif, le temps ne court pas.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Sortie&nbsp;: active dès que l&rsquo;heure de fin est atteinte.</td></tr>
+  </table>
+  <p>Avec le bouton droit (le bloc ne doit pas être verrouillé), vous choisissez l&rsquo;<b>heure de fin</b>&nbsp;: 00:10,
+  00:30, 01:00, 05:00, 10:00 ou un autre temps (en mm:ss, par exemple 02:30). À l&rsquo;heure de fin, le chronomètre
+  s&rsquo;arrête. Si vous cochez <b>Répéter</b>, il recommence à 00:01&nbsp;: Q donne alors un signal d&rsquo;une seconde
+  après chaque heure de fin. Les deux-points clignotent tant que le temps court. Le chronomètre est un traitement&nbsp;:
+  il n&rsquo;a pas besoin d&rsquo;alimentation.</p>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> mettez un <a href="invoer.html#schakelaar">interrupteur</a> sur S et une
+  lampe sur Q&nbsp;: après l&rsquo;heure de fin, la lampe s&rsquo;allume. Réglez le chronomètre sur Répéter et reliez Q à
+  l&rsquo;entrée de comptage d&rsquo;un <a href="#stappenteller">compteur de pas</a>&nbsp;: il compte les minutes.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Bloc mémoire</h2>
   <p>Une mémoire de 32 emplacements (adresse 0 à 31). Chaque emplacement contient un nombre de 0 à 15.
   Au placement, tous les emplacements valent 0.</p>

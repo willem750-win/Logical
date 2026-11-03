@@ -65,6 +65,23 @@
   <div class="tip"><strong>Tip:</strong> a <a href="invoer.html#eindschakelaar">limit switch</a> on the
   <a href="uitvoer.html#persoon">person</a> connected to the count input counts how often the person walks back and forth.</div>
 
+  <h2 id="stopwatch"><img src="../img/pal-stopwatch.png" class="ico" alt="">Stopwatch</h2>
+  <p>Measures time in minutes and seconds and shows it on a display (<b>MM:SS</b>, up to 99:59). With output Q you
+  switch something after a set time: a lamp that comes on after 30 seconds, a motor that runs for 1 minute ...</p>
+  <table>
+    <tr><th>Connection</th><th>Meaning</th></tr>
+    <tr><td><span class="pin in">S</span></td><td>Start: the time runs while S is on. When S goes off, the time stops (pause); when S comes on again, it continues.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset: sets the time back to 00:00. While R is on, the time does not run.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Output: on as soon as the end time is reached.</td></tr>
+  </table>
+  <p>With the right mouse button (the block must not be locked) you choose the <b>end time</b>: 00:10, 00:30, 01:00,
+  05:00, 10:00 or another time (as mm:ss, for example 02:30). At the end time the stopwatch stops. If you switch on
+  <b>Repeat</b>, it starts again at 00:01: Q then gives a signal of one second after every end time. The colon blinks
+  while the time runs. The stopwatch is processing: it needs no power supply.</p>
+  <div class="tip"><strong>Tip:</strong> put a <a href="invoer.html#schakelaar">switch</a> on S and a lamp on Q: after
+  the end time the lamp comes on. Set the stopwatch to Repeat and connect Q to the count input of a
+  <a href="#stappenteller">step counter</a>, and it counts the minutes.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Memory block</h2>
   <p>A memory with 32 locations (address 0 to 31). Each location holds a number from 0 to 15.
   When placed, every location contains 0.</p>
