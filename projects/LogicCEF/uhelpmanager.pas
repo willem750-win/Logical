@@ -132,7 +132,7 @@ begin
       Result := 'invoer';
     'logic':
       begin Result := 'verwerking'; AAnchor := 'poorten'; end;
-    'teller', 'geheugen':
+    'teller', 'geheugen', 'stappenteller':
       Result := 'verwerking';
     'lamp', 'relais', 'schakelrelais', 'zoemer', 'display':
       Result := 'uitvoer';
@@ -542,6 +542,7 @@ begin
     'tjansimwagen':     AControl.HelpKeyword := 'wagen';
     'tjansimmuziek':    AControl.HelpKeyword := 'muziek';
     'tjansimeindschakelaar': AControl.HelpKeyword := 'eindschakelaar';
+    'tjansimstappenteller': AControl.HelpKeyword := 'stappenteller';
   end;
 end;
 

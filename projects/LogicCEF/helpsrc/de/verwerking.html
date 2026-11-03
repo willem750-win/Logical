@@ -49,6 +49,22 @@
   Ein <a href="invoer.html#drukknop">Taster</a> oder <a href="invoer.html#puls">Impulsgeber</a> am Zähleingang
   lässt den Zähler laufen.</p>
 
+  <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Schrittzähler</h2>
+  <p>Zählt Impulse im Dezimalsystem und zeigt den Stand selbst auf einer vierstelligen Anzeige (0 bis 9999).
+  Praktisch, um Schritte, Pakete oder Runden zu zählen, zum Beispiel von 1 bis 1000.</p>
+  <table>
+    <tr><th>Anschluss</th><th>Bedeutung</th></tr>
+    <tr><td><span class="pin in">T</span></td><td>Zähleingang: Jeder Impuls erhöht den Stand um eins.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset: setzt den Stand auf 0 zurück. Solange R ein ist, zählt der Zähler nicht.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Ausgang: ein, solange der Endwert erreicht ist, zum Beispiel zu einer Lampe, einem Summer oder einem Eingang von <a href="logicrun.html">LogicRun</a>.</td></tr>
+  </table>
+  <p>Mit der rechten Maustaste (der Baustein darf nicht gesperrt sein) wählen Sie den <b>Endwert</b>: 10, 100, 1000, 9999
+  oder eine andere Zahl. Beim Endwert bleibt der Zähler stehen. Ist <b>Wiederholen</b> eingeschaltet, beginnt er beim
+  nächsten Impuls wieder bei 1; so zählt er immer von 1 bis zum Endwert. Mit <i>Auf 0 setzen</i> setzen Sie den Stand von
+  Hand zurück. Der Schrittzähler gehört zur Verarbeitung: Er braucht keine Stromversorgung.</p>
+  <div class="tip"><strong>Tipp:</strong> Ein <a href="invoer.html#eindschakelaar">Endschalter</a> der
+  <a href="uitvoer.html#persoon">Person</a> am Zähleingang zählt, wie oft die Person hin und her läuft.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Speicherbaustein</h2>
   <p>Ein Speicher mit 32 Speicherplätzen (Adresse 0 bis 31). Jeder Platz speichert eine Zahl von 0 bis 15.
   Beim Platzieren steht überall 0.</p>

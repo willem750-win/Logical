@@ -1,0 +1,59 @@
+<!-- titel: Lesson 19 - Counting to 1000 -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 19 of 19</p>
+  <h1>Counting to 1000 with the step counter</h1>
+  <div class="goal"><strong>Goal:</strong> count pulses in ordinary numbers, up to 10, 100 or 1000, and switch on a lamp
+  when the goal is reached. Then count how often the person from lesson 16 walks back and forth.</div>
+
+  <p><a class="open" href="../../panels/lessen/les19-stappenteller.lpl">&#9654; Open this example</a></p>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#puls">pulse generator</a> on input <b>T</b> of the step counter: every pulse counts one.</li>
+    <li>A <a href="invoer.html#drukknop">push button</a> on <b>R</b>: sets the counter back to 0.</li>
+    <li>The <a href="verwerking.html#stappenteller">step counter</a> with a four-digit display. At the bottom you see the
+      end value: <b>to 10</b>.</li>
+    <li>A <a href="uitvoer.html#lamp">lamp</a> on output <b>Q</b>: it switches on when the end value is reached.</li>
+  </ul>
+
+  <h2>Counter or step counter?</h2>
+  <p>The <a href="verwerking.html#teller">counter block</a> from <a href="les08.html">lesson 8</a> counts in binary,
+  from 0 to 15, and needs a separate display. The step counter counts in ordinary (decimal) numbers up to 9999 and shows
+  the count itself. With output Q the rest of the circuit knows when it is enough: after 10 boxes, 100 steps or 1000 laps.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and click the button at the bottom of the pulse generator: the step counter counts 1, 2, 3 ...</li>
+    <li>At <b>10</b> the lamp switches on and the counter stops: extra pulses no longer count.</li>
+    <li>Press the push button: the counter is back at 0, the lamp goes off and counting starts again.</li>
+    <li>Keep the push button pressed: while R is on, the counter does not count.</li>
+  </ol>
+  <p>Also look at the status bar at the bottom: with the mouse on the step counter you read the count and the end value.</p>
+
+  <h2>Task 1: up to 1000</h2>
+  <p>Make the lamp switch on only after 1000 pulses. How can it go faster?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Stop the simulation, unlock the step counter (right-click, <b>Unlock</b>) and choose <b>To 1000</b> with the right
+    mouse button. To count faster, right-click the pulse generator and choose 5&nbsp;Hz under <b>Frequency</b>. It still
+    takes over three minutes: 1000 pulses of 0.2 seconds each.</p>
+  </details>
+
+  <h2>Task 2: again and again</h2>
+  <p>Make the counter always count from 1 to 10, without the push button. What does the lamp do?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Right-click the step counter and switch on <b>Repeat</b>. After 10 the next pulse starts again at 1. The lamp is
+    on for one pulse, at every tenth pulse: a signal every ten.</p>
+  </details>
+
+  <h2>Task 3: counting the person's steps</h2>
+  <p>Open the example of <a href="les16.html">lesson 16</a> and count how often the person arrives on the right. After
+  5 times a lamp must be on.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Put a second <a href="invoer.html#eindschakelaar">limit switch</a> in the input area and choose <b>S2</b> (right)
+    with the right mouse button. Connect a step counter with end value <b>5</b> behind it, and a lamp on Q. Start the
+    simulation and switch the switch on: every time the person arrives on the right, the step counter adds one.</p>
+  </details>
+
+  <div class="pager"><a href="les18.html">&larr; Lesson 18: Music with LogicRun</a><a href="leerpad.html">Learning path &rarr;</a></div>

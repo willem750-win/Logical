@@ -1,0 +1,62 @@
+<!-- titel: Lektion 19 - Bis 1000 zählen -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 19 von 19</p>
+  <h1>Bis 1000 zählen mit dem Schrittzähler</h1>
+  <div class="goal"><strong>Ziel:</strong> Impulse in gewöhnlichen Zahlen zählen, bis 10, 100 oder 1000, und eine Lampe
+  einschalten, wenn das Ziel erreicht ist. Danach zählen Sie, wie oft die Person aus Lektion 16 hin und her läuft.</div>
+
+  <p><a class="open" href="../../panels/lessen/les19-stappenteller.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Einen <a href="invoer.html#puls">Impulsgeber</a> am Eingang <b>T</b> des Schrittzählers: Jeder Impuls zählt eins.</li>
+    <li>Einen <a href="invoer.html#drukknop">Taster</a> an <b>R</b>: setzt den Zähler auf 0 zurück.</li>
+    <li>Den <a href="verwerking.html#stappenteller">Schrittzähler</a> mit einer vierstelligen Anzeige. Unten steht der
+      Endwert: <b>bis 10</b>.</li>
+    <li>Eine <a href="uitvoer.html#lamp">Lampe</a> am Ausgang <b>Q</b>: Sie geht an, wenn der Endwert erreicht ist.</li>
+  </ul>
+
+  <h2>Zähler oder Schrittzähler?</h2>
+  <p>Der <a href="verwerking.html#teller">Zählerbaustein</a> aus <a href="les08.html">Lektion 8</a> zählt binär, von 0
+  bis 15, und braucht eine eigene Anzeige. Der Schrittzähler zählt in gewöhnlichen Zahlen (dezimal) bis 9999 und zeigt
+  den Stand selbst. Über den Ausgang Q weiß der Rest der Schaltung, wann es genug ist: nach 10 Kisten, 100 Schritten
+  oder 1000 Runden.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und klicken Sie auf die Taste unten am Impulsgeber: Der Schrittzähler zählt 1, 2, 3 ...</li>
+    <li>Bei <b>10</b> geht die Lampe an und der Zähler bleibt stehen: Weitere Impulse zählen nicht mehr.</li>
+    <li>Drücken Sie den Taster: Der Zähler steht wieder auf 0, die Lampe geht aus und das Zählen beginnt von vorn.</li>
+    <li>Halten Sie den Taster gedrückt: Solange R ein ist, zählt der Zähler nicht.</li>
+  </ol>
+  <p>Schauen Sie auch auf die Statusleiste unten: Steht die Maus auf dem Schrittzähler, lesen Sie dort den Stand und
+  den Endwert.</p>
+
+  <h2>Aufgabe 1: bis 1000</h2>
+  <p>Lassen Sie die Lampe erst nach 1000 Impulsen angehen. Wie geht es schneller?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Stoppen Sie die Simulation, entsperren Sie den Schrittzähler (Rechtsklick, <b>Entsperren</b>) und wählen Sie mit
+    der rechten Maustaste <b>Bis 1000</b>. Schneller zählen: Rechtsklick auf den Impulsgeber und unter <b>Frequenz</b>
+    5&nbsp;Hz wählen. Es dauert dann immer noch gut drei Minuten: 1000 Impulse von je 0,2 Sekunden.</p>
+  </details>
+
+  <h2>Aufgabe 2: immer wieder</h2>
+  <p>Lassen Sie den Zähler immer von 1 bis 10 zählen, ohne den Taster. Was macht die Lampe dann?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Rechtsklick auf den Schrittzähler und <b>Wiederholen</b> einschalten. Nach 10 beginnt er beim nächsten Impuls
+    wieder bei 1. Die Lampe leuchtet jeweils einen Impuls lang, bei jedem zehnten Impuls: ein Signal alle zehn.</p>
+  </details>
+
+  <h2>Aufgabe 3: die Schritte der Person zählen</h2>
+  <p>Öffnen Sie das Beispiel aus <a href="les16.html">Lektion 16</a> und zählen Sie, wie oft die Person rechts ankommt.
+  Nach 5 Mal soll eine Lampe leuchten.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Setzen Sie einen zweiten <a href="invoer.html#eindschakelaar">Endschalter</a> in die Eingabe und wählen Sie mit
+    der rechten Maustaste <b>S2</b> (rechts). Schließen Sie einen Schrittzähler mit dem Endwert <b>5</b> an, und eine
+    Lampe an Q. Starten Sie die Simulation und schalten Sie den Schalter ein: Jedes Mal, wenn die Person rechts ankommt,
+    zählt der Schrittzähler eins dazu.</p>
+  </details>
+
+  <div class="pager"><a href="les18.html">&larr; Lektion 18: Musik mit LogicRun</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

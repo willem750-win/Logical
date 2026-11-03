@@ -1809,6 +1809,7 @@ type
     FMotor:Boolean;
     FTeller:Boolean;
     FMemory:Boolean;
+    FStappen:Boolean;
     FDipSwitsh:Boolean;
     FKnopLeft:Integer;
     FSpatie:Integer;
@@ -1914,6 +1915,8 @@ type
     bmMemory:TBitmap;
     RMemory:TRect;
     DMemory:boolean;
+    RStappen:TRect;
+    DStappen:boolean;
 
     bmDisplay:TBitmap;
     RDisplay:TRect;
@@ -1954,6 +1957,7 @@ type
     FHLock:String;
     FHTeller:String;
     FHMemory:String;
+    FHStappen:String;
     FHDipSwitsh:String;
     FHDisplay:String;
     FBColor:TColor;
@@ -2006,6 +2010,7 @@ type
     PROCEDURE SetNewObject(const Value: Boolean);
     PROCEDURE SetTeller(const Value: Boolean);
     PROCEDURE SetMemory(const Value: Boolean);
+    PROCEDURE SetStappen(const Value: Boolean);
     PROCEDURE SetDipSwitsh(const Value: Boolean);
     PROCEDURE SetBuzzer(const Value: Boolean);
     PROCEDURE SetMotor(const Value: Boolean);
@@ -2063,6 +2068,7 @@ type
     PROCEDURE PaintBoxLeft;
     procedure DrawRailButton(const R: TRect; APlus, ADown: Boolean);
     procedure DrawHalfKnop(const R: TRect; ADown: Boolean; Kind: Integer);
+    procedure DrawStappenIcon(X, Y: Integer);
     PROCEDURE PaintBoxTop;
     PROCEDURE PaintBoxBottom;
     // kontrole of er connectors zijn gemaakt
@@ -2161,6 +2167,7 @@ type
     property KWarm:Boolean read FWarm write SetWarm;
     property KTeller:Boolean read FTeller write SetTeller;
     property KMemory:Boolean read FMemory write SetMemory;
+    property KStappen:Boolean read FStappen write SetStappen default True;
     property KDipSwitsh:Boolean read FDipSwitsh write SetDipSwitsh;
     property KDisplay:Boolean read FDisplay write SetDisplay;
     property KMeter:Boolean read FMeter write SetMeter;
@@ -2198,6 +2205,7 @@ type
     property HLock:String read FHLock write SetHlock;
     property HTeller:String read FHTeller write SetHTeller;
     property HMemory:String read FHMemory write SetHMemory;
+    property HStappen:String read FHStappen write FHStappen;
     property HDipSwitsh:string read FHDipSwitsh write SetHDipSwitsh;
     property HDisplay:String read FHDisplay write SetHDisplay;
     property BColor:TColor read FBColor write SetBColor;
@@ -2538,6 +2546,83 @@ end;
     property HelpKeyword;
   end;
 
+  { TjanSimStappenteller: decimale teller met een display van 4 cijfers.
+    Links de ingangen T (elke puls +1) en R (terug naar 0; gaat voor T),
+    rechts de uitgang Q: aan zolang de eindwaarde bereikt is. Bij de
+    eindwaarde blijft de teller staan, of (Herhalen) begint hij bij de
+    volgende puls weer bij 1. Verwerking: geen voeding nodig. }
+  TjanSimStappenteller = class(TGraphicControl)
+  private
+    FIn: array[0..1] of Boolean;   // 0 = T (tellen), 1 = R (reset)
+    FStand: Integer;
+    FEind: Integer;
+    FHerhalen: Boolean;
+    FResetRonde: Cardinal;         // simulatieronde waarin R laatst aan ging
+    FLock: Boolean;
+    FSelected: Boolean;
+    FSelect: Boolean;
+    FMouseOver: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FNaam: string;
+    FOnEnter: TNotifyEvent;
+    FOnExit: TNotifyEvent;
+    FOnStatus: TSimStatusEvent;
+    Connectors: TList;
+    doMove: Boolean;
+    mdp: TPoint;
+    newLeft, newTop: Integer;
+    procedure SetTaal(const Value: string);
+    procedure SetEind(Value: Integer);
+    procedure SetHerhalen(Value: Boolean);
+    procedure AnchorConnectors;
+    procedure MoveConnectors;
+    procedure SendStatusToBar;
+    function StatusText: string;
+    procedure LockClick(Sender: TObject);
+    procedure SelectClick(Sender: TObject);
+    procedure EindClick(Sender: TObject);
+    procedure EindAnderClick(Sender: TObject);
+    procedure HerhalenClick(Sender: TObject);
+    procedure NulClick(Sender: TObject);
+    procedure BuildPopup;
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+  protected
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure Paint; override;
+    procedure UpdateHintText;
+    // ingang 0 (T) of 1 (R) aan/uit, door de draden (Connect)
+    procedure SetInput(I: Integer; Value: Boolean);
+    // index van de ingang bij punt P (paneel), anders -1
+    function InputPinAt(const P: TPoint): Integer;
+    // ligt P (paneel) op de uitgang Q rechts?
+    function OutputPinAt(const P: TPoint): Boolean;
+    // Y van het aansluitvierkantje (7x7) van ingang I, en van de uitgang
+    class function InputPinY(I: Integer): Integer;
+    class function OutputPinY: Integer;
+    function Bereikt: Boolean;     // uitgang Q
+    property Stand: Integer read FStand;
+  published
+    property Eindwaarde: Integer read FEind write SetEind default 1000;
+    property Herhalen: Boolean read FHerhalen write SetHerhalen default False;
+    property Lock: Boolean read FLock write FLock;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write SetTaal;
+    property Naam: string read FNaam write FNaam;
+    property OnEnter: TNotifyEvent read FOnEnter write FOnEnter;
+    property OnExit: TNotifyEvent read FOnExit write FOnExit;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
+    property ShowHint;
+    property HelpKeyword;
+  end;
+
   { TjanLogicRun: programmeermodule met een stappenprogramma (LogicRun).
     Links 4 ingangen (DIN1-DIN4), rechts 8 uitgangen (UIT0-UIT7). Elke stap
     zet een bitpatroon op de uitgangen en duurt Tijd x StapDuur ms. Een
@@ -2842,6 +2927,24 @@ uses Process;
 procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer); forward;
 // tekenwijze (Afbeelding/IEC/ANSI) van een onderdeel (zie verderop)
 function SymOf(C: TComponent): TjanSymbolen; forward;
+
+// veld N (vanaf 0) van een regel met ; als scheiding, '' als het ontbreekt
+function VeldNr(const S: string; N: Integer): string;
+var
+  i, k, Start: Integer;
+begin
+  Result := '';
+  k := 0;
+  Start := 1;
+  for i := 1 to Length(S) + 1 do
+    if (i > Length(S)) or (S[i] = ';') then
+    begin
+      if k = N then
+        Exit(Trim(Copy(S, Start, i - Start)));
+      Inc(k);
+      Start := i + 1;
+    end;
+end;
 
   var
     // nummer van de huidige simulatieronde (cpuOnTimer, alle draden één keer)
@@ -4238,6 +4341,10 @@ begin
   else if (DisCon is TjanSimMotor) then
   begin
     TjanSimMotor(DisCon).SetInput(DisConI-1, false);
+  end
+  else if (DisCon is TjanSimStappenteller) then
+  begin
+    TjanSimStappenteller(DisCon).SetInput(DisConI-1, false);
   end
   else if (DisCon is TjanSimPersoon) then
   begin
@@ -5759,6 +5866,11 @@ begin
     Add(1, TjanSimMotor.InputPinY(0));
     Add(1, TjanSimMotor.InputPinY(1));
   end
+  else if C is TjanSimStappenteller then
+  begin
+    Add(1, TjanSimStappenteller.InputPinY(0));
+    Add(1, TjanSimStappenteller.InputPinY(1));
+  end
   else if C is TjanSimPersoon then
   begin
     // L en R (of V en A, of de 8 noten) zitten links
@@ -6248,6 +6360,16 @@ var Pi,Po:TPoint;
         end;
         continue;
       end;
+      // stappenteller: uitgang Q (eindwaarde bereikt)
+      if (wc.controls[ii] is TjanSimStappenteller) then
+      begin
+        if TjanSimStappenteller(wc.controls[ii]).OutputPinAt(Pi) then
+        begin
+          vi:=TjanSimStappenteller(wc.controls[ii]).Bereikt;
+          exit;
+        end;
+        continue;
+      end;
       // eindschakelaar: een draad die op zijn uitgang begint (de stand van
       // de persoon of het wagentje; met rails alleen als hij aan de + rail hangt)
       if (wc.controls[ii] is TjanSimEindschakelaar) then
@@ -6512,6 +6634,17 @@ var Pi,Po:TPoint;
         if Q>=0 then
         begin
           TjanSimMotor(wc.controls[ii]).SetInput(Q, vi and RailOK(TjanSimMotor(wc.controls[ii])));
+          exit;
+        end;
+        continue;
+      end;
+      // stappenteller: T of R (verwerking, geen voeding nodig)
+      if (wc.controls[ii] is TjanSimStappenteller) then
+      begin
+        Q:=TjanSimStappenteller(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          TjanSimStappenteller(wc.controls[ii]).SetInput(Q, vi);
           exit;
         end;
         continue;
@@ -6831,6 +6964,17 @@ var Pi,Po:TPoint;
         if Q>=0 then
         begin
           DisCon:=TjanSimMotor(wc.controls[ii]);
+          DisConI:=Q+1;
+          exit;
+        end;
+        continue;
+      end;
+      if (wc.controls[ii] is TjanSimStappenteller) then
+      begin
+        Q:=TjanSimStappenteller(wc.controls[ii]).InputPinAt(Po);
+        if Q>=0 then
+        begin
+          DisCon:=TjanSimStappenteller(wc.controls[ii]);
           DisConI:=Q+1;
           exit;
         end;
@@ -17976,9 +18120,9 @@ begin
   // aantal imputobjecten
   FImputAantal:=6;
   // opzetten van knoppen (Verwerkingsobjecten)
-  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;
+  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FStappen:=True;
   // aantal Verwerkingobjecten
-  FVerwerkingAantal:=5;
+  FVerwerkingAantal:=6;
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FDisplay:=true;
   FVoeding:=True;
@@ -17990,7 +18134,7 @@ begin
   DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DTeller:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
+  DTeller:=false;DStappen:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
 
   cpu:=TTimer.Create(self);
   cpu.Enabled:=false;
@@ -18424,6 +18568,9 @@ begin
         SFile.Add(Format('%s;%d;%d;%d;%d;', [c.ClassName, c.Height, c.Left, c.Top, c.Width]))
       else if c is TjanSimEindschakelaar then
         SFile.Add(Format('TjanSimEindschakelaar;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width, TjanSimEindschakelaar(c).Kanaal]))
+      else if c is TjanSimStappenteller then
+        SFile.Add(Format('TjanSimStappenteller;%d;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width,
+          TjanSimStappenteller(c).Eindwaarde, Ord(TjanSimStappenteller(c).Herhalen)]))
       else if c is TjanLogicRun then
         SFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
           TjanLogicRun(c).ProgramText + ';')
@@ -18469,7 +18616,8 @@ begin
               (c is TjanSimSensor) or (c is TjanSimWarm) or (c is TjanSimLight) or
               (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay) or
               (c is TjanRail) or (c is TjanLogicRun) or (c is TjanSimMotor) or
-              (c is TjanSimPersoon) or (c is TjanSimEindschakelaar)) then
+              (c is TjanSimPersoon) or (c is TjanSimEindschakelaar) or
+              (c is TjanSimStappenteller)) then
         Continue;
       s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
       if c is TjanRail then
@@ -18483,6 +18631,8 @@ begin
         s := s + ';' + TjanLogicRun(c).ProgramText
       else if c is TjanSimLight then
         s := s + Format(';%d', [Ord(TjanSimLight(c).Kleur)])
+      else if c is TjanSimStappenteller then
+        s := s + Format(';%d;%d', [TjanSimStappenteller(c).Eindwaarde, Ord(TjanSimStappenteller(c).Herhalen)])
       else if c is TjanSimPuls then
         s := s + Format(';%d', [TjanSimPuls(c).PulsInterval]);
       L.Add(s);
@@ -18654,6 +18804,9 @@ begin
       TempFile.Add(Format('%s;%d;%d;%d;%d;', [c.ClassName, c.Height, c.Left, c.Top, c.Width]))
     else if c is TjanSimEindschakelaar then
       TempFile.Add(Format('TjanSimEindschakelaar;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width, TjanSimEindschakelaar(c).Kanaal]))
+    else if c is TjanSimStappenteller then
+      TempFile.Add(Format('TjanSimStappenteller;%d;%d;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width,
+        TjanSimStappenteller(c).Eindwaarde, Ord(TjanSimStappenteller(c).Herhalen)]))
     else if c is TjanLogicRun then
       TempFile.Add(Format('TjanLogicRun;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]) +
         TjanLogicRun(c).ProgramText + ';')
@@ -19400,6 +19553,23 @@ begin
         Continue;
       end;
 
+      // ---- TjanSimStappenteller;height;left;top;width;eindwaarde;herhalen ----
+      if obj[1] = 'TjanSimStappenteller' then
+      begin
+        with TjanSimStappenteller.Create(self) do
+        begin
+          Parent := wc; Tag := wc.ControlCount;
+          Left := StrToInt(Trim(obj[3]));
+          Top  := StrToInt(Trim(obj[4]));
+          // S begint nog bij de breedte
+          Eindwaarde := StrToIntDef(VeldNr(S, 1), 1000);
+          Herhalen := VeldNr(S, 2) = '1';
+          FObjectID := wc.ControlCount; Lock := True;
+          BTaal := StatTaalToBTaal(Language);
+        end;
+        Continue;
+      end;
+
       // ---- TjanLogicRun;height;left;top;width;programma ----
       if obj[1] = 'TjanLogicRun' then
       begin
@@ -20004,7 +20174,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DTeller:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DTeller:=false;DStappen:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -20025,6 +20195,7 @@ begin
   else if ptinrect(RPuls,p) and (KPuls=true) then DPuls:=true
   else if ptinrect(RDisplay,p) and (KDisplay=true)then DDisplay:=true
   else if ptinrect(RTeller,p) and (KTeller=true)then DTeller:=true
+  else if ptinrect(RStappen,p) and (KStappen=true)then DStappen:=true
   else if ptinrect(RMemory,p) and (KMemory=true)then DMemory:=true
   else if ptinrect(RDipSwitsh,p) and (KDipSwitsh=true)then DDipSwitsh:=true
   else if ptinrect(RMeter,p) and (KMeter=true)then DMeter:=true
@@ -20065,6 +20236,7 @@ begin
   else if PtInRect(RPuls, P) then NewHint := FHPuls
   else if PtInRect(RDisplay, P) then NewHint := FHDisplay
   else if PtInRect(RTeller, P) then NewHint := FHTeller
+  else if PtInRect(RStappen, P) then NewHint := FHStappen
   else if PtInRect(RMemory, P) then NewHint := FHMemory
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
   else if PtInRect(RMeter, P) then NewHint := FHMeter
@@ -20112,6 +20284,7 @@ begin
   else if ptinrect(RPuls,p) then DoStatusText(FHPuls , 0)
   else if ptinrect(RDisplay,p) then DoStatusText(FHDisplay , 0)
   else if ptinrect(RTeller,p) then DoStatusText(FHTeller , 0)
+  else if ptinrect(RStappen,p) then DoStatusText(FHStappen , 0)
   else if ptinrect(RMemory,p) then DoStatusText(FHMemory , 0)
   else if ptinrect(RDipSwitsh,p)then DoStatusText(FHDipSwitsh , 0)
   else if ptinrect(RGrid,p) then DoStatusText(FHGrid , 0)
@@ -20232,6 +20405,9 @@ begin
       if (wc.controls[i] is TjanSimEindschakelaar) then
         TjanSimEindschakelaar(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanSimStappenteller) then
+        TjanSimStappenteller(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanMeter) then
         TjanMeter(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
@@ -20338,6 +20514,9 @@ begin
         wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanSimEindschakelaar) then
+        wc.Controls[i].Free;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanSimStappenteller) then
         wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanRail) then
@@ -20500,7 +20679,7 @@ var
     Dgrid := False;
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
-    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DMemory := False; DDipSwitsh := False;
+    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
@@ -20593,6 +20772,13 @@ begin
     AddF('TjanLogic.Left');   AddF('TjanLogic.Top');
     AddF('TjanLogic.Width');  AddF('TjanLogic.Height');
     AddF('TjanLogic.L_Type');
+  end
+  else if DStappen then
+  with TjanSimStappenteller.Create(self) do
+  begin
+    Parent := wc; FNew := True; Tag := wc.ControlCount;
+    FObjectID := wc.ControlCount; Visible := False; Left := -200; Screen.Cursor := crCross;
+    BTaal := StatTaalToBTaal(Language);
   end
   else if DTeller then
   with TjanTeller.Create(self) do
@@ -21120,7 +21306,8 @@ procedure TjanSimLogicBox.SelectObject(AObj: TObject);
     else if Obj is TjanLogicRun then TjanLogicRun(Obj).Selected := AValue
     else if Obj is TjanSimMotor then TjanSimMotor(Obj).Selected := AValue
     else if Obj is TjanSimPersoon then TjanSimPersoon(Obj).Selected := AValue
-    else if Obj is TjanSimEindschakelaar then TjanSimEindschakelaar(Obj).Selected := AValue;
+    else if Obj is TjanSimEindschakelaar then TjanSimEindschakelaar(Obj).Selected := AValue
+    else if Obj is TjanSimStappenteller then TjanSimStappenteller(Obj).Selected := AValue;
     // aanpassen voor volgend object
   end;
 
@@ -21200,6 +21387,8 @@ begin
       TjanSimPersoon(c).BTaal := s
     else if c is TjanSimEindschakelaar then
       TjanSimEindschakelaar(c).BTaal := s
+    else if c is TjanSimStappenteller then
+      TjanSimStappenteller(c).BTaal := s
     else if c is TjanRail then
       TjanRail(c).BTaal := s
     else if c is TjanDipSwitsh then
@@ -21248,6 +21437,7 @@ if FBoxTaal=stDutch then
   HSchakelaar:='maak Schakelaar';
   HSensor:='maak Lichtsensor';
   HTeller:='maak Tellerblok';
+  HStappen:='maak Stappenteller (telt tot 9999)';
   HWarm:='maak WarmteSensor';
   HMeter:='maak Voltmeter';
   HPersoon:='maak Persoon (met eindschakelaars)';
@@ -21277,6 +21467,7 @@ if FBoxTaal=stEnglish then
   HSchakelaar:='create Switsh';
   HSensor:='create Light sensor';
   HTeller:='create Counter block';
+  HStappen:='create Step counter (counts up to 9999)';
   HWarm:='create HeatSensor';
   HMeter:='create Voltmeter';
   HPersoon:='create Person (with limit switches)';
@@ -21305,6 +21496,7 @@ if FBoxTaal=stFrench then
   HSchakelaar:='faire un changement';
   HSensor:='faire Capteur de lumière';
   HTeller:='faire Bloc compteur';
+  HStappen:='faire Compteur de pas (compte jusqu''à 9999)';
   HWarm:='faire Capteur de chaleur';
   HMeter:='faire Voltmètre';
   HPersoon:='faire Personne (avec fins de course)';
@@ -21334,6 +21526,7 @@ if FBoxTaal=stFrench then
   HSchakelaar:='Schalter machen';
   HSensor:='Lichtsensor herstellen';
   HTeller:='Gegenblock erstellen';
+  HStappen:='Stappenteller erstellen (zählt bis 9999)';
   HWarm:='HeatSensor erstellen';
   HMeter:='Voltmeter erstellen';
   HPersoon:='Person erstellen (mit Endschaltern)';
@@ -21719,6 +21912,16 @@ begin
   invalidate;
 end;
 
+procedure TjanSimLogicBox.SetStappen(const Value: Boolean);
+begin
+  if value<>FStappen then
+  begin
+    FStappen := Value;
+    if Value=true then FVerwerkingAantal:= FVerwerkingAantal+1 else FVerwerkingAantal:= FVerwerkingAantal-1;
+  end;
+  invalidate;
+end;
+
 procedure TjanSimLogicBox.SetMemory(const Value: Boolean);
 begin
   if value<>FMemory then
@@ -22039,7 +22242,7 @@ begin
         HK:= H+TOP;
       end;
 
-      TOP:=TOP+12; HK:=HK+12;   // was 20: plaats voor de knop Motor
+      TOP:=TOP+6; HK:=HK+6;   // was 12: plaats voor de stappenteller
       //einde invoer
 
       //begin verwerking
@@ -22128,7 +22331,21 @@ begin
         HK:= H+TOP;
       end;
 
-      Top:=Top+12; HK:=HK+12;   // was 20: plaats voor de knop Motor
+      If FStappen=true then
+      Begin
+        RStappen:= rect(LK,TOP,BK,HK);
+        Rb:=RStappen;
+        if not DStappen then
+          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
+        else
+          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
+        fillrect(Rb);
+        DrawStappenIcon(Lk+1, top+2);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
+      Top:=Top+6; HK:=HK+6;   // was 12: plaats voor de stappenteller
       // einde verwerking
 
       //uitvoer
@@ -22281,7 +22498,7 @@ begin
       RRailMin := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
-      TOP := TOP + 6;
+      TOP := TOP + 2;
       RRailPlus := Rect(LK - 4, TOP, LK + 13, TOP + H);
       RRailMin := Rect(LK + 15, TOP, LK + 32, TOP + H);
       DrawRailButton(RRailPlus, True, DRailPlus);
@@ -22290,6 +22507,36 @@ begin
     end;
   end;
 
+end;
+
+// knop van de stappenteller: klein display met 123, altijd getekend
+procedure TjanSimLogicBox.DrawStappenIcon(X, Y: Integer);
+var OldBrush, OldPen, OldFont: TColor;
+    OldStyle: TBrushStyle;
+    OldSize: Integer;
+begin
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+  OldFont := Canvas.Font.Color; OldSize := Canvas.Font.Size;
+  Canvas.Pen.Width := 1;
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Pen.Color := clGray;
+  Canvas.Brush.Color := clCream;
+  Canvas.Rectangle(X + 1, Y + 5, X + 23, Y + 17);
+  Canvas.Brush.Style := bsClear;
+  Canvas.Font.Name := 'Arial';
+  Canvas.Font.Size := 7;
+  Canvas.Font.Style := [fsBold];
+  Canvas.Font.Color := clBlue;
+  Canvas.TextOut(X + 3, Y + 5, '123');
+  // telingang links
+  Canvas.Pen.Color := clNavy;
+  Canvas.Line(X, Y + 20, X + 6, Y + 20);
+  Canvas.Line(X + 6, Y + 20, X + 6, Y + 18);
+  Canvas.Line(X + 6, Y + 18, X + 10, Y + 18);
+  Canvas.Line(X + 10, Y + 18, X + 10, Y + 20);
+  Canvas.Line(X + 10, Y + 20, X + 23, Y + 20);
+  Canvas.Font.Style := []; Canvas.Font.Size := OldSize; Canvas.Font.Color := OldFont;
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
 end;
 
 // halve knop in de componentenbalk (persoon, wagentje) met icoon Kind
@@ -22650,6 +22897,17 @@ begin
         NextX(B + SPATIE);
       end;
 
+
+      if FStappen = True then
+      begin
+        RStappen := Rect(LK, TOP, BK, HK);
+        Rb := RStappen;
+        if not DStappen then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawStappenIcon(LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
       NextX(20);
 
       // ===========================================================
@@ -23071,6 +23329,17 @@ begin
         NextX(B + SPATIE);
       end;
 
+
+      if FStappen = True then
+      begin
+        RStappen := Rect(LK, TOP, BK, HK);
+        Rb := RStappen;
+        if not DStappen then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawStappenIcon(LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
       NextX(20);
 
       // ===========================================================
@@ -23273,6 +23542,8 @@ begin
     TjanSimPersoon(AComponent).BTaal := Taal
   else if AComponent is TjanSimEindschakelaar then
     TjanSimEindschakelaar(AComponent).BTaal := Taal
+  else if AComponent is TjanSimStappenteller then
+    TjanSimStappenteller(AComponent).BTaal := Taal
   else if AComponent is TjanRail then
     TjanRail(AComponent).BTaal := Taal
   else if AComponent is TjanMeter then
@@ -23496,6 +23767,19 @@ procedure TjanSimLogicBox.Notification(AComponent: TComponent; Operation: TOpera
       Exit;
     end;
 
+    // Stappenteller
+    if AObj is TjanSimStappenteller then
+    begin
+      with TjanSimStappenteller(AObj) do
+      begin
+        Box := Self;
+        if not Assigned(OnEnter)  then OnEnter  := ChildMouseEnter;
+        if not Assigned(OnExit)   then OnExit   := ChildMouseExit;
+        if not Assigned(OnStatus) then OnStatus := StatusFromChild;
+      end;
+      Exit;
+    end;
+
     // Eindschakelaar
     if AObj is TjanSimEindschakelaar then
     begin
@@ -23656,7 +23940,8 @@ begin
      (C is TjanSimWarm) or (C is TjanSimPuls) or (C is TjanDipSwitsh) or
      (C is TjanSimLight) or (C is TjanSimRelais) or (C is TjanSimBuzzer) or
      (C is TjanDisplay) or (C is TjanMeter) or (C is TjanRail) or (C is TjanLogicRun) or
-     (C is TjanSimMotor) or (C is TjanSimPersoon) or (C is TjanSimEindschakelaar));
+     (C is TjanSimMotor) or (C is TjanSimPersoon) or (C is TjanSimEindschakelaar) or
+     (C is TjanSimStappenteller));
   // vergrendelde objecten blijven staan
   if Result and IsPublishedProp(C, 'Lock') then
     Result := GetOrdProp(C, 'Lock') = 0;
@@ -26866,6 +27151,485 @@ begin
 end;
 
 procedure TjanSimEindschakelaar.MoveConnectors;
+var
+  i: Integer;
+begin
+  for i := 0 to Connectors.Count - 1 do
+    TjanConnector(Connectors[i]).MoveConnector(Point(NewLeft, NewTop));
+end;
+
+
+// ============================================================
+// TjanSimStappenteller: decimale teller met display (0 tot 9999)
+// ============================================================
+
+const
+  ST_W = 140;           // breedte van het blok
+  ST_H = 64;            // hoogte van het blok
+  ST_DX = 24;           // display: links, boven, breedte van een cijfer
+  ST_DY = 8;
+  ST_CW = 23;
+  ST_SW = 16;           // segmentcijfer: breedte, hoogte, dikte (zoals het display)
+  ST_SH = 28;
+  ST_ST = 4;
+  // segmenten a..g (bit 0 = a) van de cijfers 0 tot 9
+  ST_SEG: array[0..9] of Byte = ($3F, $06, $5B, $4F, $66, $6D, $7D, $07, $7F, $6F);
+
+constructor TjanSimStappenteller.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := ST_W;
+  Height := ST_H;
+  Connectors := TList.Create;
+  FEind := 1000;
+  FTaal := 'NL';
+  FNaam := 'Stappenteller';
+  HelpKeyword := 'stappenteller';
+  ShowHint := True;
+end;
+
+destructor TjanSimStappenteller.Destroy;
+begin
+  Connectors.Free;
+  inherited;
+end;
+
+class function TjanSimStappenteller.InputPinY(I: Integer): Integer;
+begin
+  if I = 0 then Result := 10 else Result := 46;
+end;
+
+class function TjanSimStappenteller.OutputPinY: Integer;
+begin
+  Result := 28;
+end;
+
+function TjanSimStappenteller.InputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
+  for i := 0 to 1 do
+    if Abs(P.Y - (Top + InputPinY(i) + 3)) <= 10 then
+      Exit(i);
+end;
+
+function TjanSimStappenteller.OutputPinAt(const P: TPoint): Boolean;
+begin
+  Result := (P.X >= Left + Width - 18) and (P.X <= Left + Width + 8) and
+            (Abs(P.Y - (Top + OutputPinY + 3)) <= 10);
+end;
+
+function TjanSimStappenteller.Bereikt: Boolean;
+begin
+  Result := FStand >= FEind;
+end;
+
+procedure TjanSimStappenteller.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I > 1) or (FIn[I] = Value) then Exit;
+  FIn[I] := Value;
+  if Value then
+  begin
+    if I = 1 then
+    begin
+      FResetRonde := SimRonde;
+      FStand := 0;
+    end
+    // reset gaat voor: een telpuls terwijl R aan is (of in dezelfde ronde) telt niet
+    else if not FIn[1] and not ((SimRonde <> 0) and (FResetRonde = SimRonde)) then
+    begin
+      if FStand < FEind then
+        Inc(FStand)
+      else if FHerhalen then
+        FStand := 1;
+    end;
+  end;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimStappenteller.SetEind(Value: Integer);
+begin
+  if Value < 1 then Value := 1;
+  if Value > 9999 then Value := 9999;
+  FEind := Value;
+  if FStand > FEind then FStand := FEind;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanSimStappenteller.SetHerhalen(Value: Boolean);
+begin
+  FHerhalen := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanSimStappenteller.SetTaal(const Value: string);
+begin
+  FTaal := Value;
+  UpdateHintText;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimStappenteller.Paint;
+var
+  BW, BH, i, y, d, n, x0, y0, h2, sh, HorLen, VerLen: Integer;
+  Seg: Byte;
+  Body: TRect;
+  S: string;
+
+  // zeshoekig segment zoals bij TjanDisplay: blauw aan, crème met grijze rand uit
+  procedure Segment(Nr, x, y, w, h: Integer);
+  begin
+    if Seg and (1 shl Nr) <> 0 then
+    begin
+      Canvas.Brush.Color := clBlue;
+      Canvas.Pen.Color := clAqua;
+    end
+    else
+    begin
+      Canvas.Brush.Color := clCream;
+      Canvas.Pen.Color := clGray;
+    end;
+    if h > w then   // verticaal
+      Canvas.Polygon([Point(x, y + sh), Point(x + sh, y), Point(x + w, y + sh),
+                      Point(x + w, y + h - sh), Point(x + sh, y + h), Point(x, y + h - sh)])
+    else            // horizontaal
+      Canvas.Polygon([Point(x, y + sh), Point(x + sh, y), Point(x + w - sh, y),
+                      Point(x + w, y + sh), Point(x + w - sh, y + h), Point(x + sh, y + h)]);
+  end;
+
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    // aansluitdraden naar het blok
+    Pen.Color := clBlack;
+    for i := 0 to 1 do
+    begin
+      y := InputPinY(i) + 3;
+      Line(8, y, 12, y);
+    end;
+    y := OutputPinY + 3;
+    Line(BW - 12, y, BW - 8, y);
+    // blok
+    Body := Rect(12, 0, BW - 12, BH);
+    Brush.Style := bsSolid;
+    Brush.Color := clCream;
+    Pen.Color := clGray;
+    Rectangle(Body);
+    // display: 4 cijfers zoals het display; voorloopnullen gedoofd
+    n := FStand;
+    h2 := ST_SH div 2;
+    sh := ST_ST div 2;
+    HorLen := ST_SW - ST_ST;
+    VerLen := h2 - ST_ST - sh;
+    for d := 3 downto 0 do
+    begin
+      if (n > 0) or (d = 3) then Seg := ST_SEG[n mod 10] else Seg := 0;
+      n := n div 10;
+      x0 := ST_DX + d * ST_CW + 2;
+      y0 := ST_DY;
+      Segment(0, x0 + sh, y0, HorLen, ST_ST);                              // a boven
+      Segment(1, x0 + ST_SW - ST_ST, y0 + ST_ST, ST_ST, VerLen);           // b rechtsboven
+      Segment(2, x0 + ST_SW - ST_ST, y0 + h2 + sh, ST_ST, VerLen);         // c rechtsonder
+      Segment(3, x0 + sh, y0 + ST_SH - ST_ST, HorLen, ST_ST);              // d onder
+      Segment(4, x0, y0 + h2 + sh, ST_ST, VerLen);                         // e linksonder
+      Segment(5, x0, y0 + ST_ST, ST_ST, VerLen);                           // f linksboven
+      Segment(6, x0 + sh, y0 + h2 - sh, HorLen, ST_ST);                    // g midden
+    end;
+    // aansluitingen
+    Brush.Color := clLime;
+    Pen.Color := clGray;
+    for i := 0 to 1 do
+      Rectangle(1, InputPinY(i), 8, InputPinY(i) + 7);
+    Rectangle(BW - 8, OutputPinY, BW - 1, OutputPinY + 7);
+    // letters en de eindwaarde onderaan
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    if FIn[0] then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(14, InputPinY(0) - 2, 'T');
+    if FIn[1] then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(14, InputPinY(1) - 2, 'R');
+    if Bereikt then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(BW - 22, OutputPinY - 2, 'Q');
+    Font.Style := [];
+    Font.Color := clBlack;
+    if FHerhalen then
+      S := '1..' + IntToStr(FEind) + '  ' + Tr(FTaal, 'herhalen', 'repeat', 'répéter', 'wiederh.')
+    else
+      S := Tr(FTaal, 'tot ', 'to ', 'jusqu''à ', 'bis ') + IntToStr(FEind);
+    TextOut(ST_DX - 4, ST_DY + ST_SH + 8, S);
+    if FSelect or FSelected then
+    begin
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+  end;
+end;
+
+function TjanSimStappenteller.StatusText: string;
+begin
+  Result := Tr(FTaal, 'stand ', 'count ', 'valeur ', 'Stand ') + IntToStr(FStand) +
+            Tr(FTaal, ' van ', ' of ', ' sur ', ' von ') + IntToStr(FEind);
+  if Bereikt then
+    Result := Result + Tr(FTaal, ': bereikt (Q aan)', ': reached (Q on)',
+                                 ' : atteinte (Q actif)', ': erreicht (Q ein)');
+end;
+
+procedure TjanSimStappenteller.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'T: +1 per puls, R: terug naar 0' + #13#10 + 'Q: aan als de eindwaarde bereikt is' + #13#10 + 'Rechtsklik: eindwaarde kiezen',
+              'T: +1 per pulse, R: back to 0' + #13#10 + 'Q: on when the end value is reached' + #13#10 + 'Right-click: choose the end value',
+              'T : +1 par impulsion, R : retour à 0' + #13#10 + 'Q : actif quand la valeur finale est atteinte' + #13#10 + 'Clic droit : choisir la valeur finale',
+              'T: +1 pro Impuls, R: zurück auf 0' + #13#10 + 'Q: ein, wenn der Endwert erreicht ist' + #13#10 + 'Rechtsklick: Endwert wählen');
+end;
+
+procedure TjanSimStappenteller.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, FNaam + ' > ', 0);
+  FOnStatus(Self, StatusText, 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+procedure TjanSimStappenteller.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  if Assigned(FOnEnter) then
+    FOnEnter(Self);
+  FMouseOver := True;
+  SendStatusToBar;
+  if not FLock then
+  begin
+    FSelect := True;
+    Invalidate;
+  end;
+end;
+
+procedure TjanSimStappenteller.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if Assigned(FOnExit) then
+    FOnExit(Self);
+  if not FMouseOver then Exit;
+  FMouseOver := False;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+  FSelect := False;
+  Invalidate;
+end;
+
+procedure TjanSimStappenteller.BuildPopup;
+const
+  Waarden: array[0..3] of Integer = (10, 100, 1000, 9999);
+var
+  Mi: TMenuItem;
+  i: Integer;
+  Vast: Boolean;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := '-';
+  PopupMenu.Items.Add(Mi);
+  // eindwaarde: vaste keuzes of zelf ingeven
+  Vast := False;
+  for i := 0 to High(Waarden) do
+  begin
+    Mi := TMenuItem.Create(PopupMenu);
+    Mi.Caption := Tr(FTaal, 'Tot ', 'To ', 'Jusqu''à ', 'Bis ') + IntToStr(Waarden[i]);
+    Mi.Tag := Waarden[i];
+    Mi.RadioItem := True;
+    Mi.Checked := FEind = Waarden[i];
+    Vast := Vast or Mi.Checked;
+    Mi.OnClick := EindClick;
+    PopupMenu.Items.Add(Mi);
+  end;
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Andere eindwaarde...', 'Other end value...', 'Autre valeur finale...', 'Anderer Endwert...');
+  Mi.RadioItem := True;
+  Mi.Checked := not Vast;
+  Mi.OnClick := EindAnderClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := '-';
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Herhalen (na de eindwaarde weer bij 1)', 'Repeat (start again at 1 after the end value)',
+                          'Répéter (recommencer à 1 après la valeur finale)', 'Wiederholen (nach dem Endwert wieder bei 1)');
+  Mi.Checked := FHerhalen;
+  Mi.OnClick := HerhalenClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Op 0 zetten', 'Set to 0', 'Mettre à 0', 'Auf 0 setzen');
+  Mi.OnClick := NulClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+procedure TjanSimStappenteller.LockClick(Sender: TObject);
+begin
+  FLock := not FLock;
+  Invalidate;
+end;
+
+procedure TjanSimStappenteller.SelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanSimStappenteller.EindClick(Sender: TObject);
+begin
+  Eindwaarde := TMenuItem(Sender).Tag;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimStappenteller.EindAnderClick(Sender: TObject);
+var
+  dlg: TInputBoxForm;
+  s: string;
+  v: Integer;
+begin
+  dlg := TInputBoxForm.Create(nil);
+  try
+    if dlg.Execute(Tr(FTaal, 'Eindwaarde', 'End value', 'Valeur finale', 'Endwert'),
+                   Tr(FTaal, 'Tot hoeveel tellen (1 tot 9999)?', 'Count up to (1 to 9999)?',
+                             'Compter jusqu''à (1 à 9999) ?', 'Bis wie viel zählen (1 bis 9999)?'),
+                   IntToStr(FEind), s) then
+      if TryStrToInt(Trim(s), v) then
+        Eindwaarde := v;
+  finally
+    dlg.Free;
+  end;
+end;
+
+procedure TjanSimStappenteller.HerhalenClick(Sender: TObject);
+begin
+  Herhalen := not FHerhalen;
+end;
+
+procedure TjanSimStappenteller.NulClick(Sender: TObject);
+begin
+  FStand := 0;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimStappenteller.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  P: TPoint;
+begin
+  inherited;
+  if (Button = mbRight) and not FLock then
+  begin
+    BuildPopup;
+    P := ClientToScreen(Point(0, Height));
+    PopupMenu.Popup(P.X, P.Y - 1);
+    Exit;
+  end;
+  doMove := False;
+  mdp := Point(X, Y);
+  Screen.Cursor := crDefault;
+  if Button <> mbLeft then Exit;
+  doMove := True;
+  AnchorConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).BeginGuideLines(Left + Width div 2, Top + Height div 2);
+end;
+
+procedure TjanSimStappenteller.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, SnapP: TPoint;
+  Grid: TjanGridS;
+  WorkR: TRect;
+begin
+  inherited;
+  if FLock or (Parent = nil) then Exit;
+  if not ((ssLeft in Shift) and doMove) then Exit;
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  NewLeft := P.X - mdp.X;
+  NewTop := P.Y - mdp.Y;
+  if Parent is TjanGridS then
+  begin
+    Grid := TjanGridS(Parent);
+    WorkR := Grid.GetWorkAreaRect;
+    SnapP := Grid.SnapPointToRuler(Point(NewLeft + Width div 2, NewTop + Height div 2), WorkR);
+    NewLeft := SnapP.X - Width div 2;
+    NewTop := SnapP.Y - Height div 2;
+  end;
+  StraightenWires(Connectors, NewLeft, NewTop);
+  Left := NewLeft;
+  Top := NewTop;
+  MoveConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).UpdateGuideLines(Left + Width div 2, Top + Height div 2);
+  FMouseOver := True;
+  SendStatusToBar;
+end;
+
+procedure TjanSimStappenteller.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).EndGuideLines;
+  doMove := False;
+end;
+
+procedure TjanSimStappenteller.AnchorConnectors;
+var
+  i: Integer;
+  Con: TjanConnector;
+  R: TRect;
+begin
+  Connectors.Clear;
+  if Parent = nil then Exit;
+  R := BoundsRect;
+  InflateRect(R, 8, 8);
+  for i := 0 to Parent.ControlCount - 1 do
+    if Parent.Controls[i] is TjanConnector then
+    begin
+      Con := TjanConnector(Parent.Controls[i]);
+      if Con.AnchorToRect(R, Point(Left, Top)) then
+        Connectors.Add(Con);
+    end;
+end;
+
+procedure TjanSimStappenteller.MoveConnectors;
 var
   i: Integer;
 begin

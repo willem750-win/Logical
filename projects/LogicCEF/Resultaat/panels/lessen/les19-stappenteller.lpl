@@ -1,0 +1,10 @@
+TjanSimPuls;80;100;140;50;
+TjanSimButton;32;100;260;58;
+TjanSimStappenteller;64;300;130;140;10;0;
+TjanSimLight;23;530;163;69;
+TjanConnector;12;140;148;169;jcmTL;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;82;149;184;160;jcmTL;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;9;432;165;107;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;

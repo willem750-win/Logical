@@ -1,0 +1,59 @@
+<!-- titel: Les 19 - Tellen tot 1000 -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 19 van 19</p>
+  <h1>Tellen tot 1000 met de stappenteller</h1>
+  <div class="goal"><strong>Doel:</strong> pulsen tellen in gewone getallen, tot 10, 100 of 1000, en een lamp laten
+  aangaan als het doel bereikt is. Daarna tel je hoe vaak de persoon uit les 16 heen en weer loopt.</div>
+
+  <p><a class="open" href="../../panels/lessen/les19-stappenteller.lpl">&#9654; Open dit voorbeeld</a></p>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#puls">impulsgenerator</a> op de ingang <b>T</b> van de stappenteller: elke puls telt één.</li>
+    <li>Een <a href="invoer.html#drukknop">drukknop</a> op <b>R</b>: zet de teller terug op 0.</li>
+    <li>De <a href="verwerking.html#stappenteller">stappenteller</a> met een display van vier cijfers. Onderaan staat
+      de eindwaarde: <b>tot 10</b>.</li>
+    <li>Een <a href="uitvoer.html#lamp">lamp</a> op de uitgang <b>Q</b>: die gaat aan als de eindwaarde bereikt is.</li>
+  </ul>
+
+  <h2>Teller of stappenteller?</h2>
+  <p>Het <a href="verwerking.html#teller">tellerblok</a> uit <a href="les08.html">les 8</a> telt binair, van 0 tot 15,
+  en heeft een apart display nodig. De stappenteller telt in gewone getallen (tientallig) tot 9999 en toont de stand zelf.
+  Met de uitgang Q weet de rest van de schakeling wanneer het genoeg is: na 10 dozen, 100 stappen of 1000 rondjes.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en klik op de knop onderaan de impulsgenerator: de stappenteller telt 1, 2, 3 ...</li>
+    <li>Bij <b>10</b> gaat de lamp aan en blijft de teller staan: extra pulsen tellen niet meer.</li>
+    <li>Druk op de drukknop: de teller staat weer op 0, de lamp gaat uit en het tellen begint opnieuw.</li>
+    <li>Houd de drukknop ingedrukt: zolang R aan is, telt de teller niet.</li>
+  </ol>
+  <p>Kijk ook naar de statusbalk onderaan: als de muis op de stappenteller staat, lees je er de stand en de eindwaarde.</p>
+
+  <h2>Opdracht 1: tot 1000</h2>
+  <p>Laat de lamp pas aangaan na 1000 pulsen. Hoe kan het sneller gaan?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Stop de simulatie, ontgrendel de stappenteller (rechtsklik, <b>Ontgrendel</b>) en kies met de rechtermuisknop
+    <b>Tot 1000</b>. Sneller tellen: rechtsklik op de impulsgenerator en kies bij <b>Frequentie</b> 5&nbsp;Hz. Dan duurt
+    het nog ruim drie minuten: 1000 pulsen van elk 0,2 seconde.</p>
+  </details>
+
+  <h2>Opdracht 2: steeds opnieuw</h2>
+  <p>Laat de teller altijd van 1 tot 10 tellen, zonder de drukknop. Wat doet de lamp dan?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Rechtsklik op de stappenteller en zet <b>Herhalen</b> aan. Na 10 begint hij bij de volgende puls weer bij 1.
+    De lamp brandt telkens één puls lang, bij elke tiende puls: een seintje om de tien.</p>
+  </details>
+
+  <h2>Opdracht 3: stappen van de persoon tellen</h2>
+  <p>Open het voorbeeld van <a href="les16.html">les 16</a> en tel hoe vaak de persoon rechts aankomt. Na 5 keer moet
+  er een lamp branden.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet een tweede <a href="invoer.html#eindschakelaar">eindschakelaar</a> in de invoer en kies met de
+    rechtermuisknop <b>S2</b> (rechts). Zet er een stappenteller achter met eindwaarde <b>5</b>, en een lamp op Q.
+    Start de simulatie en zet de schakelaar aan: telkens de persoon rechts aankomt, telt de stappenteller er één bij.</p>
+  </details>
+
+  <div class="pager"><a href="les18.html">&larr; Les 18: Muziek met LogicRun</a><a href="leerpad.html">Leerpad &rarr;</a></div>

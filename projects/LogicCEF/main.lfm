@@ -1,11 +1,11 @@
 object mainForm: TmainForm
   Left = 400
-  Height = 700
+  Height = 712
   Top = 177
   Width = 900
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Logisch Schakelen'
-  ClientHeight = 700
+  ClientHeight = 712
   ClientWidth = 900
   Position = poScreenCenter
   ShowHint = True

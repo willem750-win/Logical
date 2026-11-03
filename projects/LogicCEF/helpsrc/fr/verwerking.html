@@ -49,6 +49,22 @@
   Un <a href="invoer.html#drukknop">bouton-poussoir</a> ou un <a href="invoer.html#puls">générateur d&rsquo;impulsions</a>
   sur l&rsquo;entrée de comptage fait avancer le compteur.</p>
 
+  <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Compteur de pas</h2>
+  <p>Compte les impulsions en décimal et affiche lui-même la valeur sur un afficheur de quatre chiffres (de 0 à 9999).
+  Pratique pour compter des pas, des colis ou des tours, par exemple de 1 à 1000.</p>
+  <table>
+    <tr><th>Connexion</th><th>Signification</th></tr>
+    <tr><td><span class="pin in">T</span></td><td>Entrée de comptage&nbsp;: chaque impulsion ajoute un à la valeur.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Remise à zéro&nbsp;: remet la valeur à 0. Tant que R est actif, le compteur ne compte pas.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Sortie&nbsp;: active tant que la valeur finale est atteinte, par exemple vers une lampe, un buzzer ou une entrée de <a href="logicrun.html">LogicRun</a>.</td></tr>
+  </table>
+  <p>Avec le bouton droit (le bloc ne doit pas être verrouillé), choisissez la <b>valeur finale</b>&nbsp;: 10, 100, 1000,
+  9999 ou un autre nombre. À la valeur finale, le compteur s&rsquo;arrête. Si <b>Répéter</b> est coché, l&rsquo;impulsion
+  suivante recommence à 1&nbsp;: il compte donc toujours de 1 à la valeur finale. <i>Mettre à 0</i> remet la valeur à zéro
+  à la main. Le compteur de pas fait partie du traitement&nbsp;: il n&rsquo;a pas besoin d&rsquo;alimentation.</p>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> une <a href="invoer.html#eindschakelaar">fin de course</a> de la
+  <a href="uitvoer.html#persoon">personne</a> reliée à l&rsquo;entrée de comptage compte combien de fois la personne fait l&rsquo;aller-retour.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Bloc mémoire</h2>
   <p>Une mémoire de 32 emplacements (adresse 0 à 31). Chaque emplacement contient un nombre de 0 à 15.
   Au placement, tous les emplacements valent 0.</p>

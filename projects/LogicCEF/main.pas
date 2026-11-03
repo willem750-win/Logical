@@ -198,8 +198,8 @@ type
      function GetProjectHelpText(const AKeyword, ABTaal: string): string;
      procedure UpdateLastHelpObject(AObj: TObject);
      procedure OpenHelpInMiniBrowser(const FileName: string);
-    {specifieke procedure AppShowHint tijdens de simulatie de regel "Rechter muisknop
-      voor extra instellingen" uit elke hint filtert,}
+    {AppShowHint onderdrukt tijdens de simulatie de hints op het paneel: de
+      X/Y-waarden bij de muis en de hints van de objecten}
      procedure AppShowHint(var HintStr: string; var CanShow: Boolean;
        var HintInfo: THintInfo);
   //  procedure StartBrowser(const AUrl: string);
@@ -1943,7 +1943,8 @@ begin
          (C is TjanMemory) or (C is TjanSimLight) or (C is TjanSimRelais) or
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
          (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor) or
-         (C is TjanSimPersoon) or (C is TjanSimEindschakelaar))  then
+         (C is TjanSimPersoon) or (C is TjanSimEindschakelaar) or
+         (C is TjanSimStappenteller))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 
@@ -2042,6 +2043,7 @@ begin
     btSimulate.ImageIndex:=1;
     btSimulate.Color:=clRed;
     btSimulate.Hint := BuildSimulateHint(Grid.Language, True);
+    Application.CancelHint;   // een open hint op het paneel verdwijnt meteen
     Grid.Box := False;
     Grid.GuideLinesAll := False;
     Box.Visible := False;
@@ -2455,20 +2457,16 @@ end;
 
 procedure TmainForm.AppShowHint(var HintStr: string; var CanShow: Boolean;
   var HintInfo: THintInfo);
-const
-  // tweede hintregel van de objecten (zie BuildSimHint in janSimLogic)
-  RightClickLines: array[0..3] of string = (
-    'Rechter muisknop voor extra instellingen',
-    'Right mouse button for extra settings',
-    'Bouton droit pour paramètres supplémentaires',
-    'Rechte Maustaste für zusätzliche Einstellungen');
 var
-  i: Integer;
+  C: TControl;
 begin
-  // Tijdens de simulatie is er geen rechtsklikmenu: die regel weglaten.
+  // Tijdens de simulatie stoort een hint: geen X/Y bij de muis (de hint van
+  // het paneel zelf) en geen hints van de objecten op het paneel. Knoppen
+  // buiten het paneel (zoals Simuleren) houden hun hint.
   if not FRunMode then Exit;
-  for i := Low(RightClickLines) to High(RightClickLines) do
-    HintStr := StringReplace(HintStr, #13#10 + RightClickLines[i], '', [rfReplaceAll]);
+  C := HintInfo.HintControl;
+  if Assigned(C) and ((C = Grid) or (C.Parent = Grid)) then
+    CanShow := False;
 end;
 
 procedure TmainForm.OpenHelpInMiniBrowser(const FileName: string);

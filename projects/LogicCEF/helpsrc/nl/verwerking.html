@@ -48,6 +48,22 @@
   Een <a href="invoer.html#drukknop">drukknop</a> of <a href="invoer.html#puls">impulsgenerator</a> op de telingang
   laat de teller lopen.</p>
 
+  <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Stappenteller</h2>
+  <p>Telt pulsen in het tientallig stelsel en toont de stand zelf op een display van vier cijfers (0 tot 9999).
+  Handig om stappen, pakjes of rondjes te tellen, bijvoorbeeld van 1 tot 1000.</p>
+  <table>
+    <tr><th>Aansluiting</th><th>Betekenis</th></tr>
+    <tr><td><span class="pin in">T</span></td><td>Telingang: bij elke puls gaat de stand één omhoog.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset: zet de stand terug op 0. Zolang R aan is, telt de teller niet.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Uitgang: aan zolang de eindwaarde bereikt is, bijvoorbeeld naar een lamp, een zoemer of een ingang van <a href="logicrun.html">LogicRun</a>.</td></tr>
+  </table>
+  <p>Met de rechtermuisknop (het blok mag niet vergrendeld zijn) kies je de <b>eindwaarde</b>: 10, 100, 1000, 9999 of een
+  ander getal. Bij de eindwaarde blijft de teller staan. Zet je <b>Herhalen</b> aan, dan begint hij bij de volgende puls
+  weer bij 1; zo telt hij steeds van 1 tot de eindwaarde. Met <i>Op 0 zetten</i> zet je de stand met de hand terug.
+  De stappenteller is verwerking: hij heeft geen voeding nodig.</p>
+  <div class="tip"><strong>Tip:</strong> een <a href="invoer.html#eindschakelaar">eindschakelaar</a> op de
+  <a href="uitvoer.html#persoon">persoon</a> aan de telingang telt hoe vaak de persoon heen en weer loopt.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Geheugenblok</h2>
   <p>Een geheugen met 32 geheugenplaatsen (adres 0 tot 31). Elke plaats bewaart een getal van 0 tot 15.
   Bij het plaatsen staat overal 0.</p>

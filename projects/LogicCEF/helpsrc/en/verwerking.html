@@ -49,6 +49,22 @@
   A <a href="invoer.html#drukknop">push button</a> or <a href="invoer.html#puls">pulse generator</a> on the count
   input makes the counter run.</p>
 
+  <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Step counter</h2>
+  <p>Counts pulses in decimal and shows the count itself on a four-digit display (0 to 9999).
+  Useful for counting steps, parcels or laps, for example from 1 to 1000.</p>
+  <table>
+    <tr><th>Connection</th><th>Meaning</th></tr>
+    <tr><td><span class="pin in">T</span></td><td>Count input: every pulse adds one to the count.</td></tr>
+    <tr><td><span class="pin in">R</span></td><td>Reset: sets the count back to 0. While R is on, the counter does not count.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Output: on while the end value is reached, for example to a lamp, a buzzer or an input of <a href="logicrun.html">LogicRun</a>.</td></tr>
+  </table>
+  <p>Right-click the block (it must not be locked) to choose the <b>end value</b>: 10, 100, 1000, 9999 or another
+  number. At the end value the counter stops. With <b>Repeat</b> switched on, the next pulse starts again at 1, so it
+  keeps counting from 1 to the end value. <i>Set to 0</i> resets the count by hand.
+  The step counter is a processing block: it needs no power supply.</p>
+  <div class="tip"><strong>Tip:</strong> a <a href="invoer.html#eindschakelaar">limit switch</a> on the
+  <a href="uitvoer.html#persoon">person</a> connected to the count input counts how often the person walks back and forth.</div>
+
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Memory block</h2>
   <p>A memory with 32 locations (address 0 to 31). Each location holds a number from 0 to 15.
   When placed, every location contains 0.</p>

@@ -1,0 +1,67 @@
+<!-- titel: Leçon 19 - Compter jusqu'à 1000 -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 19 sur 19</p>
+  <h1>Compter jusqu&rsquo;à 1000 avec le compteur de pas</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> compter des impulsions en nombres ordinaires, jusqu&rsquo;à 10, 100 ou
+  1000, et allumer une lampe quand le but est atteint. Ensuite, vous comptez combien de fois la personne de la leçon 16
+  fait l&rsquo;aller-retour.</div>
+
+  <p><a class="open" href="../../panels/lessen/les19-stappenteller.lpl">&#9654; Ouvrir cet exemple</a></p>
+
+  <h2>Que voyez-vous&nbsp;?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#puls">générateur d&rsquo;impulsions</a> sur l&rsquo;entrée <b>T</b> du compteur de pas&nbsp;:
+      chaque impulsion compte un.</li>
+    <li>Un <a href="invoer.html#drukknop">bouton-poussoir</a> sur <b>R</b>&nbsp;: remet le compteur à 0.</li>
+    <li>Le <a href="verwerking.html#stappenteller">compteur de pas</a> avec un afficheur de quatre chiffres. En bas
+      figure la valeur finale&nbsp;: <b>jusqu&rsquo;à 10</b>.</li>
+    <li>Une <a href="uitvoer.html#lamp">lampe</a> sur la sortie <b>Q</b>&nbsp;: elle s&rsquo;allume quand la valeur finale
+      est atteinte.</li>
+  </ul>
+
+  <h2>Compteur ou compteur de pas&nbsp;?</h2>
+  <p>Le <a href="verwerking.html#teller">bloc compteur</a> de la <a href="les08.html">leçon 8</a> compte en binaire, de
+  0 à 15, et a besoin d&rsquo;un afficheur séparé. Le compteur de pas compte en nombres ordinaires (décimaux) jusqu&rsquo;à
+  9999 et affiche lui-même la valeur. Grâce à la sortie Q, le reste du circuit sait quand c&rsquo;est assez&nbsp;: après
+  10 boîtes, 100 pas ou 1000 tours.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et cliquez sur le bouton en bas du générateur d&rsquo;impulsions&nbsp;: le compteur de pas
+      compte 1, 2, 3 ...</li>
+    <li>À <b>10</b>, la lampe s&rsquo;allume et le compteur s&rsquo;arrête&nbsp;: les impulsions suivantes ne comptent plus.</li>
+    <li>Appuyez sur le bouton-poussoir&nbsp;: le compteur revient à 0, la lampe s&rsquo;éteint et le comptage recommence.</li>
+    <li>Maintenez le bouton-poussoir enfoncé&nbsp;: tant que R est actif, le compteur ne compte pas.</li>
+  </ol>
+  <p>Regardez aussi la barre d&rsquo;état en bas&nbsp;: avec la souris sur le compteur de pas, vous y lisez la valeur et
+  la valeur finale.</p>
+
+  <h2>Exercice 1&nbsp;: jusqu&rsquo;à 1000</h2>
+  <p>Faites en sorte que la lampe ne s&rsquo;allume qu&rsquo;après 1000 impulsions. Comment aller plus vite&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Arrêtez la simulation, déverrouillez le compteur de pas (clic droit, <b>Déverrouiller</b>) et choisissez
+    <b>Jusqu&rsquo;à 1000</b> avec le bouton droit. Pour compter plus vite, faites un clic droit sur le générateur
+    d&rsquo;impulsions et choisissez 5&nbsp;Hz sous <b>Fréquence</b>. Cela prend encore plus de trois minutes&nbsp;:
+    1000 impulsions de 0,2 seconde chacune.</p>
+  </details>
+
+  <h2>Exercice 2&nbsp;: encore et encore</h2>
+  <p>Faites compter le compteur toujours de 1 à 10, sans le bouton-poussoir. Que fait la lampe&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Faites un clic droit sur le compteur de pas et cochez <b>Répéter</b>. Après 10, l&rsquo;impulsion suivante
+    recommence à 1. La lampe s&rsquo;allume pendant une impulsion, à chaque dixième impulsion&nbsp;: un signal toutes les dix.</p>
+  </details>
+
+  <h2>Exercice 3&nbsp;: compter les pas de la personne</h2>
+  <p>Ouvrez l&rsquo;exemple de la <a href="les16.html">leçon 16</a> et comptez combien de fois la personne arrive à
+  droite. Après 5 fois, une lampe doit s&rsquo;allumer.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Placez une deuxième <a href="invoer.html#eindschakelaar">fin de course</a> dans l&rsquo;entrée et choisissez
+    <b>S2</b> (à droite) avec le bouton droit. Reliez-la à un compteur de pas avec la valeur finale <b>5</b>, et une
+    lampe sur Q. Lancez la simulation et mettez l&rsquo;interrupteur en marche&nbsp;: chaque fois que la personne arrive à
+    droite, le compteur de pas ajoute un.</p>
+  </details>
+
+  <div class="pager"><a href="les18.html">&larr; Leçon 18 : De la musique avec LogicRun</a><a href="leerpad.html">Parcours &rarr;</a></div>
