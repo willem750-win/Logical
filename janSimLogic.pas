@@ -27082,6 +27082,17 @@ begin
   end;
   doMove := False;
   mdp := Point(X, Y);
+
+  // met de knop Verbinding: een draad beginnen op de uitgang
+  if (Button = mbLeft) and (Screen.Cursor = crDraad) and (Parent <> nil) and
+     OutputPinAt(Point(Left + X, Top + Y)) then
+  begin
+    Maakdraad(Top + PinY + 3 - 4, Left + Width - 5 - 4, Parent);
+    movecursor;
+    BringToFront;
+    Exit;
+  end;
+
   Screen.Cursor := crDefault;
   if Button <> mbLeft then Exit;
   doMove := True;
@@ -27368,7 +27379,7 @@ begin
       S := '1..' + IntToStr(FEind) + '  ' + Tr(FTaal, 'herhalen', 'repeat', 'répéter', 'wiederh.')
     else
       S := Tr(FTaal, 'tot ', 'to ', 'jusqu''à ', 'bis ') + IntToStr(FEind);
-    TextOut(ST_DX - 4, ST_DY + ST_SH + 8, S);
+    TextOut(ST_DX + 4, ST_DY + ST_SH + 8, S);   // rechts van de letter R
     if FSelect or FSelected then
     begin
       if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
@@ -27564,6 +27575,17 @@ begin
   end;
   doMove := False;
   mdp := Point(X, Y);
+
+  // met de knop Verbinding: een draad beginnen op de uitgang Q
+  if (Button = mbLeft) and (Screen.Cursor = crDraad) and (Parent <> nil) and
+     OutputPinAt(Point(Left + X, Top + Y)) then
+  begin
+    Maakdraad(Top + OutputPinY + 3 - 4, Left + Width - 5 - 4, Parent);
+    movecursor;
+    BringToFront;
+    Exit;
+  end;
+
   Screen.Cursor := crDefault;
   if Button <> mbLeft then Exit;
   doMove := True;
