@@ -10,6 +10,8 @@ Daarna zet je de simulatie aan en zie je de schakeling werken.
 
 Logic kreeg van SourceForge de onderscheidingen *Rising Star* en *Open Source Users Love Us*.
 
+[![Download Logic simulator](https://img.shields.io/sourceforge/dm/logic-simulator.svg)](https://sourceforge.net/projects/logic-simulator/files/latest/download)
+
 *English summary: see [below](#english).*
 
 ![Logic](docs/screenshot.png)
