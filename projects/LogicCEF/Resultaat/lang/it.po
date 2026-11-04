@@ -1,0 +1,989 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Logic\n"
+"Language: it\n"
+"X-Language-Name: Italiano\n"
+
+# --- menu e cornici della griglia (chatgridpcodeSmall) ---
+msgid "Change caption"
+msgstr "Modifica la didascalia"
+
+msgid "Toggle visible"
+msgstr "Visibile sì/no"
+
+msgid "Mode = Edit"
+msgstr "Modalità = Modifica"
+
+msgid "Color blue"
+msgstr "Colore blu"
+
+msgid "Color red"
+msgstr "Colore rosso"
+
+msgid "Color green"
+msgstr "Colore verde"
+
+msgid "Delete frame"
+msgstr "Elimina la cornice"
+
+msgid "Connector tool"
+msgstr "Strumento collegamenti"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Click here to change the title"
+msgstr "Clicca qui per cambiare il titolo"
+
+# --- oggetti sul pannello (janSimLogic) ---
+msgid "Right mouse button for extra settings"
+msgstr "Tasto destro del mouse per altre impostazioni"
+
+msgid "Input"
+msgstr "Ingresso"
+
+msgid "Processing"
+msgstr "Elaborazione"
+
+msgid "Output"
+msgstr "Uscita"
+
+msgid "Logic Panel"
+msgstr "Pannello logico"
+
+msgid "Export"
+msgstr "Esporta"
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "Change name"
+msgstr "Cambia nome"
+
+msgid "Select object"
+msgstr "Seleziona oggetto"
+
+msgid "Deselect object"
+msgstr "Deseleziona oggetto"
+
+msgid "Information off"
+msgstr "Informazioni disattivate"
+
+msgid "Information on"
+msgstr "Informazioni attivate"
+
+msgid "+ rail (supply "
+msgstr "barra + (alimentazione "
+
+msgid "V)\nPlug inputs in on the right of the rail. Below 2V no signal.\nRight-click: set voltage. Drag the ends to resize."
+msgstr "V)\nInserisci gli ingressi a destra della barra. Sotto 2V nessun segnale.\nTasto destro: imposta la tensione. Trascina le estremità per ridimensionare."
+
+msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
+msgstr "barra - (massa)\nInserisci le uscite a sinistra della barra.\nTrascina le estremità per ridimensionare."
+
+msgid "+ rail"
+msgstr "barra +"
+
+msgid "- rail"
+msgstr "barra -"
+
+msgid "Ground"
+msgstr "Massa"
+
+msgid "Voltage"
+msgstr "Tensione"
+
+msgid "Unlock"
+msgstr "Sblocca"
+
+msgid "Lock"
+msgstr "Blocca"
+
+msgid "lock"
+msgstr "Blocca"
+
+msgid "Processing --> Counter block"
+msgstr "Elaborazione --> Blocco contatore"
+
+msgid "Memory block"
+msgstr "Blocco memoria"
+
+msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
+msgstr "Voltmetro (misura rispetto alla massa)\n+ a sinistra: collega un filo o inseriscilo su una barra +.\n- a destra può restare libero o essere inserito su una barra -."
+
+msgid "Push button"
+msgstr "Pulsante"
+
+msgid "Down"
+msgstr "Giù"
+
+msgid "Upwards"
+msgstr "Su"
+
+msgid "switch"
+msgstr "interruttore"
+
+msgid "DipSwitsh"
+msgstr "Interruttore DIP"
+
+msgid "emperature sensor"
+msgstr "Sensore di temperatura"
+
+msgid "Frequency"
+msgstr "Frequenza"
+
+msgid "every "
+msgstr "ogni "
+
+msgid "default"
+msgstr "predefinito"
+
+msgid "cold"
+msgstr "freddo"
+
+msgid "hot"
+msgstr "caldo"
+
+msgid "Temperature sensor"
+msgstr "Sensore di temperatura"
+
+msgid "Colour"
+msgstr "Colore"
+
+msgid "Lamp"
+msgstr "Lampada"
+
+msgid "Red LED"
+msgstr "LED rosso"
+
+msgid "Green LED"
+msgstr "LED verde"
+
+msgid "Orange LED"
+msgstr "LED arancione"
+
+msgid "create Switch"
+msgstr "crea interruttore"
+
+msgid "%d objects selected\nDrag to move them together, Esc or click outside to deselect"
+msgstr "%d oggetti selezionati\nTrascina per spostarli insieme, Esc o clic fuori per deselezionare"
+
+msgid "start/stop"
+msgstr "avvio/arresto"
+
+msgid "reset"
+msgstr "azzera"
+
+msgid "on/off"
+msgstr "acceso/spento"
+
+msgid "stopped"
+msgstr "fermo"
+
+msgid "step"
+msgstr "passo"
+
+msgid "Double-click: edit program"
+msgstr "Doppio clic: modifica il programma"
+
+msgid "Edit program..."
+msgstr "Modifica il programma..."
+
+msgid "L and R on together: fault!"
+msgstr "L e R accesi insieme: errore!"
+
+msgid "turning left"
+msgstr "gira a sinistra"
+
+msgid "turning right"
+msgstr "gira a destra"
+
+msgid "L: turn left, R: turn right"
+msgstr "L: gira a sinistra, R: gira a destra"
+
+msgid "L and R on together: stands still"
+msgstr "L e R accesi insieme: resta fermo"
+
+msgid "at the left (S1 on)"
+msgstr "a sinistra (S1 acceso)"
+
+msgid "at the right (S2 on)"
+msgstr "a destra (S2 acceso)"
+
+msgid "walking left"
+msgstr "cammina verso sinistra"
+
+msgid "walking right"
+msgstr "cammina verso destra"
+
+msgid "standing still"
+msgstr "fermo"
+
+msgid "L: walk left, R: walk right\nS1/S2: limit switch left/right\nright-click: place limit switches"
+msgstr "L: cammina a sinistra, R: cammina a destra\nS1/S2: finecorsa sinistro/destro\ntasto destro: posiziona i finecorsa"
+
+msgid "Back to the start"
+msgstr "Torna all'inizio"
+
+msgid "Close the barrier now"
+msgstr "Chiudi subito la sbarra"
+
+msgid "Back to the left (S1)"
+msgstr "Torna a sinistra (S1)"
+
+msgid "Place limit switches"
+msgstr "Posiziona i finecorsa"
+
+msgid "V and A on together: stands still"
+msgstr "V e A accesi insieme: resta fermo"
+
+msgid "at the start (Start on)"
+msgstr "alla partenza (Start acceso)"
+
+msgid "at the finish (Finish on)"
+msgstr "all'arrivo (Finish acceso)"
+
+msgid "at post %d (Tel on)"
+msgstr "al palo %d (Tel acceso)"
+
+msgid "driving forward"
+msgstr "va avanti"
+
+msgid "driving backward"
+msgstr "va indietro"
+
+msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
+msgstr "V: avanti, A: indietro\nStart/Finish: inizio e fine del percorso\nTel: un impulso a ogni palo (1-5)\ntasto destro: posiziona i finecorsa"
+
+msgid "Sound"
+msgstr "Suono"
+
+msgid "silent"
+msgstr "silenzioso"
+
+msgid "plays "
+msgstr "suona "
+
+msgid " (sound off)"
+msgstr " (suono disattivato)"
+
+msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
+msgstr "un ingresso per nota (Do Re Mi Fa Sol La Si Do')\nacceso: il tasto si illumina e la nota suona\ntasto destro: suono sì/no"
+
+msgid "red"
+msgstr "rosso"
+
+msgid "amber"
+msgstr "giallo"
+
+msgid "green"
+msgstr "verde"
+
+msgid "off"
+msgstr "spento"
+
+msgid "cars: "
+msgstr "auto: "
+
+msgid " - pedestrians: "
+msgstr " - pedoni: "
+
+msgid " - DANGER: both green!"
+msgstr " - PERICOLO: entrambi verdi!"
+
+msgid "inputs R, A, G: red, amber, green for the cars\nPR, PG: red and green figure for the pedestrians\nsame height as OUT0..OUT4 of LogicRun"
+msgstr "ingressi R, A, G: rosso, giallo, verde per le auto\nPR, PG: omino rosso e verde per i pedoni\nalla stessa altezza di OUT0..OUT4 di LogicRun"
+
+msgid "Closed"
+msgstr "Chiusa"
+
+msgid "Open"
+msgstr "Aperta"
+
+msgid "opening"
+msgstr "si apre"
+
+msgid "closing"
+msgstr "si chiude"
+
+msgid "barrier: "
+msgstr "sbarra: "
+
+msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
+msgstr "ingresso O: acceso = la sbarra si apre, spento = la sbarra si chiude\nfinecorsa Chiusa e Aperta (tasto destro: Posiziona i finecorsa)"
+
+msgid "no person or cart on the panel"
+msgstr "nessuna persona o carrello sul pannello"
+
+msgid ": on"
+msgstr ": acceso"
+
+msgid ": off"
+msgstr ": spento"
+
+msgid "Follows the person or the cart (without a wire).\nRight-click: choose S1, S2 or Start, Tel, Finish"
+msgstr "Segue la persona o il carrello (senza filo).\nTasto destro: scegli S1, S2 oppure Start, Tel, Finish"
+
+msgid "repeat"
+msgstr "ripeti"
+
+msgid "to "
+msgstr "fino a "
+
+msgid "count "
+msgstr "conta "
+
+msgid " of "
+msgstr " di "
+
+msgid ": reached (Q on)"
+msgstr ": raggiunto (Q acceso)"
+
+msgid "T: +1 per pulse, R: back to 0\nQ: on when the end value is reached\nRight-click: choose the end value"
+msgstr "T: +1 per impulso, R: torna a 0\nQ: acceso quando si raggiunge il valore finale\nTasto destro: scegli il valore finale"
+
+msgid "Other end value..."
+msgstr "Altro valore finale..."
+
+msgid "Repeat (start again at 1 after the end value)"
+msgstr "Ripeti (ricomincia da 1 dopo il valore finale)"
+
+msgid "Set to 0"
+msgstr "Imposta a 0"
+
+msgid "End value"
+msgstr "Valore finale"
+
+msgid "Count up to (1 to 9999)?"
+msgstr "Contare fino a (da 1 a 9999)?"
+
+msgid "time "
+msgstr "tempo "
+
+msgid "S: time runs while S is on, R: back to 00:00\nQ: on when the end time is reached\nRight-click: choose the end time"
+msgstr "S: il tempo scorre finché S è acceso, R: torna a 00:00\nQ: acceso quando si raggiunge il tempo finale\nTasto destro: scegli il tempo finale"
+
+msgid "Other end time..."
+msgstr "Altro tempo finale..."
+
+msgid "Repeat (start again at 00:01 after the end time)"
+msgstr "Ripeti (ricomincia da 00:01 dopo il tempo finale)"
+
+msgid "Set to 00:00"
+msgstr "Imposta a 00:00"
+
+msgid "End time"
+msgstr "Tempo finale"
+
+msgid "End time as mm:ss (00:01 to 99:59)?"
+msgstr "Tempo finale come mm:ss (da 00:01 a 99:59)?"
+
+# --- finestra principale (main) ---
+msgid "Stop simulation"
+msgstr "Ferma la simulazione"
+
+msgid "Start simulation"
+msgstr "Avvia la simulazione"
+
+msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
+msgstr "LogicBox\n\n- Contenitore centrale per gli oggetti della simulazione.\n- Gestisce selezione, eventi e messaggi di stato.\n- Può bloccare gli oggetti durante la simulazione."
+
+msgid "Shows the name or info of the active object"
+msgstr "Mostra il nome o le informazioni dell'oggetto attivo"
+
+msgid "Shows the current status or function"
+msgstr "Mostra lo stato o la funzione attuale"
+
+msgid "Displays the X and Y position of the current object"
+msgstr "Mostra la posizione X e Y dell'oggetto attuale"
+
+msgid "Shows the object type"
+msgstr "Mostra il tipo di oggetto"
+
+msgid "Shows extra debug information"
+msgstr "Mostra informazioni di debug aggiuntive"
+
+msgid "Status bar"
+msgstr "Barra di stato"
+
+msgid "General"
+msgstr "Generale"
+
+msgid "Switch Elements"
+msgstr "Componenti"
+
+msgid "Hints"
+msgstr "Suggerimenti"
+
+msgid "Logic Circuits"
+msgstr "Circuiti logici"
+
+msgid "Choose language..."
+msgstr "Scegli la lingua..."
+
+msgid "Copy the panel to the clipboard..."
+msgstr "Copia il pannello negli appunti..."
+
+msgid "Grid Yes/No\nGo to open settings for additional options..."
+msgstr "Griglia sì/no\nApri le impostazioni per altre opzioni..."
+
+msgid "Guidelines on grid YES/NO..."
+msgstr "Linee guida sulla griglia sì/no..."
+
+msgid "Draw frame on grid..."
+msgstr "Disegna una cornice sulla griglia..."
+
+msgid "Change panel title..."
+msgstr "Cambia il titolo del pannello..."
+
+msgid "Bar Input / Processing / Output on/off"
+msgstr "Barra Ingresso / Elaborazione / Uscita sì/no"
+
+msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
+msgstr "Simboli dello schema: Afbeelding (immagine), IEC (europeo) o ANSI (americano)"
+
+msgid "Open settings"
+msgstr "Apri le impostazioni"
+
+msgid "Close application"
+msgstr "Chiudi il programma"
+
+msgid "About Logic..."
+msgstr "Informazioni su Logic..."
+
+msgid "Open help (F1)"
+msgstr "Apri la guida (F1)"
+
+msgid "Open saved panel..."
+msgstr "Apri un pannello salvato..."
+
+msgid "Save panel..."
+msgstr "Salva il pannello..."
+
+msgid "Click here to select the panel..."
+msgstr "Clicca qui per scegliere il pannello..."
+
+msgid "Remove connections..."
+msgstr "Elimina i collegamenti..."
+
+msgid "Delete selected object..."
+msgstr "Elimina l'oggetto selezionato..."
+
+msgid "Undo (Ctrl+Z)"
+msgstr "Annulla (Ctrl+Z)"
+
+msgid "Redo (Ctrl+Y)"
+msgstr "Ripeti (Ctrl+Y)"
+
+msgid "LogicRun: program in steps"
+msgstr "LogicRun: programma a passi"
+
+msgid "without name"
+msgstr "senza nome"
+
+msgid "Do you want to save the changes?"
+msgstr "Vuoi salvare le modifiche?"
+
+msgid "Screenshot of the panel has been copied to the clipboard."
+msgstr "L'immagine del pannello è stata copiata negli appunti."
+
+msgid "Change title"
+msgstr "Cambia titolo"
+
+msgid "Enter new title:"
+msgstr "Inserisci il nuovo titolo:"
+
+msgid "Decision panel"
+msgstr "Pannello decisione"
+
+msgid "Counter panel"
+msgstr "Pannello contatore"
+
+msgid "Memory panel"
+msgstr "Pannello memoria"
+
+msgid "New standard panel"
+msgstr "Nuovo pannello standard"
+
+# --- informazioni (uabout) ---
+msgid "About Logic"
+msgstr "Informazioni su Logic"
+
+msgid "Version "
+msgstr "Versione "
+
+msgid "Simulator for digital circuits: build a circuit with switches, gates, counters, memories and displays, and watch it work."
+msgstr "Simulatore di circuiti digitali: costruisci un circuito con interruttori, porte, contatori, memorie e display, e guardalo funzionare."
+
+msgid "Based on the freeware components by Jan Verhoeven."
+msgstr "Basato sui componenti freeware di Jan Verhoeven."
+
+msgid "Released under the MIT license."
+msgstr "Pubblicato con licenza MIT."
+
+msgid "Check for updates automatically"
+msgstr "Cerca aggiornamenti automaticamente"
+
+msgid "Check for updates"
+msgstr "Cerca aggiornamenti"
+
+# --- guida (uhelpmanager) ---
+msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
+msgstr "Pulsante / Interruttore\n\n- Simula un ingresso o un'uscita binaria.\n- Il clic sinistro di solito cambia lo stato.\n- Il clic destro apre altre impostazioni.\n- Nome e stato possono comparire nella barra di stato."
+
+msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
+msgstr "Interruttore\n\n- Simula un interruttore acceso/spento.\n- Si può selezionare e azionare.\n- Nome e stato possono comparire nella barra di stato."
+
+msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
+msgstr "Blocco logico\n\n- Elabora gli ingressi secondo una funzione logica.\n- Funzioni possibili: AND, OR e NOT.\n- La funzione scelta può comparire nella barra di stato o nel suggerimento."
+
+msgid "Power rail\n\n- + rail: plug inputs in on the right; right-click for the voltage.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "Barra di alimentazione\n\n- barra +: inserisci gli ingressi a destra; tasto destro per la tensione.\n- barra - (massa): inserisci le uscite a sinistra.\n- Trascina il centro per spostarla, un'estremità per ridimensionarla."
+
+msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
+msgstr "Voltmetro\n\n- Mostra la tensione sul + rispetto alla massa.\n- + tramite un filo o inserito su una barra +."
+
+msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
+msgstr "Collegamento / Filo\n\n- Collega gli oggetti tra loro.\n- Si può selezionare per modificarlo o eliminarlo.\n- Il menu contestuale può contenere altre azioni."
+
+msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
+msgstr "Sensore\n\n- Rappresenta un componente di rilevamento o di ingresso.\n- Di solito fornisce uno stato binario."
+
+msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
+msgstr "Riscaldamento / Elemento caldo\n\n- Rappresenta un'uscita di riscaldamento o un simbolo di calore."
+
+msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
+msgstr "Impulso\n\n- Genera o mostra un impulso temporaneo.\n- Utile per comandi o segnali di prova."
+
+msgid "DIP switch\n\n- Allows multiple fixed binary settings."
+msgstr "Interruttore DIP\n\n- Permette più impostazioni binarie fisse."
+
+msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
+msgstr "Griglia\n\n- Per posizionare e selezionare oggetti e disegnare cornici.\n- Può usare l'aggancio alla griglia, linee guida e righelli.\n- Titolo e area di lavoro si gestiscono separatamente."
+
+msgid "No specific help found for keyword: "
+msgstr "Nessuna guida specifica trovata per la parola chiave: "
+
+msgid "\n\nExpected help page:\n"
+msgstr "\n\nPagina della guida attesa:\n"
+
+msgid "No HelpKeyword assigned."
+msgstr "Nessuna parola chiave della guida assegnata."
+
+msgid "No internal help handler assigned.\n"
+msgstr "Nessun gestore interno della guida assegnato.\n"
+
+msgid "Table of contents not found.\n"
+msgstr "Indice non trovato.\n"
+
+# --- LogicRun (uLogicRun) ---
+msgid "Start"
+msgstr "Avvia"
+
+msgid "Pause"
+msgstr "Pausa"
+
+msgid "Stop"
+msgstr "Ferma"
+
+msgid "Step time"
+msgstr "Durata del passo"
+
+msgid "Example"
+msgstr "Esempio"
+
+msgid "Load"
+msgstr "Carica"
+
+msgid "+ step"
+msgstr "+ passo"
+
+msgid "- step"
+msgstr "- passo"
+
+msgid "Put the block on the panel"
+msgstr "Metti il blocco sul pannello"
+
+msgid "There is no LogicRun block on the panel yet. Click the button below and then on the panel to place it."
+msgstr "Sul pannello non c'è ancora un blocco LogicRun. Clicca il pulsante qui sotto e poi sul pannello per posizionarlo."
+
+msgid "time x"
+msgstr "tempo x"
+
+msgid "wait for"
+msgstr "attendi"
+
+msgid "— choose —"
+msgstr "— scegli —"
+
+msgid "Traffic light"
+msgstr "Semaforo"
+
+msgid "Running light"
+msgstr "Luci in sequenza"
+
+msgid "Motor left/right"
+msgstr "Motore sinistra/destra"
+
+msgid "4-bit counter"
+msgstr "Contatore a 4 bit"
+
+msgid "Cart"
+msgstr "Carrello"
+
+msgid "Packing machine"
+msgstr "Macchina imballatrice"
+
+msgid "Count up and down"
+msgstr "Conta in avanti e indietro"
+
+msgid "Person back and forth"
+msgstr "Persona avanti e indietro"
+
+msgid "Cart on a road"
+msgstr "Carrello su un percorso"
+
+msgid "Music: Twinkle, twinkle, little star"
+msgstr "Musica: Brilla, brilla, stellina"
+
+msgid "Music: Ode to Joy (two voices)"
+msgstr "Musica: Inno alla gioia (due voci)"
+
+msgid "Traffic light with pedestrian button"
+msgstr "Semaforo con pulsante pedonale"
+
+msgid "running: step"
+msgstr "in esecuzione: passo"
+
+msgid "paused: step"
+msgstr "in pausa: passo"
+
+msgid "waiting for "
+msgstr "in attesa di "
+
+msgid "pulses on"
+msgstr "impulsi su"
+
+msgid "on"
+msgstr "acceso"
+
+msgid "None (the time counts)"
+msgstr "Nessuna (conta il tempo)"
+
+msgid "Until input on"
+msgstr "Finché l'ingresso è acceso"
+
+msgid "Until input off"
+msgstr "Finché l'ingresso è spento"
+
+msgid "Until number of pulses on input"
+msgstr "Fino a un numero di impulsi sull'ingresso"
+
+msgid "Number of pulses:"
+msgstr "Numero di impulsi:"
+
+# --- aggiornamenti (uUpdate) ---
+msgid "A new version of Logic is available: %s (you have %s)."
+msgstr "È disponibile una nuova versione di Logic: %s (hai la %s)."
+
+msgid "Skip this version"
+msgstr "Salta questa versione"
+
+msgid "Later"
+msgstr "Più tardi"
+
+msgid "Download"
+msgstr "Scarica"
+
+msgid "Logic could not check for a new version. Maybe there is no internet connection, or the website is blocked."
+msgstr "Logic non è riuscito a cercare una nuova versione. Forse non c'è connessione a internet, oppure il sito è bloccato."
+
+msgid "A new version of Logic is available: %s (you have %s).Do you want to open the download page?"
+msgstr "È disponibile una nuova versione di Logic: %s (hai la %s).Vuoi aprire la pagina di download?"
+
+msgid "You have the latest version of Logic (%s)."
+msgstr "Hai già la versione più recente di Logic (%s)."
+
+# --- impostazioni (AdvancedPropertyGrid, fsettings) ---
+msgid "Save INI"
+msgstr "Salva INI"
+
+msgid "Close Settings"
+msgstr "Chiudi le impostazioni"
+
+msgid "Load default settings"
+msgstr "Carica le impostazioni predefinite"
+
+msgid "Change Language"
+msgstr "Cambia lingua"
+
+msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
+msgstr "Pulsanti LogicRun/Persona/Carrello/Carillon/Semaforo sì/no"
+
+msgid "Selected Color"
+msgstr "Colore selezione"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Visible Yes/No"
+msgstr "Visibile sì/no"
+
+msgid "Width"
+msgstr "Larghezza"
+
+msgid "Height"
+msgstr "Altezza"
+
+msgid "Hint"
+msgstr "Suggerimento"
+
+msgid "Show hint"
+msgstr "Mostra suggerimento"
+
+msgid "Grid Yes/No"
+msgstr "Griglia sì/no"
+
+msgid "Color Panel"
+msgstr "Colore pannello"
+
+msgid "Color Input"
+msgstr "Colore ingresso"
+
+msgid "Color Output"
+msgstr "Colore uscita"
+
+msgid "Color Processing"
+msgstr "Colore elaborazione"
+
+msgid "Grid spacing X"
+msgstr "Passo griglia X"
+
+msgid "Grid spacing Y"
+msgstr "Passo griglia Y"
+
+msgid "Language choice"
+msgstr "Scelta della lingua"
+
+msgid "Color Dots"
+msgstr "Colore punti"
+
+msgid "Header"
+msgstr "Intestazione"
+
+msgid "Buzzer"
+msgstr "Cicalino"
+
+msgid "DIP switch"
+msgstr "Interruttore DIP"
+
+msgid "7 segment display"
+msgstr "Display a 7 segmenti"
+
+msgid "Power rails (+ and -)"
+msgstr "Barre di alimentazione (+ e -)"
+
+msgid "Voltmeter"
+msgstr "Voltmetro"
+
+msgid "Schematic symbols (Afbeelding/IEC/ANSI)"
+msgstr "Simboli dello schema (Afbeelding/IEC/ANSI)"
+
+msgid "Connection"
+msgstr "Collegamento"
+
+msgid "AND gate"
+msgstr "Porta AND"
+
+msgid "NOT gate"
+msgstr "Porta NOT"
+
+msgid "OR gate"
+msgstr "Porta OR"
+
+msgid "Pulse generator"
+msgstr "Generatore di impulsi"
+
+msgid "Relay"
+msgstr "Relè"
+
+msgid "Switching relay"
+msgstr "Relè di commutazione"
+
+msgid "Light sensor"
+msgstr "Sensore di luce"
+
+msgid "Counter block"
+msgstr "Blocco contatore"
+
+msgid "Step counter"
+msgstr "Contapassi"
+
+msgid "Stopwatch"
+msgstr "Cronometro"
+
+msgid "Barrier gate"
+msgstr "Sbarra"
+
+msgid "Motor"
+msgstr "Motore"
+
+msgid "Heat sensor"
+msgstr "Sensore di calore"
+
+msgid "Person"
+msgstr "Persona"
+
+msgid "Music box"
+msgstr "Carillon"
+
+msgid "+ rail (supply)"
+msgstr "barra + (alimentazione)"
+
+msgid "- rail (ground)"
+msgstr "barra - (massa)"
+
+msgid "Copy screen"
+msgstr "Copia schermo"
+
+msgid "Image type"
+msgstr "Tipo di immagine"
+
+msgid "Verrouiller"
+msgstr ""
+
+msgid "Sperren"
+msgstr ""
+
+msgid "AND"
+msgstr ""
+
+msgid "OR"
+msgstr ""
+
+msgid "NOT"
+msgstr ""
+
+msgid "Algemeen"
+msgstr ""
+
+msgid "SchakelElementen"
+msgstr ""
+
+msgid "Property"
+msgstr "Proprietà"
+
+msgid "Value"
+msgstr "Valore"
+
+msgid "Select"
+msgstr "Scelta"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "The panel \"%s\" has been changed."
+msgstr "Il pannello \"%s\" è stato modificato."
+
+msgid "create Buzzer"
+msgstr "crea cicalino"
+
+msgid "create Motor"
+msgstr "crea motore"
+
+msgid "create DipSwitsh"
+msgstr "crea interruttore DIP"
+
+msgid "create 7 segment display"
+msgstr "crea display a 7 segmenti"
+
+msgid "create Connection"
+msgstr "crea collegamento"
+
+msgid "create Push button"
+msgstr "crea pulsante"
+
+msgid "create Lamp"
+msgstr "crea lampada"
+
+msgid "create AND-Logic gate"
+msgstr "crea porta logica AND"
+
+msgid "create NOT-Logic gate"
+msgstr "crea porta logica NOT"
+
+msgid "create OR-Logic gate"
+msgstr "crea porta logica OR"
+
+msgid "create Memory block"
+msgstr "crea blocco memoria"
+
+msgid "create Impuls generator"
+msgstr "crea generatore di impulsi"
+
+msgid "create Relay"
+msgstr "crea relè"
+
+msgid "create Switching relay (relay with contact)"
+msgstr "crea relè di commutazione (relè con contatto)"
+
+msgid "create Switsh"
+msgstr "crea interruttore"
+
+msgid "create Light sensor"
+msgstr "crea sensore di luce"
+
+msgid "create Counter block"
+msgstr "crea blocco contatore"
+
+msgid "create Step counter (counts up to 9999)"
+msgstr "crea contapassi (conta fino a 9999)"
+
+msgid "create Stopwatch (time with end time)"
+msgstr "crea cronometro (tempo con tempo finale)"
+
+msgid "create HeatSensor"
+msgstr "crea sensore di calore"
+
+msgid "create Voltmeter"
+msgstr "crea voltmetro"
+
+msgid "create Person (with limit switches)"
+msgstr "crea persona (con finecorsa)"
+
+msgid "create Cart (road with posts)"
+msgstr "crea carrello (percorso con pali)"
+
+msgid "create Music box (8 piano keys)"
+msgstr "crea carillon (8 tasti di pianoforte)"
+
+msgid "create Traffic light (with pedestrian light)"
+msgstr "crea semaforo (con semaforo pedonale)"
+
+msgid "create Barrier gate (car park)"
+msgstr "crea sbarra (parcheggio)"
+
+msgid "create + rail (supply)"
+msgstr "crea barra + (alimentazione)"
+
+msgid "create - rail (ground)"
+msgstr "crea barra - (massa)"
+
+msgid "open"
+msgstr "aperta"
+
+msgid "closed"
+msgstr "chiusa"
+
+msgid "To "
+msgstr "Fino a "
+
+msgid "Step"
+msgstr "Passo"
+
+msgid "Repeat"
+msgstr "Ripeti"
+
+msgid "Switch"
+msgstr "Interruttore"

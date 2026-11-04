@@ -3101,6 +3101,8 @@ begin
   else if BTaal = 'FR' then Result := FR
   else if BTaal = 'DU' then Result := DU
   else Result := ENG;
+  // extra taal (lang\<code>.po): zie LangTrHook in chatgridpcodeSmall
+  if Result = ENG then Result := LangTr(ENG);
 end;
 
 
@@ -3135,7 +3137,7 @@ begin
 
   FCancelButton := TButton.Create(Self);
   FCancelButton.Parent := Self;
-  FCancelButton.Caption := 'Cancel';
+  FCancelButton.Caption := LangTr('Cancel');
   FCancelButton.ModalResult := mrCancel;
   FCancelButton.Left := ClientWidth - 85;
   FCancelButton.Top := 65;
@@ -3392,7 +3394,7 @@ procedure TjanDisplay.BuildPopup;
             begin
               if FLock then s := 'Unlock' else s := 'lock';
             end;
-            miLock.Caption := s;
+            miLock.Caption := LangTr(s);
           end;
 
           // --- Naam wijzigen
@@ -3402,7 +3404,7 @@ procedure TjanDisplay.BuildPopup;
             else if BTaal = 'FR' then s := 'Changer le nom'
             else if BTaal = 'DU' then s := 'Namen ändern'
             else s := 'Change name';
-            miName.Caption := s;
+            miName.Caption := LangTr(s);
           end;
 
           // --- Select / Deselect (TOGGLE)
@@ -3422,7 +3424,7 @@ procedure TjanDisplay.BuildPopup;
               else if BTaal = 'DU' then s := 'Objekt abwählen'
               else s := 'Deselect object';
             end;
-            miSelect.Caption := s;
+            miSelect.Caption := LangTr(s);
           end;
 
           // --- Info aan/uit
@@ -3442,7 +3444,7 @@ procedure TjanDisplay.BuildPopup;
               else if BTaal = 'DU' then s := 'Infos an'
               else s := 'Information on';
             end;
-            miInfo.Caption := s;
+            miInfo.Caption := LangTr(s);
           end;
         end;
 
@@ -7646,7 +7648,7 @@ begin
     begin
       if FLock then s := 'UnLock' else s := 'Lock';
     end;
-    miLock.Caption := s;
+    miLock.Caption := LangTr(s);
   end;
 
   // --- Naam wijzigen
@@ -7656,7 +7658,7 @@ begin
     else if BTaal = 'FR' then s := 'Changer le nom'
     else if BTaal = 'DU' then s := 'Namen ändern'
     else s := 'Change name';
-    miName.Caption := s;
+    miName.Caption := LangTr(s);
   end;
 
   // --- Select / Deselect (TOGGLE)
@@ -7676,7 +7678,7 @@ begin
       else if BTaal = 'DU' then s := 'Objekt abwählen'
       else s := 'Deselect object';
     end;
-    miSelect.Caption := s;
+    miSelect.Caption := LangTr(s);
   end;
 
   // --- Info aan/uit
@@ -7696,7 +7698,7 @@ begin
       else if BTaal = 'DU' then s := 'Infos an'
       else s := 'Information on';
     end;
-    miInfo.Caption := s;
+    miInfo.Caption := LangTr(s);
   end;
 end;
 
@@ -9288,7 +9290,7 @@ procedure TjanTeller.BuildPopup;
              begin
                if FLock then s := 'Unlock' else s := 'lock';
              end;
-             miLock.Caption := s;
+             miLock.Caption := LangTr(s);
            end;
 
            // --- Naam wijzigen
@@ -9298,7 +9300,7 @@ procedure TjanTeller.BuildPopup;
              else if BTaal = 'FR' then s := 'Changer le nom'
              else if BTaal = 'DU' then s := 'Namen ändern'
              else s := 'Change name';
-             miName.Caption := s;
+             miName.Caption := LangTr(s);
            end;
 
            // --- Select / Deselect (TOGGLE)
@@ -9318,7 +9320,7 @@ procedure TjanTeller.BuildPopup;
                else if BTaal = 'DU' then s := 'Objekt abwählen'
                else s := 'Deselect object';
              end;
-             miSelect.Caption := s;
+             miSelect.Caption := LangTr(s);
            end;
 
            // --- Info aan/uit
@@ -9338,7 +9340,7 @@ procedure TjanTeller.BuildPopup;
                else if BTaal = 'DU' then s := 'Infos an'
                else s := 'Information on';
              end;
-             miInfo.Caption := s;
+             miInfo.Caption := LangTr(s);
            end;
          end;
 
@@ -10418,7 +10420,7 @@ procedure TjanMemory.BuildPopup;
             begin
               if FLock then s := 'Unlock' else s := 'lock';
             end;
-            miLock.Caption := s;
+            miLock.Caption := LangTr(s);
           end;
 
           // --- Naam wijzigen
@@ -10428,7 +10430,7 @@ procedure TjanMemory.BuildPopup;
             else if BTaal = 'FR' then s := 'Changer le nom'
             else if BTaal = 'DU' then s := 'Namen ändern'
             else s := 'Change name';
-            miName.Caption := s;
+            miName.Caption := LangTr(s);
           end;
 
           // --- Select / Deselect (TOGGLE)
@@ -10448,7 +10450,7 @@ procedure TjanMemory.BuildPopup;
               else if BTaal = 'DU' then s := 'Objekt abwählen'
               else s := 'Deselect object';
             end;
-            miSelect.Caption := s;
+            miSelect.Caption := LangTr(s);
           end;
 
           // --- Info aan/uit
@@ -10468,7 +10470,7 @@ procedure TjanMemory.BuildPopup;
               else if BTaal = 'DU' then s := 'Infos an'
               else s := 'Information on';
             end;
-            miInfo.Caption := s;
+            miInfo.Caption := LangTr(s);
           end;
         end;
 
@@ -11722,7 +11724,7 @@ begin
     begin
       if FLock then s := 'Unlock' else s := 'lock';
     end;
-    miLock.Caption := s;
+    miLock.Caption := LangTr(s);
   end;
 
   // --- Naam wijzigen
@@ -11732,7 +11734,7 @@ begin
     else if BTaal = 'FR' then s := 'Changer le nom'
     else if BTaal = 'DU' then s := 'Namen ändern'
     else s := 'Change name';
-    miName.Caption := s;
+    miName.Caption := LangTr(s);
   end;
 
   // --- Select / Deselect (TOGGLE)
@@ -11752,7 +11754,7 @@ begin
       else if BTaal = 'DU' then s := 'Objekt abwählen'
       else s := 'Deselect object';
     end;
-    miSelect.Caption := s;
+    miSelect.Caption := LangTr(s);
   end;
 
   // --- Info aan/uit
@@ -11772,7 +11774,7 @@ begin
       else if BTaal = 'DU' then s := 'Infos an'
       else s := 'Information on';
     end;
-    miInfo.Caption := s;
+    miInfo.Caption := LangTr(s);
   end;
 end;
 
@@ -12826,7 +12828,7 @@ procedure TjanSimKnop.BuildPopup;
            begin
              if FLock then s := 'UnLock' else s := 'Lock';
            end;
-           miLock.Caption := s;
+           miLock.Caption := LangTr(s);
          end;
 
          // --- Naam wijzigen
@@ -12836,7 +12838,7 @@ procedure TjanSimKnop.BuildPopup;
            else if BTaal = 'FR' then s := 'Changer le nom'
            else if BTaal = 'DU' then s := 'Namen ändern'
            else s := 'Change name';
-           miName.Caption := s;
+           miName.Caption := LangTr(s);
          end;
 
          // --- Select / Deselect (TOGGLE)
@@ -12856,7 +12858,7 @@ procedure TjanSimKnop.BuildPopup;
              else if BTaal = 'DU' then s := 'Objekt abwählen'
              else s := 'Deselect object';
            end;
-           miSelect.Caption := s;
+           miSelect.Caption := LangTr(s);
          end;
 
          // --- Info aan/uit
@@ -12876,7 +12878,7 @@ procedure TjanSimKnop.BuildPopup;
              else if BTaal = 'DU' then s := 'Infos an'
              else s := 'Information on';
            end;
-           miInfo.Caption := s;
+           miInfo.Caption := LangTr(s);
          end;
        end;
 
@@ -13940,7 +13942,7 @@ procedure TjanDipSwitsh.UpdatePopupCaptions;
            begin
              if FLock then s := 'Unlock' else s := 'lock';
            end;
-           miLock.Caption := s;
+           miLock.Caption := LangTr(s);
          end;
 
          // --- Naam wijzigen
@@ -13950,7 +13952,7 @@ procedure TjanDipSwitsh.UpdatePopupCaptions;
            else if BTaal = 'FR' then s := 'Changer le nom'
            else if BTaal = 'DU' then s := 'Namen ändern'
            else s := 'Change name';
-           miName.Caption := s;
+           miName.Caption := LangTr(s);
          end;
 
          // --- Select / Deselect (TOGGLE)
@@ -13970,7 +13972,7 @@ procedure TjanDipSwitsh.UpdatePopupCaptions;
              else if BTaal = 'DU' then s := 'Objekt abwählen'
              else s := 'Deselect object';
            end;
-           miSelect.Caption := s;
+           miSelect.Caption := LangTr(s);
          end;
 
          // --- Info aan/uit
@@ -13990,7 +13992,7 @@ procedure TjanDipSwitsh.UpdatePopupCaptions;
              else if BTaal = 'DU' then s := 'Infos an'
              else s := 'Information on';
            end;
-           miInfo.Caption := s;
+           miInfo.Caption := LangTr(s);
          end;
        end;
 
@@ -14524,7 +14526,7 @@ procedure TjanSimPuls.BuildPopup;
            begin
              if FLock then s := 'Unlock' else s := 'lock';
            end;
-           miLock.Caption := s;
+           miLock.Caption := LangTr(s);
          end;
 
          // --- Naam wijzigen
@@ -14534,7 +14536,7 @@ procedure TjanSimPuls.BuildPopup;
            else if BTaal = 'FR' then s := 'Changer le nom'
            else if BTaal = 'DU' then s := 'Namen ändern'
            else s := 'Change name';
-           miName.Caption := s;
+           miName.Caption := LangTr(s);
          end;
 
          // --- Select / Deselect (TOGGLE)
@@ -14554,7 +14556,7 @@ procedure TjanSimPuls.BuildPopup;
              else if BTaal = 'DU' then s := 'Objekt abwählen'
              else s := 'Deselect object';
            end;
-           miSelect.Caption := s;
+           miSelect.Caption := LangTr(s);
          end;
 
          // --- Info aan/uit
@@ -14574,7 +14576,7 @@ procedure TjanSimPuls.BuildPopup;
              else if BTaal = 'DU' then s := 'Infos an'
              else s := 'Information on';
            end;
-           miInfo.Caption := s;
+           miInfo.Caption := LangTr(s);
          end;
        end;
 
@@ -15030,7 +15032,7 @@ begin
     begin
       if FLock then s := 'Unlock' else s := 'lock';
     end;
-    miLock.Caption := s;
+    miLock.Caption := LangTr(s);
   end;
 
   // --- Naam wijzigen
@@ -15040,7 +15042,7 @@ begin
     else if BTaal = 'FR' then s := 'Changer le nom'
     else if BTaal = 'DU' then s := 'Namen ändern'
     else s := 'Change name';
-    miName.Caption := s;
+    miName.Caption := LangTr(s);
   end;
 
   // --- Select / Deselect (TOGGLE)
@@ -15060,7 +15062,7 @@ begin
       else if BTaal = 'DU' then s := 'Objekt abwählen'
       else s := 'Deselect object';
     end;
-    miSelect.Caption := s;
+    miSelect.Caption := LangTr(s);
   end;
 
   // --- Info aan/uit
@@ -15080,7 +15082,7 @@ begin
       else if BTaal = 'DU' then s := 'Infos an'
       else s := 'Information on';
     end;
-    miInfo.Caption := s;
+    miInfo.Caption := LangTr(s);
   end;
 end;
 
@@ -15785,7 +15787,7 @@ procedure TjanSimWarm.UpdatePopupCaptions;
           begin
            if FLock then s := 'Unbolt' else s := 'Bolt';
          end;
-         miLock.Caption := s;
+         miLock.Caption := LangTr(s);
         end;
 
         if Assigned(miName) then
@@ -15794,7 +15796,7 @@ procedure TjanSimWarm.UpdatePopupCaptions;
           else if BTaal = 'FR' then s := 'Changer le nom'
 		   else if BTaal = 'DU' then s := 'Namen ändern'
           else s := 'Change name';
-          miName.Caption := s;
+          miName.Caption := LangTr(s);
          end;
 
          // --- Select / Deselect (TOGGLE)
@@ -15814,7 +15816,7 @@ procedure TjanSimWarm.UpdatePopupCaptions;
            else if BTaal = 'DU' then s := 'Objekt abwählen'
            else s := 'Deselect object';
           end;
-          miSelect.Caption := s;
+          miSelect.Caption := LangTr(s);
          end;
 
         if Assigned(miInfo) then
@@ -15833,7 +15835,7 @@ procedure TjanSimWarm.UpdatePopupCaptions;
 		  else if BTaal = 'DU' then s := 'Infos zu'
           else s := 'Information on';
          end;
-    miInfo.Caption := s;
+    miInfo.Caption := LangTr(s);
   end;
 end;
 
@@ -16489,7 +16491,7 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
              begin
                if FLock then s := 'Unlock' else s := 'lock';
              end;
-             miLock.Caption := s;
+             miLock.Caption := LangTr(s);
            end;
 
            // --- Naam wijzigen
@@ -16499,7 +16501,7 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
              else if BTaal = 'FR' then s := 'Changer le nom'
              else if BTaal = 'DU' then s := 'Namen ändern'
              else s := 'Change name';
-             miName.Caption := s;
+             miName.Caption := LangTr(s);
            end;
 
            // --- Select / Deselect (TOGGLE)
@@ -16519,7 +16521,7 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
                else if BTaal = 'DU' then s := 'Objekt abwählen'
                else s := 'Deselect object';
              end;
-             miSelect.Caption := s;
+             miSelect.Caption := LangTr(s);
            end;
 
            // --- Info aan/uit
@@ -16539,7 +16541,7 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
                else if BTaal = 'DU' then s := 'Infos an'
                else s := 'Information on';
              end;
-             miInfo.Caption := s;
+             miInfo.Caption := LangTr(s);
            end;
          end;
 
@@ -17069,7 +17071,7 @@ var R:TRect;
              begin
                if FLock then s := 'Unlock' else s := 'lock';
              end;
-             miLock.Caption := s;
+             miLock.Caption := LangTr(s);
            end;
 
            // --- Naam wijzigen
@@ -17079,7 +17081,7 @@ var R:TRect;
              else if BTaal = 'FR' then s := 'Changer le nom'
              else if BTaal = 'DU' then s := 'Namen ändern'
              else s := 'Change name';
-             miName.Caption := s;
+             miName.Caption := LangTr(s);
            end;
 
            // --- Select / Deselect (TOGGLE)
@@ -17099,7 +17101,7 @@ var R:TRect;
                else if BTaal = 'DU' then s := 'Objekt abwählen'
                else s := 'Deselect object';
              end;
-             miSelect.Caption := s;
+             miSelect.Caption := LangTr(s);
            end;
 
            // --- Info aan/uit
@@ -17119,7 +17121,7 @@ var R:TRect;
                else if BTaal = 'DU' then s := 'Infos an'
                else s := 'Information on';
              end;
-             miInfo.Caption := s;
+             miInfo.Caption := LangTr(s);
            end;
          end;
 
@@ -17658,7 +17660,7 @@ procedure TjanSimBuzzer.BuildPopup;
              begin
                if FLock then s := 'Unlock' else s := 'lock';
              end;
-             miLock.Caption := s;
+             miLock.Caption := LangTr(s);
            end;
 
            // --- Naam wijzigen
@@ -17668,7 +17670,7 @@ procedure TjanSimBuzzer.BuildPopup;
              else if BTaal = 'FR' then s := 'Changer le nom'
              else if BTaal = 'DU' then s := 'Namen ändern'
              else s := 'Change name';
-             miName.Caption := s;
+             miName.Caption := LangTr(s);
            end;
 
            // --- Select / Deselect (TOGGLE)
@@ -17688,7 +17690,7 @@ procedure TjanSimBuzzer.BuildPopup;
                else if BTaal = 'DU' then s := 'Objekt abwählen'
                else s := 'Deselect object';
              end;
-             miSelect.Caption := s;
+             miSelect.Caption := LangTr(s);
            end;
 
            // --- Info aan/uit
@@ -17708,7 +17710,7 @@ procedure TjanSimBuzzer.BuildPopup;
                else if BTaal = 'DU' then s := 'Infos an'
                else s := 'Information on';
              end;
-             miInfo.Caption := s;
+             miInfo.Caption := LangTr(s);
            end;
          end;
 
@@ -20768,7 +20770,7 @@ begin
 
   case Language of
     stDutch  : FHSchakelaar := 'maak Schakelaar';
-    stEnglish: FHSchakelaar := 'create Switch';
+    stEnglish: FHSchakelaar := LangTr('create Switch');
     stFrench : FHSchakelaar := 'créer interrupteur';
     stGerman : FHSchakelaar := 'Schalter erstellen';
   end;
@@ -21613,35 +21615,36 @@ if FBoxTaal=stDutch then
 
 if FBoxTaal=stEnglish then
  Begin
+  // LangTr: ook voor een extra taal (lang\<code>.po)
   Taal:='ENG';
-  HBuzzer:='create Buzzer';
-  HMotor:='create Motor';
-  HDipSwitsh:='create DipSwitsh';
-  HDisplay:='create 7 segment display';
-  HDraad:='create Connection';
-  HDrukknop:='create Push button';
-  HLamp:='create Lamp';
-  HLogicAnd:='create AND-Logic gate';
-  HLogicNot:='create NOT-Logic gate';
-  HLogicOr:='create OR-Logic gate';
-  HMemory:='create Memory block';
-  HPuls:='create Impuls generator';
-  HRelais:='create Relay';
-  HSchakelRelais:='create Switching relay (relay with contact)';
-  HSchakelaar:='create Switsh';
-  HSensor:='create Light sensor';
-  HTeller:='create Counter block';
-  HStappen:='create Step counter (counts up to 9999)';
-  HStopwatch:='create Stopwatch (time with end time)';
-  HWarm:='create HeatSensor';
-  HMeter:='create Voltmeter';
-  HPersoon:='create Person (with limit switches)';
-  HWagen:='create Cart (road with posts)';
-  HMuziek:='create Music box (8 piano keys)';
-  HVerkeer:='create Traffic light (with pedestrian light)';
-  HSlagboom:='create Barrier gate (car park)';
-  HRailPlus:='create + rail (supply)';
-  HRailMin:='create - rail (ground)';
+  HBuzzer:=LangTr('create Buzzer');
+  HMotor:=LangTr('create Motor');
+  HDipSwitsh:=LangTr('create DipSwitsh');
+  HDisplay:=LangTr('create 7 segment display');
+  HDraad:=LangTr('create Connection');
+  HDrukknop:=LangTr('create Push button');
+  HLamp:=LangTr('create Lamp');
+  HLogicAnd:=LangTr('create AND-Logic gate');
+  HLogicNot:=LangTr('create NOT-Logic gate');
+  HLogicOr:=LangTr('create OR-Logic gate');
+  HMemory:=LangTr('create Memory block');
+  HPuls:=LangTr('create Impuls generator');
+  HRelais:=LangTr('create Relay');
+  HSchakelRelais:=LangTr('create Switching relay (relay with contact)');
+  HSchakelaar:=LangTr('create Switsh');
+  HSensor:=LangTr('create Light sensor');
+  HTeller:=LangTr('create Counter block');
+  HStappen:=LangTr('create Step counter (counts up to 9999)');
+  HStopwatch:=LangTr('create Stopwatch (time with end time)');
+  HWarm:=LangTr('create HeatSensor');
+  HMeter:=LangTr('create Voltmeter');
+  HPersoon:=LangTr('create Person (with limit switches)');
+  HWagen:=LangTr('create Cart (road with posts)');
+  HMuziek:=LangTr('create Music box (8 piano keys)');
+  HVerkeer:=LangTr('create Traffic light (with pedestrian light)');
+  HSlagboom:=LangTr('create Barrier gate (car park)');
+  HRailPlus:=LangTr('create + rail (supply)');
+  HRailMin:=LangTr('create - rail (ground)');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -22970,7 +22973,7 @@ begin
         FHoverRect := RCon;
         FHoverText := 'Connector tool – verbindt componenten';
 
-        DoStatusText('Connector tool',0);
+        DoStatusText(LangTr('Connector tool'),0);
        if not DCon then
           Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else
@@ -23443,7 +23446,7 @@ begin
         FHoverRect := RCon;
         FHoverText := 'Connector tool – verbindt componenten';
 
-        DoStatusText('Connector tool',0);
+        DoStatusText(LangTr('Connector tool'),0);
        if not DCon then
           Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
         else

@@ -257,14 +257,29 @@ type
      property GridMode: TGridMode read FGridMode write FGridMode default gmNormal;
   end;
 
+var
+  // vertaalt een Engelse tekst naar een extra taal (lang\<code>.po); gezet
+  // door het programma, gebruikt als de taal Engels is (ook door janSimLogic)
+  LangTrHook: function(const S: string): string = nil;
+
+// S vertaald met LangTrHook, of S zelf
+function LangTr(const S: string): string;
 
 implementation
+
+function LangTr(const S: string): string;
+begin
+  if Assigned(LangTrHook) then
+    Result := LangTrHook(S)
+  else
+    Result := S;
+end;
 
 function TxtFrameCaption(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Caption wijzigen';
-    lgEnglish: Result := 'Change caption';
+    lgEnglish: Result := LangTr('Change caption');
     lgFrench:  Result := 'Modifier la légende';
     lgGerman:  Result := 'Beschriftung ändern';
   else
@@ -276,7 +291,7 @@ function TxtFrameVisible(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Visible aan/uit';
-    lgEnglish: Result := 'Toggle visible';
+    lgEnglish: Result := LangTr('Toggle visible');
     lgFrench:  Result := 'Visible oui/non';
     lgGerman:  Result := 'Sichtbar ein/aus';
   else
@@ -288,7 +303,7 @@ function TxtFrameEditMode(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Mode = Edit';
-    lgEnglish: Result := 'Mode = Edit';
+    lgEnglish: Result := LangTr('Mode = Edit');
     lgFrench:  Result := 'Mode = Édition';
     lgGerman:  Result := 'Modus = Bearbeiten';
   else
@@ -300,7 +315,7 @@ function TxtFrameColorBlue(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Kleur blauw';
-    lgEnglish: Result := 'Color blue';
+    lgEnglish: Result := LangTr('Color blue');
     lgFrench:  Result := 'Couleur bleue';
     lgGerman:  Result := 'Farbe blau';
   else
@@ -312,7 +327,7 @@ function TxtFrameColorRed(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Kleur rood';
-    lgEnglish: Result := 'Color red';
+    lgEnglish: Result := LangTr('Color red');
     lgFrench:  Result := 'Couleur rouge';
     lgGerman:  Result := 'Farbe rot';
   else
@@ -324,7 +339,7 @@ function TxtFrameColorGreen(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Kleur groen';
-    lgEnglish: Result := 'Color green';
+    lgEnglish: Result := LangTr('Color green');
     lgFrench:  Result := 'Couleur verte';
     lgGerman:  Result := 'Farbe grün';
   else
@@ -336,7 +351,7 @@ function TxtFrameDelete(ALanguage: TLanguage): string;
 begin
   case ALanguage of
     lgDutch:   Result := 'Kader verwijderen';
-    lgEnglish: Result := 'Delete frame';
+    lgEnglish: Result := LangTr('Delete frame');
     lgFrench:  Result := 'Supprimer le cadre';
     lgGerman:  Result := 'Rahmen löschen';
   else
@@ -1051,7 +1066,9 @@ end;
 
 procedure TjanGridS.SetLanguage(const Value: TLanguage);
 begin
-  if FLanguage <> Value then
+  // ook bij dezelfde waarde: Engels en een extra taal (LangTrHook) zijn
+  // allebei lgEnglish
+  if (FLanguage <> Value) or Assigned(LangTrHook) then
   begin
     FLanguage := Value;
 
@@ -1067,10 +1084,10 @@ begin
   case FLanguage of
     lgEnglish:
       begin
-        FInputText := 'Input';
-        FProcessingText := 'Processing';
-        FOutputText := 'Output';
-        FTitel := 'Logic Panel';
+        FInputText := LangTr('Input');
+        FProcessingText := LangTr('Processing');
+        FOutputText := LangTr('Output');
+        FTitel := LangTr('Logic Panel');
       end;
     lgFrench:
       begin

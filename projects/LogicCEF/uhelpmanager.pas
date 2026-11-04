@@ -5,7 +5,7 @@ unit uHelpManager;
 interface
 
 uses
-  Classes, SysUtils, Controls, Forms, Dialogs;
+  Classes, SysUtils, Controls, Forms, Dialogs, uLangPo;
 
 type
   THelpDisplayMode = (hdmMessage, hdmHTML);
@@ -64,13 +64,13 @@ begin
   if SameText(ABTaal, 'NL') then
     Result := NLText
   else if SameText(ABTaal, 'ENG') then
-    Result := ENText
+    Result := PoTr(ENText)   // of een extra taal (uLangPo)
   else if SameText(ABTaal, 'FR') then
     Result := FRText
   else if SameText(ABTaal, 'DU') then
     Result := DEText
   else
-    Result := ENText;
+    Result := PoTr(ENText);
 end;
 
 { TAppHelpManager }
@@ -91,7 +91,10 @@ end;
 // De help staat per taal in een eigen map: help\nl, help\en, help\fr, help\de.
 function TAppHelpManager.LangFolder: string;
 begin
-  if SameText(FBTaal, 'ENG') then
+  // extra taal (uLangPo): eigen help als die er is (help\it ...), anders Engels
+  if PoActive and DirectoryExists(IncludeTrailingPathDelimiter(FHelpPath) + PoCode) then
+    Result := PoCode
+  else if SameText(FBTaal, 'ENG') then
     Result := 'en'
   else if SameText(FBTaal, 'FR') then
     Result := 'fr'

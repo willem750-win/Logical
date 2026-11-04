@@ -1,0 +1,1276 @@
+# Logic - sjabloon voor vertalingen (gemaakt door tools/make-pot.ps1)
+# Vertaal met Poedit: maak een nieuwe vertaling van dit bestand en bewaar
+# ze als <code>.po in de map lang (bv. it.po voor Italiaans).
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Logic\n"
+
+#: chatgridpcodeSmall.pas:282 chatgridpcodeSmall.pas:282
+msgid "Change caption"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:318 chatgridpcodeSmall.pas:318
+msgid "Color blue"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:330 chatgridpcodeSmall.pas:330
+msgid "Color red"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:342 chatgridpcodeSmall.pas:342
+msgid "Color green"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:354 chatgridpcodeSmall.pas:354
+msgid "Delete frame"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:368
+msgid "Click here to change the title"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:384 janSimLogic.pas:3073
+msgid "Right mouse button for extra settings"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:1087 chatgridpcodeSmall.pas:1087 janSimLogic.pas:9359
+msgid "Input"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:1088 chatgridpcodeSmall.pas:1088
+msgid "Processing"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:1089 chatgridpcodeSmall.pas:1089
+msgid "Output"
+msgstr ""
+
+#: chatgridpcodeSmall.pas:1090 chatgridpcodeSmall.pas:1090
+msgid "Logic Panel"
+msgstr ""
+
+#: janSimLogic.pas:3140
+msgid "Cancel"
+msgstr ""
+
+#: janSimLogic.pas:3274 janSimLogic.pas:16182 janSimLogic.pas:16720
+msgid "Export"
+msgstr ""
+
+#: janSimLogic.pas:3275 janSimLogic.pas:8862 janSimLogic.pas:9360
+msgid "Status"
+msgstr ""
+
+#: janSimLogic.pas:3387 janSimLogic.pas:7641 janSimLogic.pas:9283
+msgid "Verrouiller"
+msgstr ""
+
+#: janSimLogic.pas:3391 janSimLogic.pas:7645 janSimLogic.pas:9287
+msgid "Sperren"
+msgstr ""
+
+#: janSimLogic.pas:3406 janSimLogic.pas:7660 janSimLogic.pas:9302
+msgid "Change name"
+msgstr ""
+
+#: janSimLogic.pas:3418 janSimLogic.pas:5771 janSimLogic.pas:7672
+msgid "Select object"
+msgstr ""
+
+#: janSimLogic.pas:3425 janSimLogic.pas:5769 janSimLogic.pas:7679
+msgid "Deselect object"
+msgstr ""
+
+#: janSimLogic.pas:3438 janSimLogic.pas:7692 janSimLogic.pas:9334
+msgid "Information off"
+msgstr ""
+
+#: janSimLogic.pas:3445 janSimLogic.pas:7699 janSimLogic.pas:9341
+msgid "Information on"
+msgstr ""
+
+#: janSimLogic.pas:5608
+msgid "+ rail (supply "
+msgstr ""
+
+#: janSimLogic.pas:5608
+msgid "V)\nPlug inputs in on the right of the rail. Below 2V no signal.\nRight-click: set voltage. Drag the ends to resize."
+msgstr ""
+
+#: janSimLogic.pas:5621
+msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
+msgstr ""
+
+#: janSimLogic.pas:5634
+msgid "+ rail"
+msgstr ""
+
+#: janSimLogic.pas:5639
+msgid "- rail"
+msgstr ""
+
+#: janSimLogic.pas:5640
+msgid "Ground"
+msgstr ""
+
+#: janSimLogic.pas:5745
+msgid "Voltage"
+msgstr ""
+
+#: janSimLogic.pas:5761 janSimLogic.pas:11261 janSimLogic.pas:25303
+msgid "Unlock"
+msgstr ""
+
+#: janSimLogic.pas:5763 janSimLogic.pas:11263 janSimLogic.pas:25305
+msgid "Lock"
+msgstr ""
+
+#: janSimLogic.pas:8578 janSimLogic.pas:8839
+msgid "AND"
+msgstr ""
+
+#: janSimLogic.pas:8584 janSimLogic.pas:8842
+msgid "OR"
+msgstr ""
+
+#: janSimLogic.pas:8590 janSimLogic.pas:8845
+msgid "NOT"
+msgstr ""
+
+#: janSimLogic.pas:9395
+msgid "Processing --> Counter block"
+msgstr ""
+
+#: janSimLogic.pas:11029 fsettings.lfm fsettings.lfm
+msgid "Memory block"
+msgstr ""
+
+#: janSimLogic.pas:11490
+msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
+msgstr ""
+
+#: janSimLogic.pas:12532 janSimLogic.pas:12565 fsettings.lfm
+msgid "Push button"
+msgstr ""
+
+#: janSimLogic.pas:12534
+msgid "Down"
+msgstr ""
+
+#: janSimLogic.pas:12536
+msgid "Upwards"
+msgstr ""
+
+#: janSimLogic.pas:13223 janSimLogic.pas:15458
+msgid "switch"
+msgstr ""
+
+#: janSimLogic.pas:13280
+msgid "DipSwitsh"
+msgstr ""
+
+#: janSimLogic.pas:14229
+msgid "emperature sensor"
+msgstr ""
+
+#: janSimLogic.pas:14475
+msgid "Frequency"
+msgstr ""
+
+#: janSimLogic.pas:14481
+msgid "every "
+msgstr ""
+
+#: janSimLogic.pas:14484
+msgid "default"
+msgstr ""
+
+#: janSimLogic.pas:15886
+msgid "cold"
+msgstr ""
+
+#: janSimLogic.pas:15886
+msgid "hot"
+msgstr ""
+
+#: janSimLogic.pas:16084
+msgid "Temperature sensor"
+msgstr ""
+
+#: janSimLogic.pas:16432
+msgid "Colour"
+msgstr ""
+
+#: janSimLogic.pas:16438 fsettings.lfm fsettings.lfm
+msgid "Lamp"
+msgstr ""
+
+#: janSimLogic.pas:16439
+msgid "Red LED"
+msgstr ""
+
+#: janSimLogic.pas:16440
+msgid "Green LED"
+msgstr ""
+
+#: janSimLogic.pas:16441
+msgid "Orange LED"
+msgstr ""
+
+#: janSimLogic.pas:20773 janSimLogic.pas:20773
+msgid "create Switch"
+msgstr ""
+
+#: janSimLogic.pas:21620 janSimLogic.pas:21620
+msgid "create Buzzer"
+msgstr ""
+
+#: janSimLogic.pas:21621 janSimLogic.pas:21621
+msgid "create Motor"
+msgstr ""
+
+#: janSimLogic.pas:21622 janSimLogic.pas:21622
+msgid "create DipSwitsh"
+msgstr ""
+
+#: janSimLogic.pas:21623 janSimLogic.pas:21623
+msgid "create 7 segment display"
+msgstr ""
+
+#: janSimLogic.pas:21624 janSimLogic.pas:21624
+msgid "create Connection"
+msgstr ""
+
+#: janSimLogic.pas:21625 janSimLogic.pas:21625
+msgid "create Push button"
+msgstr ""
+
+#: janSimLogic.pas:21626 janSimLogic.pas:21626
+msgid "create Lamp"
+msgstr ""
+
+#: janSimLogic.pas:21627 janSimLogic.pas:21627
+msgid "create AND-Logic gate"
+msgstr ""
+
+#: janSimLogic.pas:21628 janSimLogic.pas:21628
+msgid "create NOT-Logic gate"
+msgstr ""
+
+#: janSimLogic.pas:21629 janSimLogic.pas:21629
+msgid "create OR-Logic gate"
+msgstr ""
+
+#: janSimLogic.pas:21630 janSimLogic.pas:21630
+msgid "create Memory block"
+msgstr ""
+
+#: janSimLogic.pas:21631 janSimLogic.pas:21631
+msgid "create Impuls generator"
+msgstr ""
+
+#: janSimLogic.pas:21632 janSimLogic.pas:21632
+msgid "create Relay"
+msgstr ""
+
+#: janSimLogic.pas:21633 janSimLogic.pas:21633
+msgid "create Switching relay (relay with contact)"
+msgstr ""
+
+#: janSimLogic.pas:21634 janSimLogic.pas:21634
+msgid "create Switsh"
+msgstr ""
+
+#: janSimLogic.pas:21635 janSimLogic.pas:21635
+msgid "create Light sensor"
+msgstr ""
+
+#: janSimLogic.pas:21636 janSimLogic.pas:21636
+msgid "create Counter block"
+msgstr ""
+
+#: janSimLogic.pas:21637 janSimLogic.pas:21637
+msgid "create Step counter (counts up to 9999)"
+msgstr ""
+
+#: janSimLogic.pas:21638 janSimLogic.pas:21638
+msgid "create Stopwatch (time with end time)"
+msgstr ""
+
+#: janSimLogic.pas:21639 janSimLogic.pas:21639
+msgid "create HeatSensor"
+msgstr ""
+
+#: janSimLogic.pas:21640 janSimLogic.pas:21640
+msgid "create Voltmeter"
+msgstr ""
+
+#: janSimLogic.pas:21641 janSimLogic.pas:21641
+msgid "create Person (with limit switches)"
+msgstr ""
+
+#: janSimLogic.pas:21642 janSimLogic.pas:21642
+msgid "create Cart (road with posts)"
+msgstr ""
+
+#: janSimLogic.pas:21643 janSimLogic.pas:21643
+msgid "create Music box (8 piano keys)"
+msgstr ""
+
+#: janSimLogic.pas:21644 janSimLogic.pas:21644
+msgid "create Traffic light (with pedestrian light)"
+msgstr ""
+
+#: janSimLogic.pas:21645 janSimLogic.pas:21645
+msgid "create Barrier gate (car park)"
+msgstr ""
+
+#: janSimLogic.pas:21646 janSimLogic.pas:21646
+msgid "create + rail (supply)"
+msgstr ""
+
+#: janSimLogic.pas:21647 janSimLogic.pas:21647
+msgid "create - rail (ground)"
+msgstr ""
+
+#: janSimLogic.pas:22976 janSimLogic.pas:23449
+msgid "Connector tool"
+msgstr ""
+
+#: janSimLogic.pas:24375
+msgid "%d objects selected\nDrag to move them together, Esc or click outside to deselect"
+msgstr ""
+
+#: janSimLogic.pas:24698 uLogicRun.pas:286
+msgid "start/stop"
+msgstr ""
+
+#: janSimLogic.pas:24699 uLogicRun.pas:287
+msgid "reset"
+msgstr ""
+
+#: janSimLogic.pas:24701 uLogicRun.pas:289
+msgid "on/off"
+msgstr ""
+
+#: janSimLogic.pas:25220 janSimLogic.pas:25248 janSimLogic.pas:25618
+msgid "stopped"
+msgstr ""
+
+#: janSimLogic.pas:25223 janSimLogic.pas:25250 uLogicRun.pas:260
+msgid "step"
+msgstr ""
+
+#: janSimLogic.pas:25237
+msgid "Double-click: edit program"
+msgstr ""
+
+#: janSimLogic.pas:25297
+msgid "Edit program..."
+msgstr ""
+
+#: janSimLogic.pas:25611
+msgid "L and R on together: fault!"
+msgstr ""
+
+#: janSimLogic.pas:25614
+msgid "turning left"
+msgstr ""
+
+#: janSimLogic.pas:25616
+msgid "turning right"
+msgstr ""
+
+#: janSimLogic.pas:25624
+msgid "L: turn left, R: turn right"
+msgstr ""
+
+#: janSimLogic.pas:26144
+msgid "L and R on together: stands still"
+msgstr ""
+
+#: janSimLogic.pas:26147
+msgid "at the left (S1 on)"
+msgstr ""
+
+#: janSimLogic.pas:26150
+msgid "at the right (S2 on)"
+msgstr ""
+
+#: janSimLogic.pas:26153
+msgid "walking left"
+msgstr ""
+
+#: janSimLogic.pas:26155
+msgid "walking right"
+msgstr ""
+
+#: janSimLogic.pas:26157 janSimLogic.pas:26643
+msgid "standing still"
+msgstr ""
+
+#: janSimLogic.pas:26164
+msgid "L: walk left, R: walk right\nS1/S2: limit switch left/right\nright-click: place limit switches"
+msgstr ""
+
+#: janSimLogic.pas:26231
+msgid "Back to the start"
+msgstr ""
+
+#: janSimLogic.pas:26234
+msgid "Close the barrier now"
+msgstr ""
+
+#: janSimLogic.pas:26237
+msgid "Back to the left (S1)"
+msgstr ""
+
+#: janSimLogic.pas:26242
+msgid "Place limit switches"
+msgstr ""
+
+#: janSimLogic.pas:26627
+msgid "V and A on together: stands still"
+msgstr ""
+
+#: janSimLogic.pas:26630
+msgid "at the start (Start on)"
+msgstr ""
+
+#: janSimLogic.pas:26633
+msgid "at the finish (Finish on)"
+msgstr ""
+
+#: janSimLogic.pas:26636
+msgid "at post %d (Tel on)"
+msgstr ""
+
+#: janSimLogic.pas:26639
+msgid "driving forward"
+msgstr ""
+
+#: janSimLogic.pas:26641
+msgid "driving backward"
+msgstr ""
+
+#: janSimLogic.pas:26651
+msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
+msgstr ""
+
+#: janSimLogic.pas:26977
+msgid "Sound"
+msgstr ""
+
+#: janSimLogic.pas:26996
+msgid "silent"
+msgstr ""
+
+#: janSimLogic.pas:26998
+msgid "plays "
+msgstr ""
+
+#: janSimLogic.pas:27000 janSimLogic.pas:27041
+msgid " (sound off)"
+msgstr ""
+
+#: janSimLogic.pas:27007
+msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
+msgstr ""
+
+#: janSimLogic.pas:27222 janSimLogic.pas:27228
+msgid "red"
+msgstr ""
+
+#: janSimLogic.pas:27223
+msgid "amber"
+msgstr ""
+
+#: janSimLogic.pas:27224 janSimLogic.pas:27229
+msgid "green"
+msgstr ""
+
+#: janSimLogic.pas:27225 janSimLogic.pas:27230 uLogicRun.pas:713
+msgid "off"
+msgstr ""
+
+#: janSimLogic.pas:27226
+msgid "cars: "
+msgstr ""
+
+#: janSimLogic.pas:27231
+msgid " - pedestrians: "
+msgstr ""
+
+#: janSimLogic.pas:27233
+msgid " - DANGER: both green!"
+msgstr ""
+
+#: janSimLogic.pas:27241
+msgid "inputs R, A, G: red, amber, green for the cars\nPR, PG: red and green figure for the pedestrians\nsame height as OUT0..OUT4 of LogicRun"
+msgstr ""
+
+#: janSimLogic.pas:27413
+msgid "Closed"
+msgstr ""
+
+#: janSimLogic.pas:27415
+msgid "Open"
+msgstr ""
+
+#: janSimLogic.pas:27447
+msgid "opening"
+msgstr ""
+
+#: janSimLogic.pas:27448
+msgid "closing"
+msgstr ""
+
+#: janSimLogic.pas:27451
+msgid "open"
+msgstr ""
+
+#: janSimLogic.pas:27453
+msgid "closed"
+msgstr ""
+
+#: janSimLogic.pas:27455
+msgid "barrier: "
+msgstr ""
+
+#: janSimLogic.pas:27463
+msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
+msgstr ""
+
+#: janSimLogic.pas:27747
+msgid "no person or cart on the panel"
+msgstr ""
+
+#: janSimLogic.pas:27750
+msgid ": on"
+msgstr ""
+
+#: janSimLogic.pas:27752
+msgid ": off"
+msgstr ""
+
+#: janSimLogic.pas:27759
+msgid "Follows the person or the cart (without a wire).\nRight-click: choose S1, S2 or Start, Tel, Finish"
+msgstr ""
+
+#: janSimLogic.pas:28171 janSimLogic.pas:28639
+msgid "repeat"
+msgstr ""
+
+#: janSimLogic.pas:28173 janSimLogic.pas:28641
+msgid "to "
+msgstr ""
+
+#: janSimLogic.pas:28188
+msgid "count "
+msgstr ""
+
+#: janSimLogic.pas:28189 janSimLogic.pas:28657
+msgid " of "
+msgstr ""
+
+#: janSimLogic.pas:28191 janSimLogic.pas:28659
+msgid ": reached (Q on)"
+msgstr ""
+
+#: janSimLogic.pas:28199
+msgid "T: +1 per pulse, R: back to 0\nQ: on when the end value is reached\nRight-click: choose the end value"
+msgstr ""
+
+#: janSimLogic.pas:28276 janSimLogic.pas:28703
+msgid "To "
+msgstr ""
+
+#: janSimLogic.pas:28285
+msgid "Other end value..."
+msgstr ""
+
+#: janSimLogic.pas:28294
+msgid "Repeat (start again at 1 after the end value)"
+msgstr ""
+
+#: janSimLogic.pas:28300
+msgid "Set to 0"
+msgstr ""
+
+#: janSimLogic.pas:28332
+msgid "End value"
+msgstr ""
+
+#: janSimLogic.pas:28333
+msgid "Count up to (1 to 9999)?"
+msgstr ""
+
+#: janSimLogic.pas:28656
+msgid "time "
+msgstr ""
+
+#: janSimLogic.pas:28667
+msgid "S: time runs while S is on, R: back to 00:00\nQ: on when the end time is reached\nRight-click: choose the end time"
+msgstr ""
+
+#: janSimLogic.pas:28712
+msgid "Other end time..."
+msgstr ""
+
+#: janSimLogic.pas:28721
+msgid "Repeat (start again at 00:01 after the end time)"
+msgstr ""
+
+#: janSimLogic.pas:28727
+msgid "Set to 00:00"
+msgstr ""
+
+#: janSimLogic.pas:28747
+msgid "End time"
+msgstr ""
+
+#: janSimLogic.pas:28748
+msgid "End time as mm:ss (00:01 to 99:59)?"
+msgstr ""
+
+#: main.pas:257
+msgid "Stop simulation"
+msgstr ""
+
+#: main.pas:259 main.pas:1382
+msgid "Start simulation"
+msgstr ""
+
+#: main.pas:320
+msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
+msgstr ""
+
+#: main.pas:375
+msgid "Shows the name or info of the active object"
+msgstr ""
+
+#: main.pas:381
+msgid "Shows the current status or function"
+msgstr ""
+
+#: main.pas:387
+msgid "Displays the X and Y position of the current object"
+msgstr ""
+
+#: main.pas:393
+msgid "Shows the object type"
+msgstr ""
+
+#: main.pas:399
+msgid "Shows extra debug information"
+msgstr ""
+
+#: main.pas:407
+msgid "Status bar"
+msgstr ""
+
+#: main.pas:424
+msgid "Algemeen"
+msgstr ""
+
+#: main.pas:424
+msgid "General"
+msgstr ""
+
+#: main.pas:425
+msgid "SchakelElementen"
+msgstr ""
+
+#: main.pas:425
+msgid "Switch Elements"
+msgstr ""
+
+#: main.pas:426 main.pas:426
+msgid "Hints"
+msgstr ""
+
+#: main.pas:1362
+msgid "Logic Circuits"
+msgstr ""
+
+#: main.pas:1363
+msgid "Choose language..."
+msgstr ""
+
+#: main.pas:1364
+msgid "Copy the panel to the clipboard..."
+msgstr ""
+
+#: main.pas:1366
+msgid "Grid Yes/No\nGo to open settings for additional options..."
+msgstr ""
+
+#: main.pas:1367
+msgid "Guidelines on grid YES/NO..."
+msgstr ""
+
+#: main.pas:1368
+msgid "Draw frame on grid..."
+msgstr ""
+
+#: main.pas:1369
+msgid "Change panel title..."
+msgstr ""
+
+#: main.pas:1370
+msgid "Bar Input / Processing / Output on/off"
+msgstr ""
+
+#: main.pas:1371
+msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
+msgstr ""
+
+#: main.pas:1373
+msgid "Open settings"
+msgstr ""
+
+#: main.pas:1374
+msgid "Close application"
+msgstr ""
+
+#: main.pas:1375
+msgid "About Logic..."
+msgstr ""
+
+#: main.pas:1376
+msgid "Open help (F1)"
+msgstr ""
+
+#: main.pas:1377
+msgid "Open saved panel..."
+msgstr ""
+
+#: main.pas:1378
+msgid "Save panel..."
+msgstr ""
+
+#: main.pas:1379
+msgid "Click here to select the panel..."
+msgstr ""
+
+#: main.pas:1380
+msgid "Remove connections..."
+msgstr ""
+
+#: main.pas:1381
+msgid "Delete selected object..."
+msgstr ""
+
+#: main.pas:1662
+msgid "Undo (Ctrl+Z)"
+msgstr ""
+
+#: main.pas:1663
+msgid "Redo (Ctrl+Y)"
+msgstr ""
+
+#: main.pas:1681
+msgid "LogicRun: program in steps"
+msgstr ""
+
+#: main.pas:1917 main.pas:1917
+msgid "without name"
+msgstr ""
+
+#: main.pas:1918 main.pas:1918
+msgid "The panel \"%s\" has been changed."
+msgstr ""
+
+#: main.pas:1919 main.pas:1919
+msgid "Do you want to save the changes?"
+msgstr ""
+
+#: main.pas:2575
+msgid "Screenshot of the panel has been copied to the clipboard."
+msgstr ""
+
+#: main.pas:2776
+msgid "Change title"
+msgstr ""
+
+#: main.pas:2777
+msgid "Enter new title:"
+msgstr ""
+
+#: uabout.pas:109
+msgid "About Logic"
+msgstr ""
+
+#: uabout.pas:110 uabout.pas:110
+msgid "Version "
+msgstr ""
+
+#: uabout.pas:111
+msgid "Simulator for digital circuits: build a circuit with switches, gates, counters, memories and displays, and watch it work."
+msgstr ""
+
+#: uabout.pas:113
+msgid "Based on the freeware components by Jan Verhoeven."
+msgstr ""
+
+#: uabout.pas:114
+msgid "Released under the MIT license."
+msgstr ""
+
+#: uabout.pas:115
+msgid "Check for updates automatically"
+msgstr ""
+
+#: uabout.pas:116
+msgid "Check for updates"
+msgstr ""
+
+#: uhelpmanager.pas:218
+msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
+msgstr ""
+
+#: uhelpmanager.pas:240
+msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
+msgstr ""
+
+#: uhelpmanager.pas:259
+msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
+msgstr ""
+
+#: uhelpmanager.pas:278
+msgid "Power rail\n\n- + rail: plug inputs in on the right; right-click for the voltage.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr ""
+
+#: uhelpmanager.pas:296
+msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
+msgstr ""
+
+#: uhelpmanager.pas:312
+msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
+msgstr ""
+
+#: uhelpmanager.pas:330
+msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
+msgstr ""
+
+#: uhelpmanager.pas:344
+msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
+msgstr ""
+
+#: uhelpmanager.pas:356
+msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
+msgstr ""
+
+#: uhelpmanager.pas:370
+msgid "DIP switch\n\n- Allows multiple fixed binary settings."
+msgstr ""
+
+#: uhelpmanager.pas:383
+msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
+msgstr ""
+
+#: uhelpmanager.pas:399
+msgid "No specific help found for keyword: "
+msgstr ""
+
+#: uhelpmanager.pas:399
+msgid "\n\nExpected help page:\n"
+msgstr ""
+
+#: uhelpmanager.pas:417
+msgid "No HelpKeyword assigned."
+msgstr ""
+
+#: uhelpmanager.pas:434 uhelpmanager.pas:502
+msgid "No internal help handler assigned.\n"
+msgstr ""
+
+#: uhelpmanager.pas:511
+msgid "Table of contents not found.\n"
+msgstr ""
+
+#: uLogicRun.pas:244
+msgid "Start"
+msgstr ""
+
+#: uLogicRun.pas:245
+msgid "Pause"
+msgstr ""
+
+#: uLogicRun.pas:246
+msgid "Stop"
+msgstr ""
+
+#: uLogicRun.pas:247
+msgid "Step"
+msgstr ""
+
+#: uLogicRun.pas:248
+msgid "Step time"
+msgstr ""
+
+#: uLogicRun.pas:249
+msgid "Repeat"
+msgstr ""
+
+#: uLogicRun.pas:250
+msgid "Example"
+msgstr ""
+
+#: uLogicRun.pas:251
+msgid "Load"
+msgstr ""
+
+#: uLogicRun.pas:252
+msgid "+ step"
+msgstr ""
+
+#: uLogicRun.pas:253
+msgid "- step"
+msgstr ""
+
+#: uLogicRun.pas:254
+msgid "Put the block on the panel"
+msgstr ""
+
+#: uLogicRun.pas:257
+msgid "There is no LogicRun block on the panel yet. Click the button below and then on the panel to place it."
+msgstr ""
+
+#: uLogicRun.pas:261
+msgid "time x"
+msgstr ""
+
+#: uLogicRun.pas:262
+msgid "wait for"
+msgstr ""
+
+#: uLogicRun.pas:266
+msgid "— choose —"
+msgstr ""
+
+#: uLogicRun.pas:267 fsettings.lfm
+msgid "Traffic light"
+msgstr ""
+
+#: uLogicRun.pas:268
+msgid "Running light"
+msgstr ""
+
+#: uLogicRun.pas:269
+msgid "Motor left/right"
+msgstr ""
+
+#: uLogicRun.pas:270
+msgid "4-bit counter"
+msgstr ""
+
+#: uLogicRun.pas:271 fsettings.lfm
+msgid "Cart"
+msgstr ""
+
+#: uLogicRun.pas:272
+msgid "Packing machine"
+msgstr ""
+
+#: uLogicRun.pas:273
+msgid "Count up and down"
+msgstr ""
+
+#: uLogicRun.pas:274
+msgid "Person back and forth"
+msgstr ""
+
+#: uLogicRun.pas:275
+msgid "Cart on a road"
+msgstr ""
+
+#: uLogicRun.pas:276
+msgid "Music: Twinkle, twinkle, little star"
+msgstr ""
+
+#: uLogicRun.pas:277
+msgid "Music: Ode to Joy (two voices)"
+msgstr ""
+
+#: uLogicRun.pas:278
+msgid "Traffic light with pedestrian button"
+msgstr ""
+
+#: uLogicRun.pas:423
+msgid "running: step"
+msgstr ""
+
+#: uLogicRun.pas:426
+msgid "paused: step"
+msgstr ""
+
+#: uLogicRun.pas:434
+msgid "waiting for "
+msgstr ""
+
+#: uLogicRun.pas:437
+msgid "pulses on"
+msgstr ""
+
+#: uLogicRun.pas:712
+msgid "on"
+msgstr ""
+
+#: uLogicRun.pas:752
+msgid "None (the time counts)"
+msgstr ""
+
+#: uLogicRun.pas:756
+msgid "Until input on"
+msgstr ""
+
+#: uLogicRun.pas:757
+msgid "Until input off"
+msgstr ""
+
+#: uLogicRun.pas:758
+msgid "Until number of pulses on input"
+msgstr ""
+
+#: uLogicRun.pas:775
+msgid "Number of pulses:"
+msgstr ""
+
+#: uUpdate.pas:282
+msgid "A new version of Logic is available: %s (you have %s)."
+msgstr ""
+
+#: uUpdate.pas:286
+msgid "Skip this version"
+msgstr ""
+
+#: uUpdate.pas:287
+msgid "Later"
+msgstr ""
+
+#: uUpdate.pas:288
+msgid "Download"
+msgstr ""
+
+#: uUpdate.pas:376
+msgid "Logic could not check for a new version. Maybe there is no internet connection, or the website is blocked."
+msgstr ""
+
+#: uUpdate.pas:387
+msgid "A new version of Logic is available: %s (you have %s).Do you want to open the download page?"
+msgstr ""
+
+#: uUpdate.pas:396
+msgid "You have the latest version of Logic (%s)."
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:988 AdvancedPropertyGridComponent.pas:991
+msgid "Property"
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:989
+msgid "Value"
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:990
+msgid "Select"
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:1080
+msgid "Save INI"
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:1082
+msgid "Close Settings"
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:1083
+msgid "Load default settings"
+msgstr ""
+
+#: AdvancedPropertyGridComponent.pas:1084
+msgid "Change Language"
+msgstr ""
+
+#: fsettings.lfm
+msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Selected Color"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Name"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Visible Yes/No"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Width"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Height"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Hint"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Show hint"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Grid Yes/No"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Color Panel"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Color Input"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Color Output"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Color Processing"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Grid spacing X"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Grid spacing Y"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Language choice"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Color Dots"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Header"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Buzzer"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "DIP switch"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "7 segment display"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Power rails (+ and -)"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Voltmeter"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Schematic symbols (Afbeelding/IEC/ANSI)"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Connection"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "AND gate"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "NOT gate"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "OR gate"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Pulse generator"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Relay"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switching relay"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switch"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Light sensor"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Counter block"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Step counter"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Stopwatch"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Barrier gate"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Motor"
+msgstr ""
+
+#: fsettings.lfm fsettings.lfm
+msgid "Heat sensor"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Person"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Music box"
+msgstr ""
+
+#: fsettings.lfm
+msgid "+ rail (supply)"
+msgstr ""
+
+#: fsettings.lfm
+msgid "- rail (ground)"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Copy screen"
+msgstr ""
+
+#: fsettings.lfm
+msgid "Image type"
+msgstr ""
+

@@ -52,7 +52,7 @@ implementation
 
 uses
   {$IFDEF WINDOWS} Windows, WinINet, {$ELSE} fphttpclient, opensslsockets, openssl, {$ENDIF}
-  uAbout;
+  uAbout, uLangPo;
 
 const
   SectieUpdate = 'Update';
@@ -61,7 +61,7 @@ const
 function Tr(ALang: TLanguage; const NL, EN, FR, DE: string): string;
 begin
   case ALang of
-    lgEnglish: Result := EN;
+    lgEnglish: Result := PoTr(EN);   // of een extra taal (uLangPo)
     lgFrench:  Result := FR;
     lgGerman:  Result := DE;
   else

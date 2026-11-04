@@ -86,6 +86,9 @@ Source: "{#Src}\ceflib\v8_context_snapshot.bin"; DestDir: "{app}\ceflib"; Flags:
 Source: "{#Src}\ceflib\locales\*";               DestDir: "{app}\ceflib\locales"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#Src}\help\*";                    DestDir: "{app}\help"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#Src}\html\*";                    DestDir: "{app}\html"; Flags: ignoreversion recursesubdirs createallsubdirs
+; extra talen (lang\<code>.po, zie uLangPo.pas): altijd vervangen; een eigen
+; <code>.po van de gebruiker blijft staan
+Source: "{#Src}\lang\*";                    DestDir: "{app}\lang"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\..\LICENSE";                    DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\README.md";                  DestDir: "{app}"; Flags: ignoreversion
 

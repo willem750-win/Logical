@@ -99,9 +99,9 @@ else
 fi
 
 # ------------------------------------------------------------------
-# panels, ini en html uit Git (HEAD)
+# panels, ini, html en lang (extra talen) uit Git (HEAD)
 # ------------------------------------------------------------------
-DATA="projects/LogicCEF/Resultaat/panels projects/LogicCEF/Resultaat/ini projects/LogicCEF/Resultaat/html"
+DATA="projects/LogicCEF/Resultaat/panels projects/LogicCEF/Resultaat/ini projects/LogicCEF/Resultaat/html projects/LogicCEF/Resultaat/lang"
 if git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1; then
   # shellcheck disable=SC2086
   DIRTY=$(git -C "$REPO" status --porcelain -- $DATA)
@@ -112,13 +112,13 @@ if git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1; then
   GITTMP=$(mktemp -d)
   # shellcheck disable=SC2086
   git -C "$REPO" archive HEAD -- $DATA | tar -x -C "$GITTMP"
-  for D in panels ini html; do
+  for D in panels ini html lang; do
     cp -r "$GITTMP/projects/LogicCEF/Resultaat/$D" "$DST/$D"
   done
   rm -rf "$GITTMP"
 else
-  echo "LET OP: $REPO is geen Git-repository; panels, ini en html komen uit Resultaat zoals ze zijn."
-  for D in panels ini html; do
+  echo "LET OP: $REPO is geen Git-repository; panels, ini, html en lang komen uit Resultaat zoals ze zijn."
+  for D in panels ini html lang; do
     cp -r "$SRC/$D" "$DST/$D"
   done
 fi
@@ -200,6 +200,9 @@ if [ "\$(cat "\$DST/VERSION" 2>/dev/null)" != "\$(cat "\$SRC/VERSION")" ]; then
   cp -f "\$SRC/logicCEF" "\$SRC/LICENSE" "\$SRC/README.md" "\$DST/"
   rm -rf "\$DST/help" "\$DST/html"
   cp -r "\$SRC/help" "\$SRC/html" "\$DST/"
+  # extra talen (lang/<code>.po): meegeleverde vervangen, een eigen .po blijft
+  mkdir -p "\$DST/lang"
+  [ ! -d "\$SRC/lang" ] || cp -rf "\$SRC/lang/." "\$DST/lang/"
   # CEF-runtime niet kopiëren maar linken naar /opt
   rm -rf "\$DST/ceflib"
   [ ! -d "\$SRC/ceflib" ] || ln -s "\$SRC/ceflib" "\$DST/ceflib"

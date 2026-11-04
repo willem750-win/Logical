@@ -65,13 +65,13 @@ try {
   Set-Content (Join-Path $stage 'taal.ini') "[Settings]`r`nLanguage=0" -Encoding ascii
 
   # ----------------------------------------------------------------
-  # panels, ini en html uit Git (HEAD)
+  # panels, ini, html en lang (extra talen) uit Git (HEAD)
   # ----------------------------------------------------------------
-  $gitPaths = 'panels', 'ini', 'html' | ForEach-Object { "projects/LogicCEF/Resultaat/$_" }
+  $gitPaths = 'panels', 'ini', 'html', 'lang' | ForEach-Object { "projects/LogicCEF/Resultaat/$_" }
   $dirty = & git -C $repo status --porcelain -- $gitPaths
   if ($LASTEXITCODE -ne 0) { throw "git status faalde: is $repo een Git-repository?" }
   if ($dirty) {
-    Write-Warning "Niet-gecommitte wijzigingen in panels/ini/html gaan NIET mee in de release:"
+    Write-Warning "Niet-gecommitte wijzigingen in panels/ini/html/lang gaan NIET mee in de release:"
     $dirty | ForEach-Object { Write-Warning "  $_" }
   }
   $tar = Join-Path $env:TEMP "$name-data.tar"
@@ -82,7 +82,7 @@ try {
   New-Item -ItemType Directory $gitDir | Out-Null
   & "$env:SystemRoot\System32\tar.exe" -xf $tar -C $gitDir
   if ($LASTEXITCODE -ne 0) { throw "tar faalde ($LASTEXITCODE)" }
-  foreach ($d in 'panels', 'ini', 'html') {
+  foreach ($d in 'panels', 'ini', 'html', 'lang') {
     Copy-Item (Join-Path $gitDir "projects\LogicCEF\Resultaat\$d") (Join-Path $stage $d) -Recurse
   }
   Remove-Item $tar, $gitDir -Recurse -Force

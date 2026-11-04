@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate;
+  FSettings, uLogicRun, uUpdate, uLangPo;
 const
   IniFileName = 'taal.ini';
 
@@ -165,6 +165,13 @@ type
      btUndo, btRedo: TSpeedButton;
      btLogicRun: TSpeedButton;          // LogicRun-venster openen
      FLogicRunForm: TLogicRunForm;
+     // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
+     // vaste talen: FPoCodes[i] hoort bij Taal.Items[4 + i]
+     FPoCodes: TStringList;
+     FPoFlags: array of TPicture;
+     procedure AddPoLanguages;
+     function TaalIndex: Integer;
+     procedure SyncPropGridLanguageCombos;
      procedure btLogicRunClick(Sender: TObject);
      procedure GridKLogicRunChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
@@ -288,13 +295,13 @@ begin
   if ABTaal = 'NL' then
     Result := NL
   else if ABTaal = 'ENG' then
-    Result := ENG
+    Result := PoTr(ENG)   // of een extra taal (uLangPo)
   else if ABTaal = 'FR' then
     Result := FR
   else if ABTaal = 'DU' then
     Result := DU
   else
-    Result := ENG;
+    Result := PoTr(ENG);
 end;
 
 {$R *.lfm}
@@ -913,9 +920,44 @@ Begin
     mainform.StatusBar1.Panels.Items[2].Text:=moduscurrent;
     SettingsFrame.Note.ShowTabs:=true;
     fr_settingsbestaat := True;
+    SyncPropGridLanguageCombos;
     SettingsFrame.Show;
 
 
+end;
+
+// De taalkeuze onderaan in de instellingen (AdvancedPropertyGrid) kent alleen
+// Nederlands/Engels/Frans/Duits. Bij een extra taal (uLangPo) heet de
+// tweede keuze (Engels, waarop de extra taal steunt) bv. 'Italiano'.
+procedure TmainForm.SyncPropGridLanguageCombos;
+
+  procedure Scan(AParent: TWinControl);
+  var
+    I: Integer;
+    C: TControl;
+    Cb: TComboBox;
+  begin
+    for I := 0 to AParent.ControlCount - 1 do
+    begin
+      C := AParent.Controls[I];
+      if (C is TComboBox) and (TComboBox(C).Items.Count = 4) and
+         (TComboBox(C).Items[0] = 'Nederlands') then
+      begin
+        Cb := TComboBox(C);
+        if PoActive then
+          Cb.Items[1] := Taal.Items[Taal.ItemIndex]
+        else
+          Cb.Items[1] := 'Engels';
+        Cb.ItemIndex := TaalIndex;
+      end
+      else if C is TWinControl then
+        Scan(TWinControl(C));
+    end;
+  end;
+
+begin
+  if Assigned(SettingsFrame) then
+    Scan(SettingsFrame);
 end;
 
 
@@ -926,10 +968,58 @@ begin
   // Naast het programma, niet in de huidige map (onder Linux is dat vaak ~).
   Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + IniFileName);
   try
-    Ini.WriteInteger('Settings', 'Language', Taal.ItemIndex);//  ItemIndex);
+    // Language = 0..3 (vaste talen); bij een extra taal 1 (Engels, voor een
+    // oudere versie van Logic) en de code in LanguageCode
+    Ini.WriteInteger('Settings', 'Language', TaalIndex);
+    if PoActive then
+      Ini.WriteString('Settings', 'LanguageCode', PoCode)
+    else
+      Ini.DeleteKey('Settings', 'LanguageCode');
   finally
     Ini.Free;
   end;
+end;
+
+// Extra talen uit lang\*.po achteraan in de taalkeuze zetten, met hun vlag
+// (lang\<code>.png) als die er is.
+procedure TmainForm.AddPoLanguages;
+var
+  Names: TStringList;
+  I: Integer;
+  F: string;
+begin
+  if not Assigned(FPoCodes) then FPoCodes := TStringList.Create;
+  Names := TStringList.Create;
+  try
+    PoListLanguages(FPoCodes, Names);
+    SetLength(FPoFlags, FPoCodes.Count);
+    for I := 0 to FPoCodes.Count - 1 do
+    begin
+      Taal.Items.Add(Names[I]);
+      FPoFlags[I] := nil;
+      F := PoLangDir + FPoCodes[I] + '.png';
+      if FileExists(F) then
+      try
+        FPoFlags[I] := TPicture.Create;
+        FPoFlags[I].LoadFromFile(F);
+      except
+        FreeAndNil(FPoFlags[I]);
+      end;
+    end;
+  finally
+    Names.Free;
+  end;
+  if Taal.Items.Count > Taal.DropDownCount then
+    Taal.DropDownCount := Taal.Items.Count;
+end;
+
+// Index van de vaste taal: 0 = NL, 1 = EN, 2 = FR, 3 = DE. Een extra taal
+// werkt intern als Engels.
+function TmainForm.TaalIndex: Integer;
+begin
+  Result := Taal.ItemIndex;
+  if Result > 3 then Result := 1
+  else if Result < 0 then Result := 0;
 end;
 
 procedure TmainForm.LaadBoxsettings;
@@ -1090,6 +1180,10 @@ begin
       Taal.ItemIndex := LanguageIndex
     else
       Taal.ItemIndex := 0;
+    // extra taal (lang\<code>.po)
+    if Assigned(FPoCodes) and
+       (FPoCodes.IndexOf(Ini.ReadString('Settings', 'LanguageCode', '')) >= 0) then
+      Taal.ItemIndex := 4 + FPoCodes.IndexOf(Ini.ReadString('Settings', 'LanguageCode', ''));
     // Roep direct de change event aan zodat alles wordt bijgewerkt
     TaalChange(Taal);
   finally
@@ -1109,11 +1203,14 @@ begin
   end;
 end;
 
-// Taalkeuze: alleen het vlaggetje uit Flags tonen (de naam staat in de hint)
+// Taalkeuze: alleen het vlaggetje uit Flags tonen (de naam staat in de hint);
+// een extra taal toont lang\<code>.png of anders de code (IT, ES ...)
 procedure TmainForm.TaalDrawItem(Control: TWinControl; Index: Integer;
   ARect: TRect; State: TOwnerDrawState);
 var
   C: TCanvas;
+  P: Integer;
+  R: TRect;
 begin
   C := TComboBox(Control).Canvas;
   if odSelected in State then
@@ -1121,8 +1218,25 @@ begin
   else
     C.Brush.Color := TComboBox(Control).Color;
   C.FillRect(ARect);
-  if (Index >= 0) and (Index < Flags.Count) then
-    Flags.Draw(C, ARect.Left + 4, ARect.Top + (ARect.Bottom - ARect.Top - Flags.Height) div 2, Index);
+  if (Index >= 0) and (Index <= 3) and (Index < Flags.Count) then
+    Flags.Draw(C, ARect.Left + 4, ARect.Top + (ARect.Bottom - ARect.Top - Flags.Height) div 2, Index)
+  else if Assigned(FPoCodes) and (Index - 4 >= 0) and (Index - 4 < FPoCodes.Count) then
+  begin
+    P := Index - 4;
+    if (P < Length(FPoFlags)) and Assigned(FPoFlags[P]) then
+    begin
+      R := Rect(0, 0, Flags.Width, Flags.Height);
+      OffsetRect(R, ARect.Left + 4, ARect.Top + (ARect.Bottom - ARect.Top - Flags.Height) div 2);
+      C.StretchDraw(R, FPoFlags[P].Graphic);
+    end
+    else
+    begin
+      C.Brush.Style := bsClear;
+      C.TextOut(ARect.Left + 4, ARect.Top + (ARect.Bottom - ARect.Top - C.TextHeight('W')) div 2,
+        UpperCase(FPoCodes[P]));
+      C.Brush.Style := bsSolid;
+    end;
+  end;
 end;
 
  procedure TmainForm.TaalChange(Sender: TObject);
@@ -1131,8 +1245,19 @@ end;
    NieuweTaalPropGrid: AdvancedPropertyGridComponent.TLanguage;
    NieuweTaalStat: TStatTaal;
  begin
+   // Extra taal (lang\<code>.po): Logic werkt dan intern in het Engels en
+   // uLangPo vertaalt de Engelse teksten
+   chatgridpcodeSmall.LangTrHook := @PoTr;
+   if (Taal.ItemIndex > 3) and Assigned(FPoCodes) and (Taal.ItemIndex - 4 < FPoCodes.Count) then
+   begin
+     if not PoLoad(FPoCodes[Taal.ItemIndex - 4]) then
+       Taal.ItemIndex := 1;
+   end
+   else
+     PoUnload;
+
    // Converteer ComboBox selectie naar `TLanguage`
-   case Taal.ItemIndex of
+   case TaalIndex of
      0: NieuweTaalChat := chatgridpcodeSmall.lgDutch;
      1: NieuweTaalChat := chatgridpcodeSmall.lgEnglish;
      2: NieuweTaalChat := chatgridpcodeSmall.lgFrench;
@@ -1196,9 +1321,10 @@ end;
      SettingsFrame.PropB22.SetLanguage(NieuweTaalPropGrid);
      SettingsFrame.PropB222.SetLanguage(NieuweTaalPropGrid);
 
-     if Assigned(SettingsFrame.PropB2) then SettingsFrame.PropB2.UpdateLanguageSelection(Taal.Text);
-     if Assigned(SettingsFrame.PropB22) then SettingsFrame.PropB22.UpdateLanguageSelection(Taal.Text);
-     if Assigned(SettingsFrame.PropB222) then SettingsFrame.PropB222.UpdateLanguageSelection(Taal.Text);
+     if Assigned(SettingsFrame.PropB2) then SettingsFrame.PropB2.UpdateLanguageSelection(Taal.Items[TaalIndex]);
+     if Assigned(SettingsFrame.PropB22) then SettingsFrame.PropB22.UpdateLanguageSelection(Taal.Items[TaalIndex]);
+     if Assigned(SettingsFrame.PropB222) then SettingsFrame.PropB222.UpdateLanguageSelection(Taal.Items[TaalIndex]);
+     SyncPropGridLanguageCombos;
 
      SettingsFrame.Note.Pages[0].Caption := TranslateTab('Algemeen', NieuweTaalChat);
      SettingsFrame.Note.Pages[1].Caption := TranslateTab('SchakelElementen', NieuweTaalChat);
@@ -1321,6 +1447,11 @@ end;
   if FBuiltinPanel > 0 then
     ShowBuiltinPanelTitle(FBuiltinPanel);
 
+   // statusbalk opnieuw (een extra taal kan hem vertaald hebben)
+   if moduscurrent <> '' then
+     StatusBar1.Panels.Items[2].Text := moduscurrent;
+   // extra taal: de Engelse teksten op de vensters meteen vertalen
+   PoTranslateScreen;
    SaveLanguageSetting;
  end;
 
@@ -1338,9 +1469,10 @@ var
 begin
   Result := '';
   if (AKind < 1) or (AKind > 4) then Exit;
-  L := Taal.ItemIndex;
+  L := TaalIndex;
   if (L < 0) or (L > 3) then L := 0;
   Result := Names[AKind, L];
+  if L = 1 then Result := PoTr(Result);   // of een extra taal (uLangPo)
 end;
 
 procedure TmainForm.ShowBuiltinPanelTitle(AKind: Integer);
@@ -1779,11 +1911,12 @@ begin
   if FRunMode or not PanelModified then Exit;
 
   Naam := FPanelTitleBase;
-  case Taal.ItemIndex of
+  case TaalIndex of
     1: begin
-         if Naam = '' then Naam := 'without name';
-         Msg := 'The panel "' + Naam + '" has been changed.' + LineEnding +
-                'Do you want to save the changes?';
+         // ook voor een extra taal (uLangPo)
+         if Naam = '' then Naam := PoTr('without name');
+         Msg := Format(PoTr('The panel "%s" has been changed.'), [Naam]) + LineEnding +
+                PoTr('Do you want to save the changes?');
        end;
     2: begin
          if Naam = '' then Naam := 'sans nom';
@@ -2211,6 +2344,8 @@ begin
   CreateUndoButtons;
   // dubbelklik / rechtsklikmenu van het LogicRun-blok
   LogicRunEditHook := @LogicRunEdit;
+  // extra talen (lang\*.po) in de taalkeuze
+  AddPoLanguages;
 
   Application.OnShowHint := @AppShowHint;
   Application.HintColor := clYellow;
@@ -2475,6 +2610,8 @@ begin
   // Tijdens de simulatie stoort een hint: geen X/Y bij de muis (de hint van
   // het paneel zelf) en geen hints van de objecten op het paneel. Knoppen
   // buiten het paneel (zoals Simuleren) houden hun hint.
+  // Extra taal (uLangPo): de Engelse hint vertalen.
+  HintStr := PoTr(HintStr);
   if not FRunMode then Exit;
   C := HintInfo.HintControl;
   if Assigned(C) and ((C = Grid) or (C.Parent = Grid)) then

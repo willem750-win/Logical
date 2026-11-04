@@ -13,7 +13,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, StdCtrls, ExtCtrls, Grids,
-  Spin, Menus, Dialogs, janSimLogic, chatgridpcodeSmall;
+  Spin, Menus, Dialogs, janSimLogic, chatgridpcodeSmall, uLangPo;
 
 type
   TLogicRunForm = class(TForm)
@@ -223,7 +223,7 @@ end;
 
 function TLogicRunForm.T(const NL, EN, FR, DE: string): string;
 begin
-  if FTaal = 'ENG' then Result := EN
+  if FTaal = 'ENG' then Result := PoTr(EN)   // of een extra taal (uLangPo)
   else if FTaal = 'FR' then Result := FR
   else if FTaal = 'DU' then Result := DE
   else Result := NL;

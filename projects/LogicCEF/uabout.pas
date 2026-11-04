@@ -107,7 +107,7 @@ begin
     chatgridpcodeSmall.lgEnglish:
       begin
         sCaption := 'About Logic';
-        sVersion := 'Version ';
+        sVersion := LangTr('Version ');   // of een extra taal (lang\<code>.po)
         sDesc    := 'Simulator for digital circuits: build a circuit with switches, '
                   + 'gates, counters, memories and displays, and watch it work.';
         sCredit  := 'Based on the freeware components by Jan Verhoeven.';

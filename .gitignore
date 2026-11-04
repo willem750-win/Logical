@@ -21,6 +21,9 @@ projects/LogicCEF/Resultaat/*
 !projects/LogicCEF/Resultaat/ini/
 !projects/LogicCEF/Resultaat/html/
 !projects/LogicCEF/Resultaat/ImmoSetup/
+# extra talen (zie projects/LogicCEF/uLangPo.pas); missing-*.pot maakt Logic zelf met --po-collect
+!projects/LogicCEF/Resultaat/lang/
+projects/LogicCEF/Resultaat/lang/missing-*.pot
 
 # Wordt door het programma zelf aangemaakt
 projects/LogicCEF/Resultaat/ini/comboColor.ini
