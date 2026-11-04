@@ -1,0 +1,65 @@
+<!-- titel: Lesson 22 - A barrier gate at a car park -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 22 of 22</p>
+  <h1>A barrier gate at a car park</h1>
+  <div class="goal"><strong>Goal:</strong> open a barrier gate when someone presses the ticket button, and let it close
+  again by itself after a few seconds. You use what you learned in <a href="les20.html">lesson 20</a>: a stopwatch and a
+  NOT gate.</div>
+
+  <p><a class="open" href="../../panels/lessen/les22-slagboom.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les22-slagboom.png" alt="Switch and ticket button on a stopwatch, with a NOT gate to the barrier gate">
+    <figcaption>The end time 00:05 is reached: Q is on, the NOT gate off and the barrier is closed.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on input <b>S</b> of the stopwatch: the car park is open.</li>
+    <li>A <a href="invoer.html#drukknop">push button</a> on <b>R</b>: the ticket button.</li>
+    <li>A <a href="verwerking.html#stopwatch">stopwatch</a> with end time <b>00:05</b>.</li>
+    <li>A <a href="verwerking.html#niet">NOT gate</a> between output <b>Q</b> and the
+      <a href="uitvoer.html#slagboom">barrier gate</a>.</li>
+  </ul>
+
+  <h2>How does it work?</h2>
+  <p>Pressing the ticket button sets the stopwatch to 00:00. While the time runs, Q is off and the output of the NOT gate
+  is on: the barrier opens. After 5 seconds the end time is reached: Q comes on, the NOT gate goes off and the barrier
+  closes again. The stopwatch stays at 00:05 until the next car presses the button.</p>
+  <p>This is the same idea as staircase lighting: one press of the button, and after a while the light goes off by
+  itself.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on. The stopwatch starts at 00:00, so the barrier first opens and
+      closes after 5 seconds.</li>
+    <li>Press the ticket button: the barrier goes up. The lamp on the post is amber while it moves and green when it is
+      fully open.</li>
+    <li>After 5 seconds the barrier closes again and the lamp turns red.</li>
+    <li>Press the button again while the barrier is closing: it opens again at once. That way a car is never hit.</li>
+  </ol>
+
+  <h2>Task 1: more time</h2>
+  <p>A lorry needs more time. Keep the barrier open for 10 seconds.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Stop the simulation, unlock the stopwatch and choose <b>To 00:10</b> with the right mouse button.</p>
+  </details>
+
+  <h2>Task 2: a green light for the driver</h2>
+  <p>Light a lamp when the barrier is fully open, so the driver knows they may drive on.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Right-click the barrier and choose <b>Place limit switches</b>. Two
+    <a href="invoer.html#eindschakelaar">limit switches</a> appear: <b>Closed</b> and <b>Open</b>. Connect the output of
+    the <b>Open</b> limit switch to a <a href="uitvoer.html#lamp">lamp</a>.</p>
+  </details>
+
+  <h2>Task 3: at the exit too</h2>
+  <p>There is a second button at the exit. It must open the barrier as well.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Put a second push button and an <a href="verwerking.html#of">OR gate</a> on the panel. Connect both push buttons
+    to the inputs of the OR gate, and the output of the OR gate to <b>R</b> of the stopwatch. Now each button sets the
+    time to 00:00.</p>
+  </details>
+
+  <div class="pager"><a href="les21.html">&larr; Lesson 21: A traffic light with pedestrian button</a><a href="leerpad.html">Learning path &rarr;</a></div>

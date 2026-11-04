@@ -146,6 +146,8 @@ begin
       begin Result := 'uitvoer'; AAnchor := 'muziek'; end;
     'verkeerslicht':
       begin Result := 'uitvoer'; AAnchor := 'verkeerslicht'; end;
+    'slagboom':
+      begin Result := 'uitvoer'; AAnchor := 'slagboom'; end;
     'persoon':
       begin Result := 'uitvoer'; AAnchor := 'persoon'; end;
     'voeding', 'rail':
@@ -544,6 +546,7 @@ begin
     'tjansimwagen':     AControl.HelpKeyword := 'wagen';
     'tjansimmuziek':    AControl.HelpKeyword := 'muziek';
     'tjansimverkeerslicht': AControl.HelpKeyword := 'verkeerslicht';
+    'tjansimslagboom': AControl.HelpKeyword := 'slagboom';
     'tjansimeindschakelaar': AControl.HelpKeyword := 'eindschakelaar';
     'tjansimstappenteller': AControl.HelpKeyword := 'stappenteller';
     'tjansimstopwatch': AControl.HelpKeyword := 'stopwatch';

@@ -1,0 +1,65 @@
+<!-- titel: Les 22 - Een slagboom op een parking -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 22 van 22</p>
+  <h1>Een slagboom op een parking</h1>
+  <div class="goal"><strong>Doel:</strong> een slagboom laten opengaan als iemand op de ticketknop drukt, en hem na een
+  paar seconden vanzelf weer laten sluiten. Je gebruikt wat je in <a href="les20.html">les 20</a> leerde: een stopwatch
+  en een NIET-poort.</div>
+
+  <p><a class="open" href="../../panels/lessen/les22-slagboom.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les22-slagboom.png" alt="Schakelaar en ticketknop op een stopwatch, met een NIET-poort naar de slagboom">
+    <figcaption>De eindtijd 00:05 is bereikt: Q is aan, de NIET-poort uit en de slagboom is dicht.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op de ingang <b>S</b> van de stopwatch: de parking is open.</li>
+    <li>Een <a href="invoer.html#drukknop">drukknop</a> op <b>R</b>: de ticketknop.</li>
+    <li>Een <a href="verwerking.html#stopwatch">stopwatch</a> met eindtijd <b>00:05</b>.</li>
+    <li>Een <a href="verwerking.html#niet">NIET-poort</a> tussen de uitgang <b>Q</b> en de
+      <a href="uitvoer.html#slagboom">slagboom</a>.</li>
+  </ul>
+
+  <h2>Hoe werkt het?</h2>
+  <p>Een druk op de ticketknop zet de stopwatch op 00:00. Zolang de tijd loopt, is Q uit en de uitgang van de NIET-poort
+  aan: de slagboom gaat open. Na 5 seconden is de eindtijd bereikt: Q gaat aan, de NIET-poort gaat uit en de boom gaat
+  weer dicht. De stopwatch blijft op 00:05 staan tot de volgende auto op de knop drukt.</p>
+  <p>Dit is hetzelfde idee als een trappenhuisverlichting: een druk op de knop, en na een tijd gaat het licht vanzelf
+  uit.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan. De stopwatch begint bij 00:00, dus de boom gaat eerst open en na
+      5 seconden dicht.</li>
+    <li>Druk op de ticketknop: de boom gaat omhoog. Het lampje op de paal is oranje terwijl hij beweegt en groen als hij
+      helemaal open is.</li>
+    <li>Na 5 seconden gaat de boom weer dicht en wordt het lampje rood.</li>
+    <li>Druk nog eens op de knop terwijl de boom dichtgaat: hij gaat meteen weer open. Zo wordt een auto nooit geraakt.</li>
+  </ol>
+
+  <h2>Opdracht 1: meer tijd</h2>
+  <p>Een vrachtwagen heeft meer tijd nodig. Laat de boom 10 seconden openstaan.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Stop de simulatie, ontgrendel de stopwatch en kies met de rechtermuisknop <b>Tot 00:10</b>.</p>
+  </details>
+
+  <h2>Opdracht 2: een groen licht voor de bestuurder</h2>
+  <p>Laat een lamp branden als de boom helemaal open is, zodat de bestuurder weet dat hij mag doorrijden.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Rechtsklik op de slagboom en kies <b>Eindschakelaars plaatsen</b>. Er komen twee
+    <a href="invoer.html#eindschakelaar">eindschakelaars</a> bij: <b>Dicht</b> en <b>Open</b>. Verbind de uitgang van de
+    eindschakelaar <b>Open</b> met een <a href="uitvoer.html#lamp">lamp</a>.</p>
+  </details>
+
+  <h2>Opdracht 3: ook bij de uitrit</h2>
+  <p>Aan de uitrit staat een tweede knop. Ook die moet de boom openen.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet een tweede drukknop en een <a href="verwerking.html#of">OF-poort</a> op het paneel. Verbind beide drukknoppen
+    met de ingangen van de OF-poort, en de uitgang van de OF-poort met <b>R</b> van de stopwatch. Nu zet elke knop de
+    tijd op 00:00.</p>
+  </details>
+
+  <div class="pager"><a href="les21.html">&larr; Les 21: Een verkeerslicht met voetgangersknop</a><a href="leerpad.html">Leerpad &rarr;</a></div>

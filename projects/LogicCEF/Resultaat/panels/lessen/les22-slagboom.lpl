@@ -1,0 +1,12 @@
+TjanSimStopwatch;64;383;230;140;5;0;
+TjanSimSlagboom;130;700;252;150;
+TjanConnector;9;650;257;59;jcmTR;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;9;513;257;57;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;49;259;275;133;jcmTR;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;72;249;176;143;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanSimButton;32;209;309;58;
+TjanLogic;68;560;NIET;228;100;
+TjanSimKnop;50;207;156;51;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;

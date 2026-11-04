@@ -892,7 +892,7 @@ Begin
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KStappen,KStopwatch,KWarm,KVoeding,KMeter,KSymbolen');
+                                  'KSensor,KTeller,KStappen,KStopwatch,KSlagboom,KWarm,KVoeding,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
@@ -903,7 +903,7 @@ Begin
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
                                   'HSensor,HTeller,HStappen,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,'+
-                                  'HPersoon,HWagen,HMuziek,HVerkeer,ShowHint');
+                                  'HPersoon,HWagen,HMuziek,HVerkeer,HSlagboom,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];
     SettingsFrame.Note.ActivePageIndex:=0;

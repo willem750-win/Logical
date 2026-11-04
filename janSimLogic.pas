@@ -1824,6 +1824,7 @@ type
     FWagen:Boolean;
     FMuziek:Boolean;
     FVerkeer:Boolean;
+    FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
@@ -1896,6 +1897,7 @@ type
     DWagen:boolean;
     DMuziek:boolean;
     DVerkeer:boolean;
+    DSlagboom:boolean;
 
     bmSensor:Tbitmap;
     RSensor:TRect;
@@ -1933,6 +1935,7 @@ type
     RWagen:TRect;
     RMuziek:TRect;
     RVerkeer:TRect;
+    RSlagboom:TRect;
     DMeter:boolean;
 
     // voedingsrails (+ en - naast elkaar)
@@ -1975,6 +1978,7 @@ type
     FHWagen:String;
     FHMuziek:String;
     FHVerkeer:String;
+    FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
     FBoxTaal:TStatTaal;
@@ -2027,6 +2031,7 @@ type
     PROCEDURE SetWagen(const Value: Boolean);
     PROCEDURE SetMuziek(const Value: Boolean);
     PROCEDURE SetVerkeer(const Value: Boolean);
+    PROCEDURE SetSlagboom(const Value: Boolean);
     PROCEDURE SetSensor(const Value: Boolean);
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
@@ -2192,6 +2197,7 @@ type
     property KWagen:Boolean read FWagen write SetWagen default True;
     property KMuziek:Boolean read FMuziek write SetMuziek default True;
     property KVerkeer:Boolean read FVerkeer write SetVerkeer default True;
+    property KSlagboom:Boolean read FSlagboom write SetSlagboom default True;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
@@ -2219,6 +2225,7 @@ type
     property HWagen:String read FHWagen write FHWagen;
     property HMuziek:String read FHMuziek write FHMuziek;
     property HVerkeer:String read FHVerkeer write FHVerkeer;
+    property HSlagboom:String read FHSlagboom write FHSlagboom;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
     property HLock:String read FHLock write SetHlock;
@@ -2509,6 +2516,26 @@ end;
     function Direction: Integer; override;
     // groen voor de auto's en voor de voetgangers tegelijk
     function Gevaar: Boolean;
+  end;
+
+  { TjanSimSlagboom: slagboom van een parking. Eén ingang O links: aan = de
+    boom gaat open (omhoog), uit = de boom gaat dicht. Twee standen voor
+    eindschakelaars: Dicht en Open. Zo kan een geheugenblok en een stopwatch
+    de boom na een tijd weer laten sluiten. Draden, bewaren en de balk erft
+    hij van TjanSimPersoon. }
+  TjanSimSlagboom = class(TjanSimPersoon)
+  private
+    function Range: Integer; override;
+    function StatusText: string; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    function InputCount: Integer; override;
+    function OutputName(I: Integer): string; override;
+    // 1 omhoog, -1 omlaag, 0 als hij helemaal open of dicht staat
+    function Direction: Integer; override;
+    procedure Tick; override;
   end;
 
   { TjanSimEindschakelaar: eindschakelaar in de invoer. Hij volgt zonder
@@ -18190,14 +18217,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=7;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -19620,7 +19647,7 @@ begin
       // ---- TjanSimPersoon (begint altijd links, bij S1) en TjanSimWagen
       // (begint altijd aan de start) ----
       if (obj[1] = 'TjanSimPersoon') or (obj[1] = 'TjanSimWagen') or (obj[1] = 'TjanSimMuziek') or
-         (obj[1] = 'TjanSimVerkeerslicht') then
+         (obj[1] = 'TjanSimVerkeerslicht') or (obj[1] = 'TjanSimSlagboom') then
       begin
         if obj[1] = 'TjanSimWagen' then
           PersoonKlasse := TjanSimWagen
@@ -19628,6 +19655,8 @@ begin
           PersoonKlasse := TjanSimMuziek
         else if obj[1] = 'TjanSimVerkeerslicht' then
           PersoonKlasse := TjanSimVerkeerslicht
+        else if obj[1] = 'TjanSimSlagboom' then
+          PersoonKlasse := TjanSimSlagboom
         else
           PersoonKlasse := TjanSimPersoon;
         with PersoonKlasse.Create(self) do
@@ -20288,7 +20317,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -20318,6 +20347,7 @@ begin
   else if ptinrect(RWagen,p) and (KWagen=true) then DWagen:=true
   else if ptinrect(RMuziek,p) and (KMuziek=true) then DMuziek:=true
   else if ptinrect(RVerkeer,p) and (KVerkeer=true) then DVerkeer:=true
+  else if ptinrect(RSlagboom,p) and (KSlagboom=true) then DSlagboom:=true
   else if PtInRect(RRailPlus, P) then DRailPlus := True
   else if PtInRect(RRailMin, P) then DRailMin := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
@@ -20361,6 +20391,7 @@ begin
   else if PtInRect(RWagen, P) then NewHint := FHWagen
   else if PtInRect(RMuziek, P) then NewHint := FHMuziek
   else if PtInRect(RVerkeer, P) then NewHint := FHVerkeer
+  else if PtInRect(RSlagboom, P) then NewHint := FHSlagboom
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -20799,7 +20830,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -21032,6 +21063,8 @@ begin
     NewMuziek
   else if DVerkeer then
     NewPersoonVan(TjanSimVerkeerslicht)
+  else if DSlagboom then
+    NewPersoonVan(TjanSimSlagboom)
   else if DPersoon then
     NewPersoon
   else if DMotor then
@@ -21573,6 +21606,7 @@ if FBoxTaal=stDutch then
   HWagen:='maak Wagentje (parcours met paaltjes)';
   HMuziek:='maak Muziekdoos (8 pianotoetsen)';
   HVerkeer:='maak Verkeerslicht (met voetgangerslicht)';
+  HSlagboom:='maak Slagboom (parking)';
   HRailPlus:='maak + rail (voeding)';
   HRailMin:='maak - rail (massa)';
  end;
@@ -21605,6 +21639,7 @@ if FBoxTaal=stEnglish then
   HWagen:='create Cart (road with posts)';
   HMuziek:='create Music box (8 piano keys)';
   HVerkeer:='create Traffic light (with pedestrian light)';
+  HSlagboom:='create Barrier gate (car park)';
   HRailPlus:='create + rail (supply)';
   HRailMin:='create - rail (ground)';
   end ;
@@ -21636,6 +21671,7 @@ if FBoxTaal=stFrench then
   HWagen:='faire Chariot (parcours avec poteaux)';
   HMuziek:='faire Boîte à musique (8 touches de piano)';
   HVerkeer:='faire Feu tricolore (avec feu piétons)';
+  HSlagboom:='faire Barrière (parking)';
   HRailPlus:='faire Rail + (alimentation)';
   HRailMin:='faire Rail - (masse)';
  end;
@@ -21668,6 +21704,7 @@ if FBoxTaal=stFrench then
   HWagen:='Wagen erstellen (Strecke mit Pfosten)';
   HMuziek:='Spieldose erstellen (8 Klaviertasten)';
   HVerkeer:='Ampel erstellen (mit Fußgängerampel)';
+  HSlagboom:='Schranke erstellen (Parkplatz)';
   HRailPlus:='+ Schiene (Versorgung) erstellen';
   HRailMin:='- Schiene (Masse) erstellen';
   end;
@@ -21758,6 +21795,25 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 10 then
+  begin
+    // slagboom: geen plaatje, altijd getekend (paal met rood-witte boom)
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    Canvas.Pen.Width := 1;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Pen.Color := clBlack;
+    Canvas.Brush.Color := clGray;
+    Canvas.Rectangle(X + 3, Y + 8, X + 8, Y + 22);
+    Canvas.Rectangle(X + 1, Y + 20, X + 10, Y + 23);
+    Canvas.Brush.Color := clWhite;
+    Canvas.Rectangle(X + 7, Y + 9, X + 23, Y + 13);
+    Canvas.Pen.Color := clRed;
+    Canvas.Brush.Color := clRed;
+    Canvas.Rectangle(X + 10, Y + 10, X + 13, Y + 12);
+    Canvas.Rectangle(X + 16, Y + 10, X + 19, Y + 12);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 9 then
   begin
     // verkeerslicht: geen plaatje, altijd getekend (kast met rood, oranje, groen)
@@ -22011,6 +22067,13 @@ procedure TjanSimLogicBox.SetVerkeer(const Value: Boolean);
 begin
   if Value <> FVerkeer then
     FVerkeer := Value;
+  Invalidate;
+end;
+
+procedure TjanSimLogicBox.SetSlagboom(const Value: Boolean);
+begin
+  if Value <> FSlagboom then
+    FSlagboom := Value;
   Invalidate;
 end;
 
@@ -22687,6 +22750,16 @@ begin
         HK:= H+TOP;
       end;
 
+      // slagboom: halve knop op een eigen rij
+      RSlagboom := Rect(0, 0, 0, 0);
+      if FSlagboom then
+      begin
+        RSlagboom := Rect(LK - 4, TOP, LK + 13, HK);
+        DrawHalfKnop(RSlagboom, DSlagboom, 10);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
       // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
       RRailMin := Rect(0, 0, 0, 0);
@@ -23270,6 +23343,13 @@ begin
         DrawHalfKnop(RVerkeer, DVerkeer, 9);
         NextX(B + SPATIE);
       end;
+      RSlagboom := Rect(0, 0, 0, 0);
+      if FSlagboom then
+      begin
+        RSlagboom := Rect(LK, TOP, BK, HK);
+        DrawHalfKnop(RSlagboom, DSlagboom, 10);
+        NextX(B + SPATIE);
+      end;
 
       // voedingsrails: + en - als aparte groep (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
@@ -23734,6 +23814,13 @@ begin
       begin
         RVerkeer := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RVerkeer, DVerkeer, 9);
+        NextX(B + SPATIE);
+      end;
+      RSlagboom := Rect(0, 0, 0, 0);
+      if FSlagboom then
+      begin
+        RSlagboom := Rect(LK, TOP, BK, HK);
+        DrawHalfKnop(RSlagboom, DSlagboom, 10);
         NextX(B + SPATIE);
       end;
 
@@ -25921,6 +26008,7 @@ begin
   FPos := 0;
   FFrame := 0;
   FKijk := 1;
+  UpdateTimer;   // slagboom met O aan: weer omhoog
   Invalidate;
   MeldEindschakelaars;
 end;
@@ -26139,6 +26227,9 @@ begin
   if Self is TjanSimWagen then
     Mi.Caption := Tr(FTaal, 'Terug naar de start', 'Back to the start',
                             'Retour au départ', 'Zurück zum Start')
+  else if Self is TjanSimSlagboom then
+    Mi.Caption := Tr(FTaal, 'Boom meteen dicht', 'Close the barrier now',
+                            'Fermer la barrière maintenant', 'Schranke sofort schließen')
   else
     Mi.Caption := Tr(FTaal, 'Terug naar links (S1)', 'Back to the left (S1)',
                             'Retour à gauche (S1)', 'Zurück nach links (S1)');
@@ -27280,6 +27371,177 @@ begin
   end;
 end;
 
+
+// ============================================================
+// TjanSimSlagboom: slagboom van een parking, ingang O = openen
+// ============================================================
+
+const
+  SB_W = 150;           // breedte van het blok
+  SB_H = 130;           // hoogte van het blok
+  SB_PX = 40;           // draaipunt van de boom (op de paal)
+  SB_PY = 100;
+  SB_LEN = 96;          // lengte van de boom
+  SB_STAP = 3;          // graden per tik (60 ms): 90 graden in 1,8 s
+
+constructor TjanSimSlagboom.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := SB_W;
+  Height := SB_H;
+  FNaam := 'Slagboom';
+  HelpKeyword := 'slagboom';
+end;
+
+// FPos is de hoek van de boom in graden: 0 = dicht, 90 = open
+function TjanSimSlagboom.Range: Integer;
+begin
+  Result := 90;
+end;
+
+function TjanSimSlagboom.InputCount: Integer;
+begin
+  Result := 1;
+end;
+
+function TjanSimSlagboom.OutputName(I: Integer): string;
+begin
+  if I = 0 then
+    Result := Tr(FTaal, 'Dicht', 'Closed', 'Fermée', 'Zu')
+  else
+    Result := Tr(FTaal, 'Open', 'Open', 'Ouverte', 'Auf');
+end;
+
+function TjanSimSlagboom.Direction: Integer;
+begin
+  if FIn[0] and (FPos < Range) then Result := 1
+  else if not FIn[0] and (FPos > 0) then Result := -1
+  else Result := 0;
+end;
+
+procedure TjanSimSlagboom.Tick;
+var
+  NewPos: Integer;
+begin
+  if Direction = 0 then
+  begin
+    FTimer.Enabled := False;   // helemaal open of dicht: timer mag stoppen
+    Exit;
+  end;
+  NewPos := FPos + Direction * SB_STAP;
+  if NewPos < 0 then NewPos := 0;
+  if NewPos > Range then NewPos := Range;
+  FPos := NewPos;
+  Invalidate;
+  MeldEindschakelaars;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+function TjanSimSlagboom.StatusText: string;
+begin
+  case Direction of
+    1: Result := Tr(FTaal, 'gaat open', 'opening', 's''ouvre', 'öffnet');
+    -1: Result := Tr(FTaal, 'gaat dicht', 'closing', 'se ferme', 'schließt');
+  else
+    if FPos >= Range then
+      Result := Tr(FTaal, 'open', 'open', 'ouverte', 'offen')
+    else
+      Result := Tr(FTaal, 'dicht', 'closed', 'fermée', 'zu');
+  end;
+  Result := Tr(FTaal, 'slagboom: ', 'barrier: ', 'barrière : ', 'Schranke: ') + Result +
+    Format(' (%d°)', [FPos]);
+end;
+
+procedure TjanSimSlagboom.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'ingang O: aan = boom gaat open, uit = boom gaat dicht' + #13#10 + 'eindschakelaars Dicht en Open (rechtsklik: Eindschakelaars plaatsen)',
+              'input O: on = barrier opens, off = barrier closes' + #13#10 + 'limit switches Closed and Open (right-click: Place limit switches)',
+              'entrée O : active = la barrière s''ouvre, inactive = elle se ferme' + #13#10 + 'fins de course Fermée et Ouverte (clic droit : Placer les fins de course)',
+              'Eingang O: ein = Schranke öffnet, aus = Schranke schließt' + #13#10 + 'Endschalter Zu und Auf (Rechtsklick: Endschalter setzen)');
+end;
+
+procedure TjanSimSlagboom.Paint;
+var
+  BW, BH, i, y: Integer;
+  a, c, s: Double;
+  x1, y1, x2, y2: Integer;
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    // blok
+    Brush.Style := bsSolid;
+    Brush.Color := clCream;
+    Pen.Color := clGray;
+    Rectangle(12, 0, BW - 1, BH);
+    // aansluiting O
+    y := InPinY(0) + 3;
+    Pen.Color := clBlack;
+    Line(8, y, 12, y);
+    Brush.Color := clLime;
+    Pen.Color := clGray;
+    Rectangle(1, InPinY(0), 8, InPinY(0) + 7);
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    Font.Color := clBlack;
+    Brush.Style := bsClear;
+    TextOut(15, y - 6, 'O');
+    Brush.Style := bsSolid;
+    // weg en steunpaaltje aan het einde van de boom
+    Pen.Color := clGray;
+    Brush.Color := clSilver;
+    Rectangle(14, BH - 8, BW - 3, BH - 3);
+    Brush.Color := clGray;
+    Rectangle(SB_PX + SB_LEN - 3, SB_PY + 2, SB_PX + SB_LEN + 3, BH - 8);
+    // de boom: rood-wit gestreept, draait om het draaipunt
+    a := FPos * Pi / 180;
+    c := Cos(a);
+    s := Sin(a);
+    Pen.Color := clBlack;
+    Pen.Width := 8;
+    Line(SB_PX - Round(10 * c), SB_PY + Round(10 * s),
+         SB_PX + Round(SB_LEN * c), SB_PY - Round(SB_LEN * s));
+    Pen.Width := 6;
+    for i := 0 to 7 do
+    begin
+      x1 := SB_PX + Round(SB_LEN * i / 8 * c);
+      y1 := SB_PY - Round(SB_LEN * i / 8 * s);
+      x2 := SB_PX + Round(SB_LEN * (i + 1) / 8 * c);
+      y2 := SB_PY - Round(SB_LEN * (i + 1) / 8 * s);
+      if Odd(i) then Pen.Color := clWhite else Pen.Color := clRed;
+      Line(x1, y1, x2, y2);
+    end;
+    // tegengewicht achter het draaipunt
+    Pen.Color := clDkGray;
+    Line(SB_PX, SB_PY, SB_PX - Round(10 * c), SB_PY + Round(10 * s));
+    Pen.Width := 1;
+    // paal (kast) met draaipunt
+    Pen.Color := clBlack;
+    Brush.Color := $00C0C0C0;
+    Rectangle(SB_PX - 8, SB_PY - 4, SB_PX + 8, BH - 8);
+    Brush.Color := clDkGray;
+    Ellipse(SB_PX - 3, SB_PY - 3, SB_PX + 4, SB_PY + 4);
+    // lampje op de kast: rood = dicht, oranje = beweegt, groen = open
+    if Direction <> 0 then Brush.Color := $0080FF
+    else if FPos >= Range then Brush.Color := clLime
+    else Brush.Color := clRed;
+    Ellipse(SB_PX - 4, SB_PY + 8, SB_PX + 5, SB_PY + 17);
+    Brush.Style := bsClear;
+    if FSelect or FSelected then
+    begin
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+  end;
+end;
 // ============================================================
 // TjanSimEindschakelaar: eindschakelaar in de invoer, volgt de persoon of
 // het wagentje zonder draad

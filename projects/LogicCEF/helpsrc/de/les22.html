@@ -1,0 +1,67 @@
+<!-- titel: Lektion 22 - Eine Schranke am Parkplatz -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 22 von 22</p>
+  <h1>Eine Schranke am Parkplatz</h1>
+  <div class="goal"><strong>Ziel:</strong> eine Schranke öffnen, wenn jemand auf die Tickettaste drückt, und sie nach
+  ein paar Sekunden von selbst wieder schließen lassen. Sie verwenden, was Sie in <a href="les20.html">Lektion 20</a>
+  gelernt haben: eine Stoppuhr und ein NICHT-Gatter.</div>
+
+  <p><a class="open" href="../../panels/lessen/les22-slagboom.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les22-slagboom.png" alt="Schalter und Tickettaste an einer Stoppuhr, mit einem NICHT-Gatter zur Schranke">
+    <figcaption>Die Endzeit 00:05 ist erreicht: Q ist ein, das NICHT-Gatter aus und die Schranke ist zu.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Einen <a href="invoer.html#schakelaar">Schalter</a> am Eingang <b>S</b> der Stoppuhr: Der Parkplatz ist offen.</li>
+    <li>Einen <a href="invoer.html#drukknop">Taster</a> an <b>R</b>: die Tickettaste.</li>
+    <li>Eine <a href="verwerking.html#stopwatch">Stoppuhr</a> mit der Endzeit <b>00:05</b>.</li>
+    <li>Ein <a href="verwerking.html#niet">NICHT-Gatter</a> zwischen dem Ausgang <b>Q</b> und der
+      <a href="uitvoer.html#slagboom">Schranke</a>.</li>
+  </ul>
+
+  <h2>Wie funktioniert es?</h2>
+  <p>Ein Druck auf die Tickettaste setzt die Stoppuhr auf 00:00. Solange die Zeit läuft, ist Q aus und der Ausgang des
+  NICHT-Gatters ein: Die Schranke öffnet sich. Nach 5 Sekunden ist die Endzeit erreicht: Q geht an, das NICHT-Gatter
+  geht aus und die Schranke schließt wieder. Die Stoppuhr bleibt auf 00:05 stehen, bis das nächste Auto auf die Taste
+  drückt.</p>
+  <p>Das ist dieselbe Idee wie eine Treppenhausbeleuchtung: ein Druck auf die Taste, und nach einer Zeit geht das Licht
+  von selbst aus.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein. Die Stoppuhr beginnt bei 00:00, also öffnet sich
+      die Schranke zuerst und schließt nach 5 Sekunden.</li>
+    <li>Drücken Sie die Tickettaste: Die Schranke geht hoch. Die Lampe am Pfosten ist gelb, während sie sich bewegt, und
+      grün, wenn sie ganz offen ist.</li>
+    <li>Nach 5 Sekunden schließt die Schranke wieder und die Lampe wird rot.</li>
+    <li>Drücken Sie noch einmal auf die Taste, während die Schranke schließt: Sie öffnet sich sofort wieder. So wird ein
+      Auto nie getroffen.</li>
+  </ol>
+
+  <h2>Aufgabe 1: mehr Zeit</h2>
+  <p>Ein Lastwagen braucht mehr Zeit. Lassen Sie die Schranke 10 Sekunden offen.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Stoppen Sie die Simulation, entsperren Sie die Stoppuhr und wählen Sie mit der rechten Maustaste <b>Bis 00:10</b>.</p>
+  </details>
+
+  <h2>Aufgabe 2: ein grünes Licht für den Fahrer</h2>
+  <p>Lassen Sie eine Lampe leuchten, wenn die Schranke ganz offen ist, damit der Fahrer weiß, dass er weiterfahren darf.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Rechtsklick auf die Schranke und <b>Endschalter setzen</b> wählen. Es kommen zwei
+    <a href="invoer.html#eindschakelaar">Endschalter</a> dazu: <b>Zu</b> und <b>Auf</b>. Verbinden Sie den Ausgang des
+    Endschalters <b>Auf</b> mit einer <a href="uitvoer.html#lamp">Lampe</a>.</p>
+  </details>
+
+  <h2>Aufgabe 3: auch an der Ausfahrt</h2>
+  <p>An der Ausfahrt gibt es eine zweite Taste. Auch sie soll die Schranke öffnen.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Setzen Sie einen zweiten Taster und ein <a href="verwerking.html#of">ODER-Gatter</a> auf das Panel. Verbinden Sie
+    beide Taster mit den Eingängen des ODER-Gatters und den Ausgang des ODER-Gatters mit <b>R</b> der Stoppuhr. Jetzt
+    setzt jede Taste die Zeit auf 00:00.</p>
+  </details>
+
+  <div class="pager"><a href="les21.html">&larr; Lektion 21: Eine Ampel mit Fußgängertaste</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

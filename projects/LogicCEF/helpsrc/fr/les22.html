@@ -1,0 +1,68 @@
+<!-- titel: Leçon 22 - Une barrière de parking -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 22 sur 22</p>
+  <h1>Une barrière de parking</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> ouvrir une barrière quand quelqu&rsquo;un appuie sur le bouton du
+  ticket, et la laisser se refermer toute seule après quelques secondes. Vous utilisez ce que vous avez appris à la
+  <a href="les20.html">leçon 20</a>&nbsp;: un chronomètre et une porte NON.</div>
+
+  <p><a class="open" href="../../panels/lessen/les22-slagboom.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les22-slagboom.png" alt="Interrupteur et bouton du ticket sur un chronomètre, avec une porte NON vers la barrière">
+    <figcaption>L&rsquo;heure de fin 00:05 est atteinte&nbsp;: Q est actif, la porte NON inactive et la barrière est fermée.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous&nbsp;?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur l&rsquo;entrée <b>S</b> du chronomètre&nbsp;: le parking
+      est ouvert.</li>
+    <li>Un <a href="invoer.html#drukknop">bouton-poussoir</a> sur <b>R</b>&nbsp;: le bouton du ticket.</li>
+    <li>Un <a href="verwerking.html#stopwatch">chronomètre</a> avec l&rsquo;heure de fin <b>00:05</b>.</li>
+    <li>Une <a href="verwerking.html#niet">porte NON</a> entre la sortie <b>Q</b> et la
+      <a href="uitvoer.html#slagboom">barrière</a>.</li>
+  </ul>
+
+  <h2>Comment ça marche&nbsp;?</h2>
+  <p>Un appui sur le bouton du ticket remet le chronomètre à 00:00. Tant que le temps court, Q est inactif et la sortie
+  de la porte NON est active&nbsp;: la barrière s&rsquo;ouvre. Après 5 secondes, l&rsquo;heure de fin est atteinte&nbsp;:
+  Q s&rsquo;active, la porte NON s&rsquo;éteint et la barrière se referme. Le chronomètre reste à 00:05 jusqu&rsquo;à ce
+  que la voiture suivante appuie sur le bouton.</p>
+  <p>C&rsquo;est la même idée que l&rsquo;éclairage d&rsquo;une cage d&rsquo;escalier&nbsp;: un appui sur le bouton, et après
+  un moment la lumière s&rsquo;éteint toute seule.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et mettez l&rsquo;interrupteur en marche. Le chronomètre commence à 00:00&nbsp;: la barrière
+      s&rsquo;ouvre d&rsquo;abord et se ferme après 5 secondes.</li>
+    <li>Appuyez sur le bouton du ticket&nbsp;: la barrière se lève. Le voyant sur le poteau est orange pendant qu&rsquo;elle
+      bouge et vert quand elle est complètement ouverte.</li>
+    <li>Après 5 secondes, la barrière se referme et le voyant devient rouge.</li>
+    <li>Appuyez encore sur le bouton pendant que la barrière se ferme&nbsp;: elle se rouvre aussitôt. Ainsi, une voiture
+      n&rsquo;est jamais touchée.</li>
+  </ol>
+
+  <h2>Exercice 1&nbsp;: plus de temps</h2>
+  <p>Un camion a besoin de plus de temps. Laissez la barrière ouverte pendant 10 secondes.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Arrêtez la simulation, déverrouillez le chronomètre et choisissez <b>Jusqu&rsquo;à 00:10</b> avec le bouton droit.</p>
+  </details>
+
+  <h2>Exercice 2&nbsp;: un feu vert pour le conducteur</h2>
+  <p>Allumez une lampe quand la barrière est complètement ouverte, pour que le conducteur sache qu&rsquo;il peut passer.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Clic droit sur la barrière, puis <b>Placer les fins de course</b>. Deux
+    <a href="invoer.html#eindschakelaar">fins de course</a> apparaissent&nbsp;: <b>Fermée</b> et <b>Ouverte</b>. Reliez la
+    sortie de la fin de course <b>Ouverte</b> à une <a href="uitvoer.html#lamp">lampe</a>.</p>
+  </details>
+
+  <h2>Exercice 3&nbsp;: aussi à la sortie</h2>
+  <p>À la sortie se trouve un deuxième bouton. Lui aussi doit ouvrir la barrière.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Placez un deuxième bouton-poussoir et une <a href="verwerking.html#of">porte OU</a> sur le panneau. Reliez les
+    deux boutons aux entrées de la porte OU, et la sortie de la porte OU à <b>R</b> du chronomètre. Maintenant, chaque
+    bouton remet le temps à 00:00.</p>
+  </details>
+
+  <div class="pager"><a href="les21.html">&larr; Leçon 21 : Un feu avec bouton piétons</a><a href="leerpad.html">Parcours &rarr;</a></div>
