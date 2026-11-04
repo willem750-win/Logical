@@ -1,0 +1,69 @@
+<!-- titel: Leçon 21 - Un feu avec bouton piétons -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 21 sur 21</p>
+  <h1>Un feu tricolore avec bouton piétons</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> commander un feu tricolore avec <a href="logicrun.html">LogicRun</a>
+  comme dans la rue&nbsp;: les voitures ont le vert jusqu&rsquo;à ce qu&rsquo;un piéton appuie sur le bouton, puis le piéton
+  a le vert.</div>
+
+  <p><a class="open" href="../../panels/lessen/les21-verkeerslicht.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les21-verkeerslicht.png" alt="Interrupteur et bouton-poussoir sur LogicRun, avec un feu sur UIT0 à UIT4">
+    <figcaption>Après un appui sur le bouton&nbsp;: rouge pour les voitures et le bonhomme vert est allumé.</figcaption>
+  </figure>
+
+  <h2>Que voyez-vous&nbsp;?</h2>
+  <ul>
+    <li>Un <a href="invoer.html#schakelaar">interrupteur</a> sur <b>DIN1</b>&nbsp;: met le programme en marche et à l&rsquo;arrêt.</li>
+    <li>Un <a href="invoer.html#drukknop">bouton-poussoir</a> sur <b>DIN2</b>&nbsp;: le bouton piétons.</li>
+    <li>Le <a href="logicrun.html">bloc LogicRun</a> avec le programme <i>Feu avec bouton piétons</i>.</li>
+    <li>Le <a href="uitvoer.html#verkeerslicht">feu tricolore</a> sur UIT0 à UIT4&nbsp;: rouge, orange et vert pour les
+      voitures, et un bonhomme rouge et un vert pour les piétons.</li>
+  </ul>
+
+  <h2>Le programme</h2>
+  <table>
+    <tr><th>Pas</th><th>Voitures</th><th>Piétons</th><th>Combien de temps&nbsp;?</th></tr>
+    <tr><td>1</td><td>vert</td><td>rouge</td><td>jusqu&rsquo;à ce qu&rsquo;on appuie sur le bouton de DIN2</td></tr>
+    <tr><td>2</td><td>orange</td><td>rouge</td><td>3 secondes</td></tr>
+    <tr><td>3</td><td>rouge</td><td>rouge</td><td>1 seconde&nbsp;: le carrefour est vide</td></tr>
+    <tr><td>4</td><td>rouge</td><td>vert</td><td>8 secondes&nbsp;: le piéton traverse</td></tr>
+    <tr><td>5</td><td>rouge</td><td>rouge</td><td>2 secondes, puis de nouveau le pas 1</td></tr>
+  </table>
+  <p>Le pas 1 attend une entrée&nbsp;: vous le choisissez dans la fenêtre LogicRun, dans la colonne <b>attendre</b>
+  (<i>Jusqu&rsquo;à entrée active</i>, DIN2). Les autres pas durent un temps fixe&nbsp;: 6, 2, 16 et 4 fois 500 ms.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et mettez l&rsquo;interrupteur en marche&nbsp;: les voitures ont le vert, les piétons le rouge.</li>
+    <li>Appuyez sur le bouton-poussoir&nbsp;: le feu passe à l&rsquo;orange, puis au rouge, et le bonhomme vert s&rsquo;allume.</li>
+    <li>Après 8 secondes, tout est de nouveau rouge et les voitures retrouvent le vert.</li>
+    <li>Si vous n&rsquo;appuyez pas sur le bouton, le vert reste pour les voitures.</li>
+  </ol>
+
+  <h2>Exercice 1&nbsp;: plus de temps pour traverser</h2>
+  <p>Les personnes âgées ont besoin de plus de temps. Donnez 12 secondes de vert aux piétons.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Double-cliquez sur le bloc LogicRun. Réglez la durée du pas 4 sur <b>24</b> (24 x 500 ms = 12 secondes).</p>
+  </details>
+
+  <h2>Exercice 2&nbsp;: vert clignotant</h2>
+  <p>À beaucoup d&rsquo;endroits, le bonhomme vert clignote peu avant la fin. Faites clignoter le bonhomme vert 3 fois avant
+  qu&rsquo;il ne passe au rouge.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Raccourcissez le pas 4 (par exemple 10) et ajoutez ensuite six pas courts qui allument et éteignent tour à tour le
+    bonhomme vert&nbsp;: rouge pour les voitures avec le bonhomme vert (UIT0 + UIT4), puis seulement rouge pour les
+    voitures (UIT0), chaque pas 1 fois 500 ms. Ensuite vient le pas où tout est rouge.</p>
+  </details>
+
+  <h2>Exercice 3&nbsp;: danger&nbsp;!</h2>
+  <p>Dans un pas, allumez par erreur le vert pour les voitures et le vert pour les piétons en même temps. Que fait le
+  feu&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Le feu reçoit un cadre rouge avec un <b>!</b> et la barre d&rsquo;état indique <i>DANGER</i>. À un vrai carrefour,
+    cela ne doit jamais arriver&nbsp;; c&rsquo;est pourquoi un vrai feu a toujours quelques secondes de tout rouge entre les deux.</p>
+  </details>
+
+  <div class="pager"><a href="les20.html">&larr; Leçon 20 : Commander dans le temps</a><a href="leerpad.html">Parcours &rarr;</a></div>

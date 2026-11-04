@@ -1,0 +1,68 @@
+<!-- titel: Lesson 21 - A traffic light with pedestrian button -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 21 of 21</p>
+  <h1>A traffic light with pedestrian button</h1>
+  <div class="goal"><strong>Goal:</strong> control a traffic light with <a href="logicrun.html">LogicRun</a> like in the
+  street: the cars have green until a pedestrian presses the button, then the pedestrian gets green.</div>
+
+  <p><a class="open" href="../../panels/lessen/les21-verkeerslicht.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les21-verkeerslicht.png" alt="Switch and push button on LogicRun, with a traffic light on UIT0 to UIT4">
+    <figcaption>After pressing the button: red for the cars and the green man is lit.</figcaption>
+  </figure>
+
+  <h2>What do you see?</h2>
+  <ul>
+    <li>A <a href="invoer.html#schakelaar">switch</a> on <b>DIN1</b>: switches the program on and off.</li>
+    <li>A <a href="invoer.html#drukknop">push button</a> on <b>DIN2</b>: the pedestrian button.</li>
+    <li>The <a href="logicrun.html">LogicRun block</a> with the program <i>Traffic light with pedestrian button</i>.</li>
+    <li>The <a href="uitvoer.html#verkeerslicht">traffic light</a> on UIT0 to UIT4: red, amber and green for the cars, and a
+      red and a green figure for the pedestrians.</li>
+  </ul>
+
+  <h2>The program</h2>
+  <table>
+    <tr><th>Step</th><th>Cars</th><th>Pedestrians</th><th>How long?</th></tr>
+    <tr><td>1</td><td>green</td><td>red</td><td>until the button on DIN2 is pressed</td></tr>
+    <tr><td>2</td><td>amber</td><td>red</td><td>3 seconds</td></tr>
+    <tr><td>3</td><td>red</td><td>red</td><td>1 second: the crossing is empty</td></tr>
+    <tr><td>4</td><td>red</td><td>green</td><td>8 seconds: the pedestrian crosses</td></tr>
+    <tr><td>5</td><td>red</td><td>red</td><td>2 seconds, then step 1 again</td></tr>
+  </table>
+  <p>Step 1 waits for an input: you choose that in the LogicRun window in the column <b>wait for</b>
+  (<i>Until input on</i>, DIN2). The other steps last a fixed time: 6, 2, 16 and 4 times 500 ms.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and switch the switch on: the cars get green, the pedestrians red.</li>
+    <li>Press the push button: the light changes to amber, then red, and the green figure comes on.</li>
+    <li>After 8 seconds everything is red again and the cars get green again.</li>
+    <li>If you do not press the button, it stays green for the cars.</li>
+  </ol>
+
+  <h2>Task 1: more time to cross</h2>
+  <p>Older people need more time. Give the pedestrians 12 seconds of green.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Double-click the LogicRun block. Set the time of step 4 to <b>24</b> (24 x 500 ms = 12 seconds).</p>
+  </details>
+
+  <h2>Task 2: blinking green</h2>
+  <p>In many places the green figure blinks shortly before the end. Make the green figure blink 3 times before it turns
+  red.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Make step 4 shorter (for example 10) and add six short steps after it that switch the green figure on and off in
+    turn: red for the cars with the green figure (UIT0 + UIT4), then only red for the cars (UIT0), each step 1 time
+    500 ms. Then the step with everything red follows.</p>
+  </details>
+
+  <h2>Task 3: danger!</h2>
+  <p>In one step, switch on green for the cars and green for the pedestrians at the same time by mistake. What does the
+  traffic light do?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>The traffic light gets a red border with a <b>!</b> and the status bar says <i>DANGER</i>. At a real crossing that
+    must never happen; that is why a real traffic light always has a few seconds of all red in between.</p>
+  </details>
+
+  <div class="pager"><a href="les20.html">&larr; Lesson 20: Switching on time</a><a href="leerpad.html">Learning path &rarr;</a></div>

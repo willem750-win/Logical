@@ -1,0 +1,68 @@
+<!-- titel: Lektion 21 - Eine Ampel mit Fußgängertaste -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 21 von 21</p>
+  <h1>Eine Ampel mit Fußgängertaste</h1>
+  <div class="goal"><strong>Ziel:</strong> mit <a href="logicrun.html">LogicRun</a> eine Ampel steuern wie auf der Straße:
+  Die Autos haben Grün, bis ein Fußgänger auf die Taste drückt, dann bekommt der Fußgänger Grün.</div>
+
+  <p><a class="open" href="../../panels/lessen/les21-verkeerslicht.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les21-verkeerslicht.png" alt="Schalter und Taster an LogicRun, mit einer Ampel an UIT0 bis UIT4">
+    <figcaption>Nach einem Druck auf die Taste: Rot für die Autos und das grüne Männchen leuchtet.</figcaption>
+  </figure>
+
+  <h2>Was sehen Sie?</h2>
+  <ul>
+    <li>Einen <a href="invoer.html#schakelaar">Schalter</a> an <b>DIN1</b>: schaltet das Programm ein und aus.</li>
+    <li>Einen <a href="invoer.html#drukknop">Taster</a> an <b>DIN2</b>: die Fußgängertaste.</li>
+    <li>Den <a href="logicrun.html">LogicRun-Block</a> mit dem Programm <i>Ampel mit Fußgängertaste</i>.</li>
+    <li>Die <a href="uitvoer.html#verkeerslicht">Ampel</a> an UIT0 bis UIT4: rot, gelb und grün für die Autos und ein rotes
+      und ein grünes Männchen für die Fußgänger.</li>
+  </ul>
+
+  <h2>Das Programm</h2>
+  <table>
+    <tr><th>Schritt</th><th>Autos</th><th>Fußgänger</th><th>Wie lange?</th></tr>
+    <tr><td>1</td><td>grün</td><td>rot</td><td>bis die Taste an DIN2 gedrückt wird</td></tr>
+    <tr><td>2</td><td>gelb</td><td>rot</td><td>3 Sekunden</td></tr>
+    <tr><td>3</td><td>rot</td><td>rot</td><td>1 Sekunde: die Kreuzung ist leer</td></tr>
+    <tr><td>4</td><td>rot</td><td>grün</td><td>8 Sekunden: der Fußgänger geht hinüber</td></tr>
+    <tr><td>5</td><td>rot</td><td>rot</td><td>2 Sekunden, danach wieder Schritt 1</td></tr>
+  </table>
+  <p>Schritt 1 wartet auf einen Eingang: Das wählen Sie im LogicRun-Fenster in der Spalte <b>warten auf</b>
+  (<i>Bis Eingang ein</i>, DIN2). Die anderen Schritte dauern eine feste Zeit: 6, 2, 16 und 4 mal 500 ms.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie den Schalter ein: Die Autos haben Grün, die Fußgänger Rot.</li>
+    <li>Drücken Sie den Taster: Die Ampel springt auf Gelb, dann auf Rot, und das grüne Männchen geht an.</li>
+    <li>Nach 8 Sekunden ist alles wieder rot und die Autos bekommen wieder Grün.</li>
+    <li>Drücken Sie nicht auf die Taste, bleibt es grün für die Autos.</li>
+  </ol>
+
+  <h2>Aufgabe 1: länger hinübergehen</h2>
+  <p>Ältere Menschen brauchen mehr Zeit. Geben Sie den Fußgängern 12 Sekunden Grün.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Doppelklicken Sie auf den LogicRun-Block. Stellen Sie bei Schritt 4 die Zeit auf <b>24</b> (24 x 500 ms = 12 Sekunden).</p>
+  </details>
+
+  <h2>Aufgabe 2: blinkendes Grün</h2>
+  <p>An vielen Orten blinkt das grüne Männchen kurz vor dem Ende. Lassen Sie das grüne Männchen 3 Mal blinken, bevor es
+  rot wird.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Machen Sie Schritt 4 kürzer (zum Beispiel 10) und fügen Sie danach sechs kurze Schritte ein, die das grüne Männchen
+    abwechselnd ein- und ausschalten: rot für die Autos mit grünem Männchen (UIT0 + UIT4), dann nur rot für die Autos
+    (UIT0), jeder Schritt 1 mal 500 ms. Danach folgt der Schritt mit allem rot.</p>
+  </details>
+
+  <h2>Aufgabe 3: Gefahr!</h2>
+  <p>Schalten Sie in einem Schritt aus Versehen Grün für die Autos und Grün für die Fußgänger gleichzeitig ein. Was macht
+  die Ampel?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Die Ampel bekommt einen roten Rand mit einem <b>!</b> und in der Statusleiste steht <i>GEFAHR</i>. An einer echten
+    Kreuzung darf das nie passieren; darum gibt es bei einer echten Ampel immer ein paar Sekunden alles rot dazwischen.</p>
+  </details>
+
+  <div class="pager"><a href="les20.html">&larr; Lektion 20: Nach Zeit schalten</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

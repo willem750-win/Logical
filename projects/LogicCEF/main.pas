@@ -850,15 +850,24 @@ end;
 procedure TmainForm.maaksettingsframe;
 var
   centerleft: integer;
+  WR: TRect;
 Begin
   SettingsFrame := TSettingsFrame.Create(nil);
   SettingsFrame.Hide;
-  SettingsFrame.Height := 500;
-  SettingsFrame.Width := 366;
+  // zo hoog als het werkvlak (de lijsten schuiven als ze toch te lang zijn),
+  // 18 breder dan de kolommen voor de schuifbalk
+  WR := Grid.GetWorkAreaRect;
+  SettingsFrame.Height := WR.Bottom - WR.Top - 10;
+  if SettingsFrame.Height < 500 then SettingsFrame.Height := 500;
+  SettingsFrame.Width := 384;
   SettingsFrame.Parent := Grid;
+  SettingsFrame.Note.SetBounds(0, 0, SettingsFrame.Width, SettingsFrame.Height);
 
   SettingsFrame.Left := (Grid.Width  - SettingsFrame.Width)  div 2;
-  SettingsFrame.Top  := (Grid.Height - SettingsFrame.Height +80) div 2;
+  if WR.Bottom - WR.Top - 10 >= 500 then
+    SettingsFrame.Top := WR.Top + 5
+  else
+    SettingsFrame.Top  := (Grid.Height - SettingsFrame.Height +80) div 2;
 
   // Stel de verwijdercallback in
   SettingsFrame.OnRemove := @RemoveSettingsFrame;
@@ -883,7 +892,7 @@ Begin
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KWarm,KDraad,KVoeding,KMeter,KSymbolen');
+                                  'KSensor,KTeller,KStappen,KStopwatch,KWarm,KVoeding,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
@@ -893,7 +902,8 @@ Begin
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
-                                  'HSensor,HTeller,HWarm,HMeter,HRailPlus,HRailMin,ShowHint');
+                                  'HSensor,HTeller,HStappen,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,'+
+                                  'HPersoon,HWagen,HMuziek,HVerkeer,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];
     SettingsFrame.Note.ActivePageIndex:=0;
@@ -1505,6 +1515,7 @@ begin
   Box.KPersoon := Grid.KLogicRun;
   Box.KWagen := Grid.KLogicRun;
   Box.KMuziek := Grid.KLogicRun;
+  Box.KVerkeer := Grid.KLogicRun;
   Grid.OnKLogicRunChange := @GridKLogicRunChange;
   UpdateUndoHints;
   UpdateUndoButtons;
@@ -1591,6 +1602,7 @@ begin
   Box.KPersoon := Grid.KLogicRun;
   Box.KWagen := Grid.KLogicRun;
   Box.KMuziek := Grid.KLogicRun;
+  Box.KVerkeer := Grid.KLogicRun;
   if (not Grid.KLogicRun) and Assigned(FLogicRunForm) then
     FLogicRunForm.Hide;
 end;

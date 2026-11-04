@@ -1823,6 +1823,7 @@ type
     FPersoon:Boolean;
     FWagen:Boolean;
     FMuziek:Boolean;
+    FVerkeer:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
@@ -1894,6 +1895,7 @@ type
     DPersoon:boolean;
     DWagen:boolean;
     DMuziek:boolean;
+    DVerkeer:boolean;
 
     bmSensor:Tbitmap;
     RSensor:TRect;
@@ -1930,6 +1932,7 @@ type
     RPersoon:TRect;
     RWagen:TRect;
     RMuziek:TRect;
+    RVerkeer:TRect;
     DMeter:boolean;
 
     // voedingsrails (+ en - naast elkaar)
@@ -1971,6 +1974,7 @@ type
     FHPersoon:String;
     FHWagen:String;
     FHMuziek:String;
+    FHVerkeer:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
     FBoxTaal:TStatTaal;
@@ -2022,6 +2026,7 @@ type
     PROCEDURE SetPersoon(const Value: Boolean);
     PROCEDURE SetWagen(const Value: Boolean);
     PROCEDURE SetMuziek(const Value: Boolean);
+    PROCEDURE SetVerkeer(const Value: Boolean);
     PROCEDURE SetSensor(const Value: Boolean);
     PROCEDURE SetWarm(const Value: Boolean);
     PROCEDURE SetDisplay(const Value: Boolean);
@@ -2186,6 +2191,7 @@ type
     property KPersoon:Boolean read FPersoon write SetPersoon default True;
     property KWagen:Boolean read FWagen write SetWagen default True;
     property KMuziek:Boolean read FMuziek write SetMuziek default True;
+    property KVerkeer:Boolean read FVerkeer write SetVerkeer default True;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
@@ -2212,6 +2218,7 @@ type
     property HPersoon:String read FHPersoon write FHPersoon;
     property HWagen:String read FHWagen write FHWagen;
     property HMuziek:String read FHMuziek write FHMuziek;
+    property HVerkeer:String read FHVerkeer write FHVerkeer;
     property HWarm:String read FHWarm write SetHWarm;
     property HSensor:String read FHSensor write SetHSensor;
     property HLock:String read FHLock write SetHlock;
@@ -2480,6 +2487,28 @@ end;
     function NootLetter(I: Integer): string;
     // geluid aan (standaard) of alleen de toetsen laten oplichten
     property Geluid: Boolean read FGeluid write FGeluid;
+  end;
+
+  { TjanSimVerkeerslicht: verkeerslicht voor auto's (rood, oranje, groen) en
+    een voetgangerslicht (rood mannetje, groen mannetje). Vijf ingangen links,
+    op dezelfde hoogte als UIT0..UIT4 van LogicRun: R, O, G, VR en VG. Staan
+    groen voor de auto's en groen voor de voetgangers samen aan, dan toont
+    hij een rood uitroepteken (gevaarlijk). Uitvoer: aan de - rail. Draden,
+    bewaren en de balk erft hij van TjanSimPersoon. }
+  TjanSimVerkeerslicht = class(TjanSimPersoon)
+  private
+    function StatusText: string; override;
+    procedure BuildPopup; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    function InputCount: Integer; override;
+    function InPinY(I: Integer): Integer; override;
+    function OutputCount: Integer; override;
+    function Direction: Integer; override;
+    // groen voor de auto's en voor de voetgangers tegelijk
+    function Gevaar: Boolean;
   end;
 
   { TjanSimEindschakelaar: eindschakelaar in de invoer. Hij volgt zonder
@@ -18161,14 +18190,14 @@ begin
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=7;
   // opzetten van knoppen (Uitvoerobjecten)
-  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FDisplay:=true;
+  FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FDisplay:=true;
   FVoeding:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
 
   //DReset:=false;
-  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DWarm:=false;
+  DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
@@ -18465,7 +18494,9 @@ begin
   for i := 0 to FParent.ControlCount - 1 do
   begin
     c := FParent.Controls[i];
-    if c <> Self then
+    // niet de knoppenbalk zelf en geen venster dat over het paneel ligt
+    // (instellingen): dat zou bij elke momentopname mee verspringen
+    if (c <> Self) and not (c is TCustomFrame) then
       c.SetBounds(c.Left + DX, c.Top + DY, c.Width, c.Height);
   end;
 end;
@@ -19588,12 +19619,15 @@ begin
 
       // ---- TjanSimPersoon (begint altijd links, bij S1) en TjanSimWagen
       // (begint altijd aan de start) ----
-      if (obj[1] = 'TjanSimPersoon') or (obj[1] = 'TjanSimWagen') or (obj[1] = 'TjanSimMuziek') then
+      if (obj[1] = 'TjanSimPersoon') or (obj[1] = 'TjanSimWagen') or (obj[1] = 'TjanSimMuziek') or
+         (obj[1] = 'TjanSimVerkeerslicht') then
       begin
         if obj[1] = 'TjanSimWagen' then
           PersoonKlasse := TjanSimWagen
         else if obj[1] = 'TjanSimMuziek' then
           PersoonKlasse := TjanSimMuziek
+        else if obj[1] = 'TjanSimVerkeerslicht' then
+          PersoonKlasse := TjanSimVerkeerslicht
         else
           PersoonKlasse := TjanSimPersoon;
         with PersoonKlasse.Create(self) do
@@ -20254,7 +20288,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -20283,6 +20317,7 @@ begin
   else if ptinrect(RPersoon,p) and (KPersoon=true) then DPersoon:=true
   else if ptinrect(RWagen,p) and (KWagen=true) then DWagen:=true
   else if ptinrect(RMuziek,p) and (KMuziek=true) then DMuziek:=true
+  else if ptinrect(RVerkeer,p) and (KVerkeer=true) then DVerkeer:=true
   else if PtInRect(RRailPlus, P) then DRailPlus := True
   else if PtInRect(RRailMin, P) then DRailMin := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
@@ -20325,6 +20360,7 @@ begin
   else if PtInRect(RPersoon, P) then NewHint := FHPersoon
   else if PtInRect(RWagen, P) then NewHint := FHWagen
   else if PtInRect(RMuziek, P) then NewHint := FHMuziek
+  else if PtInRect(RVerkeer, P) then NewHint := FHVerkeer
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -20763,7 +20799,7 @@ var
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
-    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DDisplay := False;
+    DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
 
     // nieuw
@@ -20994,6 +21030,8 @@ begin
     NewWagen
   else if DMuziek then
     NewMuziek
+  else if DVerkeer then
+    NewPersoonVan(TjanSimVerkeerslicht)
   else if DPersoon then
     NewPersoon
   else if DMotor then
@@ -21534,6 +21572,7 @@ if FBoxTaal=stDutch then
   HPersoon:='maak Persoon (met eindschakelaars)';
   HWagen:='maak Wagentje (parcours met paaltjes)';
   HMuziek:='maak Muziekdoos (8 pianotoetsen)';
+  HVerkeer:='maak Verkeerslicht (met voetgangerslicht)';
   HRailPlus:='maak + rail (voeding)';
   HRailMin:='maak - rail (massa)';
  end;
@@ -21565,6 +21604,7 @@ if FBoxTaal=stEnglish then
   HPersoon:='create Person (with limit switches)';
   HWagen:='create Cart (road with posts)';
   HMuziek:='create Music box (8 piano keys)';
+  HVerkeer:='create Traffic light (with pedestrian light)';
   HRailPlus:='create + rail (supply)';
   HRailMin:='create - rail (ground)';
   end ;
@@ -21595,6 +21635,7 @@ if FBoxTaal=stFrench then
   HPersoon:='faire Personne (avec fins de course)';
   HWagen:='faire Chariot (parcours avec poteaux)';
   HMuziek:='faire Boîte à musique (8 touches de piano)';
+  HVerkeer:='faire Feu tricolore (avec feu piétons)';
   HRailPlus:='faire Rail + (alimentation)';
   HRailMin:='faire Rail - (masse)';
  end;
@@ -21626,6 +21667,7 @@ if FBoxTaal=stFrench then
   HPersoon:='Person erstellen (mit Endschaltern)';
   HWagen:='Wagen erstellen (Strecke mit Pfosten)';
   HMuziek:='Spieldose erstellen (8 Klaviertasten)';
+  HVerkeer:='Ampel erstellen (mit Fußgängerampel)';
   HRailPlus:='+ Schiene (Versorgung) erstellen';
   HRailMin:='- Schiene (Masse) erstellen';
   end;
@@ -21716,6 +21758,24 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 9 then
+  begin
+    // verkeerslicht: geen plaatje, altijd getekend (kast met rood, oranje, groen)
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    Canvas.Pen.Width := 1;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Pen.Color := clBlack;
+    Canvas.Brush.Color := $303030;
+    Canvas.RoundRect(X + 7, Y + 1, X + 18, Y + 23, 4, 4);
+    Canvas.Brush.Color := clRed;
+    Canvas.Ellipse(X + 9, Y + 3, X + 16, Y + 10);
+    Canvas.Brush.Color := $0080FF;
+    Canvas.Ellipse(X + 9, Y + 9, X + 16, Y + 16);
+    Canvas.Brush.Color := clLime;
+    Canvas.Ellipse(X + 9, Y + 15, X + 16, Y + 22);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 8 then
   begin
     // muziekdoos: geen plaatje, altijd getekend (klavier met een noot)
@@ -21944,6 +22004,13 @@ procedure TjanSimLogicBox.SetMuziek(const Value: Boolean);
 begin
   if Value <> FMuziek then
     FMuziek := Value;
+  Invalidate;
+end;
+
+procedure TjanSimLogicBox.SetVerkeer(const Value: Boolean);
+begin
+  if Value <> FVerkeer then
+    FVerkeer := Value;
   Invalidate;
 end;
 
@@ -22601,12 +22668,21 @@ begin
         HK:= H+TOP;
       end;
 
-      // muziekdoos: halve knop op een eigen rij
+      // muziekdoos en verkeerslicht: halve knoppen op een eigen rij
       RMuziek := Rect(0, 0, 0, 0);
+      RVerkeer := Rect(0, 0, 0, 0);
       if FMuziek then
       begin
         RMuziek := Rect(LK - 4, TOP, LK + 13, HK);
         DrawHalfKnop(RMuziek, DMuziek, 8);
+      end;
+      if FVerkeer then
+      begin
+        RVerkeer := Rect(LK + 15, TOP, LK + 32, HK);
+        DrawHalfKnop(RVerkeer, DVerkeer, 9);
+      end;
+      if FMuziek or FVerkeer then
+      begin
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
       end;
@@ -23187,6 +23263,13 @@ begin
         DrawHalfKnop(RMuziek, DMuziek, 8);
         NextX(B + SPATIE);
       end;
+      RVerkeer := Rect(0, 0, 0, 0);
+      if FVerkeer then
+      begin
+        RVerkeer := Rect(LK, TOP, BK, HK);
+        DrawHalfKnop(RVerkeer, DVerkeer, 9);
+        NextX(B + SPATIE);
+      end;
 
       // voedingsrails: + en - als aparte groep (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
@@ -23644,6 +23727,13 @@ begin
       begin
         RMuziek := Rect(LK, TOP, BK, HK);
         DrawHalfKnop(RMuziek, DMuziek, 8);
+        NextX(B + SPATIE);
+      end;
+      RVerkeer := Rect(0, 0, 0, 0);
+      if FVerkeer then
+      begin
+        RVerkeer := Rect(LK, TOP, BK, HK);
+        DrawHalfKnop(RVerkeer, DVerkeer, 9);
         NextX(B + SPATIE);
       end;
 
@@ -26947,6 +27037,246 @@ begin
     end;
     Brush.Style := bsSolid;
     Pen.Width := 1;
+  end;
+end;
+
+// ============================================================
+// TjanSimVerkeerslicht: verkeerslicht met voetgangerslicht
+// ============================================================
+
+const
+  VL_W = 120;           // breedte van het blok
+  VL_H = 140;           // hoogte van het blok
+  VL_AX = 40;           // autolicht: links, boven, breedte, hoogte van de kast
+  VL_AY = 6;
+  VL_AW = 32;
+  VL_AH = 96;
+  VL_VX = 84;           // voetgangerslicht: links, boven, breedte, hoogte
+  VL_VY = 30;
+  VL_VW = 28;
+  VL_VH = 58;
+
+constructor TjanSimVerkeerslicht.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := VL_W;
+  Height := VL_H;
+  FNaam := 'Verkeerslicht';
+  HelpKeyword := 'verkeerslicht';
+end;
+
+function TjanSimVerkeerslicht.InputCount: Integer;
+begin
+  Result := 5;
+end;
+
+// zelfde hoogte als UIT0..UIT4 van LogicRun: met de bovenkant gelijk lopen
+// de draden recht
+function TjanSimVerkeerslicht.InPinY(I: Integer): Integer;
+begin
+  Result := TjanLogicRun.OutputPinY(I);
+end;
+
+function TjanSimVerkeerslicht.OutputCount: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanSimVerkeerslicht.Direction: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanSimVerkeerslicht.Gevaar: Boolean;
+begin
+  Result := FIn[2] and FIn[4];
+end;
+
+procedure TjanSimVerkeerslicht.BuildPopup;
+var
+  Mi: TMenuItem;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+function TjanSimVerkeerslicht.StatusText: string;
+var
+  S: string;
+
+  procedure Voeg(const T: string);
+  begin
+    if S <> '' then S := S + ', ';
+    S := S + T;
+  end;
+
+begin
+  S := '';
+  if FIn[0] then Voeg(Tr(FTaal, 'rood', 'red', 'rouge', 'rot'));
+  if FIn[1] then Voeg(Tr(FTaal, 'oranje', 'amber', 'orange', 'gelb'));
+  if FIn[2] then Voeg(Tr(FTaal, 'groen', 'green', 'vert', 'grün'));
+  if S = '' then S := Tr(FTaal, 'uit', 'off', 'éteint', 'aus');
+  Result := Tr(FTaal, 'auto''s: ', 'cars: ', 'voitures : ', 'Autos: ') + S;
+  S := '';
+  if FIn[3] then Voeg(Tr(FTaal, 'rood', 'red', 'rouge', 'rot'));
+  if FIn[4] then Voeg(Tr(FTaal, 'groen', 'green', 'vert', 'grün'));
+  if S = '' then S := Tr(FTaal, 'uit', 'off', 'éteint', 'aus');
+  Result := Result + Tr(FTaal, ' - voetgangers: ', ' - pedestrians: ', ' - piétons : ', ' - Fußgänger: ') + S;
+  if Gevaar then
+    Result := Result + Tr(FTaal, ' - GEVAAR: allebei groen!', ' - DANGER: both green!',
+                                 ' - DANGER : les deux au vert !', ' - GEFAHR: beide grün!');
+end;
+
+procedure TjanSimVerkeerslicht.UpdateHintText;
+begin
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 +
+    Tr(FTaal, 'ingangen R, O, G: rood, oranje, groen voor de auto''s' + #13#10 + 'VR, VG: rood en groen mannetje voor de voetgangers' + #13#10 + 'zelfde hoogte als UIT0..UIT4 van LogicRun',
+              'inputs R, A, G: red, amber, green for the cars' + #13#10 + 'PR, PG: red and green figure for the pedestrians' + #13#10 + 'same height as OUT0..OUT4 of LogicRun',
+              'entrées R, O, V : rouge, orange, vert pour les voitures' + #13#10 + 'PR, PV : bonhomme rouge et vert pour les piétons' + #13#10 + 'même hauteur que UIT0..UIT4 de LogicRun',
+              'Eingänge R, G, Gr: rot, gelb, grün für die Autos' + #13#10 + 'FR, FG: rotes und grünes Männchen für die Fußgänger' + #13#10 + 'gleiche Höhe wie UIT0..UIT4 von LogicRun');
+end;
+
+procedure TjanSimVerkeerslicht.Paint;
+const
+  // kleur van de lampen: aan en uit (donker)
+  KleurAan: array[0..4] of TColor = (clRed, $0080FF, clLime, clRed, clLime);
+  KleurUit: array[0..4] of TColor = ($000040, $004060, $004000, $000040, $004000);
+var
+  BW, BH, i, y, cx, cy, r: Integer;
+
+  // mannetje: staand (rood) of stappend (groen), in het vak R
+  procedure Mannetje(const R: TRect; Loopt: Boolean; Kleur: TColor);
+  var
+    mx, top: Integer;
+  begin
+    mx := (R.Left + R.Right) div 2;
+    top := R.Top + 3;
+    Canvas.Pen.Color := Kleur;
+    Canvas.Brush.Color := Kleur;
+    Canvas.Ellipse(mx - 2, top, mx + 3, top + 5);          // hoofd
+    Canvas.Pen.Width := 2;
+    Canvas.Line(mx, top + 6, mx, top + 14);                 // lijf
+    if Loopt then
+    begin
+      Canvas.Line(mx, top + 8, mx - 4, top + 12);           // armen
+      Canvas.Line(mx, top + 8, mx + 4, top + 10);
+      Canvas.Line(mx, top + 14, mx - 4, top + 20);          // benen in een stap
+      Canvas.Line(mx, top + 14, mx + 4, top + 20);
+    end
+    else
+    begin
+      Canvas.Line(mx - 3, top + 8, mx - 3, top + 13);       // armen langs het lijf
+      Canvas.Line(mx + 3, top + 8, mx + 3, top + 13);
+      Canvas.Line(mx - 1, top + 14, mx - 1, top + 20);      // benen naast elkaar
+      Canvas.Line(mx + 1, top + 14, mx + 1, top + 20);
+    end;
+    Canvas.Pen.Width := 1;
+  end;
+
+  function Kleur(I: Integer): TColor;
+  begin
+    if FIn[I] then Result := KleurAan[I] else Result := KleurUit[I];
+  end;
+
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    // blok
+    Brush.Style := bsSolid;
+    Brush.Color := clCream;
+    Pen.Color := clGray;
+    Rectangle(12, 0, BW - 1, BH);
+    // aansluitdraden en -vierkantjes met een kleurbolletje of mannetje als naam
+    for i := 0 to 4 do
+    begin
+      y := InPinY(i) + 3;
+      Pen.Color := clBlack;
+      Line(8, y, 12, y);
+      Brush.Color := clLime;
+      Pen.Color := clGray;
+      Rectangle(1, InPinY(i), 8, InPinY(i) + 7);
+      Brush.Color := KleurAan[i];
+      Pen.Color := clGray;
+      if i <= 2 then
+        Ellipse(15, y - 4, 24, y + 5)
+      else
+      begin
+        Rectangle(15, y - 4, 24, y + 5);
+        Pen.Color := clWhite;
+        Line(19, y - 2, 19, y + 3);
+      end;
+    end;
+    // paal
+    Brush.Color := clGray;
+    Pen.Color := clGray;
+    Rectangle(VL_AX + VL_AW div 2 - 3, VL_AY + VL_AH, VL_AX + VL_AW div 2 + 3, BH - 4);
+    Rectangle(VL_AX + VL_AW, VL_VY + VL_VH div 2 - 2, VL_VX, VL_VY + VL_VH div 2 + 2);
+    Brush.Color := clDkGray;
+    Rectangle(VL_AX + 2, BH - 6, VL_AX + VL_AW - 2, BH - 2);
+    // kast van het autolicht met rood, oranje en groen
+    Brush.Color := $303030;
+    Pen.Color := clBlack;
+    RoundRect(VL_AX, VL_AY, VL_AX + VL_AW, VL_AY + VL_AH, 10, 10);
+    r := 11;
+    cx := VL_AX + VL_AW div 2;
+    for i := 0 to 2 do
+    begin
+      cy := VL_AY + 16 + i * 32;
+      Brush.Color := Kleur(i);
+      if FIn[i] then Pen.Color := clWhite else Pen.Color := clBlack;
+      Ellipse(cx - r, cy - r, cx + r + 1, cy + r + 1);
+    end;
+    // kast van het voetgangerslicht: rood staand en groen stappend mannetje
+    Brush.Color := $303030;
+    Pen.Color := clBlack;
+    RoundRect(VL_VX, VL_VY, VL_VX + VL_VW, VL_VY + VL_VH, 8, 8);
+    for i := 0 to 1 do
+    begin
+      Brush.Color := clBlack;
+      Pen.Color := clBlack;
+      Rectangle(VL_VX + 4, VL_VY + 4 + i * 26, VL_VX + VL_VW - 4, VL_VY + 28 + i * 26);
+      Mannetje(Rect(VL_VX + 4, VL_VY + 4 + i * 26, VL_VX + VL_VW - 4, VL_VY + 28 + i * 26),
+        i = 1, Kleur(3 + i));
+    end;
+    // gevaar: groen voor auto's en voetgangers samen
+    if Gevaar then
+    begin
+      Brush.Style := bsClear;
+      Pen.Color := clRed;
+      Pen.Width := 2;
+      Rectangle(13, 1, BW - 2, BH - 1);
+      Pen.Width := 1;
+      Font.Name := 'Arial';
+      Font.Size := 14;
+      Font.Style := [fsBold];
+      Font.Color := clRed;
+      TextOut(VL_VX + 9, VL_VY + VL_VH + 6, '!');
+    end;
+    Brush.Style := bsClear;
+    if FSelect or FSelected then
+    begin
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
   end;
 end;
 

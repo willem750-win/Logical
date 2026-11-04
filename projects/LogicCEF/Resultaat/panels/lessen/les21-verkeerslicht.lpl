@@ -1,0 +1,14 @@
+TjanLogicRun;184;378;110;120;500;1;4;0;0;0;12:1:1:1:1,10:6,9:2,17:16,9:4;
+TjanSimVerkeerslicht;140;550;111;120;
+TjanConnector;9;489;187;69;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;9;489;173;69;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;9;489;159;69;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;9;489;145;69;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;9;489;131;69;jcmTL;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;28;202;137;185;jcmTL;jcpBL;jcsTRBL;0,5;-1;
+TjanConnector;94;210;161;177;jcmTL;jcpBL;jcsTRBL;0,5;-1;
+TjanSimKnop;50;160;136;51;
+TjanSimButton;32;160;240;58;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;

@@ -275,6 +275,7 @@ begin
   CbEx.Items.Add(T('Wagentje op parcours', 'Cart on a road', 'Chariot sur un parcours', 'Wagen auf der Strecke'));
   CbEx.Items.Add(T('Muziek: Altijd is Kortjakje ziek', 'Music: Twinkle, twinkle, little star', 'Musique : Ah ! vous dirai-je, maman', 'Musik: Morgen kommt der Weihnachtsmann'));
   CbEx.Items.Add(T('Muziek: Ode aan de vreugde (twee stemmen)', 'Music: Ode to Joy (two voices)', 'Musique : Hymne à la joie (deux voix)', 'Musik: Ode an die Freude (zweistimmig)'));
+  CbEx.Items.Add(T('Verkeerslicht met voetgangersknop', 'Traffic light with pedestrian button', 'Feu avec bouton piétons', 'Ampel mit Fußgängertaste'));
   if Keep < 0 then Keep := 0;
   CbEx.ItemIndex := Keep;
   for i := 0 to 3 do
@@ -697,6 +698,11 @@ begin
     // muziekdoos: Ode aan de vreugde (Beethoven) in twee stemmen, elke noot met
     // de terts erboven (do+mi, re+fa, mi+sol, fa+la, sol+si), slot do mi sol do'
     11: FBlock.SetProgramText('125;1;4;0;0;0;20:3,0:1,20:4,40:4,80:3,0:1,80:4,40:4,20:4,10:4,5:3,0:1,5:4,10:4,20:3,0:1,20:6,10:2,0:1,10:7,20:3,0:1,20:4,40:4,80:3,0:1,80:4,40:4,20:4,10:4,5:3,0:1,5:4,10:4,20:4,10:6,5:2,149:8,0:8');
+    // verkeerslicht (les 21): UIT0 rood, UIT1 oranje, UIT2 groen voor de auto's,
+    // UIT3 rood en UIT4 groen voor de voetgangers. Groen tot de voetganger op
+    // de knop (DIN2) drukt, 3 s oranje, 1 s alles rood, 8 s groen voor de
+    // voetgangers, 2 s alles rood; DIN1 aan/uit
+    12: FBlock.SetProgramText('500;1;4;0;0;0;12:1:1:1:1,10:6,9:2,17:16,9:4');
   end;
 end;
 

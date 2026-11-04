@@ -1,0 +1,69 @@
+<!-- titel: Les 21 - Een verkeerslicht met voetgangersknop -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 21 van 21</p>
+  <h1>Een verkeerslicht met voetgangersknop</h1>
+  <div class="goal"><strong>Doel:</strong> met <a href="logicrun.html">LogicRun</a> een verkeerslicht sturen zoals op
+  straat: de auto's hebben groen tot een voetganger op de knop drukt, dan krijgt de voetganger groen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les21-verkeerslicht.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les21-verkeerslicht.png" alt="Schakelaar en drukknop op LogicRun, met een verkeerslicht op UIT0 tot UIT4">
+    <figcaption>Na een druk op de knop: rood voor de auto&rsquo;s en het groene mannetje brandt.</figcaption>
+  </figure>
+
+  <h2>Wat zie je?</h2>
+  <ul>
+    <li>Een <a href="invoer.html#schakelaar">schakelaar</a> op <b>DIN1</b>: zet het programma aan en uit.</li>
+    <li>Een <a href="invoer.html#drukknop">drukknop</a> op <b>DIN2</b>: de voetgangersknop.</li>
+    <li>Het <a href="logicrun.html">LogicRun-blok</a> met het programma <i>Verkeerslicht met voetgangersknop</i>.</li>
+    <li>Het <a href="uitvoer.html#verkeerslicht">verkeerslicht</a> op UIT0 tot UIT4: rood, oranje en groen voor de auto's,
+      en een rood en een groen mannetje voor de voetgangers.</li>
+  </ul>
+
+  <h2>Het programma</h2>
+  <table>
+    <tr><th>Stap</th><th>Auto's</th><th>Voetgangers</th><th>Hoe lang?</th></tr>
+    <tr><td>1</td><td>groen</td><td>rood</td><td>tot de knop op DIN2 ingedrukt wordt</td></tr>
+    <tr><td>2</td><td>oranje</td><td>rood</td><td>3 seconden</td></tr>
+    <tr><td>3</td><td>rood</td><td>rood</td><td>1 seconde: het kruispunt is leeg</td></tr>
+    <tr><td>4</td><td>rood</td><td>groen</td><td>8 seconden: de voetganger steekt over</td></tr>
+    <tr><td>5</td><td>rood</td><td>rood</td><td>2 seconden, daarna weer stap 1</td></tr>
+  </table>
+  <p>Stap 1 wacht op een ingang: dat kies je in het LogicRun-venster in de kolom <b>wacht op</b>
+  (<i>Tot ingang aan</i>, DIN2). De andere stappen duren een vaste tijd: 6, 2, 16 en 4 keer 500 ms.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaar aan: de auto's krijgen groen, de voetgangers rood.</li>
+    <li>Druk op de drukknop: het licht springt op oranje, dan op rood, en het groene mannetje gaat aan.</li>
+    <li>Na 8 seconden staat alles weer op rood en krijgen de auto's weer groen.</li>
+    <li>Druk je niet op de knop, dan blijft het groen voor de auto's.</li>
+  </ol>
+
+  <h2>Opdracht 1: langer oversteken</h2>
+  <p>Oudere mensen hebben meer tijd nodig. Geef de voetgangers 12 seconden groen.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Dubbelklik op het LogicRun-blok. Zet bij stap 4 de tijd op <b>24</b> (24 x 500 ms = 12 seconden).</p>
+  </details>
+
+  <h2>Opdracht 2: knipperend groen</h2>
+  <p>Op veel plaatsen knippert het groene mannetje kort voor het einde. Laat het groene mannetje 3 keer knipperen
+  voordat het rood wordt.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Maak stap 4 korter (bijvoorbeeld 10) en voeg erna zes korte stappen toe die afwisselend het groene mannetje aan
+    en uit zetten: rood voor de auto's met groen mannetje (UIT0 + UIT4), dan alleen rood voor de auto's (UIT0), elke
+    stap 1 keer 500 ms. Daarna volgt de stap met alles rood.</p>
+  </details>
+
+  <h2>Opdracht 3: gevaar!</h2>
+  <p>Zet in een stap per ongeluk groen voor de auto's en groen voor de voetgangers tegelijk aan. Wat doet het
+  verkeerslicht?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Het verkeerslicht krijgt een rode rand met een <b>!</b> en in de statusbalk staat <i>GEVAAR</i>. Op een echt
+    kruispunt mag dat nooit gebeuren; daarom zitten er bij een echt verkeerslicht altijd een paar seconden alles rood
+    tussen.</p>
+  </details>
+
+  <div class="pager"><a href="les20.html">&larr; Les 20: Schakelen op tijd</a><a href="leerpad.html">Leerpad &rarr;</a></div>

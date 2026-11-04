@@ -126,6 +126,26 @@ $1  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo;
     <li>On a panel with rails the music box hangs on the &minus; rail, like the other outputs.</li>
   </ul>
 
+  <h2 id="verkeerslicht"><img src="../img/pal-verkeerslicht.png" class="ico" alt="">Traffic light</h2>
+  <p>A traffic light for the cars (red, amber, green) with a pedestrian light next to it (a red standing and a green
+  walking figure). On the left there are 5 inputs, at the same height as UIT0 to UIT4 of <a href="logicrun.html">LogicRun</a>:
+  put the traffic light at the same height as the LogicRun block and the wires run straight.</p>
+  <table>
+    <tr><th>Input</th><th>Lamp</th></tr>
+    <tr><td>1 (UIT0)</td><td>red for the cars</td></tr>
+    <tr><td>2 (UIT1)</td><td>amber for the cars</td></tr>
+    <tr><td>3 (UIT2)</td><td>green for the cars</td></tr>
+    <tr><td>4 (UIT3)</td><td>red figure for the pedestrians</td></tr>
+    <tr><td>5 (UIT4)</td><td>green figure for the pedestrians</td></tr>
+  </table>
+  <ul>
+    <li>Next to each input there is a dot or figure in the colour of the lamp.</li>
+    <li>Green for the cars and green for the pedestrians <b>on at the same time</b>: the traffic light gets a red border with
+      a <b>!</b>. That is dangerous: make sure it never happens.</li>
+    <li>LogicRun has an example <i>Traffic light with pedestrian button</i>; see <a href="les21.html">lesson 21</a>.</li>
+    <li>On a panel with rails the traffic light hangs on the &minus; rail, like the other outputs.</li>
+  </ul>
+
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>
   <p>The display has one input. What it shows depends on what you connect to it:</p>
   <ul>
