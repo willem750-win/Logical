@@ -31,7 +31,7 @@ Voor Linux (Debian, Ubuntu, Mint ...): installeer `logical_<versie>_amd64.deb` m
 start `./logicCEF`.
 
 Logic staat ook op [SourceForge](https://sourceforge.net/projects/logic-simulator/).
-Ondertekening van de Windows-bestanden: zie de [Code signing policy](#code-signing-policy).
+De Windows-bestanden zijn niet ondertekend: zie [Ondertekening](#ondertekening).
 Vind je Logic handig? Laat dan een
 [review achter op SourceForge](https://sourceforge.net/projects/logic-simulator/reviews/).
 
@@ -139,7 +139,13 @@ vermeld: `janSimLogic.pas`, `janSimIndicator.pas`, `janSimPID.pas`,
 
 ## Ondertekening
 
-Zie de [Code signing policy](#code-signing-policy) hieronder (in het Engels).
+De Windows-bestanden van Logic zijn (nog) **niet ondertekend**: Logic is een gratis
+hobbyproject en heeft op dit moment geen certificaat voor ondertekening. Daarom kan
+Windows bij het installeren *Windows heeft uw pc beveiligd* tonen: klik dan op
+**Meer informatie** en **Toch uitvoeren**. Download Logic alleen van
+[GitHub](https://github.com/willem750-win/Logical/releases) of
+[SourceForge](https://sourceforge.net/projects/logic-simulator/files/).
+Meer uitleg: zie de [Code signing policy](#code-signing-policy) hieronder (in het Engels).
 
 ---
 
@@ -172,19 +178,30 @@ Mozilla Public License 1.1 (see the header of each file).
 
 ## Code signing policy
 
-Free code signing provided by [SignPath.io](https://about.signpath.io),
-certificate by [SignPath Foundation](https://signpath.org).
-
-- Committers and reviewers: [Willy Jansen (willem750-win)](https://github.com/willem750-win)
-- Approvers: [Willy Jansen (willem750-win)](https://github.com/willem750-win)
-
 The Windows release files (`Logic-<version>-setup.exe`, `Logic-<version>-win64.zip`)
-are built from this repository by the GitHub Actions workflow
-[`windows-build.yml`](.github/workflows/windows-build.yml).
-Every signing request is approved manually.
+are **not code-signed** (yet). Logic is a free hobby project and a code signing
+certificate is not available to it at the moment.
+
+Because of this, Windows may show *Windows protected your PC* (SmartScreen) when you
+start the installer: click **More info** and then **Run anyway**.
+
+To check a download:
+
+- download Logic only from [GitHub Releases](https://github.com/willem750-win/Logical/releases)
+  or [SourceForge](https://sourceforge.net/projects/logic-simulator/files/);
+- GitHub shows the SHA-256 checksum of every file on the Releases page; compare it with
+  `certutil -hashfile Logic-<version>-setup.exe SHA256` (Windows) or
+  `sha256sum <file>` (Linux);
+- or build Logic yourself from this repository (see above); the GitHub Actions workflow
+  [`windows-build.yml`](.github/workflows/windows-build.yml) shows how the Windows files are built.
+
+All code is written and reviewed by [Willy Jansen (willem750-win)](https://github.com/willem750-win).
 
 ### Privacy policy
 
 This program will not transfer any information to other networked systems
 unless specifically requested by the user or the person installing or operating it.
 The built-in help browser only opens the local help files; links to the internet are blocked.
+To tell you about a new version, Logic downloads the small file
+[`latest.txt`](latest.txt) from GitHub; no personal data is sent. You can switch this
+off in the Info window (*Check for updates automatically*).
