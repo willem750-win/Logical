@@ -5,6 +5,11 @@ Je bouwt een schakeling op een paneel met schakelaars, sensoren, logische
 poorten, tellers, geheugens, lampen en displays, en verbindt ze met draden.
 Daarna zet je de simulatie aan en zie je de schakeling werken.
 
+<a href="https://sourceforge.net/projects/logic-simulator/"><img alt="Rising Star (SourceForge)" src="docs/oss-rising-star-white.svg" width="110"></a>
+<a href="https://sourceforge.net/projects/logic-simulator/"><img alt="Open Source Users Love Us (SourceForge)" src="docs/oss-users-love-us-white.svg" width="110"></a>
+
+Logic kreeg van SourceForge de onderscheidingen *Rising Star* en *Open Source Users Love Us*.
+
 *English summary: see [below](#english).*
 
 ![Logic](docs/screenshot.png)
@@ -145,7 +150,7 @@ wires and run the simulation. User interface and help are available in Dutch,
 English, French and German. It runs on Windows and Linux (GTK2).
 
 Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: run `Logic-<version>-setup.exe`, or unzip the `.zip` and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, then start Logic from the Education menu, or extract the `.tar.gz` and run `./logicCEF`).
-Also on [SourceForge](https://sourceforge.net/projects/logic-simulator/). Do you find
+Also on [SourceForge](https://sourceforge.net/projects/logic-simulator/). SourceForge gave Logic the *Rising Star* and *Open Source Users Love Us* awards. Do you find
 Logic useful? Please leave a [review on SourceForge](https://sourceforge.net/projects/logic-simulator/reviews/).
 
 To build: install `jwlogic.lpk` in Lazarus 4.x, then open

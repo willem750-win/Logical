@@ -275,3 +275,7 @@ details[open] summary { margin-bottom: 8px; }
 ol.lessons { padding-left: 22px; }
 ol.lessons li { margin-bottom: 10px; }
 ol.lessons li span { display: block; color: var(--muted); font-size: 14px; }
+
+/* onderscheidingen van SourceForge op de startpagina */
+.awards { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 14px 0; }
+.awards img { width: 110px; height: 110px; }
