@@ -1320,6 +1320,15 @@ end;
      SettingsFrame.PropB2.SetLanguage(NieuweTaalPropGrid);
      SettingsFrame.PropB22.SetLanguage(NieuweTaalPropGrid);
      SettingsFrame.PropB222.SetLanguage(NieuweTaalPropGrid);
+     // Engels en een extra taal zijn voor het rooster allebei lgEnglish: dan
+     // vult SetLanguage de lijst niet opnieuw, en blijven de oude waarden
+     // (bv. de hints) staan
+     SettingsFrame.PropB2.UpdateHeaders;
+     SettingsFrame.PropB22.UpdateHeaders;
+     SettingsFrame.PropB222.UpdateHeaders;
+     SettingsFrame.PropB2.PopulateGridWithProperties;
+     SettingsFrame.PropB22.PopulateGridWithProperties;
+     SettingsFrame.PropB222.PopulateGridWithProperties;
 
      if Assigned(SettingsFrame.PropB2) then SettingsFrame.PropB2.UpdateLanguageSelection(Taal.Items[TaalIndex]);
      if Assigned(SettingsFrame.PropB22) then SettingsFrame.PropB22.UpdateLanguageSelection(Taal.Items[TaalIndex]);
