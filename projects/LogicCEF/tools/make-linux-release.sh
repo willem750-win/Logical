@@ -241,6 +241,7 @@ Terminal=false
 Categories=Education;Electronics;
 EOF
 
+  # Suggests: lettertypes voor Japans en Chinees (lang/ja.po, zh.po)
   SIZE=$(du -sk "$ROOT" | cut -f1)
   cat > "$ROOT/DEBIAN/control" <<EOF
 Package: $PKG
@@ -250,6 +251,7 @@ Priority: optional
 Architecture: $DARCH
 Depends: libc6, libgtk2.0-0, xdg-utils
 Recommends: libnss3, libnspr4, libatk1.0-0 | libatk1.0-0t64, libatk-bridge2.0-0 | libatk-bridge2.0-0t64, libcups2 | libcups2t64, libasound2 | libasound2t64, libgbm1, libxkbcommon0, libxcomposite1, libxdamage1, libxrandr2, libpango-1.0-0, libcairo2
+Suggests: fonts-noto-cjk
 Installed-Size: $SIZE
 Maintainer: Willy Jansen <willyjansen@telenet.be>
 Homepage: https://github.com/willem750-win/Logical
