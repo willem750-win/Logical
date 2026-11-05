@@ -35,6 +35,20 @@ De Windows-bestanden zijn niet ondertekend: zie [Ondertekening](#ondertekening).
 Vind je Logic handig? Laat dan een
 [review achter op SourceForge](https://sourceforge.net/projects/logic-simulator/reviews/).
 
+## Talen
+
+Logic werkt in het Nederlands, Engels, Frans en Duits, en daarnaast in het
+Italiaans, Spaans, Portugees, Russisch, Japans en Chinees. Je kiest de taal met
+het vlaggetje rechtsonder. De help is er in het Nederlands, Engels, Frans en
+Duits; bij de andere talen opent de Engelse help.
+
+De extra talen staan als `.po`-bestand in de map `lang` naast het programma en
+kun je zelf verbeteren of aanvullen met het gratis programma
+[Poedit](https://poedit.net). Hoe dat gaat staat in
+[`lang/README.txt`](projects/LogicCEF/Resultaat/lang/README.txt) (in het Engels).
+Een verbeterde of nieuwe vertaling is welkom bij de
+[Issues](https://github.com/willem750-win/Logical/issues).
+
 ## Onderdelen
 
 | Groep      | Onderdelen |
@@ -155,7 +169,15 @@ Meer uitleg: zie de [Code signing policy](#code-signing-policy) hieronder (in he
 Place switches, sensors, logic gates (AND, OR, NOT), counters, memories, lamps,
 relays, buzzers and 7-segment displays on a panel, connect them with
 wires and run the simulation. User interface and help are available in Dutch,
-English, French and German. It runs on Windows and Linux (GTK2).
+English, French and German; the user interface also in Italian, Spanish,
+Portuguese, Russian, Japanese and Chinese. It runs on Windows and Linux (GTK2).
+
+**Translations:** the extra languages are `.po` files in the `lang` folder next to
+the program. You can improve them or add a new language with the free
+[Poedit](https://poedit.net), see
+[`lang/README.txt`](projects/LogicCEF/Resultaat/lang/README.txt). Corrections
+and new languages are very welcome in the
+[Issues](https://github.com/willem750-win/Logical/issues).
 
 Download: see [Releases](https://github.com/willem750-win/Logical/releases) (Windows: run `Logic-<version>-setup.exe`, or unzip the `.zip` and run `logicCEF.exe`; Linux: `sudo apt install ./logical_<version>_amd64.deb`, then start Logic from the Education menu, or extract the `.tar.gz` and run `./logicCEF`).
 Also on [SourceForge](https://sourceforge.net/projects/logic-simulator/). SourceForge gave Logic the *Rising Star* and *Open Source Users Love Us* awards. Do you find
