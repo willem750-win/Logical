@@ -638,7 +638,7 @@ msgstr ""
 msgid "Stop simulation"
 msgstr ""
 
-#: main.pas:259 main.pas:1382
+#: main.pas:259 main.pas:1391
 msgid "Start simulation"
 msgstr ""
 
@@ -690,111 +690,127 @@ msgstr ""
 msgid "Hints"
 msgstr ""
 
-#: main.pas:1362
+#: main.pas:1371
 msgid "Logic Circuits"
 msgstr ""
 
-#: main.pas:1363
+#: main.pas:1372
 msgid "Choose language..."
 msgstr ""
 
-#: main.pas:1364
+#: main.pas:1373
 msgid "Copy the panel to the clipboard..."
 msgstr ""
 
-#: main.pas:1366
+#: main.pas:1375
 msgid "Grid Yes/No\nGo to open settings for additional options..."
 msgstr ""
 
-#: main.pas:1367
+#: main.pas:1376
 msgid "Guidelines on grid YES/NO..."
 msgstr ""
 
-#: main.pas:1368
+#: main.pas:1377
 msgid "Draw frame on grid..."
 msgstr ""
 
-#: main.pas:1369
+#: main.pas:1378
 msgid "Change panel title..."
 msgstr ""
 
-#: main.pas:1370
+#: main.pas:1379
 msgid "Bar Input / Processing / Output on/off"
 msgstr ""
 
-#: main.pas:1371
+#: main.pas:1380
 msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
 msgstr ""
 
-#: main.pas:1373
+#: main.pas:1382
 msgid "Open settings"
 msgstr ""
 
-#: main.pas:1374
+#: main.pas:1383
 msgid "Close application"
 msgstr ""
 
-#: main.pas:1375
+#: main.pas:1384
 msgid "About Logic..."
 msgstr ""
 
-#: main.pas:1376
+#: main.pas:1385
 msgid "Open help (F1)"
 msgstr ""
 
-#: main.pas:1377
+#: main.pas:1386
 msgid "Open saved panel..."
 msgstr ""
 
-#: main.pas:1378
+#: main.pas:1387
 msgid "Save panel..."
 msgstr ""
 
-#: main.pas:1379
+#: main.pas:1388
 msgid "Click here to select the panel..."
 msgstr ""
 
-#: main.pas:1380
+#: main.pas:1389
 msgid "Remove connections..."
 msgstr ""
 
-#: main.pas:1381
+#: main.pas:1390
 msgid "Delete selected object..."
 msgstr ""
 
-#: main.pas:1662
+#: main.pas:1472
+msgid "Decision panel"
+msgstr ""
+
+#: main.pas:1473
+msgid "Counter panel"
+msgstr ""
+
+#: main.pas:1474
+msgid "Memory panel"
+msgstr ""
+
+#: main.pas:1475
+msgid "New standard panel"
+msgstr ""
+
+#: main.pas:1671
 msgid "Undo (Ctrl+Z)"
 msgstr ""
 
-#: main.pas:1663
+#: main.pas:1672
 msgid "Redo (Ctrl+Y)"
 msgstr ""
 
-#: main.pas:1681
+#: main.pas:1690
 msgid "LogicRun: program in steps"
 msgstr ""
 
-#: main.pas:1917 main.pas:1917
+#: main.pas:1926 main.pas:1926
 msgid "without name"
 msgstr ""
 
-#: main.pas:1918 main.pas:1918
+#: main.pas:1927 main.pas:1927
 msgid "The panel \"%s\" has been changed."
 msgstr ""
 
-#: main.pas:1919 main.pas:1919
+#: main.pas:1928 main.pas:1928
 msgid "Do you want to save the changes?"
 msgstr ""
 
-#: main.pas:2575
+#: main.pas:2584
 msgid "Screenshot of the panel has been copied to the clipboard."
 msgstr ""
 
-#: main.pas:2776
+#: main.pas:2785
 msgid "Change title"
 msgstr ""
 
-#: main.pas:2777
+#: main.pas:2786
 msgid "Enter new title:"
 msgstr ""
 
@@ -1092,6 +1108,14 @@ msgstr ""
 
 #: AdvancedPropertyGridComponent.pas:1084
 msgid "Change Language"
+msgstr ""
+
+#: main.pas (moduscurrent, statusbalk)
+msgid "Settings"
+msgstr ""
+
+#: janSimLogic.pas (rechtsklikmenu)
+msgid "lock"
 msgstr ""
 
 #: fsettings.lfm

@@ -176,6 +176,16 @@ foreach ($F in $Files) {
       continue
     }
 
+    # ('NL', 'EN', 'FR', 'DE') in een tabel met vier talen, bv. de namen van
+    # de ingebouwde panelen in main.pas: Engels = 2e
+    if ($X.K -eq 'p' -and $X.V -eq '(' -and ($i + 8) -lt $N -and
+        $T[$i + 1].K -eq 's' -and $T[$i + 2].V -eq ',' -and $T[$i + 3].K -eq 's' -and $T[$i + 4].V -eq ',' -and
+        $T[$i + 5].K -eq 's' -and $T[$i + 6].V -eq ',' -and $T[$i + 7].K -eq 's' -and $T[$i + 8].V -eq ')' -and
+        $i -gt 0 -and $T[$i - 1].K -eq 'p' -and ($T[$i - 1].V -eq '(' -or $T[$i - 1].V -eq ',')) {
+      Add-Msg $T[$i + 3].V "$($Rel):$($T[$i + 3].L)"
+      continue
+    }
+
     # if BTaal = 'XX' then ...  (keten per taal)
     if ($X.K -eq 'p' -and $X.V -eq '=' -and ($i + 2) -lt $N -and $T[$i + 1].K -eq 's' -and
         $T[$i + 1].V -match '^(NL|ENG|FR|DU)$' -and $T[$i + 2].V -eq 'then') {
@@ -200,6 +210,10 @@ foreach ($F in $Files) {
       continue
     }  }
 }
+
+# teksten die de regels hierboven niet vinden
+Add-Msg 'Settings' 'main.pas (moduscurrent, statusbalk)'
+Add-Msg 'lock' 'janSimLogic.pas (rechtsklikmenu)'
 
 # namen in de instellingen: [lgEnglish] van StringHolderTranslations (hex)
 $Lfm = Join-Path $Project 'fsettings.lfm'
