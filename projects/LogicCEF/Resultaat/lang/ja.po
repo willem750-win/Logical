@@ -1,0 +1,1299 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Logic\n"
+"Language: ja\n"
+"X-Language-Name: 日本語\n"
+
+#: chatgridpcodeSmall.pas:282 chatgridpcodeSmall.pas:282
+msgid "Change caption"
+msgstr "表示名を変更"
+
+#: chatgridpcodeSmall.pas:318 chatgridpcodeSmall.pas:318
+msgid "Color blue"
+msgstr "青色"
+
+#: chatgridpcodeSmall.pas:330 chatgridpcodeSmall.pas:330
+msgid "Color red"
+msgstr "赤色"
+
+#: chatgridpcodeSmall.pas:342 chatgridpcodeSmall.pas:342
+msgid "Color green"
+msgstr "緑色"
+
+#: chatgridpcodeSmall.pas:354 chatgridpcodeSmall.pas:354
+msgid "Delete frame"
+msgstr "枠を削除"
+
+#: chatgridpcodeSmall.pas:368
+msgid "Click here to change the title"
+msgstr "ここをクリックしてタイトルを変更"
+
+#: chatgridpcodeSmall.pas:384 janSimLogic.pas:3073
+msgid "Right mouse button for extra settings"
+msgstr "右クリックでその他の設定"
+
+#: chatgridpcodeSmall.pas:1087 chatgridpcodeSmall.pas:1087 janSimLogic.pas:9359
+msgid "Input"
+msgstr "入力"
+
+#: chatgridpcodeSmall.pas:1088 chatgridpcodeSmall.pas:1088
+msgid "Processing"
+msgstr "処理"
+
+#: chatgridpcodeSmall.pas:1089 chatgridpcodeSmall.pas:1089
+msgid "Output"
+msgstr "出力"
+
+#: chatgridpcodeSmall.pas:1090 chatgridpcodeSmall.pas:1090
+msgid "Logic Panel"
+msgstr "ロジックパネル"
+
+#: janSimLogic.pas:3140
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: janSimLogic.pas:3274 janSimLogic.pas:16182 janSimLogic.pas:16720
+msgid "Export"
+msgstr "書き出し"
+
+#: janSimLogic.pas:3275 janSimLogic.pas:8862 janSimLogic.pas:9360
+msgid "Status"
+msgstr "状態"
+
+#: janSimLogic.pas:3387 janSimLogic.pas:7641 janSimLogic.pas:9283
+msgid "Verrouiller"
+msgstr ""
+
+#: janSimLogic.pas:3391 janSimLogic.pas:7645 janSimLogic.pas:9287
+msgid "Sperren"
+msgstr ""
+
+#: janSimLogic.pas:3406 janSimLogic.pas:7660 janSimLogic.pas:9302
+msgid "Change name"
+msgstr "名前を変更"
+
+#: janSimLogic.pas:3418 janSimLogic.pas:5771 janSimLogic.pas:7672
+msgid "Select object"
+msgstr "オブジェクトを選択"
+
+#: janSimLogic.pas:3425 janSimLogic.pas:5769 janSimLogic.pas:7679
+msgid "Deselect object"
+msgstr "選択を解除"
+
+#: janSimLogic.pas:3438 janSimLogic.pas:7692 janSimLogic.pas:9334
+msgid "Information off"
+msgstr "情報を隠す"
+
+#: janSimLogic.pas:3445 janSimLogic.pas:7699 janSimLogic.pas:9341
+msgid "Information on"
+msgstr "情報を表示"
+
+#: janSimLogic.pas:5608
+msgid "+ rail (supply "
+msgstr "+ レール (電源"
+
+#: janSimLogic.pas:5608
+msgid "V)\nPlug inputs in on the right of the rail. Below 2V no signal.\nRight-click: set voltage. Drag the ends to resize."
+msgstr "V)\n入力はレールの右側に差し込みます。2V未満は信号なし。\n右クリック: 電圧を設定。端をドラッグしてサイズ変更。"
+
+#: janSimLogic.pas:5621
+msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
+msgstr "- レール (グランド)\n出力はレールの左側に差し込みます。\n端をドラッグしてサイズ変更。"
+
+#: janSimLogic.pas:5634
+msgid "+ rail"
+msgstr "+ レール"
+
+#: janSimLogic.pas:5639
+msgid "- rail"
+msgstr "- レール"
+
+#: janSimLogic.pas:5640
+msgid "Ground"
+msgstr "グランド"
+
+#: janSimLogic.pas:5745
+msgid "Voltage"
+msgstr "電圧"
+
+#: janSimLogic.pas:5761 janSimLogic.pas:11261 janSimLogic.pas:25303
+msgid "Unlock"
+msgstr "ロック解除"
+
+#: janSimLogic.pas:5763 janSimLogic.pas:11263 janSimLogic.pas:25305
+msgid "Lock"
+msgstr "ロック"
+
+#: janSimLogic.pas:8578 janSimLogic.pas:8839
+msgid "AND"
+msgstr ""
+
+#: janSimLogic.pas:8584 janSimLogic.pas:8842
+msgid "OR"
+msgstr ""
+
+#: janSimLogic.pas:8590 janSimLogic.pas:8845
+msgid "NOT"
+msgstr ""
+
+#: janSimLogic.pas:9395
+msgid "Processing --> Counter block"
+msgstr "処理 --> カウンタブロック"
+
+#: janSimLogic.pas:11029 fsettings.lfm fsettings.lfm
+msgid "Memory block"
+msgstr "メモリブロック"
+
+#: janSimLogic.pas:11490
+msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
+msgstr "電圧計 (グランド基準で測定)\n+ 左: 配線するか + レールに差し込みます。\n- 右: 空けたままか - レールに差し込みます。"
+
+#: janSimLogic.pas:12532 janSimLogic.pas:12565 fsettings.lfm
+msgid "Push button"
+msgstr "押しボタン"
+
+#: janSimLogic.pas:12534
+msgid "Down"
+msgstr "下"
+
+#: janSimLogic.pas:12536
+msgid "Upwards"
+msgstr "上"
+
+#: janSimLogic.pas:13223 janSimLogic.pas:15458
+msgid "switch"
+msgstr "スイッチ"
+
+#: janSimLogic.pas:13280
+msgid "DipSwitsh"
+msgstr "DIPスイッチ"
+
+#: janSimLogic.pas:14229
+msgid "emperature sensor"
+msgstr "温度センサー"
+
+#: janSimLogic.pas:14475
+msgid "Frequency"
+msgstr "周波数"
+
+#: janSimLogic.pas:14481
+msgid "every "
+msgstr "間隔"
+
+#: janSimLogic.pas:14484
+msgid "default"
+msgstr "標準"
+
+#: janSimLogic.pas:15886
+msgid "cold"
+msgstr "冷たい"
+
+#: janSimLogic.pas:15886
+msgid "hot"
+msgstr "熱い"
+
+#: janSimLogic.pas:16084
+msgid "Temperature sensor"
+msgstr "温度センサー"
+
+#: janSimLogic.pas:16432
+msgid "Colour"
+msgstr "色"
+
+#: janSimLogic.pas:16438 fsettings.lfm fsettings.lfm
+msgid "Lamp"
+msgstr "ランプ"
+
+#: janSimLogic.pas:16439
+msgid "Red LED"
+msgstr "赤色LED"
+
+#: janSimLogic.pas:16440
+msgid "Green LED"
+msgstr "緑色LED"
+
+#: janSimLogic.pas:16441
+msgid "Orange LED"
+msgstr "オレンジ色LED"
+
+#: janSimLogic.pas:20773 janSimLogic.pas:20773
+msgid "create Switch"
+msgstr "スイッチを作成"
+
+#: janSimLogic.pas:21620 janSimLogic.pas:21620
+msgid "create Buzzer"
+msgstr "ブザーを作成"
+
+#: janSimLogic.pas:21621 janSimLogic.pas:21621
+msgid "create Motor"
+msgstr "モーターを作成"
+
+#: janSimLogic.pas:21622 janSimLogic.pas:21622
+msgid "create DipSwitsh"
+msgstr "DIPスイッチを作成"
+
+#: janSimLogic.pas:21623 janSimLogic.pas:21623
+msgid "create 7 segment display"
+msgstr "7セグメント表示器を作成"
+
+#: janSimLogic.pas:21624 janSimLogic.pas:21624
+msgid "create Connection"
+msgstr "接続を作成"
+
+#: janSimLogic.pas:21625 janSimLogic.pas:21625
+msgid "create Push button"
+msgstr "押しボタンを作成"
+
+#: janSimLogic.pas:21626 janSimLogic.pas:21626
+msgid "create Lamp"
+msgstr "ランプを作成"
+
+#: janSimLogic.pas:21627 janSimLogic.pas:21627
+msgid "create AND-Logic gate"
+msgstr "AND ゲートを作成"
+
+#: janSimLogic.pas:21628 janSimLogic.pas:21628
+msgid "create NOT-Logic gate"
+msgstr "NOT ゲートを作成"
+
+#: janSimLogic.pas:21629 janSimLogic.pas:21629
+msgid "create OR-Logic gate"
+msgstr "OR ゲートを作成"
+
+#: janSimLogic.pas:21630 janSimLogic.pas:21630
+msgid "create Memory block"
+msgstr "メモリブロックを作成"
+
+#: janSimLogic.pas:21631 janSimLogic.pas:21631
+msgid "create Impuls generator"
+msgstr "パルス発生器を作成"
+
+#: janSimLogic.pas:21632 janSimLogic.pas:21632
+msgid "create Relay"
+msgstr "リレーを作成"
+
+#: janSimLogic.pas:21633 janSimLogic.pas:21633
+msgid "create Switching relay (relay with contact)"
+msgstr "切替リレーを作成 (接点付きリレー)"
+
+#: janSimLogic.pas:21634 janSimLogic.pas:21634
+msgid "create Switsh"
+msgstr "スイッチを作成"
+
+#: janSimLogic.pas:21635 janSimLogic.pas:21635
+msgid "create Light sensor"
+msgstr "光センサーを作成"
+
+#: janSimLogic.pas:21636 janSimLogic.pas:21636
+msgid "create Counter block"
+msgstr "カウンタブロックを作成"
+
+#: janSimLogic.pas:21637 janSimLogic.pas:21637
+msgid "create Step counter (counts up to 9999)"
+msgstr "ステップカウンタを作成 (9999 まで)"
+
+#: janSimLogic.pas:21638 janSimLogic.pas:21638
+msgid "create Stopwatch (time with end time)"
+msgstr "ストップウォッチを作成 (終了時間付き)"
+
+#: janSimLogic.pas:21639 janSimLogic.pas:21639
+msgid "create HeatSensor"
+msgstr "熱センサーを作成"
+
+#: janSimLogic.pas:21640 janSimLogic.pas:21640
+msgid "create Voltmeter"
+msgstr "電圧計を作成"
+
+#: janSimLogic.pas:21641 janSimLogic.pas:21641
+msgid "create Person (with limit switches)"
+msgstr "人を作成 (リミットスイッチ付き)"
+
+#: janSimLogic.pas:21642 janSimLogic.pas:21642
+msgid "create Cart (road with posts)"
+msgstr "台車を作成 (ポール付きコース)"
+
+#: janSimLogic.pas:21643 janSimLogic.pas:21643
+msgid "create Music box (8 piano keys)"
+msgstr "オルゴールを作成 (鍵盤 8 個)"
+
+#: janSimLogic.pas:21644 janSimLogic.pas:21644
+msgid "create Traffic light (with pedestrian light)"
+msgstr "信号機を作成 (歩行者用信号付き)"
+
+#: janSimLogic.pas:21645 janSimLogic.pas:21645
+msgid "create Barrier gate (car park)"
+msgstr "遮断機を作成 (駐車場)"
+
+#: janSimLogic.pas:21646 janSimLogic.pas:21646
+msgid "create + rail (supply)"
+msgstr "+ レールを作成 (電源)"
+
+#: janSimLogic.pas:21647 janSimLogic.pas:21647
+msgid "create - rail (ground)"
+msgstr "- レールを作成 (グランド)"
+
+#: janSimLogic.pas:22976 janSimLogic.pas:23449
+msgid "Connector tool"
+msgstr "接続ツール"
+
+#: janSimLogic.pas:24375
+msgid "%d objects selected\nDrag to move them together, Esc or click outside to deselect"
+msgstr "%d 個のオブジェクトを選択中\nドラッグでまとめて移動、Esc または外側をクリックで選択解除"
+
+#: janSimLogic.pas:24698 uLogicRun.pas:286
+msgid "start/stop"
+msgstr "開始/停止"
+
+#: janSimLogic.pas:24699 uLogicRun.pas:287
+msgid "reset"
+msgstr "リセット"
+
+#: janSimLogic.pas:24701 uLogicRun.pas:289
+msgid "on/off"
+msgstr "オン/オフ"
+
+#: janSimLogic.pas:25220 janSimLogic.pas:25248 janSimLogic.pas:25618
+msgid "stopped"
+msgstr "停止中"
+
+#: janSimLogic.pas:25223 janSimLogic.pas:25250 uLogicRun.pas:260
+msgid "step"
+msgstr "ステップ"
+
+#: janSimLogic.pas:25237
+msgid "Double-click: edit program"
+msgstr "ダブルクリック: プログラムを編集"
+
+#: janSimLogic.pas:25297
+msgid "Edit program..."
+msgstr "プログラムを編集..."
+
+#: janSimLogic.pas:25611
+msgid "L and R on together: fault!"
+msgstr "L と R が同時にオン: エラー!"
+
+#: janSimLogic.pas:25614
+msgid "turning left"
+msgstr "左に回転中"
+
+#: janSimLogic.pas:25616
+msgid "turning right"
+msgstr "右に回転中"
+
+#: janSimLogic.pas:25624
+msgid "L: turn left, R: turn right"
+msgstr "L: 左回転、R: 右回転"
+
+#: janSimLogic.pas:26144
+msgid "L and R on together: stands still"
+msgstr "L と R が同時にオン: 停止"
+
+#: janSimLogic.pas:26147
+msgid "at the left (S1 on)"
+msgstr "左端 (S1 オン)"
+
+#: janSimLogic.pas:26150
+msgid "at the right (S2 on)"
+msgstr "右端 (S2 オン)"
+
+#: janSimLogic.pas:26153
+msgid "walking left"
+msgstr "左へ歩行中"
+
+#: janSimLogic.pas:26155
+msgid "walking right"
+msgstr "右へ歩行中"
+
+#: janSimLogic.pas:26157 janSimLogic.pas:26643
+msgid "standing still"
+msgstr "停止中"
+
+#: janSimLogic.pas:26164
+msgid "L: walk left, R: walk right\nS1/S2: limit switch left/right\nright-click: place limit switches"
+msgstr "L: 左へ歩く、R: 右へ歩く\nS1/S2: 左/右のリミットスイッチ\n右クリック: リミットスイッチを配置"
+
+#: janSimLogic.pas:26231
+msgid "Back to the start"
+msgstr "スタートに戻る"
+
+#: janSimLogic.pas:26234
+msgid "Close the barrier now"
+msgstr "今すぐ遮断機を閉じる"
+
+#: janSimLogic.pas:26237
+msgid "Back to the left (S1)"
+msgstr "左に戻る (S1)"
+
+#: janSimLogic.pas:26242
+msgid "Place limit switches"
+msgstr "リミットスイッチを配置"
+
+#: janSimLogic.pas:26627
+msgid "V and A on together: stands still"
+msgstr "V と A が同時にオン: 停止"
+
+#: janSimLogic.pas:26630
+msgid "at the start (Start on)"
+msgstr "スタート地点 (Start オン)"
+
+#: janSimLogic.pas:26633
+msgid "at the finish (Finish on)"
+msgstr "ゴール地点 (Finish オン)"
+
+#: janSimLogic.pas:26636
+msgid "at post %d (Tel on)"
+msgstr "ポール %d (Tel オン)"
+
+#: janSimLogic.pas:26639
+msgid "driving forward"
+msgstr "前進中"
+
+#: janSimLogic.pas:26641
+msgid "driving backward"
+msgstr "後退中"
+
+#: janSimLogic.pas:26651
+msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
+msgstr "V: 前進、A: 後退\nStart/Finish: コースの始点と終点\nTel: ポールごとに1パルス (1-5)\n右クリック: リミットスイッチを配置"
+
+#: janSimLogic.pas:26977
+msgid "Sound"
+msgstr "音"
+
+#: janSimLogic.pas:26996
+msgid "silent"
+msgstr "無音"
+
+#: janSimLogic.pas:26998
+msgid "plays "
+msgstr "演奏中"
+
+#: janSimLogic.pas:27000 janSimLogic.pas:27041
+msgid " (sound off)"
+msgstr " (音オフ)"
+
+#: janSimLogic.pas:27007
+msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
+msgstr "音符ごとに1入力 (ド レ ミ ファ ソ ラ シ ド')\nオン: 鍵盤が光り音が鳴る\n右クリック: 音のオン/オフ"
+
+#: janSimLogic.pas:27222 janSimLogic.pas:27228
+msgid "red"
+msgstr "赤"
+
+#: janSimLogic.pas:27223
+msgid "amber"
+msgstr "黄"
+
+#: janSimLogic.pas:27224 janSimLogic.pas:27229
+msgid "green"
+msgstr "青"
+
+#: janSimLogic.pas:27225 janSimLogic.pas:27230 uLogicRun.pas:713
+msgid "off"
+msgstr "オフ"
+
+#: janSimLogic.pas:27226
+msgid "cars: "
+msgstr "車:"
+
+#: janSimLogic.pas:27231
+msgid " - pedestrians: "
+msgstr " - 歩行者:"
+
+#: janSimLogic.pas:27233
+msgid " - DANGER: both green!"
+msgstr " - 危険: 両方とも青!"
+
+#: janSimLogic.pas:27241
+msgid "inputs R, A, G: red, amber, green for the cars\nPR, PG: red and green figure for the pedestrians\nsame height as OUT0..OUT4 of LogicRun"
+msgstr "入力 R, A, G: 車用の赤・黄・青\nPR, PG: 歩行者用の赤と青の人形\nLogicRun の OUT0..OUT4 と同じ高さ"
+
+#: janSimLogic.pas:27413
+msgid "Closed"
+msgstr "閉"
+
+#: janSimLogic.pas:27415
+msgid "Open"
+msgstr "開"
+
+#: janSimLogic.pas:27447
+msgid "opening"
+msgstr "開いています"
+
+#: janSimLogic.pas:27448
+msgid "closing"
+msgstr "閉じています"
+
+#: janSimLogic.pas:27451
+msgid "open"
+msgstr "開"
+
+#: janSimLogic.pas:27453
+msgid "closed"
+msgstr "閉"
+
+#: janSimLogic.pas:27455
+msgid "barrier: "
+msgstr "遮断機:"
+
+#: janSimLogic.pas:27463
+msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
+msgstr "入力 O: オン = 遮断機が開く、オフ = 閉じる\nリミットスイッチ 閉 と 開 (右クリック: リミットスイッチを配置)"
+
+#: janSimLogic.pas:27747
+msgid "no person or cart on the panel"
+msgstr "パネルに人または台車がありません"
+
+#: janSimLogic.pas:27750
+msgid ": on"
+msgstr ": オン"
+
+#: janSimLogic.pas:27752
+msgid ": off"
+msgstr ": オフ"
+
+#: janSimLogic.pas:27759
+msgid "Follows the person or the cart (without a wire).\nRight-click: choose S1, S2 or Start, Tel, Finish"
+msgstr "人または台車に連動します (配線不要)。\n右クリック: S1、S2 または Start、Tel、Finish を選択"
+
+#: janSimLogic.pas:28171 janSimLogic.pas:28639
+msgid "repeat"
+msgstr "繰り返し"
+
+#: janSimLogic.pas:28173 janSimLogic.pas:28641
+msgid "to "
+msgstr "まで"
+
+#: janSimLogic.pas:28188
+msgid "count "
+msgstr "カウント"
+
+#: janSimLogic.pas:28189 janSimLogic.pas:28657
+msgid " of "
+msgstr " /"
+
+#: janSimLogic.pas:28191 janSimLogic.pas:28659
+msgid ": reached (Q on)"
+msgstr ": 到達 (Q オン)"
+
+#: janSimLogic.pas:28199
+msgid "T: +1 per pulse, R: back to 0\nQ: on when the end value is reached\nRight-click: choose the end value"
+msgstr "T: パルスごとに +1、R: 0 に戻す\nQ: 終了値に達するとオン\n右クリック: 終了値を選択"
+
+#: janSimLogic.pas:28276 janSimLogic.pas:28703
+msgid "To "
+msgstr "まで"
+
+#: janSimLogic.pas:28285
+msgid "Other end value..."
+msgstr "他の終了値..."
+
+#: janSimLogic.pas:28294
+msgid "Repeat (start again at 1 after the end value)"
+msgstr "繰り返し (終了値の後 1 から再開)"
+
+#: janSimLogic.pas:28300
+msgid "Set to 0"
+msgstr "0 にする"
+
+#: janSimLogic.pas:28332
+msgid "End value"
+msgstr "終了値"
+
+#: janSimLogic.pas:28333
+msgid "Count up to (1 to 9999)?"
+msgstr "いくつまで数えますか (1～9999)?"
+
+#: janSimLogic.pas:28656
+msgid "time "
+msgstr "時間"
+
+#: janSimLogic.pas:28667
+msgid "S: time runs while S is on, R: back to 00:00\nQ: on when the end time is reached\nRight-click: choose the end time"
+msgstr "S: S がオンの間 時間が進む、R: 00:00 に戻す\nQ: 終了時間に達するとオン\n右クリック: 終了時間を選択"
+
+#: janSimLogic.pas:28712
+msgid "Other end time..."
+msgstr "他の終了時間..."
+
+#: janSimLogic.pas:28721
+msgid "Repeat (start again at 00:01 after the end time)"
+msgstr "繰り返し (終了時間の後 00:01 から再開)"
+
+#: janSimLogic.pas:28727
+msgid "Set to 00:00"
+msgstr "00:00 にする"
+
+#: janSimLogic.pas:28747
+msgid "End time"
+msgstr "終了時間"
+
+#: janSimLogic.pas:28748
+msgid "End time as mm:ss (00:01 to 99:59)?"
+msgstr "終了時間 (mm:ss、00:01～99:59)?"
+
+#: main.pas:257
+msgid "Stop simulation"
+msgstr "シミュレーション停止"
+
+#: main.pas:259 main.pas:1391
+msgid "Start simulation"
+msgstr "シミュレーション開始"
+
+#: main.pas:320
+msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
+msgstr "LogicBox\n\n- シミュレーション用オブジェクトの中心となる入れ物。\n- 選択、イベント、状態メッセージを管理します。\n- 実行中はオブジェクトをロックできます。"
+
+#: main.pas:375
+msgid "Shows the name or info of the active object"
+msgstr "選択中のオブジェクトの名前や情報を表示"
+
+#: main.pas:381
+msgid "Shows the current status or function"
+msgstr "現在の状態や機能を表示"
+
+#: main.pas:387
+msgid "Displays the X and Y position of the current object"
+msgstr "現在のオブジェクトの X と Y の位置を表示"
+
+#: main.pas:393
+msgid "Shows the object type"
+msgstr "オブジェクトの種類を表示"
+
+#: main.pas:399
+msgid "Shows extra debug information"
+msgstr "追加のデバッグ情報を表示"
+
+#: main.pas:407
+msgid "Status bar"
+msgstr "ステータスバー"
+
+#: main.pas:424
+msgid "Algemeen"
+msgstr ""
+
+#: main.pas:424
+msgid "General"
+msgstr "一般"
+
+#: main.pas:425
+msgid "SchakelElementen"
+msgstr ""
+
+#: main.pas:425
+msgid "Switch Elements"
+msgstr "部品"
+
+#: main.pas:426 main.pas:426
+msgid "Hints"
+msgstr "ヒント"
+
+#: main.pas:1371
+msgid "Logic Circuits"
+msgstr "論理回路"
+
+#: main.pas:1372
+msgid "Choose language..."
+msgstr "言語を選択..."
+
+#: main.pas:1373
+msgid "Copy the panel to the clipboard..."
+msgstr "パネルをクリップボードにコピー..."
+
+#: main.pas:1375
+msgid "Grid Yes/No\nGo to open settings for additional options..."
+msgstr "グリッド オン/オフ\nその他のオプションは設定で..."
+
+#: main.pas:1376
+msgid "Guidelines on grid YES/NO..."
+msgstr "グリッドのガイド線 オン/オフ..."
+
+#: main.pas:1377
+msgid "Draw frame on grid..."
+msgstr "グリッドに枠を描く..."
+
+#: main.pas:1378
+msgid "Change panel title..."
+msgstr "パネルのタイトルを変更..."
+
+#: main.pas:1379
+msgid "Bar Input / Processing / Output on/off"
+msgstr "入力 / 処理 / 出力 バー オン/オフ"
+
+#: main.pas:1380
+msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
+msgstr "回路記号: Afbeelding (絵)、IEC (欧州式) または ANSI (米国式)"
+
+#: main.pas:1382
+msgid "Open settings"
+msgstr "設定を開く"
+
+#: main.pas:1383
+msgid "Close application"
+msgstr "プログラムを終了"
+
+#: main.pas:1384
+msgid "About Logic..."
+msgstr "Logic について..."
+
+#: main.pas:1385
+msgid "Open help (F1)"
+msgstr "ヘルプを開く (F1)"
+
+#: main.pas:1386
+msgid "Open saved panel..."
+msgstr "保存したパネルを開く..."
+
+#: main.pas:1387
+msgid "Save panel..."
+msgstr "パネルを保存..."
+
+#: main.pas:1388
+msgid "Click here to select the panel..."
+msgstr "ここをクリックしてパネルを選択..."
+
+#: main.pas:1389
+msgid "Remove connections..."
+msgstr "接続を削除..."
+
+#: main.pas:1390
+msgid "Delete selected object..."
+msgstr "選択したオブジェクトを削除..."
+
+#: main.pas:1472
+msgid "Decision panel"
+msgstr "判断パネル"
+
+#: main.pas:1473
+msgid "Counter panel"
+msgstr "カウンタパネル"
+
+#: main.pas:1474
+msgid "Memory panel"
+msgstr "メモリパネル"
+
+#: main.pas:1475
+msgid "New standard panel"
+msgstr "新しい標準パネル"
+
+#: main.pas:1671
+msgid "Undo (Ctrl+Z)"
+msgstr "元に戻す (Ctrl+Z)"
+
+#: main.pas:1672
+msgid "Redo (Ctrl+Y)"
+msgstr "やり直し (Ctrl+Y)"
+
+#: main.pas:1690
+msgid "LogicRun: program in steps"
+msgstr "LogicRun: ステップでプログラム"
+
+#: main.pas:1926 main.pas:1926
+msgid "without name"
+msgstr "名前なし"
+
+#: main.pas:1927 main.pas:1927
+msgid "The panel \"%s\" has been changed."
+msgstr "パネル \"%s\" は変更されています。"
+
+#: main.pas:1928 main.pas:1928
+msgid "Do you want to save the changes?"
+msgstr "変更を保存しますか?"
+
+#: main.pas:2584
+msgid "Screenshot of the panel has been copied to the clipboard."
+msgstr "パネルの画像をクリップボードにコピーしました。"
+
+#: main.pas:2785
+msgid "Change title"
+msgstr "タイトルを変更"
+
+#: main.pas:2786
+msgid "Enter new title:"
+msgstr "新しいタイトルを入力:"
+
+#: uabout.pas:109
+msgid "About Logic"
+msgstr "Logic について"
+
+#: uabout.pas:110 uabout.pas:110
+msgid "Version "
+msgstr "バージョン"
+
+#: uabout.pas:111
+msgid "Simulator for digital circuits: build a circuit with switches, gates, counters, memories and displays, and watch it work."
+msgstr "デジタル回路シミュレータ: スイッチ、ゲート、カウンタ、メモリ、表示器で回路を組み、動作を確かめましょう。"
+
+#: uabout.pas:113
+msgid "Based on the freeware components by Jan Verhoeven."
+msgstr "Jan Verhoeven 氏のフリーウェア部品をもとにしています。"
+
+#: uabout.pas:114
+msgid "Released under the MIT license."
+msgstr "MIT ライセンスで公開しています。"
+
+#: uabout.pas:115
+msgid "Check for updates automatically"
+msgstr "自動的に更新を確認"
+
+#: uabout.pas:116
+msgid "Check for updates"
+msgstr "更新を確認"
+
+#: uhelpmanager.pas:218
+msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
+msgstr "ボタン / スイッチ\n\n- 2値の入力または出力を模擬します。\n- 通常は左クリックで状態が変わります。\n- 右クリックでその他の設定を開きます。\n- 名前と状態はステータスバーに表示できます。"
+
+#: uhelpmanager.pas:240
+msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
+msgstr "スイッチ\n\n- オン/オフのスイッチを模擬します。\n- 選択して操作できます。\n- 名前と状態はステータスバーに表示できます。"
+
+#: uhelpmanager.pas:259
+msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
+msgstr "論理ブロック\n\n- 論理関数に従って入力を処理します。\n- 使える関数: AND、OR、NOT。\n- 選んだ関数はステータスバーやヒントに表示できます。"
+
+#: uhelpmanager.pas:278
+msgid "Power rail\n\n- + rail: plug inputs in on the right; right-click for the voltage.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "電源レール\n\n- + レール: 入力は右側に差し込み、右クリックで電圧設定。\n- - レール (グランド): 出力は左側に差し込みます。\n- 中央をドラッグで移動、端をドラッグでサイズ変更。"
+
+#: uhelpmanager.pas:296
+msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
+msgstr "電圧計\n\n- グランドに対する + の電圧を表示します。\n- + は配線するか + レールに差し込みます。"
+
+#: uhelpmanager.pas:312
+msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
+msgstr "接続 / 配線\n\n- オブジェクト同士をつなぎます。\n- 選択して編集・削除できます。\n- 右クリックメニューに追加の操作があります。"
+
+#: uhelpmanager.pas:330
+msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
+msgstr "センサー\n\n- 検出または入力用の部品です。\n- 通常は2値の状態を出します。"
+
+#: uhelpmanager.pas:344
+msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
+msgstr "加熱 / 熱の要素\n\n- 加熱の出力または熱の記号を表します。"
+
+#: uhelpmanager.pas:356
+msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
+msgstr "パルス\n\n- 一時的なパルスを発生・表示します。\n- トリガーやテスト信号に便利です。"
+
+#: uhelpmanager.pas:370
+msgid "DIP switch\n\n- Allows multiple fixed binary settings."
+msgstr "DIPスイッチ\n\n- 複数の2値設定を固定できます。"
+
+#: uhelpmanager.pas:383
+msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
+msgstr "グリッド\n\n- オブジェクトの配置・選択と枠の描画に使います。\n- グリッドへの吸着、ガイド線、定規を使えます。\n- タイトルと作業領域は別々に扱えます。"
+
+#: uhelpmanager.pas:399
+msgid "No specific help found for keyword: "
+msgstr "このキーワードのヘルプは見つかりません:"
+
+#: uhelpmanager.pas:399
+msgid "\n\nExpected help page:\n"
+msgstr "\n\n予定のヘルプページ:\n"
+
+#: uhelpmanager.pas:417
+msgid "No HelpKeyword assigned."
+msgstr "ヘルプキーワードが設定されていません。"
+
+#: uhelpmanager.pas:434 uhelpmanager.pas:502
+msgid "No internal help handler assigned.\n"
+msgstr "内部ヘルプ処理が設定されていません。\n"
+
+#: uhelpmanager.pas:511
+msgid "Table of contents not found.\n"
+msgstr "目次が見つかりません。\n"
+
+#: uLogicRun.pas:244
+msgid "Start"
+msgstr "開始"
+
+#: uLogicRun.pas:245
+msgid "Pause"
+msgstr "一時停止"
+
+#: uLogicRun.pas:246
+msgid "Stop"
+msgstr "停止"
+
+#: uLogicRun.pas:247
+msgid "Step"
+msgstr "ステップ"
+
+#: uLogicRun.pas:248
+msgid "Step time"
+msgstr "ステップ時間"
+
+#: uLogicRun.pas:249
+msgid "Repeat"
+msgstr "繰り返し"
+
+#: uLogicRun.pas:250
+msgid "Example"
+msgstr "例"
+
+#: uLogicRun.pas:251
+msgid "Load"
+msgstr "読み込み"
+
+#: uLogicRun.pas:252
+msgid "+ step"
+msgstr "+ ステップ"
+
+#: uLogicRun.pas:253
+msgid "- step"
+msgstr "- ステップ"
+
+#: uLogicRun.pas:254
+msgid "Put the block on the panel"
+msgstr "ブロックをパネルに置く"
+
+#: uLogicRun.pas:257
+msgid "There is no LogicRun block on the panel yet. Click the button below and then on the panel to place it."
+msgstr "パネルにはまだ LogicRun ブロックがありません。下のボタンを押してから、パネルをクリックして配置してください。"
+
+#: uLogicRun.pas:261
+msgid "time x"
+msgstr "時間 x"
+
+#: uLogicRun.pas:262
+msgid "wait for"
+msgstr "待機"
+
+#: uLogicRun.pas:266
+msgid "— choose —"
+msgstr "— 選択 —"
+
+#: uLogicRun.pas:267 fsettings.lfm
+msgid "Traffic light"
+msgstr "信号機"
+
+#: uLogicRun.pas:268
+msgid "Running light"
+msgstr "流れるライト"
+
+#: uLogicRun.pas:269
+msgid "Motor left/right"
+msgstr "モーター 左/右"
+
+#: uLogicRun.pas:270
+msgid "4-bit counter"
+msgstr "4ビットカウンタ"
+
+#: uLogicRun.pas:271 fsettings.lfm
+msgid "Cart"
+msgstr "台車"
+
+#: uLogicRun.pas:272
+msgid "Packing machine"
+msgstr "包装機"
+
+#: uLogicRun.pas:273
+msgid "Count up and down"
+msgstr "上下にカウント"
+
+#: uLogicRun.pas:274
+msgid "Person back and forth"
+msgstr "人が行ったり来たり"
+
+#: uLogicRun.pas:275
+msgid "Cart on a road"
+msgstr "コース上の台車"
+
+#: uLogicRun.pas:276
+msgid "Music: Twinkle, twinkle, little star"
+msgstr "音楽: きらきら星"
+
+#: uLogicRun.pas:277
+msgid "Music: Ode to Joy (two voices)"
+msgstr "音楽: 歓喜の歌 (2声)"
+
+#: uLogicRun.pas:278
+msgid "Traffic light with pedestrian button"
+msgstr "押しボタン式信号機"
+
+#: uLogicRun.pas:423
+msgid "running: step"
+msgstr "実行中: ステップ"
+
+#: uLogicRun.pas:426
+msgid "paused: step"
+msgstr "一時停止: ステップ"
+
+#: uLogicRun.pas:434
+msgid "waiting for "
+msgstr "待機中"
+
+#: uLogicRun.pas:437
+msgid "pulses on"
+msgstr "パルス 入力"
+
+#: uLogicRun.pas:712
+msgid "on"
+msgstr "オン"
+
+#: uLogicRun.pas:752
+msgid "None (the time counts)"
+msgstr "なし (時間で進む)"
+
+#: uLogicRun.pas:756
+msgid "Until input on"
+msgstr "入力がオンになるまで"
+
+#: uLogicRun.pas:757
+msgid "Until input off"
+msgstr "入力がオフになるまで"
+
+#: uLogicRun.pas:758
+msgid "Until number of pulses on input"
+msgstr "入力のパルス数に達するまで"
+
+#: uLogicRun.pas:775
+msgid "Number of pulses:"
+msgstr "パルス数:"
+
+#: uUpdate.pas:282
+msgid "A new version of Logic is available: %s (you have %s)."
+msgstr "Logic の新しいバージョンがあります: %s (現在 %s)。"
+
+#: uUpdate.pas:286
+msgid "Skip this version"
+msgstr "このバージョンをスキップ"
+
+#: uUpdate.pas:287
+msgid "Later"
+msgstr "後で"
+
+#: uUpdate.pas:288
+msgid "Download"
+msgstr "ダウンロード"
+
+#: uUpdate.pas:376
+msgid "Logic could not check for a new version. Maybe there is no internet connection, or the website is blocked."
+msgstr "新しいバージョンを確認できませんでした。インターネットに接続されていないか、サイトがブロックされている可能性があります。"
+
+#: uUpdate.pas:387
+msgid "A new version of Logic is available: %s (you have %s).Do you want to open the download page?"
+msgstr "Logic の新しいバージョンがあります: %s (現在 %s)。ダウンロードページを開きますか?"
+
+#: uUpdate.pas:396
+msgid "You have the latest version of Logic (%s)."
+msgstr "Logic は最新バージョンです (%s)。"
+
+#: AdvancedPropertyGridComponent.pas:988 AdvancedPropertyGridComponent.pas:991
+msgid "Property"
+msgstr "プロパティ"
+
+#: AdvancedPropertyGridComponent.pas:989
+msgid "Value"
+msgstr "値"
+
+#: AdvancedPropertyGridComponent.pas:990
+msgid "Select"
+msgstr "選択"
+
+#: AdvancedPropertyGridComponent.pas:1080
+msgid "Save INI"
+msgstr "INI を保存"
+
+#: AdvancedPropertyGridComponent.pas:1082
+msgid "Close Settings"
+msgstr "設定を閉じる"
+
+#: AdvancedPropertyGridComponent.pas:1083
+msgid "Load default settings"
+msgstr "標準設定を読み込む"
+
+#: AdvancedPropertyGridComponent.pas:1084
+msgid "Change Language"
+msgstr "言語を変更"
+
+#: main.pas (moduscurrent, statusbalk)
+msgid "Settings"
+msgstr "設定"
+
+#: janSimLogic.pas (rechtsklikmenu)
+msgid "lock"
+msgstr "ロック"
+
+#: fsettings.lfm
+msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
+msgstr "LogicRun/人/台車/オルゴール/信号機 ボタン オン/オフ"
+
+#: fsettings.lfm
+msgid "Selected Color"
+msgstr "選択色"
+
+#: fsettings.lfm
+msgid "Name"
+msgstr "名前"
+
+#: fsettings.lfm
+msgid "Visible Yes/No"
+msgstr "表示 オン/オフ"
+
+#: fsettings.lfm
+msgid "Width"
+msgstr "幅"
+
+#: fsettings.lfm
+msgid "Height"
+msgstr "高さ"
+
+#: fsettings.lfm
+msgid "Hint"
+msgstr "ヒント"
+
+#: fsettings.lfm
+msgid "Show hint"
+msgstr "ヒントを表示"
+
+#: fsettings.lfm
+msgid "Grid Yes/No"
+msgstr "グリッド オン/オフ"
+
+#: fsettings.lfm
+msgid "Color Panel"
+msgstr "パネルの色"
+
+#: fsettings.lfm
+msgid "Color Input"
+msgstr "入力の色"
+
+#: fsettings.lfm
+msgid "Color Output"
+msgstr "出力の色"
+
+#: fsettings.lfm
+msgid "Color Processing"
+msgstr "処理の色"
+
+#: fsettings.lfm
+msgid "Grid spacing X"
+msgstr "グリッド間隔 X"
+
+#: fsettings.lfm
+msgid "Grid spacing Y"
+msgstr "グリッド間隔 Y"
+
+#: fsettings.lfm
+msgid "Language choice"
+msgstr "言語の選択"
+
+#: fsettings.lfm
+msgid "Color Dots"
+msgstr "点の色"
+
+#: fsettings.lfm
+msgid "Header"
+msgstr "見出し"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Buzzer"
+msgstr "ブザー"
+
+#: fsettings.lfm fsettings.lfm
+msgid "DIP switch"
+msgstr "DIPスイッチ"
+
+#: fsettings.lfm fsettings.lfm
+msgid "7 segment display"
+msgstr "7セグメント表示器"
+
+#: fsettings.lfm
+msgid "Power rails (+ and -)"
+msgstr "電源レール (+ と -)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Voltmeter"
+msgstr "電圧計"
+
+#: fsettings.lfm
+msgid "Schematic symbols (Afbeelding/IEC/ANSI)"
+msgstr "回路記号 (Afbeelding/IEC/ANSI)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Connection"
+msgstr "接続"
+
+#: fsettings.lfm fsettings.lfm
+msgid "AND gate"
+msgstr "AND ゲート"
+
+#: fsettings.lfm fsettings.lfm
+msgid "NOT gate"
+msgstr "NOT ゲート"
+
+#: fsettings.lfm fsettings.lfm
+msgid "OR gate"
+msgstr "OR ゲート"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Pulse generator"
+msgstr "パルス発生器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Relay"
+msgstr "リレー"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switching relay"
+msgstr "切替リレー"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switch"
+msgstr "スイッチ"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Light sensor"
+msgstr "光センサー"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Counter block"
+msgstr "カウンタブロック"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Step counter"
+msgstr "ステップカウンタ"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Stopwatch"
+msgstr "ストップウォッチ"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Barrier gate"
+msgstr "遮断機"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Motor"
+msgstr "モーター"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Heat sensor"
+msgstr "熱センサー"
+
+#: fsettings.lfm
+msgid "Person"
+msgstr "人"
+
+#: fsettings.lfm
+msgid "Music box"
+msgstr "オルゴール"
+
+#: fsettings.lfm
+msgid "+ rail (supply)"
+msgstr "+ レール (電源)"
+
+#: fsettings.lfm
+msgid "- rail (ground)"
+msgstr "- レール (グランド)"
+
+#: fsettings.lfm
+msgid "Copy screen"
+msgstr "画面をコピー"
+
+#: fsettings.lfm
+msgid "Image type"
+msgstr "画像の種類"
+

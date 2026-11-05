@@ -1,0 +1,1299 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Logic\n"
+"Language: zh\n"
+"X-Language-Name: 中文\n"
+
+#: chatgridpcodeSmall.pas:282 chatgridpcodeSmall.pas:282
+msgid "Change caption"
+msgstr "修改标题"
+
+#: chatgridpcodeSmall.pas:318 chatgridpcodeSmall.pas:318
+msgid "Color blue"
+msgstr "蓝色"
+
+#: chatgridpcodeSmall.pas:330 chatgridpcodeSmall.pas:330
+msgid "Color red"
+msgstr "红色"
+
+#: chatgridpcodeSmall.pas:342 chatgridpcodeSmall.pas:342
+msgid "Color green"
+msgstr "绿色"
+
+#: chatgridpcodeSmall.pas:354 chatgridpcodeSmall.pas:354
+msgid "Delete frame"
+msgstr "删除边框"
+
+#: chatgridpcodeSmall.pas:368
+msgid "Click here to change the title"
+msgstr "点击此处修改标题"
+
+#: chatgridpcodeSmall.pas:384 janSimLogic.pas:3073
+msgid "Right mouse button for extra settings"
+msgstr "右键单击可进行更多设置"
+
+#: chatgridpcodeSmall.pas:1087 chatgridpcodeSmall.pas:1087 janSimLogic.pas:9359
+msgid "Input"
+msgstr "输入"
+
+#: chatgridpcodeSmall.pas:1088 chatgridpcodeSmall.pas:1088
+msgid "Processing"
+msgstr "处理"
+
+#: chatgridpcodeSmall.pas:1089 chatgridpcodeSmall.pas:1089
+msgid "Output"
+msgstr "输出"
+
+#: chatgridpcodeSmall.pas:1090 chatgridpcodeSmall.pas:1090
+msgid "Logic Panel"
+msgstr "逻辑面板"
+
+#: janSimLogic.pas:3140
+msgid "Cancel"
+msgstr "取消"
+
+#: janSimLogic.pas:3274 janSimLogic.pas:16182 janSimLogic.pas:16720
+msgid "Export"
+msgstr "导出"
+
+#: janSimLogic.pas:3275 janSimLogic.pas:8862 janSimLogic.pas:9360
+msgid "Status"
+msgstr "状态"
+
+#: janSimLogic.pas:3387 janSimLogic.pas:7641 janSimLogic.pas:9283
+msgid "Verrouiller"
+msgstr ""
+
+#: janSimLogic.pas:3391 janSimLogic.pas:7645 janSimLogic.pas:9287
+msgid "Sperren"
+msgstr ""
+
+#: janSimLogic.pas:3406 janSimLogic.pas:7660 janSimLogic.pas:9302
+msgid "Change name"
+msgstr "修改名称"
+
+#: janSimLogic.pas:3418 janSimLogic.pas:5771 janSimLogic.pas:7672
+msgid "Select object"
+msgstr "选择对象"
+
+#: janSimLogic.pas:3425 janSimLogic.pas:5769 janSimLogic.pas:7679
+msgid "Deselect object"
+msgstr "取消选择"
+
+#: janSimLogic.pas:3438 janSimLogic.pas:7692 janSimLogic.pas:9334
+msgid "Information off"
+msgstr "关闭信息"
+
+#: janSimLogic.pas:3445 janSimLogic.pas:7699 janSimLogic.pas:9341
+msgid "Information on"
+msgstr "显示信息"
+
+#: janSimLogic.pas:5608
+msgid "+ rail (supply "
+msgstr "+ 电源轨 (电源"
+
+#: janSimLogic.pas:5608
+msgid "V)\nPlug inputs in on the right of the rail. Below 2V no signal.\nRight-click: set voltage. Drag the ends to resize."
+msgstr "V)\n输入插在电源轨右侧。低于 2V 无信号。\n右键: 设置电压。拖动两端可调整大小。"
+
+#: janSimLogic.pas:5621
+msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
+msgstr "- 电源轨 (接地)\n输出插在电源轨左侧。\n拖动两端可调整大小。"
+
+#: janSimLogic.pas:5634
+msgid "+ rail"
+msgstr "+ 电源轨"
+
+#: janSimLogic.pas:5639
+msgid "- rail"
+msgstr "- 电源轨"
+
+#: janSimLogic.pas:5640
+msgid "Ground"
+msgstr "接地"
+
+#: janSimLogic.pas:5745
+msgid "Voltage"
+msgstr "电压"
+
+#: janSimLogic.pas:5761 janSimLogic.pas:11261 janSimLogic.pas:25303
+msgid "Unlock"
+msgstr "解锁"
+
+#: janSimLogic.pas:5763 janSimLogic.pas:11263 janSimLogic.pas:25305
+msgid "Lock"
+msgstr "锁定"
+
+#: janSimLogic.pas:8578 janSimLogic.pas:8839
+msgid "AND"
+msgstr ""
+
+#: janSimLogic.pas:8584 janSimLogic.pas:8842
+msgid "OR"
+msgstr ""
+
+#: janSimLogic.pas:8590 janSimLogic.pas:8845
+msgid "NOT"
+msgstr ""
+
+#: janSimLogic.pas:9395
+msgid "Processing --> Counter block"
+msgstr "处理 --> 计数器模块"
+
+#: janSimLogic.pas:11029 fsettings.lfm fsettings.lfm
+msgid "Memory block"
+msgstr "存储器模块"
+
+#: janSimLogic.pas:11490
+msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
+msgstr "电压表 (相对于接地测量)\n+ 左侧: 连接导线或插在 + 电源轨上。\n- 右侧: 可悬空或插在 - 电源轨上。"
+
+#: janSimLogic.pas:12532 janSimLogic.pas:12565 fsettings.lfm
+msgid "Push button"
+msgstr "按钮"
+
+#: janSimLogic.pas:12534
+msgid "Down"
+msgstr "下"
+
+#: janSimLogic.pas:12536
+msgid "Upwards"
+msgstr "上"
+
+#: janSimLogic.pas:13223 janSimLogic.pas:15458
+msgid "switch"
+msgstr "开关"
+
+#: janSimLogic.pas:13280
+msgid "DipSwitsh"
+msgstr "拨码开关"
+
+#: janSimLogic.pas:14229
+msgid "emperature sensor"
+msgstr "温度传感器"
+
+#: janSimLogic.pas:14475
+msgid "Frequency"
+msgstr "频率"
+
+#: janSimLogic.pas:14481
+msgid "every "
+msgstr "每"
+
+#: janSimLogic.pas:14484
+msgid "default"
+msgstr "默认"
+
+#: janSimLogic.pas:15886
+msgid "cold"
+msgstr "冷"
+
+#: janSimLogic.pas:15886
+msgid "hot"
+msgstr "热"
+
+#: janSimLogic.pas:16084
+msgid "Temperature sensor"
+msgstr "温度传感器"
+
+#: janSimLogic.pas:16432
+msgid "Colour"
+msgstr "颜色"
+
+#: janSimLogic.pas:16438 fsettings.lfm fsettings.lfm
+msgid "Lamp"
+msgstr "灯"
+
+#: janSimLogic.pas:16439
+msgid "Red LED"
+msgstr "红色 LED"
+
+#: janSimLogic.pas:16440
+msgid "Green LED"
+msgstr "绿色 LED"
+
+#: janSimLogic.pas:16441
+msgid "Orange LED"
+msgstr "橙色 LED"
+
+#: janSimLogic.pas:20773 janSimLogic.pas:20773
+msgid "create Switch"
+msgstr "创建开关"
+
+#: janSimLogic.pas:21620 janSimLogic.pas:21620
+msgid "create Buzzer"
+msgstr "创建蜂鸣器"
+
+#: janSimLogic.pas:21621 janSimLogic.pas:21621
+msgid "create Motor"
+msgstr "创建电机"
+
+#: janSimLogic.pas:21622 janSimLogic.pas:21622
+msgid "create DipSwitsh"
+msgstr "创建拨码开关"
+
+#: janSimLogic.pas:21623 janSimLogic.pas:21623
+msgid "create 7 segment display"
+msgstr "创建 7 段数码管"
+
+#: janSimLogic.pas:21624 janSimLogic.pas:21624
+msgid "create Connection"
+msgstr "创建连线"
+
+#: janSimLogic.pas:21625 janSimLogic.pas:21625
+msgid "create Push button"
+msgstr "创建按钮"
+
+#: janSimLogic.pas:21626 janSimLogic.pas:21626
+msgid "create Lamp"
+msgstr "创建灯"
+
+#: janSimLogic.pas:21627 janSimLogic.pas:21627
+msgid "create AND-Logic gate"
+msgstr "创建与门 (AND)"
+
+#: janSimLogic.pas:21628 janSimLogic.pas:21628
+msgid "create NOT-Logic gate"
+msgstr "创建非门 (NOT)"
+
+#: janSimLogic.pas:21629 janSimLogic.pas:21629
+msgid "create OR-Logic gate"
+msgstr "创建或门 (OR)"
+
+#: janSimLogic.pas:21630 janSimLogic.pas:21630
+msgid "create Memory block"
+msgstr "创建存储器模块"
+
+#: janSimLogic.pas:21631 janSimLogic.pas:21631
+msgid "create Impuls generator"
+msgstr "创建脉冲发生器"
+
+#: janSimLogic.pas:21632 janSimLogic.pas:21632
+msgid "create Relay"
+msgstr "创建继电器"
+
+#: janSimLogic.pas:21633 janSimLogic.pas:21633
+msgid "create Switching relay (relay with contact)"
+msgstr "创建转换继电器 (带触点的继电器)"
+
+#: janSimLogic.pas:21634 janSimLogic.pas:21634
+msgid "create Switsh"
+msgstr "创建开关"
+
+#: janSimLogic.pas:21635 janSimLogic.pas:21635
+msgid "create Light sensor"
+msgstr "创建光传感器"
+
+#: janSimLogic.pas:21636 janSimLogic.pas:21636
+msgid "create Counter block"
+msgstr "创建计数器模块"
+
+#: janSimLogic.pas:21637 janSimLogic.pas:21637
+msgid "create Step counter (counts up to 9999)"
+msgstr "创建步数计数器 (最多计到 9999)"
+
+#: janSimLogic.pas:21638 janSimLogic.pas:21638
+msgid "create Stopwatch (time with end time)"
+msgstr "创建秒表 (带结束时间)"
+
+#: janSimLogic.pas:21639 janSimLogic.pas:21639
+msgid "create HeatSensor"
+msgstr "创建热传感器"
+
+#: janSimLogic.pas:21640 janSimLogic.pas:21640
+msgid "create Voltmeter"
+msgstr "创建电压表"
+
+#: janSimLogic.pas:21641 janSimLogic.pas:21641
+msgid "create Person (with limit switches)"
+msgstr "创建人 (带限位开关)"
+
+#: janSimLogic.pas:21642 janSimLogic.pas:21642
+msgid "create Cart (road with posts)"
+msgstr "创建小车 (带柱子的路线)"
+
+#: janSimLogic.pas:21643 janSimLogic.pas:21643
+msgid "create Music box (8 piano keys)"
+msgstr "创建音乐盒 (8 个琴键)"
+
+#: janSimLogic.pas:21644 janSimLogic.pas:21644
+msgid "create Traffic light (with pedestrian light)"
+msgstr "创建交通灯 (带行人信号灯)"
+
+#: janSimLogic.pas:21645 janSimLogic.pas:21645
+msgid "create Barrier gate (car park)"
+msgstr "创建道闸 (停车场)"
+
+#: janSimLogic.pas:21646 janSimLogic.pas:21646
+msgid "create + rail (supply)"
+msgstr "创建 + 电源轨 (电源)"
+
+#: janSimLogic.pas:21647 janSimLogic.pas:21647
+msgid "create - rail (ground)"
+msgstr "创建 - 电源轨 (接地)"
+
+#: janSimLogic.pas:22976 janSimLogic.pas:23449
+msgid "Connector tool"
+msgstr "连线工具"
+
+#: janSimLogic.pas:24375
+msgid "%d objects selected\nDrag to move them together, Esc or click outside to deselect"
+msgstr "已选择 %d 个对象\n拖动可一起移动，按 Esc 或点击外部取消选择"
+
+#: janSimLogic.pas:24698 uLogicRun.pas:286
+msgid "start/stop"
+msgstr "启动/停止"
+
+#: janSimLogic.pas:24699 uLogicRun.pas:287
+msgid "reset"
+msgstr "复位"
+
+#: janSimLogic.pas:24701 uLogicRun.pas:289
+msgid "on/off"
+msgstr "开/关"
+
+#: janSimLogic.pas:25220 janSimLogic.pas:25248 janSimLogic.pas:25618
+msgid "stopped"
+msgstr "已停止"
+
+#: janSimLogic.pas:25223 janSimLogic.pas:25250 uLogicRun.pas:260
+msgid "step"
+msgstr "步"
+
+#: janSimLogic.pas:25237
+msgid "Double-click: edit program"
+msgstr "双击: 编辑程序"
+
+#: janSimLogic.pas:25297
+msgid "Edit program..."
+msgstr "编辑程序..."
+
+#: janSimLogic.pas:25611
+msgid "L and R on together: fault!"
+msgstr "L 和 R 同时接通: 故障!"
+
+#: janSimLogic.pas:25614
+msgid "turning left"
+msgstr "向左转"
+
+#: janSimLogic.pas:25616
+msgid "turning right"
+msgstr "向右转"
+
+#: janSimLogic.pas:25624
+msgid "L: turn left, R: turn right"
+msgstr "L: 向左转，R: 向右转"
+
+#: janSimLogic.pas:26144
+msgid "L and R on together: stands still"
+msgstr "L 和 R 同时接通: 停止不动"
+
+#: janSimLogic.pas:26147
+msgid "at the left (S1 on)"
+msgstr "在左端 (S1 接通)"
+
+#: janSimLogic.pas:26150
+msgid "at the right (S2 on)"
+msgstr "在右端 (S2 接通)"
+
+#: janSimLogic.pas:26153
+msgid "walking left"
+msgstr "向左走"
+
+#: janSimLogic.pas:26155
+msgid "walking right"
+msgstr "向右走"
+
+#: janSimLogic.pas:26157 janSimLogic.pas:26643
+msgid "standing still"
+msgstr "站着不动"
+
+#: janSimLogic.pas:26164
+msgid "L: walk left, R: walk right\nS1/S2: limit switch left/right\nright-click: place limit switches"
+msgstr "L: 向左走，R: 向右走\nS1/S2: 左/右限位开关\n右键: 放置限位开关"
+
+#: janSimLogic.pas:26231
+msgid "Back to the start"
+msgstr "回到起点"
+
+#: janSimLogic.pas:26234
+msgid "Close the barrier now"
+msgstr "立即关闭道闸"
+
+#: janSimLogic.pas:26237
+msgid "Back to the left (S1)"
+msgstr "回到左边 (S1)"
+
+#: janSimLogic.pas:26242
+msgid "Place limit switches"
+msgstr "放置限位开关"
+
+#: janSimLogic.pas:26627
+msgid "V and A on together: stands still"
+msgstr "V 和 A 同时接通: 停止不动"
+
+#: janSimLogic.pas:26630
+msgid "at the start (Start on)"
+msgstr "在起点 (Start 接通)"
+
+#: janSimLogic.pas:26633
+msgid "at the finish (Finish on)"
+msgstr "在终点 (Finish 接通)"
+
+#: janSimLogic.pas:26636
+msgid "at post %d (Tel on)"
+msgstr "在第 %d 根柱子 (Tel 接通)"
+
+#: janSimLogic.pas:26639
+msgid "driving forward"
+msgstr "前进"
+
+#: janSimLogic.pas:26641
+msgid "driving backward"
+msgstr "后退"
+
+#: janSimLogic.pas:26651
+msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
+msgstr "V: 前进，A: 后退\nStart/Finish: 路线的起点和终点\nTel: 每根柱子一个脉冲 (1-5)\n右键: 放置限位开关"
+
+#: janSimLogic.pas:26977
+msgid "Sound"
+msgstr "声音"
+
+#: janSimLogic.pas:26996
+msgid "silent"
+msgstr "静音"
+
+#: janSimLogic.pas:26998
+msgid "plays "
+msgstr "正在演奏"
+
+#: janSimLogic.pas:27000 janSimLogic.pas:27041
+msgid " (sound off)"
+msgstr " (声音关闭)"
+
+#: janSimLogic.pas:27007
+msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
+msgstr "每个音符一个输入 (Do Re Mi Fa Sol La Si Do')\n接通: 琴键发光并发出音符\n右键: 声音开/关"
+
+#: janSimLogic.pas:27222 janSimLogic.pas:27228
+msgid "red"
+msgstr "红"
+
+#: janSimLogic.pas:27223
+msgid "amber"
+msgstr "黄"
+
+#: janSimLogic.pas:27224 janSimLogic.pas:27229
+msgid "green"
+msgstr "绿"
+
+#: janSimLogic.pas:27225 janSimLogic.pas:27230 uLogicRun.pas:713
+msgid "off"
+msgstr "关"
+
+#: janSimLogic.pas:27226
+msgid "cars: "
+msgstr "车辆:"
+
+#: janSimLogic.pas:27231
+msgid " - pedestrians: "
+msgstr " - 行人:"
+
+#: janSimLogic.pas:27233
+msgid " - DANGER: both green!"
+msgstr " - 危险: 两边都是绿灯!"
+
+#: janSimLogic.pas:27241
+msgid "inputs R, A, G: red, amber, green for the cars\nPR, PG: red and green figure for the pedestrians\nsame height as OUT0..OUT4 of LogicRun"
+msgstr "输入 R, A, G: 车辆的红、黄、绿灯\nPR, PG: 行人的红色和绿色小人\n与 LogicRun 的 OUT0..OUT4 高度相同"
+
+#: janSimLogic.pas:27413
+msgid "Closed"
+msgstr "关闭"
+
+#: janSimLogic.pas:27415
+msgid "Open"
+msgstr "打开"
+
+#: janSimLogic.pas:27447
+msgid "opening"
+msgstr "正在打开"
+
+#: janSimLogic.pas:27448
+msgid "closing"
+msgstr "正在关闭"
+
+#: janSimLogic.pas:27451
+msgid "open"
+msgstr "打开"
+
+#: janSimLogic.pas:27453
+msgid "closed"
+msgstr "关闭"
+
+#: janSimLogic.pas:27455
+msgid "barrier: "
+msgstr "道闸:"
+
+#: janSimLogic.pas:27463
+msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
+msgstr "输入 O: 接通 = 道闸打开，断开 = 道闸关闭\n限位开关 关闭 和 打开 (右键: 放置限位开关)"
+
+#: janSimLogic.pas:27747
+msgid "no person or cart on the panel"
+msgstr "面板上没有人或小车"
+
+#: janSimLogic.pas:27750
+msgid ": on"
+msgstr ": 接通"
+
+#: janSimLogic.pas:27752
+msgid ": off"
+msgstr ": 断开"
+
+#: janSimLogic.pas:27759
+msgid "Follows the person or the cart (without a wire).\nRight-click: choose S1, S2 or Start, Tel, Finish"
+msgstr "跟随人或小车 (无需连线)。\n右键: 选择 S1、S2 或 Start、Tel、Finish"
+
+#: janSimLogic.pas:28171 janSimLogic.pas:28639
+msgid "repeat"
+msgstr "重复"
+
+#: janSimLogic.pas:28173 janSimLogic.pas:28641
+msgid "to "
+msgstr "到"
+
+#: janSimLogic.pas:28188
+msgid "count "
+msgstr "计数"
+
+#: janSimLogic.pas:28189 janSimLogic.pas:28657
+msgid " of "
+msgstr " /"
+
+#: janSimLogic.pas:28191 janSimLogic.pas:28659
+msgid ": reached (Q on)"
+msgstr ": 已达到 (Q 接通)"
+
+#: janSimLogic.pas:28199
+msgid "T: +1 per pulse, R: back to 0\nQ: on when the end value is reached\nRight-click: choose the end value"
+msgstr "T: 每个脉冲 +1，R: 归零\nQ: 达到终值时接通\n右键: 选择终值"
+
+#: janSimLogic.pas:28276 janSimLogic.pas:28703
+msgid "To "
+msgstr "到"
+
+#: janSimLogic.pas:28285
+msgid "Other end value..."
+msgstr "其他终值..."
+
+#: janSimLogic.pas:28294
+msgid "Repeat (start again at 1 after the end value)"
+msgstr "重复 (达到终值后从 1 重新开始)"
+
+#: janSimLogic.pas:28300
+msgid "Set to 0"
+msgstr "置为 0"
+
+#: janSimLogic.pas:28332
+msgid "End value"
+msgstr "终值"
+
+#: janSimLogic.pas:28333
+msgid "Count up to (1 to 9999)?"
+msgstr "计数到多少 (1 到 9999)?"
+
+#: janSimLogic.pas:28656
+msgid "time "
+msgstr "时间"
+
+#: janSimLogic.pas:28667
+msgid "S: time runs while S is on, R: back to 00:00\nQ: on when the end time is reached\nRight-click: choose the end time"
+msgstr "S: S 接通时计时，R: 归零到 00:00\nQ: 达到结束时间时接通\n右键: 选择结束时间"
+
+#: janSimLogic.pas:28712
+msgid "Other end time..."
+msgstr "其他结束时间..."
+
+#: janSimLogic.pas:28721
+msgid "Repeat (start again at 00:01 after the end time)"
+msgstr "重复 (到结束时间后从 00:01 重新开始)"
+
+#: janSimLogic.pas:28727
+msgid "Set to 00:00"
+msgstr "置为 00:00"
+
+#: janSimLogic.pas:28747
+msgid "End time"
+msgstr "结束时间"
+
+#: janSimLogic.pas:28748
+msgid "End time as mm:ss (00:01 to 99:59)?"
+msgstr "结束时间，格式 mm:ss (00:01 到 99:59)?"
+
+#: main.pas:257
+msgid "Stop simulation"
+msgstr "停止仿真"
+
+#: main.pas:259 main.pas:1391
+msgid "Start simulation"
+msgstr "开始仿真"
+
+#: main.pas:320
+msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
+msgstr "LogicBox\n\n- 仿真对象的中央容器。\n- 管理选择、事件和状态信息。\n- 运行时可以锁定对象。"
+
+#: main.pas:375
+msgid "Shows the name or info of the active object"
+msgstr "显示当前对象的名称或信息"
+
+#: main.pas:381
+msgid "Shows the current status or function"
+msgstr "显示当前状态或功能"
+
+#: main.pas:387
+msgid "Displays the X and Y position of the current object"
+msgstr "显示当前对象的 X 和 Y 位置"
+
+#: main.pas:393
+msgid "Shows the object type"
+msgstr "显示对象类型"
+
+#: main.pas:399
+msgid "Shows extra debug information"
+msgstr "显示额外的调试信息"
+
+#: main.pas:407
+msgid "Status bar"
+msgstr "状态栏"
+
+#: main.pas:424
+msgid "Algemeen"
+msgstr ""
+
+#: main.pas:424
+msgid "General"
+msgstr "常规"
+
+#: main.pas:425
+msgid "SchakelElementen"
+msgstr ""
+
+#: main.pas:425
+msgid "Switch Elements"
+msgstr "元件"
+
+#: main.pas:426 main.pas:426
+msgid "Hints"
+msgstr "提示"
+
+#: main.pas:1371
+msgid "Logic Circuits"
+msgstr "逻辑电路"
+
+#: main.pas:1372
+msgid "Choose language..."
+msgstr "选择语言..."
+
+#: main.pas:1373
+msgid "Copy the panel to the clipboard..."
+msgstr "将面板复制到剪贴板..."
+
+#: main.pas:1375
+msgid "Grid Yes/No\nGo to open settings for additional options..."
+msgstr "网格 开/关\n更多选项请打开设置..."
+
+#: main.pas:1376
+msgid "Guidelines on grid YES/NO..."
+msgstr "网格辅助线 开/关..."
+
+#: main.pas:1377
+msgid "Draw frame on grid..."
+msgstr "在网格上画框..."
+
+#: main.pas:1378
+msgid "Change panel title..."
+msgstr "修改面板标题..."
+
+#: main.pas:1379
+msgid "Bar Input / Processing / Output on/off"
+msgstr "输入 / 处理 / 输出 栏 开/关"
+
+#: main.pas:1380
+msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
+msgstr "电路符号: Afbeelding (图片)、IEC (欧洲) 或 ANSI (美国)"
+
+#: main.pas:1382
+msgid "Open settings"
+msgstr "打开设置"
+
+#: main.pas:1383
+msgid "Close application"
+msgstr "关闭程序"
+
+#: main.pas:1384
+msgid "About Logic..."
+msgstr "关于 Logic..."
+
+#: main.pas:1385
+msgid "Open help (F1)"
+msgstr "打开帮助 (F1)"
+
+#: main.pas:1386
+msgid "Open saved panel..."
+msgstr "打开已保存的面板..."
+
+#: main.pas:1387
+msgid "Save panel..."
+msgstr "保存面板..."
+
+#: main.pas:1388
+msgid "Click here to select the panel..."
+msgstr "点击此处选择面板..."
+
+#: main.pas:1389
+msgid "Remove connections..."
+msgstr "删除连线..."
+
+#: main.pas:1390
+msgid "Delete selected object..."
+msgstr "删除所选对象..."
+
+#: main.pas:1472
+msgid "Decision panel"
+msgstr "判断面板"
+
+#: main.pas:1473
+msgid "Counter panel"
+msgstr "计数器面板"
+
+#: main.pas:1474
+msgid "Memory panel"
+msgstr "存储器面板"
+
+#: main.pas:1475
+msgid "New standard panel"
+msgstr "新建标准面板"
+
+#: main.pas:1671
+msgid "Undo (Ctrl+Z)"
+msgstr "撤销 (Ctrl+Z)"
+
+#: main.pas:1672
+msgid "Redo (Ctrl+Y)"
+msgstr "重做 (Ctrl+Y)"
+
+#: main.pas:1690
+msgid "LogicRun: program in steps"
+msgstr "LogicRun: 分步编程"
+
+#: main.pas:1926 main.pas:1926
+msgid "without name"
+msgstr "未命名"
+
+#: main.pas:1927 main.pas:1927
+msgid "The panel \"%s\" has been changed."
+msgstr "面板 \"%s\" 已更改。"
+
+#: main.pas:1928 main.pas:1928
+msgid "Do you want to save the changes?"
+msgstr "是否保存更改?"
+
+#: main.pas:2584
+msgid "Screenshot of the panel has been copied to the clipboard."
+msgstr "面板图像已复制到剪贴板。"
+
+#: main.pas:2785
+msgid "Change title"
+msgstr "修改标题"
+
+#: main.pas:2786
+msgid "Enter new title:"
+msgstr "输入新标题:"
+
+#: uabout.pas:109
+msgid "About Logic"
+msgstr "关于 Logic"
+
+#: uabout.pas:110 uabout.pas:110
+msgid "Version "
+msgstr "版本"
+
+#: uabout.pas:111
+msgid "Simulator for digital circuits: build a circuit with switches, gates, counters, memories and displays, and watch it work."
+msgstr "数字电路仿真器: 用开关、逻辑门、计数器、存储器和显示器搭建电路，并观察它的工作过程。"
+
+#: uabout.pas:113
+msgid "Based on the freeware components by Jan Verhoeven."
+msgstr "基于 Jan Verhoeven 的免费组件。"
+
+#: uabout.pas:114
+msgid "Released under the MIT license."
+msgstr "以 MIT 许可证发布。"
+
+#: uabout.pas:115
+msgid "Check for updates automatically"
+msgstr "自动检查更新"
+
+#: uabout.pas:116
+msgid "Check for updates"
+msgstr "检查更新"
+
+#: uhelpmanager.pas:218
+msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
+msgstr "按钮 / 开关\n\n- 模拟二进制输入或输出。\n- 左键单击通常改变状态。\n- 右键单击打开更多设置。\n- 名称和状态可显示在状态栏中。"
+
+#: uhelpmanager.pas:240
+msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
+msgstr "开关\n\n- 模拟开/关开关。\n- 可以选择和操作。\n- 名称和状态可显示在状态栏中。"
+
+#: uhelpmanager.pas:259
+msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
+msgstr "逻辑模块\n\n- 按逻辑函数处理输入。\n- 可用函数: AND、OR 和 NOT。\n- 所选函数可显示在状态栏或提示中。"
+
+#: uhelpmanager.pas:278
+msgid "Power rail\n\n- + rail: plug inputs in on the right; right-click for the voltage.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "电源轨\n\n- + 电源轨: 输入插在右侧；右键设置电压。\n- - 电源轨 (接地): 输出插在左侧。\n- 拖动中间可移动，拖动一端可调整大小。"
+
+#: uhelpmanager.pas:296
+msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
+msgstr "电压表\n\n- 显示 + 端相对于接地的电压。\n- + 端通过导线连接或插在 + 电源轨上。"
+
+#: uhelpmanager.pas:312
+msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
+msgstr "连线 / 导线\n\n- 将对象连接在一起。\n- 可以选择以编辑或删除。\n- 右键菜单中可能有更多操作。"
+
+#: uhelpmanager.pas:330
+msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
+msgstr "传感器\n\n- 表示检测或输入元件。\n- 通常提供二进制状态。"
+
+#: uhelpmanager.pas:344
+msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
+msgstr "加热 / 发热元件\n\n- 表示加热输出或发热符号。"
+
+#: uhelpmanager.pas:356
+msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
+msgstr "脉冲\n\n- 产生或显示短暂的脉冲。\n- 适用于触发或测试信号。"
+
+#: uhelpmanager.pas:370
+msgid "DIP switch\n\n- Allows multiple fixed binary settings."
+msgstr "拨码开关\n\n- 可设置多个固定的二进制值。"
+
+#: uhelpmanager.pas:383
+msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
+msgstr "网格\n\n- 用于放置、选择对象和画框。\n- 可使用网格吸附、辅助线和标尺。\n- 标题和工作区可分别处理。"
+
+#: uhelpmanager.pas:399
+msgid "No specific help found for keyword: "
+msgstr "未找到该关键字的帮助:"
+
+#: uhelpmanager.pas:399
+msgid "\n\nExpected help page:\n"
+msgstr "\n\n预期的帮助页面:\n"
+
+#: uhelpmanager.pas:417
+msgid "No HelpKeyword assigned."
+msgstr "未指定帮助关键字。"
+
+#: uhelpmanager.pas:434 uhelpmanager.pas:502
+msgid "No internal help handler assigned.\n"
+msgstr "未指定内部帮助处理程序。\n"
+
+#: uhelpmanager.pas:511
+msgid "Table of contents not found.\n"
+msgstr "未找到目录。\n"
+
+#: uLogicRun.pas:244
+msgid "Start"
+msgstr "开始"
+
+#: uLogicRun.pas:245
+msgid "Pause"
+msgstr "暂停"
+
+#: uLogicRun.pas:246
+msgid "Stop"
+msgstr "停止"
+
+#: uLogicRun.pas:247
+msgid "Step"
+msgstr "步"
+
+#: uLogicRun.pas:248
+msgid "Step time"
+msgstr "步长时间"
+
+#: uLogicRun.pas:249
+msgid "Repeat"
+msgstr "重复"
+
+#: uLogicRun.pas:250
+msgid "Example"
+msgstr "示例"
+
+#: uLogicRun.pas:251
+msgid "Load"
+msgstr "加载"
+
+#: uLogicRun.pas:252
+msgid "+ step"
+msgstr "+ 步"
+
+#: uLogicRun.pas:253
+msgid "- step"
+msgstr "- 步"
+
+#: uLogicRun.pas:254
+msgid "Put the block on the panel"
+msgstr "将模块放到面板上"
+
+#: uLogicRun.pas:257
+msgid "There is no LogicRun block on the panel yet. Click the button below and then on the panel to place it."
+msgstr "面板上还没有 LogicRun 模块。请点击下面的按钮，然后点击面板进行放置。"
+
+#: uLogicRun.pas:261
+msgid "time x"
+msgstr "时间 x"
+
+#: uLogicRun.pas:262
+msgid "wait for"
+msgstr "等待"
+
+#: uLogicRun.pas:266
+msgid "— choose —"
+msgstr "— 选择 —"
+
+#: uLogicRun.pas:267 fsettings.lfm
+msgid "Traffic light"
+msgstr "交通灯"
+
+#: uLogicRun.pas:268
+msgid "Running light"
+msgstr "流水灯"
+
+#: uLogicRun.pas:269
+msgid "Motor left/right"
+msgstr "电机 左/右"
+
+#: uLogicRun.pas:270
+msgid "4-bit counter"
+msgstr "4 位计数器"
+
+#: uLogicRun.pas:271 fsettings.lfm
+msgid "Cart"
+msgstr "小车"
+
+#: uLogicRun.pas:272
+msgid "Packing machine"
+msgstr "包装机"
+
+#: uLogicRun.pas:273
+msgid "Count up and down"
+msgstr "加减计数"
+
+#: uLogicRun.pas:274
+msgid "Person back and forth"
+msgstr "人来回走动"
+
+#: uLogicRun.pas:275
+msgid "Cart on a road"
+msgstr "路线上的小车"
+
+#: uLogicRun.pas:276
+msgid "Music: Twinkle, twinkle, little star"
+msgstr "音乐: 小星星"
+
+#: uLogicRun.pas:277
+msgid "Music: Ode to Joy (two voices)"
+msgstr "音乐: 欢乐颂 (二声部)"
+
+#: uLogicRun.pas:278
+msgid "Traffic light with pedestrian button"
+msgstr "带行人按钮的交通灯"
+
+#: uLogicRun.pas:423
+msgid "running: step"
+msgstr "运行中: 步"
+
+#: uLogicRun.pas:426
+msgid "paused: step"
+msgstr "已暂停: 步"
+
+#: uLogicRun.pas:434
+msgid "waiting for "
+msgstr "等待"
+
+#: uLogicRun.pas:437
+msgid "pulses on"
+msgstr "个脉冲于"
+
+#: uLogicRun.pas:712
+msgid "on"
+msgstr "接通"
+
+#: uLogicRun.pas:752
+msgid "None (the time counts)"
+msgstr "无 (按时间)"
+
+#: uLogicRun.pas:756
+msgid "Until input on"
+msgstr "直到输入接通"
+
+#: uLogicRun.pas:757
+msgid "Until input off"
+msgstr "直到输入断开"
+
+#: uLogicRun.pas:758
+msgid "Until number of pulses on input"
+msgstr "直到输入达到指定脉冲数"
+
+#: uLogicRun.pas:775
+msgid "Number of pulses:"
+msgstr "脉冲数:"
+
+#: uUpdate.pas:282
+msgid "A new version of Logic is available: %s (you have %s)."
+msgstr "Logic 有新版本: %s (当前为 %s)。"
+
+#: uUpdate.pas:286
+msgid "Skip this version"
+msgstr "跳过此版本"
+
+#: uUpdate.pas:287
+msgid "Later"
+msgstr "以后再说"
+
+#: uUpdate.pas:288
+msgid "Download"
+msgstr "下载"
+
+#: uUpdate.pas:376
+msgid "Logic could not check for a new version. Maybe there is no internet connection, or the website is blocked."
+msgstr "Logic 无法检查新版本。可能没有网络连接，或网站被屏蔽。"
+
+#: uUpdate.pas:387
+msgid "A new version of Logic is available: %s (you have %s).Do you want to open the download page?"
+msgstr "Logic 有新版本: %s (当前为 %s)。是否打开下载页面?"
+
+#: uUpdate.pas:396
+msgid "You have the latest version of Logic (%s)."
+msgstr "您使用的是最新版本的 Logic (%s)。"
+
+#: AdvancedPropertyGridComponent.pas:988 AdvancedPropertyGridComponent.pas:991
+msgid "Property"
+msgstr "属性"
+
+#: AdvancedPropertyGridComponent.pas:989
+msgid "Value"
+msgstr "值"
+
+#: AdvancedPropertyGridComponent.pas:990
+msgid "Select"
+msgstr "选择"
+
+#: AdvancedPropertyGridComponent.pas:1080
+msgid "Save INI"
+msgstr "保存 INI"
+
+#: AdvancedPropertyGridComponent.pas:1082
+msgid "Close Settings"
+msgstr "关闭设置"
+
+#: AdvancedPropertyGridComponent.pas:1083
+msgid "Load default settings"
+msgstr "加载默认设置"
+
+#: AdvancedPropertyGridComponent.pas:1084
+msgid "Change Language"
+msgstr "更改语言"
+
+#: main.pas (moduscurrent, statusbalk)
+msgid "Settings"
+msgstr "设置"
+
+#: janSimLogic.pas (rechtsklikmenu)
+msgid "lock"
+msgstr "锁定"
+
+#: fsettings.lfm
+msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
+msgstr "LogicRun/人/小车/音乐盒/交通灯 按钮 开/关"
+
+#: fsettings.lfm
+msgid "Selected Color"
+msgstr "选中颜色"
+
+#: fsettings.lfm
+msgid "Name"
+msgstr "名称"
+
+#: fsettings.lfm
+msgid "Visible Yes/No"
+msgstr "可见 开/关"
+
+#: fsettings.lfm
+msgid "Width"
+msgstr "宽度"
+
+#: fsettings.lfm
+msgid "Height"
+msgstr "高度"
+
+#: fsettings.lfm
+msgid "Hint"
+msgstr "提示"
+
+#: fsettings.lfm
+msgid "Show hint"
+msgstr "显示提示"
+
+#: fsettings.lfm
+msgid "Grid Yes/No"
+msgstr "网格 开/关"
+
+#: fsettings.lfm
+msgid "Color Panel"
+msgstr "面板颜色"
+
+#: fsettings.lfm
+msgid "Color Input"
+msgstr "输入颜色"
+
+#: fsettings.lfm
+msgid "Color Output"
+msgstr "输出颜色"
+
+#: fsettings.lfm
+msgid "Color Processing"
+msgstr "处理颜色"
+
+#: fsettings.lfm
+msgid "Grid spacing X"
+msgstr "网格间距 X"
+
+#: fsettings.lfm
+msgid "Grid spacing Y"
+msgstr "网格间距 Y"
+
+#: fsettings.lfm
+msgid "Language choice"
+msgstr "语言选择"
+
+#: fsettings.lfm
+msgid "Color Dots"
+msgstr "网点颜色"
+
+#: fsettings.lfm
+msgid "Header"
+msgstr "标题"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Buzzer"
+msgstr "蜂鸣器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "DIP switch"
+msgstr "拨码开关"
+
+#: fsettings.lfm fsettings.lfm
+msgid "7 segment display"
+msgstr "7 段数码管"
+
+#: fsettings.lfm
+msgid "Power rails (+ and -)"
+msgstr "电源轨 (+ 和 -)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Voltmeter"
+msgstr "电压表"
+
+#: fsettings.lfm
+msgid "Schematic symbols (Afbeelding/IEC/ANSI)"
+msgstr "电路符号 (Afbeelding/IEC/ANSI)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Connection"
+msgstr "连线"
+
+#: fsettings.lfm fsettings.lfm
+msgid "AND gate"
+msgstr "与门 (AND)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "NOT gate"
+msgstr "非门 (NOT)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "OR gate"
+msgstr "或门 (OR)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Pulse generator"
+msgstr "脉冲发生器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Relay"
+msgstr "继电器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switching relay"
+msgstr "转换继电器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switch"
+msgstr "开关"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Light sensor"
+msgstr "光传感器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Counter block"
+msgstr "计数器模块"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Step counter"
+msgstr "步数计数器"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Stopwatch"
+msgstr "秒表"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Barrier gate"
+msgstr "道闸"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Motor"
+msgstr "电机"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Heat sensor"
+msgstr "热传感器"
+
+#: fsettings.lfm
+msgid "Person"
+msgstr "人"
+
+#: fsettings.lfm
+msgid "Music box"
+msgstr "音乐盒"
+
+#: fsettings.lfm
+msgid "+ rail (supply)"
+msgstr "+ 电源轨 (电源)"
+
+#: fsettings.lfm
+msgid "- rail (ground)"
+msgstr "- 电源轨 (接地)"
+
+#: fsettings.lfm
+msgid "Copy screen"
+msgstr "复制屏幕"
+
+#: fsettings.lfm
+msgid "Image type"
+msgstr "图像类型"
+

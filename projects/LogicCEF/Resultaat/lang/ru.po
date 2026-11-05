@@ -1,0 +1,1299 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Logic\n"
+"Language: ru\n"
+"X-Language-Name: Русский\n"
+
+#: chatgridpcodeSmall.pas:282 chatgridpcodeSmall.pas:282
+msgid "Change caption"
+msgstr "Изменить надпись"
+
+#: chatgridpcodeSmall.pas:318 chatgridpcodeSmall.pas:318
+msgid "Color blue"
+msgstr "Синий цвет"
+
+#: chatgridpcodeSmall.pas:330 chatgridpcodeSmall.pas:330
+msgid "Color red"
+msgstr "Красный цвет"
+
+#: chatgridpcodeSmall.pas:342 chatgridpcodeSmall.pas:342
+msgid "Color green"
+msgstr "Зелёный цвет"
+
+#: chatgridpcodeSmall.pas:354 chatgridpcodeSmall.pas:354
+msgid "Delete frame"
+msgstr "Удалить рамку"
+
+#: chatgridpcodeSmall.pas:368
+msgid "Click here to change the title"
+msgstr "Нажмите здесь, чтобы изменить заголовок"
+
+#: chatgridpcodeSmall.pas:384 janSimLogic.pas:3073
+msgid "Right mouse button for extra settings"
+msgstr "Правая кнопка мыши — дополнительные настройки"
+
+#: chatgridpcodeSmall.pas:1087 chatgridpcodeSmall.pas:1087 janSimLogic.pas:9359
+msgid "Input"
+msgstr "Вход"
+
+#: chatgridpcodeSmall.pas:1088 chatgridpcodeSmall.pas:1088
+msgid "Processing"
+msgstr "Обработка"
+
+#: chatgridpcodeSmall.pas:1089 chatgridpcodeSmall.pas:1089
+msgid "Output"
+msgstr "Выход"
+
+#: chatgridpcodeSmall.pas:1090 chatgridpcodeSmall.pas:1090
+msgid "Logic Panel"
+msgstr "Логическая панель"
+
+#: janSimLogic.pas:3140
+msgid "Cancel"
+msgstr "Отмена"
+
+#: janSimLogic.pas:3274 janSimLogic.pas:16182 janSimLogic.pas:16720
+msgid "Export"
+msgstr "Экспорт"
+
+#: janSimLogic.pas:3275 janSimLogic.pas:8862 janSimLogic.pas:9360
+msgid "Status"
+msgstr "Состояние"
+
+#: janSimLogic.pas:3387 janSimLogic.pas:7641 janSimLogic.pas:9283
+msgid "Verrouiller"
+msgstr ""
+
+#: janSimLogic.pas:3391 janSimLogic.pas:7645 janSimLogic.pas:9287
+msgid "Sperren"
+msgstr ""
+
+#: janSimLogic.pas:3406 janSimLogic.pas:7660 janSimLogic.pas:9302
+msgid "Change name"
+msgstr "Изменить имя"
+
+#: janSimLogic.pas:3418 janSimLogic.pas:5771 janSimLogic.pas:7672
+msgid "Select object"
+msgstr "Выбрать объект"
+
+#: janSimLogic.pas:3425 janSimLogic.pas:5769 janSimLogic.pas:7679
+msgid "Deselect object"
+msgstr "Снять выбор"
+
+#: janSimLogic.pas:3438 janSimLogic.pas:7692 janSimLogic.pas:9334
+msgid "Information off"
+msgstr "Информация выкл."
+
+#: janSimLogic.pas:3445 janSimLogic.pas:7699 janSimLogic.pas:9341
+msgid "Information on"
+msgstr "Информация вкл."
+
+#: janSimLogic.pas:5608
+msgid "+ rail (supply "
+msgstr "шина + (питание"
+
+#: janSimLogic.pas:5608
+msgid "V)\nPlug inputs in on the right of the rail. Below 2V no signal.\nRight-click: set voltage. Drag the ends to resize."
+msgstr "В)\nВходы подключаются справа от шины. Ниже 2 В сигнала нет.\nПравый щелчок: задать напряжение. Тяните концы, чтобы изменить размер."
+
+#: janSimLogic.pas:5621
+msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
+msgstr "шина - (земля)\nВыходы подключаются слева от шины.\nТяните концы, чтобы изменить размер."
+
+#: janSimLogic.pas:5634
+msgid "+ rail"
+msgstr "шина +"
+
+#: janSimLogic.pas:5639
+msgid "- rail"
+msgstr "шина -"
+
+#: janSimLogic.pas:5640
+msgid "Ground"
+msgstr "Земля"
+
+#: janSimLogic.pas:5745
+msgid "Voltage"
+msgstr "Напряжение"
+
+#: janSimLogic.pas:5761 janSimLogic.pas:11261 janSimLogic.pas:25303
+msgid "Unlock"
+msgstr "Разблокировать"
+
+#: janSimLogic.pas:5763 janSimLogic.pas:11263 janSimLogic.pas:25305
+msgid "Lock"
+msgstr "Заблокировать"
+
+#: janSimLogic.pas:8578 janSimLogic.pas:8839
+msgid "AND"
+msgstr ""
+
+#: janSimLogic.pas:8584 janSimLogic.pas:8842
+msgid "OR"
+msgstr ""
+
+#: janSimLogic.pas:8590 janSimLogic.pas:8845
+msgid "NOT"
+msgstr ""
+
+#: janSimLogic.pas:9395
+msgid "Processing --> Counter block"
+msgstr "Обработка --> Блок счётчика"
+
+#: janSimLogic.pas:11029 fsettings.lfm fsettings.lfm
+msgid "Memory block"
+msgstr "Блок памяти"
+
+#: janSimLogic.pas:11490
+msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
+msgstr "Вольтметр (измеряет относительно земли)\n+ слева: подключите провод или вставьте в шину +.\n- справа можно оставить свободным или вставить в шину -."
+
+#: janSimLogic.pas:12532 janSimLogic.pas:12565 fsettings.lfm
+msgid "Push button"
+msgstr "Кнопка"
+
+#: janSimLogic.pas:12534
+msgid "Down"
+msgstr "Вниз"
+
+#: janSimLogic.pas:12536
+msgid "Upwards"
+msgstr "Вверх"
+
+#: janSimLogic.pas:13223 janSimLogic.pas:15458
+msgid "switch"
+msgstr "выключатель"
+
+#: janSimLogic.pas:13280
+msgid "DipSwitsh"
+msgstr "DIP-переключатель"
+
+#: janSimLogic.pas:14229
+msgid "emperature sensor"
+msgstr "Датчик температуры"
+
+#: janSimLogic.pas:14475
+msgid "Frequency"
+msgstr "Частота"
+
+#: janSimLogic.pas:14481
+msgid "every "
+msgstr "каждые"
+
+#: janSimLogic.pas:14484
+msgid "default"
+msgstr "по умолчанию"
+
+#: janSimLogic.pas:15886
+msgid "cold"
+msgstr "холодно"
+
+#: janSimLogic.pas:15886
+msgid "hot"
+msgstr "горячо"
+
+#: janSimLogic.pas:16084
+msgid "Temperature sensor"
+msgstr "Датчик температуры"
+
+#: janSimLogic.pas:16432
+msgid "Colour"
+msgstr "Цвет"
+
+#: janSimLogic.pas:16438 fsettings.lfm fsettings.lfm
+msgid "Lamp"
+msgstr "Лампа"
+
+#: janSimLogic.pas:16439
+msgid "Red LED"
+msgstr "Красный светодиод"
+
+#: janSimLogic.pas:16440
+msgid "Green LED"
+msgstr "Зелёный светодиод"
+
+#: janSimLogic.pas:16441
+msgid "Orange LED"
+msgstr "Оранжевый светодиод"
+
+#: janSimLogic.pas:20773 janSimLogic.pas:20773
+msgid "create Switch"
+msgstr "создать выключатель"
+
+#: janSimLogic.pas:21620 janSimLogic.pas:21620
+msgid "create Buzzer"
+msgstr "создать зуммер"
+
+#: janSimLogic.pas:21621 janSimLogic.pas:21621
+msgid "create Motor"
+msgstr "создать мотор"
+
+#: janSimLogic.pas:21622 janSimLogic.pas:21622
+msgid "create DipSwitsh"
+msgstr "создать DIP-переключатель"
+
+#: janSimLogic.pas:21623 janSimLogic.pas:21623
+msgid "create 7 segment display"
+msgstr "создать 7-сегментный индикатор"
+
+#: janSimLogic.pas:21624 janSimLogic.pas:21624
+msgid "create Connection"
+msgstr "создать соединение"
+
+#: janSimLogic.pas:21625 janSimLogic.pas:21625
+msgid "create Push button"
+msgstr "создать кнопку"
+
+#: janSimLogic.pas:21626 janSimLogic.pas:21626
+msgid "create Lamp"
+msgstr "создать лампу"
+
+#: janSimLogic.pas:21627 janSimLogic.pas:21627
+msgid "create AND-Logic gate"
+msgstr "создать логический элемент AND"
+
+#: janSimLogic.pas:21628 janSimLogic.pas:21628
+msgid "create NOT-Logic gate"
+msgstr "создать логический элемент NOT"
+
+#: janSimLogic.pas:21629 janSimLogic.pas:21629
+msgid "create OR-Logic gate"
+msgstr "создать логический элемент OR"
+
+#: janSimLogic.pas:21630 janSimLogic.pas:21630
+msgid "create Memory block"
+msgstr "создать блок памяти"
+
+#: janSimLogic.pas:21631 janSimLogic.pas:21631
+msgid "create Impuls generator"
+msgstr "создать генератор импульсов"
+
+#: janSimLogic.pas:21632 janSimLogic.pas:21632
+msgid "create Relay"
+msgstr "создать реле"
+
+#: janSimLogic.pas:21633 janSimLogic.pas:21633
+msgid "create Switching relay (relay with contact)"
+msgstr "создать переключающее реле (реле с контактом)"
+
+#: janSimLogic.pas:21634 janSimLogic.pas:21634
+msgid "create Switsh"
+msgstr "создать выключатель"
+
+#: janSimLogic.pas:21635 janSimLogic.pas:21635
+msgid "create Light sensor"
+msgstr "создать датчик света"
+
+#: janSimLogic.pas:21636 janSimLogic.pas:21636
+msgid "create Counter block"
+msgstr "создать блок счётчика"
+
+#: janSimLogic.pas:21637 janSimLogic.pas:21637
+msgid "create Step counter (counts up to 9999)"
+msgstr "создать счётчик шагов (считает до 9999)"
+
+#: janSimLogic.pas:21638 janSimLogic.pas:21638
+msgid "create Stopwatch (time with end time)"
+msgstr "создать секундомер (время с конечным временем)"
+
+#: janSimLogic.pas:21639 janSimLogic.pas:21639
+msgid "create HeatSensor"
+msgstr "создать датчик тепла"
+
+#: janSimLogic.pas:21640 janSimLogic.pas:21640
+msgid "create Voltmeter"
+msgstr "создать вольтметр"
+
+#: janSimLogic.pas:21641 janSimLogic.pas:21641
+msgid "create Person (with limit switches)"
+msgstr "создать человека (с концевыми выключателями)"
+
+#: janSimLogic.pas:21642 janSimLogic.pas:21642
+msgid "create Cart (road with posts)"
+msgstr "создать тележку (путь со столбиками)"
+
+#: janSimLogic.pas:21643 janSimLogic.pas:21643
+msgid "create Music box (8 piano keys)"
+msgstr "создать музыкальную шкатулку (8 клавиш)"
+
+#: janSimLogic.pas:21644 janSimLogic.pas:21644
+msgid "create Traffic light (with pedestrian light)"
+msgstr "создать светофор (с пешеходным светофором)"
+
+#: janSimLogic.pas:21645 janSimLogic.pas:21645
+msgid "create Barrier gate (car park)"
+msgstr "создать шлагбаум (парковка)"
+
+#: janSimLogic.pas:21646 janSimLogic.pas:21646
+msgid "create + rail (supply)"
+msgstr "создать шину + (питание)"
+
+#: janSimLogic.pas:21647 janSimLogic.pas:21647
+msgid "create - rail (ground)"
+msgstr "создать шину - (земля)"
+
+#: janSimLogic.pas:22976 janSimLogic.pas:23449
+msgid "Connector tool"
+msgstr "Инструмент соединения"
+
+#: janSimLogic.pas:24375
+msgid "%d objects selected\nDrag to move them together, Esc or click outside to deselect"
+msgstr "Выбрано объектов: %d\nТяните, чтобы переместить их вместе; Esc или щелчок снаружи — снять выбор"
+
+#: janSimLogic.pas:24698 uLogicRun.pas:286
+msgid "start/stop"
+msgstr "пуск/стоп"
+
+#: janSimLogic.pas:24699 uLogicRun.pas:287
+msgid "reset"
+msgstr "сброс"
+
+#: janSimLogic.pas:24701 uLogicRun.pas:289
+msgid "on/off"
+msgstr "вкл./выкл."
+
+#: janSimLogic.pas:25220 janSimLogic.pas:25248 janSimLogic.pas:25618
+msgid "stopped"
+msgstr "остановлен"
+
+#: janSimLogic.pas:25223 janSimLogic.pas:25250 uLogicRun.pas:260
+msgid "step"
+msgstr "шаг"
+
+#: janSimLogic.pas:25237
+msgid "Double-click: edit program"
+msgstr "Двойной щелчок: изменить программу"
+
+#: janSimLogic.pas:25297
+msgid "Edit program..."
+msgstr "Изменить программу..."
+
+#: janSimLogic.pas:25611
+msgid "L and R on together: fault!"
+msgstr "L и R включены вместе: ошибка!"
+
+#: janSimLogic.pas:25614
+msgid "turning left"
+msgstr "вращается влево"
+
+#: janSimLogic.pas:25616
+msgid "turning right"
+msgstr "вращается вправо"
+
+#: janSimLogic.pas:25624
+msgid "L: turn left, R: turn right"
+msgstr "L: вращение влево, R: вращение вправо"
+
+#: janSimLogic.pas:26144
+msgid "L and R on together: stands still"
+msgstr "L и R включены вместе: стоит на месте"
+
+#: janSimLogic.pas:26147
+msgid "at the left (S1 on)"
+msgstr "слева (S1 вкл.)"
+
+#: janSimLogic.pas:26150
+msgid "at the right (S2 on)"
+msgstr "справа (S2 вкл.)"
+
+#: janSimLogic.pas:26153
+msgid "walking left"
+msgstr "идёт влево"
+
+#: janSimLogic.pas:26155
+msgid "walking right"
+msgstr "идёт вправо"
+
+#: janSimLogic.pas:26157 janSimLogic.pas:26643
+msgid "standing still"
+msgstr "стоит"
+
+#: janSimLogic.pas:26164
+msgid "L: walk left, R: walk right\nS1/S2: limit switch left/right\nright-click: place limit switches"
+msgstr "L: идти влево, R: идти вправо\nS1/S2: концевой выключатель слева/справа\nправый щелчок: разместить концевые выключатели"
+
+#: janSimLogic.pas:26231
+msgid "Back to the start"
+msgstr "Вернуться к началу"
+
+#: janSimLogic.pas:26234
+msgid "Close the barrier now"
+msgstr "Закрыть шлагбаум сейчас"
+
+#: janSimLogic.pas:26237
+msgid "Back to the left (S1)"
+msgstr "Вернуться влево (S1)"
+
+#: janSimLogic.pas:26242
+msgid "Place limit switches"
+msgstr "Разместить концевые выключатели"
+
+#: janSimLogic.pas:26627
+msgid "V and A on together: stands still"
+msgstr "V и A включены вместе: стоит на месте"
+
+#: janSimLogic.pas:26630
+msgid "at the start (Start on)"
+msgstr "на старте (Start вкл.)"
+
+#: janSimLogic.pas:26633
+msgid "at the finish (Finish on)"
+msgstr "на финише (Finish вкл.)"
+
+#: janSimLogic.pas:26636
+msgid "at post %d (Tel on)"
+msgstr "у столбика %d (Tel вкл.)"
+
+#: janSimLogic.pas:26639
+msgid "driving forward"
+msgstr "едет вперёд"
+
+#: janSimLogic.pas:26641
+msgid "driving backward"
+msgstr "едет назад"
+
+#: janSimLogic.pas:26651
+msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
+msgstr "V: вперёд, A: назад\nStart/Finish: начало и конец пути\nTel: импульс у каждого столбика (1-5)\nправый щелчок: разместить концевые выключатели"
+
+#: janSimLogic.pas:26977
+msgid "Sound"
+msgstr "Звук"
+
+#: janSimLogic.pas:26996
+msgid "silent"
+msgstr "без звука"
+
+#: janSimLogic.pas:26998
+msgid "plays "
+msgstr "играет"
+
+#: janSimLogic.pas:27000 janSimLogic.pas:27041
+msgid " (sound off)"
+msgstr " (звук выкл.)"
+
+#: janSimLogic.pas:27007
+msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
+msgstr "один вход на ноту (До Ре Ми Фа Соль Ля Си До')\nвкл.: клавиша светится и звучит нота\nправый щелчок: звук вкл./выкл."
+
+#: janSimLogic.pas:27222 janSimLogic.pas:27228
+msgid "red"
+msgstr "красный"
+
+#: janSimLogic.pas:27223
+msgid "amber"
+msgstr "жёлтый"
+
+#: janSimLogic.pas:27224 janSimLogic.pas:27229
+msgid "green"
+msgstr "зелёный"
+
+#: janSimLogic.pas:27225 janSimLogic.pas:27230 uLogicRun.pas:713
+msgid "off"
+msgstr "выкл."
+
+#: janSimLogic.pas:27226
+msgid "cars: "
+msgstr "машины:"
+
+#: janSimLogic.pas:27231
+msgid " - pedestrians: "
+msgstr " - пешеходы:"
+
+#: janSimLogic.pas:27233
+msgid " - DANGER: both green!"
+msgstr " - ОПАСНОСТЬ: оба зелёные!"
+
+#: janSimLogic.pas:27241
+msgid "inputs R, A, G: red, amber, green for the cars\nPR, PG: red and green figure for the pedestrians\nsame height as OUT0..OUT4 of LogicRun"
+msgstr "входы R, A, G: красный, жёлтый, зелёный для машин\nPR, PG: красный и зелёный человечек для пешеходов\nна той же высоте, что OUT0..OUT4 у LogicRun"
+
+#: janSimLogic.pas:27413
+msgid "Closed"
+msgstr "Закрыт"
+
+#: janSimLogic.pas:27415
+msgid "Open"
+msgstr "Открыт"
+
+#: janSimLogic.pas:27447
+msgid "opening"
+msgstr "открывается"
+
+#: janSimLogic.pas:27448
+msgid "closing"
+msgstr "закрывается"
+
+#: janSimLogic.pas:27451
+msgid "open"
+msgstr "открыт"
+
+#: janSimLogic.pas:27453
+msgid "closed"
+msgstr "закрыт"
+
+#: janSimLogic.pas:27455
+msgid "barrier: "
+msgstr "шлагбаум:"
+
+#: janSimLogic.pas:27463
+msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
+msgstr "вход O: вкл. = шлагбаум открывается, выкл. = закрывается\nконцевые выключатели Закрыт и Открыт (правый щелчок: Разместить концевые выключатели)"
+
+#: janSimLogic.pas:27747
+msgid "no person or cart on the panel"
+msgstr "на панели нет человека или тележки"
+
+#: janSimLogic.pas:27750
+msgid ": on"
+msgstr ": вкл."
+
+#: janSimLogic.pas:27752
+msgid ": off"
+msgstr ": выкл."
+
+#: janSimLogic.pas:27759
+msgid "Follows the person or the cart (without a wire).\nRight-click: choose S1, S2 or Start, Tel, Finish"
+msgstr "Следует за человеком или тележкой (без провода).\nПравый щелчок: выбрать S1, S2 или Start, Tel, Finish"
+
+#: janSimLogic.pas:28171 janSimLogic.pas:28639
+msgid "repeat"
+msgstr "повтор"
+
+#: janSimLogic.pas:28173 janSimLogic.pas:28641
+msgid "to "
+msgstr "до"
+
+#: janSimLogic.pas:28188
+msgid "count "
+msgstr "счёт"
+
+#: janSimLogic.pas:28189 janSimLogic.pas:28657
+msgid " of "
+msgstr " из"
+
+#: janSimLogic.pas:28191 janSimLogic.pas:28659
+msgid ": reached (Q on)"
+msgstr ": достигнуто (Q вкл.)"
+
+#: janSimLogic.pas:28199
+msgid "T: +1 per pulse, R: back to 0\nQ: on when the end value is reached\nRight-click: choose the end value"
+msgstr "T: +1 за импульс, R: сброс в 0\nQ: вкл. при достижении конечного значения\nПравый щелчок: выбрать конечное значение"
+
+#: janSimLogic.pas:28276 janSimLogic.pas:28703
+msgid "To "
+msgstr "До"
+
+#: janSimLogic.pas:28285
+msgid "Other end value..."
+msgstr "Другое конечное значение..."
+
+#: janSimLogic.pas:28294
+msgid "Repeat (start again at 1 after the end value)"
+msgstr "Повтор (снова с 1 после конечного значения)"
+
+#: janSimLogic.pas:28300
+msgid "Set to 0"
+msgstr "Сбросить в 0"
+
+#: janSimLogic.pas:28332
+msgid "End value"
+msgstr "Конечное значение"
+
+#: janSimLogic.pas:28333
+msgid "Count up to (1 to 9999)?"
+msgstr "Считать до (от 1 до 9999)?"
+
+#: janSimLogic.pas:28656
+msgid "time "
+msgstr "время"
+
+#: janSimLogic.pas:28667
+msgid "S: time runs while S is on, R: back to 00:00\nQ: on when the end time is reached\nRight-click: choose the end time"
+msgstr "S: время идёт, пока S вкл., R: сброс в 00:00\nQ: вкл. при достижении конечного времени\nПравый щелчок: выбрать конечное время"
+
+#: janSimLogic.pas:28712
+msgid "Other end time..."
+msgstr "Другое конечное время..."
+
+#: janSimLogic.pas:28721
+msgid "Repeat (start again at 00:01 after the end time)"
+msgstr "Повтор (снова с 00:01 после конечного времени)"
+
+#: janSimLogic.pas:28727
+msgid "Set to 00:00"
+msgstr "Сбросить в 00:00"
+
+#: janSimLogic.pas:28747
+msgid "End time"
+msgstr "Конечное время"
+
+#: janSimLogic.pas:28748
+msgid "End time as mm:ss (00:01 to 99:59)?"
+msgstr "Конечное время в формате мм:сс (от 00:01 до 99:59)?"
+
+#: main.pas:257
+msgid "Stop simulation"
+msgstr "Остановить моделирование"
+
+#: main.pas:259 main.pas:1391
+msgid "Start simulation"
+msgstr "Запустить моделирование"
+
+#: main.pas:320
+msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
+msgstr "LogicBox\n\n- Центральный контейнер для объектов моделирования.\n- Управляет выбором, событиями и сообщениями о состоянии.\n- Может блокировать объекты во время моделирования."
+
+#: main.pas:375
+msgid "Shows the name or info of the active object"
+msgstr "Показывает имя или сведения об активном объекте"
+
+#: main.pas:381
+msgid "Shows the current status or function"
+msgstr "Показывает текущее состояние или функцию"
+
+#: main.pas:387
+msgid "Displays the X and Y position of the current object"
+msgstr "Показывает положение X и Y текущего объекта"
+
+#: main.pas:393
+msgid "Shows the object type"
+msgstr "Показывает тип объекта"
+
+#: main.pas:399
+msgid "Shows extra debug information"
+msgstr "Показывает дополнительную отладочную информацию"
+
+#: main.pas:407
+msgid "Status bar"
+msgstr "Строка состояния"
+
+#: main.pas:424
+msgid "Algemeen"
+msgstr ""
+
+#: main.pas:424
+msgid "General"
+msgstr "Общие"
+
+#: main.pas:425
+msgid "SchakelElementen"
+msgstr ""
+
+#: main.pas:425
+msgid "Switch Elements"
+msgstr "Элементы"
+
+#: main.pas:426 main.pas:426
+msgid "Hints"
+msgstr "Подсказки"
+
+#: main.pas:1371
+msgid "Logic Circuits"
+msgstr "Логические схемы"
+
+#: main.pas:1372
+msgid "Choose language..."
+msgstr "Выберите язык..."
+
+#: main.pas:1373
+msgid "Copy the panel to the clipboard..."
+msgstr "Копировать панель в буфер обмена..."
+
+#: main.pas:1375
+msgid "Grid Yes/No\nGo to open settings for additional options..."
+msgstr "Сетка да/нет\nДополнительные параметры — в настройках..."
+
+#: main.pas:1376
+msgid "Guidelines on grid YES/NO..."
+msgstr "Направляющие на сетке да/нет..."
+
+#: main.pas:1377
+msgid "Draw frame on grid..."
+msgstr "Нарисовать рамку на сетке..."
+
+#: main.pas:1378
+msgid "Change panel title..."
+msgstr "Изменить заголовок панели..."
+
+#: main.pas:1379
+msgid "Bar Input / Processing / Output on/off"
+msgstr "Полоса Вход / Обработка / Выход да/нет"
+
+#: main.pas:1380
+msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
+msgstr "Условные обозначения: Afbeelding (рисунок), IEC (европейские) или ANSI (американские)"
+
+#: main.pas:1382
+msgid "Open settings"
+msgstr "Открыть настройки"
+
+#: main.pas:1383
+msgid "Close application"
+msgstr "Закрыть программу"
+
+#: main.pas:1384
+msgid "About Logic..."
+msgstr "О программе Logic..."
+
+#: main.pas:1385
+msgid "Open help (F1)"
+msgstr "Открыть справку (F1)"
+
+#: main.pas:1386
+msgid "Open saved panel..."
+msgstr "Открыть сохранённую панель..."
+
+#: main.pas:1387
+msgid "Save panel..."
+msgstr "Сохранить панель..."
+
+#: main.pas:1388
+msgid "Click here to select the panel..."
+msgstr "Нажмите здесь, чтобы выбрать панель..."
+
+#: main.pas:1389
+msgid "Remove connections..."
+msgstr "Удалить соединения..."
+
+#: main.pas:1390
+msgid "Delete selected object..."
+msgstr "Удалить выбранный объект..."
+
+#: main.pas:1472
+msgid "Decision panel"
+msgstr "Панель решения"
+
+#: main.pas:1473
+msgid "Counter panel"
+msgstr "Панель счётчика"
+
+#: main.pas:1474
+msgid "Memory panel"
+msgstr "Панель памяти"
+
+#: main.pas:1475
+msgid "New standard panel"
+msgstr "Новая стандартная панель"
+
+#: main.pas:1671
+msgid "Undo (Ctrl+Z)"
+msgstr "Отменить (Ctrl+Z)"
+
+#: main.pas:1672
+msgid "Redo (Ctrl+Y)"
+msgstr "Повторить (Ctrl+Y)"
+
+#: main.pas:1690
+msgid "LogicRun: program in steps"
+msgstr "LogicRun: программа по шагам"
+
+#: main.pas:1926 main.pas:1926
+msgid "without name"
+msgstr "без имени"
+
+#: main.pas:1927 main.pas:1927
+msgid "The panel \"%s\" has been changed."
+msgstr "Панель \"%s\" была изменена."
+
+#: main.pas:1928 main.pas:1928
+msgid "Do you want to save the changes?"
+msgstr "Сохранить изменения?"
+
+#: main.pas:2584
+msgid "Screenshot of the panel has been copied to the clipboard."
+msgstr "Изображение панели скопировано в буфер обмена."
+
+#: main.pas:2785
+msgid "Change title"
+msgstr "Изменить заголовок"
+
+#: main.pas:2786
+msgid "Enter new title:"
+msgstr "Введите новый заголовок:"
+
+#: uabout.pas:109
+msgid "About Logic"
+msgstr "О программе Logic"
+
+#: uabout.pas:110 uabout.pas:110
+msgid "Version "
+msgstr "Версия"
+
+#: uabout.pas:111
+msgid "Simulator for digital circuits: build a circuit with switches, gates, counters, memories and displays, and watch it work."
+msgstr "Симулятор цифровых схем: соберите схему из выключателей, логических элементов, счётчиков, памяти и индикаторов и посмотрите, как она работает."
+
+#: uabout.pas:113
+msgid "Based on the freeware components by Jan Verhoeven."
+msgstr "Основано на бесплатных компонентах Яна Верховена (Jan Verhoeven)."
+
+#: uabout.pas:114
+msgid "Released under the MIT license."
+msgstr "Распространяется по лицензии MIT."
+
+#: uabout.pas:115
+msgid "Check for updates automatically"
+msgstr "Автоматически проверять обновления"
+
+#: uabout.pas:116
+msgid "Check for updates"
+msgstr "Проверить обновления"
+
+#: uhelpmanager.pas:218
+msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
+msgstr "Кнопка / Выключатель\n\n- Моделирует двоичный вход или выход.\n- Левый щелчок обычно меняет состояние.\n- Правый щелчок открывает дополнительные настройки.\n- Имя и состояние могут отображаться в строке состояния."
+
+#: uhelpmanager.pas:240
+msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
+msgstr "Выключатель\n\n- Моделирует выключатель вкл./выкл.\n- Его можно выбрать и переключать.\n- Имя и состояние могут отображаться в строке состояния."
+
+#: uhelpmanager.pas:259
+msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
+msgstr "Логический блок\n\n- Обрабатывает входы по логической функции.\n- Возможные функции: AND, OR и NOT.\n- Выбранная функция может отображаться в строке состояния или подсказке."
+
+#: uhelpmanager.pas:278
+msgid "Power rail\n\n- + rail: plug inputs in on the right; right-click for the voltage.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "Шина питания\n\n- шина +: входы подключаются справа; правый щелчок — напряжение.\n- шина - (земля): выходы подключаются слева.\n- Тяните середину для перемещения, конец — для изменения размера."
+
+#: uhelpmanager.pas:296
+msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
+msgstr "Вольтметр\n\n- Показывает напряжение на + относительно земли.\n- + через провод или вставкой в шину +."
+
+#: uhelpmanager.pas:312
+msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
+msgstr "Соединение / Провод\n\n- Соединяет объекты между собой.\n- Его можно выбрать для изменения или удаления.\n- Контекстное меню может содержать дополнительные действия."
+
+#: uhelpmanager.pas:330
+msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
+msgstr "Датчик\n\n- Представляет компонент обнаружения или ввода.\n- Обычно выдаёт двоичное состояние."
+
+#: uhelpmanager.pas:344
+msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
+msgstr "Нагрев / Тёплый элемент\n\n- Представляет выход нагрева или символ тепла."
+
+#: uhelpmanager.pas:356
+msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
+msgstr "Импульс\n\n- Создаёт или показывает кратковременный импульс.\n- Полезен для запуска или тестовых сигналов."
+
+#: uhelpmanager.pas:370
+msgid "DIP switch\n\n- Allows multiple fixed binary settings."
+msgstr "DIP-переключатель\n\n- Позволяет задать несколько фиксированных двоичных значений."
+
+#: uhelpmanager.pas:383
+msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
+msgstr "Сетка\n\n- Для размещения и выбора объектов и рисования рамок.\n- Может использовать привязку к сетке, направляющие и линейки.\n- Заголовок и рабочая область настраиваются отдельно."
+
+#: uhelpmanager.pas:399
+msgid "No specific help found for keyword: "
+msgstr "Справка для ключевого слова не найдена:"
+
+#: uhelpmanager.pas:399
+msgid "\n\nExpected help page:\n"
+msgstr "\n\nОжидаемая страница справки:\n"
+
+#: uhelpmanager.pas:417
+msgid "No HelpKeyword assigned."
+msgstr "Ключевое слово справки не назначено."
+
+#: uhelpmanager.pas:434 uhelpmanager.pas:502
+msgid "No internal help handler assigned.\n"
+msgstr "Внутренний обработчик справки не назначен.\n"
+
+#: uhelpmanager.pas:511
+msgid "Table of contents not found.\n"
+msgstr "Содержание не найдено.\n"
+
+#: uLogicRun.pas:244
+msgid "Start"
+msgstr "Пуск"
+
+#: uLogicRun.pas:245
+msgid "Pause"
+msgstr "Пауза"
+
+#: uLogicRun.pas:246
+msgid "Stop"
+msgstr "Стоп"
+
+#: uLogicRun.pas:247
+msgid "Step"
+msgstr "Шаг"
+
+#: uLogicRun.pas:248
+msgid "Step time"
+msgstr "Длительность шага"
+
+#: uLogicRun.pas:249
+msgid "Repeat"
+msgstr "Повтор"
+
+#: uLogicRun.pas:250
+msgid "Example"
+msgstr "Пример"
+
+#: uLogicRun.pas:251
+msgid "Load"
+msgstr "Загрузить"
+
+#: uLogicRun.pas:252
+msgid "+ step"
+msgstr "+ шаг"
+
+#: uLogicRun.pas:253
+msgid "- step"
+msgstr "- шаг"
+
+#: uLogicRun.pas:254
+msgid "Put the block on the panel"
+msgstr "Поместить блок на панель"
+
+#: uLogicRun.pas:257
+msgid "There is no LogicRun block on the panel yet. Click the button below and then on the panel to place it."
+msgstr "На панели ещё нет блока LogicRun. Нажмите кнопку ниже, а затем на панель, чтобы разместить его."
+
+#: uLogicRun.pas:261
+msgid "time x"
+msgstr "время x"
+
+#: uLogicRun.pas:262
+msgid "wait for"
+msgstr "ждать"
+
+#: uLogicRun.pas:266
+msgid "— choose —"
+msgstr "— выбрать —"
+
+#: uLogicRun.pas:267 fsettings.lfm
+msgid "Traffic light"
+msgstr "Светофор"
+
+#: uLogicRun.pas:268
+msgid "Running light"
+msgstr "Бегущие огни"
+
+#: uLogicRun.pas:269
+msgid "Motor left/right"
+msgstr "Мотор влево/вправо"
+
+#: uLogicRun.pas:270
+msgid "4-bit counter"
+msgstr "4-битный счётчик"
+
+#: uLogicRun.pas:271 fsettings.lfm
+msgid "Cart"
+msgstr "Тележка"
+
+#: uLogicRun.pas:272
+msgid "Packing machine"
+msgstr "Упаковочная машина"
+
+#: uLogicRun.pas:273
+msgid "Count up and down"
+msgstr "Счёт вверх и вниз"
+
+#: uLogicRun.pas:274
+msgid "Person back and forth"
+msgstr "Человек туда и обратно"
+
+#: uLogicRun.pas:275
+msgid "Cart on a road"
+msgstr "Тележка на пути"
+
+#: uLogicRun.pas:276
+msgid "Music: Twinkle, twinkle, little star"
+msgstr "Музыка: Twinkle, twinkle, little star"
+
+#: uLogicRun.pas:277
+msgid "Music: Ode to Joy (two voices)"
+msgstr "Музыка: Ода к радости (два голоса)"
+
+#: uLogicRun.pas:278
+msgid "Traffic light with pedestrian button"
+msgstr "Светофор с кнопкой для пешеходов"
+
+#: uLogicRun.pas:423
+msgid "running: step"
+msgstr "выполняется: шаг"
+
+#: uLogicRun.pas:426
+msgid "paused: step"
+msgstr "пауза: шаг"
+
+#: uLogicRun.pas:434
+msgid "waiting for "
+msgstr "ожидание:"
+
+#: uLogicRun.pas:437
+msgid "pulses on"
+msgstr "импульсов на"
+
+#: uLogicRun.pas:712
+msgid "on"
+msgstr "вкл."
+
+#: uLogicRun.pas:752
+msgid "None (the time counts)"
+msgstr "Нет (считается время)"
+
+#: uLogicRun.pas:756
+msgid "Until input on"
+msgstr "Пока вход не включится"
+
+#: uLogicRun.pas:757
+msgid "Until input off"
+msgstr "Пока вход не выключится"
+
+#: uLogicRun.pas:758
+msgid "Until number of pulses on input"
+msgstr "До заданного числа импульсов на входе"
+
+#: uLogicRun.pas:775
+msgid "Number of pulses:"
+msgstr "Число импульсов:"
+
+#: uUpdate.pas:282
+msgid "A new version of Logic is available: %s (you have %s)."
+msgstr "Доступна новая версия Logic: %s (у вас %s)."
+
+#: uUpdate.pas:286
+msgid "Skip this version"
+msgstr "Пропустить эту версию"
+
+#: uUpdate.pas:287
+msgid "Later"
+msgstr "Позже"
+
+#: uUpdate.pas:288
+msgid "Download"
+msgstr "Скачать"
+
+#: uUpdate.pas:376
+msgid "Logic could not check for a new version. Maybe there is no internet connection, or the website is blocked."
+msgstr "Logic не удалось проверить наличие новой версии. Возможно, нет подключения к интернету или сайт заблокирован."
+
+#: uUpdate.pas:387
+msgid "A new version of Logic is available: %s (you have %s).Do you want to open the download page?"
+msgstr "Доступна новая версия Logic: %s (у вас %s).Открыть страницу загрузки?"
+
+#: uUpdate.pas:396
+msgid "You have the latest version of Logic (%s)."
+msgstr "У вас последняя версия Logic (%s)."
+
+#: AdvancedPropertyGridComponent.pas:988 AdvancedPropertyGridComponent.pas:991
+msgid "Property"
+msgstr "Свойство"
+
+#: AdvancedPropertyGridComponent.pas:989
+msgid "Value"
+msgstr "Значение"
+
+#: AdvancedPropertyGridComponent.pas:990
+msgid "Select"
+msgstr "Выбор"
+
+#: AdvancedPropertyGridComponent.pas:1080
+msgid "Save INI"
+msgstr "Сохранить INI"
+
+#: AdvancedPropertyGridComponent.pas:1082
+msgid "Close Settings"
+msgstr "Закрыть настройки"
+
+#: AdvancedPropertyGridComponent.pas:1083
+msgid "Load default settings"
+msgstr "Загрузить настройки по умолчанию"
+
+#: AdvancedPropertyGridComponent.pas:1084
+msgid "Change Language"
+msgstr "Сменить язык"
+
+#: main.pas (moduscurrent, statusbalk)
+msgid "Settings"
+msgstr "Настройки"
+
+#: janSimLogic.pas (rechtsklikmenu)
+msgid "lock"
+msgstr "Заблокировать"
+
+#: fsettings.lfm
+msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
+msgstr "Кнопки LogicRun/Человек/Тележка/Музыкальная шкатулка/Светофор да/нет"
+
+#: fsettings.lfm
+msgid "Selected Color"
+msgstr "Цвет выделения"
+
+#: fsettings.lfm
+msgid "Name"
+msgstr "Имя"
+
+#: fsettings.lfm
+msgid "Visible Yes/No"
+msgstr "Видимый да/нет"
+
+#: fsettings.lfm
+msgid "Width"
+msgstr "Ширина"
+
+#: fsettings.lfm
+msgid "Height"
+msgstr "Высота"
+
+#: fsettings.lfm
+msgid "Hint"
+msgstr "Подсказка"
+
+#: fsettings.lfm
+msgid "Show hint"
+msgstr "Показывать подсказку"
+
+#: fsettings.lfm
+msgid "Grid Yes/No"
+msgstr "Сетка да/нет"
+
+#: fsettings.lfm
+msgid "Color Panel"
+msgstr "Цвет панели"
+
+#: fsettings.lfm
+msgid "Color Input"
+msgstr "Цвет входа"
+
+#: fsettings.lfm
+msgid "Color Output"
+msgstr "Цвет выхода"
+
+#: fsettings.lfm
+msgid "Color Processing"
+msgstr "Цвет обработки"
+
+#: fsettings.lfm
+msgid "Grid spacing X"
+msgstr "Шаг сетки X"
+
+#: fsettings.lfm
+msgid "Grid spacing Y"
+msgstr "Шаг сетки Y"
+
+#: fsettings.lfm
+msgid "Language choice"
+msgstr "Выбор языка"
+
+#: fsettings.lfm
+msgid "Color Dots"
+msgstr "Цвет точек"
+
+#: fsettings.lfm
+msgid "Header"
+msgstr "Заголовок"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Buzzer"
+msgstr "Зуммер"
+
+#: fsettings.lfm fsettings.lfm
+msgid "DIP switch"
+msgstr "DIP-переключатель"
+
+#: fsettings.lfm fsettings.lfm
+msgid "7 segment display"
+msgstr "7-сегментный индикатор"
+
+#: fsettings.lfm
+msgid "Power rails (+ and -)"
+msgstr "Шины питания (+ и -)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Voltmeter"
+msgstr "Вольтметр"
+
+#: fsettings.lfm
+msgid "Schematic symbols (Afbeelding/IEC/ANSI)"
+msgstr "Условные обозначения (Afbeelding/IEC/ANSI)"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Connection"
+msgstr "Соединение"
+
+#: fsettings.lfm fsettings.lfm
+msgid "AND gate"
+msgstr "Элемент AND"
+
+#: fsettings.lfm fsettings.lfm
+msgid "NOT gate"
+msgstr "Элемент NOT"
+
+#: fsettings.lfm fsettings.lfm
+msgid "OR gate"
+msgstr "Элемент OR"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Pulse generator"
+msgstr "Генератор импульсов"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Relay"
+msgstr "Реле"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switching relay"
+msgstr "Переключающее реле"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Switch"
+msgstr "Выключатель"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Light sensor"
+msgstr "Датчик света"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Counter block"
+msgstr "Блок счётчика"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Step counter"
+msgstr "Счётчик шагов"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Stopwatch"
+msgstr "Секундомер"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Barrier gate"
+msgstr "Шлагбаум"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Motor"
+msgstr "Мотор"
+
+#: fsettings.lfm fsettings.lfm
+msgid "Heat sensor"
+msgstr "Датчик тепла"
+
+#: fsettings.lfm
+msgid "Person"
+msgstr "Человек"
+
+#: fsettings.lfm
+msgid "Music box"
+msgstr "Музыкальная шкатулка"
+
+#: fsettings.lfm
+msgid "+ rail (supply)"
+msgstr "шина + (питание)"
+
+#: fsettings.lfm
+msgid "- rail (ground)"
+msgstr "шина - (земля)"
+
+#: fsettings.lfm
+msgid "Copy screen"
+msgstr "Копия экрана"
+
+#: fsettings.lfm
+msgid "Image type"
+msgstr "Тип изображения"
+
