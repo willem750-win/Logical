@@ -1,28 +1,96 @@
 <!-- titel: Power & voltmeter -->
   <h1 id="voeding">Power &amp; voltmeter</h1>
   <p class="lead">Normally all components get their power invisibly in the background (see
-  <a href="simulatie.html#voeding">Where are the plus and the minus?</a>). If you want to see the plus and
-  the minus, put <b>power rails</b> on the panel: a red <b>+ rail</b> for the inputs and a blue
-  <b>&minus; rail</b> (ground) for the outputs. With the <b>voltmeter</b> you measure the voltage.</p>
+  <a href="simulatie.html#voeding">Where are the plus and the minus?</a>). If you want to see where the current
+  comes from, build a <b>power circuit</b>: a <b>source</b> (battery) of 0 to 12&nbsp;V, if you like a <b>fuse</b>
+  and a <b>milliammeter</b>, a red <b>+ rail</b> for the inputs and a blue <b>&minus; rail</b> (ground) for the
+  outputs. With the <b>voltmeter</b> you measure the voltage.</p>
 
   <figure>
-    <img src="../img/voeding-voorbeeld.png" alt="Power rails with push button, lamp and voltmeter">
-    <figcaption>A push button on a 5&nbsp;V + rail, a lamp on the &minus; rail (ground), and a voltmeter
-    between a 3.3&nbsp;V + rail and ground.</figcaption>
+    <img src="../img/voeding-basis.png" alt="A 6.5 V source with a 500 mA fuse, a + rail and a − rail">
+    <figcaption>A simple power supply: the + terminal of the source goes through a 500&nbsp;mA fuse to the
+    + rail, the &minus; terminal to the &minus; rail. The + rail gets the voltage of the source: 6.5&nbsp;V.</figcaption>
   </figure>
 
-  <h2 id="rails">Placing power rails</h2>
-  <p>At the bottom of the <a href="onderdelenbalk.html">component bar</a> there are two half buttons side by side:</p>
+  <h2 id="rails">The buttons</h2>
+  <p>At the bottom of the <a href="onderdelenbalk.html">component bar</a> there are four half buttons; the
+  milliammeter has a normal button, next to the voltmeter.</p>
   <table>
     <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (supply)</td><td>Red rail. The voltage is shown at the top, for example <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (supply)</td><td>Red rail for the inputs. The voltage it gets from the source is shown at the top, for example <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; rail (ground)</td><td>Blue rail with <b>0V</b> at the top and the ground symbol at the bottom.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Source (battery)</a></td><td>Voltage source of 0 to 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fuse</a></td><td>Blows when too much current flows.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliammeter</a></td><td>Measures the current the circuit uses.</td></tr>
   </table>
   <ol class="steps">
-    <li>Click the button of the rail you want to place.</li>
-    <li>Click on the panel where the rail should go.</li>
+    <li>Click the button of the component you want to place.</li>
+    <li>Click on the panel where it should go.</li>
   </ol>
-  <p>You may place as many + and &minus; rails as you like, for example a separate rail for each part of the circuit.</p>
+  <p>You may place as many rails as you like, for example a separate rail for each part of the circuit.</p>
+
+  <h2 id="kring">The power circuit</h2>
+  <p>The rails get their voltage <b>only from a source</b>. Connect with
+  <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>:</p>
+  <ol class="steps">
+    <li>the <b>+ terminal</b> of the source (bottom left) to the line of the <b>+ rail</b>;</li>
+    <li>the <b>&minus; terminal</b> of the source (bottom right) to the line of the <b>&minus; rail</b>.</li>
+  </ol>
+  <p>Put a fuse and a milliammeter <b>in series</b> in the + wire: from the source to the top terminal of the
+  fuse, and from its bottom terminal on to the meter or to the + rail.</p>
+  <p>When the circuit is <b>closed</b>, the voltage of the source is on the + rail. When it is not closed (a wire is
+  missing or the fuse has blown), the + rail is at <b>0&nbsp;V</b>: the inputs give no signal and the outputs do
+  not work.</p>
+  <div class="tip"><strong>Older panels:</strong> a panel made with an older version of Logic has rails with their
+  own voltage and no source yet. When you open it, Logic puts a source with that voltage (without internal
+  resistance) above each + rail, with the wires to the rails. If there is not enough room at the top, the panel
+  moves down a little. When you save the panel, the source stays in it.</div>
+
+  <h2 id="bron"><img src="../img/pal-bron.png" class="ico" alt="">The source (battery)</h2>
+  <ul>
+    <li><b>Voltage:</b> drag the slider or click on it: 0 to 12&nbsp;V in steps of 0.5&nbsp;V. The small window shows
+      the voltage that is set. This also works during the <a href="simulatie.html">simulation</a>.</li>
+    <li><b>Internal resistance (Ri):</b> right-click the source and choose 0, 0.5, 1 or 2&nbsp;&Omega;. A real battery
+      has a small internal resistance: the more current you draw, the more the voltage at the terminals drops.</li>
+    <li><b>Status bar:</b> move the mouse over the source. You see <b>E</b> (the voltage that is set, the source
+      voltage), <b>U</b> (the terminal voltage, which goes to the + rail) and <b>I</b> (the current in mA).</li>
+  </ul>
+
+  <h2 id="ohm">Current and voltage: Ohm&rsquo;s law</h2>
+  <p>Every load that is on behaves like a fixed resistor. At 12&nbsp;V it draws:</p>
+  <table>
+    <tr><th>Load (on)</th><th>Current at 12&nbsp;V</th></tr>
+    <tr><td>lamp</td><td>100&nbsp;mA</td></tr>
+    <tr><td>motor (running)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>relay or switching relay (coil energised)</td><td>40&nbsp;mA</td></tr>
+    <tr><td>buzzer</td><td>30&nbsp;mA</td></tr>
+    <tr><td>LED, person (per input that is on)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>7-segment display</td><td>10&nbsp;mA per lit segment</td></tr>
+    <tr><td>gate, counter, memory, LogicRun, plugged-in input</td><td>1&nbsp;mA</td></tr>
+  </table>
+  <p>At a lower voltage the current is proportionally smaller: a lamp draws 50&nbsp;mA at 6&nbsp;V. The current of
+  the source is the sum of all loads together. With the internal resistance Ri of the source this becomes:</p>
+  <p class="formula"><b>I = E / (Ri + R)</b> &nbsp;and&nbsp; <b>U = E &minus; I &times; Ri</b></p>
+  <p>R is the resistance of all loads together (in parallel). The more loads are on, the larger the current and the
+  more the terminal voltage U drops. Lamps and LEDs shine brighter as the supply voltage rises.</p>
+
+  <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">The fuse</h2>
+  <p>A fuse protects the circuit: when the current becomes larger than the <b>rated current</b>, the wire inside
+  <b>blows</b>. A red cross appears and the + rail drops back to 0&nbsp;V.</p>
+  <ul>
+    <li>Right-click &rsaquo; <b>Rated current</b>: 100&nbsp;mA, 250&nbsp;mA, 500&nbsp;mA (default), 1&nbsp;A or 2&nbsp;A.
+      The value is shown below the tube.</li>
+    <li>Right-click &rsaquo; <b>Replace fuse</b> (only when it has blown). First remove the cause, for example a lower
+      voltage or fewer loads, or the new fuse blows again at once.</li>
+  </ul>
+  <div class="tip"><strong>Tip:</strong> put a 250&nbsp;mA fuse in the circuit and set the source to 12&nbsp;V. Two lamps
+  together need about 200&nbsp;mA: the fuse holds. Switch on a third lamp and it becomes about 300&nbsp;mA: the fuse
+  blows.</div>
+
+  <h2 id="ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">The milliammeter</h2>
+  <p>The milliammeter measures the current flowing through the circuit, in mA. Put it in series in the + wire,
+  between the source (or the fuse) and the + rail: the wire comes in on the left and continues on the right. A
+  meter that is not in a closed circuit shows 0.</p>
 
   <h2 id="regels">What changes when there are rails on the panel?</h2>
   <p>As long as there is no rail on the panel, everything works as before. As soon as there is
@@ -75,19 +143,19 @@
     <li><b>Move:</b> drag the middle of the rail. All components plugged into it move along, with their wires.</li>
     <li><b>Longer or shorter:</b> drag an end (the mouse pointer becomes &updownarrow;). On a &minus; rail the
       ground symbol is the bottom end.</li>
-    <li><b>Right-click menu:</b> <b>Voltage</b> (+ rail only), <b>Lock / Unlock</b> and <b>Select object</b>
+    <li><b>Right-click menu:</b> <b>Lock / Unlock</b> and <b>Select object</b>
       to <a href="objecten.html#verwijderen">delete</a> the rail.</li>
     <li>During the <a href="simulatie.html">simulation</a> the rails cannot be moved.</li>
   </ul>
 
   <h2 id="spanning">Voltage of a + rail</h2>
-  <p>Right-click a + rail and choose <b>Voltage</b>: 0, 1, 2, 3, 3.3, 4 or 5&nbsp;V. Just like in real logic
+  <p>The + rail gets the terminal voltage of the source it is connected to. Just like in real logic
   circuits, an input only works from about <b>2&nbsp;V</b>.</p>
   <table>
     <tr><th>Voltage</th><th>Rail</th><th>Input on this rail</th></tr>
-    <tr><td>0&nbsp;V</td><td>grey</td><td>gives no signal</td></tr>
-    <tr><td>1&nbsp;V</td><td>dark red</td><td>gives no signal: voltage too low</td></tr>
-    <tr><td>2&nbsp;V to 5&nbsp;V</td><td>red, brighter as the voltage rises</td><td>works</td></tr>
+    <tr><td>0&nbsp;V (no closed circuit)</td><td>grey</td><td>gives no signal</td></tr>
+    <tr><td>below 2&nbsp;V</td><td>dark red</td><td>gives no signal: voltage too low</td></tr>
+    <tr><td>2&nbsp;V to 12&nbsp;V</td><td>red, brighter as the voltage rises</td><td>works</td></tr>
   </table>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
@@ -110,14 +178,15 @@
     <tr><td>gate, counter or memory, output on</td><td>5&nbsp;V</td></tr>
     <tr><td>anything that is off</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Tip:</strong> put a push button on a 1&nbsp;V + rail and connect it to a lamp and
-  to the voltmeter. When you press the button, the meter shows 1.0&nbsp;V but the lamp stays off: the voltage
+  <div class="tip"><strong>Tip:</strong> set the source to 1&nbsp;V and connect a push button on the + rail to a
+  lamp and to the voltmeter. When you press the button, the meter shows 1.0&nbsp;V but the lamp stays off: the voltage
   is too low for a logic input.</div>
 
   <h2 id="bewaren">Saving and settings</h2>
   <ul>
-    <li>Rails (with their position, length and voltage) and voltmeters are saved in the panel file
-      (<code>.lpl</code>). An older version of Logic skips the rails.</li>
-    <li>If you do not want the rail buttons in the component bar, set <b>Power rails (+ and -)</b> to
-      <b>False</b> in <a href="instellingen.html#schakelelementen">Settings</a>.</li>
+    <li>Sources (voltage and Ri), fuses (rated current), meters and rails are saved with their position in the
+      panel file (<code>.lpl</code>). A blown fuse is whole again after opening the panel.</li>
+    <li>If you do not want the power buttons in the component bar, set <b>Power rails (+ and -)</b> to
+      <b>False</b> in <a href="instellingen.html#schakelelementen">Settings</a>. The rails, the source, the fuse and
+      the milliammeter then disappear from the bar.</li>
   </ul>

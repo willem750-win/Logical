@@ -1,28 +1,96 @@
 <!-- titel: Voeding & voltmeter -->
   <h1 id="voeding">Voeding &amp; voltmeter</h1>
   <p class="lead">Normaal hangt de voeding van alle onderdelen onzichtbaar op de achtergrond (zie
-  <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a>). Wil je de plus en de min toch zien,
-  zet dan <b>voedingsrails</b> op het paneel: een rode <b>+ rail</b> voor de invoer en een blauwe
-  <b>&minus; rail</b> (de massa) voor de uitvoer. Met de <b>voltmeter</b> meet je de spanning.</p>
+  <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a>). Wil je zien waar de stroom vandaan komt,
+  bouw dan een <b>voedingskring</b>: een <b>bron</b> (accu) van 0 tot 12&nbsp;V, eventueel een <b>zekering</b>
+  en een <b>milliampèremeter</b>, een rode <b>+ rail</b> voor de invoer en een blauwe <b>&minus; rail</b>
+  (de massa) voor de uitvoer. Met de <b>voltmeter</b> meet je de spanning.</p>
 
   <figure>
-    <img src="../img/voeding-voorbeeld.png" alt="Voedingsrails met drukknop, lamp en voltmeter">
-    <figcaption>Een drukknop op de + rail van 5&nbsp;V, een lamp op de &minus; rail (massa), en een
-    voltmeter tussen een + rail van 3,3&nbsp;V en de massa.</figcaption>
+    <img src="../img/voeding-basis.png" alt="Bron van 6,5 V met een zekering van 500 mA, een + rail en een − rail">
+    <figcaption>Een eenvoudige voeding: de + klem van de bron gaat via een zekering van 500&nbsp;mA naar de
+    + rail, de &minus; klem naar de &minus; rail. De + rail krijgt de spanning van de bron: 6,5&nbsp;V.</figcaption>
   </figure>
 
-  <h2 id="rails">Voedingsrails plaatsen</h2>
-  <p>Onderaan de <a href="onderdelenbalk.html">onderdelenbalk</a> staan twee halve knoppen naast elkaar:</p>
+  <h2 id="rails">De knoppen</h2>
+  <p>Onderaan de <a href="onderdelenbalk.html">onderdelenbalk</a> staan vier halve knoppen; de milliampèremeter
+  heeft een gewone knop, naast de voltmeter.</p>
   <table>
     <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (voeding)</td><td>Rode rail. Bovenaan staat de spanning, bijvoorbeeld <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (voeding)</td><td>Rode rail voor de invoer. Bovenaan staat de spanning die hij van de bron krijgt, bijvoorbeeld <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; rail (massa)</td><td>Blauwe rail met bovenaan <b>0V</b> en onderaan het massasymbool.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Bron (accu)</a></td><td>Spanningsbron van 0 tot 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Zekering</a></td><td>Smelt als er te veel stroom loopt.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremeter</a></td><td>Meet de stroom die de schakeling verbruikt.</td></tr>
   </table>
   <ol class="steps">
-    <li>Klik op de knop van de rail die je wil plaatsen.</li>
-    <li>Klik op het paneel waar de rail moet komen.</li>
+    <li>Klik op de knop van het onderdeel dat je wil plaatsen.</li>
+    <li>Klik op het paneel waar het moet komen.</li>
   </ol>
-  <p>Je mag zoveel + en &minus; rails plaatsen als je wil, bijvoorbeeld een aparte rail per deel van de schakeling.</p>
+  <p>Je mag zoveel rails plaatsen als je wil, bijvoorbeeld een aparte rail per deel van de schakeling.</p>
+
+  <h2 id="kring">De voedingskring</h2>
+  <p>De rails krijgen hun spanning <b>alleen van een bron</b>. Verbind daarvoor met
+  <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbinding</b>:</p>
+  <ol class="steps">
+    <li>de <b>+ klem</b> van de bron (onderaan links) met de lijn van de <b>+ rail</b>;</li>
+    <li>de <b>&minus; klem</b> van de bron (onderaan rechts) met de lijn van de <b>&minus; rail</b>.</li>
+  </ol>
+  <p>Een zekering en een milliampèremeter zet je <b>in serie</b> in de + draad: van de bron naar de bovenste klem
+  van de zekering, van de onderste klem verder naar de meter of naar de + rail.</p>
+  <p>Is de kring <b>gesloten</b>, dan staat de spanning van de bron op de + rail. Is ze niet gesloten (een draad
+  ontbreekt of de zekering is gesmolten), dan staat de + rail op <b>0&nbsp;V</b>: de invoer geeft geen signaal en
+  de uitvoer werkt niet.</p>
+  <div class="tip"><strong>Oude panelen:</strong> een paneel dat met een oudere versie van Logic gemaakt is, heeft
+  rails met een eigen spanning en nog geen bron. Bij het openen zet Logic boven elke + rail een bron met die spanning
+  (zonder inwendige weerstand) en de draden naar de rails. Is er bovenaan te weinig plaats, dan schuift het paneel
+  wat naar beneden. Bewaar je het paneel, dan blijft de bron erin.</div>
+
+  <h2 id="bron"><img src="../img/pal-bron.png" class="ico" alt="">De bron (accu)</h2>
+  <ul>
+    <li><b>Spanning:</b> sleep de schuifregelaar of klik erop: 0 tot 12&nbsp;V in stappen van 0,5&nbsp;V. Het
+      venstertje toont de ingestelde spanning. Dat kan ook tijdens de <a href="simulatie.html">simulatie</a>.</li>
+    <li><b>Inwendige weerstand (Ri):</b> rechtsklik op de bron en kies 0, 0,5, 1 of 2&nbsp;&Omega;. Een echte accu
+      heeft een kleine inwendige weerstand: hoe meer stroom je vraagt, hoe meer de spanning op de klemmen zakt.</li>
+    <li><b>Statusbalk:</b> beweeg de muis over de bron. Je ziet <b>E</b> (de ingestelde spanning, de bronspanning),
+      <b>U</b> (de klemspanning, die op de + rail komt) en <b>I</b> (de stroom in mA).</li>
+  </ul>
+
+  <h2 id="ohm">Stroom en spanning: de wet van Ohm</h2>
+  <p>Elke verbruiker die aan staat, gedraagt zich als een vaste weerstand. Bij 12&nbsp;V trekt hij:</p>
+  <table>
+    <tr><th>Verbruiker (aan)</th><th>Stroom bij 12&nbsp;V</th></tr>
+    <tr><td>lamp</td><td>100&nbsp;mA</td></tr>
+    <tr><td>motor (draait)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>relais of schakelrelais (spoel bekrachtigd)</td><td>40&nbsp;mA</td></tr>
+    <tr><td>zoemer</td><td>30&nbsp;mA</td></tr>
+    <tr><td>led, persoon (per ingang die aan staat)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>7-segmentdisplay</td><td>10&nbsp;mA per segment dat brandt</td></tr>
+    <tr><td>poort, teller, geheugen, LogicRun, ingeplugde invoer</td><td>1&nbsp;mA</td></tr>
+  </table>
+  <p>Bij een lagere spanning is de stroom evenredig kleiner: een lamp trekt bij 6&nbsp;V 50&nbsp;mA. De stroom van
+  de bron is de som van alle verbruikers samen. Met de inwendige weerstand Ri van de bron wordt dat:</p>
+  <p class="formula"><b>I = E / (Ri + R)</b> &nbsp;en&nbsp; <b>U = E &minus; I &times; Ri</b></p>
+  <p>R is de weerstand van alle verbruikers samen (parallel). Hoe meer verbruikers aan staan, hoe groter de stroom
+  en hoe meer de klemspanning U zakt. Lampen en leds branden feller naarmate de spanning van de voeding hoger is.</p>
+
+  <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">De zekering</h2>
+  <p>Een zekering beschermt de kring: wordt de stroom groter dan de <b>nominale stroom</b>, dan <b>smelt</b> het
+  draadje. Er komt een rood kruis op en de + rail valt terug op 0&nbsp;V.</p>
+  <ul>
+    <li>Rechtsklik &rsaquo; <b>Nominale stroom</b>: 100&nbsp;mA, 250&nbsp;mA, 500&nbsp;mA (standaard), 1&nbsp;A of 2&nbsp;A.
+      De waarde staat onder het buisje.</li>
+    <li>Rechtsklik &rsaquo; <b>Zekering vervangen</b> (alleen als ze gesmolten is). Neem eerst de oorzaak weg,
+      bijvoorbeeld een lagere spanning of minder verbruikers, anders smelt de nieuwe zekering meteen weer.</li>
+  </ul>
+  <div class="tip"><strong>Tip:</strong> zet een zekering van 250&nbsp;mA in de kring en zet de bron op 12&nbsp;V. Twee lampen
+  samen vragen ongeveer 200&nbsp;mA: dat houdt de zekering. Zet je een derde lamp aan, dan wordt het ongeveer 300&nbsp;mA
+  en smelt de zekering.</div>
+
+  <h2 id="ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">De milliampèremeter</h2>
+  <p>De milliampèremeter meet de stroom die door de kring loopt, in mA. Zet hem in serie in de + draad, tussen de
+  bron (of de zekering) en de + rail: de draad komt links binnen en gaat rechts verder. Een meter die niet in een
+  gesloten kring zit, toont 0.</p>
 
   <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
   <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er
@@ -76,19 +144,19 @@
       mee, met hun draden.</li>
     <li><b>Langer of korter:</b> sleep een uiteinde (de muisaanwijzer wordt &updownarrow;). Bij de &minus; rail is het
       massasymbool het onderste uiteinde.</li>
-    <li><b>Rechtsklikmenu:</b> <b>Spanning</b> (alleen bij een + rail), <b>Vergrendel / Ontgrendel</b> en
-      <b>Selecteer object</b> om de rail te <a href="objecten.html#verwijderen">verwijderen</a>.</li>
+    <li><b>Rechtsklikmenu:</b> <b>Vergrendel / Ontgrendel</b> en <b>Selecteer object</b> om de rail te
+      <a href="objecten.html#verwijderen">verwijderen</a>.</li>
     <li>Tijdens de <a href="simulatie.html">simulatie</a> liggen de rails vast.</li>
   </ul>
 
   <h2 id="spanning">Spanning van een + rail</h2>
-  <p>Rechtsklik op een + rail en kies <b>Spanning</b>: 0, 1, 2, 3, 3,3, 4 of 5&nbsp;V. Net als bij echte
-  logische schakelingen werkt een ingang pas vanaf ongeveer <b>2&nbsp;V</b>.</p>
+  <p>De + rail krijgt de klemspanning van de bron waarmee hij verbonden is. Net als bij echte logische
+  schakelingen werkt een ingang pas vanaf ongeveer <b>2&nbsp;V</b>.</p>
   <table>
     <tr><th>Spanning</th><th>Rail</th><th>Invoer op deze rail</th></tr>
-    <tr><td>0&nbsp;V</td><td>grijs</td><td>geeft geen signaal</td></tr>
-    <tr><td>1&nbsp;V</td><td>donkerrood</td><td>geeft geen signaal: te weinig spanning</td></tr>
-    <tr><td>2&nbsp;V tot 5&nbsp;V</td><td>rood, feller naarmate de spanning hoger is</td><td>werkt</td></tr>
+    <tr><td>0&nbsp;V (geen gesloten kring)</td><td>grijs</td><td>geeft geen signaal</td></tr>
+    <tr><td>onder 2&nbsp;V</td><td>donkerrood</td><td>geeft geen signaal: te weinig spanning</td></tr>
+    <tr><td>2&nbsp;V tot 12&nbsp;V</td><td>rood, feller naarmate de spanning hoger is</td><td>werkt</td></tr>
   </table>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
@@ -112,14 +180,15 @@
     <tr><td>poort, teller of geheugen, uitgang aan</td><td>5&nbsp;V</td></tr>
     <tr><td>alles wat uit staat</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Tip:</strong> zet een drukknop op een + rail van 1&nbsp;V en verbind hem met een
+  <div class="tip"><strong>Tip:</strong> zet de bron op 1&nbsp;V en verbind een drukknop op de + rail met een
   lamp en met de voltmeter. Druk je de knop in, dan toont de meter 1,0&nbsp;V, maar de lamp blijft uit:
   de spanning is te laag voor een logische ingang.</div>
 
   <h2 id="bewaren">Opslaan en instellingen</h2>
   <ul>
-    <li>Rails (met hun plaats, lengte en spanning) en voltmeters worden in het paneelbestand (<code>.lpl</code>)
-      bewaard. Een oudere versie van Logic slaat de rails over.</li>
-    <li>Wil je de railknoppen niet in de onderdelenbalk, zet dan bij
-      <a href="instellingen.html#schakelelementen">Instellingen</a> <b>Voedingsrails (+ en -)</b> op <b>False</b>.</li>
+    <li>Bronnen (spanning en Ri), zekeringen (nominale stroom), meters en rails worden met hun plaats in het
+      paneelbestand (<code>.lpl</code>) bewaard. Een gesmolten zekering is na het openen weer heel.</li>
+    <li>Wil je de knoppen van de voeding niet in de onderdelenbalk, zet dan bij
+      <a href="instellingen.html#schakelelementen">Instellingen</a> <b>Voedingsrails (+ en -)</b> op <b>False</b>.
+      Dan verdwijnen de rails, de bron, de zekering en de milliampèremeter uit de balk.</li>
   </ul>

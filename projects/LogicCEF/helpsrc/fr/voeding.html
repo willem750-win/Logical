@@ -1,28 +1,98 @@
 <!-- titel: Alimentation & voltmètre -->
   <h1 id="voeding">Alimentation &amp; voltmètre</h1>
-  <p class="lead">Normalement, tous les composants sont alimentés de manière invisible (voir
-  <a href="simulatie.html#voeding">Où sont le plus et le moins ?</a>). Pour voir le plus et le moins,
-  placez des <b>rails d&rsquo;alimentation</b> sur le panneau : un <b>rail +</b> rouge pour les entrées et un
+  <p class="lead">Normalement, tous les composants reçoivent leur alimentation de façon invisible, en arrière-plan
+  (voir <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a>). Pour voir d&rsquo;où vient le
+  courant, construisez un <b>circuit d&rsquo;alimentation</b>&nbsp;: une <b>source</b> (batterie) de 0 à 12&nbsp;V,
+  éventuellement un <b>fusible</b> et un <b>milliampèremètre</b>, un <b>rail +</b> rouge pour les entrées et un
   <b>rail &minus;</b> bleu (la masse) pour les sorties. Avec le <b>voltmètre</b>, vous mesurez la tension.</p>
 
   <figure>
-    <img src="../img/voeding-voorbeeld.png" alt="Rails d'alimentation avec bouton-poussoir, lampe et voltmètre">
-    <figcaption>Un bouton-poussoir sur un rail + de 5&nbsp;V, une lampe sur le rail &minus; (masse) et un
-    voltmètre entre un rail + de 3,3&nbsp;V et la masse.</figcaption>
+    <img src="../img/voeding-basis.png" alt="Source de 6,5 V avec un fusible de 500 mA, un rail + et un rail −">
+    <figcaption>Une alimentation simple&nbsp;: la borne + de la source passe par un fusible de 500&nbsp;mA vers le
+    rail +, la borne &minus; va vers le rail &minus;. Le rail + reçoit la tension de la source&nbsp;: 6,5&nbsp;V.</figcaption>
   </figure>
 
-  <h2 id="rails">Placer des rails d&rsquo;alimentation</h2>
-  <p>En bas de la <a href="onderdelenbalk.html">barre des composants</a> se trouvent deux demi-boutons côte à côte :</p>
+  <h2 id="rails">Les boutons</h2>
+  <p>En bas de la <a href="onderdelenbalk.html">barre des composants</a> se trouvent quatre demi-boutons&nbsp;; le
+  milliampèremètre a un bouton normal, à côté du voltmètre.</p>
   <table>
-    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est ?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">Rail + (alimentation)</td><td>Rail rouge. La tension est indiquée en haut, par exemple <b>5V</b>.</td></tr>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">Rail + (alimentation)</td><td>Rail rouge pour les entrées. En haut s&rsquo;affiche la tension qu&rsquo;il reçoit de la source, par exemple <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">Rail &minus; (masse)</td><td>Rail bleu avec <b>0V</b> en haut et le symbole de masse en bas.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Source (batterie)</a></td><td>Source de tension de 0 à 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fusible</a></td><td>Fond quand le courant est trop fort.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremètre</a></td><td>Mesure le courant consommé par le circuit.</td></tr>
   </table>
   <ol class="steps">
-    <li>Cliquez sur le bouton du rail à placer.</li>
+    <li>Cliquez sur le bouton du composant à placer.</li>
     <li>Cliquez sur le panneau à l&rsquo;endroit voulu.</li>
   </ol>
-  <p>Vous pouvez placer autant de rails + et &minus; que vous voulez, par exemple un rail par partie du circuit.</p>
+  <p>Vous pouvez placer autant de rails que vous voulez, par exemple un rail séparé pour chaque partie du circuit.</p>
+
+  <h2 id="kring">Le circuit d&rsquo;alimentation</h2>
+  <p>Les rails reçoivent leur tension <b>uniquement d&rsquo;une source</b>. Reliez avec
+  <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>&nbsp;:</p>
+  <ol class="steps">
+    <li>la <b>borne +</b> de la source (en bas à gauche) à la ligne du <b>rail +</b>&nbsp;;</li>
+    <li>la <b>borne &minus;</b> de la source (en bas à droite) à la ligne du <b>rail &minus;</b>.</li>
+  </ol>
+  <p>Un fusible et un milliampèremètre se placent <b>en série</b> dans le fil +&nbsp;: de la source vers la borne du
+  haut du fusible, puis de sa borne du bas vers le milliampèremètre ou vers le rail +.</p>
+  <p>Quand le circuit est <b>fermé</b>, la tension de la source est sur le rail +. Quand il n&rsquo;est pas fermé
+  (un fil manque ou le fusible a fondu), le rail + est à <b>0&nbsp;V</b>&nbsp;: les entrées ne donnent pas de signal et
+  les sorties ne fonctionnent pas.</p>
+  <div class="tip"><strong>Anciens panneaux&nbsp;:</strong> un panneau fait avec une version plus ancienne de Logic a
+  des rails avec leur propre tension et pas encore de source. À l&rsquo;ouverture, Logic place au-dessus de chaque
+  rail + une source de cette tension (sans résistance interne), avec les fils vers les rails. S&rsquo;il n&rsquo;y a pas
+  assez de place en haut, le panneau descend un peu. Si vous enregistrez le panneau, la source y reste.</div>
+
+  <h2 id="bron"><img src="../img/pal-bron.png" class="ico" alt="">La source (batterie)</h2>
+  <ul>
+    <li><b>Tension&nbsp;:</b> faites glisser le curseur ou cliquez dessus&nbsp;: 0 à 12&nbsp;V par pas de 0,5&nbsp;V. La
+      petite fenêtre affiche la tension réglée. Cela fonctionne aussi pendant la <a href="simulatie.html">simulation</a>.</li>
+    <li><b>Résistance interne (Ri)&nbsp;:</b> clic droit sur la source, puis 0, 0,5, 1 ou 2&nbsp;&Omega;. Une vraie
+      batterie a une petite résistance interne&nbsp;: plus vous demandez de courant, plus la tension aux bornes baisse.</li>
+    <li><b>Barre d&rsquo;état&nbsp;:</b> passez la souris sur la source. Vous voyez <b>E</b> (la tension réglée, la
+      tension de la source), <b>U</b> (la tension aux bornes, qui arrive sur le rail +) et <b>I</b> (le courant en mA).</li>
+  </ul>
+
+  <h2 id="ohm">Courant et tension&nbsp;: la loi d&rsquo;Ohm</h2>
+  <p>Chaque récepteur allumé se comporte comme une résistance fixe. À 12&nbsp;V, il consomme&nbsp;:</p>
+  <table>
+    <tr><th>Récepteur (allumé)</th><th>Courant à 12&nbsp;V</th></tr>
+    <tr><td>lampe</td><td>100&nbsp;mA</td></tr>
+    <tr><td>moteur (en marche)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>relais ou relais de commutation (bobine excitée)</td><td>40&nbsp;mA</td></tr>
+    <tr><td>buzzer</td><td>30&nbsp;mA</td></tr>
+    <tr><td>LED, personnage (par entrée activée)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>afficheur 7 segments</td><td>10&nbsp;mA par segment allumé</td></tr>
+    <tr><td>porte, compteur, mémoire, LogicRun, entrée branchée</td><td>1&nbsp;mA</td></tr>
+  </table>
+  <p>À une tension plus basse, le courant diminue dans la même proportion&nbsp;: une lampe consomme 50&nbsp;mA à
+  6&nbsp;V. Le courant de la source est la somme de tous les récepteurs. Avec la résistance interne Ri de la source,
+  on obtient&nbsp;:</p>
+  <p class="formula"><b>I = E / (Ri + R)</b> &nbsp;et&nbsp; <b>U = E &minus; I &times; Ri</b></p>
+  <p>R est la résistance de tous les récepteurs ensemble (en parallèle). Plus il y a de récepteurs allumés, plus le
+  courant est grand et plus la tension aux bornes U baisse. Les lampes et les LED brillent plus fort quand la
+  tension d&rsquo;alimentation augmente.</p>
+
+  <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">Le fusible</h2>
+  <p>Un fusible protège le circuit&nbsp;: quand le courant dépasse le <b>courant nominal</b>, le filament
+  <b>fond</b>. Une croix rouge apparaît et le rail + retombe à 0&nbsp;V.</p>
+  <ul>
+    <li>Clic droit &rsaquo; <b>Courant nominal</b>&nbsp;: 100&nbsp;mA, 250&nbsp;mA, 500&nbsp;mA (par défaut), 1&nbsp;A ou
+      2&nbsp;A. La valeur s&rsquo;affiche sous le tube.</li>
+    <li>Clic droit &rsaquo; <b>Remplacer le fusible</b> (seulement s&rsquo;il a fondu). Supprimez d&rsquo;abord la
+      cause, par exemple avec une tension plus basse ou moins de récepteurs, sinon le nouveau fusible fond aussitôt.</li>
+  </ul>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> placez un fusible de 250&nbsp;mA dans le circuit et réglez la source sur
+  12&nbsp;V. Deux lampes demandent ensemble environ 200&nbsp;mA&nbsp;: le fusible tient. Allumez une troisième lampe et on
+  arrive à environ 300&nbsp;mA&nbsp;: le fusible fond.</div>
+
+  <h2 id="ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">Le milliampèremètre</h2>
+  <p>Le milliampèremètre mesure le courant qui traverse le circuit, en mA. Placez-le en série dans le fil +, entre
+  la source (ou le fusible) et le rail +&nbsp;: le fil entre à gauche et repart à droite. Un milliampèremètre qui
+  n&rsquo;est pas dans un circuit fermé affiche 0.</p>
 
   <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>
   <p>Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau, tout fonctionne comme avant. Dès qu&rsquo;il y a
@@ -76,19 +146,19 @@
     <li><b>Déplacer :</b> faites glisser le milieu du rail. Tous les composants branchés suivent, avec leurs fils.</li>
     <li><b>Plus long ou plus court :</b> faites glisser une extrémité (le pointeur devient &updownarrow;). Sur un
       rail &minus;, le symbole de masse est l&rsquo;extrémité du bas.</li>
-    <li><b>Menu du clic droit :</b> <b>Tension</b> (rail + uniquement), <b>Verrouiller / Déverrouiller</b> et
+    <li><b>Menu du clic droit :</b> <b>Verrouiller / Déverrouiller</b> et
       <b>Sélectionner un objet</b> pour <a href="objecten.html#verwijderen">supprimer</a> le rail.</li>
     <li>Pendant la <a href="simulatie.html">simulation</a>, les rails sont fixes.</li>
   </ul>
 
   <h2 id="spanning">Tension d&rsquo;un rail +</h2>
-  <p>Faites un clic droit sur un rail + et choisissez <b>Tension</b> : 0, 1, 2, 3, 3,3, 4 ou 5&nbsp;V. Comme
+  <p>Le rail + reçoit la tension aux bornes de la source à laquelle il est relié. Comme
   dans les vrais circuits logiques, une entrée ne fonctionne qu&rsquo;à partir d&rsquo;environ <b>2&nbsp;V</b>.</p>
   <table>
     <tr><th>Tension</th><th>Rail</th><th>Entrée sur ce rail</th></tr>
-    <tr><td>0&nbsp;V</td><td>gris</td><td>pas de signal</td></tr>
-    <tr><td>1&nbsp;V</td><td>rouge foncé</td><td>pas de signal : tension trop faible</td></tr>
-    <tr><td>2&nbsp;V à 5&nbsp;V</td><td>rouge, plus vif quand la tension augmente</td><td>fonctionne</td></tr>
+    <tr><td>0&nbsp;V (pas de circuit fermé)</td><td>gris</td><td>pas de signal</td></tr>
+    <tr><td>moins de 2&nbsp;V</td><td>rouge foncé</td><td>pas de signal : tension trop faible</td></tr>
+    <tr><td>2&nbsp;V à 12&nbsp;V</td><td>rouge, plus vif quand la tension augmente</td><td>fonctionne</td></tr>
   </table>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmètre</h2>
@@ -111,15 +181,17 @@
     <tr><td>porte, compteur ou mémoire, sortie activée</td><td>5&nbsp;V</td></tr>
     <tr><td>tout ce qui est éteint</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Astuce :</strong> placez un bouton-poussoir sur un rail + de 1&nbsp;V et reliez-le
+  <div class="tip"><strong>Astuce :</strong> réglez la source sur 1&nbsp;V et reliez un bouton-poussoir du rail +
   à une lampe et au voltmètre. Quand vous appuyez, le voltmètre indique 1,0&nbsp;V mais la lampe reste
   éteinte : la tension est trop faible pour une entrée logique.</div>
 
   <h2 id="bewaren">Enregistrer et réglages</h2>
   <ul>
-    <li>Les rails (position, longueur et tension) et les voltmètres sont enregistrés dans le fichier du
-      panneau (<code>.lpl</code>). Une version plus ancienne de Logic ignore les rails.</li>
-    <li>Si vous ne voulez pas les boutons des rails dans la barre des composants, mettez
+    <li>Les sources (tension et Ri), les fusibles (courant nominal), les appareils de mesure et les rails sont
+      enregistrés avec leur position dans le fichier du panneau (<code>.lpl</code>). Un fusible fondu est à nouveau
+      intact après l&rsquo;ouverture.</li>
+    <li>Si vous ne voulez pas les boutons de l&rsquo;alimentation dans la barre des composants, mettez
       <b>Rails d&rsquo;alimentation (+ et -)</b> sur <b>False</b> dans les
-      <a href="instellingen.html#schakelelementen">Réglages</a>.</li>
+      <a href="instellingen.html#schakelelementen">Réglages</a>. Les rails, la source, le fusible et le
+      milliampèremètre disparaissent alors de la barre.</li>
   </ul>

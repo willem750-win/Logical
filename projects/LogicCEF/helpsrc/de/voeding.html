@@ -1,28 +1,97 @@
 <!-- titel: Versorgung & Voltmeter -->
   <h1 id="voeding">Versorgung &amp; Voltmeter</h1>
-  <p class="lead">Normalerweise werden alle Bauteile unsichtbar im Hintergrund versorgt (siehe
-  <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a>). Möchten Sie Plus und Minus sehen, setzen Sie
-  <b>Versorgungsschienen</b> auf das Panel: eine rote <b>+ Schiene</b> für die Eingänge und eine blaue
-  <b>&minus; Schiene</b> (Masse) für die Ausgänge. Mit dem <b>Voltmeter</b> messen Sie die Spannung.</p>
+  <p class="lead">Normalerweise bekommen alle Bauteile ihre Versorgung unsichtbar im Hintergrund (siehe
+  <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a>). Möchten Sie sehen, woher der Strom kommt, bauen
+  Sie einen <b>Versorgungskreis</b>: eine <b>Quelle</b> (Akku) von 0 bis 12&nbsp;V, nach Wunsch eine <b>Sicherung</b>
+  und ein <b>Milliamperemeter</b>, eine rote <b>+ Schiene</b> für die Eingänge und eine blaue <b>&minus; Schiene</b>
+  (Masse) für die Ausgänge. Mit dem <b>Voltmeter</b> messen Sie die Spannung.</p>
 
   <figure>
-    <img src="../img/voeding-voorbeeld.png" alt="Versorgungsschienen mit Taster, Lampe und Voltmeter">
-    <figcaption>Ein Taster an einer + Schiene mit 5&nbsp;V, eine Lampe an der &minus; Schiene (Masse) und ein
-    Voltmeter zwischen einer + Schiene mit 3,3&nbsp;V und Masse.</figcaption>
+    <img src="../img/voeding-basis.png" alt="Quelle mit 6,5 V, Sicherung 500 mA, + Schiene und − Schiene">
+    <figcaption>Eine einfache Versorgung: Die + Klemme der Quelle führt über eine Sicherung von 500&nbsp;mA zur
+    + Schiene, die &minus; Klemme zur &minus; Schiene. Die + Schiene bekommt die Spannung der Quelle: 6,5&nbsp;V.</figcaption>
   </figure>
 
-  <h2 id="rails">Versorgungsschienen platzieren</h2>
-  <p>Unten in der <a href="onderdelenbalk.html">Bauteilleiste</a> stehen zwei halbe Schaltflächen nebeneinander:</p>
+  <h2 id="rails">Die Schaltflächen</h2>
+  <p>Unten in der <a href="onderdelenbalk.html">Bauteilleiste</a> stehen vier halbe Schaltflächen; das
+  Milliamperemeter hat eine normale Schaltfläche neben dem Voltmeter.</p>
   <table>
     <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ Schiene (Versorgung)</td><td>Rote Schiene. Oben steht die Spannung, zum Beispiel <b>5V</b>.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ Schiene (Versorgung)</td><td>Rote Schiene für die Eingänge. Oben steht die Spannung, die sie von der Quelle bekommt, zum Beispiel <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; Schiene (Masse)</td><td>Blaue Schiene mit <b>0V</b> oben und dem Massesymbol unten.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Quelle (Akku)</a></td><td>Spannungsquelle von 0 bis 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Sicherung</a></td><td>Brennt durch, wenn zu viel Strom fließt.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliamperemeter</a></td><td>Misst den Strom, den die Schaltung verbraucht.</td></tr>
   </table>
   <ol class="steps">
-    <li>Klicken Sie auf die Schaltfläche der gewünschten Schiene.</li>
-    <li>Klicken Sie auf das Panel, wo die Schiene hin soll.</li>
+    <li>Klicken Sie auf die Schaltfläche des Bauteils, das Sie platzieren möchten.</li>
+    <li>Klicken Sie auf das Panel, wo es hin soll.</li>
   </ol>
-  <p>Sie können beliebig viele + und &minus; Schienen setzen, zum Beispiel eine eigene Schiene für jeden Teil der Schaltung.</p>
+  <p>Sie dürfen so viele Schienen platzieren, wie Sie möchten, zum Beispiel eine eigene Schiene für jeden Teil der Schaltung.</p>
+
+  <h2 id="kring">Der Versorgungskreis</h2>
+  <p>Die Schienen bekommen ihre Spannung <b>nur von einer Quelle</b>. Verbinden Sie mit
+  <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>:</p>
+  <ol class="steps">
+    <li>die <b>+ Klemme</b> der Quelle (unten links) mit der Linie der <b>+ Schiene</b>;</li>
+    <li>die <b>&minus; Klemme</b> der Quelle (unten rechts) mit der Linie der <b>&minus; Schiene</b>.</li>
+  </ol>
+  <p>Eine Sicherung und ein Milliamperemeter setzen Sie <b>in Reihe</b> in den + Draht: von der Quelle zur oberen
+  Klemme der Sicherung, von der unteren Klemme weiter zum Messgerät oder zur + Schiene.</p>
+  <p>Ist der Kreis <b>geschlossen</b>, liegt die Spannung der Quelle an der + Schiene. Ist er nicht geschlossen
+  (ein Draht fehlt oder die Sicherung ist durchgebrannt), steht die + Schiene auf <b>0&nbsp;V</b>: Die Eingänge geben
+  kein Signal und die Ausgänge funktionieren nicht.</p>
+  <div class="tip"><strong>Ältere Panels:</strong> Ein Panel aus einer älteren Version von Logic hat Schienen mit
+  eigener Spannung und noch keine Quelle. Beim Öffnen setzt Logic über jede + Schiene eine Quelle mit dieser Spannung
+  (ohne Innenwiderstand), mit den Drähten zu den Schienen. Ist oben zu wenig Platz, rückt das Panel etwas nach
+  unten. Speichern Sie das Panel, bleibt die Quelle darin.</div>
+
+  <h2 id="bron"><img src="../img/pal-bron.png" class="ico" alt="">Die Quelle (Akku)</h2>
+  <ul>
+    <li><b>Spannung:</b> Ziehen Sie den Schieberegler oder klicken Sie darauf: 0 bis 12&nbsp;V in Schritten von 0,5&nbsp;V. Das
+      kleine Fenster zeigt die eingestellte Spannung. Das geht auch während der <a href="simulatie.html">Simulation</a>.</li>
+    <li><b>Innenwiderstand (Ri):</b> Rechtsklick auf die Quelle, dann 0, 0,5, 1 oder 2&nbsp;&Omega;. Ein echter Akku hat
+      einen kleinen Innenwiderstand: Je mehr Strom Sie entnehmen, desto stärker sinkt die Spannung an den Klemmen.</li>
+    <li><b>Statusleiste:</b> Bewegen Sie die Maus über die Quelle. Sie sehen <b>E</b> (die eingestellte Spannung, die
+      Quellenspannung), <b>U</b> (die Klemmenspannung, die an der + Schiene ankommt) und <b>I</b> (den Strom in mA).</li>
+  </ul>
+
+  <h2 id="ohm">Strom und Spannung: das ohmsche Gesetz</h2>
+  <p>Jeder Verbraucher, der eingeschaltet ist, verhält sich wie ein fester Widerstand. Bei 12&nbsp;V nimmt er auf:</p>
+  <table>
+    <tr><th>Verbraucher (ein)</th><th>Strom bei 12&nbsp;V</th></tr>
+    <tr><td>Lampe</td><td>100&nbsp;mA</td></tr>
+    <tr><td>Motor (dreht)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>Relais oder Schaltrelais (Spule erregt)</td><td>40&nbsp;mA</td></tr>
+    <tr><td>Summer</td><td>30&nbsp;mA</td></tr>
+    <tr><td>LED, Person (pro eingeschaltetem Eingang)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>7-Segment-Anzeige</td><td>10&nbsp;mA pro leuchtendem Segment</td></tr>
+    <tr><td>Gatter, Zähler, Speicher, LogicRun, eingesteckter Eingang</td><td>1&nbsp;mA</td></tr>
+  </table>
+  <p>Bei einer niedrigeren Spannung ist der Strom im gleichen Verhältnis kleiner: Eine Lampe nimmt bei 6&nbsp;V
+  50&nbsp;mA auf. Der Strom der Quelle ist die Summe aller Verbraucher. Mit dem Innenwiderstand Ri der Quelle gilt:</p>
+  <p class="formula"><b>I = E / (Ri + R)</b> &nbsp;und&nbsp; <b>U = E &minus; I &times; Ri</b></p>
+  <p>R ist der Widerstand aller Verbraucher zusammen (parallel). Je mehr Verbraucher eingeschaltet sind, desto
+  größer der Strom und desto stärker sinkt die Klemmenspannung U. Lampen und LEDs leuchten heller, je höher die
+  Versorgungsspannung ist.</p>
+
+  <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">Die Sicherung</h2>
+  <p>Eine Sicherung schützt den Kreis: Wird der Strom größer als der <b>Nennstrom</b>, <b>brennt</b> der Draht
+  durch. Ein rotes Kreuz erscheint und die + Schiene fällt auf 0&nbsp;V zurück.</p>
+  <ul>
+    <li>Rechtsklick &rsaquo; <b>Nennstrom</b>: 100&nbsp;mA, 250&nbsp;mA, 500&nbsp;mA (Standard), 1&nbsp;A oder 2&nbsp;A.
+      Der Wert steht unter dem Röhrchen.</li>
+    <li>Rechtsklick &rsaquo; <b>Sicherung ersetzen</b> (nur wenn sie durchgebrannt ist). Beseitigen Sie zuerst die Ursache,
+      zum Beispiel mit einer niedrigeren Spannung oder weniger Verbrauchern, sonst brennt die neue Sicherung sofort wieder durch.</li>
+  </ul>
+  <div class="tip"><strong>Tipp:</strong> Setzen Sie eine Sicherung von 250&nbsp;mA in den Kreis und stellen Sie die Quelle auf
+  12&nbsp;V. Zwei Lampen brauchen zusammen etwa 200&nbsp;mA: Die Sicherung hält. Schalten Sie eine dritte Lampe ein,
+  sind es etwa 300&nbsp;mA: Die Sicherung brennt durch.</div>
+
+  <h2 id="ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">Das Milliamperemeter</h2>
+  <p>Das Milliamperemeter misst den Strom, der durch den Kreis fließt, in mA. Setzen Sie es in Reihe in den + Draht,
+  zwischen die Quelle (oder die Sicherung) und die + Schiene: Der Draht kommt links an und geht rechts weiter. Ein
+  Messgerät, das nicht in einem geschlossenen Kreis liegt, zeigt 0.</p>
 
   <h2 id="regels">Was ändert sich, wenn Schienen auf dem Panel stehen?</h2>
   <p>Solange keine Schiene auf dem Panel steht, funktioniert alles wie bisher. Sobald <b>mindestens eine</b>
@@ -76,19 +145,18 @@
     <li><b>Verschieben:</b> ziehen Sie die Mitte der Schiene. Alle angesteckten Bauteile wandern mit, samt Drähten.</li>
     <li><b>Länger oder kürzer:</b> ziehen Sie ein Ende (der Mauszeiger wird zu &updownarrow;). Bei einer
       &minus; Schiene ist das Massesymbol das untere Ende.</li>
-    <li><b>Rechtsklickmenü:</b> <b>Spannung</b> (nur + Schiene), <b>Sperren / Entsperren</b> und
+    <li><b>Rechtsklickmenü:</b> <b>Sperren / Entsperren</b> und
       <b>Objekt auswählen</b>, um die Schiene zu <a href="objecten.html#verwijderen">löschen</a>.</li>
     <li>Während der <a href="simulatie.html">Simulation</a> sind die Schienen fest.</li>
   </ul>
 
   <h2 id="spanning">Spannung einer + Schiene</h2>
-  <p>Klicken Sie mit der rechten Maustaste auf eine + Schiene und wählen Sie <b>Spannung</b>: 0, 1, 2, 3, 3,3,
-  4 oder 5&nbsp;V. Wie bei echten Logikschaltungen funktioniert ein Eingang erst ab etwa <b>2&nbsp;V</b>.</p>
+  <p>Die + Schiene bekommt die Klemmenspannung der Quelle, mit der sie verbunden ist. Wie bei echten Logikschaltungen funktioniert ein Eingang erst ab etwa <b>2&nbsp;V</b>.</p>
   <table>
     <tr><th>Spannung</th><th>Schiene</th><th>Eingang an dieser Schiene</th></tr>
-    <tr><td>0&nbsp;V</td><td>grau</td><td>gibt kein Signal</td></tr>
-    <tr><td>1&nbsp;V</td><td>dunkelrot</td><td>gibt kein Signal: Spannung zu niedrig</td></tr>
-    <tr><td>2&nbsp;V bis 5&nbsp;V</td><td>rot, heller bei höherer Spannung</td><td>funktioniert</td></tr>
+    <tr><td>0&nbsp;V (kein geschlossener Kreis)</td><td>grau</td><td>gibt kein Signal</td></tr>
+    <tr><td>unter 2&nbsp;V</td><td>dunkelrot</td><td>gibt kein Signal: Spannung zu niedrig</td></tr>
+    <tr><td>2&nbsp;V bis 12&nbsp;V</td><td>rot, heller bei höherer Spannung</td><td>funktioniert</td></tr>
   </table>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
@@ -112,15 +180,16 @@
     <tr><td>Gatter, Zähler oder Speicher, Ausgang ein</td><td>5&nbsp;V</td></tr>
     <tr><td>alles, was aus ist</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Tipp:</strong> Setzen Sie einen Taster an eine + Schiene mit 1&nbsp;V und verbinden
-  Sie ihn mit einer Lampe und dem Voltmeter. Drücken Sie den Taster, zeigt das Voltmeter 1,0&nbsp;V, aber die
+  <div class="tip"><strong>Tipp:</strong> Stellen Sie die Quelle auf 1&nbsp;V und verbinden Sie einen Taster an der
+  + Schiene mit einer Lampe und dem Voltmeter. Drücken Sie den Taster, zeigt das Voltmeter 1,0&nbsp;V, aber die
   Lampe bleibt aus: Die Spannung ist zu niedrig für einen Logikeingang.</div>
 
   <h2 id="bewaren">Speichern und Einstellungen</h2>
   <ul>
-    <li>Schienen (mit Position, Länge und Spannung) und Voltmeter werden in der Panel-Datei (<code>.lpl</code>)
-      gespeichert. Eine ältere Version von Logic überspringt die Schienen.</li>
-    <li>Möchten Sie die Schienen-Schaltflächen nicht in der Bauteilleiste, setzen Sie
+    <li>Quellen (Spannung und Ri), Sicherungen (Nennstrom), Messgeräte und Schienen werden mit ihrer Position in der
+      Panel-Datei (<code>.lpl</code>) gespeichert. Eine durchgebrannte Sicherung ist nach dem Öffnen wieder ganz.</li>
+    <li>Möchten Sie die Schaltflächen der Versorgung nicht in der Bauteilleiste, setzen Sie
       <b>Versorgungsschienen (+ und -)</b> in den <a href="instellingen.html#schakelelementen">Einstellungen</a>
-      auf <b>False</b>.</li>
+      auf <b>False</b>. Dann verschwinden die Schienen, die Quelle, die Sicherung und das
+      Milliamperemeter aus der Leiste.</li>
   </ul>

@@ -157,6 +157,12 @@ begin
       begin Result := 'voeding'; AAnchor := 'rails'; end;
     'meter':
       begin Result := 'voeding'; AAnchor := 'voltmeter'; end;
+    'bron':
+      begin Result := 'voeding'; AAnchor := 'bron'; end;
+    'zekering':
+      begin Result := 'voeding'; AAnchor := 'zekering'; end;
+    'ampmeter':
+      begin Result := 'voeding'; AAnchor := 'ampmeter'; end;
     'statusbalk':
       begin Result := 'paneel'; AAnchor := 'statusbalk'; end;
     'connector':
@@ -272,21 +278,74 @@ begin
     'voeding', 'rail':
       Result := TrHelp(ABTaal,
         'Voedingsrail'#13#10#13#10 +
-        '- + rail: invoer rechts inpluggen; rechtsklik voor de spanning.'#13#10 +
+        '- + rail: invoer rechts inpluggen; de spanning komt van de bron.'#13#10 +
         '- - rail (massa): uitvoer links inpluggen.'#13#10 +
         '- Midden slepen = verplaatsen, uiteinde slepen = langer/korter.',
         'Power rail'#13#10#13#10 +
-        '- + rail: plug inputs in on the right; right-click for the voltage.'#13#10 +
+        '- + rail: plug inputs in on the right; the voltage comes from the source.'#13#10 +
         '- - rail (ground): plug outputs in on the left.'#13#10 +
         '- Drag the middle to move, drag an end to resize.',
         'Rail d''alimentation'#13#10#13#10 +
-        '- Rail + : brancher les entrées à droite ; clic droit pour la tension.'#13#10 +
+        '- Rail + : brancher les entrées à droite ; la tension vient de la source.'#13#10 +
         '- Rail - (masse) : brancher les sorties à gauche.'#13#10 +
         '- Glisser le milieu pour déplacer, une extrémité pour redimensionner.',
         'Versorgungsschiene'#13#10#13#10 +
-        '- + Schiene: Eingänge rechts anstecken; Rechtsklick für die Spannung.'#13#10 +
+        '- + Schiene: Eingänge rechts anstecken; die Spannung kommt von der Quelle.'#13#10 +
         '- - Schiene (Masse): Ausgänge links anstecken.'#13#10 +
         '- Mitte ziehen = verschieben, Ende ziehen = verlängern/kürzen.');
+
+    'bron':
+      Result := TrHelp(ABTaal,
+        'Bron (accu)'#13#10#13#10 +
+        '- Schuifregelaar: 0 tot 12 V in stappen van 0,5 V.'#13#10 +
+        '- + met een draad naar de + rail, - naar de - rail.'#13#10 +
+        '- Rechtsklik: inwendige weerstand.',
+        'Source (battery)'#13#10#13#10 +
+        '- Slider: 0 to 12 V in steps of 0.5 V.'#13#10 +
+        '- + with a wire to the + rail, - to the - rail.'#13#10 +
+        '- Right-click: internal resistance.',
+        'Source (batterie)'#13#10#13#10 +
+        '- Curseur : 0 à 12 V par pas de 0,5 V.'#13#10 +
+        '- + avec un fil vers le rail +, - vers le rail -.'#13#10 +
+        '- Clic droit : résistance interne.',
+        'Quelle (Akku)'#13#10#13#10 +
+        '- Schieberegler: 0 bis 12 V in Schritten von 0,5 V.'#13#10 +
+        '- + mit einem Draht an die + Schiene, - an die - Schiene.'#13#10 +
+        '- Rechtsklick: Innenwiderstand.');
+
+    'zekering':
+      Result := TrHelp(ABTaal,
+        'Zekering'#13#10#13#10 +
+        '- In serie tussen de bron en de + rail.'#13#10 +
+        '- Smelt bij te veel stroom.'#13#10 +
+        '- Rechtsklik: nominale stroom, zekering vervangen.',
+        'Fuse'#13#10#13#10 +
+        '- In series between the source and the + rail.'#13#10 +
+        '- Blows when the current is too high.'#13#10 +
+        '- Right-click: rated current, replace fuse.',
+        'Fusible'#13#10#13#10 +
+        '- En série entre la source et le rail +.'#13#10 +
+        '- Fond si le courant est trop fort.'#13#10 +
+        '- Clic droit : courant nominal, remplacer le fusible.',
+        'Sicherung'#13#10#13#10 +
+        '- In Reihe zwischen Quelle und + Schiene.'#13#10 +
+        '- Brennt bei zu hohem Strom durch.'#13#10 +
+        '- Rechtsklick: Nennstrom, Sicherung ersetzen.');
+
+    'ampmeter':
+      Result := TrHelp(ABTaal,
+        'Milliampèremeter'#13#10#13#10 +
+        '- In serie tussen de bron en de + rail.'#13#10 +
+        '- Toont de stroom die de schakeling verbruikt.',
+        'Milliammeter'#13#10#13#10 +
+        '- In series between the source and the + rail.'#13#10 +
+        '- Shows the current the circuit uses.',
+        'Milliampèremètre'#13#10#13#10 +
+        '- En série entre la source et le rail +.'#13#10 +
+        '- Affiche le courant consommé par le circuit.',
+        'Milliamperemeter'#13#10#13#10 +
+        '- In Reihe zwischen Quelle und + Schiene.'#13#10 +
+        '- Zeigt den Strom, den die Schaltung verbraucht.');
 
     'meter':
       Result := TrHelp(ABTaal,
@@ -540,6 +599,9 @@ begin
     'tjandisplay':      AControl.HelpKeyword := 'display';
     'tjanmeter':        AControl.HelpKeyword := 'meter';
     'tjanrail':         AControl.HelpKeyword := 'voeding';
+    'tjanbron':         AControl.HelpKeyword := 'bron';
+    'tjanzekering':     AControl.HelpKeyword := 'zekering';
+    'tjanampmeter':     AControl.HelpKeyword := 'ampmeter';
     'tjanconnector':    AControl.HelpKeyword := 'connector';
     'tjansimlogicbox':  AControl.HelpKeyword := 'logicbox';
     'tjangrids':        AControl.HelpKeyword := 'grid';

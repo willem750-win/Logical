@@ -176,6 +176,9 @@ kbd {
 
 .tip strong:first-child { margin-right: 4px; }
 
+/* formule, bv. de wet van Ohm */
+p.formula { text-align: center; font-size: 1.1em; margin: 12px 0; }
+
 ol.steps li { margin-bottom: 6px; }
 
 .cards {

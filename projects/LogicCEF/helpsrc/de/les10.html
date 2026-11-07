@@ -6,39 +6,42 @@
 
   <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les10-voeding-en-spanning.png" alt="Zwei Taster an Schienen mit 5 V und 1 V, zwei Lampen und ein Voltmeter">
-    <figcaption>Beide Taster sind gedrückt. Bei 5&nbsp;V leuchtet die Lampe, bei 1&nbsp;V nicht, obwohl das Voltmeter 1,0&nbsp;V misst.</figcaption>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Zwei Quellen mit 7,5 V und 1,5 V, jede mit einer + Schiene und einem Taster, zwei Lampen und ein Voltmeter">
+    <figcaption>Der untere Taster ist gedrückt: Das Voltmeter misst 1,5&nbsp;V, aber die Lampe bleibt aus.</figcaption>
   </figure>
 
-  <h2>Versorgungsschienen</h2>
-  <p>In den vorigen Lektionen kam die Versorgung unsichtbar aus dem Hintergrund. Mit
-  <a href="voeding.html">Versorgungsschienen</a> machen Sie sie sichtbar:</p>
+  <h2>Quelle und Versorgungsschienen</h2>
+  <p>In den vorigen Lektionen kam die Versorgung unsichtbar aus dem Hintergrund. Hier machen Sie sie mit einem
+  <a href="voeding.html">Versorgungskreis</a> sichtbar:</p>
   <ul>
-    <li>die rote <b>+ Schiene</b> versorgt die Eingänge (hier die Taster), mit einer Spannung, die Sie selbst wählen;</li>
-    <li>die blaue <b>&minus; Schiene</b> ist die Masse (0&nbsp;V), an der die Ausgänge (die Lampen) angeschlossen sind.</li>
+    <li>eine <b>Quelle</b> (Akku): Mit dem Schieberegler wählen Sie eine Spannung von 0 bis 12&nbsp;V;</li>
+    <li>die rote <b>+ Schiene</b> bekommt diese Spannung über einen Draht von der + Klemme und versorgt die Eingänge (hier die Taster);</li>
+    <li>die blaue <b>&minus; Schiene</b> ist die Masse (0&nbsp;V). Die &minus; Klemme der Quelle ist mit ihr verbunden, und
+      die Ausgänge (die Lampen) sind daran angeschlossen.</li>
   </ul>
-  <p>Der obere Taster sitzt an einer Schiene mit <b>5&nbsp;V</b>, der untere an einer Schiene mit <b>1&nbsp;V</b>.</p>
+  <p>Die obere Quelle steht auf <b>7,5&nbsp;V</b>, die untere auf <b>1,5&nbsp;V</b>. Jede Quelle speist ihre eigene
+  + Schiene; die &minus; Schiene teilen sie sich.</p>
 
   <h2>Spannung messen</h2>
   <p>Das <a href="voeding.html#voltmeter">Voltmeter</a> hängt am Draht des unteren Tasters und misst die Spannung gegen
-  Masse: <b>1,0&nbsp;V</b>. Trotzdem bleibt die Lampe aus. Ein Logikeingang funktioniert erst ab etwa <b>2&nbsp;V</b>:
-  darunter zählt das Signal als &bdquo;aus&ldquo;.</p>
+  Masse: <b>1,5&nbsp;V</b>. Trotzdem bleibt die Lampe aus. Ein Logikeingang funktioniert erst ab etwa <b>2&nbsp;V</b>:
+  darunter gilt das Signal als &bdquo;aus&ldquo;.</p>
 
   <h2>Ausprobieren</h2>
   <ol class="steps">
-    <li>Starten Sie die Simulation und drücken Sie den unteren Taster: Das Voltmeter zeigt 1,0&nbsp;V, die Lampe bleibt aus.</li>
-    <li>Halten Sie die Simulation an. Klicken Sie mit der rechten Maustaste auf die untere + Schiene und wählen Sie
-      <b>Spannung &rsaquo; 3,3&nbsp;V</b>.</li>
-    <li>Starten Sie erneut und drücken Sie: Das Voltmeter zeigt 3,3&nbsp;V und die Lampe leuchtet.</li>
+    <li>Starten Sie die Simulation und drücken Sie den unteren Taster: Das Voltmeter zeigt 1,5&nbsp;V, die Lampe bleibt aus.</li>
+    <li>Ziehen Sie den Schieberegler der unteren Quelle auf 3&nbsp;V. Das geht auch während der Simulation.</li>
+    <li>Drücken Sie erneut: Das Voltmeter zeigt 3,0&nbsp;V und die Lampe leuchtet.</li>
   </ol>
 
   <h2>Übung</h2>
-  <p>Suchen Sie im Menü die niedrigste Spannung, bei der die untere Lampe noch leuchtet. Was passiert mit einer Lampe,
-  die Sie von der &minus; Schiene abziehen?</p>
+  <p>Suchen Sie mit dem Schieberegler die niedrigste Spannung, bei der die untere Lampe noch leuchtet. Was passiert,
+  wenn Sie den Draht zwischen der &minus; Klemme einer Quelle und der &minus; Schiene löschen?</p>
   <details>
     <summary>Lösung</summary>
-    <p>Ab <b>2&nbsp;V</b> leuchtet die Lampe, bei 1&nbsp;V und 0&nbsp;V nicht. Eine Lampe, die nicht an einer &minus; Schiene
-    steckt, bekommt einen grauen Punkt und leuchtet nie: Ohne Verbindung zur Masse kann kein Strom fließen.</p>
+    <p>Ab <b>2&nbsp;V</b> leuchtet die Lampe, bei 1,5&nbsp;V und darunter nicht. Ohne den Draht zur &minus; Schiene ist
+    der Kreis nicht geschlossen: Die + Schiene dieser Quelle fällt auf 0&nbsp;V und wird grau, und der Taster an dieser
+    Schiene funktioniert nicht mehr. Ohne Rückweg zur Quelle kann kein Strom fließen.</p>
   </details>
 
   <div class="pager"><a href="les09.html">&larr; Lektion 9: Speicher</a><a href="les11.html">Lektion 11: Das Relais &rarr;</a></div>
