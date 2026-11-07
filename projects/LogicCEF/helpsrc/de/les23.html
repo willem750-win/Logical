@@ -1,0 +1,67 @@
+<!-- titel: Lektion 23 - Das ohmsche Gesetz -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektriciteit">Strom und Spannung</a> &rsaquo; Lektion 23 von 23</p>
+  <h1>Das ohmsche Gesetz</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, dass der Strom größer wird, wenn mehr Verbraucher eingeschaltet sind,
+  dass die Spannung der Quelle dann etwas sinkt, und was eine Sicherung tut, wenn der Strom zu groß wird.</div>
+
+  <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les23-wet-van-ohm.png" alt="Quelle mit 12 V, Sicherung und Milliamperemeter, drei Schalter mit Lampen und ein Voltmeter">
+    <figcaption>Zwei Lampen leuchten: Das Milliamperemeter misst 196&nbsp;mA, das Voltmeter 11,6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Die Schaltung</h2>
+  <ul>
+    <li>Die <a href="voeding.html#bron">Quelle</a> steht auf <b>12&nbsp;V</b> und hat einen Innenwiderstand <b>Ri = 2&nbsp;&Omega;</b>.</li>
+    <li>Die + Klemme führt über eine <a href="voeding.html#zekering">Sicherung</a> von <b>250&nbsp;mA</b> und ein
+      <a href="voeding.html#ampmeter">Milliamperemeter</a> zur + Schiene.</li>
+    <li>An der + Schiene sitzen drei Schalter. Jeder Schalter schaltet eine Lampe ein; die Lampen sitzen an der &minus; Schiene.</li>
+    <li>Das <a href="voeding.html#voltmeter">Voltmeter</a> misst die Spannung der + Schiene.</li>
+  </ul>
+
+  <h2>Strom, Spannung und Widerstand</h2>
+  <p>Bei 12&nbsp;V nimmt eine Lampe einen Strom von 100&nbsp;mA auf. Nach dem <b>ohmschen Gesetz</b> ist ihr Widerstand dann:</p>
+  <p class="formula"><b>R = U / I</b> = 12&nbsp;V / 0,1&nbsp;A = <b>120&nbsp;&Omega;</b></p>
+  <p>Lampen nebeneinander (parallel) an den Schienen bekommen jede dieselbe Spannung. Ihre Ströme addieren sich:
+  Zwei Lampen nehmen zusammen doppelt so viel Strom auf. Die Quelle muss diesen Strom liefern, und wegen ihres
+  Innenwiderstands sinkt die Spannung an ihren Klemmen etwas: <b>U = E &minus; I &times; Ri</b>.</p>
+  <table>
+    <tr><th>Lampen ein</th><th>Milliamperemeter</th><th>Voltmeter</th></tr>
+    <tr><td>keine</td><td>3&nbsp;mA (die drei Schalter, je 1&nbsp;mA)</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>1</td><td>101&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
+    <tr><td>2</td><td>196&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
+    <tr><td>3</td><td>die Sicherung brennt durch: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
+  </table>
+  <p>Mit zwei Lampen: 12&nbsp;V &minus; 0,196&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Mit drei Lampen wäre der Strom
+  etwa 290&nbsp;mA. Das ist mehr als die 250&nbsp;mA der Sicherung: Sie brennt durch und der Kreis ist unterbrochen.</p>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Schalten Sie die Lampen nacheinander ein und notieren Sie jedes Mal Strom und Spannung.</li>
+    <li>Schalten Sie die dritte Lampe ein: Die Sicherung brennt durch, alle Lampen gehen aus und die + Schiene wird grau.</li>
+    <li>Schalten Sie eine Lampe aus. Klicken Sie mit der rechten Maustaste auf die Sicherung und wählen Sie
+      <b>Sicherung ersetzen</b>: Die zwei Lampen leuchten wieder.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <ol>
+    <li>Stellen Sie die Quelle mit dem Schieberegler auf 6&nbsp;V und lassen Sie eine Lampe leuchten. Berechnen Sie
+      zuerst mit R = 120&nbsp;&Omega;, welchen Strom Sie erwarten, und prüfen Sie dann mit dem Messgerät.</li>
+    <li>Stellen Sie die Quelle wieder auf 12&nbsp;V. Klicken Sie mit der rechten Maustaste auf die Quelle und wählen Sie
+      <b>Innenwiderstand &rsaquo; 0&nbsp;&Omega;</b>. Was macht das Voltmeter jetzt, wenn Sie Lampen ein- und ausschalten?</li>
+    <li>Welche Sicherung brauchen Sie, damit die drei Lampen zusammen leuchten können?</li>
+  </ol>
+  <details>
+    <summary>Lösung</summary>
+    <ol>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. Das Messgerät zeigt etwa 51&nbsp;mA:
+        Die Schalter nehmen zusammen noch ein klein wenig auf.</li>
+      <li>Das Voltmeter bleibt auf <b>12,0&nbsp;V</b>. Ohne Innenwiderstand sinkt die Klemmenspannung nicht, egal wie viel
+        Strom Sie entnehmen. Eine solche ideale Quelle gibt es in Wirklichkeit nicht.</li>
+      <li>Drei Lampen brauchen zusammen etwa 290&nbsp;mA. Die Sicherung von 250&nbsp;mA ist zu klein; wählen Sie
+        (Rechtsklick &rsaquo; <b>Nennstrom</b>) <b>500&nbsp;mA</b>. Eine Sicherung wählt man immer etwas größer als den
+        normalen Strom, aber nicht viel größer, sonst schützt sie nichts mehr.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les22.html">&larr; Lektion 22: Eine Schranke am Parkplatz</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

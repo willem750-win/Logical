@@ -1,0 +1,66 @@
+<!-- titel: Lesson 23 - Ohm's law -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektriciteit">Current and voltage</a> &rsaquo; Lesson 23 of 23</p>
+  <h1>Ohm&rsquo;s law</h1>
+  <div class="goal"><strong>Goal:</strong> see that the current grows when more loads are on, that the voltage of the
+  source then drops a little, and what a fuse does when the current becomes too large.</div>
+
+  <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les23-wet-van-ohm.png" alt="A 12 V source with a fuse and a milliammeter, three switches with lamps and a voltmeter">
+    <figcaption>Two lamps are on: the milliammeter measures 196&nbsp;mA, the voltmeter 11.6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>The circuit</h2>
+  <ul>
+    <li>The <a href="voeding.html#bron">source</a> is set to <b>12&nbsp;V</b> and has an internal resistance <b>Ri = 2&nbsp;&Omega;</b>.</li>
+    <li>The + terminal goes through a <b>250&nbsp;mA</b> <a href="voeding.html#zekering">fuse</a> and a
+      <a href="voeding.html#ampmeter">milliammeter</a> to the + rail.</li>
+    <li>Three switches sit on the + rail. Each switch turns on a lamp; the lamps sit on the &minus; rail.</li>
+    <li>The <a href="voeding.html#voltmeter">voltmeter</a> measures the voltage of the + rail.</li>
+  </ul>
+
+  <h2>Current, voltage and resistance</h2>
+  <p>At 12&nbsp;V a lamp draws a current of 100&nbsp;mA. According to <b>Ohm&rsquo;s law</b> its resistance is:</p>
+  <p class="formula"><b>R = U / I</b> = 12&nbsp;V / 0.1&nbsp;A = <b>120&nbsp;&Omega;</b></p>
+  <p>Lamps side by side (in parallel) on the rails each get the same voltage. Their currents add up: two lamps
+  together draw twice as much current. The source has to supply that current, and because of its internal
+  resistance the voltage at its terminals drops a little: <b>U = E &minus; I &times; Ri</b>.</p>
+  <table>
+    <tr><th>Lamps on</th><th>Milliammeter</th><th>Voltmeter</th></tr>
+    <tr><td>none</td><td>3&nbsp;mA (the three switches, 1&nbsp;mA each)</td><td>12.0&nbsp;V</td></tr>
+    <tr><td>1</td><td>101&nbsp;mA</td><td>11.8&nbsp;V</td></tr>
+    <tr><td>2</td><td>196&nbsp;mA</td><td>11.6&nbsp;V</td></tr>
+    <tr><td>3</td><td>the fuse blows: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
+  </table>
+  <p>With two lamps: 12&nbsp;V &minus; 0.196&nbsp;A &times; 2&nbsp;&Omega; = 11.6&nbsp;V. With three lamps the current would
+  be about 290&nbsp;mA. That is more than the 250&nbsp;mA of the fuse: it blows and the circuit is broken.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation. Switch the lamps on one by one and write down the current and the voltage each time.</li>
+    <li>Switch on the third lamp: the fuse blows, all lamps go out and the + rail turns grey.</li>
+    <li>Switch one lamp off. Right-click the fuse and choose <b>Replace fuse</b>: the two lamps are on again.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <ol>
+    <li>Set the source to 6&nbsp;V with the slider and let one lamp shine. First work out with R = 120&nbsp;&Omega;
+      which current you expect, then check with the meter.</li>
+    <li>Set the source back to 12&nbsp;V. Right-click the source and choose <b>Internal resistance &rsaquo; 0&nbsp;&Omega;</b>.
+      What does the voltmeter do now when you switch lamps on and off?</li>
+    <li>Which fuse do you need so that the three lamps can shine together?</li>
+  </ol>
+  <details>
+    <summary>Solution</summary>
+    <ol>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0.05&nbsp;A = <b>50&nbsp;mA</b>. The meter shows about 51&nbsp;mA:
+        the switches together draw a tiny bit more.</li>
+      <li>The voltmeter stays at <b>12.0&nbsp;V</b>. Without internal resistance the terminal voltage does not drop,
+        however much current you draw. Such an ideal source does not exist in real life.</li>
+      <li>Three lamps together need about 290&nbsp;mA. The 250&nbsp;mA fuse is too small; choose
+        (right-click &rsaquo; <b>Rated current</b>) <b>500&nbsp;mA</b>. You always pick a fuse a little larger than the
+        normal current, but not much larger, or it no longer protects anything.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les22.html">&larr; Lesson 22: A barrier gate at a car park</a><a href="leerpad.html">Learning path &rarr;</a></div>

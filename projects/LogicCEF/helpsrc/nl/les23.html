@@ -1,0 +1,66 @@
+<!-- titel: Les 23 - De wet van Ohm -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektriciteit">Stroom en spanning</a> &rsaquo; Les 23 van 23</p>
+  <h1>De wet van Ohm</h1>
+  <div class="goal"><strong>Doel:</strong> zien dat de stroom groter wordt als er meer verbruikers aan staan, dat de
+  spanning van de bron dan een beetje zakt, en wat een zekering doet als de stroom te groot wordt.</div>
+
+  <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les23-wet-van-ohm.png" alt="Bron van 12 V met zekering en milliampèremeter, drie schakelaars met lampen en een voltmeter">
+    <figcaption>Twee lampen branden: de milliampèremeter meet 196&nbsp;mA, de voltmeter 11,6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>De schakeling</h2>
+  <ul>
+    <li>De <a href="voeding.html#bron">bron</a> staat op <b>12&nbsp;V</b> en heeft een inwendige weerstand <b>Ri = 2&nbsp;&Omega;</b>.</li>
+    <li>De + klem gaat via een <a href="voeding.html#zekering">zekering</a> van <b>250&nbsp;mA</b> en een
+      <a href="voeding.html#ampmeter">milliampèremeter</a> naar de + rail.</li>
+    <li>Op de + rail staan drie schakelaars. Elke schakelaar zet een lamp aan; de lampen zitten op de &minus; rail.</li>
+    <li>De <a href="voeding.html#voltmeter">voltmeter</a> meet de spanning van de + rail.</li>
+  </ul>
+
+  <h2>Stroom, spanning en weerstand</h2>
+  <p>Een lamp trekt bij 12&nbsp;V een stroom van 100&nbsp;mA. Volgens de <b>wet van Ohm</b> is haar weerstand dan:</p>
+  <p class="formula"><b>R = U / I</b> = 12&nbsp;V / 0,1&nbsp;A = <b>120&nbsp;&Omega;</b></p>
+  <p>Lampen die naast elkaar (parallel) op de rails staan, krijgen elk dezelfde spanning. Hun stromen tellen op:
+  twee lampen trekken samen twee keer zoveel stroom. De bron moet die stroom leveren, en door haar inwendige
+  weerstand zakt de spanning op haar klemmen een beetje: <b>U = E &minus; I &times; Ri</b>.</p>
+  <table>
+    <tr><th>Lampen aan</th><th>Milliampèremeter</th><th>Voltmeter</th></tr>
+    <tr><td>geen</td><td>3&nbsp;mA (de drie schakelaars, elk 1&nbsp;mA)</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>1</td><td>101&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
+    <tr><td>2</td><td>196&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
+    <tr><td>3</td><td>de zekering smelt: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
+  </table>
+  <p>Met twee lampen: 12&nbsp;V &minus; 0,196&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Met drie lampen zou de stroom
+  ongeveer 290&nbsp;mA worden. Dat is meer dan de 250&nbsp;mA van de zekering: ze smelt en de kring is onderbroken.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie. Zet de schakelaars een voor een aan en noteer telkens de stroom en de spanning.</li>
+    <li>Zet de derde schakelaar aan: de zekering smelt, alle lampen gaan uit en de + rail wordt grijs.</li>
+    <li>Zet een schakelaar uit. Rechtsklik op de zekering en kies <b>Zekering vervangen</b>: de twee lampen branden weer.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <ol>
+    <li>Zet de bron met de schuifregelaar op 6&nbsp;V en laat één lamp branden. Bereken eerst met R = 120&nbsp;&Omega;
+      welke stroom je verwacht, en controleer met de meter.</li>
+    <li>Zet de bron terug op 12&nbsp;V. Rechtsklik op de bron en kies <b>Inwendige weerstand &rsaquo; 0&nbsp;&Omega;</b>.
+      Wat doet de voltmeter nu als je lampen aan- en uitzet?</li>
+    <li>Welke zekering moet je kiezen zodat de drie lampen samen kunnen branden?</li>
+  </ol>
+  <details>
+    <summary>Oplossing</summary>
+    <ol>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. De meter toont ongeveer 51&nbsp;mA:
+        de schakelaars trekken er samen nog een klein beetje bij.</li>
+      <li>De voltmeter blijft op <b>12,0&nbsp;V</b>. Zonder inwendige weerstand zakt de klemspanning niet, hoeveel
+        stroom je ook vraagt. Zo&rsquo;n ideale bron bestaat in het echt niet.</li>
+      <li>Drie lampen vragen samen ongeveer 290&nbsp;mA. De zekering van 250&nbsp;mA is te klein; kies
+        (rechtsklik &rsaquo; <b>Nominale stroom</b>) <b>500&nbsp;mA</b>. Een zekering kies je altijd iets groter dan de
+        normale stroom, maar niet veel groter: anders beschermt ze niet meer.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les22.html">&larr; Les 22: Een slagboom op een parking</a><a href="leerpad.html">Leerpad &rarr;</a></div>

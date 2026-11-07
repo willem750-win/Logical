@@ -1,0 +1,67 @@
+<!-- titel: Leçon 23 - La loi d'Ohm -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektriciteit">Courant et tension</a> &rsaquo; Leçon 23 sur 23</p>
+  <h1>La loi d&rsquo;Ohm</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir que le courant augmente quand plus de récepteurs sont allumés,
+  que la tension de la source baisse alors un peu, et ce que fait un fusible quand le courant devient trop fort.</div>
+
+  <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les23-wet-van-ohm.png" alt="Source de 12 V avec fusible et milliampèremètre, trois interrupteurs avec lampes et un voltmètre">
+    <figcaption>Deux lampes sont allumées&nbsp;: le milliampèremètre mesure 196&nbsp;mA, le voltmètre 11,6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Le circuit</h2>
+  <ul>
+    <li>La <a href="voeding.html#bron">source</a> est réglée sur <b>12&nbsp;V</b> et a une résistance interne <b>Ri = 2&nbsp;&Omega;</b>.</li>
+    <li>La borne + passe par un <a href="voeding.html#zekering">fusible</a> de <b>250&nbsp;mA</b> et un
+      <a href="voeding.html#ampmeter">milliampèremètre</a> vers le rail +.</li>
+    <li>Trois interrupteurs sont sur le rail +. Chaque interrupteur allume une lampe&nbsp;; les lampes sont sur le rail &minus;.</li>
+    <li>Le <a href="voeding.html#voltmeter">voltmètre</a> mesure la tension du rail +.</li>
+  </ul>
+
+  <h2>Courant, tension et résistance</h2>
+  <p>À 12&nbsp;V, une lampe consomme un courant de 100&nbsp;mA. Selon la <b>loi d&rsquo;Ohm</b>, sa résistance est alors&nbsp;:</p>
+  <p class="formula"><b>R = U / I</b> = 12&nbsp;V / 0,1&nbsp;A = <b>120&nbsp;&Omega;</b></p>
+  <p>Des lampes côte à côte (en parallèle) sur les rails reçoivent chacune la même tension. Leurs courants
+  s&rsquo;additionnent&nbsp;: deux lampes consomment ensemble deux fois plus de courant. La source doit fournir ce
+  courant, et à cause de sa résistance interne, la tension à ses bornes baisse un peu&nbsp;: <b>U = E &minus; I &times; Ri</b>.</p>
+  <table>
+    <tr><th>Lampes allumées</th><th>Milliampèremètre</th><th>Voltmètre</th></tr>
+    <tr><td>aucune</td><td>3&nbsp;mA (les trois interrupteurs, 1&nbsp;mA chacun)</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>1</td><td>101&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
+    <tr><td>2</td><td>196&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
+    <tr><td>3</td><td>le fusible fond&nbsp;: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
+  </table>
+  <p>Avec deux lampes&nbsp;: 12&nbsp;V &minus; 0,196&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Avec trois lampes, le
+  courant serait d&rsquo;environ 290&nbsp;mA. C&rsquo;est plus que les 250&nbsp;mA du fusible&nbsp;: il fond et le circuit est coupé.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation. Allumez les lampes une par une et notez chaque fois le courant et la tension.</li>
+    <li>Allumez la troisième lampe&nbsp;: le fusible fond, toutes les lampes s&rsquo;éteignent et le rail + devient gris.</li>
+    <li>Éteignez une lampe. Faites un clic droit sur le fusible et choisissez <b>Remplacer le fusible</b>&nbsp;: les deux
+      lampes se rallument.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <ol>
+    <li>Réglez la source sur 6&nbsp;V avec le curseur et allumez une lampe. Calculez d&rsquo;abord avec R = 120&nbsp;&Omega;
+      le courant attendu, puis vérifiez avec le milliampèremètre.</li>
+    <li>Remettez la source sur 12&nbsp;V. Faites un clic droit sur la source et choisissez
+      <b>Résistance interne &rsaquo; 0&nbsp;&Omega;</b>. Que fait le voltmètre quand vous allumez et éteignez des lampes&nbsp;?</li>
+    <li>Quel fusible faut-il pour que les trois lampes puissent brûler ensemble&nbsp;?</li>
+  </ol>
+  <details>
+    <summary>Solution</summary>
+    <ol>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. Le milliampèremètre indique environ
+        51&nbsp;mA&nbsp;: les interrupteurs consomment encore un tout petit peu.</li>
+      <li>Le voltmètre reste à <b>12,0&nbsp;V</b>. Sans résistance interne, la tension aux bornes ne baisse pas, quel que
+        soit le courant demandé. Une telle source idéale n&rsquo;existe pas en réalité.</li>
+      <li>Trois lampes demandent ensemble environ 290&nbsp;mA. Le fusible de 250&nbsp;mA est trop petit&nbsp;; choisissez
+        (clic droit &rsaquo; <b>Courant nominal</b>) <b>500&nbsp;mA</b>. On choisit toujours un fusible un peu plus grand
+        que le courant normal, mais pas beaucoup plus, sinon il ne protège plus rien.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les22.html">&larr; Leçon 22 : Une barrière de parking</a><a href="leerpad.html">Parcours &rarr;</a></div>
