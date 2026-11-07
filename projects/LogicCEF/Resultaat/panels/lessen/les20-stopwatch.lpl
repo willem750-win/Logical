@@ -1,6 +1,6 @@
 TjanSimStopwatch;64;383;229;140;10;0;
-TjanSimLight;23;648;193;69;
-TjanConnector;69;514;195;143;jcmTR;jcpBL;jcsTRBL;0,5;-1;
+TjanSimLight;23;700;193;69;
+TjanConnector;69;514;195;195;jcmTR;jcpBL;jcsTRBL;0,3667;-1;
 TjanConnector;71;249;176;143;jcmBR;jcpTL;jcsTLBR;0,5;-1;
 TjanConnector;50;259;274;133;jcmTR;jcpBL;jcsTRBL;0,5;-1;
 TjanSimButton;32;209;309;58;

@@ -1,5 +1,5 @@
-TjanSimLight;23;600;167;69;
-TjanConnector;9;510;169;99;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanSimLight;23;700;167;69;
+TjanConnector;9;510;169;199;jcmBR;jcpTL;jcsTLBR;0,2487;-1;
 TjanConnector;93;162;186;268;jcmBR;jcpBL;jcsTRBL;0,5;-1;
 TjanConnector;9;350;150;80;jcmBR;jcpTL;jcsTLBR;0,5;-1;
 TjanConnector;9;169;149;101;jcmBR;jcpTL;jcsTLBR;0,5;-1;
