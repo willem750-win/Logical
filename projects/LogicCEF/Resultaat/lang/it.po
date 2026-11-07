@@ -987,3 +987,51 @@ msgstr "Ripeti"
 
 msgid "Switch"
 msgstr "Interruttore"
+
+msgid "+ rail (supply):"
+msgstr "barra + (alimentazione):"
+
+msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
+msgstr "Inserisci gli ingressi a destra della barra. Sotto 2V nessun segnale.\nLa tensione viene dalla sorgente (batteria). Trascina le estremità per ridimensionare."
+
+msgid "Internal resistance"
+msgstr "Resistenza interna"
+
+msgid "Source (battery)"
+msgstr "Sorgente (batteria)"
+
+msgid "Slider: voltage 0 to 12 V.\n+ with a wire to the + rail, - to the - rail.\nRight-click: internal resistance."
+msgstr "Cursore: tensione da 0 a 12 V.\n+ con un filo alla barra +, - alla barra -.\nTasto destro: resistenza interna."
+
+msgid "Replace fuse"
+msgstr "Sostituisci il fusibile"
+
+msgid "Rated current"
+msgstr "Corrente nominale"
+
+msgid "Fuse"
+msgstr "Fusibile"
+
+msgid "In series between the source and the + rail.\nBlows when the current is too high: right-click to replace."
+msgstr "In serie tra la sorgente e la barra +.\nFonde se la corrente è troppo alta: tasto destro per sostituirlo."
+
+msgid "blown"
+msgstr "fuso"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Milliammeter"
+msgstr "Milliamperometro"
+
+msgid "In series between the source and the + rail.\nShows the current the circuit uses."
+msgstr "In serie tra la sorgente e la barra +.\nMostra la corrente consumata dal circuito."
+
+msgid "create Source (battery, 0 to 12 V)"
+msgstr "crea sorgente (batteria, da 0 a 12 V)"
+
+msgid "create Fuse"
+msgstr "crea fusibile"
+
+msgid "create Milliammeter"
+msgstr "crea milliamperometro"

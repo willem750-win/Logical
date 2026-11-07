@@ -1292,3 +1292,51 @@ msgstr "Panel de memoria"
 
 msgid "New standard panel"
 msgstr "Nuevo panel estándar"
+
+msgid "+ rail (supply):"
+msgstr "barra + (alimentación):"
+
+msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
+msgstr "Conecta las entradas a la derecha de la barra. Por debajo de 2V no hay señal.\nLa tensión viene de la fuente (batería). Arrastra los extremos para cambiar el tamaño."
+
+msgid "Internal resistance"
+msgstr "Resistencia interna"
+
+msgid "Source (battery)"
+msgstr "Fuente (batería)"
+
+msgid "Slider: voltage 0 to 12 V.\n+ with a wire to the + rail, - to the - rail.\nRight-click: internal resistance."
+msgstr "Control deslizante: tensión de 0 a 12 V.\n+ con un cable a la barra +, - a la barra -.\nClic derecho: resistencia interna."
+
+msgid "Replace fuse"
+msgstr "Cambiar el fusible"
+
+msgid "Rated current"
+msgstr "Corriente nominal"
+
+msgid "Fuse"
+msgstr "Fusible"
+
+msgid "In series between the source and the + rail.\nBlows when the current is too high: right-click to replace."
+msgstr "En serie entre la fuente y la barra +.\nSe funde si la corriente es demasiado alta: clic derecho para cambiarlo."
+
+msgid "blown"
+msgstr "fundido"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Milliammeter"
+msgstr "Miliamperímetro"
+
+msgid "In series between the source and the + rail.\nShows the current the circuit uses."
+msgstr "En serie entre la fuente y la barra +.\nMuestra la corriente que consume el circuito."
+
+msgid "create Source (battery, 0 to 12 V)"
+msgstr "crear fuente (batería, de 0 a 12 V)"
+
+msgid "create Fuse"
+msgstr "crear fusible"
+
+msgid "create Milliammeter"
+msgstr "crear miliamperímetro"

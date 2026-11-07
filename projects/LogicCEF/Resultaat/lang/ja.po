@@ -1297,3 +1297,51 @@ msgstr "画面をコピー"
 msgid "Image type"
 msgstr "画像の種類"
 
+
+msgid "+ rail (supply):"
+msgstr "+ レール (電源):"
+
+msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
+msgstr "入力はレールの右側に差し込みます。2V未満は信号なし。\n電圧は電源 (電池) から供給されます。端をドラッグしてサイズ変更。"
+
+msgid "Internal resistance"
+msgstr "内部抵抗"
+
+msgid "Source (battery)"
+msgstr "電源 (電池)"
+
+msgid "Slider: voltage 0 to 12 V.\n+ with a wire to the + rail, - to the - rail.\nRight-click: internal resistance."
+msgstr "スライダー: 電圧 0～12 V。\n+ を配線で + レールへ、- を - レールへ。\n右クリック: 内部抵抗。"
+
+msgid "Replace fuse"
+msgstr "ヒューズを交換"
+
+msgid "Rated current"
+msgstr "定格電流"
+
+msgid "Fuse"
+msgstr "ヒューズ"
+
+msgid "In series between the source and the + rail.\nBlows when the current is too high: right-click to replace."
+msgstr "電源と + レールの間に直列に入れます。\n電流が大きすぎると切れます: 右クリックで交換。"
+
+msgid "blown"
+msgstr "切れた"
+
+msgid "OK"
+msgstr "正常"
+
+msgid "Milliammeter"
+msgstr "ミリアンペア計"
+
+msgid "In series between the source and the + rail.\nShows the current the circuit uses."
+msgstr "電源と + レールの間に直列に入れます。\n回路が使う電流を表示します。"
+
+msgid "create Source (battery, 0 to 12 V)"
+msgstr "電源を作成 (電池、0～12 V)"
+
+msgid "create Fuse"
+msgstr "ヒューズを作成"
+
+msgid "create Milliammeter"
+msgstr "ミリアンペア計を作成"

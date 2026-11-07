@@ -1297,3 +1297,51 @@ msgstr "复制屏幕"
 msgid "Image type"
 msgstr "图像类型"
 
+
+msgid "+ rail (supply):"
+msgstr "+ 电源轨 (电源):"
+
+msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
+msgstr "输入插在电源轨右侧。低于 2V 无信号。\n电压来自电源 (电池)。拖动两端可调整大小。"
+
+msgid "Internal resistance"
+msgstr "内阻"
+
+msgid "Source (battery)"
+msgstr "电源 (电池)"
+
+msgid "Slider: voltage 0 to 12 V.\n+ with a wire to the + rail, - to the - rail.\nRight-click: internal resistance."
+msgstr "滑块: 电压 0 到 12 V。\n+ 用导线接到 + 电源轨，- 接到 - 电源轨。\n右键: 内阻。"
+
+msgid "Replace fuse"
+msgstr "更换保险丝"
+
+msgid "Rated current"
+msgstr "额定电流"
+
+msgid "Fuse"
+msgstr "保险丝"
+
+msgid "In series between the source and the + rail.\nBlows when the current is too high: right-click to replace."
+msgstr "串联在电源和 + 电源轨之间。\n电流过大时熔断: 右键更换。"
+
+msgid "blown"
+msgstr "已熔断"
+
+msgid "OK"
+msgstr "正常"
+
+msgid "Milliammeter"
+msgstr "毫安表"
+
+msgid "In series between the source and the + rail.\nShows the current the circuit uses."
+msgstr "串联在电源和 + 电源轨之间。\n显示电路消耗的电流。"
+
+msgid "create Source (battery, 0 to 12 V)"
+msgstr "创建电源 (电池，0 到 12 V)"
+
+msgid "create Fuse"
+msgstr "创建保险丝"
+
+msgid "create Milliammeter"
+msgstr "创建毫安表"

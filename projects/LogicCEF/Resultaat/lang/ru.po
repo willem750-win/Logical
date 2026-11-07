@@ -1297,3 +1297,51 @@ msgstr "Копия экрана"
 msgid "Image type"
 msgstr "Тип изображения"
 
+
+msgid "+ rail (supply):"
+msgstr "шина + (питание):"
+
+msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
+msgstr "Входы подключаются справа от шины. Ниже 2 В сигнала нет.\nНапряжение подаёт источник (аккумулятор). Тяните концы, чтобы изменить размер."
+
+msgid "Internal resistance"
+msgstr "Внутреннее сопротивление"
+
+msgid "Source (battery)"
+msgstr "Источник (аккумулятор)"
+
+msgid "Slider: voltage 0 to 12 V.\n+ with a wire to the + rail, - to the - rail.\nRight-click: internal resistance."
+msgstr "Ползунок: напряжение от 0 до 12 В.\n+ проводом к шине +, - к шине -.\nПравый щелчок: внутреннее сопротивление."
+
+msgid "Replace fuse"
+msgstr "Заменить предохранитель"
+
+msgid "Rated current"
+msgstr "Номинальный ток"
+
+msgid "Fuse"
+msgstr "Предохранитель"
+
+msgid "In series between the source and the + rail.\nBlows when the current is too high: right-click to replace."
+msgstr "Последовательно между источником и шиной +.\nПерегорает при слишком большом токе: правый щелчок, чтобы заменить."
+
+msgid "blown"
+msgstr "перегорел"
+
+msgid "OK"
+msgstr "в порядке"
+
+msgid "Milliammeter"
+msgstr "Миллиамперметр"
+
+msgid "In series between the source and the + rail.\nShows the current the circuit uses."
+msgstr "Последовательно между источником и шиной +.\nПоказывает ток, который потребляет схема."
+
+msgid "create Source (battery, 0 to 12 V)"
+msgstr "создать источник (аккумулятор, от 0 до 12 В)"
+
+msgid "create Fuse"
+msgstr "создать предохранитель"
+
+msgid "create Milliammeter"
+msgstr "создать миллиамперметр"

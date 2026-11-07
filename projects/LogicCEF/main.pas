@@ -2098,7 +2098,7 @@ begin
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
          (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor) or
          (C is TjanSimPersoon) or (C is TjanSimEindschakelaar) or
-         (C is TjanSimStappenteller))  then
+         (C is TjanSimStappenteller) or (C is TjanVoedingsDeel))  then
     Exit;
     // aanpassen om object te kunnen verwijderen
 

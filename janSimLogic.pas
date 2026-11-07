@@ -81,6 +81,7 @@ type
 
   TjanSimLogicBox = class;  // forward
   TjanRail = class;         // forward (voedingsrail)
+  TjanVoedingsDeel = class; // forward (bron, zekering, milliampèremeter)
   TjanLogicRun = class;     // forward (programmeermodule)
 
 
@@ -1941,6 +1942,10 @@ type
     // voedingsrails (+ en - naast elkaar)
     RRailPlus, RRailMin: TRect;
     DRailPlus, DRailMin: Boolean;
+    // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
+    RBron, RZekering, RAmpMeter: TRect;
+    DBron, DZekering, DAmpMeter: Boolean;
+    FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
     FOnLeave: TNotifyEvent;
@@ -2049,6 +2054,8 @@ type
     PROCEDURE SetOutputColor(const Value:TColor);
     PROCEDURE SetVerwerkingColor(const Value:TColor);
     PROCEDURE cpuOnTimer(sender:TObject);
+    procedure SupplyOnTimer(Sender: TObject);
+    procedure DrawVoedingButton(const R: TRect; AKind: Integer; ADown: Boolean);
     PROCEDURE SetParent(const Value:TWincontrol);
     PROCEDURE SetObjectID(const Value:Integer);
     PROCEDURE SetImputAantal(const Value:Integer);
@@ -2126,6 +2133,10 @@ type
     function AddRail(ALeft, ATop, AHeight: Integer; APlus: Boolean; AVolt: Double): TjanRail;
     // nieuwe rail aan de muis hangen om te plaatsen (zoals een component uit de balk)
     procedure NewRail(APlus: Boolean);
+    procedure NewVoedingsDeel(AKind: Integer);   // 0 = bron, 1 = zekering, 2 = mA-meter
+    procedure SetupVoedingsDeel(D: TjanVoedingsDeel);
+    // oud paneel met rails maar zonder bron: een bron met draden toevoegen
+    procedure EnsureBron;
     // nieuw LogicRun-blok aan de muis hangen (alleen als er nog geen is)
     procedure NewLogicRun;
     // nieuwe persoon (met vloer en eindschakelaars) aan de muis hangen
@@ -2857,7 +2868,8 @@ end;
   TjanRail = class(TGraphicControl)
   private
     FPlus: Boolean;
-    FVolt: Double;
+    FVolt: Double;               // bewaarde spanning (oude panelen, zonder bron)
+    FCalcVolt: Double;           // spanning van de bron (UpdateSupply)
     FLock: Boolean;
     FSelected: Boolean;
     FBox: TjanSimLogicBox;
@@ -2869,6 +2881,7 @@ end;
     FMover: TObject;             // TjanGroupSelect: ingeplugde componenten schuiven mee
     procedure SetPlus(const Value: Boolean);
     procedure SetVolt(const Value: Double);
+    function GetVolt: Double;
     procedure SetTaal(const Value: string);
     function GetLineX: Integer;
     function GetSpanTop: Integer;
@@ -2898,13 +2911,148 @@ end;
     property SpanBottom: Integer read GetSpanBottom;
   published
     property Plus: Boolean read FPlus write SetPlus;
-    property Volt: Double read FVolt write SetVolt;
+    // + rail: de spanning die de bron levert (0 V zonder bron); schrijven
+    // zet de bewaarde spanning van een oud paneel (zie EnsureBron)
+    property Volt: Double read GetVolt write SetVolt;
+    property SavedVolt: Double read FVolt;
     property Lock: Boolean read FLock write FLock;
     property Selected: Boolean read FSelected write FSelected;
     property Box: TjanSimLogicBox read FBox write FBox;
     property BTaal: string read FTaal write SetTaal;
     property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
     property ShowHint;
+  end;
+
+  { TjanVoedingsDeel: gemeenschappelijke basis van de onderdelen van de
+    voedingskring: bron (accu), zekering en milliampèremeter. Ze hebben
+    aansluitklemmen (pinnen) waar een draad op begint of eindigt; de kring
+    bron -> zekering/meter -> + rail en - rail -> bron wordt uitgerekend in
+    UpdateSupply. Pinnen: linkerbovenhoek van het 7x7-vierkantje, relatief. }
+  TjanVoedingsDeel = class(TGraphicControl)
+  private
+    FLock: Boolean;
+    FSelected: Boolean;
+    FBox: TjanSimLogicBox;
+    FTaal: string;
+    FOnStatus: TSimStatusEvent;
+    FDoMove: Boolean;
+    FMdp: TPoint;
+    FNewLeft, FNewTop: Integer;
+    FConnectors: TList;
+    procedure AnchorConnectors;
+    procedure MoveConnectors;
+    procedure LockClick(Sender: TObject);
+    procedure InfoClick(Sender: TObject);
+    procedure SelectClick(Sender: TObject);
+    procedure SetTaal(const Value: string);
+    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+  protected
+    // eigen menu-items voor het rechtsklikmenu (vóór vergrendelen e.d.)
+    procedure AddMenuItems(APop: TPopupMenu); virtual;
+    // muisklik op het onderdeel zelf (bv. de schuifregelaar); True = afgehandeld
+    function HandleClick(X, Y: Integer): Boolean; virtual;
+    procedure PaintPin(X, Y: Integer; AOn: Boolean);
+    procedure PaintSelection;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    function PinCount: Integer; virtual; abstract;
+    function PinPos(I: Integer): TPoint; virtual; abstract;
+    // pin op punt P (paneel-coördinaten), anders -1
+    function PinAt(const P: TPoint): Integer;
+    // middelpunt van pin I in paneel-coördinaten
+    function PinCenter(I: Integer): TPoint;
+    procedure UpdateHintText; virtual; abstract;
+    procedure SendStatusToBar; virtual; abstract;
+  published
+    property Lock: Boolean read FLock write FLock;
+    property Selected: Boolean read FSelected write FSelected;
+    property Box: TjanSimLogicBox read FBox write FBox;
+    property BTaal: string read FTaal write SetTaal;
+    property OnStatus: TSimStatusEvent read FOnStatus write FOnStatus;
+    property ShowHint;
+    property HelpKeyword;
+  end;
+
+  { TjanBron: accu met instelbare spanning (0 tot 12 V, schuifregelaar) en
+    inwendige weerstand. Pin 0 = +, pin 1 = - (allebei rechts). }
+  TjanBron = class(TjanVoedingsDeel)
+  private
+    FVolt: Double;         // bronspanning E
+    FRiIdx: Integer;       // index in BronRi
+    FKlem: Double;         // klemspanning (na de spanningsval over Ri)
+    FStroom: Double;       // stroom in A
+    FSliding: Boolean;
+    procedure SetVolt(const Value: Double);
+    procedure SetRiIdx(const Value: Integer);
+    procedure RiClick(Sender: TObject);
+    function SliderRect: TRect;
+    procedure SlideTo(X: Integer);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function HandleClick(X, Y: Integer): Boolean; override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ri: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Klem: Double read FKlem;
+    property Stroom: Double read FStroom;
+  published
+    property Volt: Double read FVolt write SetVolt;
+    property RiIdx: Integer read FRiIdx write SetRiIdx;
+  end;
+
+  { TjanZekering: smeltzekering in de voedingsleiding. Pin 0 = ingang
+    (links), pin 1 = uitgang (rechts). Wordt de stroom groter dan de
+    nominale stroom, dan smelt ze (Doorgebrand) tot ze vervangen wordt. }
+  TjanZekering = class(TjanVoedingsDeel)
+  private
+    FNomIdx: Integer;      // index in ZekeringMA
+    FDoorgebrand: Boolean;
+    FInVolt, FUitVolt: Double;
+    procedure SetNomIdx(const Value: Integer);
+    procedure SetDoorgebrand(const Value: Boolean);
+    procedure NomClick(Sender: TObject);
+    procedure VervangClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function NominaalA: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property NomIdx: Integer read FNomIdx write SetNomIdx;
+    property Doorgebrand: Boolean read FDoorgebrand write SetDoorgebrand;
+  end;
+
+  { TjanAmpMeter: milliampèremeter, in serie in de voedingsleiding. Pin 0 =
+    ingang (links), pin 1 = uitgang (rechts). Toont de stroom in mA. }
+  TjanAmpMeter = class(TjanVoedingsDeel)
+  private
+    FStroom: Double;       // A
+    FInVolt, FUitVolt: Double;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Stroom: Double read FStroom;
   end;
 
   { TjanGroupSelect: meerdere objecten tegelijk selecteren en verplaatsen.
@@ -2965,7 +3113,8 @@ const
   RailGap = 12;        // afstand lijn van de rail -> component (stekker + bolletje)
   RailSnapTol = 12;    // binnen zoveel pixels springt een component op de rail
   RailMinVolt = 2.0;   // onder deze spanning geeft ingeplugde invoer geen signaal
-  RailMaxVolt = 5.0;
+  RailMaxVolt = 5.0;   // signaal zonder rails
+  BronMaxVolt = 12.0;  // hoogste spanning van de bron (accu)
   RailLineOfs = 11;    // X van de lijn binnen TjanRail
   RailWidth = 23;      // breedte van TjanRail (stekkers links en rechts van de lijn)
   RailLabelH = 14;     // bovenaan: spanning (+ rail) of 0V (- rail)
@@ -3018,6 +3167,8 @@ uses Process;
 
 // magnetisch rechttrekken van draden bij het slepen (zie verderop)
 procedure StraightenWires(AConnectors: TList; var ANewLeft, ANewTop: Integer); forward;
+// staat er een + rail onder spanning (voedingskring, zie UpdateSupply)?
+function SupplyOK(P: TWinControl): Boolean; forward;
 // tekenwijze (Afbeelding/IEC/ANSI) van een onderdeel (zie verderop)
 function SymOf(C: TComponent): TjanSymbolen; forward;
 
@@ -5366,7 +5517,10 @@ begin
   if R = nil then
     Result := False
   else if IsRailInput(C) then
-    Result := R.Powered;
+    Result := R.Powered
+  else
+    // uitvoer: alleen als de bron de + rail(s) voedt
+    Result := SupplyOK(C.Parent);
 end;
 
 // spanning (volt) die invoer C op zijn draad zet: zonder rails 5 V als hij
@@ -5506,7 +5660,7 @@ var
 begin
   if R.Plus then Sign := '+' else Sign := '-';
   Result := Format('TjanRail;%d;%d;%d;%d;%s;%d;',
-    [R.Height, R.Left, R.Top, R.Width, Sign, Round(R.Volt * 10)]);
+    [R.Height, R.Left, R.Top, R.Width, Sign, Round(R.SavedVolt * 10)]);
 end;
 
 { TjanRail }
@@ -5551,7 +5705,13 @@ end;
 
 function TjanRail.Powered: Boolean;
 begin
-  Result := FPlus and (FVolt >= RailMinVolt - 0.001);
+  Result := FPlus and (Volt >= RailMinVolt - 0.001);
+end;
+
+// + rail: de spanning van de bron (zie UpdateSupply); - rail: 0 V
+function TjanRail.GetVolt: Double;
+begin
+  if FPlus then Result := FCalcVolt else Result := 0;
 end;
 
 // - rail blauw; + rail grijs bij 0 V, daarboven rood en feller naarmate de
@@ -5560,10 +5720,10 @@ function TjanRail.RailColor: TColor;
 begin
   if not FPlus then
     Result := clBlue
-  else if FVolt <= 0 then
+  else if Volt <= 0.001 then
     Result := clGray
   else
-    Result := RGBToColor(110 + Round(145 * FVolt / RailMaxVolt), 0, 0);
+    Result := RGBToColor(110 + Round(145 * Volt / BronMaxVolt), 0, 0);
 end;
 
 procedure TjanRail.SetPlus(const Value: Boolean);
@@ -5581,7 +5741,7 @@ var
 begin
   V := Value;
   if V < 0 then V := 0;
-  if V > RailMaxVolt then V := RailMaxVolt;
+  if V > BronMaxVolt then V := BronMaxVolt;
   if Abs(V - FVolt) < 0.001 then Exit;
   FVolt := V;
   UpdateHintText;
@@ -5599,21 +5759,19 @@ procedure TjanRail.UpdateHintText;
 var
   V: string;
 begin
-  V := FormatFloat('0.#', FVolt);
+  V := FormatFloat('0.0', Volt) + ' V';
   if FPlus then
-    Hint := Tr(FTaal,
-      '+ rail (voeding ' + V + 'V)' + #13#10 +
+    Hint := Tr(FTaal, '+ rail (voeding):', '+ rail (supply):', 'Rail + (alimentation) :',
+        '+ Schiene (Versorgung):') + ' ' + V + #13#10 +
+      Tr(FTaal,
         'Invoer rechts op de rail inpluggen. Onder 2V geen signaal.' + #13#10 +
-        'Rechtsklik: spanning instellen. Sleep de uiteinden om te verlengen.',
-      '+ rail (supply ' + V + 'V)' + #13#10 +
+          'De spanning komt van de bron (accu). Sleep de uiteinden om te verlengen.',
         'Plug inputs in on the right of the rail. Below 2V no signal.' + #13#10 +
-        'Right-click: set voltage. Drag the ends to resize.',
-      'Rail + (alimentation ' + V + 'V)' + #13#10 +
+          'The voltage comes from the source (battery). Drag the ends to resize.',
         'Branchez les entrées à droite du rail. Sous 2V pas de signal.' + #13#10 +
-        'Clic droit : régler la tension. Faites glisser les extrémités.',
-      '+ Schiene (Versorgung ' + V + 'V)' + #13#10 +
+          'La tension vient de la source (batterie). Faites glisser les extrémités.',
         'Eingänge rechts an die Schiene stecken. Unter 2V kein Signal.' + #13#10 +
-        'Rechtsklick: Spannung einstellen. Enden ziehen zum Verlängern.')
+          'Die Spannung kommt von der Quelle (Akku). Enden ziehen zum Verlängern.')
   else
     Hint := Tr(FTaal,
       '- rail (massa)' + #13#10 + 'Uitvoer links op de rail inpluggen.' + #13#10 +
@@ -5632,7 +5790,7 @@ begin
   if FPlus then
   begin
     FOnStatus(Self, Tr(FTaal, '+ rail', '+ rail', 'Rail +', '+ Schiene') + ' > ', 0);
-    FOnStatus(Self, 'U = ' + FormatFloat('0.#', FVolt) + ' V', 1);
+    FOnStatus(Self, 'U = ' + FormatFloat('0.0', Volt) + ' V', 1);
   end
   else
   begin
@@ -5694,7 +5852,7 @@ begin
     end;
     // spanning bovenaan (+ rail: ingestelde spanning, - rail: 0V)
     if FPlus then
-      S := FormatFloat('0.#', FVolt) + 'V'
+      S := FormatFloat('0.#', Volt) + 'V'
     else
       S := '0V';
     Brush.Style := bsClear;
@@ -5731,30 +5889,13 @@ end;
 
 procedure TjanRail.BuildPopup;
 var
-  mi, sub: TMenuItem;
-  i: Integer;
+  mi: TMenuItem;
 begin
   if not Assigned(PopupMenu) then
     PopupMenu := TPopupMenu.Create(Self)
   else
     PopupMenu.Items.Clear;
-
-  if FPlus then
-  begin
-    mi := TMenuItem.Create(PopupMenu);
-    mi.Caption := Tr(FTaal, 'Spanning', 'Voltage', 'Tension', 'Spannung');
-    PopupMenu.Items.Add(mi);
-    for i := Low(RailVolts) to High(RailVolts) do
-    begin
-      sub := TMenuItem.Create(PopupMenu);
-      sub.Caption := FormatFloat('0.#', RailVolts[i]) + ' V';
-      sub.Tag := i;
-      sub.RadioItem := True;
-      sub.Checked := Abs(RailVolts[i] - FVolt) < 0.001;
-      sub.OnClick := VoltClick;
-      mi.Add(sub);
-    end;
-  end;
+  // (de spanning van een + rail komt van de bron: geen menu Spanning meer)
 
   mi := TMenuItem.Create(PopupMenu);
   if FLock then
@@ -5932,6 +6073,1070 @@ begin
 end;
 
 // ============================================================
+// Voedingskring: bron (accu), zekering en milliampèremeter
+// ============================================================
+//
+// De kring: + van de bron -> (zekering, meter ...) -> + rail, en - rail ->
+// - van de bron. Alle verbruikers die aan staan vormen samen de belasting
+// (een weerstand per onderdeel, zie LoadAmps). UpdateSupply rekent met de
+// wet van Ohm de stroom en de spanning op de rail uit:
+//   I = E / (Ri + Rbelasting)    U(rail) = E - I * Ri
+// Zonder gesloten kring (geen bron, - niet aangesloten, zekering
+// doorgebrand) staat de + rail op 0 V.
+
+const
+  BronRi: array[0..3] of Double = (0, 0.5, 1, 2);            // ohm
+  ZekeringMA: array[0..4] of Integer = (100, 250, 500, 1000, 2000);
+  VoedingPinTol = 5;      // zo dicht bij een klem telt een draadeinde
+  BronW = 112; BronH = 84;
+  ZekeringW = 40; ZekeringH = 58;
+  AmpMeterW = 100; AmpMeterH = 51;
+
+// stroom (A) die verbruiker C bij 12 V trekt als hij aan staat; 0 als hij
+// uit staat of niet aangesloten is. Bij een andere spanning evenredig
+// (wet van Ohm: elke verbruiker is een vaste weerstand).
+function LoadAmps12(C: TControl): Double;
+const
+  Segments: array[0..15] of Integer = (6, 2, 5, 5, 4, 5, 6, 3, 7, 6, 6, 5, 4, 5, 5, 4);
+var
+  i: Integer;
+  P: TjanSimPersoon;
+begin
+  Result := 0;
+  if not C.Visible then Exit;
+  // uitvoer werkt alleen ingeplugd op (of met een draad aan) de - rail
+  if IsRailOutput(C) and (RailOf(C) = nil) then Exit;
+  if C is TjanSimLight then
+  begin
+    if TjanSimLight(C).Lit then
+      if TjanSimLight(C).Kleur = lkLamp then Result := 0.100 else Result := 0.020;
+  end
+  else if C is TjanSchakelRelais then
+  begin
+    if TjanSchakelRelais(C).Lit then Result := 0.040;
+  end
+  else if C is TjanSimRelais then
+  begin
+    if TjanSimRelais(C).Lit then Result := 0.040;
+  end
+  else if C is TjanSimBuzzer then
+  begin
+    if TjanSimBuzzer(C).Lit then Result := 0.030;
+  end
+  else if C is TjanSimMotor then
+  begin
+    if TjanSimMotor(C).Inputs[0] <> TjanSimMotor(C).Inputs[1] then Result := 0.200;
+  end
+  else if C is TjanDisplay then
+    Result := 0.010 * Segments[TjanDisplay(C).Bits and 15]
+  else if C is TjanSimPersoon then
+  begin
+    P := TjanSimPersoon(C);
+    for i := 0 to P.InputCount - 1 do
+      if P.Inputs[i] then Result := Result + 0.020;
+  end
+  // poorten, tellers, geheugen en ingeplugde invoer: een klein beetje
+  else if (IsRailInput(C) and (RailOf(C) <> nil)) or (C is TjanLogic) or
+          (C is TjanTeller) or (C is TjanMemory) or (C is TjanSimStappenteller) or
+          (C is TjanLogicRun) then
+    Result := 0.001;
+end;
+
+// helderheid (0..1) van een lamp of led: spanning van de voeding / 12 V;
+// zonder rails op het paneel altijd vol
+function LampHelderheid(C: TControl): Double;
+var
+  i: Integer;
+  U: Double;
+begin
+  Result := 1;
+  if (C.Parent = nil) or not PanelHasRails(C.Parent) then Exit;
+  U := 0;
+  for i := 0 to C.Parent.ControlCount - 1 do
+    if (C.Parent.Controls[i] is TjanRail) and C.Parent.Controls[i].Visible and
+       (TjanRail(C.Parent.Controls[i]).Volt > U) then
+      U := TjanRail(C.Parent.Controls[i]).Volt;
+  Result := U / BronMaxVolt;
+  if Result > 1 then Result := 1;
+  if Result < 0.15 then Result := 0.15;
+end;
+
+// staat er een + rail onder spanning op paneel P? (dan werkt de uitvoer)
+function SupplyOK(P: TWinControl): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible and
+       TjanRail(P.Controls[i]).Powered then
+      Exit(True);
+end;
+
+// een draad (niet AExclude) met een uiteinde bij Pt; AOther = het andere einde
+function WireAt(P: TWinControl; const Pt: TPoint; AExclude: TControl;
+  out AOther: TPoint): TjanConnector;
+var
+  i: Integer;
+  A, B: TPoint;
+begin
+  Result := nil;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible and
+       (P.Controls[i] <> AExclude) then
+    begin
+      TjanConnector(P.Controls[i]).EndCenters(A, B);
+      if (Abs(A.X - Pt.X) <= VoedingPinTol) and (Abs(A.Y - Pt.Y) <= VoedingPinTol) then
+      begin
+        AOther := B;
+        Exit(TjanConnector(P.Controls[i]));
+      end;
+      if (Abs(B.X - Pt.X) <= VoedingPinTol) and (Abs(B.Y - Pt.Y) <= VoedingPinTol) then
+      begin
+        AOther := A;
+        Exit(TjanConnector(P.Controls[i]));
+      end;
+    end;
+end;
+
+// het voedingsonderdeel (geen bron) met een klem bij Pt, en welke klem
+function SeriesPartAt(P: TWinControl; const Pt: TPoint; out APin: Integer): TjanVoedingsDeel;
+var
+  i: Integer;
+begin
+  Result := nil;
+  APin := -1;
+  for i := 0 to P.ControlCount - 1 do
+    if ((P.Controls[i] is TjanZekering) or (P.Controls[i] is TjanAmpMeter)) and
+       P.Controls[i].Visible then
+    begin
+      APin := TjanVoedingsDeel(P.Controls[i]).PinAt(Pt);
+      if APin >= 0 then
+        Exit(TjanVoedingsDeel(P.Controls[i]));
+    end;
+end;
+
+// volg de draden vanaf klem APin van bron B tot op een rail; de zekeringen
+// en meters onderweg komen in AParts (in volgorde)
+function FollowSupply(B: TjanBron; APin: Integer; AParts: TList): TjanRail;
+var
+  P: TWinControl;
+  Pt, Other: TPoint;
+  Con, Came: TjanConnector;
+  D: TjanVoedingsDeel;
+  k, n: Integer;
+begin
+  Result := nil;
+  P := B.Parent;
+  Pt := B.PinCenter(APin);
+  Came := nil;
+  for n := 1 to 20 do
+  begin
+    Con := WireAt(P, Pt, Came, Other);
+    if Con = nil then Exit;
+    Result := RailAtPoint(P, Other);
+    if Result <> nil then Exit;
+    D := SeriesPartAt(P, Other, k);
+    if (D = nil) or (AParts.IndexOf(D) >= 0) then Exit;
+    AParts.Add(D);
+    Pt := D.PinCenter(1 - k);
+    Came := Con;
+  end;
+end;
+
+// Rekent de voedingskring van paneel P uit en zet de spanning van de
+// rails, de klemspanning van de bron en de stroom in de meters. AInval:
+// gewijzigde onderdelen opnieuw tekenen.
+procedure UpdateSupply(P: TWinControl; AInval: Boolean);
+var
+  i, k: Integer;
+  C: TControl;
+  B: TjanBron;
+  RPlus, RMin: TjanRail;
+  PlusParts, MinParts: TList;
+  G, E, Rs, Amp, U, V, OldV: Double;
+  HasMinRail, Closed, Blown: Boolean;
+  Changed: Boolean;
+  Z: TjanZekering;
+  NewVolt: array of Double;
+  Rails: array of TjanRail;
+
+  procedure SetPartVolts(D: TObject; AIn, AUit: Double);
+  begin
+    if D is TjanZekering then
+    begin
+      TjanZekering(D).FInVolt := AIn; TjanZekering(D).FUitVolt := AUit;
+    end
+    else if D is TjanAmpMeter then
+    begin
+      TjanAmpMeter(D).FInVolt := AIn; TjanAmpMeter(D).FUitVolt := AUit;
+    end;
+  end;
+
+  procedure SetMeter(D: TObject; AI: Double);
+  begin
+    if (D is TjanAmpMeter) and (Abs(TjanAmpMeter(D).FStroom - AI) > 0.00005) then
+    begin
+      TjanAmpMeter(D).FStroom := AI;
+      if AInval then TjanAmpMeter(D).Invalidate;
+    end;
+  end;
+
+begin
+  if P = nil then Exit;
+  // belasting: geleiding G = som van I/U van alle verbruikers die aan staan
+  G := 0;
+  HasMinRail := False;
+  SetLength(Rails, 0);
+  for i := 0 to P.ControlCount - 1 do
+  begin
+    C := P.Controls[i];
+    if (C is TjanRail) and C.Visible then
+    begin
+      SetLength(Rails, Length(Rails) + 1);
+      Rails[High(Rails)] := TjanRail(C);
+      if not TjanRail(C).Plus then HasMinRail := True;
+    end
+    else
+      G := G + LoadAmps12(C) / BronMaxVolt;
+    // meters en zekeringen buiten een kring: 0 mA, spanning 0
+    if C is TjanAmpMeter then SetMeter(C, 0);
+    SetPartVolts(C, 0, 0);
+  end;
+  SetLength(NewVolt, Length(Rails));
+  for k := 0 to High(NewVolt) do NewVolt[k] := 0;
+
+  PlusParts := TList.Create;
+  MinParts := TList.Create;
+  try
+    for i := 0 to P.ControlCount - 1 do
+    begin
+      if not ((P.Controls[i] is TjanBron) and P.Controls[i].Visible) then Continue;
+      B := TjanBron(P.Controls[i]);
+      PlusParts.Clear;
+      MinParts.Clear;
+      RPlus := FollowSupply(B, 0, PlusParts);
+      RMin := FollowSupply(B, 1, MinParts);
+      if (RPlus <> nil) and not RPlus.Plus then RPlus := nil;
+      if (RMin <> nil) and RMin.Plus then RMin := nil;
+      E := B.Volt;
+      Rs := B.Ri;
+      // gesloten kring: + aan een + rail, - aan een - rail (als die er is),
+      // en geen doorgebrande zekering
+      Blown := False;
+      for k := 0 to PlusParts.Count - 1 do
+        if (TObject(PlusParts[k]) is TjanZekering) and TjanZekering(PlusParts[k]).Doorgebrand then Blown := True;
+      for k := 0 to MinParts.Count - 1 do
+        if (TObject(MinParts[k]) is TjanZekering) and TjanZekering(MinParts[k]).Doorgebrand then Blown := True;
+      Closed := (RPlus <> nil) and ((RMin <> nil) or not HasMinRail) and not Blown;
+      // wet van Ohm
+      if Closed and (G > 0) then
+        Amp := E / (Rs + 1 / G)
+      else
+        Amp := 0;
+      // te veel stroom: de zekering smelt
+      if Closed then
+        for k := 0 to PlusParts.Count + MinParts.Count - 1 do
+        begin
+          Z := nil;
+          if (k < PlusParts.Count) and (TObject(PlusParts[k]) is TjanZekering) then
+            Z := TjanZekering(PlusParts[k])
+          else if (k >= PlusParts.Count) and (TObject(MinParts[k - PlusParts.Count]) is TjanZekering) then
+            Z := TjanZekering(MinParts[k - PlusParts.Count]);
+          if (Z <> nil) and (Amp > Z.NominaalA + 0.000001) then
+          begin
+            Z.Doorgebrand := True;
+            Closed := False;
+            Amp := 0;
+          end;
+        end;
+      U := E - Amp * Rs;
+      // klemspanning en stroom van de bron
+      if (Abs(B.FKlem - U) > 0.0005) or (Abs(B.FStroom - Amp) > 0.00005) then
+      begin
+        B.FKlem := U;
+        B.FStroom := Amp;
+        if AInval then B.Invalidate;
+      end;
+      // spanning langs de + leiding (na een doorgebrande zekering 0 V)
+      V := U;
+      for k := 0 to PlusParts.Count - 1 do
+      begin
+        OldV := V;
+        if (TObject(PlusParts[k]) is TjanZekering) and TjanZekering(PlusParts[k]).Doorgebrand then
+          V := 0;
+        SetPartVolts(TObject(PlusParts[k]), OldV, V);
+        SetMeter(TObject(PlusParts[k]), Amp);
+      end;
+      for k := 0 to MinParts.Count - 1 do
+        SetMeter(TObject(MinParts[k]), Amp);
+      if Closed and (RPlus <> nil) then
+        for k := 0 to High(Rails) do
+          if (Rails[k] = RPlus) and (V > NewVolt[k]) then
+            NewVolt[k] := V;
+    end;
+  finally
+    PlusParts.Free;
+    MinParts.Free;
+  end;
+
+  // nieuwe spanning op de rails
+  Changed := False;
+  for k := 0 to High(Rails) do
+    if Abs(Rails[k].FCalcVolt - NewVolt[k]) > 0.0005 then
+    begin
+      Rails[k].FCalcVolt := NewVolt[k];
+      Changed := True;
+      if AInval then
+      begin
+        Rails[k].UpdateHintText;
+        Rails[k].Invalidate;
+      end;
+    end;
+  if Changed and AInval then
+    P.Invalidate;   // kleur van de stekkers
+end;
+
+// spanning op klem APin van voedingsonderdeel D (voor een draad die daar begint)
+function VoedingsPinVolt(D: TjanVoedingsDeel; APin: Integer): Double;
+begin
+  Result := 0;
+  if D is TjanBron then
+  begin
+    if APin = 0 then Result := TjanBron(D).FKlem;
+  end
+  else if D is TjanZekering then
+  begin
+    if APin = 0 then Result := TjanZekering(D).FInVolt else Result := TjanZekering(D).FUitVolt;
+  end
+  else if D is TjanAmpMeter then
+  begin
+    if APin = 0 then Result := TjanAmpMeter(D).FInVolt else Result := TjanAmpMeter(D).FUitVolt;
+  end;
+end;
+
+// regel in het paneelbestand voor bron, zekering of milliampèremeter
+function VoedingFileLine(C: TControl): string;
+begin
+  if C is TjanBron then
+    Result := Format('TjanBron;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Round(TjanBron(C).Volt * 10), TjanBron(C).RiIdx])
+  else if C is TjanZekering then
+    Result := Format('TjanZekering;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanZekering(C).NomIdx])
+  else
+    Result := Format('TjanAmpMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width]);
+end;
+
+{ TjanVoedingsDeel }
+
+constructor TjanVoedingsDeel.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FConnectors := TList.Create;
+  FTaal := 'NL';
+  ShowHint := True;
+  HelpKeyword := 'voeding';
+end;
+
+destructor TjanVoedingsDeel.Destroy;
+begin
+  FConnectors.Free;
+  inherited Destroy;
+end;
+
+function TjanVoedingsDeel.PinCenter(I: Integer): TPoint;
+var
+  Q: TPoint;
+begin
+  Q := PinPos(I);
+  Result := Point(Left + Q.X + 3, Top + Q.Y + 3);
+end;
+
+function TjanVoedingsDeel.PinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+  C: TPoint;
+begin
+  for i := 0 to PinCount - 1 do
+  begin
+    C := PinCenter(i);
+    if (Abs(C.X - P.X) <= VoedingPinTol) and (Abs(C.Y - P.Y) <= VoedingPinTol) then
+      Exit(i);
+  end;
+  Result := -1;
+end;
+
+procedure TjanVoedingsDeel.PaintPin(X, Y: Integer; AOn: Boolean);
+begin
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    if AOn then Brush.Color := clLime else Brush.Color := clGreen;
+    FillRect(Rect(X, Y, X + 7, Y + 7));
+    Pen.Color := clBlack;
+    Pen.Style := psSolid;
+    Brush.Style := bsClear;
+    Rectangle(Rect(X, Y, X + 7, Y + 7));
+  end;
+end;
+
+procedure TjanVoedingsDeel.PaintSelection;
+begin
+  if not FSelected then Exit;
+  with Canvas do
+  begin
+    Brush.Style := bsClear;
+    Pen.Color := clRed; Pen.Style := psDot; Pen.Width := 1;
+    Rectangle(ClientRect);
+    Pen.Style := psSolid;
+    Brush.Style := bsSolid;
+  end;
+end;
+
+procedure TjanVoedingsDeel.SetTaal(const Value: string);
+begin
+  FTaal := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanVoedingsDeel.AddMenuItems(APop: TPopupMenu);
+begin
+end;
+
+function TjanVoedingsDeel.HandleClick(X, Y: Integer): Boolean;
+begin
+  Result := False;
+end;
+
+procedure TjanVoedingsDeel.LockClick(Sender: TObject);
+begin
+  FLock := not FLock;
+end;
+
+procedure TjanVoedingsDeel.InfoClick(Sender: TObject);
+begin
+  ShowHint := not ShowHint;
+end;
+
+procedure TjanVoedingsDeel.SelectClick(Sender: TObject);
+begin
+  if Assigned(FBox) then
+    FBox.SelectObject(Self);
+end;
+
+procedure TjanVoedingsDeel.AnchorConnectors;
+var
+  i: Integer;
+  Con: TjanConnector;
+  R: TRect;
+begin
+  FConnectors.Clear;
+  if Parent = nil then Exit;
+  R := BoundsRect;
+  InflateRect(R, 8, 0);
+  for i := 0 to Parent.ControlCount - 1 do
+    if Parent.Controls[i] is TjanConnector then
+    begin
+      Con := TjanConnector(Parent.Controls[i]);
+      if Con.AnchorToRect(R, Point(Left, Top)) then
+        FConnectors.Add(Con);
+    end;
+end;
+
+procedure TjanVoedingsDeel.MoveConnectors;
+var
+  i: Integer;
+begin
+  for i := 0 to FConnectors.Count - 1 do
+    TjanConnector(FConnectors[i]).MoveConnector(Point(FNewLeft, FNewTop));
+end;
+
+procedure TjanVoedingsDeel.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Pop: TPopupMenu;
+  Mi: TMenuItem;
+  Pt: TPoint;
+  K: Integer;
+begin
+  inherited MouseDown(Button, Shift, X, Y);
+  FDoMove := False;
+  FMdp := Point(X, Y);
+  if Button = mbRight then
+  begin
+    Pop := TPopupMenu.Create(Self);
+    AddMenuItems(Pop);
+    if Pop.Items.Count > 0 then
+    begin
+      Mi := TMenuItem.Create(Pop);
+      Mi.Caption := '-';
+      Pop.Items.Add(Mi);
+    end;
+    Mi := TMenuItem.Create(Pop);
+    if FLock then
+      Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+    else
+      Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+    Mi.OnClick := LockClick;
+    Pop.Items.Add(Mi);
+    Mi := TMenuItem.Create(Pop);
+    if ShowHint then
+      Mi.Caption := Tr(FTaal, 'Info uit', 'Information off', 'Infos off', 'Infos aus')
+    else
+      Mi.Caption := Tr(FTaal, 'Info aan', 'Information on', 'Infos on', 'Infos an');
+    Mi.OnClick := InfoClick;
+    Pop.Items.Add(Mi);
+    Mi := TMenuItem.Create(Pop);
+    if FSelected then
+      Mi.Caption := Tr(FTaal, 'Deselecteer object', 'Deselect object', 'Désélectionner l''objet', 'Objekt abwählen')
+    else
+      Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner un objet', 'Objekt auswählen');
+    Mi.OnClick := SelectClick;
+    Pop.Items.Add(Mi);
+    Pt := ClientToScreen(Point(0, Height));
+    Pop.Popup(Pt.X, Pt.Y - 1);
+    Exit;
+  end;
+  // met de knop Verbinding: een draad beginnen op een klem
+  if (Button = mbLeft) and (Screen.Cursor = crDraad) and (Parent <> nil) then
+  begin
+    K := PinAt(Point(Left + X, Top + Y));
+    if K >= 0 then
+    begin
+      Pt := PinCenter(K);
+      Maakdraad(Pt.Y - 4, Pt.X - 4, Parent);
+      movecursor;
+      BringToFront;
+      Exit;
+    end;
+  end;
+  if Button <> mbLeft then Exit;
+  // eigen bediening (schuifregelaar) werkt ook tijdens de simulatie
+  if HandleClick(X, Y) then Exit;
+  FDoMove := True;
+  AnchorConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).BeginGuideLines(Left + Width div 2, Top + Height div 2);
+end;
+
+procedure TjanVoedingsDeel.MouseMove(Shift: TShiftState; X, Y: Integer);
+var
+  P, SnapP: TPoint;
+  Grid: TjanGridS;
+begin
+  inherited MouseMove(Shift, X, Y);
+  if FLock or (Parent = nil) or not FDoMove or not (ssLeft in Shift) then Exit;
+  P := Parent.ScreenToClient(ClientToScreen(Point(X, Y)));
+  FNewLeft := P.X - FMdp.X;
+  FNewTop := P.Y - FMdp.Y;
+  if Parent is TjanGridS then
+  begin
+    Grid := TjanGridS(Parent);
+    SnapP := Grid.SnapPointToRuler(Point(FNewLeft + Width div 2, FNewTop + Height div 2),
+      Grid.GetWorkAreaRect);
+    FNewLeft := SnapP.X - Width div 2;
+    FNewTop := SnapP.Y - Height div 2;
+  end;
+  StraightenWires(FConnectors, FNewLeft, FNewTop);
+  Left := FNewLeft;
+  Top := FNewTop;
+  MoveConnectors;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).UpdateGuideLines(Left + Width div 2, Top + Height div 2);
+  if Assigned(GlobalSimBox) then
+    GlobalSimBox.DoObjectMove(Self, Left, Top);
+  SendStatusToBar;
+end;
+
+procedure TjanVoedingsDeel.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited MouseUp(Button, Shift, X, Y);
+  FDoMove := False;
+  if Parent is TjanGridS then
+    TjanGridS(Parent).EndGuideLines;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanVoedingsDeel.CMMouseEnter(var Msg: TMessage);
+begin
+  inherited;
+  UpdateHintText;
+  SendStatusToBar;
+end;
+
+procedure TjanVoedingsDeel.CMMouseLeave(var Msg: TMessage);
+begin
+  inherited;
+  if Assigned(FOnStatus) then
+  begin
+    FOnStatus(Self, '', 0);
+    FOnStatus(Self, '', 1);
+    FOnStatus(Self, '', 2);
+    FOnStatus(Self, '', 3);
+  end;
+end;
+
+{ TjanBron }
+
+constructor TjanBron.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := BronW;
+  Height := BronH;
+  FVolt := BronMaxVolt;
+  FRiIdx := 1;            // 0,5 ohm
+  FKlem := FVolt;
+end;
+
+function TjanBron.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+// klemmen onderaan: + links, - rechts
+function TjanBron.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(4, BronH - 10) else Result := Point(BronW - 10, BronH - 10);
+end;
+
+function TjanBron.Ri: Double;
+begin
+  Result := BronRi[FRiIdx];
+end;
+
+procedure TjanBron.SetVolt(const Value: Double);
+var
+  V: Double;
+begin
+  V := Round(Value * 2) / 2;           // stappen van 0,5 V
+  if V < 0 then V := 0;
+  if V > BronMaxVolt then V := BronMaxVolt;
+  if Abs(V - FVolt) < 0.001 then Exit;
+  FVolt := V;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+  SendStatusToBar;
+end;
+
+procedure TjanBron.SetRiIdx(const Value: Integer);
+begin
+  if (Value < Low(BronRi)) or (Value > High(BronRi)) or (Value = FRiIdx) then Exit;
+  FRiIdx := Value;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+function TjanBron.SliderRect: TRect;
+begin
+  Result := Rect(10, 54, 86, 60);
+end;
+
+procedure TjanBron.SlideTo(X: Integer);
+var
+  R: TRect;
+begin
+  R := SliderRect;
+  Volt := (X - R.Left) / (R.Right - R.Left) * BronMaxVolt;
+end;
+
+function TjanBron.HandleClick(X, Y: Integer): Boolean;
+var
+  R: TRect;
+begin
+  R := SliderRect;
+  InflateRect(R, 4, 6);
+  Result := PtInRect(R, Point(X, Y));
+  if Result then
+  begin
+    FSliding := True;
+    SlideTo(X);
+  end;
+end;
+
+procedure TjanBron.MouseMove(Shift: TShiftState; X, Y: Integer);
+begin
+  if FSliding then
+  begin
+    if ssLeft in Shift then SlideTo(X) else FSliding := False;
+    Exit;
+  end;
+  inherited MouseMove(Shift, X, Y);
+end;
+
+procedure TjanBron.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  FSliding := False;
+  inherited MouseUp(Button, Shift, X, Y);
+end;
+
+procedure TjanBron.RiClick(Sender: TObject);
+begin
+  RiIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanBron.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Inwendige weerstand', 'Internal resistance', 'Résistance interne', 'Innenwiderstand');
+  APop.Items.Add(Mi);
+  for i := Low(BronRi) to High(BronRi) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := FormatFloat('0.#', BronRi[i]) + ' Ω';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FRiIdx;
+    Sub.OnClick := RiClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+procedure TjanBron.Paint;
+var
+  R: TRect;
+  S: string;
+  KX, TW: Integer;
+begin
+  with Canvas do
+  begin
+    // doorzichtig, met een streep-punt kader (zoals een kast in een schema)
+    Brush.Style := bsClear;
+    Pen.Color := clGray; Pen.Width := 1; Pen.Style := psDashDot;
+    Rectangle(ClientRect);
+    Pen.Style := psSolid;
+    Brush.Style := bsSolid;
+    // batterijsymbool (cellen in serie): lange plaat (+), korte plaat (-),
+    // stippellijn, lange plaat, korte plaat
+    Brush.Color := clBlack;
+    FillRect(Rect(3, 18, 7, 20));      // aansluiting
+    FillRect(Rect(7, 8, 9, 30));       // lange plaat
+    FillRect(Rect(11, 13, 14, 25));    // korte plaat
+    FillRect(Rect(16, 18, 18, 20));    // stippels
+    FillRect(Rect(19, 18, 21, 20));
+    FillRect(Rect(22, 18, 24, 20));
+    FillRect(Rect(26, 8, 28, 30));     // lange plaat
+    FillRect(Rect(30, 13, 33, 25));    // korte plaat
+    FillRect(Rect(33, 18, 37, 20));    // aansluiting
+    Font.Name := 'Arial';
+    // display met de bronspanning
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(250, 250, 220);
+    R := Rect(46, 6, 100, 28);
+    FillRect(R);
+    Frame3D(R, clBtnShadow, clBtnHighlight, 1);
+    Brush.Style := bsClear;
+    S := FormatFloat('0.0', FVolt) + ' V';
+    Font.Size := 11; Font.Style := [fsBold];
+    if FVolt > 0.001 then Font.Color := clRed else Font.Color := clGray;
+    TW := TextWidth(S);
+    TextOut(73 - TW div 2, 8, S);
+    // inwendige weerstand
+    Font.Size := 7; Font.Style := []; Font.Color := clNavy;
+    TextOut(48, 36, 'Ri ' + FormatFloat('0.#', Ri) + ' Ω');
+    // klemmen onderaan: + links, - rechts
+    Font.Size := 8; Font.Style := [fsBold];
+    Font.Color := clRed; TextOut(14, BronH - 15, '+');
+    Font.Color := clBlue; TextOut(BronW - 20, BronH - 15, '-');
+    PaintPin(PinPos(0).X, PinPos(0).Y, FKlem >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, False);
+    // schuifregelaar 0 .. 12 V
+    R := SliderRect;
+    Brush.Style := bsSolid;
+    Brush.Color := clGray;
+    FillRect(Rect(R.Left, R.Top + 2, R.Right, R.Bottom - 2));
+    KX := R.Left + Round((R.Right - R.Left) * FVolt / BronMaxVolt);
+    Brush.Color := clNavy;
+    FillRect(Rect(KX - 3, R.Top - 4, KX + 3, R.Bottom + 4));
+    Brush.Style := bsClear;
+    Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+    TextOut(R.Right + 4, R.Top - 3, '12V');
+  end;
+  PaintSelection;
+end;
+
+procedure TjanBron.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Bron (accu)', 'Source (battery)', 'Source (batterie)', 'Quelle (Akku)') +
+    ': ' + FormatFloat('0.0', FVolt) + ' V' + #13#10 +
+    Tr(FTaal,
+      'Schuifregelaar: spanning 0 tot 12 V.' + #13#10 +
+        '+ met een draad naar de + rail, - naar de - rail.' + #13#10 +
+        'Rechtsklik: inwendige weerstand.',
+      'Slider: voltage 0 to 12 V.' + #13#10 +
+        '+ with a wire to the + rail, - to the - rail.' + #13#10 +
+        'Right-click: internal resistance.',
+      'Curseur : tension de 0 à 12 V.' + #13#10 +
+        '+ avec un fil vers le rail +, - vers le rail -.' + #13#10 +
+        'Clic droit : résistance interne.',
+      'Schieberegler: Spannung 0 bis 12 V.' + #13#10 +
+        '+ mit einem Draht an die + Schiene, - an die - Schiene.' + #13#10 +
+        'Rechtsklick: Innenwiderstand.');
+end;
+
+procedure TjanBron.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Bron (accu)', 'Source (battery)', 'Source (batterie)', 'Quelle (Akku)') + ' > ', 0);
+  FOnStatus(Self, 'E = ' + FormatFloat('0.0', FVolt) + ' V   U = ' + FormatFloat('0.00', FKlem) +
+    ' V   I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanZekering }
+
+constructor TjanZekering.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := ZekeringW;
+  Height := ZekeringH;
+  FNomIdx := 2;           // 500 mA
+end;
+
+function TjanZekering.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+function TjanZekering.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(17, 1) else Result := Point(17, ZekeringH - 8);
+end;
+
+function TjanZekering.NominaalA: Double;
+begin
+  Result := ZekeringMA[FNomIdx] / 1000;
+end;
+
+procedure TjanZekering.SetNomIdx(const Value: Integer);
+begin
+  if (Value < Low(ZekeringMA)) or (Value > High(ZekeringMA)) or (Value = FNomIdx) then Exit;
+  FNomIdx := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanZekering.SetDoorgebrand(const Value: Boolean);
+begin
+  if Value = FDoorgebrand then Exit;
+  FDoorgebrand := Value;
+  Invalidate;
+  SendStatusToBar;
+end;
+
+procedure TjanZekering.NomClick(Sender: TObject);
+begin
+  NomIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanZekering.VervangClick(Sender: TObject);
+begin
+  Doorgebrand := False;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanZekering.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Zekering vervangen', 'Replace fuse', 'Remplacer le fusible', 'Sicherung ersetzen');
+  Mi.Enabled := FDoorgebrand;
+  Mi.OnClick := VervangClick;
+  APop.Items.Add(Mi);
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Nominale stroom', 'Rated current', 'Courant nominal', 'Nennstrom');
+  APop.Items.Add(Mi);
+  for i := Low(ZekeringMA) to High(ZekeringMA) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    if ZekeringMA[i] >= 1000 then
+      Sub.Caption := IntToStr(ZekeringMA[i] div 1000) + ' A'
+    else
+      Sub.Caption := IntToStr(ZekeringMA[i]) + ' mA';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FNomIdx;
+    Sub.OnClick := NomClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+procedure TjanZekering.Paint;
+var
+  R: TRect;
+  S: string;
+  CX, CY, TW: Integer;
+begin
+  CX := PinPos(0).X + 3;
+  CY := 24;
+  with Canvas do
+  begin
+    // geen achtergrond: de zekering is doorzichtig, alleen het buisje is te zien
+    Brush.Style := bsSolid;
+    // staand glazen buisje met het smeltdraadje
+    if FDoorgebrand then Brush.Color := RGBToColor(255, 210, 210)
+    else Brush.Color := RGBToColor(235, 245, 255);
+    R := Rect(CX - 6, 14, CX + 7, 34);
+    FillRect(R);
+    Pen.Color := clGray; Pen.Width := 1;
+    Brush.Style := bsClear;
+    Rectangle(R);
+    Brush.Style := bsSolid; Brush.Color := clGray;
+    FillRect(Rect(CX - 5, 10, CX + 6, 14));
+    FillRect(Rect(CX - 5, 34, CX + 6, 38));
+    Pen.Color := clBlack; Pen.Width := 2;
+    if FDoorgebrand then
+    begin
+      // gesmolten: het draadje is onderbroken
+      MoveTo(CX, 8); LineTo(CX, CY - 5);
+      MoveTo(CX, CY + 5); LineTo(CX, 38);
+      Pen.Color := clRed;
+      MoveTo(CX - 4, CY - 4); LineTo(CX + 4, CY + 4);
+      MoveTo(CX + 4, CY - 4); LineTo(CX - 4, CY + 4);
+    end
+    else
+    begin
+      MoveTo(CX, 8); LineTo(CX, 38);
+    end;
+    Pen.Width := 1;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+    // nominale stroom onder het buisje
+    if ZekeringMA[FNomIdx] >= 1000 then
+      S := IntToStr(ZekeringMA[FNomIdx] div 1000) + ' A'
+    else
+      S := IntToStr(ZekeringMA[FNomIdx]) + ' mA';
+    Brush.Style := bsClear;
+    Font.Name := 'Arial'; Font.Size := 6; Font.Style := [fsBold];
+    if FDoorgebrand then Font.Color := clRed else Font.Color := clNavy;
+    TW := TextWidth(S);
+    TextOut((ZekeringW - TW) div 2, 38, S);
+    // het draadje loopt door tot de onderste klem
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(CX, 48); LineTo(CX, ZekeringH - 8);
+    Pen.Width := 1;
+  end;
+  PaintSelection;
+end;
+
+procedure TjanZekering.UpdateHintText;
+var
+  S: string;
+begin
+  if ZekeringMA[FNomIdx] >= 1000 then
+    S := IntToStr(ZekeringMA[FNomIdx] div 1000) + ' A'
+  else
+    S := IntToStr(ZekeringMA[FNomIdx]) + ' mA';
+  Hint := Tr(FTaal, 'Zekering', 'Fuse', 'Fusible', 'Sicherung') + ': ' + S + #13#10 +
+    Tr(FTaal,
+      'In serie tussen de bron en de + rail.' + #13#10 +
+        'Smelt bij te veel stroom: rechtsklik om te vervangen.',
+      'In series between the source and the + rail.' + #13#10 +
+        'Blows when the current is too high: right-click to replace.',
+      'En série entre la source et le rail +.' + #13#10 +
+        'Fond si le courant est trop fort : clic droit pour le remplacer.',
+      'In Reihe zwischen Quelle und + Schiene.' + #13#10 +
+        'Brennt bei zu hohem Strom durch: Rechtsklick zum Ersetzen.');
+end;
+
+procedure TjanZekering.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Zekering', 'Fuse', 'Fusible', 'Sicherung') + ' > ', 0);
+  if FDoorgebrand then
+    FOnStatus(Self, Tr(FTaal, 'doorgebrand', 'blown', 'fondu', 'durchgebrannt'), 1)
+  else
+    FOnStatus(Self, Tr(FTaal, 'in orde', 'OK', 'en ordre', 'in Ordnung'), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanAmpMeter }
+
+constructor TjanAmpMeter.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := AmpMeterW;
+  Height := AmpMeterH;
+end;
+
+function TjanAmpMeter.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+function TjanAmpMeter.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 35) else Result := Point(AmpMeterW - 8, 35);
+end;
+
+procedure TjanAmpMeter.Paint;
+var
+  R: TRect;
+  S: string;
+  TW: Integer;
+begin
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    Brush.Color := clSilver;
+    R := ClientRect;
+    FillRect(R);
+    Frame3D(R, clBtnHighlight, clBtnShadow, 1);
+    Brush.Color := RGBToColor(220, 240, 250);
+    R := Rect(18, 5, 82, 30);
+    FillRect(R);
+    Frame3D(R, clBtnShadow, clBtnHighlight, 2);
+    Brush.Style := bsClear;
+    S := FormatFloat('0', FStroom * 1000);
+    Font.Name := 'Arial'; Font.Size := 12; Font.Style := [fsBold];
+    if FStroom > 0.00005 then Font.Color := clRed else Font.Color := clGray;
+    TW := TextWidth(S);
+    TextOut(60 - TW, 8, S);
+    Font.Size := 9; Font.Color := clBlack; Font.Style := [];
+    TextOut(62, 11, 'mA');
+    PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+    Brush.Style := bsClear;
+    Font.Size := 8; Font.Style := [fsBold]; Font.Color := clNavy;
+    TextOut(40, 34, 'A');
+  end;
+  PaintSelection;
+end;
+
+procedure TjanAmpMeter.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Milliampèremeter', 'Milliammeter', 'Milliampèremètre', 'Milliamperemeter') +
+    ': ' + FormatFloat('0', FStroom * 1000) + ' mA' + #13#10 +
+    Tr(FTaal,
+      'In serie tussen de bron en de + rail.' + #13#10 +
+        'Toont de stroom die de schakeling verbruikt.',
+      'In series between the source and the + rail.' + #13#10 +
+        'Shows the current the circuit uses.',
+      'En série entre la source et le rail +.' + #13#10 +
+        'Affiche le courant consommé par le circuit.',
+      'In Reihe zwischen Quelle und + Schiene.' + #13#10 +
+        'Zeigt den Strom, den die Schaltung verbraucht.');
+end;
+
+procedure TjanAmpMeter.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Milliampèremeter', 'Milliammeter', 'Milliampèremètre', 'Milliamperemeter') + ' > ', 0);
+  FOnStatus(Self, 'I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+// ============================================================
 // Uiteinde van een draad laten "springen" naar een ingang
 // ============================================================
 
@@ -5951,7 +7156,13 @@ function InputPins(C: TControl): TPinArray;
 var i: Integer;
 begin
   Result := nil;
-  if C is TjanLogicRun then
+  if C is TjanVoedingsDeel then
+  begin
+    // bron, zekering, milliampèremeter: alle klemmen
+    for i := 0 to TjanVoedingsDeel(C).PinCount - 1 do
+      Add(TjanVoedingsDeel(C).PinPos(i).X, TjanVoedingsDeel(C).PinPos(i).Y);
+  end
+  else if C is TjanLogicRun then
   begin
     for i := 0 to 3 do
       Add(1, TjanLogicRun.InputPinY(i));
@@ -6076,6 +7287,8 @@ var PiC,PoC,Best,P:TPoint;
     EndMode:TjanConMode;
     FromRail:TjanRail;
     HasDot:Boolean;
+    FromVoeding:Boolean;
+    Rl:TjanRail;
 begin
   if Parent=nil then exit;
   // alleen als het EINDE van de draad versleept werd (niet het begin)
@@ -6132,6 +7345,26 @@ begin
       end;
     end;
   end;
+  // begint de draad op een klem van de voedingskring (bron, zekering,
+  // meter), dan mag het einde ook op de lijn van een rail springen
+  FromVoeding:=False;
+  for i:=0 to Parent.ControlCount-1 do
+    if (Parent.Controls[i] is TjanVoedingsDeel) and Parent.Controls[i].Visible and
+       (TjanVoedingsDeel(Parent.Controls[i]).PinAt(PiC)>=0) then
+      FromVoeding:=True;
+  if FromVoeding then
+    for i:=0 to Parent.ControlCount-1 do
+      if (Parent.Controls[i] is TjanRail) and Parent.Controls[i].Visible then
+      begin
+        Rl:=TjanRail(Parent.Controls[i]);
+        if (PoC.y<Rl.SpanTop+2) or (PoC.y>Rl.SpanBottom-2) then continue;
+        Dist:=Abs(Rl.LineX-PoC.x);
+        if Dist<BestDist then
+        begin
+          BestDist:=Dist;
+          Best:=point(Rl.LineX,PoC.y);
+        end;
+      end;
   if (BestDist<=InputSnapTol) and ((Best.x<>PoC.x) or (Best.y<>PoC.y)) then
     PlaceEnds(PiC,Best);
 end;
@@ -6439,6 +7672,19 @@ var Pi,Po:TPoint;
     end;
     for ii:=0 to wc.ControlCount-1 do
     begin
+      // voedingskring: een draad die op een klem van de bron, zekering of
+      // milliampèremeter begint, krijgt de spanning van die klem
+      if (wc.controls[ii] is TjanVoedingsDeel) then
+      begin
+        Q:=TjanVoedingsDeel(wc.controls[ii]).PinAt(Pi);
+        if Q>=0 then
+        begin
+          SrcVolt:=VoedingsPinVolt(TjanVoedingsDeel(wc.controls[ii]),Q);
+          vi:=SrcVolt>=RailMinVolt-0.001;
+          exit;
+        end;
+        continue;
+      end;
       // LogicRun: een draad die op een uitgang begint
       if (wc.controls[ii] is TjanLogicRun) then
       begin
@@ -16566,24 +17812,68 @@ end;
 procedure TjanSimLight.Paint;
 var
 R:TRect;
+Dim:Double;
+BOn,BOff:TBitmap;
+x,y:Integer;
+COn,COff:TColor;
+
+  procedure DrawLamp(ACanvas:TCanvas; ALit:Boolean);
+  begin
+    if FKleur<>lkLamp then
+    begin
+      // led: links het aansluitblokje met pijl van het lampje, rechts de led
+      if ALit then
+        DrawBitmapPart(ACanvas,lAan,Rect(0,0,37,Self.Height))
+      else
+        DrawBitmapPart(ACanvas,lUit,Rect(0,0,37,Self.Height));
+      DrawLedSymbol(ACanvas,37,Self.Width-1,6,FKleur,ALit,SymOf(Self));
+    end
+    else if ALit then
+      PaintOutputSymbol(Self,ACanvas,lAan,0,True)
+    else
+      PaintOutputSymbol(Self,ACanvas,lUit,0,False);
+  end;
+
+  function Mix(A,B:TColor; F:Double):TColor;
+  begin
+    A:=ColorToRGB(A); B:=ColorToRGB(B);
+    Result:=RGBToColor(Round(Red(A)*F+Red(B)*(1-F)),Round(Green(A)*F+Green(B)*(1-F)),
+      Round(Blue(A)*F+Blue(B)*(1-F)));
+  end;
+
 begin
  With canvas do
  begin
    Lock;
    lUit.Transparent:=true; lAan.Transparent:=true;
-   if FKleur<>lkLamp then
+   // helderheid volgens de spanning van de voeding (12 V = vol); de pixels
+   // die aan en uit verschillen worden gemengd
+   Dim:=LampHelderheid(Self);
+   if FLit and (Dim<0.97) then
    begin
-     // led: links het aansluitblokje met pijl van het lampje, rechts de led
-     if FLit then
-       DrawBitmapPart(Canvas,lAan,Rect(0,0,37,Self.Height))
-     else
-       DrawBitmapPart(Canvas,lUit,Rect(0,0,37,Self.Height));
-     DrawLedSymbol(Canvas,37,Self.Width-1,6,FKleur,FLit,SymOf(Self));
+     DrawLamp(Canvas,False);
+     BOn:=TBitmap.Create; BOff:=TBitmap.Create;
+     try
+       BOn.SetSize(Self.Width,Self.Height); BOff.SetSize(Self.Width,Self.Height);
+       BOn.Canvas.Brush.Color:=clFuchsia; BOn.Canvas.FillRect(Rect(0,0,Self.Width,Self.Height));
+       BOff.Canvas.Brush.Color:=clFuchsia; BOff.Canvas.FillRect(Rect(0,0,Self.Width,Self.Height));
+       DrawLamp(BOn.Canvas,True);
+       DrawLamp(BOff.Canvas,False);
+       for y:=0 to Self.Height-1 do
+         for x:=0 to Self.Width-1 do
+         begin
+           COn:=BOn.Canvas.Pixels[x,y];
+           COff:=BOff.Canvas.Pixels[x,y];
+           if (COn=COff) or (COn=clFuchsia) then continue;
+           if COff=clFuchsia then COff:=Canvas.Pixels[x,y];
+           Canvas.Pixels[x,y]:=Mix(COn,COff,Dim);
+         end;
+     finally
+       BOn.Free; BOff.Free;
+     end;
    end
-   else If FLit=false then
-     PaintOutputSymbol(Self,Canvas,lUit,0,False)
-     else
-     PaintOutputSymbol(Self,Canvas,lAan,0,True);
+   else
+     DrawLamp(Canvas,FLit);
      brush.style:=bsclear;
      Font.Name:='Arial';
      Font.Size:=9;
@@ -18079,6 +19369,8 @@ var wc:TWinControl;
 begin
   Inc(SimRonde);
   wc:=parent;
+  // eerst de voedingskring: spanning op de rails, stroom in de meters
+  UpdateSupply(wc, True);
   for i:=0 to wc.ControlCount-1 do
     if (wc.controls[i] is TjanConnector) then
       TjanConnector(wc.controls[i]).connect;
@@ -18235,6 +19527,11 @@ begin
   cpu.Enabled:=false;
   cpu.OnTimer:=cpuOnTimer;
   cpu.Interval:=50;
+  // voedingskring ook buiten de simulatie (schuifregelaar, nieuwe draden)
+  FSupplyTimer := TTimer.Create(Self);
+  FSupplyTimer.Interval := 200;
+  FSupplyTimer.OnTimer := SupplyOnTimer;
+  FSupplyTimer.Enabled := True;
   FBColor:=clSilver;
   Align:=(alTop);
 
@@ -18700,12 +19997,15 @@ begin
       else if c is TjanMeter then
         SFile.Add(Format('TjanMeter;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
       else if c is TjanRail then
-        SFile.Add(RailFileLine(TjanRail(c)));
+        SFile.Add(RailFileLine(TjanRail(c)))
+      else if c is TjanVoedingsDeel then
+        SFile.Add(VoedingFileLine(c));
     end;
 
     // Paneel-instellingen achteraan
     SFile.Add(Format('Paneelkleur;%d;', [Paneel.Color]));
     SFile.Add(Format('Dotkleur;%d;', [Paneel.DotColor]));
+    SFile.Add('Voeding;1;');   // paneel met bron (geen bron bijzetten bij laden)
     if Paneel.ShowGrid then
       SFile.Add('Grid;True;')
     else
@@ -18742,11 +20042,13 @@ begin
               (c is TjanSimRelais) or (c is TjanSimBuzzer) or (c is TjanDisplay) or
               (c is TjanRail) or (c is TjanLogicRun) or (c is TjanSimMotor) or
               (c is TjanSimPersoon) or (c is TjanSimEindschakelaar) or
-              (c is TjanSimStappenteller)) then
+              (c is TjanSimStappenteller) or (c is TjanVoedingsDeel)) then
         Continue;
       s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
       if c is TjanRail then
         s := RailFileLine(TjanRail(c))
+      else if c is TjanVoedingsDeel then
+        s := VoedingFileLine(c)
       else if c is TjanConnector then
         with TjanConnector(c) do
           s := s + Format(';%d;%d;%.3f', [Ord(V_ConPos), Ord(V_ConShape), V_Edge])
@@ -18942,12 +20244,15 @@ begin
     else if c is TjanMeter then
       TempFile.Add(Format('TjanMeter;%d;%d;%d;%d;', [c.Height, c.Left, c.Top, c.Width]))
     else if c is TjanRail then
-      TempFile.Add(RailFileLine(TjanRail(c)));
+      TempFile.Add(RailFileLine(TjanRail(c)))
+    else if c is TjanVoedingsDeel then
+      TempFile.Add(VoedingFileLine(c));
   end;
 
   // Paneel-instellingen
   TempFile.Add(Format('Paneelkleur;%d;', [Paneel.Color]));
   TempFile.Add(Format('Dotkleur;%d;', [Paneel.DotColor]));
+  TempFile.Add('Voeding;1;');
   if Paneel.ShowGrid then
     TempFile.Add('Grid;True;')
   else
@@ -18970,6 +20275,8 @@ var
   EdgeFS: TFormatSettings;
   EdgeVal: Double;
   PersoonKlasse: TjanSimPersoonClass;
+  VoedingMark: Boolean;   // regel Voeding;1; (paneel met bron)
+  VD: TjanVoedingsDeel;
 
   procedure AddCommonSimProps(const AClassName: string);
   var
@@ -18986,6 +20293,7 @@ begin
   // Geen nieuw object meer "aan de muis": koos je in de balk een component
   // maar plaatste je het niet, dan zou anders na het laden een object van
   // het paneel de muis volgen (zie GridMouseMove in main.pas).
+  VoedingMark := False;
   FNew := False;
   wc := FParent;
   FFilterLijst.Clear;
@@ -19060,6 +20368,46 @@ begin
       obj[2] := Copy(S, 1, positie - 1);           // True / False
       if Assigned(Paneel) then
          Paneel.ShowGrid := (Trim(obj[2]) = 'True');
+      Continue;
+    end;
+
+    // Voeding;1;  (paneel uit een versie met bron: geen bron bijzetten)
+    if obj[1] = 'Voeding' then
+    begin
+      VoedingMark := True;
+      Continue;
+    end;
+
+    // TjanBron;h;l;t;w;spanning x10;Ri;  TjanZekering;h;l;t;w;stroom;
+    // TjanAmpMeter;h;l;t;w;
+    if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') then
+    begin
+      with TStringList.Create do
+      try
+        Delimiter := ';';
+        StrictDelimiter := True;
+        DelimitedText := S;
+        if Count >= 3 then
+        begin
+          if obj[1] = 'TjanBron' then VD := TjanBron.Create(Self)
+          else if obj[1] = 'TjanZekering' then VD := TjanZekering.Create(Self)
+          else VD := TjanAmpMeter.Create(Self);
+          VD.Parent := wc;
+          VD.Tag := wc.ControlCount;
+          SetupVoedingsDeel(VD);
+          VD.SetBounds(StrToIntDef(Trim(Strings[1]), 0), StrToIntDef(Trim(Strings[2]), 0),
+            VD.Width, VD.Height);
+          if (VD is TjanBron) and (Count >= 6) then
+          begin
+            TjanBron(VD).RiIdx := StrToIntDef(Trim(Strings[5]), 1);
+            TjanBron(VD).Volt := StrToIntDef(Trim(Strings[4]), 120) / 10;
+          end
+          else if (VD is TjanZekering) and (Count >= 5) then
+            TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2);
+        end;
+      finally
+        Free;
+      end;
       Continue;
     end;
 
@@ -19775,6 +21123,10 @@ begin
   BlokkeerObjecten(False);
   // paneel bewaard met een andere tekenwijze: voedingsdraden bijstellen
   RealignPowerWires(wc);
+  // oud paneel (zonder bron): een bron met draden naar de rails bijzetten
+  if not VoedingMark then
+    EnsureBron;
+  UpdateSupply(wc, True);
 end;
 
 function TjanSimLogicBox.AddRail(ALeft, ATop, AHeight: Integer; APlus: Boolean;
@@ -19859,6 +21211,209 @@ begin
   FObjectID := R.Tag;
   FNew := True;
   Screen.Cursor := crCross;
+end;
+
+procedure TjanSimLogicBox.SetupVoedingsDeel(D: TjanVoedingsDeel);
+begin
+  D.Box := Self;
+  D.BTaal := StatTaalToBTaal(Language);
+  D.OnStatus := StatusFromChild;
+end;
+
+// 0 = bron (accu), 1 = zekering, 2 = milliampèremeter
+procedure TjanSimLogicBox.NewVoedingsDeel(AKind: Integer);
+var
+  D: TjanVoedingsDeel;
+begin
+  if FParent = nil then Exit;
+  case AKind of
+    0: D := TjanBron.Create(Self);
+    1: D := TjanZekering.Create(Self);
+  else
+    D := TjanAmpMeter.Create(Self);
+  end;
+  D.Parent := FParent;
+  SetupVoedingsDeel(D);
+  // zoals een nieuw component uit de balk: volgt de muis tot de klik
+  D.Visible := False;
+  D.Left := -200;
+  D.Tag := FParent.ControlCount;
+  FObjectID := D.Tag;
+  FNew := True;
+  Screen.Cursor := crCross;
+end;
+
+// Een paneel van vóór de bron (versie 1.10 en ouder) heeft rails met een
+// eigen spanning. Zonder bron zou alles op 0 V staan: zet daarom links van
+// elke + rail een bron met die spanning (zonder inwendige weerstand, zodat
+// het paneel werkt zoals vroeger) en verbind ze met de rails.
+procedure TjanSimLogicBox.EnsureBron;
+var
+  wc: TWinControl;
+  i, k, X, Y, Y1, Y2: Integer;
+  RP, RM: TjanRail;
+  B: TjanBron;
+  A, E: TPoint;
+  WA: TRect;
+
+  function Clamp(V, Lo, Hi: Integer): Integer;
+  begin
+    Result := V;
+    if Result < Lo then Result := Lo;
+    if Result > Hi then Result := Hi;
+  end;
+
+  procedure AddWire(const AFrom, ATo: TPoint; AEdge: Double);
+  var
+    Con: TjanConnector;
+  begin
+    Con := TjanConnector.Create(Self);
+    Con.Parent := wc;
+    Con.Tag := wc.ControlCount;
+    if ATo.X >= AFrom.X then
+    begin
+      if ATo.Y >= AFrom.Y then Con.V_ConPos := jcpTL else Con.V_ConPos := jcpBL;
+    end
+    else if ATo.Y >= AFrom.Y then Con.V_ConPos := jcpTR
+    else Con.V_ConPos := jcpBR;
+    Con.PlaceEnds(AFrom, ATo);
+    // waar de knik in de draad zit (0..1); -1: meteen aan het begin, zodat
+    // de draad eerst recht naar beneden gaat en dan opzij
+    if AEdge < 0 then
+    begin
+      if Con.Width > 0 then Con.V_Edge := 4 / Con.Width;
+    end
+    else
+      Con.V_Edge := AEdge;
+    Con.Visible := True;
+  end;
+
+begin
+  wc := FParent;
+  if wc = nil then Exit;
+  for i := 0 to wc.ControlCount - 1 do
+    if wc.Controls[i] is TjanBron then Exit;
+  if wc is TjanGridS then
+    WA := TjanGridS(wc).GetWorkAreaRect
+  else
+    WA := wc.ClientRect;
+  for i := wc.ControlCount - 1 downto 0 do
+  begin
+    if not ((wc.Controls[i] is TjanRail) and TjanRail(wc.Controls[i]).Plus and
+            wc.Controls[i].Visible) then Continue;
+    RP := TjanRail(wc.Controls[i]);
+    // de dichtste - rail
+    RM := nil;
+    for k := 0 to wc.ControlCount - 1 do
+      if (wc.Controls[k] is TjanRail) and wc.Controls[k].Visible and
+         not TjanRail(wc.Controls[k]).Plus then
+        if (RM = nil) or (Abs(TjanRail(wc.Controls[k]).LineX - RP.LineX) <
+                          Abs(RM.LineX - RP.LineX)) then
+          RM := TjanRail(wc.Controls[k]);
+    B := TjanBron.Create(Self);
+    B.Parent := wc;
+    SetupVoedingsDeel(B);
+    B.RiIdx := 0;
+    B.Volt := RP.SavedVolt;
+    // De klemmen zitten onderaan (+ links, - rechts). De bron komt links
+    // van de + rail, met de klemmen iets boven de onderkant van de rail:
+    // + gaat naar beneden en dan naar rechts tot onderaan de + rail;
+    // - gaat dieper naar beneden, onder de + rail door, tot aan de - rail.
+    Y1 := RP.SpanBottom - 4;                 // waar + op de + rail komt
+    X := RP.Left - BronW - 24;
+    if X < WA.Left + 4 then X := WA.Left + 4;
+    Y := Y1 - 14 - (BronH - 7);              // klemmen 14 boven Y1
+    Y := Clamp(Y, WA.Top + 4, WA.Bottom - BronH - 4);
+    B.SetBounds(X, Y, BronW, BronH);
+    B.Tag := wc.ControlCount;
+    // + van de bron naar de + rail
+    A := B.PinCenter(0);
+    E := Point(RP.LineX, Clamp(Y1, A.Y + 6, RP.SpanBottom - 2));
+    AddWire(A, E, -1);
+    // - van de bron naar de - rail, onder de + rail door
+    if RM <> nil then
+    begin
+      A := B.PinCenter(1);
+      Y2 := RP.SpanBottom + 12;
+      if Y2 < A.Y + 6 then Y2 := A.Y + 6;
+      // de - rail zo nodig wat langer maken tot onder die draad
+      if RM.SpanBottom < Y2 + 4 then
+        RM.Height := Y2 + 4 + RailFootH - RM.Top + 1;
+      if RM.SpanTop > Y2 - 4 then
+        Y2 := RM.SpanTop + 4;
+      E := Point(RM.LineX, Y2);
+      AddWire(A, E, -1);
+    end;
+  end;
+  UpdateSupply(wc, True);
+end;
+
+procedure TjanSimLogicBox.SupplyOnTimer(Sender: TObject);
+begin
+  // tijdens de simulatie doet cpuOnTimer dit
+  if (FParent <> nil) and not cpu.Enabled then
+    UpdateSupply(FParent, True);
+end;
+
+// knoppen van de voedingskring: 0 = bron, 1 = zekering, 2 = mA-meter
+procedure TjanSimLogicBox.DrawVoedingButton(const R: TRect; AKind: Integer; ADown: Boolean);
+var
+  Rb: TRect;
+  CX, CY, K: Integer;
+begin
+  Rb := R;
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    Brush.Color := clSilver;
+    if FSymbolen <> Afbeelding then Brush.Color := SymKnopKleur;
+    if not ADown then
+      Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+    else
+      Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+    FillRect(Rb);
+    CX := (R.Left + R.Right) div 2;
+    CY := (R.Top + R.Bottom) div 2;
+    Pen.Color := clBlack;
+    Pen.Width := 1;
+    case AKind of
+      0:
+        begin
+          // accu (batterij van cellen): lange en korte platen met
+          // stippellijn ertussen, zoals het schemasymbool
+          K := R.Left + (R.Right - R.Left - 16) div 2;
+          Brush.Color := clBlack;
+          FillRect(Rect(K, CY, K + 2, CY + 1));            // aansluiting links
+          FillRect(Rect(K + 1, CY - 5, K + 2, CY + 6));    // lange plaat
+          FillRect(Rect(K + 3, CY - 2, K + 4, CY + 3));    // korte plaat
+          FillRect(Rect(K + 5, CY, K + 6, CY + 1));        // stippels
+          FillRect(Rect(K + 7, CY, K + 8, CY + 1));
+          FillRect(Rect(K + 9, CY, K + 10, CY + 1));
+          FillRect(Rect(K + 11, CY - 5, K + 12, CY + 6));  // lange plaat
+          FillRect(Rect(K + 13, CY - 2, K + 14, CY + 3));  // korte plaat
+          FillRect(Rect(K + 13, CY, K + 16, CY + 1));      // aansluiting rechts
+        end;
+      1:
+        begin
+          // zekering: buisje met draadje
+          Brush.Style := bsClear;
+          Rectangle(Rect(CX - 7, CY - 4, CX + 8, CY + 5));
+          MoveTo(R.Left + 3, CY); LineTo(R.Right - 3, CY);
+        end;
+    else
+      begin
+        // milliampèremeter: cirkel met A
+        Brush.Style := bsClear;
+        K := (R.Right - R.Left) div 2 - 3;
+        if K > 9 then K := 9;
+        Ellipse(Rect(CX - K, CY - K, CX + K + 1, CY + K + 1));
+        Font.Name := 'Arial'; Font.Size := 8; Font.Style := [fsBold]; Font.Color := clNavy;
+        TextOut(CX - TextWidth('A') div 2 + 1, CY - TextHeight('A') div 2, 'A');
+      end;
+    end;
+    Brush.Style := bsSolid;
+    Brush.Color := clSilver;
+  end;
 end;
 
 procedure TjanSimLogicBox.LoadPanel(welke: string; Paneel: TjanGridS; codec: Boolean);
@@ -20321,6 +21876,7 @@ begin
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
+  DBron:=false;DZekering:=false;DAmpMeter:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -20352,6 +21908,9 @@ begin
   else if ptinrect(RSlagboom,p) and (KSlagboom=true) then DSlagboom:=true
   else if PtInRect(RRailPlus, P) then DRailPlus := True
   else if PtInRect(RRailMin, P) then DRailMin := True
+  else if PtInRect(RBron, P) then DBron := True
+  else if PtInRect(RZekering, P) then DZekering := True
+  else if PtInRect(RAmpMeter, P) then DAmpMeter := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -20396,6 +21955,14 @@ begin
   else if PtInRect(RSlagboom, P) then NewHint := FHSlagboom
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
+  else if PtInRect(RBron, P) then
+    NewHint := Tr(StatTaalToBTaal(Language), 'maak Bron (accu, 0 tot 12 V)', 'create Source (battery, 0 to 12 V)',
+      'faire Source (batterie, 0 à 12 V)', 'Quelle erstellen (Akku, 0 bis 12 V)')
+  else if PtInRect(RZekering, P) then
+    NewHint := Tr(StatTaalToBTaal(Language), 'maak Zekering', 'create Fuse', 'faire Fusible', 'Sicherung erstellen')
+  else if PtInRect(RAmpMeter, P) then
+    NewHint := Tr(StatTaalToBTaal(Language), 'maak Milliampèremeter', 'create Milliammeter',
+      'faire Milliampèremètre', 'Milliamperemeter erstellen')
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -20560,6 +22127,9 @@ begin
       if (wc.controls[i] is TjanSimStappenteller) then
         TjanSimStappenteller(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanVoedingsDeel) then
+        TjanVoedingsDeel(wc.Controls[i]).Lock := blokkeer;
+   for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanMeter) then
         TjanMeter(wc.Controls[i]).Lock := blokkeer;
    for i := wc.ControlCount - 1 downto 0 do
@@ -20669,6 +22239,9 @@ begin
         wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanSimStappenteller) then
+        wc.Controls[i].Free;
+   for i := wc.ControlCount - 1 downto 0 do
+      if (wc.controls[i] is TjanVoedingsDeel) then
         wc.Controls[i].Free;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanRail) then
@@ -20834,6 +22407,7 @@ var
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
+    DBron := False; DZekering := False; DAmpMeter := False;
 
     // nieuw
     DSquare := False;
@@ -21040,6 +22614,12 @@ begin
     NewRail(True)
   else if DRailMin then
     NewRail(False)
+  else if DBron then
+    NewVoedingsDeel(0)
+  else if DZekering then
+    NewVoedingsDeel(1)
+  else if DAmpMeter then
+    NewVoedingsDeel(2)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -21470,7 +23050,8 @@ procedure TjanSimLogicBox.SelectObject(AObj: TObject);
     else if Obj is TjanSimMotor then TjanSimMotor(Obj).Selected := AValue
     else if Obj is TjanSimPersoon then TjanSimPersoon(Obj).Selected := AValue
     else if Obj is TjanSimEindschakelaar then TjanSimEindschakelaar(Obj).Selected := AValue
-    else if Obj is TjanSimStappenteller then TjanSimStappenteller(Obj).Selected := AValue;
+    else if Obj is TjanSimStappenteller then TjanSimStappenteller(Obj).Selected := AValue
+    else if Obj is TjanVoedingsDeel then TjanVoedingsDeel(Obj).Selected := AValue;
     // aanpassen voor volgend object
   end;
 
@@ -21552,6 +23133,8 @@ begin
       TjanSimEindschakelaar(c).BTaal := s
     else if c is TjanSimStappenteller then
       TjanSimStappenteller(c).BTaal := s
+    else if c is TjanVoedingsDeel then
+      TjanVoedingsDeel(c).BTaal := s
     else if c is TjanRail then
       TjanRail(c).BTaal := s
     else if c is TjanDipSwitsh then
@@ -21798,6 +23381,44 @@ procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integ
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
 begin
+  if Kind = 11 then
+  begin
+    // milliampèremeter: zoals de voltmeter, maar met mA
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    Canvas.Pen.Width := 1;
+    if FSymbolen = Afbeelding then
+    begin
+      // het plaatje van de voltmeter, met mA in plaats van V
+      Canvas.Draw(X, Y, Bm);
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := clBlack;
+      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      Canvas.Brush.Style := bsClear;
+      Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 9;
+      Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clLime;
+      Canvas.TextOut(X + Bm.Width div 2 - Canvas.TextWidth('mA') div 2,
+                     Y + Bm.Height div 2 - Canvas.TextHeight('mA') div 2, 'mA');
+    end
+    else
+    begin
+      // schemasymbool: cirkel met mA
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := SymKnopKleur;
+      Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
+      SymPen(Canvas, clBlack);
+      Canvas.Line(X + 1, Y + 11, X + 3, Y + 11);
+      Canvas.Line(X + 20, Y + 11, X + 22, Y + 11);
+      Canvas.Brush.Color := clWhite;
+      Canvas.Ellipse(X + 2, Y + 1, X + 22, Y + 21);
+      Canvas.Brush.Style := bsClear;
+      Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 7;
+      Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clBlack;
+      Canvas.TextOut(X + 12 - Canvas.TextWidth('mA') div 2,
+                     Y + 11 - Canvas.TextHeight('mA') div 2, 'mA');
+    end;
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    Exit;
+  end;
   if Kind = 10 then
   begin
     // slagboom: geen plaatje, altijd getekend (paal met rood-witte boom)
@@ -22715,6 +24336,20 @@ begin
         HK:= H+TOP;
       end;
 
+      // milliampèremeter: zelfde soort knop, direct onder de voltmeter
+      RAmpMeter := Rect(0, 0, 0, 0);
+      if FVoeding then
+      begin
+        RAmpMeter := Rect(LK, TOP, BK, HK);
+        Rb := RAmpMeter;
+        if not DAmpMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(11, bmMeter, LK+1, TOP+2);
+        TOP:=TOP+H+SPATIE;
+        HK:= H+TOP;
+      end;
+
       // persoon en wagentje: twee halve knoppen naast elkaar (zoals de rails)
       RPersoon := Rect(0, 0, 0, 0);
       RWagen := Rect(0, 0, 0, 0);
@@ -22766,6 +24401,8 @@ begin
       // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
       RRailMin := Rect(0, 0, 0, 0);
+      RBron := Rect(0, 0, 0, 0);
+      RZekering := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
       TOP := TOP + 2;
@@ -22773,6 +24410,12 @@ begin
       RRailMin := Rect(LK + 15, TOP, LK + 32, TOP + H);
       DrawRailButton(RRailPlus, True, DRailPlus);
       DrawRailButton(RRailMin, False, DRailMin);
+      // voedingskring: bron en zekering
+      TOP := TOP + H + SPATIE;
+      RBron := Rect(LK - 4, TOP, LK + 13, TOP + H);
+      RZekering := Rect(LK + 15, TOP, LK + 32, TOP + H);
+      DrawVoedingButton(RBron, 0, DBron);
+      DrawVoedingButton(RZekering, 1, DZekering);
       end;
     end;
   end;
@@ -23317,6 +24960,19 @@ begin
         NextX(B + SPATIE);
       end;
 
+      // milliampèremeter: zelfde soort knop, direct naast de voltmeter
+      RAmpMeter := Rect(0, 0, 0, 0);
+      if FVoeding then
+      begin
+        RAmpMeter := Rect(LK, TOP, BK, HK);
+        Rb := RAmpMeter;
+        if not DAmpMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(11, bmMeter, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
       // persoon, wagentje en muziekdoos: even breed als de andere knoppen
       RPersoon := Rect(0, 0, 0, 0);
       RWagen := Rect(0, 0, 0, 0);
@@ -23357,14 +25013,20 @@ begin
       // voedingsrails: + en - als aparte groep (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
       RRailMin := Rect(0, 0, 0, 0);
+      RBron := Rect(0, 0, 0, 0);
+      RZekering := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
-        NextX(20 - SPATIE);
-        RRailPlus := Rect(LK, TOP, BK, HK);
+        // halve knoppen: + en - rail, bron, zekering
+        NextX(8);
+        RRailPlus := Rect(LK, TOP, LK + 17, HK);
         DrawRailButton(RRailPlus, True, DRailPlus);
-        NextX(B + SPATIE);
-        RRailMin := Rect(LK, TOP, BK, HK);
+        RRailMin := Rect(LK + 19, TOP, LK + 36, HK);
         DrawRailButton(RRailMin, False, DRailMin);
+        RBron := Rect(LK + 38, TOP, LK + 55, HK);
+        DrawVoedingButton(RBron, 0, DBron);
+        RZekering := Rect(LK + 57, TOP, LK + 74, HK);
+        DrawVoedingButton(RZekering, 1, DZekering);
       end;
     end;
   end;
@@ -23790,6 +25452,19 @@ begin
         NextX(B + SPATIE);
       end;
 
+      // milliampèremeter: zelfde soort knop, direct naast de voltmeter
+      RAmpMeter := Rect(0, 0, 0, 0);
+      if FVoeding then
+      begin
+        RAmpMeter := Rect(LK, TOP, BK, HK);
+        Rb := RAmpMeter;
+        if not DAmpMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(11, bmMeter, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
       // persoon, wagentje en muziekdoos: even breed als de andere knoppen
       RPersoon := Rect(0, 0, 0, 0);
       RWagen := Rect(0, 0, 0, 0);
@@ -23830,14 +25505,20 @@ begin
       // voedingsrails: + en - als aparte groep (KVoeding)
       RRailPlus := Rect(0, 0, 0, 0);
       RRailMin := Rect(0, 0, 0, 0);
+      RBron := Rect(0, 0, 0, 0);
+      RZekering := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
-        NextX(20 - SPATIE);
-        RRailPlus := Rect(LK, TOP, BK, HK);
+        // halve knoppen: + en - rail, bron, zekering
+        NextX(8);
+        RRailPlus := Rect(LK, TOP, LK + 17, HK);
         DrawRailButton(RRailPlus, True, DRailPlus);
-        NextX(B + SPATIE);
-        RRailMin := Rect(LK, TOP, BK, HK);
+        RRailMin := Rect(LK + 19, TOP, LK + 36, HK);
         DrawRailButton(RRailMin, False, DRailMin);
+        RBron := Rect(LK + 38, TOP, LK + 55, HK);
+        DrawVoedingButton(RBron, 0, DBron);
+        RZekering := Rect(LK + 57, TOP, LK + 74, HK);
+        DrawVoedingButton(RZekering, 1, DZekering);
       end;
     end;
   end;
@@ -23921,6 +25602,8 @@ begin
     TjanSimEindschakelaar(AComponent).BTaal := Taal
   else if AComponent is TjanSimStappenteller then
     TjanSimStappenteller(AComponent).BTaal := Taal
+  else if AComponent is TjanVoedingsDeel then
+    TjanVoedingsDeel(AComponent).BTaal := Taal
   else if AComponent is TjanRail then
     TjanRail(AComponent).BTaal := Taal
   else if AComponent is TjanMeter then
@@ -24144,6 +25827,17 @@ procedure TjanSimLogicBox.Notification(AComponent: TComponent; Operation: TOpera
       Exit;
     end;
 
+    // bron, zekering, milliampèremeter
+    if AObj is TjanVoedingsDeel then
+    begin
+      with TjanVoedingsDeel(AObj) do
+      begin
+        Box := Self;
+        if not Assigned(OnStatus) then OnStatus := StatusFromChild;
+      end;
+      Exit;
+    end;
+
     // Stappenteller
     if AObj is TjanSimStappenteller then
     begin
@@ -24318,7 +26012,7 @@ begin
      (C is TjanSimLight) or (C is TjanSimRelais) or (C is TjanSimBuzzer) or
      (C is TjanDisplay) or (C is TjanMeter) or (C is TjanRail) or (C is TjanLogicRun) or
      (C is TjanSimMotor) or (C is TjanSimPersoon) or (C is TjanSimEindschakelaar) or
-     (C is TjanSimStappenteller));
+     (C is TjanSimStappenteller) or (C is TjanVoedingsDeel));
   // vergrendelde objecten blijven staan
   if Result and IsPublishedProp(C, 'Lock') then
     Result := GetOrdProp(C, 'Lock') = 0;
