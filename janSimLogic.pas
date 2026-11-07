@@ -21244,13 +21244,15 @@ begin
 end;
 
 // Een paneel van vóór de bron (versie 1.10 en ouder) heeft rails met een
-// eigen spanning. Zonder bron zou alles op 0 V staan: zet daarom links van
+// eigen spanning. Zonder bron zou alles op 0 V staan: zet daarom boven
 // elke + rail een bron met die spanning (zonder inwendige weerstand, zodat
 // het paneel werkt zoals vroeger) en verbind ze met de rails.
 procedure TjanSimLogicBox.EnsureBron;
+const
+  BronGap = 18;   // ruimte tussen de bronklemmen en het hoogste onderdeel
 var
   wc: TWinControl;
-  i, k, X, Y, Y1, Y2: Integer;
+  i, k, X, Y, Y1, Y2, MinTop, BronTop: Integer;
   RP, RM: TjanRail;
   B: TjanBron;
   A, E: TPoint;
@@ -21297,6 +21299,21 @@ begin
     WA := TjanGridS(wc).GetWorkAreaRect
   else
     WA := wc.ClientRect;
+  // De bron komt boven de + rail, boven alle onderdelen: de - draad loopt
+  // dan bovenlangs naar de - rail en kruist niets. Is er bovenaan te weinig
+  // plaats, dan schuift eerst het hele paneel wat naar beneden.
+  MinTop := MaxInt;
+  for i := 0 to wc.ControlCount - 1 do
+    if (wc.Controls[i] <> Self) and wc.Controls[i].Visible and
+       not (wc.Controls[i] is TCustomFrame) then
+      if wc.Controls[i].Top < MinTop then MinTop := wc.Controls[i].Top;
+  if MinTop = MaxInt then Exit;
+  BronTop := MinTop - BronGap - (BronH - 7);   // - draad BronGap-6 boven alles
+  if BronTop < WA.Top + 4 then
+  begin
+    ShiftPanelObjects(0, WA.Top + 4 - BronTop);
+    BronTop := WA.Top + 4;
+  end;
   for i := wc.ControlCount - 1 downto 0 do
   begin
     if not ((wc.Controls[i] is TjanRail) and TjanRail(wc.Controls[i]).Plus and
@@ -21315,32 +21332,33 @@ begin
     SetupVoedingsDeel(B);
     B.RiIdx := 0;
     B.Volt := RP.SavedVolt;
-    // De klemmen zitten onderaan (+ links, - rechts). De bron komt links
-    // van de + rail, met de klemmen iets boven de onderkant van de rail:
-    // + gaat naar beneden en dan naar rechts tot onderaan de + rail;
-    // - gaat dieper naar beneden, onder de + rail door, tot aan de - rail.
-    Y1 := RP.SpanBottom - 4;                 // waar + op de + rail komt
-    X := RP.Left - BronW - 24;
+    // De klemmen zitten onderaan (+ links, - rechts). De + klem staat net
+    // links van de + rail: + gaat recht naar beneden en dan naar rechts tot
+    // bovenaan de + rail; - gaat iets naar beneden en dan bovenlangs naar
+    // de - rail (die zo nodig naar boven verlengd wordt).
+    X := RP.LineX - 25;                      // + klem 18 links van de rail
     if X < WA.Left + 4 then X := WA.Left + 4;
-    Y := Y1 - 14 - (BronH - 7);              // klemmen 14 boven Y1
-    Y := Clamp(Y, WA.Top + 4, WA.Bottom - BronH - 4);
-    B.SetBounds(X, Y, BronW, BronH);
+    B.SetBounds(X, BronTop, BronW, BronH);
     B.Tag := wc.ControlCount;
     // + van de bron naar de + rail
     A := B.PinCenter(0);
-    E := Point(RP.LineX, Clamp(Y1, A.Y + 6, RP.SpanBottom - 2));
+    Y1 := Clamp(RP.SpanTop + 6, A.Y + 6, RP.SpanBottom - 2);
+    E := Point(RP.LineX, Y1);
     AddWire(A, E, -1);
-    // - van de bron naar de - rail, onder de + rail door
+    // - van de bron naar de - rail, boven de onderdelen
     if RM <> nil then
     begin
       A := B.PinCenter(1);
-      Y2 := RP.SpanBottom + 12;
-      if Y2 < A.Y + 6 then Y2 := A.Y + 6;
-      // de - rail zo nodig wat langer maken tot onder die draad
+      Y2 := A.Y + 9;
+      // de - rail zo nodig naar boven verlengen tot boven die draad
+      if RM.SpanTop > Y2 - 4 then
+      begin
+        Y := RM.Top - (RM.SpanTop - (Y2 - 4));
+        RM.SetBounds(RM.Left, Y, RM.Width, RM.Height + RM.Top - Y);
+      end;
+      // en naar beneden als de draad er toch onder ligt
       if RM.SpanBottom < Y2 + 4 then
         RM.Height := Y2 + 4 + RailFootH - RM.Top + 1;
-      if RM.SpanTop > Y2 - 4 then
-        Y2 := RM.SpanTop + 4;
       E := Point(RM.LineX, Y2);
       AddWire(A, E, -1);
     end;
