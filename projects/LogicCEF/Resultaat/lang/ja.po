@@ -1345,3 +1345,42 @@ msgstr "ヒューズを作成"
 
 msgid "create Milliammeter"
 msgstr "ミリアンペア計を作成"
+
+msgid "good contact"
+msgstr "良好な接触"
+
+msgid "long thin wire"
+msgstr "長く細い電線"
+
+msgid "poor contact"
+msgstr "接触不良"
+
+msgid "burnt contact"
+msgstr "焼損した接点"
+
+msgid "Kind"
+msgstr "種類"
+
+msgid "Resistance"
+msgstr "抵抗"
+
+msgid "In series in the supply line: some voltage is lost (U = I × R).\nMeasure it with a voltmeter across both terminals. Right-click: choose the kind."
+msgstr "電源ラインに直列: 電圧の一部が失われます (U = I × R)。\n2つの端子の間に電圧計をつないで測ります。右クリック: 種類を選ぶ。"
+
+msgid "create Resistance (contact, long wire)"
+msgstr "抵抗を作成 (接点、長い電線)"
+
+msgid "Power rail\n\n- + rail: plug inputs in on the right; the voltage comes from the source.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "電源レール\n\n- + レール: 入力を右側に差し込みます。電圧は電源から来ます。\n- - レール (グラウンド): 出力を左側に差し込みます。\n- 中央をドラッグで移動、端をドラッグで長さを変更。"
+
+msgid "Source (battery)\n\n- Slider: 0 to 12 V in steps of 0.5 V.\n- + with a wire to the + rail, - to the - rail.\n- Right-click: internal resistance."
+msgstr "電源 (バッテリー)\n\n- スライダー: 0〜12 V、0.5 V 刻み。\n- + は電線で + レールへ、- は - レールへ。\n- 右クリック: 内部抵抗。"
+
+msgid "Fuse\n\n- In series between the source and the + rail.\n- Blows when the current is too high.\n- Right-click: rated current, replace fuse."
+msgstr "ヒューズ\n\n- 電源と + レールの間に直列。\n- 電流が大きすぎると切れます。\n- 右クリック: 定格電流、ヒューズの交換。"
+
+msgid "Milliammeter\n\n- In series between the source and the + rail.\n- Shows the current the circuit uses."
+msgstr "ミリアンペア計\n\n- 電源と + レールの間に直列。\n- 回路が使う電流を表示します。"
+
+msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
+msgstr "抵抗 (接点)\n\n- 電源ラインに直列: 電圧降下 U = I x R。\n- 良好な接触 0.05 Ω、長く細い電線 1 Ω、接触不良 2 Ω、焼損した接点 10 Ω。\n- 2つの端子の間に電圧計をつないで電圧降下を測ります。\n- 右クリック: 種類を選ぶ。"

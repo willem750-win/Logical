@@ -13,7 +13,7 @@
   </figure>
 
   <h2 id="rails">The buttons</h2>
-  <p>At the bottom of the <a href="onderdelenbalk.html">component bar</a> there are four half buttons; the
+  <p>At the bottom of the <a href="onderdelenbalk.html">component bar</a> there are five half buttons; the
   milliammeter has a normal button, next to the voltmeter.</p>
   <table>
     <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
@@ -22,6 +22,7 @@
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Source (battery)</a></td><td>Voltage source of 0 to 12&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fuse</a></td><td>Blows when too much current flows.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliammeter</a></td><td>Measures the current the circuit uses.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Resistance (contact)</a></td><td>A contact or wire with a small resistance: some voltage is lost.</td></tr>
   </table>
   <ol class="steps">
     <li>Click the button of the component you want to place.</li>
@@ -91,6 +92,23 @@
   <p>The milliammeter measures the current flowing through the circuit, in mA. Put it in series in the + wire,
   between the source (or the fuse) and the + rail: the wire comes in on the left and continues on the right. A
   meter that is not in a closed circuit shows 0.</p>
+
+  <h2 id="weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">The resistance (contact)</h2>
+  <p>Every wire and every contact has a small resistance. When current flows through it, a little voltage is lost:
+  the <b>voltage drop</b> <b>U = I &times; R</b>. That voltage does not reach the loads, and the contact gets warm:
+  <b>P = I &times; I &times; R</b>.</p>
+  <p>Put the resistance in series in the + wire (or the &minus; wire), just like the milliammeter: the wire comes in
+  on the left and continues on the right. Right-click &rsaquo; <b>Kind</b>:</p>
+  <table>
+    <tr><th>Kind</th><th>Resistance</th><th>Where do you see it?</th></tr>
+    <tr><td>good contact</td><td>0.05&nbsp;&Omega;</td><td>a firmly tightened terminal</td></tr>
+    <tr><td>long thin wire</td><td>1&nbsp;&Omega;</td><td>a cable that is too thin to a distant lamp</td></tr>
+    <tr><td>poor contact</td><td>2&nbsp;&Omega;</td><td>a loose or oxidised terminal (default)</td></tr>
+    <tr><td>burnt contact</td><td>10&nbsp;&Omega;</td><td>a terminal that has become too hot</td></tr>
+  </table>
+  <p>The block turns orange to red as it gets warmer. Measure the voltage drop with a
+  <a href="#voltmeter">voltmeter</a>: + on the terminal on the source side, &minus; on the other terminal.
+  See <a href="les24.html">lesson 24</a>.</p>
 
   <h2 id="regels">What changes when there are rails on the panel?</h2>
   <p>As long as there is no rail on the panel, everything works as before. As soon as there is
@@ -166,8 +184,10 @@
   <ul>
     <li><b>+</b> (left): connect a wire, or plug the meter in on the right of a + rail. It then shows the
       voltage of that rail.</li>
-    <li><b>&minus;</b> (right): may stay open, or plug the meter in on the left of a &minus; rail, or run a wire from a &minus; rail to the dot on the right (parallel connection). The reading
-      stays the same; it only makes the circuit clearer.</li>
+    <li><b>&minus;</b> (right): may stay open; the meter then measures against ground. You may also plug the meter in on the left of a &minus; rail,
+      or run a wire from a &minus; rail to the dot on the right (parallel connection): the reading stays the same.
+      If you run a wire to the green square on the right, the meter measures the <b>difference</b> between + and &minus;,
+      for example the voltage drop across a <a href="#weerstand">contact</a>.</li>
   </ul>
   <p>A wire carries the voltage of its source:</p>
   <table>

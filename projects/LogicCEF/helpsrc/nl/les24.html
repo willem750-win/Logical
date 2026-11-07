@@ -1,0 +1,75 @@
+<!-- titel: Les 24 - Een verbrand contact -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektriciteit">Stroom en spanning</a> &rsaquo; Les 24 van 24</p>
+  <h1>Een verbrand contact</h1>
+  <div class="goal"><strong>Doel:</strong> zien dat een slecht of verbrand contact spanning wegneemt van de verbruikers,
+  die spanningsval meten met een voltmeter, en begrijpen waarom zo&rsquo;n contact warm wordt.</div>
+
+  <p><a class="open" href="../../panels/lessen/les24-verbrand-contact.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les24-verbrand-contact.png" alt="Bron van 12 V met zekering, milliampèremeter en een contact in de + draad, een voltmeter over het contact, drie lampen en een voltmeter op de + rail">
+    <figcaption>Een verbrand contact en drie lampen aan: 2,4&nbsp;V gaat verloren in het contact, de lampen krijgen nog 9,6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>De schakeling</h2>
+  <ul>
+    <li>De <a href="voeding.html#bron">bron</a> staat op <b>12&nbsp;V</b>, zonder inwendige weerstand (Ri = 0&nbsp;&Omega;).</li>
+    <li>De + klem gaat via een <a href="voeding.html#zekering">zekering</a> van 500&nbsp;mA, de
+      <a href="voeding.html#ampmeter">milliampèremeter</a> en een <a href="voeding.html#weerstand">contact</a> naar de + rail.
+      Het contact begint als <b>goed contact</b>.</li>
+    <li>De bovenste <a href="voeding.html#voltmeter">voltmeter</a> staat <b>over het contact</b>: + aan de klem aan de kant
+      van de bron, &minus; aan de klem aan de kant van de rail. Hij meet het verschil: de <b>spanningsval</b>.</li>
+    <li>De onderste voltmeter meet de spanning op de + rail: wat er overblijft voor de lampen.</li>
+  </ul>
+
+  <h2>Spanningsval en warmte</h2>
+  <p>De stroom van alle lampen gaat door het contact. Over het contact staat dan een spanning:</p>
+  <p class="formula"><b>U = I &times; R</b></p>
+  <p>Die spanning gaat verloren: de lampen krijgen 12&nbsp;V min de spanningsval. De twee voltmeters samen tonen dus
+  altijd 12&nbsp;V. Met drie lampen aan meet je:</p>
+  <table>
+    <tr><th>Contact</th><th>Milliampèremeter</th><th>Over het contact</th><th>Op de + rail</th></tr>
+    <tr><td>goed contact (0,05&nbsp;&Omega;)</td><td>303&nbsp;mA</td><td>0,0&nbsp;V</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>lange dunne draad (1&nbsp;&Omega;)</td><td>296&nbsp;mA</td><td>0,3&nbsp;V</td><td>11,7&nbsp;V</td></tr>
+    <tr><td>slecht contact (2&nbsp;&Omega;)</td><td>288&nbsp;mA</td><td>0,6&nbsp;V</td><td>11,4&nbsp;V</td></tr>
+    <tr><td>verbrand contact (10&nbsp;&Omega;)</td><td>242&nbsp;mA</td><td>2,4&nbsp;V</td><td>9,6&nbsp;V</td></tr>
+  </table>
+  <p>Het contact wordt ook warm. Het vermogen dat erin verloren gaat, is <b>P = U &times; I = I &times; I &times; R</b>:</p>
+  <ul>
+    <li>goed contact: 0,303&nbsp;A &times; 0,303&nbsp;A &times; 0,05&nbsp;&Omega; = 0,005&nbsp;W: je merkt er niets van;</li>
+    <li>verbrand contact: 0,242&nbsp;A &times; 0,242&nbsp;A &times; 10&nbsp;&Omega; = 0,59&nbsp;W: meer dan honderd keer zoveel,
+      op een klein plekje. Het blokje kleurt rood.</li>
+  </ul>
+  <p>In het echt is dat gevaarlijk: een warm contact oxideert, daardoor wordt de weerstand nog groter, en het
+  wordt nog warmer. Zo kan een losse klem in een stopcontact of een kabelschoen brand veroorzaken.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en zet de drie schakelaars aan. Noteer de stroom en de twee spanningen.</li>
+    <li>Rechtsklik op het contact en kies <b>Soort &rsaquo; lange dunne draad</b>, daarna <b>slecht contact</b> en
+      <b>verbrand contact</b>. Noteer telkens de meters en kijk naar de kleur van het blokje.</li>
+    <li>Tel telkens de twee spanningen op.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <ol>
+    <li>Laat het contact op <b>verbrand contact</b> staan en zet twee lampen uit. Wat tonen de meters nu? Waarom is
+      de spanningsval kleiner?</li>
+    <li>Waarom toont de voltmeter over een goed contact 0,0&nbsp;V, al loopt er 303&nbsp;mA door?</li>
+    <li>Een lamp heeft ongeveer 120&nbsp;&Omega; (zie <a href="les23.html">les 23</a>). Bereken de stroom en de twee
+      spanningen met <b>twee</b> lampen en een verbrand contact. Controleer daarna met de meters.</li>
+  </ol>
+  <details>
+    <summary>Oplossing</summary>
+    <ol>
+      <li>95&nbsp;mA, 0,9&nbsp;V over het contact en 11,1&nbsp;V op de rail. Minder stroom geeft minder spanningsval
+        (U = I &times; R). Daarom meet een elektricien een verdacht contact altijd <b>onder belasting</b>: zonder stroom
+        zie je niets.</li>
+      <li>U = 0,303&nbsp;A &times; 0,05&nbsp;&Omega; = 0,015&nbsp;V. Dat is te klein voor de meter, die één decimaal toont.</li>
+      <li>Twee lampen parallel: 120&nbsp;&Omega; / 2 = 60&nbsp;&Omega;. Met het contact erbij: 70&nbsp;&Omega;.
+        I = 12&nbsp;V / 70&nbsp;&Omega; = 0,171&nbsp;A. Over het contact: 0,171&nbsp;A &times; 10&nbsp;&Omega; = 1,7&nbsp;V,
+        op de rail 12&nbsp;V &minus; 1,7&nbsp;V = 10,3&nbsp;V. De meter toont 174&nbsp;mA: de schakelaars trekken er
+        nog een klein beetje bij.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les23.html">&larr; Les 23: De wet van Ohm</a><a href="leerpad.html">Leerpad &rarr;</a></div>

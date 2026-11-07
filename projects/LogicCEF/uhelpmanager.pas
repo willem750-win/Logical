@@ -163,6 +163,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'zekering'; end;
     'ampmeter':
       begin Result := 'voeding'; AAnchor := 'ampmeter'; end;
+    'weerstand':
+      begin Result := 'voeding'; AAnchor := 'weerstand'; end;
     'statusbalk':
       begin Result := 'paneel'; AAnchor := 'statusbalk'; end;
     'connector':
@@ -346,6 +348,29 @@ begin
         'Milliamperemeter'#13#10#13#10 +
         '- In Reihe zwischen Quelle und + Schiene.'#13#10 +
         '- Zeigt den Strom, den die Schaltung verbraucht.');
+
+    'weerstand':
+      Result := TrHelp(ABTaal,
+        'Weerstand (contact)'#13#10#13#10 +
+        '- In serie in de voedingsleiding: spanningsval U = I x R.'#13#10 +
+        '- Goed contact 0,05 ohm, lange dunne draad 1 ohm, slecht contact 2 ohm, verbrand contact 10 ohm.'#13#10 +
+        '- Meet de spanningsval met een voltmeter over de twee klemmen.'#13#10 +
+        '- Rechtsklik: soort kiezen.',
+        'Resistance (contact)'#13#10#13#10 +
+        '- In series in the supply line: voltage drop U = I x R.'#13#10 +
+        '- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.'#13#10 +
+        '- Measure the voltage drop with a voltmeter across both terminals.'#13#10 +
+        '- Right-click: choose the kind.',
+        'Résistance (contact)'#13#10#13#10 +
+        '- En série dans la ligne d''alimentation : chute de tension U = I x R.'#13#10 +
+        '- Bon contact 0,05 ohm, long fil fin 1 ohm, mauvais contact 2 ohm, contact brûlé 10 ohm.'#13#10 +
+        '- Mesurez la chute de tension avec un voltmètre entre les deux bornes.'#13#10 +
+        '- Clic droit : choisir le type.',
+        'Widerstand (Kontakt)'#13#10#13#10 +
+        '- In Reihe in der Versorgungsleitung: Spannungsabfall U = I x R.'#13#10 +
+        '- Guter Kontakt 0,05 Ohm, langer dünner Draht 1 Ohm, schlechter Kontakt 2 Ohm, verbrannter Kontakt 10 Ohm.'#13#10 +
+        '- Messen Sie den Spannungsabfall mit einem Voltmeter über beide Klemmen.'#13#10 +
+        '- Rechtsklick: Art wählen.');
 
     'meter':
       Result := TrHelp(ABTaal,
@@ -602,6 +627,7 @@ begin
     'tjanbron':         AControl.HelpKeyword := 'bron';
     'tjanzekering':     AControl.HelpKeyword := 'zekering';
     'tjanampmeter':     AControl.HelpKeyword := 'ampmeter';
+    'tjanweerstand':    AControl.HelpKeyword := 'weerstand';
     'tjanconnector':    AControl.HelpKeyword := 'connector';
     'tjansimlogicbox':  AControl.HelpKeyword := 'logicbox';
     'tjangrids':        AControl.HelpKeyword := 'grid';

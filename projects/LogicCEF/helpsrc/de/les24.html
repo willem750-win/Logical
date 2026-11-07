@@ -1,0 +1,77 @@
+<!-- titel: Lektion 24 - Ein verbrannter Kontakt -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektriciteit">Strom und Spannung</a> &rsaquo; Lektion 24 von 24</p>
+  <h1>Ein verbrannter Kontakt</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, dass ein schlechter oder verbrannter Kontakt den Verbrauchern Spannung
+  wegnimmt, diesen Spannungsabfall mit einem Voltmeter messen und verstehen, warum ein solcher Kontakt warm wird.</div>
+
+  <p><a class="open" href="../../panels/lessen/les24-verbrand-contact.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les24-verbrand-contact.png" alt="Quelle mit 12 V, Sicherung, Milliamperemeter und ein Kontakt im + Draht, ein Voltmeter über dem Kontakt, drei Lampen und ein Voltmeter an der + Schiene">
+    <figcaption>Ein verbrannter Kontakt und drei Lampen ein: 2,4&nbsp;V gehen im Kontakt verloren, die Lampen bekommen noch 9,6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Die Schaltung</h2>
+  <ul>
+    <li>Die <a href="voeding.html#bron">Quelle</a> steht auf <b>12&nbsp;V</b>, ohne Innenwiderstand (Ri = 0&nbsp;&Omega;).</li>
+    <li>Die + Klemme führt über eine <a href="voeding.html#zekering">Sicherung</a> von 500&nbsp;mA, das
+      <a href="voeding.html#ampmeter">Milliamperemeter</a> und einen <a href="voeding.html#weerstand">Kontakt</a> zur + Schiene.
+      Der Kontakt beginnt als <b>guter Kontakt</b>.</li>
+    <li>Das obere <a href="voeding.html#voltmeter">Voltmeter</a> liegt <b>über dem Kontakt</b>: + an der Klemme auf der
+      Seite der Quelle, &minus; an der Klemme auf der Seite der Schiene. Es misst den Unterschied: den <b>Spannungsabfall</b>.</li>
+    <li>Das untere Voltmeter misst die Spannung an der + Schiene: was für die Lampen übrig bleibt.</li>
+  </ul>
+
+  <h2>Spannungsabfall und Wärme</h2>
+  <p>Der Strom aller Lampen fließt durch den Kontakt. Über dem Kontakt liegt dann eine Spannung:</p>
+  <p class="formula"><b>U = I &times; R</b></p>
+  <p>Diese Spannung geht verloren: Die Lampen bekommen 12&nbsp;V minus den Spannungsabfall. Die beiden Voltmeter
+  zeigen zusammen also immer 12&nbsp;V. Mit drei eingeschalteten Lampen messen Sie:</p>
+  <table>
+    <tr><th>Kontakt</th><th>Milliamperemeter</th><th>Über dem Kontakt</th><th>An der + Schiene</th></tr>
+    <tr><td>guter Kontakt (0,05&nbsp;&Omega;)</td><td>303&nbsp;mA</td><td>0,0&nbsp;V</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>langer dünner Draht (1&nbsp;&Omega;)</td><td>296&nbsp;mA</td><td>0,3&nbsp;V</td><td>11,7&nbsp;V</td></tr>
+    <tr><td>schlechter Kontakt (2&nbsp;&Omega;)</td><td>288&nbsp;mA</td><td>0,6&nbsp;V</td><td>11,4&nbsp;V</td></tr>
+    <tr><td>verbrannter Kontakt (10&nbsp;&Omega;)</td><td>242&nbsp;mA</td><td>2,4&nbsp;V</td><td>9,6&nbsp;V</td></tr>
+  </table>
+  <p>Der Kontakt wird auch warm. Die Leistung, die darin verloren geht, ist <b>P = U &times; I = I &times; I &times; R</b>:</p>
+  <ul>
+    <li>guter Kontakt: 0,303&nbsp;A &times; 0,303&nbsp;A &times; 0,05&nbsp;&Omega; = 0,005&nbsp;W: Davon merkt man nichts;</li>
+    <li>verbrannter Kontakt: 0,242&nbsp;A &times; 0,242&nbsp;A &times; 10&nbsp;&Omega; = 0,59&nbsp;W: mehr als hundertmal so
+      viel, an einer kleinen Stelle. Der Block färbt sich rot.</li>
+  </ul>
+  <p>In Wirklichkeit ist das gefährlich: Ein warmer Kontakt oxidiert, dadurch wird der Widerstand noch größer, und er
+  wird noch wärmer. So kann eine lose Klemme in einer Steckdose oder ein Kabelschuh einen Brand verursachen.</p>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie die drei Schalter ein. Notieren Sie den Strom und die beiden Spannungen.</li>
+    <li>Klicken Sie mit der rechten Maustaste auf den Kontakt und wählen Sie <b>Art &rsaquo; langer dünner Draht</b>,
+      danach <b>schlechter Kontakt</b> und <b>verbrannter Kontakt</b>. Notieren Sie jedes Mal die Messgeräte und achten
+      Sie auf die Farbe des Blocks.</li>
+    <li>Zählen Sie jedes Mal die beiden Spannungen zusammen.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <ol>
+    <li>Lassen Sie den Kontakt auf <b>verbrannter Kontakt</b> und schalten Sie zwei Lampen aus. Was zeigen die
+      Messgeräte jetzt? Warum ist der Spannungsabfall kleiner?</li>
+    <li>Warum zeigt das Voltmeter über einem guten Kontakt 0,0&nbsp;V, obwohl 303&nbsp;mA hindurchfließen?</li>
+    <li>Eine Lampe hat etwa 120&nbsp;&Omega; (siehe <a href="les23.html">Lektion 23</a>). Berechnen Sie den Strom und die
+      beiden Spannungen mit <b>zwei</b> Lampen und einem verbrannten Kontakt. Prüfen Sie danach mit den Messgeräten.</li>
+  </ol>
+  <details>
+    <summary>Lösung</summary>
+    <ol>
+      <li>95&nbsp;mA, 0,9&nbsp;V über dem Kontakt und 11,1&nbsp;V an der Schiene. Weniger Strom ergibt weniger
+        Spannungsabfall (U = I &times; R). Deshalb misst ein Elektriker einen verdächtigen Kontakt immer
+        <b>unter Last</b>: Ohne Strom sieht man nichts.</li>
+      <li>U = 0,303&nbsp;A &times; 0,05&nbsp;&Omega; = 0,015&nbsp;V. Das ist zu klein für das Messgerät, das eine
+        Nachkommastelle zeigt.</li>
+      <li>Zwei Lampen parallel: 120&nbsp;&Omega; / 2 = 60&nbsp;&Omega;. Mit dem Kontakt: 70&nbsp;&Omega;.
+        I = 12&nbsp;V / 70&nbsp;&Omega; = 0,171&nbsp;A. Über dem Kontakt: 0,171&nbsp;A &times; 10&nbsp;&Omega; = 1,7&nbsp;V,
+        an der Schiene 12&nbsp;V &minus; 1,7&nbsp;V = 10,3&nbsp;V. Das Messgerät zeigt 174&nbsp;mA: Die Schalter nehmen
+        noch ein klein wenig auf.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les23.html">&larr; Lektion 23: Das ohmsche Gesetz</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

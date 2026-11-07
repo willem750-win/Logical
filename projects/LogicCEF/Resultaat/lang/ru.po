@@ -1345,3 +1345,42 @@ msgstr "создать предохранитель"
 
 msgid "create Milliammeter"
 msgstr "создать миллиамперметр"
+
+msgid "good contact"
+msgstr "хороший контакт"
+
+msgid "long thin wire"
+msgstr "длинный тонкий провод"
+
+msgid "poor contact"
+msgstr "плохой контакт"
+
+msgid "burnt contact"
+msgstr "обгоревший контакт"
+
+msgid "Kind"
+msgstr "Тип"
+
+msgid "Resistance"
+msgstr "Сопротивление"
+
+msgid "In series in the supply line: some voltage is lost (U = I × R).\nMeasure it with a voltmeter across both terminals. Right-click: choose the kind."
+msgstr "Последовательно в линии питания: часть напряжения теряется (U = I × R).\nИзмерьте его вольтметром между двумя клеммами. Правый щелчок: выбрать тип."
+
+msgid "create Resistance (contact, long wire)"
+msgstr "создать Сопротивление (контакт, длинный провод)"
+
+msgid "Power rail\n\n- + rail: plug inputs in on the right; the voltage comes from the source.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "Шина питания\n\n- Шина +: входы подключаются справа; напряжение поступает от источника.\n- Шина - (масса): выходы подключаются слева.\n- Перетащите середину, чтобы переместить, конец — чтобы изменить размер."
+
+msgid "Source (battery)\n\n- Slider: 0 to 12 V in steps of 0.5 V.\n- + with a wire to the + rail, - to the - rail.\n- Right-click: internal resistance."
+msgstr "Источник (аккумулятор)\n\n- Ползунок: от 0 до 12 В с шагом 0,5 В.\n- + проводом к шине +, - к шине -.\n- Правый щелчок: внутреннее сопротивление."
+
+msgid "Fuse\n\n- In series between the source and the + rail.\n- Blows when the current is too high.\n- Right-click: rated current, replace fuse."
+msgstr "Предохранитель\n\n- Последовательно между источником и шиной +.\n- Перегорает при слишком большом токе.\n- Правый щелчок: номинальный ток, заменить предохранитель."
+
+msgid "Milliammeter\n\n- In series between the source and the + rail.\n- Shows the current the circuit uses."
+msgstr "Миллиамперметр\n\n- Последовательно между источником и шиной +.\n- Показывает ток, потребляемый схемой."
+
+msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
+msgstr "Сопротивление (контакт)\n\n- Последовательно в линии питания: падение напряжения U = I x R.\n- Хороший контакт 0,05 Ом, длинный тонкий провод 1 Ом, плохой контакт 2 Ом, обгоревший контакт 10 Ом.\n- Измерьте падение напряжения вольтметром между двумя клеммами.\n- Правый щелчок: выбрать тип."

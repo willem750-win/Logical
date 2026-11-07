@@ -1943,8 +1943,8 @@ type
     RRailPlus, RRailMin: TRect;
     DRailPlus, DRailMin: Boolean;
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
-    RBron, RZekering, RAmpMeter: TRect;
-    DBron, DZekering, DAmpMeter: Boolean;
+    RBron, RZekering, RAmpMeter, RWeerstand: TRect;
+    DBron, DZekering, DAmpMeter, DWeerstand: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2939,6 +2939,7 @@ end;
     FMdp: TPoint;
     FNewLeft, FNewTop: Integer;
     FConnectors: TList;
+    FEntryPin: Integer;    // klem aan de kant van de bron (UpdateSupply)
     procedure AnchorConnectors;
     procedure MoveConnectors;
     procedure LockClick(Sender: TObject);
@@ -3053,6 +3054,33 @@ end;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Stroom: Double read FStroom;
+  end;
+
+  { TjanWeerstand: weerstand of contact in de voedingsleiding. Er staat een
+    kleine spanning over (U = I x R) en het wordt warm (P = I x I x R).
+    Pin 0 = links, pin 1 = rechts. Soort: goed contact, lange dunne draad,
+    slecht contact of verbrand contact (zie WeerstandOhm). }
+  TjanWeerstand = class(TjanVoedingsDeel)
+  private
+    FSoort: Integer;       // index in WeerstandOhm
+    FStroom: Double;       // A
+    FInVolt, FUitVolt: Double;
+    procedure SetSoort(const Value: Integer);
+    procedure SoortClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double;
+    function Vermogen: Double;   // W
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Stroom: Double read FStroom;
+  published
+    property Soort: Integer read FSoort write SetSoort;
   end;
 
   { TjanGroupSelect: meerdere objecten tegelijk selecteren en verplaatsen.
@@ -6091,6 +6119,28 @@ const
   BronW = 112; BronH = 84;
   ZekeringW = 40; ZekeringH = 58;
   AmpMeterW = 100; AmpMeterH = 51;
+  // weerstand/contact: goed contact, lange dunne draad, slecht contact,
+  // verbrand contact
+  WeerstandOhm: array[0..3] of Double = (0.05, 1, 2, 10);
+  WeerstandW = 100; WeerstandH = 42;
+
+// naam van soort I van de weerstand (zie WeerstandOhm)
+function WeerstandNaam(const ATaal: string; I: Integer): string;
+begin
+  case I of
+    0: Result := Tr(ATaal, 'goed contact', 'good contact', 'bon contact', 'guter Kontakt');
+    1: Result := Tr(ATaal, 'lange dunne draad', 'long thin wire', 'long fil fin', 'langer dünner Draht');
+    2: Result := Tr(ATaal, 'slecht contact', 'poor contact', 'mauvais contact', 'schlechter Kontakt');
+  else
+    Result := Tr(ATaal, 'verbrand contact', 'burnt contact', 'contact brûlé', 'verbrannter Kontakt');
+  end;
+end;
+
+function OhmText(R: Double): string;
+begin
+  if R < 1 then Result := FormatFloat('0.00', R) else Result := FormatFloat('0', R);
+  Result := Result + ' Ω';
+end;
 
 // stroom (A) die verbruiker C bij 12 V trekt als hij aan staat; 0 als hij
 // uit staat of niet aangesloten is. Bij een andere spanning evenredig
@@ -6208,8 +6258,8 @@ begin
   Result := nil;
   APin := -1;
   for i := 0 to P.ControlCount - 1 do
-    if ((P.Controls[i] is TjanZekering) or (P.Controls[i] is TjanAmpMeter)) and
-       P.Controls[i].Visible then
+    if ((P.Controls[i] is TjanZekering) or (P.Controls[i] is TjanAmpMeter) or
+        (P.Controls[i] is TjanWeerstand)) and P.Controls[i].Visible then
     begin
       APin := TjanVoedingsDeel(P.Controls[i]).PinAt(Pt);
       if APin >= 0 then
@@ -6217,15 +6267,18 @@ begin
     end;
 end;
 
-// volg de draden vanaf klem APin van bron B tot op een rail; de zekeringen
-// en meters onderweg komen in AParts (in volgorde)
+// volg de draden vanaf klem APin van bron B tot op een rail; de zekeringen,
+// meters en weerstanden onderweg komen in AParts (in volgorde; FEntryPin =
+// de klem aan de kant van de bron). Andere draden op een klem (bv. naar een
+// voltmeter) tellen niet mee.
 function FollowSupply(B: TjanBron; APin: Integer; AParts: TList): TjanRail;
 var
   P: TWinControl;
-  Pt, Other: TPoint;
-  Con, Came: TjanConnector;
-  D: TjanVoedingsDeel;
-  k, n: Integer;
+  Pt, A, Bp, Other: TPoint;
+  Con, Came, Next: TjanConnector;
+  D, NextD: TjanVoedingsDeel;
+  R: TjanRail;
+  i, k, NextK, n: Integer;
 begin
   Result := nil;
   P := B.Parent;
@@ -6233,15 +6286,36 @@ begin
   Came := nil;
   for n := 1 to 20 do
   begin
-    Con := WireAt(P, Pt, Came, Other);
-    if Con = nil then Exit;
-    Result := RailAtPoint(P, Other);
-    if Result <> nil then Exit;
-    D := SeriesPartAt(P, Other, k);
-    if (D = nil) or (AParts.IndexOf(D) >= 0) then Exit;
-    AParts.Add(D);
-    Pt := D.PinCenter(1 - k);
-    Came := Con;
+    Next := nil;
+    NextD := nil;
+    NextK := -1;
+    for i := 0 to P.ControlCount - 1 do
+    begin
+      if not ((P.Controls[i] is TjanConnector) and P.Controls[i].Visible) or
+         (P.Controls[i] = Came) then Continue;
+      Con := TjanConnector(P.Controls[i]);
+      Con.EndCenters(A, Bp);
+      if (Abs(A.X - Pt.X) <= VoedingPinTol) and (Abs(A.Y - Pt.Y) <= VoedingPinTol) then
+        Other := Bp
+      else if (Abs(Bp.X - Pt.X) <= VoedingPinTol) and (Abs(Bp.Y - Pt.Y) <= VoedingPinTol) then
+        Other := A
+      else
+        Continue;
+      R := RailAtPoint(P, Other);
+      if R <> nil then Exit(R);
+      D := SeriesPartAt(P, Other, k);
+      if (D <> nil) and (AParts.IndexOf(D) < 0) and (Next = nil) then
+      begin
+        Next := Con;
+        NextD := D;
+        NextK := k;
+      end;
+    end;
+    if Next = nil then Exit;
+    NextD.FEntryPin := NextK;
+    AParts.Add(NextD);
+    Pt := NextD.PinCenter(1 - NextK);
+    Came := Next;
   end;
 end;
 
@@ -6255,23 +6329,39 @@ var
   B: TjanBron;
   RPlus, RMin: TjanRail;
   PlusParts, MinParts: TList;
-  G, E, Rs, Amp, U, V, OldV: Double;
+  G, E, Rs, Rw, Amp, U, V, OldV, Vm: Double;
   HasMinRail, Closed, Blown: Boolean;
   Changed: Boolean;
   Z: TjanZekering;
   NewVolt: array of Double;
   Rails: array of TjanRail;
 
-  procedure SetPartVolts(D: TObject; AIn, AUit: Double);
+  procedure SetPinVolt(D: TObject; APin: Integer; AV: Double);
   begin
     if D is TjanZekering then
     begin
-      TjanZekering(D).FInVolt := AIn; TjanZekering(D).FUitVolt := AUit;
+      if APin = 0 then TjanZekering(D).FInVolt := AV else TjanZekering(D).FUitVolt := AV;
     end
     else if D is TjanAmpMeter then
     begin
-      TjanAmpMeter(D).FInVolt := AIn; TjanAmpMeter(D).FUitVolt := AUit;
+      if APin = 0 then TjanAmpMeter(D).FInVolt := AV else TjanAmpMeter(D).FUitVolt := AV;
+    end
+    else if D is TjanWeerstand then
+    begin
+      if APin = 0 then TjanWeerstand(D).FInVolt := AV else TjanWeerstand(D).FUitVolt := AV;
     end;
+  end;
+
+  // spanning aan de kant van de bron (ABron) en aan de kant van de rail
+  procedure SetPartVolts(D: TObject; ABron, ARail: Double);
+  var
+    K: Integer;
+  begin
+    if not (D is TjanVoedingsDeel) or (D is TjanBron) then Exit;
+    K := TjanVoedingsDeel(D).FEntryPin;
+    if (K < 0) or (K > 1) then K := 0;
+    SetPinVolt(D, K, ABron);
+    SetPinVolt(D, 1 - K, ARail);
   end;
 
   procedure SetMeter(D: TObject; AI: Double);
@@ -6280,7 +6370,23 @@ var
     begin
       TjanAmpMeter(D).FStroom := AI;
       if AInval then TjanAmpMeter(D).Invalidate;
+    end
+    else if (D is TjanWeerstand) and (Abs(TjanWeerstand(D).FStroom - AI) > 0.00005) then
+    begin
+      TjanWeerstand(D).FStroom := AI;
+      if AInval then TjanWeerstand(D).Invalidate;
     end;
+  end;
+
+  // som van de weerstanden (contacten) in de lijst
+  function SeriesOhm(L: TList): Double;
+  var
+    j: Integer;
+  begin
+    Result := 0;
+    for j := 0 to L.Count - 1 do
+      if TObject(L[j]) is TjanWeerstand then
+        Result := Result + TjanWeerstand(L[j]).Ohm;
   end;
 
 begin
@@ -6301,7 +6407,7 @@ begin
     else
       G := G + LoadAmps12(C) / BronMaxVolt;
     // meters en zekeringen buiten een kring: 0 mA, spanning 0
-    if C is TjanAmpMeter then SetMeter(C, 0);
+    if (C is TjanAmpMeter) or (C is TjanWeerstand) then SetMeter(C, 0);
     SetPartVolts(C, 0, 0);
   end;
   SetLength(NewVolt, Length(Rails));
@@ -6330,9 +6436,11 @@ begin
       for k := 0 to MinParts.Count - 1 do
         if (TObject(MinParts[k]) is TjanZekering) and TjanZekering(MinParts[k]).Doorgebrand then Blown := True;
       Closed := (RPlus <> nil) and ((RMin <> nil) or not HasMinRail) and not Blown;
+      // weerstanden (contacten) in de + en de - leiding
+      Rw := SeriesOhm(PlusParts) + SeriesOhm(MinParts);
       // wet van Ohm
       if Closed and (G > 0) then
-        Amp := E / (Rs + 1 / G)
+        Amp := E / (Rs + Rw + 1 / G)
       else
         Amp := 0;
       // te veel stroom: de zekering smelt
@@ -6359,18 +6467,32 @@ begin
         B.FStroom := Amp;
         if AInval then B.Invalidate;
       end;
-      // spanning langs de + leiding (na een doorgebrande zekering 0 V)
+      // spanning langs de + leiding (t.o.v. de - klem van de bron): elke
+      // weerstand neemt I x R weg, na een doorgebrande zekering 0 V
       V := U;
       for k := 0 to PlusParts.Count - 1 do
       begin
         OldV := V;
         if (TObject(PlusParts[k]) is TjanZekering) and TjanZekering(PlusParts[k]).Doorgebrand then
-          V := 0;
+          V := 0
+        else if TObject(PlusParts[k]) is TjanWeerstand then
+          V := V - Amp * TjanWeerstand(PlusParts[k]).Ohm;
         SetPartVolts(TObject(PlusParts[k]), OldV, V);
         SetMeter(TObject(PlusParts[k]), Amp);
       end;
+      // langs de - leiding stijgt de spanning vanaf de - klem van de bron
+      Vm := 0;
       for k := 0 to MinParts.Count - 1 do
+      begin
+        OldV := Vm;
+        if TObject(MinParts[k]) is TjanWeerstand then
+          Vm := Vm + Amp * TjanWeerstand(MinParts[k]).Ohm;
+        SetPartVolts(TObject(MinParts[k]), OldV, Vm);
         SetMeter(TObject(MinParts[k]), Amp);
+      end;
+      // de + rail: de spanning die overblijft voor de verbruikers
+      V := V - Vm;
+      if V < 0 then V := 0;
       if Closed and (RPlus <> nil) then
         for k := 0 to High(Rails) do
           if (Rails[k] = RPlus) and (V > NewVolt[k]) then
@@ -6413,6 +6535,10 @@ begin
   else if D is TjanAmpMeter then
   begin
     if APin = 0 then Result := TjanAmpMeter(D).FInVolt else Result := TjanAmpMeter(D).FUitVolt;
+  end
+  else if D is TjanWeerstand then
+  begin
+    if APin = 0 then Result := TjanWeerstand(D).FInVolt else Result := TjanWeerstand(D).FUitVolt;
   end;
 end;
 
@@ -6425,6 +6551,9 @@ begin
   else if C is TjanZekering then
     Result := Format('TjanZekering;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanZekering(C).NomIdx])
+  else if C is TjanWeerstand then
+    Result := Format('TjanWeerstand;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanWeerstand(C).Soort])
   else
     Result := Format('TjanAmpMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width]);
 end;
@@ -7133,6 +7262,159 @@ begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Milliampèremeter', 'Milliammeter', 'Milliampèremètre', 'Milliamperemeter') + ' > ', 0);
   FOnStatus(Self, 'I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanWeerstand }
+
+constructor TjanWeerstand.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := WeerstandW;
+  Height := WeerstandH;
+  FSoort := 2;            // slecht contact, 2 ohm
+  HelpKeyword := 'weerstand';
+end;
+
+function TjanWeerstand.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+function TjanWeerstand.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 11) else Result := Point(WeerstandW - 8, 11);
+end;
+
+function TjanWeerstand.Ohm: Double;
+begin
+  Result := WeerstandOhm[FSoort];
+end;
+
+function TjanWeerstand.Vermogen: Double;
+begin
+  Result := FStroom * FStroom * Ohm;
+end;
+
+procedure TjanWeerstand.SetSoort(const Value: Integer);
+begin
+  if (Value < Low(WeerstandOhm)) or (Value > High(WeerstandOhm)) or (Value = FSoort) then Exit;
+  FSoort := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanWeerstand.SoortClick(Sender: TObject);
+begin
+  Soort := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanWeerstand.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Soort', 'Kind', 'Type', 'Art');
+  APop.Items.Add(Mi);
+  for i := Low(WeerstandOhm) to High(WeerstandOhm) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := WeerstandNaam(FTaal, i) + ' (' + OhmText(WeerstandOhm[i]) + ')';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FSoort;
+    Sub.OnClick := SoortClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+procedure TjanWeerstand.Paint;
+var
+  R: TRect;
+  S: string;
+  CY, TW, X, H, K: Integer;
+  Heat: Double;
+begin
+  CY := PinPos(0).Y + 3;
+  with Canvas do
+  begin
+    // doorzichtig: alleen de draadjes, het blokje en de tekst
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(PinPos(0).X + 7, CY); LineTo(26, CY);
+    MoveTo(WeerstandW - 26, CY); LineTo(PinPos(1).X, CY);
+    Pen.Width := 1;
+    // schemasymbool (rechthoek); kleurt rood als het warm wordt
+    Heat := Vermogen / 0.5;
+    if Heat > 1 then Heat := 1;
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(255, 255 - Round(140 * Heat), 255 - Round(255 * Heat));
+    R := Rect(26, CY - 8, WeerstandW - 26, CY + 9);
+    FillRect(R);
+    Pen.Color := clBlack;
+    Brush.Style := bsClear;
+    Rectangle(R);
+    if FSoort = 3 then
+    begin
+      // verbrand: zwarte vlekken aan de uiteinden (naast de waarde)
+      Brush.Style := bsSolid; Brush.Color := RGBToColor(60, 40, 30);
+      Pen.Color := RGBToColor(60, 40, 30);
+      for X := 0 to 3 do
+      begin
+        H := 4 + (X mod 2) * 2;
+        if X < 2 then K := 28 + X * 4 else K := WeerstandW - 36 + (X - 2) * 4;
+        Ellipse(Rect(K, CY - 6 + (X mod 2) * 6, K + H, CY - 6 + (X mod 2) * 6 + H));
+      end;
+      Pen.Color := clBlack;
+      Brush.Style := bsClear;
+    end;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+    // waarde in het blokje, soort eronder
+    Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
+    S := OhmText(Ohm);
+    if FSoort = 3 then
+    begin
+      TW := TextWidth(S);
+      Brush.Style := bsSolid; Brush.Color := clWhite;
+      FillRect(Rect((WeerstandW - TW) div 2 - 1, CY - 6, (WeerstandW + TW) div 2 + 1, CY + 6));
+      Brush.Style := bsClear;
+    end;
+    TW := TextWidth(S);
+    TextOut((WeerstandW - TW) div 2, CY - 6, S);
+    Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+    S := WeerstandNaam(FTaal, FSoort);
+    TW := TextWidth(S);
+    TextOut((WeerstandW - TW) div 2, CY + 11, S);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanWeerstand.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand') + ': ' +
+    WeerstandNaam(FTaal, FSoort) + ' (' + OhmText(Ohm) + ')' + #13#10 +
+    'I = ' + FormatFloat('0', FStroom * 1000) + ' mA    P = I × I × R = ' +
+      FormatFloat('0.00', Vermogen) + ' W' + #13#10 +
+    Tr(FTaal,
+      'In serie in de voedingsleiding: er gaat spanning verloren (U = I × R).' + #13#10 +
+        'Meet ze met een voltmeter over de twee klemmen. Rechtsklik: soort kiezen.',
+      'In series in the supply line: some voltage is lost (U = I × R).' + #13#10 +
+        'Measure it with a voltmeter across both terminals. Right-click: choose the kind.',
+      'En série dans la ligne d''alimentation : une partie de la tension est perdue (U = I × R).' + #13#10 +
+        'Mesurez-la avec un voltmètre entre les deux bornes. Clic droit : choisir le type.',
+      'In Reihe in der Versorgungsleitung: Es geht Spannung verloren (U = I × R).' + #13#10 +
+        'Messen Sie sie mit einem Voltmeter über beide Klemmen. Rechtsklick: Art wählen.');
+end;
+
+procedure TjanWeerstand.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand') + ' > ', 0);
+  FOnStatus(Self, WeerstandNaam(FTaal, FSoort) + ' ' + OhmText(Ohm) + '   I = ' +
+    FormatFloat('0', FStroom * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
 
@@ -12460,7 +12742,7 @@ begin
   FLogicAndFunc:=jlfEN;
   FGates[0].Active:=true;
   FGates[1].Active:=false;
-  FGates[2].Active:=false;   // geen - aansluiting meer: de meter meet tegen de massa
+  FGates[2].Active:=true;    // - aansluiting: zonder draad meet de meter tegen de massa, met een draad het verschil (bv. over een contact)
   FGates[3].Active:=false;
   FGates[4].Active:=true;
   FGates[5].Active:=false;
@@ -20380,7 +20662,9 @@ begin
 
     // TjanBron;h;l;t;w;spanning x10;Ri;  TjanZekering;h;l;t;w;stroom;
     // TjanAmpMeter;h;l;t;w;
-    if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') then
+    // TjanWeerstand;h;l;t;w;soort;
+    if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
+       (obj[1] = 'TjanWeerstand') then
     begin
       with TStringList.Create do
       try
@@ -20391,6 +20675,7 @@ begin
         begin
           if obj[1] = 'TjanBron' then VD := TjanBron.Create(Self)
           else if obj[1] = 'TjanZekering' then VD := TjanZekering.Create(Self)
+          else if obj[1] = 'TjanWeerstand' then VD := TjanWeerstand.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -20403,7 +20688,9 @@ begin
             TjanBron(VD).Volt := StrToIntDef(Trim(Strings[4]), 120) / 10;
           end
           else if (VD is TjanZekering) and (Count >= 5) then
-            TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2);
+            TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
+          else if (VD is TjanWeerstand) and (Count >= 5) then
+            TjanWeerstand(VD).Soort := StrToIntDef(Trim(Strings[4]), 2);
         end;
       finally
         Free;
@@ -21220,7 +21507,7 @@ begin
   D.OnStatus := StatusFromChild;
 end;
 
-// 0 = bron (accu), 1 = zekering, 2 = milliampèremeter
+// 0 = bron (accu), 1 = zekering, 2 = milliampèremeter, 3 = weerstand
 procedure TjanSimLogicBox.NewVoedingsDeel(AKind: Integer);
 var
   D: TjanVoedingsDeel;
@@ -21229,6 +21516,7 @@ begin
   case AKind of
     0: D := TjanBron.Create(Self);
     1: D := TjanZekering.Create(Self);
+    3: D := TjanWeerstand.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -21417,6 +21705,17 @@ begin
           Brush.Style := bsClear;
           Rectangle(Rect(CX - 7, CY - 4, CX + 8, CY + 5));
           MoveTo(R.Left + 3, CY); LineTo(R.Right - 3, CY);
+        end;
+      3:
+        begin
+          // weerstand: schemasymbool (rechthoek met aansluitdraadjes)
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(255, 200, 150);
+          FillRect(Rect(CX - 5, CY - 3, CX + 6, CY + 4));
+          Brush.Style := bsClear;
+          Rectangle(Rect(CX - 5, CY - 3, CX + 6, CY + 4));
+          MoveTo(R.Left + 2, CY); LineTo(CX - 5, CY);
+          MoveTo(CX + 6, CY); LineTo(R.Right - 2, CY);
         end;
     else
       begin
@@ -21894,7 +22193,7 @@ begin
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
-  DBron:=false;DZekering:=false;DAmpMeter:=false;
+  DBron:=false;DZekering:=false;DAmpMeter:=false;DWeerstand:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -21929,6 +22228,7 @@ begin
   else if PtInRect(RBron, P) then DBron := True
   else if PtInRect(RZekering, P) then DZekering := True
   else if PtInRect(RAmpMeter, P) then DAmpMeter := True
+  else if PtInRect(RWeerstand, P) then DWeerstand := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -21981,6 +22281,10 @@ begin
   else if PtInRect(RAmpMeter, P) then
     NewHint := Tr(StatTaalToBTaal(Language), 'maak Milliampèremeter', 'create Milliammeter',
       'faire Milliampèremètre', 'Milliamperemeter erstellen')
+  else if PtInRect(RWeerstand, P) then
+    NewHint := Tr(StatTaalToBTaal(Language), 'maak Weerstand (contact, lange draad)',
+      'create Resistance (contact, long wire)', 'faire Résistance (contact, long fil)',
+      'Widerstand erstellen (Kontakt, langer Draht)')
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -22425,7 +22729,7 @@ var
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
-    DBron := False; DZekering := False; DAmpMeter := False;
+    DBron := False; DZekering := False; DAmpMeter := False; DWeerstand := False;
 
     // nieuw
     DSquare := False;
@@ -22638,6 +22942,8 @@ begin
     NewVoedingsDeel(1)
   else if DAmpMeter then
     NewVoedingsDeel(2)
+  else if DWeerstand then
+    NewVoedingsDeel(3)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -24421,6 +24727,7 @@ begin
       RRailMin := Rect(0, 0, 0, 0);
       RBron := Rect(0, 0, 0, 0);
       RZekering := Rect(0, 0, 0, 0);
+      RWeerstand := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
       TOP := TOP + 2;
@@ -24434,6 +24741,10 @@ begin
       RZekering := Rect(LK + 15, TOP, LK + 32, TOP + H);
       DrawVoedingButton(RBron, 0, DBron);
       DrawVoedingButton(RZekering, 1, DZekering);
+      // weerstand (contact) op een eigen rij
+      TOP := TOP + H + SPATIE;
+      RWeerstand := Rect(LK - 4, TOP, LK + 13, TOP + H);
+      DrawVoedingButton(RWeerstand, 3, DWeerstand);
       end;
     end;
   end;
@@ -25033,9 +25344,10 @@ begin
       RRailMin := Rect(0, 0, 0, 0);
       RBron := Rect(0, 0, 0, 0);
       RZekering := Rect(0, 0, 0, 0);
+      RWeerstand := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
-        // halve knoppen: + en - rail, bron, zekering
+        // halve knoppen: + en - rail, bron, zekering, weerstand
         NextX(8);
         RRailPlus := Rect(LK, TOP, LK + 17, HK);
         DrawRailButton(RRailPlus, True, DRailPlus);
@@ -25045,6 +25357,8 @@ begin
         DrawVoedingButton(RBron, 0, DBron);
         RZekering := Rect(LK + 57, TOP, LK + 74, HK);
         DrawVoedingButton(RZekering, 1, DZekering);
+        RWeerstand := Rect(LK + 76, TOP, LK + 93, HK);
+        DrawVoedingButton(RWeerstand, 3, DWeerstand);
       end;
     end;
   end;
@@ -25525,9 +25839,10 @@ begin
       RRailMin := Rect(0, 0, 0, 0);
       RBron := Rect(0, 0, 0, 0);
       RZekering := Rect(0, 0, 0, 0);
+      RWeerstand := Rect(0, 0, 0, 0);
       if FVoeding then
       begin
-        // halve knoppen: + en - rail, bron, zekering
+        // halve knoppen: + en - rail, bron, zekering, weerstand
         NextX(8);
         RRailPlus := Rect(LK, TOP, LK + 17, HK);
         DrawRailButton(RRailPlus, True, DRailPlus);
@@ -25537,6 +25852,8 @@ begin
         DrawVoedingButton(RBron, 0, DBron);
         RZekering := Rect(LK + 57, TOP, LK + 74, HK);
         DrawVoedingButton(RZekering, 1, DZekering);
+        RWeerstand := Rect(LK + 76, TOP, LK + 93, HK);
+        DrawVoedingButton(RWeerstand, 3, DWeerstand);
       end;
     end;
   end;

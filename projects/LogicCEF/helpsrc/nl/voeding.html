@@ -13,7 +13,7 @@
   </figure>
 
   <h2 id="rails">De knoppen</h2>
-  <p>Onderaan de <a href="onderdelenbalk.html">onderdelenbalk</a> staan vier halve knoppen; de milliampèremeter
+  <p>Onderaan de <a href="onderdelenbalk.html">onderdelenbalk</a> staan vijf halve knoppen; de milliampèremeter
   heeft een gewone knop, naast de voltmeter.</p>
   <table>
     <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
@@ -22,6 +22,7 @@
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Bron (accu)</a></td><td>Spanningsbron van 0 tot 12&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Zekering</a></td><td>Smelt als er te veel stroom loopt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremeter</a></td><td>Meet de stroom die de schakeling verbruikt.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Weerstand (contact)</a></td><td>Een contact of draad met een kleine weerstand: er gaat spanning verloren.</td></tr>
   </table>
   <ol class="steps">
     <li>Klik op de knop van het onderdeel dat je wil plaatsen.</li>
@@ -91,6 +92,23 @@
   <p>De milliampèremeter meet de stroom die door de kring loopt, in mA. Zet hem in serie in de + draad, tussen de
   bron (of de zekering) en de + rail: de draad komt links binnen en gaat rechts verder. Een meter die niet in een
   gesloten kring zit, toont 0.</p>
+
+  <h2 id="weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">De weerstand (contact)</h2>
+  <p>Elke draad en elk contact heeft een kleine weerstand. Loopt er stroom door, dan gaat er een stukje spanning
+  verloren: de <b>spanningsval</b> <b>U = I &times; R</b>. Dat stukje spanning komt niet bij de verbruikers aan, en het
+  contact wordt warm: <b>P = I &times; I &times; R</b>.</p>
+  <p>Zet de weerstand in serie in de + draad (of de &minus; draad), net als de milliampèremeter: de draad komt links
+  binnen en gaat rechts verder. Rechtsklik &rsaquo; <b>Soort</b>:</p>
+  <table>
+    <tr><th>Soort</th><th>Weerstand</th><th>Waar zie je dat?</th></tr>
+    <tr><td>goed contact</td><td>0,05&nbsp;&Omega;</td><td>een stevig vastgeschroefde klem</td></tr>
+    <tr><td>lange dunne draad</td><td>1&nbsp;&Omega;</td><td>een te dunne kabel naar een verre lamp</td></tr>
+    <tr><td>slecht contact</td><td>2&nbsp;&Omega;</td><td>een losse of geoxideerde klem (standaard)</td></tr>
+    <tr><td>verbrand contact</td><td>10&nbsp;&Omega;</td><td>een klem die te warm geworden is</td></tr>
+  </table>
+  <p>Het blokje kleurt oranje tot rood naarmate het warmer wordt. Meet de spanningsval met een
+  <a href="#voltmeter">voltmeter</a>: + aan de klem aan de kant van de bron, &minus; aan de andere klem.
+  Zie <a href="les24.html">les 24</a>.</p>
 
   <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
   <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er
@@ -168,8 +186,10 @@
   <ul>
     <li><b>+</b> (links): sluit er een draad op aan, of plug de meter rechts van een + rail in. Dan toont hij
       de spanning van die rail.</li>
-    <li><b>&minus;</b> (rechts): mag open blijven, of plug de meter links van een &minus; rail in, of leg een draad van een &minus; rail naar het bolletje rechts (parallel aansluiten). De meting
-      blijft dezelfde; het maakt de schakeling alleen duidelijker.</li>
+    <li><b>&minus;</b> (rechts): mag open blijven; dan meet de meter tegenover de massa. Je mag de meter ook links van een &minus; rail inpluggen,
+      of een draad van een &minus; rail naar het bolletje rechts leggen (parallel aansluiten): de meting blijft dezelfde.
+      Leg je een draad naar het groene vierkantje rechts, dan meet de meter het <b>verschil</b> tussen + en &minus;,
+      bijvoorbeeld de spanningsval over een <a href="#weerstand">contact</a>.</li>
   </ul>
   <p>Een draad brengt de spanning van zijn bron mee:</p>
   <table>

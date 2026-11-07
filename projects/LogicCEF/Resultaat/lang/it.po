@@ -1035,3 +1035,42 @@ msgstr "crea fusibile"
 
 msgid "create Milliammeter"
 msgstr "crea milliamperometro"
+
+msgid "good contact"
+msgstr "contatto buono"
+
+msgid "long thin wire"
+msgstr "filo lungo e sottile"
+
+msgid "poor contact"
+msgstr "contatto difettoso"
+
+msgid "burnt contact"
+msgstr "contatto bruciato"
+
+msgid "Kind"
+msgstr "Tipo"
+
+msgid "Resistance"
+msgstr "Resistenza"
+
+msgid "In series in the supply line: some voltage is lost (U = I × R).\nMeasure it with a voltmeter across both terminals. Right-click: choose the kind."
+msgstr "In serie nella linea di alimentazione: si perde un po' di tensione (U = I × R).\nMisurala con un voltmetro tra i due morsetti. Tasto destro: scegli il tipo."
+
+msgid "create Resistance (contact, long wire)"
+msgstr "crea Resistenza (contatto, filo lungo)"
+
+msgid "Power rail\n\n- + rail: plug inputs in on the right; the voltage comes from the source.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
+msgstr "Barra di alimentazione\n\n- Barra +: inserisci gli ingressi a destra; la tensione viene dalla sorgente.\n- Barra - (massa): inserisci le uscite a sinistra.\n- Trascina il centro per spostare, un'estremità per ridimensionare."
+
+msgid "Source (battery)\n\n- Slider: 0 to 12 V in steps of 0.5 V.\n- + with a wire to the + rail, - to the - rail.\n- Right-click: internal resistance."
+msgstr "Sorgente (batteria)\n\n- Cursore: da 0 a 12 V a passi di 0,5 V.\n- + con un filo alla barra +, - alla barra -.\n- Tasto destro: resistenza interna."
+
+msgid "Fuse\n\n- In series between the source and the + rail.\n- Blows when the current is too high.\n- Right-click: rated current, replace fuse."
+msgstr "Fusibile\n\n- In serie tra la sorgente e la barra +.\n- Fonde se la corrente è troppo alta.\n- Tasto destro: corrente nominale, sostituisci il fusibile."
+
+msgid "Milliammeter\n\n- In series between the source and the + rail.\n- Shows the current the circuit uses."
+msgstr "Milliamperometro\n\n- In serie tra la sorgente e la barra +.\n- Mostra la corrente consumata dal circuito."
+
+msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
+msgstr "Resistenza (contatto)\n\n- In serie nella linea di alimentazione: caduta di tensione U = I x R.\n- Contatto buono 0,05 ohm, filo lungo e sottile 1 ohm, contatto difettoso 2 ohm, contatto bruciato 10 ohm.\n- Misura la caduta di tensione con un voltmetro tra i due morsetti.\n- Tasto destro: scegli il tipo."

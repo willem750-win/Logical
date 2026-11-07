@@ -1,0 +1,75 @@
+<!-- titel: Lesson 24 - A burnt contact -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektriciteit">Current and voltage</a> &rsaquo; Lesson 24 of 24</p>
+  <h1>A burnt contact</h1>
+  <div class="goal"><strong>Goal:</strong> see that a poor or burnt contact takes voltage away from the loads,
+  measure that voltage drop with a voltmeter, and understand why such a contact gets warm.</div>
+
+  <p><a class="open" href="../../panels/lessen/les24-verbrand-contact.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les24-verbrand-contact.png" alt="A 12 V source with a fuse, a milliammeter and a contact in the + wire, a voltmeter across the contact, three lamps and a voltmeter on the + rail">
+    <figcaption>A burnt contact and three lamps on: 2.4&nbsp;V is lost in the contact, the lamps still get 9.6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>The circuit</h2>
+  <ul>
+    <li>The <a href="voeding.html#bron">source</a> is set to <b>12&nbsp;V</b>, without internal resistance (Ri = 0&nbsp;&Omega;).</li>
+    <li>The + terminal goes through a 500&nbsp;mA <a href="voeding.html#zekering">fuse</a>, the
+      <a href="voeding.html#ampmeter">milliammeter</a> and a <a href="voeding.html#weerstand">contact</a> to the + rail.
+      The contact starts as a <b>good contact</b>.</li>
+    <li>The top <a href="voeding.html#voltmeter">voltmeter</a> sits <b>across the contact</b>: + on the terminal on the
+      source side, &minus; on the terminal on the rail side. It measures the difference: the <b>voltage drop</b>.</li>
+    <li>The bottom voltmeter measures the voltage on the + rail: what is left for the lamps.</li>
+  </ul>
+
+  <h2>Voltage drop and heat</h2>
+  <p>The current of all the lamps flows through the contact. There is then a voltage across the contact:</p>
+  <p class="formula"><b>U = I &times; R</b></p>
+  <p>That voltage is lost: the lamps get 12&nbsp;V minus the voltage drop. So the two voltmeters together always
+  show 12&nbsp;V. With three lamps on you measure:</p>
+  <table>
+    <tr><th>Contact</th><th>Milliammeter</th><th>Across the contact</th><th>On the + rail</th></tr>
+    <tr><td>good contact (0.05&nbsp;&Omega;)</td><td>303&nbsp;mA</td><td>0.0&nbsp;V</td><td>12.0&nbsp;V</td></tr>
+    <tr><td>long thin wire (1&nbsp;&Omega;)</td><td>296&nbsp;mA</td><td>0.3&nbsp;V</td><td>11.7&nbsp;V</td></tr>
+    <tr><td>poor contact (2&nbsp;&Omega;)</td><td>288&nbsp;mA</td><td>0.6&nbsp;V</td><td>11.4&nbsp;V</td></tr>
+    <tr><td>burnt contact (10&nbsp;&Omega;)</td><td>242&nbsp;mA</td><td>2.4&nbsp;V</td><td>9.6&nbsp;V</td></tr>
+  </table>
+  <p>The contact also gets warm. The power lost in it is <b>P = U &times; I = I &times; I &times; R</b>:</p>
+  <ul>
+    <li>good contact: 0.303&nbsp;A &times; 0.303&nbsp;A &times; 0.05&nbsp;&Omega; = 0.005&nbsp;W: you notice nothing;</li>
+    <li>burnt contact: 0.242&nbsp;A &times; 0.242&nbsp;A &times; 10&nbsp;&Omega; = 0.59&nbsp;W: more than a hundred times
+      as much, in one small spot. The block turns red.</li>
+  </ul>
+  <p>In real life that is dangerous: a warm contact oxidises, which makes the resistance even larger, and it gets
+  even warmer. That is how a loose terminal in a socket or a cable lug can start a fire.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and turn on the three switches. Write down the current and the two voltages.</li>
+    <li>Right-click the contact and choose <b>Kind &rsaquo; long thin wire</b>, then <b>poor contact</b> and
+      <b>burnt contact</b>. Write down the meters each time and look at the colour of the block.</li>
+    <li>Each time, add up the two voltages.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <ol>
+    <li>Leave the contact on <b>burnt contact</b> and turn two lamps off. What do the meters show now? Why is the
+      voltage drop smaller?</li>
+    <li>Why does the voltmeter across a good contact show 0.0&nbsp;V, even though 303&nbsp;mA flows through it?</li>
+    <li>A lamp is about 120&nbsp;&Omega; (see <a href="les23.html">lesson 23</a>). Calculate the current and the two
+      voltages with <b>two</b> lamps and a burnt contact. Then check with the meters.</li>
+  </ol>
+  <details>
+    <summary>Solution</summary>
+    <ol>
+      <li>95&nbsp;mA, 0.9&nbsp;V across the contact and 11.1&nbsp;V on the rail. Less current gives less voltage drop
+        (U = I &times; R). That is why an electrician always measures a suspect contact <b>under load</b>: without
+        current you see nothing.</li>
+      <li>U = 0.303&nbsp;A &times; 0.05&nbsp;&Omega; = 0.015&nbsp;V. That is too small for the meter, which shows one decimal.</li>
+      <li>Two lamps in parallel: 120&nbsp;&Omega; / 2 = 60&nbsp;&Omega;. With the contact: 70&nbsp;&Omega;.
+        I = 12&nbsp;V / 70&nbsp;&Omega; = 0.171&nbsp;A. Across the contact: 0.171&nbsp;A &times; 10&nbsp;&Omega; = 1.7&nbsp;V,
+        on the rail 12&nbsp;V &minus; 1.7&nbsp;V = 10.3&nbsp;V. The meter shows 174&nbsp;mA: the switches draw a
+        tiny bit more.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les23.html">&larr; Lesson 23: Ohm&rsquo;s law</a><a href="leerpad.html">Learning path &rarr;</a></div>

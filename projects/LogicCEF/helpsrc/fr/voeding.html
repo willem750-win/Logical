@@ -13,7 +13,7 @@
   </figure>
 
   <h2 id="rails">Les boutons</h2>
-  <p>En bas de la <a href="onderdelenbalk.html">barre des composants</a> se trouvent quatre demi-boutons&nbsp;; le
+  <p>En bas de la <a href="onderdelenbalk.html">barre des composants</a> se trouvent cinq demi-boutons&nbsp;; le
   milliampèremètre a un bouton normal, à côté du voltmètre.</p>
   <table>
     <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
@@ -22,6 +22,7 @@
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Source (batterie)</a></td><td>Source de tension de 0 à 12&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fusible</a></td><td>Fond quand le courant est trop fort.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremètre</a></td><td>Mesure le courant consommé par le circuit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Résistance (contact)</a></td><td>Un contact ou un fil avec une petite résistance&nbsp;: une partie de la tension est perdue.</td></tr>
   </table>
   <ol class="steps">
     <li>Cliquez sur le bouton du composant à placer.</li>
@@ -93,6 +94,23 @@
   <p>Le milliampèremètre mesure le courant qui traverse le circuit, en mA. Placez-le en série dans le fil +, entre
   la source (ou le fusible) et le rail +&nbsp;: le fil entre à gauche et repart à droite. Un milliampèremètre qui
   n&rsquo;est pas dans un circuit fermé affiche 0.</p>
+
+  <h2 id="weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">La résistance (contact)</h2>
+  <p>Chaque fil et chaque contact a une petite résistance. Quand le courant le traverse, un peu de tension est
+  perdue&nbsp;: la <b>chute de tension</b> <b>U = I &times; R</b>. Cette tension n&rsquo;arrive pas aux récepteurs, et
+  le contact chauffe&nbsp;: <b>P = I &times; I &times; R</b>.</p>
+  <p>Placez la résistance en série dans le fil + (ou le fil &minus;), comme le milliampèremètre&nbsp;: le fil entre à
+  gauche et repart à droite. Clic droit &rsaquo; <b>Type</b>&nbsp;:</p>
+  <table>
+    <tr><th>Type</th><th>Résistance</th><th>Où le voit-on&nbsp;?</th></tr>
+    <tr><td>bon contact</td><td>0,05&nbsp;&Omega;</td><td>une borne bien serrée</td></tr>
+    <tr><td>long fil fin</td><td>1&nbsp;&Omega;</td><td>un câble trop fin vers une lampe éloignée</td></tr>
+    <tr><td>mauvais contact</td><td>2&nbsp;&Omega;</td><td>une borne desserrée ou oxydée (par défaut)</td></tr>
+    <tr><td>contact brûlé</td><td>10&nbsp;&Omega;</td><td>une borne devenue trop chaude</td></tr>
+  </table>
+  <p>Le bloc devient orange puis rouge à mesure qu&rsquo;il chauffe. Mesurez la chute de tension avec un
+  <a href="#voltmeter">voltmètre</a>&nbsp;: + sur la borne du côté de la source, &minus; sur l&rsquo;autre borne.
+  Voir la <a href="les24.html">leçon 24</a>.</p>
 
   <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>
   <p>Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau, tout fonctionne comme avant. Dès qu&rsquo;il y a
@@ -169,8 +187,10 @@
   <ul>
     <li><b>+</b> (à gauche) : reliez un fil, ou branchez le voltmètre à droite d&rsquo;un rail +. Il affiche
       alors la tension de ce rail.</li>
-    <li><b>&minus;</b> (à droite) : peut rester libre, ou branchez le voltmètre à gauche d&rsquo;un rail &minus;, ou tirez un fil d&rsquo;un rail &minus; vers le point de droite (branchement en parallèle).
-      La mesure reste la même ; le schéma devient seulement plus clair.</li>
+    <li><b>&minus;</b> (à droite) : peut rester libre ; le voltmètre mesure alors par rapport à la masse. Vous pouvez aussi brancher le voltmètre à gauche d&rsquo;un rail &minus;,
+      ou tirer un fil d&rsquo;un rail &minus; vers le point de droite (branchement en parallèle) : la mesure reste la même.
+      Si vous tirez un fil vers le carré vert de droite, le voltmètre mesure la <b>différence</b> entre + et &minus;,
+      par exemple la chute de tension aux bornes d&rsquo;un <a href="#weerstand">contact</a>.</li>
   </ul>
   <p>Un fil transporte la tension de sa source :</p>
   <table>
