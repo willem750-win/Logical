@@ -1,0 +1,90 @@
+<!-- titel: Lektion 25 - Lampen parallel -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektriciteit">Strom und Spannung</a> &rsaquo; Lektion 25 von 25</p>
+  <h1>Lampen parallel</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, dass parallel geschaltete Lampen jeweils die volle Spannung bekommen,
+  dass sich ihre Ströme addieren, und den Gesamtwiderstand berechnen. Sie vergleichen mit Lampen in Reihe.</div>
+
+  <p><a class="open" href="../../panels/lessen/les25-parallel.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les25-parallel.png" alt="Quelle von 12 V mit Sicherung und Milliamperemeter, drei Zweige mit je einem Schalter und einer Lampe, und ein Voltmeter über der unteren Lampe">
+    <figcaption>Drei Lampen parallel, alle drei an: Das Milliamperemeter misst 3 &times; 100 = 300&nbsp;mA, das Voltmeter über Lampe C 12,0&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Die Schaltung</h2>
+  <ul>
+    <li>Die <a href="voeding.html#bron">Quelle</a> steht auf <b>12&nbsp;V</b>, ohne Innenwiderstand (Ri = 0&nbsp;&Omega;).</li>
+    <li>Die + Klemme geht über eine <a href="voeding.html#zekering">Sicherung</a> von 500&nbsp;mA und das
+      <a href="voeding.html#ampmeter">Milliamperemeter</a> zum linken Draht.</li>
+    <li>Zwischen dem linken und dem rechten Draht liegen drei <b>Zweige</b>, jeder mit einem
+      <a href="voeding.html#serie">Schalter und einer Lampe</a> von 120&nbsp;&Omega;. Der rechte Draht geht zurück zur
+      &minus; Klemme der Quelle.</li>
+    <li>Das <a href="voeding.html#serie">Voltmeter</a> liegt über der unteren Lampe (Lampe C).</li>
+    <li>Nur der Schalter von Lampe A ist geschlossen.</li>
+  </ul>
+
+  <h2>Parallel: jede Lampe bekommt 12&nbsp;V</h2>
+  <p>Jeder Zweig liegt direkt zwischen dem + und dem &minus; der Quelle. Jede Lampe bekommt also die <b>volle Spannung</b>
+  von 12&nbsp;V und leuchtet gleich hell, egal wie viele Lampen an sind. Durch jede Lampe fließen
+  I = U / R = 12&nbsp;V / 120&nbsp;&Omega; = 100&nbsp;mA. Das Milliamperemeter misst den Strom aller Zweige zusammen:</p>
+  <p class="formula"><b>I = I<sub>A</sub> + I<sub>B</sub> + I<sub>C</sub></b></p>
+  <table>
+    <tr><th>Lampen an</th><th>Milliamperemeter</th><th>Gesamtwiderstand</th><th>Jede Lampe</th></tr>
+    <tr><td>1</td><td>100&nbsp;mA</td><td>120&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+    <tr><td>2</td><td>200&nbsp;mA</td><td>60&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+    <tr><td>3</td><td>300&nbsp;mA</td><td>40&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+  </table>
+  <p>Je mehr Lampen parallel, desto <b>kleiner</b> der Gesamtwiderstand: Der Strom bekommt mehr Wege.
+  Den Gesamtwiderstand berechnen Sie so:</p>
+  <p class="formula"><b>1 / R = 1 / R<sub>A</sub> + 1 / R<sub>B</sub> + 1 / R<sub>C</sub></b></p>
+  <p>Bei gleichen Lampen ist das einfach: Teilen Sie den Widerstand einer Lampe durch die Anzahl der Lampen.
+  Drei Lampen von 120&nbsp;&Omega;: 120&nbsp;&Omega; / 3 = 40&nbsp;&Omega;, und 12&nbsp;V / 40&nbsp;&Omega; = 300&nbsp;mA.</p>
+
+  <h2>Vergleich: Lampen in Reihe</h2>
+  <p>Setzen Sie zwei Lampen <b>hintereinander</b> in einen Draht, dann liegen sie in <b>Reihe</b>. Derselbe Strom fließt
+  durch beide, und die Widerstände addieren sich: <b>R = R<sub>1</sub> + R<sub>2</sub></b> = 240&nbsp;&Omega;. Der Strom ist dann
+  12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA, und jede Lampe bekommt nur die Hälfte der Spannung: 6&nbsp;V.</p>
+  <table>
+    <tr><th></th><th>Reihe</th><th>Parallel</th></tr>
+    <tr><td>Strom</td><td>überall gleich</td><td>die Ströme addieren sich</td></tr>
+    <tr><td>Spannung</td><td>die Spannungen addieren sich</td><td>überall gleich</td></tr>
+    <tr><td>Gesamtwiderstand</td><td>R<sub>1</sub> + R<sub>2</sub> (größer)</td><td>kleiner als der kleinste</td></tr>
+    <tr><td>Eine Lampe defekt</td><td>alles geht aus</td><td>die anderen leuchten weiter</td></tr>
+  </table>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Lampe A leuchtet, das Messgerät zeigt 100&nbsp;mA. Das Voltmeter über Lampe C zeigt
+      0,0&nbsp;V: Ohne Strom durch die Lampe liegt keine Spannung an ihr (U = I &times; R = 0).</li>
+    <li>Klicken Sie auf den Hebel der Schalter von B und C. Notieren Sie jedes Mal den Strom. Lampe A wird nicht dunkler.</li>
+    <li>Halten Sie die Maus über eine Lampe: Der Hinweis zeigt U, I und P dieser Lampe.</li>
+  </ol>
+
+  <h2>Aufgabe</h2>
+  <ol>
+    <li>Schalten Sie alle drei Lampen ein. Klicken Sie mit rechts auf Lampe C und wählen Sie <b>Widerstand &rsaquo; 60&nbsp;&Omega;</b>.
+      Berechnen Sie zuerst den Strom durch Lampe C und den Gesamtstrom, und prüfen Sie dann mit dem Messgerät.</li>
+    <li>Wählen Sie jetzt für Lampe C <b>24&nbsp;&Omega;</b>. Was passiert? Warum?</li>
+    <li>Bauen Sie selbst zwei Lampen von 120&nbsp;&Omega; in Reihe an 12&nbsp;V, mit einem Voltmeter über einer Lampe.
+      Welchen Strom messen Sie, und welche Spannung? Leuchtet eine Lampe heller oder dunkler als hier?</li>
+    <li>Warum sind die Lampen und Steckdosen in einem Haus parallel und nicht in Reihe geschaltet?</li>
+  </ol>
+  <div class="tip"><strong>Tipp:</strong> Sie möchten zwei Drähte an derselben Klemme? Klicken Sie auf die Schaltfläche
+  <b>Verbindung</b> und dann auf die Klemme, auch wenn schon ein Draht daran ist: Ein neuer Draht beginnt.</div>
+  <details>
+    <summary>Lösung</summary>
+    <ol>
+      <li>Lampe C: 12&nbsp;V / 60&nbsp;&Omega; = 200&nbsp;mA. Gesamt: 100 + 100 + 200 = 400&nbsp;mA. Mit der Formel:
+        1 / R = 1/120 + 1/120 + 1/60 = 4/120, also R = 30&nbsp;&Omega; und 12&nbsp;V / 30&nbsp;&Omega; = 400&nbsp;mA.
+        Lampe C ist eine Lampe von 2,4&nbsp;W.</li>
+      <li>Lampe C braucht 12&nbsp;V / 24&nbsp;&Omega; = 500&nbsp;mA. Zusammen mit A und B sind das 700&nbsp;mA, mehr als die
+        500&nbsp;mA der Sicherung: Sie brennt durch und alle Lampen gehen aus. Schalten Sie einen Schalter aus, wählen Sie
+        eine kleinere Lampe und ersetzen Sie die Sicherung (Rechtsklick &rsaquo; <b>Sicherung ersetzen</b>).</li>
+      <li>12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA und 6,0&nbsp;V über jeder Lampe. Eine Lampe bekommt dann
+        6&nbsp;V &times; 0,05&nbsp;A = 0,3&nbsp;W statt 1,2&nbsp;W: Sie leuchtet viel dunkler.</li>
+      <li>Parallel bekommt jedes Gerät die volle Spannung, Sie können jedes Gerät einzeln ein- und ausschalten, und wenn
+        eine Lampe kaputtgeht, funktioniert der Rest weiter. Der Strom aller Geräte zusammen fließt allerdings durch die
+        Sicherung dieses Stromkreises.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les24.html">&larr; Lektion 24: Ein verbrannter Kontakt</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

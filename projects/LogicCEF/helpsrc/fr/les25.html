@@ -1,0 +1,90 @@
+<!-- titel: Leçon 25 - Des lampes en parallèle -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektriciteit">Courant et tension</a> &rsaquo; Leçon 25 sur 25</p>
+  <h1>Des lampes en parallèle</h1>
+  <div class="goal"><strong>Objectif :</strong> voir que des lampes en parallèle reçoivent chacune la tension complète,
+  que leurs courants s&rsquo;additionnent, et calculer la résistance totale. Vous comparez avec des lampes en série.</div>
+
+  <p><a class="open" href="../../panels/lessen/les25-parallel.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les25-parallel.png" alt="Source de 12 V avec fusible et milliampèremètre, trois branches avec chacune un interrupteur et une lampe, et un voltmètre aux bornes de la lampe du bas">
+    <figcaption>Trois lampes en parallèle, toutes allumées : le milliampèremètre mesure 3 &times; 100 = 300&nbsp;mA, le voltmètre aux bornes de la lampe C 12,0&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Le circuit</h2>
+  <ul>
+    <li>La <a href="voeding.html#bron">source</a> est réglée sur <b>12&nbsp;V</b>, sans résistance interne (Ri = 0&nbsp;&Omega;).</li>
+    <li>La borne + passe par un <a href="voeding.html#zekering">fusible</a> de 500&nbsp;mA et le
+      <a href="voeding.html#ampmeter">milliampèremètre</a> vers le fil de gauche.</li>
+    <li>Entre le fil de gauche et le fil de droite se trouvent trois <b>branches</b>, chacune avec un
+      <a href="voeding.html#serie">interrupteur et une lampe</a> de 120&nbsp;&Omega;. Le fil de droite revient à la
+      borne &minus; de la source.</li>
+    <li>Le <a href="voeding.html#serie">voltmètre</a> est branché aux bornes de la lampe du bas (lampe C).</li>
+    <li>Seul l&rsquo;interrupteur de la lampe A est fermé.</li>
+  </ul>
+
+  <h2>En parallèle : chaque lampe reçoit 12&nbsp;V</h2>
+  <p>Chaque branche est branchée directement entre le + et le &minus; de la source. Chaque lampe reçoit donc la
+  <b>tension complète</b> de 12&nbsp;V et brille autant, quel que soit le nombre de lampes allumées. Dans chaque lampe passe
+  I = U / R = 12&nbsp;V / 120&nbsp;&Omega; = 100&nbsp;mA. Le milliampèremètre mesure le courant de toutes les branches ensemble :</p>
+  <p class="formula"><b>I = I<sub>A</sub> + I<sub>B</sub> + I<sub>C</sub></b></p>
+  <table>
+    <tr><th>Lampes allumées</th><th>Milliampèremètre</th><th>Résistance totale</th><th>Chaque lampe</th></tr>
+    <tr><td>1</td><td>100&nbsp;mA</td><td>120&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+    <tr><td>2</td><td>200&nbsp;mA</td><td>60&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+    <tr><td>3</td><td>300&nbsp;mA</td><td>40&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+  </table>
+  <p>Plus il y a de lampes en parallèle, plus la résistance totale est <b>petite</b> : le courant a plus de chemins.
+  Vous calculez la résistance totale ainsi :</p>
+  <p class="formula"><b>1 / R = 1 / R<sub>A</sub> + 1 / R<sub>B</sub> + 1 / R<sub>C</sub></b></p>
+  <p>Avec des lampes égales, c&rsquo;est simple : divisez la résistance d&rsquo;une lampe par le nombre de lampes.
+  Trois lampes de 120&nbsp;&Omega; : 120&nbsp;&Omega; / 3 = 40&nbsp;&Omega;, et 12&nbsp;V / 40&nbsp;&Omega; = 300&nbsp;mA.</p>
+
+  <h2>Comparez : des lampes en série</h2>
+  <p>Si vous placez deux lampes <b>l&rsquo;une après l&rsquo;autre</b> dans un même fil, elles sont en <b>série</b>. Le même
+  courant passe dans les deux, et les résistances s&rsquo;additionnent : <b>R = R<sub>1</sub> + R<sub>2</sub></b> = 240&nbsp;&Omega;.
+  Le courant vaut alors 12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA, et chaque lampe ne reçoit que la moitié de la tension : 6&nbsp;V.</p>
+  <table>
+    <tr><th></th><th>Série</th><th>Parallèle</th></tr>
+    <tr><td>Courant</td><td>le même partout</td><td>les courants s&rsquo;additionnent</td></tr>
+    <tr><td>Tension</td><td>les tensions s&rsquo;additionnent</td><td>la même partout</td></tr>
+    <tr><td>Résistance totale</td><td>R<sub>1</sub> + R<sub>2</sub> (plus grande)</td><td>plus petite que la plus petite</td></tr>
+    <tr><td>Une lampe grillée</td><td>tout s&rsquo;éteint</td><td>les autres restent allumées</td></tr>
+  </table>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation. La lampe A est allumée, le mètre indique 100&nbsp;mA. Le voltmètre aux bornes de la lampe C
+      indique 0,0&nbsp;V : sans courant dans la lampe, il n&rsquo;y a pas de tension à ses bornes (U = I &times; R = 0).</li>
+    <li>Cliquez sur le levier des interrupteurs de B et C. Notez chaque fois le courant. La lampe A ne faiblit pas.</li>
+    <li>Placez la souris sur une lampe : l&rsquo;info-bulle montre U, I et P de cette lampe.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <ol>
+    <li>Allumez les trois lampes. Faites un clic droit sur la lampe C et choisissez <b>Résistance &rsaquo; 60&nbsp;&Omega;</b>.
+      Calculez d&rsquo;abord le courant dans la lampe C et le courant total, puis vérifiez avec le mètre.</li>
+    <li>Choisissez maintenant <b>24&nbsp;&Omega;</b> pour la lampe C. Que se passe-t-il ? Pourquoi ?</li>
+    <li>Construisez vous-même deux lampes de 120&nbsp;&Omega; en série sur 12&nbsp;V, avec un voltmètre aux bornes d&rsquo;une lampe.
+      Quel courant mesurez-vous, et quelle tension ? Une lampe brille-t-elle plus ou moins qu&rsquo;ici ?</li>
+    <li>Pourquoi les lampes et les prises d&rsquo;une maison sont-elles en parallèle et non en série ?</li>
+  </ol>
+  <div class="tip"><strong>Astuce :</strong> vous voulez deux fils sur la même borne ? Cliquez sur le bouton <b>Connexion</b>
+  puis sur la borne, même s&rsquo;il y a déjà un fil : un nouveau fil commence.</div>
+  <details>
+    <summary>Solution</summary>
+    <ol>
+      <li>Lampe C : 12&nbsp;V / 60&nbsp;&Omega; = 200&nbsp;mA. Total : 100 + 100 + 200 = 400&nbsp;mA. Avec la formule :
+        1 / R = 1/120 + 1/120 + 1/60 = 4/120, donc R = 30&nbsp;&Omega; et 12&nbsp;V / 30&nbsp;&Omega; = 400&nbsp;mA.
+        La lampe C est une lampe de 2,4&nbsp;W.</li>
+      <li>La lampe C demande 12&nbsp;V / 24&nbsp;&Omega; = 500&nbsp;mA. Avec A et B, cela fait 700&nbsp;mA, plus que les
+        500&nbsp;mA du fusible : il fond et toutes les lampes s&rsquo;éteignent. Ouvrez un interrupteur, choisissez une lampe
+        plus petite et remplacez le fusible (clic droit &rsaquo; <b>Remplacer le fusible</b>).</li>
+      <li>12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA et 6,0&nbsp;V aux bornes de chaque lampe. Une lampe reçoit alors
+        6&nbsp;V &times; 0,05&nbsp;A = 0,3&nbsp;W au lieu de 1,2&nbsp;W : elle brille beaucoup moins.</li>
+      <li>En parallèle, chaque appareil reçoit la tension complète, vous pouvez allumer et éteindre chaque appareil
+        séparément, et si une lampe grille, le reste continue de fonctionner. Le courant de tous les appareils ensemble passe
+        bien par le fusible de ce circuit.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les24.html">&larr; Leçon 24 : Un contact brûlé</a><a href="leerpad.html">Parcours &rarr;</a></div>

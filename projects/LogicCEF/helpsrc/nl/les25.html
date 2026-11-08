@@ -1,0 +1,89 @@
+<!-- titel: Les 25 - Lampen parallel -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektriciteit">Stroom en spanning</a> &rsaquo; Les 25 van 25</p>
+  <h1>Lampen parallel</h1>
+  <div class="goal"><strong>Doel:</strong> zien dat lampen die parallel staan elk de volle spanning krijgen, dat hun
+  stromen optellen, en de totale weerstand berekenen. Je vergelijkt met lampen in serie.</div>
+
+  <p><a class="open" href="../../panels/lessen/les25-parallel.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les25-parallel.png" alt="Bron van 12 V met zekering en milliampèremeter, drie takken met elk een schakelaar en een lamp, en een voltmeter over de onderste lamp">
+    <figcaption>Drie lampen parallel, alle drie aan: de milliampèremeter meet 3 &times; 100 = 300&nbsp;mA, de voltmeter over lamp C 12,0&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>De schakeling</h2>
+  <ul>
+    <li>De <a href="voeding.html#bron">bron</a> staat op <b>12&nbsp;V</b>, zonder inwendige weerstand (Ri = 0&nbsp;&Omega;).</li>
+    <li>De + klem gaat via een <a href="voeding.html#zekering">zekering</a> van 500&nbsp;mA en de
+      <a href="voeding.html#ampmeter">milliampèremeter</a> naar de linkse draad.</li>
+    <li>Tussen de linkse en de rechtse draad staan drie <b>takken</b>, elk met een
+      <a href="voeding.html#serie">schakelaar en een lamp</a> van 120&nbsp;&Omega;. De rechtse draad gaat terug naar de
+      &minus; klem van de bron.</li>
+    <li>De <a href="voeding.html#serie">voltmeter</a> staat over de onderste lamp (lamp C).</li>
+    <li>Alleen de schakelaar van lamp A staat dicht.</li>
+  </ul>
+
+  <h2>Parallel: elke lamp krijgt 12&nbsp;V</h2>
+  <p>Elke tak hangt rechtstreeks tussen de + en de &minus; van de bron. Elke lamp krijgt dus de <b>volle spanning</b>
+  van 12&nbsp;V en brandt even fel, hoeveel lampen er ook aan staan. Door elke lamp gaat
+  I = U / R = 12&nbsp;V / 120&nbsp;&Omega; = 100&nbsp;mA. De milliampèremeter meet de stroom van alle takken samen:</p>
+  <p class="formula"><b>I = I<sub>A</sub> + I<sub>B</sub> + I<sub>C</sub></b></p>
+  <table>
+    <tr><th>Lampen aan</th><th>Milliampèremeter</th><th>Totale weerstand</th><th>Elke lamp</th></tr>
+    <tr><td>1</td><td>100&nbsp;mA</td><td>120&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+    <tr><td>2</td><td>200&nbsp;mA</td><td>60&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+    <tr><td>3</td><td>300&nbsp;mA</td><td>40&nbsp;&Omega;</td><td>12&nbsp;V, 1,2&nbsp;W</td></tr>
+  </table>
+  <p>Hoe meer lampen parallel, hoe <b>kleiner</b> de totale weerstand: er komen meer wegen bij voor de stroom.
+  De totale weerstand bereken je zo:</p>
+  <p class="formula"><b>1 / R = 1 / R<sub>A</sub> + 1 / R<sub>B</sub> + 1 / R<sub>C</sub></b></p>
+  <p>Bij gelijke lampen is dat eenvoudig: deel de weerstand van één lamp door het aantal lampen.
+  Drie lampen van 120&nbsp;&Omega;: 120&nbsp;&Omega; / 3 = 40&nbsp;&Omega;, en 12&nbsp;V / 40&nbsp;&Omega; = 300&nbsp;mA.</p>
+
+  <h2>Vergelijk: lampen in serie</h2>
+  <p>Zet je twee lampen <b>na elkaar</b> in één draad, dan staan ze in <b>serie</b>. Dezelfde stroom gaat door beide,
+  en de weerstanden tellen op: <b>R = R<sub>1</sub> + R<sub>2</sub></b> = 240&nbsp;&Omega;. De stroom is dan
+  12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA, en elke lamp krijgt maar de helft van de spanning: 6&nbsp;V.</p>
+  <table>
+    <tr><th></th><th>Serie</th><th>Parallel</th></tr>
+    <tr><td>Stroom</td><td>overal dezelfde</td><td>de stromen tellen op</td></tr>
+    <tr><td>Spanning</td><td>de spanningen tellen op</td><td>overal dezelfde</td></tr>
+    <tr><td>Totale weerstand</td><td>R<sub>1</sub> + R<sub>2</sub> (groter)</td><td>kleiner dan de kleinste</td></tr>
+    <tr><td>Eén lamp stuk</td><td>alles gaat uit</td><td>de andere branden verder</td></tr>
+  </table>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie. Lamp A brandt, de meter toont 100&nbsp;mA. De voltmeter over lamp C toont 0,0&nbsp;V:
+      zonder stroom door de lamp is er geen spanning over (U = I &times; R = 0).</li>
+    <li>Klik op de hendel van de schakelaars van B en C. Noteer telkens de stroom. Lamp A brandt niet minder fel.</li>
+    <li>Ga met de muis op een lamp staan: de hint toont U, I en P van die lamp.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <ol>
+    <li>Zet alle drie de lampen aan. Rechtsklik op lamp C en kies <b>Weerstand &rsaquo; 60&nbsp;&Omega;</b>.
+      Bereken eerst de stroom door lamp C en de totale stroom, en controleer daarna met de meter.</li>
+    <li>Kies nu voor lamp C <b>24&nbsp;&Omega;</b>. Wat gebeurt er? Waarom?</li>
+    <li>Bouw zelf twee lampen van 120&nbsp;&Omega; in serie op 12&nbsp;V, met een voltmeter over één lamp.
+      Hoeveel stroom meet je, en welke spanning? Brandt een lamp feller of minder fel dan hier?</li>
+    <li>Waarom staan de lampen en stopcontacten in een huis parallel en niet in serie?</li>
+  </ol>
+  <div class="tip"><strong>Tip:</strong> wil je twee draden op dezelfde klem? Klik op de knop <b>Verbinding</b> en
+  daarna op de klem, ook als er al een draad op zit: er begint een nieuwe draad.</div>
+  <details>
+    <summary>Oplossing</summary>
+    <ol>
+      <li>Lamp C: 12&nbsp;V / 60&nbsp;&Omega; = 200&nbsp;mA. Totaal: 100 + 100 + 200 = 400&nbsp;mA. Met de formule:
+        1 / R = 1/120 + 1/120 + 1/60 = 4/120, dus R = 30&nbsp;&Omega; en 12&nbsp;V / 30&nbsp;&Omega; = 400&nbsp;mA.
+        Lamp C is een lamp van 2,4&nbsp;W.</li>
+      <li>Lamp C vraagt 12&nbsp;V / 24&nbsp;&Omega; = 500&nbsp;mA. Samen met A en B is dat 700&nbsp;mA, meer dan de
+        500&nbsp;mA van de zekering: ze smelt en alle lampen gaan uit. Zet een schakelaar uit, kies een kleinere lamp en
+        vervang de zekering (rechtsklik &rsaquo; <b>Zekering vervangen</b>).</li>
+      <li>12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA en 6,0&nbsp;V over elke lamp. Een lamp krijgt dan
+        6&nbsp;V &times; 0,05&nbsp;A = 0,3&nbsp;W in plaats van 1,2&nbsp;W: ze brandt veel minder fel.</li>
+      <li>Parallel krijgt elk toestel de volle spanning, je kan elk toestel apart aan- en uitschakelen, en als één lamp
+        stukgaat, werkt de rest verder. De stroom van alle toestellen samen gaat wel door de zekering van die kring.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les24.html">&larr; Les 24: Een verbrand contact</a><a href="leerpad.html">Leerpad &rarr;</a></div>

@@ -1,0 +1,89 @@
+<!-- titel: Lesson 25 - Lamps in parallel -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektriciteit">Current and voltage</a> &rsaquo; Lesson 25 of 25</p>
+  <h1>Lamps in parallel</h1>
+  <div class="goal"><strong>Goal:</strong> see that lamps in parallel each get the full voltage, that their currents
+  add up, and calculate the total resistance. You compare with lamps in series.</div>
+
+  <p><a class="open" href="../../panels/lessen/les25-parallel.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les25-parallel.png" alt="12 V source with fuse and milliammeter, three branches each with a switch and a lamp, and a voltmeter across the bottom lamp">
+    <figcaption>Three lamps in parallel, all three on: the milliammeter measures 3 &times; 100 = 300&nbsp;mA, the voltmeter across lamp C 12.0&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>The circuit</h2>
+  <ul>
+    <li>The <a href="voeding.html#bron">source</a> is set to <b>12&nbsp;V</b>, without internal resistance (Ri = 0&nbsp;&Omega;).</li>
+    <li>The + terminal goes through a <a href="voeding.html#zekering">fuse</a> of 500&nbsp;mA and the
+      <a href="voeding.html#ampmeter">milliammeter</a> to the left wire.</li>
+    <li>Between the left and the right wire there are three <b>branches</b>, each with a
+      <a href="voeding.html#serie">switch and a lamp</a> of 120&nbsp;&Omega;. The right wire goes back to the
+      &minus; terminal of the source.</li>
+    <li>The <a href="voeding.html#serie">voltmeter</a> is across the bottom lamp (lamp C).</li>
+    <li>Only the switch of lamp A is closed.</li>
+  </ul>
+
+  <h2>Parallel: every lamp gets 12&nbsp;V</h2>
+  <p>Every branch is connected directly between the + and the &minus; of the source. So every lamp gets the
+  <b>full voltage</b> of 12&nbsp;V and shines just as brightly, however many lamps are on. Through every lamp flows
+  I = U / R = 12&nbsp;V / 120&nbsp;&Omega; = 100&nbsp;mA. The milliammeter measures the current of all branches together:</p>
+  <p class="formula"><b>I = I<sub>A</sub> + I<sub>B</sub> + I<sub>C</sub></b></p>
+  <table>
+    <tr><th>Lamps on</th><th>Milliammeter</th><th>Total resistance</th><th>Every lamp</th></tr>
+    <tr><td>1</td><td>100&nbsp;mA</td><td>120&nbsp;&Omega;</td><td>12&nbsp;V, 1.2&nbsp;W</td></tr>
+    <tr><td>2</td><td>200&nbsp;mA</td><td>60&nbsp;&Omega;</td><td>12&nbsp;V, 1.2&nbsp;W</td></tr>
+    <tr><td>3</td><td>300&nbsp;mA</td><td>40&nbsp;&Omega;</td><td>12&nbsp;V, 1.2&nbsp;W</td></tr>
+  </table>
+  <p>The more lamps in parallel, the <b>smaller</b> the total resistance: the current gets more paths.
+  You calculate the total resistance like this:</p>
+  <p class="formula"><b>1 / R = 1 / R<sub>A</sub> + 1 / R<sub>B</sub> + 1 / R<sub>C</sub></b></p>
+  <p>With equal lamps it is simple: divide the resistance of one lamp by the number of lamps.
+  Three lamps of 120&nbsp;&Omega;: 120&nbsp;&Omega; / 3 = 40&nbsp;&Omega;, and 12&nbsp;V / 40&nbsp;&Omega; = 300&nbsp;mA.</p>
+
+  <h2>Compare: lamps in series</h2>
+  <p>If you put two lamps <b>one after the other</b> in one wire, they are in <b>series</b>. The same current flows
+  through both, and the resistances add up: <b>R = R<sub>1</sub> + R<sub>2</sub></b> = 240&nbsp;&Omega;. The current is then
+  12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA, and every lamp only gets half of the voltage: 6&nbsp;V.</p>
+  <table>
+    <tr><th></th><th>Series</th><th>Parallel</th></tr>
+    <tr><td>Current</td><td>the same everywhere</td><td>the currents add up</td></tr>
+    <tr><td>Voltage</td><td>the voltages add up</td><td>the same everywhere</td></tr>
+    <tr><td>Total resistance</td><td>R<sub>1</sub> + R<sub>2</sub> (larger)</td><td>smaller than the smallest</td></tr>
+    <tr><td>One lamp broken</td><td>everything goes out</td><td>the others stay on</td></tr>
+  </table>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation. Lamp A is on, the meter shows 100&nbsp;mA. The voltmeter across lamp C shows 0.0&nbsp;V:
+      without current through the lamp there is no voltage across it (U = I &times; R = 0).</li>
+    <li>Click the lever of the switches of B and C. Write down the current each time. Lamp A does not get dimmer.</li>
+    <li>Hold the mouse over a lamp: the hint shows U, I and P of that lamp.</li>
+  </ol>
+
+  <h2>Assignment</h2>
+  <ol>
+    <li>Switch on all three lamps. Right-click lamp C and choose <b>Resistance &rsaquo; 60&nbsp;&Omega;</b>.
+      First calculate the current through lamp C and the total current, then check with the meter.</li>
+    <li>Now choose <b>24&nbsp;&Omega;</b> for lamp C. What happens? Why?</li>
+    <li>Build two lamps of 120&nbsp;&Omega; in series on 12&nbsp;V yourself, with a voltmeter across one lamp.
+      What current do you measure, and what voltage? Does a lamp shine more or less brightly than here?</li>
+    <li>Why are the lamps and sockets in a house connected in parallel and not in series?</li>
+  </ol>
+  <div class="tip"><strong>Tip:</strong> want two wires on the same terminal? Click the <b>Connection</b> button and
+  then the terminal, even if a wire is already on it: a new wire starts.</div>
+  <details>
+    <summary>Solution</summary>
+    <ol>
+      <li>Lamp C: 12&nbsp;V / 60&nbsp;&Omega; = 200&nbsp;mA. Total: 100 + 100 + 200 = 400&nbsp;mA. With the formula:
+        1 / R = 1/120 + 1/120 + 1/60 = 4/120, so R = 30&nbsp;&Omega; and 12&nbsp;V / 30&nbsp;&Omega; = 400&nbsp;mA.
+        Lamp C is a 2.4&nbsp;W lamp.</li>
+      <li>Lamp C needs 12&nbsp;V / 24&nbsp;&Omega; = 500&nbsp;mA. Together with A and B that is 700&nbsp;mA, more than the
+        500&nbsp;mA of the fuse: it blows and all lamps go out. Switch one off, choose a smaller lamp and
+        replace the fuse (right-click &rsaquo; <b>Replace fuse</b>).</li>
+      <li>12&nbsp;V / 240&nbsp;&Omega; = 50&nbsp;mA and 6.0&nbsp;V across every lamp. A lamp then gets
+        6&nbsp;V &times; 0.05&nbsp;A = 0.3&nbsp;W instead of 1.2&nbsp;W: it shines much less brightly.</li>
+      <li>In parallel every appliance gets the full voltage, you can switch every appliance on and off separately, and if
+        one lamp breaks, the rest keeps working. The current of all appliances together does go through the fuse of that circuit.</li>
+    </ol>
+  </details>
+
+  <div class="pager"><a href="les24.html">&larr; Lesson 24: A burnt contact</a><a href="leerpad.html">Learning path &rarr;</a></div>
