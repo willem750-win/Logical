@@ -76,6 +76,55 @@
   größer der Strom und desto stärker sinkt die Klemmenspannung U. Lampen und LEDs leuchten heller, je höher die
   Versorgungsspannung ist.</p>
 
+  <h2 id="formules">Die Formeln: U, I, R und P</h2>
+  <p>In der Elektrizität kommen vier Größen immer wieder vor:</p>
+  <table>
+    <tr><th>Größe</th><th>Symbol</th><th>Einheit</th></tr>
+    <tr><td>Spannung</td><td><b>U</b></td><td>Volt (V)</td></tr>
+    <tr><td>Stromstärke</td><td><b>I</b></td><td>Ampere (A); 1&nbsp;A = 1000&nbsp;mA</td></tr>
+    <tr><td>Widerstand</td><td><b>R</b></td><td>Ohm (&Omega;)</td></tr>
+    <tr><td>Leistung</td><td><b>P</b></td><td>Watt (W)</td></tr>
+  </table>
+  <p>Das ohmsche Gesetz verbindet Spannung, Strom und Widerstand. Kennen Sie zwei davon, dann berechnen Sie die
+  dritte. Die Leistung ist Spannung mal Strom. Die Dreiecke helfen, die Formel zu finden:</p>
+  <figure>
+    <img src="../img/ohm-driehoek.svg" alt="Dreieck des ohmschen Gesetzes: U oben, I und R unten. Dreieck der Leistung: P oben, U und I unten.">
+    <figcaption>Decken Sie ab, was Sie suchen: Was übrig bleibt, ist die Formel. Nebeneinander = multiplizieren, übereinander = dividieren.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Gesucht</th><th>Formel</th><th>Beispiel</th></tr>
+    <tr><td>Spannung</td><td><b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0,1&nbsp;A &times; 120&nbsp;&Omega; = 12&nbsp;V</td></tr>
+    <tr><td>Strom</td><td><b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = 50&nbsp;mA</td></tr>
+    <tr><td>Widerstand</td><td><b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b></td><td>12&nbsp;V / 0,1&nbsp;A = 120&nbsp;&Omega;</td></tr>
+    <tr><td>Leistung</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b></td><td>12&nbsp;V &times; 0,1&nbsp;A = 1,2&nbsp;W</td></tr>
+    <tr><td>Leistung (mit R und I)</td><td><b>P&nbsp;=&nbsp;I&nbsp;&times;&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0,242&nbsp;A &times; 0,242&nbsp;A &times; 10&nbsp;&Omega; = 0,59&nbsp;W</td></tr>
+    <tr><td>Leistung (mit U und R)</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V &times; 6&nbsp;V / 120&nbsp;&Omega; = 0,3&nbsp;W</td></tr>
+  </table>
+  <div class="tip"><strong>Achtung:</strong> Rechnen Sie immer in Volt, Ampere und Ohm. Wandeln Sie Milliampere zuerst
+  in Ampere um: 242&nbsp;mA = 0,242&nbsp;A.</div>
+  <div class="tip"><strong>In Logic:</strong> Zeigen Sie mit der Maus auf die Quelle, das Milliamperemeter, einen Kontakt oder
+  eine Lampe. Der Hinweis zeigt dann die Berechnung mit den echten Werten dieses Moments, auch während der Simulation. Zum
+  Beispiel bei einem verbrannten Kontakt: <b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b> = 0,242&nbsp;A &times; 10&nbsp;&Omega; = 2,42&nbsp;V.</div>
+  <h3>Beispiel: eine Lampe an halber Spannung</h3>
+  <p>Bei 12&nbsp;V nimmt eine Lampe 100&nbsp;mA auf. Ihr Widerstand ist <b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b> = 12&nbsp;V / 0,1&nbsp;A
+  = 120&nbsp;&Omega; und ihre Leistung <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 12&nbsp;V &times; 0,1&nbsp;A = 1,2&nbsp;W.</p>
+  <p>Stellen Sie die Quelle auf 6&nbsp;V, dann bleibt der Widerstand 120&nbsp;&Omega;. Der Strom wird <b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b>
+  = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A und die Leistung <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 6&nbsp;V &times; 0,05&nbsp;A
+  = 0,3&nbsp;W. Die halbe Spannung ergibt den halben Strom, aber nur ein <b>Viertel</b> der Leistung. Deshalb gibt
+  eine Lampe an halber Spannung so viel weniger Licht.</p>
+
+  <h3 id="elektronen">Blick in den Draht: die Elektronen flie&szlig;en</h3>
+  <p>Verschieben Sie die Spannung der Quelle. Bei 0&nbsp;V stehen die Elektronen <b>still</b>: Sie sind immer im Draht, aber
+  nichts schiebt sie an. Je h&ouml;her die Spannung, desto st&auml;rker schiebt die Quelle: Mehr Elektronen pro Sekunde
+  wandern durch den Draht, der Strom <b>I</b> wird gr&ouml;&szlig;er und die Lampe leuchtet heller. Die Lupe zeigt ein
+  St&uuml;ck Kupferdraht: Die grauen Kupferatome bleiben an ihrem Platz, die blauen Elektronen wandern weiter.</p>
+  <div class="stroomdemo" data-dec="," data-label="Spannung der Quelle:"
+    data-stil="U = 0 V: Keine Spannung schiebt die Elektronen an, also flie&szlig;t kein Strom (I = 0 A)."></div>
+  <script src="../stroom.js"></script>
+  <div class="tip"><strong>Gut zu wissen:</strong> Die Elektronen wandern vom &minus;&nbsp;Pol zum +&nbsp;Pol. Die
+  <b>technische Stromrichtung</b> in Schaltpl&auml;nen ist umgekehrt: von + nach &minus;. In Wirklichkeit wandern die
+  Elektronen sehr langsam, weniger als einen Millimeter pro Sekunde; in der Animation geht es viel schneller.</div>
+
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">Die Sicherung</h2>
   <p>Eine Sicherung schützt den Kreis: Wird der Strom größer als der <b>Nennstrom</b>, <b>brennt</b> der Draht
   durch. Ein rotes Kreuz erscheint und die + Schiene fällt auf 0&nbsp;V zurück.</p>

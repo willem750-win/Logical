@@ -70,6 +70,7 @@ $Utf8 = New-Object System.Text.UTF8Encoding($false)
 
 New-Item -ItemType Directory -Force $Out | Out-Null
 Copy-Item (Join-Path $Src 'help.css') (Join-Path $Out 'help.css') -Force
+Copy-Item (Join-Path $Src 'stroom.js') (Join-Path $Out 'stroom.js') -Force
 New-Item -ItemType Directory -Force (Join-Path $Out 'img') | Out-Null
 Copy-Item (Join-Path $Src 'img/*') (Join-Path $Out 'img') -Force
 

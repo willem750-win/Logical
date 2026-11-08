@@ -77,6 +77,57 @@
   courant est grand et plus la tension aux bornes U baisse. Les lampes et les LED brillent plus fort quand la
   tension d&rsquo;alimentation augmente.</p>
 
+  <h2 id="formules">Les formules&nbsp;: U, I, R et P</h2>
+  <p>En électricité, quatre grandeurs reviennent toujours&nbsp;:</p>
+  <table>
+    <tr><th>Grandeur</th><th>Symbole</th><th>Unité</th></tr>
+    <tr><td>tension</td><td><b>U</b></td><td>volt (V)</td></tr>
+    <tr><td>intensité (courant)</td><td><b>I</b></td><td>ampère (A)&nbsp;; 1&nbsp;A = 1000&nbsp;mA</td></tr>
+    <tr><td>résistance</td><td><b>R</b></td><td>ohm (&Omega;)</td></tr>
+    <tr><td>puissance</td><td><b>P</b></td><td>watt (W)</td></tr>
+  </table>
+  <p>La loi d&rsquo;Ohm relie la tension, le courant et la résistance. Si vous en connaissez deux, vous calculez la
+  troisième. La puissance est la tension fois le courant. Les triangles aident à trouver la formule&nbsp;:</p>
+  <figure>
+    <img src="../img/ohm-driehoek.svg" alt="Triangle de la loi d'Ohm : U en haut, I et R en bas. Triangle de la puissance : P en haut, U et I en bas.">
+    <figcaption>Cachez ce que vous cherchez&nbsp;: ce qui reste est la formule. Côte à côte = multiplier, l&rsquo;un au-dessus de l&rsquo;autre = diviser.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Vous cherchez</th><th>Formule</th><th>Exemple</th></tr>
+    <tr><td>la tension</td><td><b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0,1&nbsp;A &times; 120&nbsp;&Omega; = 12&nbsp;V</td></tr>
+    <tr><td>le courant</td><td><b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = 50&nbsp;mA</td></tr>
+    <tr><td>la résistance</td><td><b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b></td><td>12&nbsp;V / 0,1&nbsp;A = 120&nbsp;&Omega;</td></tr>
+    <tr><td>la puissance</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b></td><td>12&nbsp;V &times; 0,1&nbsp;A = 1,2&nbsp;W</td></tr>
+    <tr><td>la puissance (avec R et I)</td><td><b>P&nbsp;=&nbsp;I&nbsp;&times;&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0,242&nbsp;A &times; 0,242&nbsp;A &times; 10&nbsp;&Omega; = 0,59&nbsp;W</td></tr>
+    <tr><td>la puissance (avec U et R)</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V &times; 6&nbsp;V / 120&nbsp;&Omega; = 0,3&nbsp;W</td></tr>
+  </table>
+  <div class="tip"><strong>Attention&nbsp;:</strong> calculez toujours en volts, ampères et ohms. Convertissez d&rsquo;abord
+  les milliampères en ampères&nbsp;: 242&nbsp;mA = 0,242&nbsp;A.</div>
+  <div class="tip"><strong>Dans Logic&nbsp;:</strong> pointez la source, le milliampèremètre, un contact ou une lampe avec la
+  souris. L&rsquo;info-bulle affiche alors le calcul avec les valeurs réelles du moment, aussi pendant la simulation. Par exemple
+  avec un contact brûlé&nbsp;: <b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b> = 0,242&nbsp;A &times; 10&nbsp;&Omega; = 2,42&nbsp;V.</div>
+  <h3>Exemple&nbsp;: une lampe à demi-tension</h3>
+  <p>À 12&nbsp;V, une lampe consomme 100&nbsp;mA. Sa résistance vaut <b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b> = 12&nbsp;V / 0,1&nbsp;A
+  = 120&nbsp;&Omega; et sa puissance <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 12&nbsp;V &times; 0,1&nbsp;A = 1,2&nbsp;W.</p>
+  <p>Réglez la source sur 6&nbsp;V&nbsp;: la résistance reste 120&nbsp;&Omega;. Le courant devient <b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b>
+  = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A et la puissance <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 6&nbsp;V &times; 0,05&nbsp;A
+  = 0,3&nbsp;W. La moitié de la tension donne la moitié du courant, mais seulement un <b>quart</b> de la puissance.
+  C&rsquo;est pourquoi une lampe à demi-tension éclaire beaucoup moins.</p>
+
+  <h3 id="elektronen">Regardez dans le fil&nbsp;: les &eacute;lectrons circulent</h3>
+  <p>D&eacute;placez la tension de la source. &Agrave; 0&nbsp;V, les &eacute;lectrons sont <b>immobiles</b>&nbsp;: ils sont
+  toujours dans le fil, mais rien ne les pousse. Plus la tension est haute, plus la source pousse fort&nbsp;: plus
+  d'&eacute;lectrons par seconde traversent le fil, le courant <b>I</b> augmente et la lampe brille plus fort. La loupe
+  montre un morceau de fil de cuivre&nbsp;: les atomes de cuivre gris restent en place, les &eacute;lectrons bleus
+  avancent.</p>
+  <div class="stroomdemo" data-dec="," data-label="Tension de la source&nbsp;:"
+    data-stil="U = 0 V&nbsp;: aucune tension ne pousse les &eacute;lectrons, donc aucun courant ne passe (I = 0 A)."></div>
+  <script src="../stroom.js"></script>
+  <div class="tip"><strong>Bon &agrave; savoir&nbsp;:</strong> les &eacute;lectrons vont de la borne &minus; vers la
+  borne +. Le <b>sens conventionnel du courant</b> sur les sch&eacute;mas est l'inverse&nbsp;: de + vers &minus;. En
+  r&eacute;alit&eacute;, les &eacute;lectrons avancent tr&egrave;s lentement, moins d'un millim&egrave;tre par
+  seconde&nbsp;; dans l'animation, c'est beaucoup plus rapide.</div>
+
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">Le fusible</h2>
   <p>Un fusible protège le circuit&nbsp;: quand le courant dépasse le <b>courant nominal</b>, le filament
   <b>fond</b>. Une croix rouge apparaît et le rail + retombe à 0&nbsp;V.</p>

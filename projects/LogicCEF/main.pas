@@ -2623,6 +2623,9 @@ begin
   HintStr := PoTr(HintStr);
   if not FRunMode then Exit;
   C := HintInfo.HintControl;
+  // uitzondering: bron, zekering, meters, contact en lampen tonen tijdens de
+  // simulatie wel hun hint, met de berekening (wet van Ohm) van dat moment
+  if (C is TjanVoedingsDeel) or (C is TjanSimLight) then Exit;
   if Assigned(C) and ((C = Grid) or (C.Parent = Grid)) then
     CanShow := False;
 end;

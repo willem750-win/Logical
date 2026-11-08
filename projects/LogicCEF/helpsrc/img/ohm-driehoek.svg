@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" width="480" height="200" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="480" height="200" fill="#ffffff"/>
+  <!-- wet van Ohm: U boven, I x R onder -->
+  <g transform="translate(20,10)">
+    <path d="M100 6 L194 176 L6 176 Z" fill="#eaf1fb" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+    <line x1="53" y1="91" x2="147" y2="91" stroke="#1f5fbf" stroke-width="3"/>
+    <line x1="100" y1="91" x2="100" y2="176" stroke="#1f5fbf" stroke-width="3"/>
+    <text x="100" y="78" text-anchor="middle" font-size="40" font-weight="bold" fill="#c0392b">U</text>
+    <text x="70" y="150" text-anchor="middle" font-size="36" font-weight="bold" fill="#1f2328">I</text>
+    <text x="133" y="150" text-anchor="middle" font-size="36" font-weight="bold" fill="#1f2328">R</text>
+  </g>
+  <!-- vermogen: P boven, U x I onder -->
+  <g transform="translate(260,10)">
+    <path d="M100 6 L194 176 L6 176 Z" fill="#fdf2e6" stroke="#d35400" stroke-width="3" stroke-linejoin="round"/>
+    <line x1="53" y1="91" x2="147" y2="91" stroke="#d35400" stroke-width="3"/>
+    <line x1="100" y1="91" x2="100" y2="176" stroke="#d35400" stroke-width="3"/>
+    <text x="100" y="78" text-anchor="middle" font-size="40" font-weight="bold" fill="#c0392b">P</text>
+    <text x="68" y="150" text-anchor="middle" font-size="36" font-weight="bold" fill="#1f2328">U</text>
+    <text x="133" y="150" text-anchor="middle" font-size="36" font-weight="bold" fill="#1f2328">I</text>
+  </g>
+</svg>

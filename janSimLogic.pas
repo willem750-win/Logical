@@ -6138,8 +6138,61 @@ end;
 
 function OhmText(R: Double): string;
 begin
-  if R < 1 then Result := FormatFloat('0.00', R) else Result := FormatFloat('0', R);
+  if R = 0 then Result := '0'
+  else if R < 1 then Result := FormatFloat('0.00', R) else Result := FormatFloat('0', R);
   Result := Result + ' Ω';
+end;
+
+// getallen voor de berekeningen in de hints (wet van Ohm)
+function AmpText(I: Double): string;
+begin
+  Result := FormatFloat('0.000', I) + ' A';
+end;
+
+function MilliAmpText(I: Double): string;
+begin
+  Result := FormatFloat('0', I * 1000) + ' mA';
+end;
+
+function VoltText(U: Double): string;
+begin
+  if U >= 10 then Result := FormatFloat('0.0', U)
+  else if U >= 0.1 then Result := FormatFloat('0.00', U)
+  else Result := FormatFloat('0.000', U);
+  Result := Result + ' V';
+end;
+
+function WattText(P: Double): string;
+begin
+  if P >= 10 then Result := FormatFloat('0.0', P)
+  else if P >= 0.1 then Result := FormatFloat('0.00', P)
+  else Result := FormatFloat('0.000', P);
+  Result := Result + ' W';
+end;
+
+// "I = 242 mA = 0,242 A"
+function StroomRegel(I: Double): string;
+begin
+  Result := 'I = ' + MilliAmpText(I) + ' = ' + AmpText(I);
+end;
+
+// "P = U × I = 2,42 V × 0,242 A = 0,59 W"
+function VermogenRegel(U, I: Double): string;
+begin
+  Result := 'P = U × I = ' + VoltText(U) + ' × ' + AmpText(I) + ' = ' + WattText(U * I);
+end;
+
+// hoogste spanning op een + rail van paneel P (0 als er geen is)
+function MaxRailVolt(P: TWinControl): Double;
+var
+  i: Integer;
+begin
+  Result := 0;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible and
+       (TjanRail(P.Controls[i]).Volt > Result) then
+      Result := TjanRail(P.Controls[i]).Volt;
 end;
 
 // stroom (A) die verbruiker C bij 12 V trekt als hij aan staat; 0 als hij
@@ -6994,7 +7047,14 @@ end;
 procedure TjanBron.UpdateHintText;
 begin
   Hint := Tr(FTaal, 'Bron (accu)', 'Source (battery)', 'Source (batterie)', 'Quelle (Akku)') +
-    ': ' + FormatFloat('0.0', FVolt) + ' V' + #13#10 +
+    ': E = ' + FormatFloat('0.0', FVolt) + ' V    Ri = ' + OhmText(Ri) + #13#10;
+  // klemspanning met de wet van Ohm: U = E - I x Ri
+  if FStroom > 0.00005 then
+    Hint := Hint + StroomRegel(FStroom) + #13#10 +
+      'U = E − I × Ri = ' + VoltText(FVolt) + ' − ' + AmpText(FStroom) + ' × ' +
+        OhmText(Ri) + ' = ' + VoltText(FKlem) + #13#10 +
+      VermogenRegel(FKlem, FStroom) + #13#10;
+  Hint := Hint +
     Tr(FTaal,
       'Schuifregelaar: spanning 0 tot 12 V.' + #13#10 +
         '+ met een draad naar de + rail, - naar de - rail.' + #13#10 +
@@ -7245,7 +7305,7 @@ end;
 procedure TjanAmpMeter.UpdateHintText;
 begin
   Hint := Tr(FTaal, 'Milliampèremeter', 'Milliammeter', 'Milliampèremètre', 'Milliamperemeter') +
-    ': ' + FormatFloat('0', FStroom * 1000) + ' mA' + #13#10 +
+    ': ' + StroomRegel(FStroom) + '    (1 A = 1000 mA)' + #13#10 +
     Tr(FTaal,
       'In serie tussen de bron en de + rail.' + #13#10 +
         'Toont de stroom die de schakeling verbruikt.',
@@ -7396,8 +7456,10 @@ procedure TjanWeerstand.UpdateHintText;
 begin
   Hint := Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand') + ': ' +
     WeerstandNaam(FTaal, FSoort) + ' (' + OhmText(Ohm) + ')' + #13#10 +
-    'I = ' + FormatFloat('0', FStroom * 1000) + ' mA    P = I × I × R = ' +
-      FormatFloat('0.00', Vermogen) + ' W' + #13#10 +
+    StroomRegel(FStroom) + #13#10 +
+    'U = I × R = ' + AmpText(FStroom) + ' × ' + OhmText(Ohm) + ' = ' +
+      VoltText(FStroom * Ohm) + #13#10 +
+    VermogenRegel(FStroom * Ohm, FStroom) + #13#10 +
     Tr(FTaal,
       'In serie in de voedingsleiding: er gaat spanning verloren (U = I × R).' + #13#10 +
         'Meet ze met een voltmeter over de twee klemmen. Rechtsklik: soort kiezen.',
@@ -18074,8 +18136,23 @@ procedure TjanSimLight.MouseUp(Button: TMouseButton; Shift: TShiftState; X,Y: In
          end;
 
 procedure TjanSimLight.UpdateHintText;
+var
+  U, R, I: Double;
 begin
    Hint := BuildSimHint(FNaam, BTaal);
+   // met een voeding: de berekening met de wet van Ohm (lamp 100 mA en led
+   // 20 mA bij 12 V, zie LoadAmps12)
+   if (Parent <> nil) and PanelHasRails(Parent) and (LoadAmps12(Self) > 0) then
+   begin
+     U := MaxRailVolt(Parent);
+     if U <= 0 then Exit;
+     R := BronMaxVolt / LoadAmps12(Self);
+     I := U / R;
+     Hint := Hint + #13#10 + 'U = ' + VoltText(U) + '    R = ' + OhmText(R) + #13#10 +
+       'I = U / R = ' + VoltText(U) + ' / ' + OhmText(R) + ' = ' + AmpText(I) +
+         ' = ' + MilliAmpText(I) + #13#10 +
+       VermogenRegel(U, I);
+   end;
 end;
 
 procedure TjanSimLight.MoveConnectors;

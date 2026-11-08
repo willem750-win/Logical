@@ -75,6 +75,55 @@
   <p>R is de weerstand van alle verbruikers samen (parallel). Hoe meer verbruikers aan staan, hoe groter de stroom
   en hoe meer de klemspanning U zakt. Lampen en leds branden feller naarmate de spanning van de voeding hoger is.</p>
 
+  <h2 id="formules">De formules: U, I, R en P</h2>
+  <p>Bij elektriciteit komen vier grootheden telkens terug:</p>
+  <table>
+    <tr><th>Grootheid</th><th>Symbool</th><th>Eenheid</th></tr>
+    <tr><td>spanning</td><td><b>U</b></td><td>volt (V)</td></tr>
+    <tr><td>stroom</td><td><b>I</b></td><td>ampère (A); 1&nbsp;A = 1000&nbsp;mA</td></tr>
+    <tr><td>weerstand</td><td><b>R</b></td><td>ohm (&Omega;)</td></tr>
+    <tr><td>vermogen</td><td><b>P</b></td><td>watt (W)</td></tr>
+  </table>
+  <p>De wet van Ohm verbindt spanning, stroom en weerstand. Ken je er twee, dan reken je de derde uit. Het vermogen
+  is spanning maal stroom. De driehoeken helpen om de formule te vinden:</p>
+  <figure>
+    <img src="../img/ohm-driehoek.svg" alt="Driehoek van de wet van Ohm: U boven, I en R onder. Driehoek van het vermogen: P boven, U en I onder.">
+    <figcaption>Bedek wat je zoekt: wat overblijft is de formule. Naast elkaar = vermenigvuldigen, boven elkaar = delen.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Je zoekt</th><th>Formule</th><th>Voorbeeld</th></tr>
+    <tr><td>spanning</td><td><b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0,1&nbsp;A &times; 120&nbsp;&Omega; = 12&nbsp;V</td></tr>
+    <tr><td>stroom</td><td><b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = 50&nbsp;mA</td></tr>
+    <tr><td>weerstand</td><td><b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b></td><td>12&nbsp;V / 0,1&nbsp;A = 120&nbsp;&Omega;</td></tr>
+    <tr><td>vermogen</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b></td><td>12&nbsp;V &times; 0,1&nbsp;A = 1,2&nbsp;W</td></tr>
+    <tr><td>vermogen (met R en I)</td><td><b>P&nbsp;=&nbsp;I&nbsp;&times;&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0,242&nbsp;A &times; 0,242&nbsp;A &times; 10&nbsp;&Omega; = 0,59&nbsp;W</td></tr>
+    <tr><td>vermogen (met U en R)</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V &times; 6&nbsp;V / 120&nbsp;&Omega; = 0,3&nbsp;W</td></tr>
+  </table>
+  <div class="tip"><strong>Let op:</strong> reken altijd in volt, ampère en ohm. Zet milliampère eerst om naar ampère:
+  242&nbsp;mA = 0,242&nbsp;A.</div>
+  <div class="tip"><strong>In Logic:</strong> wijs met de muis de bron, de milliampèremeter, een contact of een lamp aan.
+  De hint toont dan de berekening met de echte waarden van dat moment, ook tijdens de simulatie. Bijvoorbeeld bij een
+  verbrand contact: <b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b> = 0,242&nbsp;A &times; 10&nbsp;&Omega; = 2,42&nbsp;V.</div>
+  <h3>Voorbeeld: een lamp op halve spanning</h3>
+  <p>Een lamp trekt bij 12&nbsp;V een stroom van 100&nbsp;mA. Haar weerstand is <b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b> = 12&nbsp;V / 0,1&nbsp;A
+  = 120&nbsp;&Omega; en haar vermogen <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 12&nbsp;V &times; 0,1&nbsp;A = 1,2&nbsp;W.</p>
+  <p>Zet je de bron op 6&nbsp;V, dan blijft de weerstand 120&nbsp;&Omega;. De stroom wordt <b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b>
+  = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A en het vermogen <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 6&nbsp;V &times; 0,05&nbsp;A
+  = 0,3&nbsp;W. De halve spanning geeft de halve stroom, maar slechts een <b>kwart</b> van het vermogen. Daarom geeft
+  een lamp op halve spanning zoveel minder licht.</p>
+
+  <h3 id="elektronen">Kijk in de draad: de elektronen stromen</h3>
+  <p>Schuif de spanning van de bron. Bij 0&nbsp;V staan de elektronen <b>stil</b>: ze zitten altijd in de draad, maar
+  niets duwt ze. Hoe hoger de spanning, hoe harder de bron duwt: er schuiven meer elektronen per seconde door de draad,
+  de stroom <b>I</b> wordt groter en de lamp brandt feller. Het vergrootglas toont een stukje koperdraad: de grijze
+  koperatomen blijven op hun plaats, de blauwe elektronen schuiven verder.</p>
+  <div class="stroomdemo" data-dec="," data-label="Spanning van de bron:"
+    data-stil="U = 0 V: er is geen spanning die de elektronen duwt, dus er loopt geen stroom (I = 0 A)."></div>
+  <script src="../stroom.js"></script>
+  <div class="tip"><strong>Goed om te weten:</strong> de elektronen lopen van de &minus; pool naar de + pool. De
+  <b>afgesproken stroomzin</b> op schema's is omgekeerd: van + naar &minus;. In werkelijkheid schuiven de elektronen
+  heel traag, minder dan een millimeter per seconde; in de animatie gaat het veel sneller.</div>
+
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">De zekering</h2>
   <p>Een zekering beschermt de kring: wordt de stroom groter dan de <b>nominale stroom</b>, dan <b>smelt</b> het
   draadje. Er komt een rood kruis op en de + rail valt terug op 0&nbsp;V.</p>

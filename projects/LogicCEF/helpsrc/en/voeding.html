@@ -75,6 +75,55 @@
   <p>R is the resistance of all loads together (in parallel). The more loads are on, the larger the current and the
   more the terminal voltage U drops. Lamps and LEDs shine brighter as the supply voltage rises.</p>
 
+  <h2 id="formules">The formulas: U, I, R and P</h2>
+  <p>In electricity, four quantities keep coming back:</p>
+  <table>
+    <tr><th>Quantity</th><th>Symbol</th><th>Unit</th></tr>
+    <tr><td>voltage</td><td><b>U</b></td><td>volt (V)</td></tr>
+    <tr><td>current</td><td><b>I</b></td><td>ampere (A); 1&nbsp;A = 1000&nbsp;mA</td></tr>
+    <tr><td>resistance</td><td><b>R</b></td><td>ohm (&Omega;)</td></tr>
+    <tr><td>power</td><td><b>P</b></td><td>watt (W)</td></tr>
+  </table>
+  <p>Ohm's law links voltage, current and resistance. If you know two of them, you can calculate the third. Power
+  is voltage times current. The triangles help you find the formula:</p>
+  <figure>
+    <img src="../img/ohm-driehoek.svg" alt="Ohm's law triangle: U at the top, I and R at the bottom. Power triangle: P at the top, U and I at the bottom.">
+    <figcaption>Cover what you are looking for: what is left is the formula. Side by side = multiply, one above the other = divide.</figcaption>
+  </figure>
+  <table>
+    <tr><th>You want</th><th>Formula</th><th>Example</th></tr>
+    <tr><td>voltage</td><td><b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0.1&nbsp;A &times; 120&nbsp;&Omega; = 12&nbsp;V</td></tr>
+    <tr><td>current</td><td><b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V / 120&nbsp;&Omega; = 0.05&nbsp;A = 50&nbsp;mA</td></tr>
+    <tr><td>resistance</td><td><b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b></td><td>12&nbsp;V / 0.1&nbsp;A = 120&nbsp;&Omega;</td></tr>
+    <tr><td>power</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b></td><td>12&nbsp;V &times; 0.1&nbsp;A = 1.2&nbsp;W</td></tr>
+    <tr><td>power (from R and I)</td><td><b>P&nbsp;=&nbsp;I&nbsp;&times;&nbsp;I&nbsp;&times;&nbsp;R</b></td><td>0.242&nbsp;A &times; 0.242&nbsp;A &times; 10&nbsp;&Omega; = 0.59&nbsp;W</td></tr>
+    <tr><td>power (from U and R)</td><td><b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;U&nbsp;/&nbsp;R</b></td><td>6&nbsp;V &times; 6&nbsp;V / 120&nbsp;&Omega; = 0.3&nbsp;W</td></tr>
+  </table>
+  <div class="tip"><strong>Note:</strong> always calculate in volts, amperes and ohms. Convert milliamperes to amperes
+  first: 242&nbsp;mA = 0.242&nbsp;A.</div>
+  <div class="tip"><strong>In Logic:</strong> point at the source, the milliammeter, a contact or a lamp with the mouse.
+  The hint then shows the calculation with the real values of that moment, also during the simulation. For example with a
+  burnt contact: <b>U&nbsp;=&nbsp;I&nbsp;&times;&nbsp;R</b> = 0.242&nbsp;A &times; 10&nbsp;&Omega; = 2.42&nbsp;V.</div>
+  <h3>Example: a lamp at half voltage</h3>
+  <p>At 12&nbsp;V a lamp draws 100&nbsp;mA. Its resistance is <b>R&nbsp;=&nbsp;U&nbsp;/&nbsp;I</b> = 12&nbsp;V / 0.1&nbsp;A = 120&nbsp;&Omega;
+  and its power <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 12&nbsp;V &times; 0.1&nbsp;A = 1.2&nbsp;W.</p>
+  <p>Set the source to 6&nbsp;V and the resistance stays 120&nbsp;&Omega;. The current becomes <b>I&nbsp;=&nbsp;U&nbsp;/&nbsp;R</b>
+  = 6&nbsp;V / 120&nbsp;&Omega; = 0.05&nbsp;A and the power <b>P&nbsp;=&nbsp;U&nbsp;&times;&nbsp;I</b> = 6&nbsp;V &times; 0.05&nbsp;A
+  = 0.3&nbsp;W. Half the voltage gives half the current, but only a <b>quarter</b> of the power. That is why a lamp
+  at half voltage gives so much less light.</p>
+
+  <h3 id="elektronen">Look inside the wire: the electrons flow</h3>
+  <p>Move the voltage of the source. At 0&nbsp;V the electrons stand <b>still</b>: they are always in the wire, but
+  nothing pushes them. The higher the voltage, the harder the source pushes: more electrons per second move through the
+  wire, the current <b>I</b> gets larger and the lamp shines brighter. The magnifying glass shows a piece of copper wire:
+  the grey copper atoms stay in place, the blue electrons move on.</p>
+  <div class="stroomdemo" data-dec="." data-label="Voltage of the source:"
+    data-stil="U = 0 V: there is no voltage pushing the electrons, so no current flows (I = 0 A)."></div>
+  <script src="../stroom.js"></script>
+  <div class="tip"><strong>Good to know:</strong> the electrons move from the &minus; terminal to the + terminal. The
+  <b>conventional current direction</b> on diagrams is the opposite: from + to &minus;. In reality the electrons drift
+  very slowly, less than a millimetre per second; in the animation it is much faster.</div>
+
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">The fuse</h2>
   <p>A fuse protects the circuit: when the current becomes larger than the <b>rated current</b>, the wire inside
   <b>blows</b>. A red cross appears and the + rail drops back to 0&nbsp;V.</p>
