@@ -1839,6 +1839,8 @@ type
     FVerkeer:Boolean;
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
+    // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -2000,6 +2002,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2: string;
     FBoxTaal:TStatTaal;
     FOnObjectMove: TObjectMoveEvent;
 
@@ -2056,6 +2059,15 @@ type
     PROCEDURE SetDisplay(const Value: Boolean);
     PROCEDURE SetMeter(const Value: Boolean);
     procedure SetVoeding(const Value: Boolean);
+    procedure SetVoedingKnop(var F: Boolean; const Value: Boolean);
+    procedure SetKBron(const Value: Boolean);
+    procedure SetKZekering(const Value: Boolean);
+    procedure SetKAmpMeter(const Value: Boolean);
+    procedure SetKWeerstand(const Value: Boolean);
+    procedure SetKLamp2(const Value: Boolean);
+    procedure SetKSchakelaar2(const Value: Boolean);
+    procedure SetKVoltmeter2(const Value: Boolean);
+    procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean);
     procedure SetSymbolen(const Value: TjanSymbolen);
     procedure DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
     procedure DrawInputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
@@ -2225,6 +2237,14 @@ type
     property KSlagboom:Boolean read FSlagboom write SetSlagboom default True;
     // knoppen voor de voedingsrails (+ en -) in de balk tonen
     property KVoeding: Boolean read FVoeding write SetVoeding default True;
+    // knoppen van de voedingskring
+    property KBron: Boolean read FBronK write SetKBron default True;
+    property KZekering: Boolean read FZekeringK write SetKZekering default True;
+    property KAmpMeter: Boolean read FAmpMeterK write SetKAmpMeter default True;
+    property KWeerstand: Boolean read FWeerstandK write SetKWeerstand default True;
+    property KLamp2: Boolean read FLamp2K write SetKLamp2 default True;
+    property KSchakelaar2: Boolean read FSchak2K write SetKSchakelaar2 default True;
+    property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2236,6 +2256,13 @@ type
     property HMeter:String read FHMeter write SetHMeter;
     property HRailPlus: string read FHRailPlus write FHRailPlus;
     property HRailMin: string read FHRailMin write FHRailMin;
+    property HBron: string read FHBron write FHBron;
+    property HZekering: string read FHZekering write FHZekering;
+    property HAmpMeter: string read FHAmpMeter write FHAmpMeter;
+    property HWeerstand: string read FHWeerstand write FHWeerstand;
+    property HLamp2: string read FHLamp2 write FHLamp2;
+    property HSchakelaar2: string read FHSchak2 write FHSchak2;
+    property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -21050,6 +21077,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -23573,29 +23601,13 @@ begin
   else if PtInRect(RSlagboom, P) then NewHint := FHSlagboom
   else if PtInRect(RRailPlus, P) then NewHint := FHRailPlus
   else if PtInRect(RRailMin, P) then NewHint := FHRailMin
-  else if PtInRect(RBron, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Bron (accu, 0 tot 12 V)', 'create Source (battery, 0 to 12 V)',
-      'faire Source (batterie, 0 à 12 V)', 'Quelle erstellen (Akku, 0 bis 12 V)')
-  else if PtInRect(RZekering, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Zekering', 'create Fuse', 'faire Fusible', 'Sicherung erstellen')
-  else if PtInRect(RAmpMeter, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Milliampèremeter', 'create Milliammeter',
-      'faire Milliampèremètre', 'Milliamperemeter erstellen')
-  else if PtInRect(RWeerstand, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Weerstand (contact, lange draad)',
-      'create Resistance (contact, long wire)', 'faire Résistance (contact, long fil)',
-      'Widerstand erstellen (Kontakt, langer Draht)')
-  else if PtInRect(RLamp2, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Lamp met 2 klemmen (120 Ω, serie en parallel)',
-      'create Lamp with 2 terminals (120 Ω, series and parallel)',
-      'faire Lampe à 2 bornes (120 Ω, série et parallèle)',
-      'Lampe mit 2 Klemmen erstellen (120 Ω, Reihe und parallel)')
-  else if PtInRect(RSchak2, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Schakelaar met 2 klemmen', 'create Switch with 2 terminals',
-      'faire Interrupteur à 2 bornes', 'Schalter mit 2 Klemmen erstellen')
-  else if PtInRect(RVolt2, P) then
-    NewHint := Tr(StatTaalToBTaal(Language), 'maak Voltmeter met 2 klemmen', 'create Voltmeter with 2 terminals',
-      'faire Voltmètre à 2 bornes', 'Voltmeter mit 2 Klemmen erstellen')
+  else if PtInRect(RBron, P) then NewHint := FHBron
+  else if PtInRect(RZekering, P) then NewHint := FHZekering
+  else if PtInRect(RAmpMeter, P) then NewHint := FHAmpMeter
+  else if PtInRect(RWeerstand, P) then NewHint := FHWeerstand
+  else if PtInRect(RLamp2, P) then NewHint := FHLamp2
+  else if PtInRect(RSchak2, P) then NewHint := FHSchak2
+  else if PtInRect(RVolt2, P) then NewHint := FHVolt2
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -24836,6 +24848,13 @@ if FBoxTaal=stDutch then
   HSlagboom:='maak Slagboom (parking)';
   HRailPlus:='maak + rail (voeding)';
   HRailMin:='maak - rail (massa)';
+  HBron:='maak Bron (accu, 0 tot 12 V)';
+  HZekering:='maak Zekering';
+  HAmpMeter:='maak Milliampèremeter';
+  HWeerstand:='maak Weerstand (contact, lange draad)';
+  HLamp2:='maak Lamp met 2 klemmen (serie en parallel)';
+  HSchakelaar2:='maak Schakelaar met 2 klemmen';
+  HVoltmeter2:='maak Voltmeter met 2 klemmen';
  end;
 
 if FBoxTaal=stEnglish then
@@ -24870,6 +24889,13 @@ if FBoxTaal=stEnglish then
   HSlagboom:=LangTr('create Barrier gate (car park)');
   HRailPlus:=LangTr('create + rail (supply)');
   HRailMin:=LangTr('create - rail (ground)');
+  HBron:=LangTr('create Source (battery, 0 to 12 V)');
+  HZekering:=LangTr('create Fuse');
+  HAmpMeter:=LangTr('create Milliammeter');
+  HWeerstand:=LangTr('create Resistance (contact, long wire)');
+  HLamp2:=LangTr('create Lamp with 2 terminals (series and parallel)');
+  HSchakelaar2:=LangTr('create Switch with 2 terminals');
+  HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -24902,6 +24928,13 @@ if FBoxTaal=stFrench then
   HSlagboom:='faire Barrière (parking)';
   HRailPlus:='faire Rail + (alimentation)';
   HRailMin:='faire Rail - (masse)';
+  HBron:='faire Source (batterie, 0 à 12 V)';
+  HZekering:='faire Fusible';
+  HAmpMeter:='faire Milliampèremètre';
+  HWeerstand:='faire Résistance (contact, long fil)';
+  HLamp2:='faire Lampe à 2 bornes (série et parallèle)';
+  HSchakelaar2:='faire Interrupteur à 2 bornes';
+  HVoltmeter2:='faire Voltmètre à 2 bornes';
  end;
 
  if FBoxTaal=stGerman then
@@ -24935,6 +24968,13 @@ if FBoxTaal=stFrench then
   HSlagboom:='Schranke erstellen (Parkplatz)';
   HRailPlus:='+ Schiene (Versorgung) erstellen';
   HRailMin:='- Schiene (Masse) erstellen';
+  HBron:='Quelle erstellen (Akku, 0 bis 12 V)';
+  HZekering:='Sicherung erstellen';
+  HAmpMeter:='Milliamperemeter erstellen';
+  HWeerstand:='Widerstand erstellen (Kontakt, langer Draht)';
+  HLamp2:='Lampe mit 2 Klemmen erstellen (Reihe und parallel)';
+  HSchakelaar2:='Schalter mit 2 Klemmen erstellen';
+  HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   end;
   invalidate;
  // willy
@@ -24975,6 +25015,81 @@ begin
   if Value = FVoeding then Exit;
   FVoeding := Value;
   invalidate;
+end;
+
+procedure TjanSimLogicBox.SetVoedingKnop(var F: Boolean; const Value: Boolean);
+begin
+  if Value = F then Exit;
+  F := Value;
+  Invalidate;
+end;
+
+procedure TjanSimLogicBox.SetKBron(const Value: Boolean);
+begin SetVoedingKnop(FBronK, Value); end;
+
+procedure TjanSimLogicBox.SetKZekering(const Value: Boolean);
+begin SetVoedingKnop(FZekeringK, Value); end;
+
+procedure TjanSimLogicBox.SetKAmpMeter(const Value: Boolean);
+begin SetVoedingKnop(FAmpMeterK, Value); end;
+
+procedure TjanSimLogicBox.SetKWeerstand(const Value: Boolean);
+begin SetVoedingKnop(FWeerstandK, Value); end;
+
+procedure TjanSimLogicBox.SetKLamp2(const Value: Boolean);
+begin SetVoedingKnop(FLamp2K, Value); end;
+
+procedure TjanSimLogicBox.SetKSchakelaar2(const Value: Boolean);
+begin SetVoedingKnop(FSchak2K, Value); end;
+
+procedure TjanSimLogicBox.SetKVoltmeter2(const Value: Boolean);
+begin SetVoedingKnop(FVolt2K, Value); end;
+
+// De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
+// schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
+// Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
+procedure TjanSimLogicBox.PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean);
+var
+  N: Integer;
+
+  procedure Knop(var R: TRect; Soort: Integer; ADown: Boolean);
+  var Y: Integer;
+  begin
+    if Vertikaal then
+    begin
+      Y := TOP + (N div 2) * (H + SPATIE);
+      if N mod 2 = 0 then R := Rect(LK - 4, Y, LK + 13, Y + H)
+      else R := Rect(LK + 15, Y, LK + 32, Y + H);
+    end
+    else
+      R := Rect(LK + N * 19, TOP, LK + N * 19 + 17, TOP + H);
+    if Soort = -1 then DrawRailButton(R, True, ADown)
+    else if Soort = -2 then DrawRailButton(R, False, ADown)
+    else DrawVoedingButton(R, Soort, ADown);
+    Inc(N);
+  end;
+
+begin
+  RRailPlus := Rect(0, 0, 0, 0);
+  RRailMin := Rect(0, 0, 0, 0);
+  RBron := Rect(0, 0, 0, 0);
+  RZekering := Rect(0, 0, 0, 0);
+  RWeerstand := Rect(0, 0, 0, 0);
+  RLamp2 := Rect(0, 0, 0, 0);
+  RSchak2 := Rect(0, 0, 0, 0);
+  RVolt2 := Rect(0, 0, 0, 0);
+  N := 0;
+  if FVoeding then
+  begin
+    Knop(RRailPlus, -1, DRailPlus);
+    Knop(RRailMin, -2, DRailMin);
+  end;
+  if FBronK then Knop(RBron, 0, DBron);
+  if FZekeringK then Knop(RZekering, 1, DZekering);
+  if FWeerstandK then Knop(RWeerstand, 3, DWeerstand);
+  if FLamp2K then Knop(RLamp2, 4, DLamp2);
+  if FSchak2K then Knop(RSchak2, 5, DSchak2);
+  if FVolt2K then Knop(RVolt2, 6, DVolt2);
 end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);
@@ -25980,7 +26095,7 @@ begin
 
       // milliampèremeter: zelfde soort knop, direct onder de voltmeter
       RAmpMeter := Rect(0, 0, 0, 0);
-      if FVoeding then
+      if FAmpMeterK then
       begin
         RAmpMeter := Rect(LK, TOP, BK, HK);
         Rb := RAmpMeter;
@@ -26041,40 +26156,8 @@ begin
       end;
 
       // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
-      RRailPlus := Rect(0, 0, 0, 0);
-      RRailMin := Rect(0, 0, 0, 0);
-      RBron := Rect(0, 0, 0, 0);
-      RZekering := Rect(0, 0, 0, 0);
-      RWeerstand := Rect(0, 0, 0, 0);
-      RLamp2 := Rect(0, 0, 0, 0);
-      RSchak2 := Rect(0, 0, 0, 0);
-      RVolt2 := Rect(0, 0, 0, 0);
-      if FVoeding then
-      begin
-      TOP := TOP + 2;
-      RRailPlus := Rect(LK - 4, TOP, LK + 13, TOP + H);
-      RRailMin := Rect(LK + 15, TOP, LK + 32, TOP + H);
-      DrawRailButton(RRailPlus, True, DRailPlus);
-      DrawRailButton(RRailMin, False, DRailMin);
-      // voedingskring: bron en zekering
-      TOP := TOP + H + SPATIE;
-      RBron := Rect(LK - 4, TOP, LK + 13, TOP + H);
-      RZekering := Rect(LK + 15, TOP, LK + 32, TOP + H);
-      DrawVoedingButton(RBron, 0, DBron);
-      DrawVoedingButton(RZekering, 1, DZekering);
-      // weerstand (contact) op een eigen rij
-      TOP := TOP + H + SPATIE;
-      RWeerstand := Rect(LK - 4, TOP, LK + 13, TOP + H);
-      DrawVoedingButton(RWeerstand, 3, DWeerstand);
-      RLamp2 := Rect(LK + 15, TOP, LK + 32, TOP + H);
-      DrawVoedingButton(RLamp2, 4, DLamp2);
-      // schakelaar en voltmeter met twee klemmen
-      TOP := TOP + H + SPATIE;
-      RSchak2 := Rect(LK - 4, TOP, LK + 13, TOP + H);
-      DrawVoedingButton(RSchak2, 5, DSchak2);
-      RVolt2 := Rect(LK + 15, TOP, LK + 32, TOP + H);
-      DrawVoedingButton(RVolt2, 6, DVolt2);
-      end;
+      // (ook bron, zekering, weerstand, lamp, schakelaar en voltmeter met 2 klemmen)
+      PlaatsVoeding(LK, TOP + 2, H, SPATIE, True);
     end;
   end;
 
@@ -26620,7 +26703,7 @@ begin
 
       // milliampèremeter: zelfde soort knop, direct naast de voltmeter
       RAmpMeter := Rect(0, 0, 0, 0);
-      if FVoeding then
+      if FAmpMeterK then
       begin
         RAmpMeter := Rect(LK, TOP, BK, HK);
         Rb := RAmpMeter;
@@ -26668,36 +26751,10 @@ begin
         NextX(B + SPATIE);
       end;
 
-      // voedingsrails: + en - als aparte groep (KVoeding)
-      RRailPlus := Rect(0, 0, 0, 0);
-      RRailMin := Rect(0, 0, 0, 0);
-      RBron := Rect(0, 0, 0, 0);
-      RZekering := Rect(0, 0, 0, 0);
-      RWeerstand := Rect(0, 0, 0, 0);
-      RLamp2 := Rect(0, 0, 0, 0);
-      RSchak2 := Rect(0, 0, 0, 0);
-      RVolt2 := Rect(0, 0, 0, 0);
-      if FVoeding then
-      begin
-        // halve knoppen: + en - rail, bron, zekering, weerstand
-        NextX(8);
-        RRailPlus := Rect(LK, TOP, LK + 17, HK);
-        DrawRailButton(RRailPlus, True, DRailPlus);
-        RRailMin := Rect(LK + 19, TOP, LK + 36, HK);
-        DrawRailButton(RRailMin, False, DRailMin);
-        RBron := Rect(LK + 38, TOP, LK + 55, HK);
-        DrawVoedingButton(RBron, 0, DBron);
-        RZekering := Rect(LK + 57, TOP, LK + 74, HK);
-        DrawVoedingButton(RZekering, 1, DZekering);
-        RWeerstand := Rect(LK + 76, TOP, LK + 93, HK);
-        DrawVoedingButton(RWeerstand, 3, DWeerstand);
-        RLamp2 := Rect(LK + 95, TOP, LK + 112, HK);
-        DrawVoedingButton(RLamp2, 4, DLamp2);
-        RSchak2 := Rect(LK + 114, TOP, LK + 131, HK);
-        DrawVoedingButton(RSchak2, 5, DSchak2);
-        RVolt2 := Rect(LK + 133, TOP, LK + 150, HK);
-        DrawVoedingButton(RVolt2, 6, DVolt2);
-      end;
+      // voeding: + en - rail, bron, zekering, weerstand, lamp, schakelaar en
+      // voltmeter met 2 klemmen als halve knoppen in een aparte groep
+      NextX(8);
+      PlaatsVoeding(LK, TOP, HK - TOP, SPATIE, False);
     end;
   end;
 end;
@@ -27124,7 +27181,7 @@ begin
 
       // milliampèremeter: zelfde soort knop, direct naast de voltmeter
       RAmpMeter := Rect(0, 0, 0, 0);
-      if FVoeding then
+      if FAmpMeterK then
       begin
         RAmpMeter := Rect(LK, TOP, BK, HK);
         Rb := RAmpMeter;
@@ -27172,36 +27229,10 @@ begin
         NextX(B + SPATIE);
       end;
 
-      // voedingsrails: + en - als aparte groep (KVoeding)
-      RRailPlus := Rect(0, 0, 0, 0);
-      RRailMin := Rect(0, 0, 0, 0);
-      RBron := Rect(0, 0, 0, 0);
-      RZekering := Rect(0, 0, 0, 0);
-      RWeerstand := Rect(0, 0, 0, 0);
-      RLamp2 := Rect(0, 0, 0, 0);
-      RSchak2 := Rect(0, 0, 0, 0);
-      RVolt2 := Rect(0, 0, 0, 0);
-      if FVoeding then
-      begin
-        // halve knoppen: + en - rail, bron, zekering, weerstand
-        NextX(8);
-        RRailPlus := Rect(LK, TOP, LK + 17, HK);
-        DrawRailButton(RRailPlus, True, DRailPlus);
-        RRailMin := Rect(LK + 19, TOP, LK + 36, HK);
-        DrawRailButton(RRailMin, False, DRailMin);
-        RBron := Rect(LK + 38, TOP, LK + 55, HK);
-        DrawVoedingButton(RBron, 0, DBron);
-        RZekering := Rect(LK + 57, TOP, LK + 74, HK);
-        DrawVoedingButton(RZekering, 1, DZekering);
-        RWeerstand := Rect(LK + 76, TOP, LK + 93, HK);
-        DrawVoedingButton(RWeerstand, 3, DWeerstand);
-        RLamp2 := Rect(LK + 95, TOP, LK + 112, HK);
-        DrawVoedingButton(RLamp2, 4, DLamp2);
-        RSchak2 := Rect(LK + 114, TOP, LK + 131, HK);
-        DrawVoedingButton(RSchak2, 5, DSchak2);
-        RVolt2 := Rect(LK + 133, TOP, LK + 150, HK);
-        DrawVoedingButton(RVolt2, 6, DVolt2);
-      end;
+      // voeding: + en - rail, bron, zekering, weerstand, lamp, schakelaar en
+      // voltmeter met 2 klemmen als halve knoppen in een aparte groep
+      NextX(8);
+      PlaatsVoeding(LK, TOP, HK - TOP, SPATIE, False);
     end;
   end;
 end;

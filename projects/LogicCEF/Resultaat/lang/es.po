@@ -1379,3 +1379,25 @@ msgstr "Miliamperímetro\n\n- En serie entre la fuente y la barra +.\n- Muestra 
 
 msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
 msgstr "Resistencia (contacto)\n\n- En serie en la línea de alimentación: caída de tensión U = I x R.\n- Buen contacto 0,05 ohm, cable largo y fino 1 ohm, mal contacto 2 ohm, contacto quemado 10 ohm.\n- Mide la caída de tensión con un voltímetro entre los dos bornes.\n- Clic derecho: elegir el tipo."
+
+msgid "Resistance (contact)"
+msgstr "Resistencia (contacto)"
+
+msgid "Lamp with 2 terminals"
+msgstr "Lámpara de 2 bornes"
+
+msgid "Switch with 2 terminals"
+msgstr "Interruptor de 2 bornes"
+
+msgid "Voltmeter with 2 terminals"
+msgstr "Voltímetro de 2 bornes"
+
+msgid "create Lamp with 2 terminals (series and parallel)"
+msgstr "crear lámpara de 2 bornes (serie y paralelo)"
+
+msgid "create Switch with 2 terminals"
+msgstr "crear interruptor de 2 bornes"
+
+msgid "create Voltmeter with 2 terminals"
+msgstr "crear voltímetro de 2 bornes"
+

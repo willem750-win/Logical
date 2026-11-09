@@ -1384,3 +1384,25 @@ msgstr "毫安表\n\n- 串联在电源和 + 轨之间。\n- 显示电路消耗�
 
 msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
 msgstr "电阻（触点）\n\n- 串联在供电线路中：电压降 U = I x R。\n- 接触良好 0.05 Ω，细长导线 1 Ω，接触不良 2 Ω，烧坏的触点 10 Ω。\n- 用电压表接在两个端子之间测量电压降。\n- 右键：选择类型。"
+
+msgid "Resistance (contact)"
+msgstr "电阻（触点）"
+
+msgid "Lamp with 2 terminals"
+msgstr "双接线柱灯"
+
+msgid "Switch with 2 terminals"
+msgstr "双接线柱开关"
+
+msgid "Voltmeter with 2 terminals"
+msgstr "双接线柱电压表"
+
+msgid "create Lamp with 2 terminals (series and parallel)"
+msgstr "创建双接线柱灯（串联和并联）"
+
+msgid "create Switch with 2 terminals"
+msgstr "创建双接线柱开关"
+
+msgid "create Voltmeter with 2 terminals"
+msgstr "创建双接线柱电压表"
+

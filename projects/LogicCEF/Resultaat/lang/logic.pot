@@ -1398,3 +1398,24 @@ msgstr ""
 msgid "Image type"
 msgstr ""
 
+msgid "Resistance (contact)"
+msgstr ""
+
+msgid "Lamp with 2 terminals"
+msgstr ""
+
+msgid "Switch with 2 terminals"
+msgstr ""
+
+msgid "Voltmeter with 2 terminals"
+msgstr ""
+
+msgid "create Lamp with 2 terminals (series and parallel)"
+msgstr ""
+
+msgid "create Switch with 2 terminals"
+msgstr ""
+
+msgid "create Voltmeter with 2 terminals"
+msgstr ""
+

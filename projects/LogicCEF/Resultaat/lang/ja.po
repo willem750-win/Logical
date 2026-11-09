@@ -1384,3 +1384,25 @@ msgstr "ミリアンペア計\n\n- 電源と + レールの間に直列。\n- �
 
 msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
 msgstr "抵抗 (接点)\n\n- 電源ラインに直列: 電圧降下 U = I x R。\n- 良好な接触 0.05 Ω、長く細い電線 1 Ω、接触不良 2 Ω、焼損した接点 10 Ω。\n- 2つの端子の間に電圧計をつないで電圧降下を測ります。\n- 右クリック: 種類を選ぶ。"
+
+msgid "Resistance (contact)"
+msgstr "抵抗 (接点)"
+
+msgid "Lamp with 2 terminals"
+msgstr "2端子のランプ"
+
+msgid "Switch with 2 terminals"
+msgstr "2端子のスイッチ"
+
+msgid "Voltmeter with 2 terminals"
+msgstr "2端子の電圧計"
+
+msgid "create Lamp with 2 terminals (series and parallel)"
+msgstr "2端子のランプを作成 (直列と並列)"
+
+msgid "create Switch with 2 terminals"
+msgstr "2端子のスイッチを作成"
+
+msgid "create Voltmeter with 2 terminals"
+msgstr "2端子の電圧計を作成"
+
