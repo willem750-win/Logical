@@ -1,6 +1,6 @@
 TjanRail;245;443;271;23;+;120;
 TjanRail;463;864;166;23;-;0;
-TjanBron;84;157;101;112;120;0;
+TjanBron;84;157;101;112;120;0;1;
 TjanZekering;58;144;201;40;2;
 TjanAmpMeter;51;204;253;100;
 TjanWeerstand;42;324;277;100;2;

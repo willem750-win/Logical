@@ -256,6 +256,7 @@ type
     Tmemlist: Array[0..15] of integer;
     FParent:TWinControl;
     FPower:Boolean;
+    FStroomA: Double;   // stroom van het begin naar het einde van de draad (A), voor de elektronen
     mdp:TPoint;
     oldp:TPoint;
     ConAnchor:TPoint;
@@ -312,6 +313,8 @@ type
     procedure DisConnectFinal;
     // met de knop Verbinding op een klem van de voedingskring: nieuwe draad
     function StartWireOnPin(const P: TPoint): Boolean;
+    procedure SetStroomA(AI: Double);
+    procedure PaintElektronen;
     procedure CMHitTest(var Msg: TCMHitTest); message CM_HITTEST;
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
@@ -324,6 +327,7 @@ type
   public
     { Public declarations }
     constructor Create(AOwner:TComponent); override;
+    destructor Destroy; override;
     procedure paint; override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure DoMouseDown(x, y: integer);
@@ -2996,7 +3000,10 @@ end;
     FKlem: Double;         // klemspanning (na de spanningsval over Ri)
     FStroom: Double;       // stroom in A
     FSliding: Boolean;
+    FElektronen: Boolean;  // elektronen in de draden tonen
     procedure SetVolt(const Value: Double);
+    procedure SetElektronen(const Value: Boolean);
+    procedure ElektronenClick(Sender: TObject);
     procedure SetRiIdx(const Value: Integer);
     procedure RiClick(Sender: TObject);
     function SliderRect: TRect;
@@ -3019,6 +3026,7 @@ end;
   published
     property Volt: Double read FVolt write SetVolt;
     property RiIdx: Integer read FRiIdx write SetRiIdx;
+    property Elektronen: Boolean read FElektronen write SetElektronen;
   end;
 
   { TjanZekering: smeltzekering in de voedingsleiding. Pin 0 = ingang
@@ -3425,6 +3433,31 @@ if (screen.cursor=crDraad) then
     SetCursorPos(pt.x + 35 - 10, pt.y+15);
     //screen.cursor:=crDefault;
    end;
+end;
+
+// ============================================================
+// Elektronen in de draden van de voedingskring: bolletjes die met de
+// stroom meeschuiven (aan te zetten bij de bron: Elektronen tonen)
+// ============================================================
+const
+  ElektronMinA = 0.0005;   // minder stroom: geen elektronen
+  ElektronAfstand = 14;    // pixels tussen twee elektronen
+type
+  TElektronKlok = class
+    procedure Tik(Sender: TObject);
+  end;
+var
+  ElektronDraden: TList = nil;      // draden waar stroom door gaat
+  ElektronTimer: TTimer = nil;
+  ElektronKlok: TElektronKlok = nil;
+
+procedure TElektronKlok.Tik(Sender: TObject);
+var
+  i: Integer;
+begin
+  if ElektronDraden = nil then Exit;
+  for i := 0 to ElektronDraden.Count - 1 do
+    TjanConnector(ElektronDraden[i]).Invalidate;
 end;
 
 procedure Maakdraad(T,L:integer;wc:TWincontrol);
@@ -4395,6 +4428,109 @@ begin
    //FTaal:='NL';
 end;
 
+destructor TjanConnector.Destroy;
+begin
+  if ElektronDraden <> nil then
+  begin
+    ElektronDraden.Remove(Self);
+    if (ElektronDraden.Count = 0) and (ElektronTimer <> nil) then
+      ElektronTimer.Enabled := False;
+  end;
+  inherited Destroy;
+end;
+
+procedure TjanConnector.SetStroomA(AI: Double);
+var
+  Aan, WasAan: Boolean;
+begin
+  WasAan := Abs(FStroomA) > ElektronMinA;
+  FStroomA := AI;
+  Aan := Abs(AI) > ElektronMinA;
+  if Aan = WasAan then Exit;
+  if ElektronDraden = nil then ElektronDraden := TList.Create;
+  if Aan then
+  begin
+    ElektronDraden.Add(Self);
+    if ElektronTimer = nil then
+    begin
+      ElektronKlok := TElektronKlok.Create;
+      ElektronTimer := TTimer.Create(nil);
+      ElektronTimer.Interval := 40;
+      ElektronTimer.OnTimer := ElektronKlok.Tik;
+    end;
+    ElektronTimer.Enabled := True;
+  end
+  else
+  begin
+    ElektronDraden.Remove(Self);
+    if (ElektronDraden.Count = 0) and (ElektronTimer <> nil) then
+      ElektronTimer.Enabled := False;
+  end;
+  Invalidate;
+end;
+
+// Elektronen langs de draad. De (conventionele) stroom gaat van het begin
+// naar het einde; de elektronen schuiven de andere kant op, van - naar +.
+// Hoe meer stroom, hoe sneller (100 mA: 40 pixels per seconde).
+procedure TjanConnector.PaintElektronen;
+var
+  d2, w2, xw, yh, k, j: Integer;
+  Pt: array[0..3] of TPoint;
+  Len: array[0..2] of Double;
+  Tot, Snel, Ph, S, F: Double;
+  X, Y: Integer;
+begin
+  if Abs(FStroomA) <= ElektronMinA then Exit;
+  d2 := conSize div 2;
+  w2 := Round(Edge * Width);
+  xw := Width - 1;
+  yh := Height - 1;
+  // zelfde weg als in Paint, van het begin (APi) naar het einde (APo)
+  case conPos of
+    jcpTL: begin Pt[0] := Point(d2, d2); Pt[1] := Point(w2, d2); Pt[2] := Point(w2, yh - d2); Pt[3] := Point(xw - d2, yh - d2); end;
+    jcpBR: begin Pt[0] := Point(xw - d2, yh - d2); Pt[1] := Point(xw - d2, d2); Pt[2] := Pt[1]; Pt[3] := Point(d2, d2); end;
+    jcpTR: begin Pt[0] := Point(xw - d2, d2); Pt[1] := Point(xw - d2, yh - d2); Pt[2] := Pt[1]; Pt[3] := Point(d2, yh - d2); end;
+  else     begin Pt[0] := Point(d2, yh - d2); Pt[1] := Point(w2, yh - d2); Pt[2] := Point(w2, d2); Pt[3] := Point(xw - d2, d2); end;
+  end;
+  Tot := 0;
+  for k := 0 to 2 do
+  begin
+    Len[k] := Abs(Pt[k + 1].X - Pt[k].X) + Abs(Pt[k + 1].Y - Pt[k].Y);
+    Tot := Tot + Len[k];
+  end;
+  if Tot < 1 then Exit;
+  Snel := 400 * Abs(FStroomA);
+  if Snel < 8 then Snel := 8;
+  if Snel > 120 then Snel := 120;
+  Ph := Frac(GetTickCount64 / 1000 * Snel / ElektronAfstand) * ElektronAfstand;
+  // stroom van begin naar einde: elektronen van einde naar begin
+  if FStroomA > 0 then Ph := ElektronAfstand - Ph;
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    Pen.Color := RGBToColor(31, 95, 191);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(31, 95, 191);
+    S := Ph;
+    while S < Tot do
+    begin
+      F := S;
+      j := 0;
+      while (j < 2) and (F > Len[j]) do
+      begin
+        F := F - Len[j];
+        Inc(j);
+      end;
+      if Len[j] > 0 then F := F / Len[j] else F := 0;
+      if F > 1 then F := 1;
+      X := Pt[j].X + Round((Pt[j + 1].X - Pt[j].X) * F);
+      Y := Pt[j].Y + Round((Pt[j + 1].Y - Pt[j].Y) * F);
+      Ellipse(X - 2, Y - 2, X + 3, Y + 3);
+      S := S + ElektronAfstand;
+    end;
+  end;
+end;
+
 procedure TjanConnector.DoMouseDown(x,y:integer);
 var p:Tpoint;
     Rtl,Rbr,Rtr,Rbl:TRect;
@@ -4900,6 +5036,8 @@ begin
             end;
           end;
       end; // case Shape
+
+      PaintElektronen;
 
       // -----------------------------
       // Selectiekader ALS LAATSTE
@@ -6441,6 +6579,15 @@ var
   G, E, Gs, Amp, U, F, Hulp: Double;
   Smelt, Changed: Boolean;
   Z: TjanZekering;
+  LoadItA, LoadItB: Integer;       // klem/rail waar de verbruikers aan hangen
+  LoadG: Double;
+  Toon: Boolean;
+  Vraag, Sub: array of Double;     // stroom die een klem/rail uit de draden neemt
+  Draad: array of TjanConnector;
+  DrA, DrB, Buur, BuurDraad, Volg, OuderIt, OuderDraad: array of Integer;
+  BuurStart: array of Integer;
+  Gezien: array of Boolean;
+  NI, ND, Kop, Staart, m: Integer;
 
   // weerstand, minstens RKlein (een ideale bron of draad: bijna 0 ohm)
   function NietNul(R: Double): Double;
@@ -6627,13 +6774,21 @@ begin
 
   // de rail waar de verbruikers op staan: eerste + rail en eerste - rail
   PlusR := -1; Mass := -1;
+  LoadItA := -1; LoadItB := -1; LoadG := 0;
   for k := 0 to NR - 1 do
     if Rails[k].Plus then
     begin
-      if PlusR < 0 then PlusR := NodeOf[2 * NP + k];
+      if PlusR < 0 then
+      begin
+        PlusR := NodeOf[2 * NP + k];
+        LoadItA := 2 * NP + k;
+      end;
     end
     else if Mass < 0 then
+    begin
       Mass := NodeOf[2 * NP + k];
+      LoadItB := 2 * NP + k;
+    end;
 
   SetLength(V, N);
   SetLength(NewVolt, NR);
@@ -6676,10 +6831,13 @@ begin
         if (Parts[k] is TjanBron) and (Find(PinNode(k, 0)) = Find(PlusR)) then
         begin
           j := PinNode(k, 1);
+          if Mass < 0 then LoadItB := 2 * k + 1;
           Break;
         end;
+    LoadG := 0;
     if (PlusR >= 0) and (j >= 0) and (j <> PlusR) and (G > 0) then
     begin
+      LoadG := G;
       AddTak(PlusR, j, G, nil);
       Union(PlusR, j);
     end;
@@ -6799,6 +6957,115 @@ begin
     end;
   if Changed and AInval then
     P.Invalidate;   // kleur van de stekkers
+
+  // stroom per draad, voor de elektronen (alleen als een bron ze toont).
+  // Elke klem/rail neemt een stroom uit de draden (de stroom door het
+  // onderdeel); per knooppunt volgt de stroom in de draden uit de
+  // stroomwet van Kirchhoff, over een opspannende boom van de draden.
+  Toon := False;
+  for k := 0 to NP - 1 do
+    if (Parts[k] is TjanBron) and TjanBron(Parts[k]).Elektronen then Toon := True;
+  NI := 2 * NP + NR;
+  SetLength(Draad, 0); SetLength(DrA, 0); SetLength(DrB, 0);
+  ND := 0;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanConnector) then
+    begin
+      Con := TjanConnector(P.Controls[i]);
+      A := -1; B := -1;
+      if Toon and Con.Visible then
+      begin
+        Con.EndCenters(Pa, Pb);
+        A := ItemAt(Pa);
+        B := ItemAt(Pb);
+      end;
+      if (A < 0) or (B < 0) or (A = B) then
+      begin
+        Con.SetStroomA(0);
+        Continue;
+      end;
+      SetLength(Draad, ND + 1); SetLength(DrA, ND + 1); SetLength(DrB, ND + 1);
+      Draad[ND] := Con; DrA[ND] := A; DrB[ND] := B;
+      Inc(ND);
+    end;
+  if ND = 0 then Exit;
+  SetLength(Vraag, NI);
+  for i := 0 to NI - 1 do Vraag[i] := 0;
+  for k := 0 to NP - 1 do
+  begin
+    if Parts[k] is TjanBron then Amp := -TjanBron(Parts[k]).FStroom else Amp := Parts[k].FAmp;
+    Vraag[2 * k] := Amp;
+    Vraag[2 * k + 1] := -Amp;
+  end;
+  if (LoadG > 0) and (LoadItA >= 0) and (LoadItB >= 0) then
+  begin
+    Amp := LoadG * (V[NodeOf[LoadItA]] - V[NodeOf[LoadItB]]);
+    Vraag[LoadItA] := Vraag[LoadItA] + Amp;
+    Vraag[LoadItB] := Vraag[LoadItB] - Amp;
+  end;
+  // buren per klem/rail (lijst met beginpunten)
+  SetLength(BuurStart, NI + 1);
+  for i := 0 to NI do BuurStart[i] := 0;
+  for m := 0 to ND - 1 do
+  begin
+    Inc(BuurStart[DrA[m] + 1]);
+    Inc(BuurStart[DrB[m] + 1]);
+  end;
+  for i := 1 to NI do BuurStart[i] := BuurStart[i] + BuurStart[i - 1];
+  SetLength(Buur, 2 * ND); SetLength(BuurDraad, 2 * ND);
+  SetLength(Volg, NI);
+  for i := 0 to NI - 1 do Volg[i] := BuurStart[i];
+  for m := 0 to ND - 1 do
+  begin
+    Buur[Volg[DrA[m]]] := DrB[m]; BuurDraad[Volg[DrA[m]]] := m; Inc(Volg[DrA[m]]);
+    Buur[Volg[DrB[m]]] := DrA[m]; BuurDraad[Volg[DrB[m]]] := m; Inc(Volg[DrB[m]]);
+  end;
+  // breedte-eerst door elk deel; Volg wordt de bezoekvolgorde
+  SetLength(Gezien, NI); SetLength(OuderIt, NI); SetLength(OuderDraad, NI);
+  for i := 0 to NI - 1 do
+  begin
+    Gezien[i] := False; OuderIt[i] := -1; OuderDraad[i] := -1;
+  end;
+  Staart := 0;
+  for i := 0 to NI - 1 do
+    if not Gezien[i] then
+    begin
+      Gezien[i] := True;
+      Kop := Staart;
+      Volg[Staart] := i; Inc(Staart);
+      while Kop < Staart do
+      begin
+        A := Volg[Kop]; Inc(Kop);
+        for j := BuurStart[A] to BuurStart[A + 1] - 1 do
+          if not Gezien[Buur[j]] then
+          begin
+            B := Buur[j];
+            Gezien[B] := True;
+            OuderIt[B] := A;
+            OuderDraad[B] := BuurDraad[j];
+            Volg[Staart] := B; Inc(Staart);
+          end;
+      end;
+    end;
+  // van de bladeren naar de wortel: de stroom in de draad naar een klem is
+  // alles wat die klem en alles daarachter uit de draden neemt
+  SetLength(Sub, NI);
+  for i := 0 to NI - 1 do Sub[i] := Vraag[i];
+  SetLength(Gezien, ND);
+  for m := 0 to ND - 1 do Gezien[m] := False;
+  for k := NI - 1 downto 0 do
+  begin
+    B := Volg[k];
+    A := OuderIt[B];
+    if A < 0 then Continue;
+    m := OuderDraad[B];
+    Gezien[m] := True;
+    // stroom van A naar B door draad m
+    if DrA[m] = A then Draad[m].SetStroomA(Sub[B]) else Draad[m].SetStroomA(-Sub[B]);
+    Sub[A] := Sub[A] + Sub[B];
+  end;
+  for m := 0 to ND - 1 do
+    if not Gezien[m] then Draad[m].SetStroomA(0);
 end;
 
 // spanning op klem APin van voedingsonderdeel D (voor een draad die daar begint)
@@ -6814,8 +7081,8 @@ end;
 function VoedingFileLine(C: TControl): string;
 begin
   if C is TjanBron then
-    Result := Format('TjanBron;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
-      Round(TjanBron(C).Volt * 10), TjanBron(C).RiIdx])
+    Result := Format('TjanBron;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Round(TjanBron(C).Volt * 10), TjanBron(C).RiIdx, Ord(TjanBron(C).Elektronen)])
   else if C is TjanZekering then
     Result := Format('TjanZekering;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanZekering(C).NomIdx])
@@ -7184,6 +7451,19 @@ begin
   RiIdx := TMenuItem(Sender).Tag;
 end;
 
+procedure TjanBron.SetElektronen(const Value: Boolean);
+begin
+  if Value = FElektronen then Exit;
+  FElektronen := Value;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanBron.ElektronenClick(Sender: TObject);
+begin
+  Elektronen := not Elektronen;
+end;
+
 procedure TjanBron.AddMenuItems(APop: TPopupMenu);
 var
   Mi, Sub: TMenuItem;
@@ -7202,6 +7482,11 @@ begin
     Sub.OnClick := RiClick;
     Mi.Add(Sub);
   end;
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Elektronen tonen', 'Show electrons', 'Montrer les électrons', 'Elektronen zeigen');
+  Mi.Checked := FElektronen;
+  Mi.OnClick := ElektronenClick;
+  APop.Items.Add(Mi);
 end;
 
 procedure TjanBron.Paint;
@@ -21297,7 +21582,7 @@ begin
       Continue;
     end;
 
-    // TjanBron;h;l;t;w;spanning x10;Ri;  TjanZekering;h;l;t;w;stroom;
+    // TjanBron;h;l;t;w;spanning x10;Ri;elektronen;  TjanZekering;h;l;t;w;stroom;
     // TjanAmpMeter;h;l;t;w;
     // TjanLamp2;h;l;t;w;soort;  TjanSchakelaar2;h;l;t;w;aan;  TjanVoltmeter2;h;l;t;w;
     // TjanWeerstand;h;l;t;w;soort;
@@ -21328,6 +21613,8 @@ begin
           begin
             TjanBron(VD).RiIdx := StrToIntDef(Trim(Strings[5]), 1);
             TjanBron(VD).Volt := StrToIntDef(Trim(Strings[4]), 120) / 10;
+            if Count >= 7 then
+              TjanBron(VD).Elektronen := Trim(Strings[6]) = '1';
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
