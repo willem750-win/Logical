@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les23-wet-van-ohm.png" alt="A 12 V source with a fuse and a milliammeter, three switches with lamps and a voltmeter">
-    <figcaption>Two lamps are on: the milliammeter measures 196&nbsp;mA, the voltmeter 11.6&nbsp;V.</figcaption>
+    <img src="../img/les23-wet-van-ohm.png" alt="A 12 V source with a fuse and a milliammeter, three branches each with a switch and a lamp, and a voltmeter">
+    <figcaption>Two lamps are on: the milliammeter measures 194&nbsp;mA, the voltmeter 11.6&nbsp;V.</figcaption>
   </figure>
 
   <h2>The circuit</h2>
@@ -15,7 +15,7 @@
     <li>The <a href="voeding.html#bron">source</a> is set to <b>12&nbsp;V</b> and has an internal resistance <b>Ri = 2&nbsp;&Omega;</b>.</li>
     <li>The + terminal goes through a <b>250&nbsp;mA</b> <a href="voeding.html#zekering">fuse</a> and a
       <a href="voeding.html#ampmeter">milliammeter</a> to the + rail.</li>
-    <li>Three switches sit on the + rail. Each switch turns on a lamp; the lamps sit on the &minus; rail.</li>
+    <li>Between the + rail and the &minus; rail there are three branches, each with a <a href="voeding.html#serie">switch and a lamp</a> of 120&nbsp;&Omega;.</li>
     <li>The <a href="voeding.html#voltmeter">voltmeter</a> measures the voltage of the + rail.</li>
   </ul>
 
@@ -27,13 +27,13 @@
   resistance the voltage at its terminals drops a little: <b>U = E &minus; I &times; Ri</b>.</p>
   <table>
     <tr><th>Lamps on</th><th>Milliammeter</th><th>Voltmeter</th></tr>
-    <tr><td>none</td><td>3&nbsp;mA (the three switches, 1&nbsp;mA each)</td><td>12.0&nbsp;V</td></tr>
-    <tr><td>1</td><td>101&nbsp;mA</td><td>11.8&nbsp;V</td></tr>
-    <tr><td>2</td><td>196&nbsp;mA</td><td>11.6&nbsp;V</td></tr>
+    <tr><td>none</td><td>0&nbsp;mA</td><td>12.0&nbsp;V</td></tr>
+    <tr><td>1</td><td>98&nbsp;mA</td><td>11.8&nbsp;V</td></tr>
+    <tr><td>2</td><td>194&nbsp;mA</td><td>11.6&nbsp;V</td></tr>
     <tr><td>3</td><td>the fuse blows: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
   </table>
-  <p>With two lamps: 12&nbsp;V &minus; 0.196&nbsp;A &times; 2&nbsp;&Omega; = 11.6&nbsp;V. With three lamps the current would
-  be about 290&nbsp;mA. That is more than the 250&nbsp;mA of the fuse: it blows and the circuit is broken.</p>
+  <p>With two lamps: 12&nbsp;V &minus; 0.194&nbsp;A &times; 2&nbsp;&Omega; = 11.6&nbsp;V. With three lamps the current would
+  be 12&nbsp;V / (40&nbsp;&Omega; + 2&nbsp;&Omega;) = 286&nbsp;mA. That is more than the 250&nbsp;mA of the fuse: it blows and the circuit is broken.</p>
 
   <p>All formulas (U, I, R and P) with the triangle are in <a href="voeding.html#formules">The formulas</a>.</p>
 
@@ -66,11 +66,11 @@
   <details>
     <summary>Solution</summary>
     <ol>
-      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0.05&nbsp;A = <b>50&nbsp;mA</b>. The meter shows about 51&nbsp;mA:
-        the switches together draw a tiny bit more.</li>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0.05&nbsp;A = <b>50&nbsp;mA</b>. The meter shows 49&nbsp;mA:
+        because of the internal resistance of 2&nbsp;&Omega; slightly less current flows.</li>
       <li>The voltmeter stays at <b>12.0&nbsp;V</b>. Without internal resistance the terminal voltage does not drop,
         however much current you draw. Such an ideal source does not exist in real life.</li>
-      <li>Three lamps together need about 290&nbsp;mA. The 250&nbsp;mA fuse is too small; choose
+      <li>Three lamps together need about 286&nbsp;mA. The 250&nbsp;mA fuse is too small; choose
         (right-click &rsaquo; <b>Rated current</b>) <b>500&nbsp;mA</b>. You always pick a fuse a little larger than the
         normal current, but not much larger, or it no longer protects anything.</li>
     </ol>

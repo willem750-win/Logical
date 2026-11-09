@@ -257,6 +257,7 @@ type
     FParent:TWinControl;
     FPower:Boolean;
     FStroomA: Double;   // stroom van het begin naar het einde van de draad (A), voor de elektronen
+    FStroomNieuw: Double; // nieuwe stroom tijdens UpdateSupply, pas op het einde toegepast
     mdp:TPoint;
     oldp:TPoint;
     ConAnchor:TPoint;
@@ -315,6 +316,7 @@ type
     function StartWireOnPin(const P: TPoint): Boolean;
     procedure SetStroomA(AI: Double);
     procedure PaintElektronen;
+    procedure ElektronWeg(out Pt: array of TPoint);
     procedure CMHitTest(var Msg: TCMHitTest); message CM_HITTEST;
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
@@ -329,6 +331,8 @@ type
     constructor Create(AOwner:TComponent); override;
     destructor Destroy; override;
     procedure paint; override;
+    // alleen smalle stroken langs de draad hertekenen (de elektronen)
+    procedure InvalidateElektronen;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure DoMouseDown(x, y: integer);
     procedure DoMouseMove(dx, dy: integer);
@@ -1520,6 +1524,8 @@ type
     FOnStatus: TSimStatusEvent;// xxx doorgeven van strings naan StatusBar1 panels
     FBox: TjanSimLogicBox;//xxxx  nodig voor selectie van object
     FKleur: TLampKleur;      // lamp of led (rood, groen, oranje)
+    FDimBmp: TBitmap;        // gedimde lamp, één keer gemengd (pixel per pixel is traag onder Linux)
+    FDimKey: string;
 
     procedure SendStatusToBar;//xxx
     procedure SetNaam(const Value: String);//xxx
@@ -2919,6 +2925,7 @@ end;
     // elektronen: stukken rail tussen AY[k] en AY[k+1] met stroom AI[k] naar beneden
     procedure SetElektronen(const AY: array of Integer; const AI: array of Double);
     procedure PaintElektronen;
+    procedure InvalidateElektronen;
     property LineX: Integer read GetLineX;          // X van de 2 px lijn in het paneel
     property SpanTop: Integer read GetSpanTop;      // getekend stuk rail, in het paneel
     property SpanBottom: Integer read GetSpanBottom;
@@ -3455,14 +3462,38 @@ var
   ElektronDraden: TList = nil;      // draden waar stroom door gaat
   ElektronTimer: TTimer = nil;
   ElektronKlok: TElektronKlok = nil;
+  // tijd van de animatie (s). Loopt per tik hoogstens ElektronMaxStap op:
+  // bij weinig beelden per seconde (Linux) zou de snelste stroom anders per
+  // beeld bijna een hele afstand opschuiven, en dan lijken de elektronen
+  // stil te staan of achteruit te gaan (stroboscoop)
+  ElektronTijd: Double = 0;
+  ElektronLaatste: QWord = 0;
+const
+  ElektronMaxSnel = 120;   // pixels per seconde (bij 300 mA en meer)
+  ElektronMaxStap = 0.35 * ElektronAfstand / ElektronMaxSnel;
 
 procedure TElektronKlok.Tik(Sender: TObject);
 var
   i: Integer;
+  Nu: QWord;
+  Dt: Double;
 begin
   if ElektronDraden = nil then Exit;
+  Nu := GetTickCount64;
+  if ElektronLaatste > 0 then
+  begin
+    Dt := (Nu - ElektronLaatste) / 1000;
+    if Dt > ElektronMaxStap then Dt := ElektronMaxStap;
+    ElektronTijd := ElektronTijd + Dt;
+  end;
+  ElektronLaatste := Nu;
   for i := 0 to ElektronDraden.Count - 1 do
-    TControl(ElektronDraden[i]).Invalidate;
+    if TObject(ElektronDraden[i]) is TjanConnector then
+      TjanConnector(ElektronDraden[i]).InvalidateElektronen
+    else if TObject(ElektronDraden[i]) is TjanRail then
+      TjanRail(ElektronDraden[i]).InvalidateElektronen
+    else
+      TControl(ElektronDraden[i]).Invalidate;
 end;
 
 // C (draad of rail) in of uit de lijst van de klok
@@ -3492,14 +3523,24 @@ end;
 // fase (0..ElektronAfstand) van de elektronen bij stroom AI; AI > 0: de
 // (conventionele) stroom gaat in de richting van de weg, de elektronen
 // schuiven terug
+function KleinsteI(A, B: Integer): Integer;
+begin
+  if A < B then Result := A else Result := B;
+end;
+
+function GrootsteI(A, B: Integer): Integer;
+begin
+  if A > B then Result := A else Result := B;
+end;
+
 function ElektronFase(AI: Double): Double;
 var
   Snel: Double;
 begin
   Snel := 400 * Abs(AI);
   if Snel < 8 then Snel := 8;
-  if Snel > 120 then Snel := 120;
-  Result := Frac(GetTickCount64 / 1000 * Snel / ElektronAfstand) * ElektronAfstand;
+  if Snel > ElektronMaxSnel then Snel := ElektronMaxSnel;
+  Result := Frac(ElektronTijd * Snel / ElektronAfstand) * ElektronAfstand;
   if AI > 0 then Result := ElektronAfstand - Result;
 end;
 
@@ -4497,26 +4538,52 @@ end;
 // Elektronen langs de draad. De (conventionele) stroom gaat van het begin
 // naar het einde; de elektronen schuiven de andere kant op, van - naar +.
 // Hoe meer stroom, hoe sneller (100 mA: 40 pixels per seconde).
-procedure TjanConnector.PaintElektronen;
+// de weg van de draad (4 punten, lokaal), van het begin (APi) naar het einde
+procedure TjanConnector.ElektronWeg(out Pt: array of TPoint);
 var
-  d2, w2, xw, yh, k, j: Integer;
-  Pt: array[0..3] of TPoint;
-  Len: array[0..2] of Double;
-  Tot, Ph, S, F: Double;
-  X, Y: Integer;
+  d2, w2, xw, yh: Integer;
 begin
-  if Abs(FStroomA) <= ElektronMinA then Exit;
   d2 := conSize div 2;
   w2 := Round(Edge * Width);
   xw := Width - 1;
   yh := Height - 1;
-  // zelfde weg als in Paint, van het begin (APi) naar het einde (APo)
   case conPos of
     jcpTL: begin Pt[0] := Point(d2, d2); Pt[1] := Point(w2, d2); Pt[2] := Point(w2, yh - d2); Pt[3] := Point(xw - d2, yh - d2); end;
     jcpBR: begin Pt[0] := Point(xw - d2, yh - d2); Pt[1] := Point(xw - d2, d2); Pt[2] := Pt[1]; Pt[3] := Point(d2, d2); end;
     jcpTR: begin Pt[0] := Point(xw - d2, d2); Pt[1] := Point(xw - d2, yh - d2); Pt[2] := Pt[1]; Pt[3] := Point(d2, yh - d2); end;
   else     begin Pt[0] := Point(d2, yh - d2); Pt[1] := Point(w2, yh - d2); Pt[2] := Point(w2, d2); Pt[3] := Point(xw - d2, d2); end;
   end;
+end;
+
+procedure TjanConnector.InvalidateElektronen;
+var
+  Pt: array[0..3] of TPoint;
+  k: Integer;
+  R: TRect;
+begin
+  if (Parent = nil) or not Parent.HandleAllocated then Exit;
+  ElektronWeg(Pt);
+  for k := 0 to 2 do
+  begin
+    R.Left := Left + KleinsteI(Pt[k].X, Pt[k + 1].X) - 4;
+    R.Right := Left + GrootsteI(Pt[k].X, Pt[k + 1].X) + 5;
+    R.Top := Top + KleinsteI(Pt[k].Y, Pt[k + 1].Y) - 4;
+    R.Bottom := Top + GrootsteI(Pt[k].Y, Pt[k + 1].Y) + 5;
+    InvalidateRect(Parent.Handle, @R, False);
+  end;
+end;
+
+procedure TjanConnector.PaintElektronen;
+var
+  k, j: Integer;
+  Pt: array[0..3] of TPoint;
+  Len: array[0..2] of Double;
+  Tot, Ph, S, F: Double;
+  X, Y: Integer;
+begin
+  if Abs(FStroomA) <= ElektronMinA then Exit;
+  // zelfde weg als in Paint, van het begin (APi) naar het einde (APo)
+  ElektronWeg(Pt);
   Tot := 0;
   for k := 0 to 2 do
   begin
@@ -5982,8 +6049,20 @@ begin
     FElekI[k] := AI[k];
     if Abs(AI[k]) > ElektronMinA then Aan := True;
   end;
-  if Aan <> WasAan then ElektronLijst(Self, Aan);
-  if Aan or WasAan then Invalidate;
+  if Aan <> WasAan then
+  begin
+    ElektronLijst(Self, Aan);
+    Invalidate;
+  end;
+end;
+
+procedure TjanRail.InvalidateElektronen;
+var
+  R: TRect;
+begin
+  if (Parent = nil) or not Parent.HandleAllocated or (Length(FElekY) < 2) then Exit;
+  R := Rect(LineX - 4, FElekY[0] - 4, LineX + 6, FElekY[High(FElekY)] + 5);
+  InvalidateRect(Parent.Handle, @R, False);
 end;
 
 procedure TjanRail.PaintElektronen;
@@ -7053,9 +7132,9 @@ begin
         A := ItemAt(Pa);
         B := ItemAt(Pb);
       end;
+      Con.FStroomNieuw := 0;
       if (A < 0) or (B < 0) or (A = B) then
       begin
-        Con.SetStroomA(0);
         Continue;
       end;
       SetLength(Draad, ND + 1); SetLength(DrA, ND + 1); SetLength(DrB, ND + 1);
@@ -7143,11 +7222,11 @@ begin
     m := OuderDraad[B];
     Gezien[m] := True;
     // stroom van A naar B door draad m
-    if DrA[m] = A then Draad[m].SetStroomA(Sub[B]) else Draad[m].SetStroomA(-Sub[B]);
+    if DrA[m] = A then Draad[m].FStroomNieuw := Sub[B] else Draad[m].FStroomNieuw := -Sub[B];
     Sub[A] := Sub[A] + Sub[B];
   end;
   for m := 0 to ND - 1 do
-    if not Gezien[m] then Draad[m].SetStroomA(0);
+    if not Gezien[m] then Draad[m].FStroomNieuw := 0;
   ElektronenRails(P, U, Toon);
 end;
 
@@ -8543,12 +8622,12 @@ begin
       if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
       begin
         Con := TjanConnector(P.Controls[i]);
-        if Abs(Con.FStroomA) <= ElektronMinA then Continue;
+        if Abs(Con.FStroomNieuw) <= ElektronMinA then Continue;
         Con.EndCenters(Pa, Pb);
         R := RailAtPoint(P, Pb);
-        if R <> nil then Tap(R, Pb.Y, Con.FStroomA);
+        if R <> nil then Tap(R, Pb.Y, Con.FStroomNieuw);
         R := RailAtPoint(P, Pa);
-        if R <> nil then Tap(R, Pa.Y, -Con.FStroomA);
+        if R <> nil then Tap(R, Pa.Y, -Con.FStroomNieuw);
       end;
     // verbruikers op de rails
     for i := 0 to P.ControlCount - 1 do
@@ -8572,12 +8651,12 @@ begin
             Con.EndCenters(Pa, Pb);
             if Bij(Pb, Pin) then
             begin
-              Con.SetStroomA(IC);
+              Con.FStroomNieuw := IC;
               Q := Pa;
             end
             else if Bij(Pa, Pin) then
             begin
-              Con.SetStroomA(-IC);
+              Con.FStroomNieuw := -IC;
               Q := Pb;
             end
             else
@@ -8631,6 +8710,15 @@ begin
     if Length(Is_) > 0 then SetLength(Is_, Length(Is_) - 1);
     Rails[ri].SetElektronen(Ys, Is_);
   end;
+  // de nieuwe stromen in één keer toepassen: een draad wordt alleen hertekend
+  // als hij aan of uit gaat (de klok van de elektronen doet de rest)
+  for i := 0 to P.ControlCount - 1 do
+    if P.Controls[i] is TjanConnector then
+    begin
+      Con := TjanConnector(P.Controls[i]);
+      if not AToon then Con.FStroomNieuw := 0;
+      Con.SetStroomA(Con.FStroomNieuw);
+    end;
 end;
 
 // Middelpunt van het blokje aan het begin (APi, de bron, kant van conPos)
@@ -18831,6 +18919,7 @@ end;
 destructor TjanSimLight.Destroy;
 begin
   inherited;
+  FDimBmp.Free;
   lUit.Free;
   lAan.Free;
   connectors.free;
@@ -19248,7 +19337,8 @@ R:TRect;
 Dim:Double;
 BOn,BOff:TBitmap;
 x,y:Integer;
-COn,COff:TColor;
+COn,COff,Bg:TColor;
+Key:string;
 
   procedure DrawLamp(ACanvas:TCanvas; ALit:Boolean);
   begin
@@ -19284,7 +19374,16 @@ begin
    Dim:=LampHelderheid(Self);
    if FLit and (Dim<0.97) then
    begin
-     DrawLamp(Canvas,False);
+     // het gemengde beeld bewaren; alleen opnieuw mengen als de helderheid,
+     // de grootte, de soort of de tekenwijze verandert
+     if Parent<>nil then Bg:=ColorToRGB(Parent.Color) else Bg:=ColorToRGB(clBtnFace);
+     Key:=Format('%d,%d,%d,%d,%d,%d',[Round(Dim*100),Self.Width,Self.Height,Ord(FKleur),Ord(SymOf(Self)),Bg]);
+     if (FDimBmp=nil) or (FDimKey<>Key) then
+     begin
+     if FDimBmp=nil then FDimBmp:=TBitmap.Create;
+     FDimBmp.SetSize(Self.Width,Self.Height);
+     FDimBmp.Canvas.Brush.Color:=clFuchsia; FDimBmp.Canvas.FillRect(Rect(0,0,Self.Width,Self.Height));
+     DrawLamp(FDimBmp.Canvas,False);
      BOn:=TBitmap.Create; BOff:=TBitmap.Create;
      try
        BOn.SetSize(Self.Width,Self.Height); BOff.SetSize(Self.Width,Self.Height);
@@ -19298,12 +19397,17 @@ begin
            COn:=BOn.Canvas.Pixels[x,y];
            COff:=BOff.Canvas.Pixels[x,y];
            if (COn=COff) or (COn=clFuchsia) then continue;
-           if COff=clFuchsia then COff:=Canvas.Pixels[x,y];
-           Canvas.Pixels[x,y]:=Mix(COn,COff,Dim);
+           if COff=clFuchsia then COff:=Bg;
+           FDimBmp.Canvas.Pixels[x,y]:=Mix(COn,COff,Dim);
          end;
      finally
        BOn.Free; BOff.Free;
      end;
+     FDimBmp.Transparent:=True;
+     FDimBmp.TransparentColor:=clFuchsia;
+     FDimKey:=Key;
+     end;
+     Canvas.Draw(0,0,FDimBmp);
    end
    else
      DrawLamp(Canvas,FLit);

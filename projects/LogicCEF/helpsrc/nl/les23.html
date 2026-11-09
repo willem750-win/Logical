@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les23-wet-van-ohm.png" alt="Bron van 12 V met zekering en milliampèremeter, drie schakelaars met lampen en een voltmeter">
-    <figcaption>Twee lampen branden: de milliampèremeter meet 196&nbsp;mA, de voltmeter 11,6&nbsp;V.</figcaption>
+    <img src="../img/les23-wet-van-ohm.png" alt="Bron van 12 V met zekering en milliampèremeter, drie takken met elk een schakelaar en een lamp, en een voltmeter">
+    <figcaption>Twee lampen branden: de milliampèremeter meet 194&nbsp;mA, de voltmeter 11,6&nbsp;V.</figcaption>
   </figure>
 
   <h2>De schakeling</h2>
@@ -15,7 +15,7 @@
     <li>De <a href="voeding.html#bron">bron</a> staat op <b>12&nbsp;V</b> en heeft een inwendige weerstand <b>Ri = 2&nbsp;&Omega;</b>.</li>
     <li>De + klem gaat via een <a href="voeding.html#zekering">zekering</a> van <b>250&nbsp;mA</b> en een
       <a href="voeding.html#ampmeter">milliampèremeter</a> naar de + rail.</li>
-    <li>Op de + rail staan drie schakelaars. Elke schakelaar zet een lamp aan; de lampen zitten op de &minus; rail.</li>
+    <li>Tussen de + rail en de &minus; rail staan drie takken, elk met een <a href="voeding.html#serie">schakelaar en een lamp</a> van 120&nbsp;&Omega;.</li>
     <li>De <a href="voeding.html#voltmeter">voltmeter</a> meet de spanning van de + rail.</li>
   </ul>
 
@@ -27,13 +27,13 @@
   weerstand zakt de spanning op haar klemmen een beetje: <b>U = E &minus; I &times; Ri</b>.</p>
   <table>
     <tr><th>Lampen aan</th><th>Milliampèremeter</th><th>Voltmeter</th></tr>
-    <tr><td>geen</td><td>3&nbsp;mA (de drie schakelaars, elk 1&nbsp;mA)</td><td>12,0&nbsp;V</td></tr>
-    <tr><td>1</td><td>101&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
-    <tr><td>2</td><td>196&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
+    <tr><td>geen</td><td>0&nbsp;mA</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>1</td><td>98&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
+    <tr><td>2</td><td>194&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
     <tr><td>3</td><td>de zekering smelt: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
   </table>
-  <p>Met twee lampen: 12&nbsp;V &minus; 0,196&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Met drie lampen zou de stroom
-  ongeveer 290&nbsp;mA worden. Dat is meer dan de 250&nbsp;mA van de zekering: ze smelt en de kring is onderbroken.</p>
+  <p>Met twee lampen: 12&nbsp;V &minus; 0,194&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Met drie lampen zou de stroom
+  12&nbsp;V / (40&nbsp;&Omega; + 2&nbsp;&Omega;) = 286&nbsp;mA worden. Dat is meer dan de 250&nbsp;mA van de zekering: ze smelt en de kring is onderbroken.</p>
 
   <p>Alle formules (U, I, R en P) met de driehoek vind je bij <a href="voeding.html#formules">De formules</a>.</p>
 
@@ -66,11 +66,11 @@
   <details>
     <summary>Oplossing</summary>
     <ol>
-      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. De meter toont ongeveer 51&nbsp;mA:
-        de schakelaars trekken er samen nog een klein beetje bij.</li>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. De meter toont 49&nbsp;mA:
+        door de inwendige weerstand van 2&nbsp;&Omega; gaat er net iets minder stroom.</li>
       <li>De voltmeter blijft op <b>12,0&nbsp;V</b>. Zonder inwendige weerstand zakt de klemspanning niet, hoeveel
         stroom je ook vraagt. Zo&rsquo;n ideale bron bestaat in het echt niet.</li>
-      <li>Drie lampen vragen samen ongeveer 290&nbsp;mA. De zekering van 250&nbsp;mA is te klein; kies
+      <li>Drie lampen vragen samen ongeveer 286&nbsp;mA. De zekering van 250&nbsp;mA is te klein; kies
         (rechtsklik &rsaquo; <b>Nominale stroom</b>) <b>500&nbsp;mA</b>. Een zekering kies je altijd iets groter dan de
         normale stroom, maar niet veel groter: anders beschermt ze niet meer.</li>
     </ol>

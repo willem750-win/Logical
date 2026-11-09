@@ -59,6 +59,8 @@ type
     FShowGrid: Boolean;
     FGridX, FGridY: NativeInt;
     FGridColor: TColor;
+    FGridBmp: TBitmap;        // raster één keer getekend, daarna alleen gekopieerd
+    FGridBmpKey: string;
     FSnapToGrid: Boolean;
     // selectie / tekenen
     FIsDrawing: Boolean;
@@ -1366,15 +1368,25 @@ end;
 
 procedure TjanGridS.Paint;
 var
-  WorkR, R: TRect;
+  WorkR, R, Clip, Deel: TRect;
   x, y: Integer;
   i: Integer;
+  Key: string;
+  Binnen: Boolean;
 begin
   inherited Paint;
 
+  // Wordt alleen een stuk van het werkvlak hertekend (bv. de bewegende
+  // elektronen in een draad), dan de balk en de linialen overslaan: onder
+  // Linux (GTK2) is dat veel tekenwerk.
+  Clip := Canvas.ClipRect;
+  WorkR := GetWorkAreaRect;
+  Binnen := (Clip.Left >= WorkR.Left) and (Clip.Top >= WorkR.Top) and
+            (Clip.Right <= WorkR.Right) and (Clip.Bottom <= WorkR.Bottom);
+
   // balk boven of onder: links een vlak in de kleur van de linialen,
   // 25 pixels breed
-  if BoxSide in [alTop, alBottom] then
+  if (not Binnen) and (BoxSide in [alTop, alBottom]) then
   begin
     // met een opstaande rand, zoals een TPanel
     R := Rect(1, 1 + BoxTopH, 26, Height - 1 - BoxBottomH);
@@ -1383,29 +1395,43 @@ begin
     Canvas.FillRect(R);
   end;
 
-  DrawStatusBar;
-  DrawRulers;
-
-  WorkR := GetWorkAreaRect;
-
-  if FShowGrid and (FGridX > 0) and (FGridY > 0) then
+  if not Binnen then
   begin
-    Canvas.Lock;
-    try
-      x := WorkR.Left;
-      while x < WorkR.Right do
+    DrawStatusBar;
+    DrawRulers;
+  end;
+
+  // het raster: één keer in een bitmap tekenen (punt per punt is onder
+  // Linux heel traag), daarna alleen het nodige stuk kopiëren
+  if FShowGrid and (FGridX > 0) and (FGridY > 0) and
+     (WorkR.Right > WorkR.Left) and (WorkR.Bottom > WorkR.Top) then
+  begin
+    Key := Format('%d,%d,%d,%d,%d,%d', [WorkR.Right - WorkR.Left, WorkR.Bottom - WorkR.Top,
+      FGridX, FGridY, ColorToRGB(FGridColor), ColorToRGB(Color)]);
+    if (FGridBmp = nil) or (FGridBmpKey <> Key) then
+    begin
+      if FGridBmp = nil then FGridBmp := TBitmap.Create;
+      FGridBmp.SetSize(WorkR.Right - WorkR.Left, WorkR.Bottom - WorkR.Top);
+      FGridBmp.Canvas.Brush.Style := bsSolid;
+      FGridBmp.Canvas.Brush.Color := Color;
+      FGridBmp.Canvas.FillRect(Rect(0, 0, FGridBmp.Width, FGridBmp.Height));
+      FGridBmp.Canvas.Brush.Color := FGridColor;
+      x := 0;
+      while x < FGridBmp.Width do
       begin
-        y := WorkR.Top;
-        while y < WorkR.Bottom do
+        y := 0;
+        while y < FGridBmp.Height do
         begin
-          Canvas.Pixels[x, y] := FGridColor;
+          FGridBmp.Canvas.FillRect(Rect(x, y, x + 1, y + 1));
           Inc(y, FGridY);
         end;
         Inc(x, FGridX);
       end;
-    finally
-      Canvas.Unlock;
+      FGridBmpKey := Key;
     end;
+    if IntersectRect(Deel, Clip, WorkR) then
+      Canvas.CopyRect(Deel, FGridBmp.Canvas,
+        Rect(Deel.Left - WorkR.Left, Deel.Top - WorkR.Top, Deel.Right - WorkR.Left, Deel.Bottom - WorkR.Top));
   end;
 
   if FShowGuideLines and FHasGuidePoint then
@@ -2190,6 +2216,7 @@ begin
     TObject(FFrames[i]).Free;
 
   FFrames.Free;
+  FGridBmp.Free;
   inherited Destroy;
 end;
 

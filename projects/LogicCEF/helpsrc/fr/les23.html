@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les23-wet-van-ohm.png" alt="Source de 12 V avec fusible et milliampèremètre, trois interrupteurs avec lampes et un voltmètre">
-    <figcaption>Deux lampes sont allumées&nbsp;: le milliampèremètre mesure 196&nbsp;mA, le voltmètre 11,6&nbsp;V.</figcaption>
+    <img src="../img/les23-wet-van-ohm.png" alt="Source de 12 V avec fusible et milliampèremètre, trois branches avec chacune un interrupteur et une lampe, et un voltmètre">
+    <figcaption>Deux lampes sont allumées&nbsp;: le milliampèremètre mesure 194&nbsp;mA, le voltmètre 11,6&nbsp;V.</figcaption>
   </figure>
 
   <h2>Le circuit</h2>
@@ -15,7 +15,7 @@
     <li>La <a href="voeding.html#bron">source</a> est réglée sur <b>12&nbsp;V</b> et a une résistance interne <b>Ri = 2&nbsp;&Omega;</b>.</li>
     <li>La borne + passe par un <a href="voeding.html#zekering">fusible</a> de <b>250&nbsp;mA</b> et un
       <a href="voeding.html#ampmeter">milliampèremètre</a> vers le rail +.</li>
-    <li>Trois interrupteurs sont sur le rail +. Chaque interrupteur allume une lampe&nbsp;; les lampes sont sur le rail &minus;.</li>
+    <li>Entre le rail + et le rail &minus; se trouvent trois branches, chacune avec un <a href="voeding.html#serie">interrupteur et une lampe</a> de 120&nbsp;&Omega;.</li>
     <li>Le <a href="voeding.html#voltmeter">voltmètre</a> mesure la tension du rail +.</li>
   </ul>
 
@@ -27,13 +27,13 @@
   courant, et à cause de sa résistance interne, la tension à ses bornes baisse un peu&nbsp;: <b>U = E &minus; I &times; Ri</b>.</p>
   <table>
     <tr><th>Lampes allumées</th><th>Milliampèremètre</th><th>Voltmètre</th></tr>
-    <tr><td>aucune</td><td>3&nbsp;mA (les trois interrupteurs, 1&nbsp;mA chacun)</td><td>12,0&nbsp;V</td></tr>
-    <tr><td>1</td><td>101&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
-    <tr><td>2</td><td>196&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
+    <tr><td>aucune</td><td>0&nbsp;mA</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>1</td><td>98&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
+    <tr><td>2</td><td>194&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
     <tr><td>3</td><td>le fusible fond&nbsp;: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
   </table>
-  <p>Avec deux lampes&nbsp;: 12&nbsp;V &minus; 0,196&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Avec trois lampes, le
-  courant serait d&rsquo;environ 290&nbsp;mA. C&rsquo;est plus que les 250&nbsp;mA du fusible&nbsp;: il fond et le circuit est coupé.</p>
+  <p>Avec deux lampes&nbsp;: 12&nbsp;V &minus; 0,194&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Avec trois lampes, le
+  courant serait de 12&nbsp;V / (40&nbsp;&Omega; + 2&nbsp;&Omega;) = 286&nbsp;mA. C&rsquo;est plus que les 250&nbsp;mA du fusible&nbsp;: il fond et le circuit est coupé.</p>
 
   <p>Toutes les formules (U, I, R et P) avec le triangle se trouvent dans <a href="voeding.html#formules">Les formules</a>.</p>
 
@@ -68,11 +68,11 @@
   <details>
     <summary>Solution</summary>
     <ol>
-      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. Le milliampèremètre indique environ
-        51&nbsp;mA&nbsp;: les interrupteurs consomment encore un tout petit peu.</li>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. Le milliampèremètre indique 
+        49&nbsp;mA&nbsp;: à cause de la résistance interne de 2&nbsp;&Omega;, le courant est un peu plus faible.</li>
       <li>Le voltmètre reste à <b>12,0&nbsp;V</b>. Sans résistance interne, la tension aux bornes ne baisse pas, quel que
         soit le courant demandé. Une telle source idéale n&rsquo;existe pas en réalité.</li>
-      <li>Trois lampes demandent ensemble environ 290&nbsp;mA. Le fusible de 250&nbsp;mA est trop petit&nbsp;; choisissez
+      <li>Trois lampes demandent ensemble environ 286&nbsp;mA. Le fusible de 250&nbsp;mA est trop petit&nbsp;; choisissez
         (clic droit &rsaquo; <b>Courant nominal</b>) <b>500&nbsp;mA</b>. On choisit toujours un fusible un peu plus grand
         que le courant normal, mais pas beaucoup plus, sinon il ne protège plus rien.</li>
     </ol>

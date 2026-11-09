@@ -6,7 +6,7 @@
 
   <p><a class="open" href="../../panels/lessen/les24-verbrand-contact.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les24-verbrand-contact.png" alt="Source de 12 V avec fusible, milliampèremètre et un contact dans le fil +, un voltmètre aux bornes du contact, trois lampes et un voltmètre sur le rail +">
+    <img src="../img/les24-verbrand-contact.png" alt="Source de 12 V avec fusible, milliampèremètre et un contact dans le fil +, un voltmètre aux bornes du contact, trois interrupteurs avec lampes et un voltmètre sur le rail +">
     <figcaption>Un contact brûlé et trois lampes allumées&nbsp;: 2,4&nbsp;V sont perdus dans le contact, les lampes reçoivent encore 9,6&nbsp;V.</figcaption>
   </figure>
 
@@ -18,6 +18,7 @@
       Le contact commence comme <b>mauvais contact</b>.</li>
     <li>Le <a href="voeding.html#voltmeter">voltmètre</a> du haut est branché <b>aux bornes du contact</b>&nbsp;: + sur la
       borne du côté de la source, &minus; sur la borne du côté du rail. Il mesure la différence&nbsp;: la <b>chute de tension</b>.</li>
+    <li>Entre le rail + et le rail &minus; se trouvent trois branches, chacune avec un <a href="voeding.html#serie">interrupteur et une lampe</a> de 120&nbsp;&Omega;.</li>
     <li>Le voltmètre du bas mesure la tension sur le rail +&nbsp;: ce qui reste pour les lampes.</li>
   </ul>
 
@@ -28,15 +29,15 @@
   ensemble affichent donc toujours 12&nbsp;V. Avec trois lampes allumées, vous mesurez&nbsp;:</p>
   <table>
     <tr><th>Contact</th><th>Milliampèremètre</th><th>Aux bornes du contact</th><th>Sur le rail +</th></tr>
-    <tr><td>bon contact (0,05&nbsp;&Omega;)</td><td>303&nbsp;mA</td><td>0,0&nbsp;V</td><td>12,0&nbsp;V</td></tr>
-    <tr><td>long fil fin (1&nbsp;&Omega;)</td><td>296&nbsp;mA</td><td>0,3&nbsp;V</td><td>11,7&nbsp;V</td></tr>
-    <tr><td>mauvais contact (2&nbsp;&Omega;)</td><td>288&nbsp;mA</td><td>0,6&nbsp;V</td><td>11,4&nbsp;V</td></tr>
-    <tr><td>contact brûlé (10&nbsp;&Omega;)</td><td>242&nbsp;mA</td><td>2,4&nbsp;V</td><td>9,6&nbsp;V</td></tr>
+    <tr><td>bon contact (0,05&nbsp;&Omega;)</td><td>300&nbsp;mA</td><td>0,0&nbsp;V</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>long fil fin (1&nbsp;&Omega;)</td><td>293&nbsp;mA</td><td>0,3&nbsp;V</td><td>11,7&nbsp;V</td></tr>
+    <tr><td>mauvais contact (2&nbsp;&Omega;)</td><td>286&nbsp;mA</td><td>0,6&nbsp;V</td><td>11,4&nbsp;V</td></tr>
+    <tr><td>contact brûlé (10&nbsp;&Omega;)</td><td>240&nbsp;mA</td><td>2,4&nbsp;V</td><td>9,6&nbsp;V</td></tr>
   </table>
   <p>Le contact chauffe aussi. La puissance qui s&rsquo;y perd est <b>P = U &times; I = I &times; I &times; R</b>&nbsp;:</p>
   <ul>
-    <li>bon contact&nbsp;: 0,303&nbsp;A &times; 0,303&nbsp;A &times; 0,05&nbsp;&Omega; = 0,005&nbsp;W&nbsp;: on ne remarque rien&nbsp;;</li>
-    <li>contact brûlé&nbsp;: 0,242&nbsp;A &times; 0,242&nbsp;A &times; 10&nbsp;&Omega; = 0,59&nbsp;W&nbsp;: plus de cent fois
+    <li>bon contact&nbsp;: 0,300&nbsp;A &times; 0,300&nbsp;A &times; 0,05&nbsp;&Omega; = 0,005&nbsp;W&nbsp;: on ne remarque rien&nbsp;;</li>
+    <li>contact brûlé&nbsp;: 0,240&nbsp;A &times; 0,240&nbsp;A &times; 10&nbsp;&Omega; = 0,58&nbsp;W&nbsp;: plus de cent fois
       plus, sur un tout petit endroit. Le bloc devient rouge.</li>
   </ul>
   <p>En réalité, c&rsquo;est dangereux&nbsp;: un contact chaud s&rsquo;oxyde, sa résistance augmente encore, et il
@@ -57,22 +58,21 @@
   <ol>
     <li>Laissez le contact sur <b>contact brûlé</b> et éteignez deux lampes. Qu&rsquo;affichent les appareils
       maintenant&nbsp;? Pourquoi la chute de tension est-elle plus petite&nbsp;?</li>
-    <li>Pourquoi le voltmètre aux bornes d&rsquo;un bon contact affiche-t-il 0,0&nbsp;V, alors que 303&nbsp;mA le traversent&nbsp;?</li>
+    <li>Pourquoi le voltmètre aux bornes d&rsquo;un bon contact affiche-t-il 0,0&nbsp;V, alors que 300&nbsp;mA le traversent&nbsp;?</li>
     <li>Une lampe fait environ 120&nbsp;&Omega; (voir la <a href="les23.html">leçon 23</a>). Calculez le courant et les
       deux tensions avec <b>deux</b> lampes et un contact brûlé. Vérifiez ensuite avec les appareils.</li>
   </ol>
   <details>
     <summary>Solution</summary>
     <ol>
-      <li>95&nbsp;mA, 0,9&nbsp;V aux bornes du contact et 11,1&nbsp;V sur le rail. Moins de courant donne moins de chute
+      <li>92&nbsp;mA, 0,9&nbsp;V aux bornes du contact et 11,1&nbsp;V sur le rail. Moins de courant donne moins de chute
         de tension (U = I &times; R). C&rsquo;est pourquoi un électricien mesure toujours un contact suspect
         <b>en charge</b>&nbsp;: sans courant, on ne voit rien.</li>
-      <li>U = 0,303&nbsp;A &times; 0,05&nbsp;&Omega; = 0,015&nbsp;V. C&rsquo;est trop petit pour l&rsquo;appareil, qui
+      <li>U = 0,300&nbsp;A &times; 0,05&nbsp;&Omega; = 0,015&nbsp;V. C&rsquo;est trop petit pour l&rsquo;appareil, qui
         affiche une décimale.</li>
       <li>Deux lampes en parallèle&nbsp;: 120&nbsp;&Omega; / 2 = 60&nbsp;&Omega;. Avec le contact&nbsp;: 70&nbsp;&Omega;.
         I = 12&nbsp;V / 70&nbsp;&Omega; = 0,171&nbsp;A. Aux bornes du contact&nbsp;: 0,171&nbsp;A &times; 10&nbsp;&Omega; = 1,7&nbsp;V,
-        sur le rail 12&nbsp;V &minus; 1,7&nbsp;V = 10,3&nbsp;V. L&rsquo;appareil affiche 174&nbsp;mA&nbsp;: les interrupteurs
-        consomment encore un tout petit peu.</li>
+        sur le rail 12&nbsp;V &minus; 1,7&nbsp;V = 10,3&nbsp;V. L&rsquo;appareil affiche aussi 171&nbsp;mA.</li>
     </ol>
   </details>
 

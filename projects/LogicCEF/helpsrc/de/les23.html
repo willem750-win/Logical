@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les23-wet-van-ohm.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les23-wet-van-ohm.png" alt="Quelle mit 12 V, Sicherung und Milliamperemeter, drei Schalter mit Lampen und ein Voltmeter">
-    <figcaption>Zwei Lampen leuchten: Das Milliamperemeter misst 196&nbsp;mA, das Voltmeter 11,6&nbsp;V.</figcaption>
+    <img src="../img/les23-wet-van-ohm.png" alt="Quelle mit 12 V, Sicherung und Milliamperemeter, drei Zweige mit je einem Schalter und einer Lampe, und ein Voltmeter">
+    <figcaption>Zwei Lampen leuchten: Das Milliamperemeter misst 194&nbsp;mA, das Voltmeter 11,6&nbsp;V.</figcaption>
   </figure>
 
   <h2>Die Schaltung</h2>
@@ -15,7 +15,7 @@
     <li>Die <a href="voeding.html#bron">Quelle</a> steht auf <b>12&nbsp;V</b> und hat einen Innenwiderstand <b>Ri = 2&nbsp;&Omega;</b>.</li>
     <li>Die + Klemme führt über eine <a href="voeding.html#zekering">Sicherung</a> von <b>250&nbsp;mA</b> und ein
       <a href="voeding.html#ampmeter">Milliamperemeter</a> zur + Schiene.</li>
-    <li>An der + Schiene sitzen drei Schalter. Jeder Schalter schaltet eine Lampe ein; die Lampen sitzen an der &minus; Schiene.</li>
+    <li>Zwischen der + Schiene und der &minus; Schiene liegen drei Zweige, jeder mit einem <a href="voeding.html#serie">Schalter und einer Lampe</a> von 120&nbsp;&Omega;.</li>
     <li>Das <a href="voeding.html#voltmeter">Voltmeter</a> misst die Spannung der + Schiene.</li>
   </ul>
 
@@ -27,13 +27,13 @@
   Innenwiderstands sinkt die Spannung an ihren Klemmen etwas: <b>U = E &minus; I &times; Ri</b>.</p>
   <table>
     <tr><th>Lampen ein</th><th>Milliamperemeter</th><th>Voltmeter</th></tr>
-    <tr><td>keine</td><td>3&nbsp;mA (die drei Schalter, je 1&nbsp;mA)</td><td>12,0&nbsp;V</td></tr>
-    <tr><td>1</td><td>101&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
-    <tr><td>2</td><td>196&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
+    <tr><td>keine</td><td>0&nbsp;mA</td><td>12,0&nbsp;V</td></tr>
+    <tr><td>1</td><td>98&nbsp;mA</td><td>11,8&nbsp;V</td></tr>
+    <tr><td>2</td><td>194&nbsp;mA</td><td>11,6&nbsp;V</td></tr>
     <tr><td>3</td><td>die Sicherung brennt durch: 0&nbsp;mA</td><td>0&nbsp;V</td></tr>
   </table>
-  <p>Mit zwei Lampen: 12&nbsp;V &minus; 0,196&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Mit drei Lampen wäre der Strom
-  etwa 290&nbsp;mA. Das ist mehr als die 250&nbsp;mA der Sicherung: Sie brennt durch und der Kreis ist unterbrochen.</p>
+  <p>Mit zwei Lampen: 12&nbsp;V &minus; 0,194&nbsp;A &times; 2&nbsp;&Omega; = 11,6&nbsp;V. Mit drei Lampen wäre der Strom
+  12&nbsp;V / (40&nbsp;&Omega; + 2&nbsp;&Omega;) = 286&nbsp;mA. Das ist mehr als die 250&nbsp;mA der Sicherung: Sie brennt durch und der Kreis ist unterbrochen.</p>
 
   <p>Alle Formeln (U, I, R und P) mit dem Dreieck finden Sie unter <a href="voeding.html#formules">Die Formeln</a>.</p>
 
@@ -67,11 +67,11 @@
   <details>
     <summary>Lösung</summary>
     <ol>
-      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. Das Messgerät zeigt etwa 51&nbsp;mA:
-        Die Schalter nehmen zusammen noch ein klein wenig auf.</li>
+      <li>I = U / R = 6&nbsp;V / 120&nbsp;&Omega; = 0,05&nbsp;A = <b>50&nbsp;mA</b>. Das Messgerät zeigt 49&nbsp;mA:
+        Durch den Innenwiderstand von 2&nbsp;&Omega; fließt etwas weniger Strom.</li>
       <li>Das Voltmeter bleibt auf <b>12,0&nbsp;V</b>. Ohne Innenwiderstand sinkt die Klemmenspannung nicht, egal wie viel
         Strom Sie entnehmen. Eine solche ideale Quelle gibt es in Wirklichkeit nicht.</li>
-      <li>Drei Lampen brauchen zusammen etwa 290&nbsp;mA. Die Sicherung von 250&nbsp;mA ist zu klein; wählen Sie
+      <li>Drei Lampen brauchen zusammen etwa 286&nbsp;mA. Die Sicherung von 250&nbsp;mA ist zu klein; wählen Sie
         (Rechtsklick &rsaquo; <b>Nennstrom</b>) <b>500&nbsp;mA</b>. Eine Sicherung wählt man immer etwas größer als den
         normalen Strom, aber nicht viel größer, sonst schützt sie nichts mehr.</li>
     </ol>
