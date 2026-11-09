@@ -2887,6 +2887,8 @@ end;
     FDragStart: TPoint;          // muis bij begin slepen (paneel-coördinaten)
     FStartRect: TRect;
     FMover: TObject;             // TjanGroupSelect: ingeplugde componenten schuiven mee
+    FElekY: array of Integer;    // elektronen: grenzen van de stukken rail (paneel-Y)
+    FElekI: array of Double;     // stroom naar beneden in elk stuk (A)
     procedure SetPlus(const Value: Boolean);
     procedure SetVolt(const Value: Double);
     function GetVolt: Double;
@@ -2914,6 +2916,9 @@ end;
     // werkt een ingeplugde invoer? (+ rail met minstens RailMinVolt)
     function Powered: Boolean;
     function RailColor: TColor;
+    // elektronen: stukken rail tussen AY[k] en AY[k+1] met stroom AI[k] naar beneden
+    procedure SetElektronen(const AY: array of Integer; const AI: array of Double);
+    procedure PaintElektronen;
     property LineX: Integer read GetLineX;          // X van de 2 px lijn in het paneel
     property SpanTop: Integer read GetSpanTop;      // getekend stuk rail, in het paneel
     property SpanBottom: Integer read GetSpanBottom;
@@ -3457,7 +3462,45 @@ var
 begin
   if ElektronDraden = nil then Exit;
   for i := 0 to ElektronDraden.Count - 1 do
-    TjanConnector(ElektronDraden[i]).Invalidate;
+    TControl(ElektronDraden[i]).Invalidate;
+end;
+
+// C (draad of rail) in of uit de lijst van de klok
+procedure ElektronLijst(C: TControl; AAan: Boolean);
+begin
+  if ElektronDraden = nil then ElektronDraden := TList.Create;
+  if AAan then
+  begin
+    if ElektronDraden.IndexOf(C) < 0 then ElektronDraden.Add(C);
+    if ElektronTimer = nil then
+    begin
+      ElektronKlok := TElektronKlok.Create;
+      ElektronTimer := TTimer.Create(nil);
+      ElektronTimer.Interval := 40;
+      ElektronTimer.OnTimer := ElektronKlok.Tik;
+    end;
+    ElektronTimer.Enabled := True;
+  end
+  else
+  begin
+    ElektronDraden.Remove(C);
+    if (ElektronDraden.Count = 0) and (ElektronTimer <> nil) then
+      ElektronTimer.Enabled := False;
+  end;
+end;
+
+// fase (0..ElektronAfstand) van de elektronen bij stroom AI; AI > 0: de
+// (conventionele) stroom gaat in de richting van de weg, de elektronen
+// schuiven terug
+function ElektronFase(AI: Double): Double;
+var
+  Snel: Double;
+begin
+  Snel := 400 * Abs(AI);
+  if Snel < 8 then Snel := 8;
+  if Snel > 120 then Snel := 120;
+  Result := Frac(GetTickCount64 / 1000 * Snel / ElektronAfstand) * ElektronAfstand;
+  if AI > 0 then Result := ElektronAfstand - Result;
 end;
 
 procedure Maakdraad(T,L:integer;wc:TWincontrol);
@@ -4447,25 +4490,7 @@ begin
   FStroomA := AI;
   Aan := Abs(AI) > ElektronMinA;
   if Aan = WasAan then Exit;
-  if ElektronDraden = nil then ElektronDraden := TList.Create;
-  if Aan then
-  begin
-    ElektronDraden.Add(Self);
-    if ElektronTimer = nil then
-    begin
-      ElektronKlok := TElektronKlok.Create;
-      ElektronTimer := TTimer.Create(nil);
-      ElektronTimer.Interval := 40;
-      ElektronTimer.OnTimer := ElektronKlok.Tik;
-    end;
-    ElektronTimer.Enabled := True;
-  end
-  else
-  begin
-    ElektronDraden.Remove(Self);
-    if (ElektronDraden.Count = 0) and (ElektronTimer <> nil) then
-      ElektronTimer.Enabled := False;
-  end;
+  ElektronLijst(Self, Aan);
   Invalidate;
 end;
 
@@ -4477,7 +4502,7 @@ var
   d2, w2, xw, yh, k, j: Integer;
   Pt: array[0..3] of TPoint;
   Len: array[0..2] of Double;
-  Tot, Snel, Ph, S, F: Double;
+  Tot, Ph, S, F: Double;
   X, Y: Integer;
 begin
   if Abs(FStroomA) <= ElektronMinA then Exit;
@@ -4499,12 +4524,8 @@ begin
     Tot := Tot + Len[k];
   end;
   if Tot < 1 then Exit;
-  Snel := 400 * Abs(FStroomA);
-  if Snel < 8 then Snel := 8;
-  if Snel > 120 then Snel := 120;
-  Ph := Frac(GetTickCount64 / 1000 * Snel / ElektronAfstand) * ElektronAfstand;
   // stroom van begin naar einde: elektronen van einde naar begin
-  if FStroomA > 0 then Ph := ElektronAfstand - Ph;
+  Ph := ElektronFase(FStroomA);
   with Canvas do
   begin
     Pen.Width := 1;
@@ -5940,7 +5961,57 @@ end;
 destructor TjanRail.Destroy;
 begin
   FreeAndNil(FMover);
+  ElektronLijst(Self, False);
   inherited Destroy;
+end;
+
+procedure TjanRail.SetElektronen(const AY: array of Integer; const AI: array of Double);
+var
+  k: Integer;
+  Aan, WasAan: Boolean;
+begin
+  WasAan := False;
+  for k := 0 to High(FElekI) do
+    if Abs(FElekI[k]) > ElektronMinA then WasAan := True;
+  SetLength(FElekY, Length(AY));
+  for k := 0 to High(AY) do FElekY[k] := AY[k];
+  SetLength(FElekI, Length(AI));
+  Aan := False;
+  for k := 0 to High(AI) do
+  begin
+    FElekI[k] := AI[k];
+    if Abs(AI[k]) > ElektronMinA then Aan := True;
+  end;
+  if Aan <> WasAan then ElektronLijst(Self, Aan);
+  if Aan or WasAan then Invalidate;
+end;
+
+procedure TjanRail.PaintElektronen;
+var
+  k, X, Y, Y1, Y2: Integer;
+  S: Double;
+begin
+  X := RailLineOfs;
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    Pen.Color := RGBToColor(31, 95, 191);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(31, 95, 191);
+    for k := 0 to High(FElekI) do
+    begin
+      if (k + 1 > High(FElekY)) or (Abs(FElekI[k]) <= ElektronMinA) then Continue;
+      Y1 := FElekY[k] - Top;
+      Y2 := FElekY[k + 1] - Top;
+      S := ElektronFase(FElekI[k]);
+      while Y1 + S < Y2 do
+      begin
+        Y := Y1 + Round(S);
+        Ellipse(X - 2, Y - 2, X + 4, Y + 4);
+        S := S + ElektronAfstand;
+      end;
+    end;
+  end;
 end;
 
 function TjanRail.GetLineX: Integer;
@@ -6130,6 +6201,7 @@ begin
     end;
     Brush.Style := bsSolid;
   end;
+  PaintElektronen;
 end;
 
 // 1 = verplaatsen, 2 = bovenkant, 3 = onderkant
@@ -6552,6 +6624,8 @@ end;
 // Zet de spanning van de rails, de klemspanning en stroom van de bron, en
 // de stroom en klemspanningen van de andere onderdelen. AInval: gewijzigde
 // onderdelen opnieuw tekenen.
+procedure ElektronenRails(P: TWinControl; AU: Double; AToon: Boolean); forward;
+
 procedure UpdateSupply(P: TWinControl; AInval: Boolean);
 const
   RKlein = 0.001;   // ohm: zekering, meter, gesloten schakelaar, bron zonder Ri
@@ -6988,7 +7062,15 @@ begin
       Draad[ND] := Con; DrA[ND] := A; DrB[ND] := B;
       Inc(ND);
     end;
-  if ND = 0 then Exit;
+  // spanning over de verbruikers op de rails
+  U := 0;
+  if (LoadG > 0) and (LoadItA >= 0) and (LoadItB >= 0) then
+    U := V[NodeOf[LoadItA]] - V[NodeOf[LoadItB]];
+  if ND = 0 then
+  begin
+    ElektronenRails(P, U, Toon);
+    Exit;
+  end;
   SetLength(Vraag, NI);
   for i := 0 to NI - 1 do Vraag[i] := 0;
   for k := 0 to NP - 1 do
@@ -7066,6 +7148,7 @@ begin
   end;
   for m := 0 to ND - 1 do
     if not Gezien[m] then Draad[m].SetStroomA(0);
+  ElektronenRails(P, U, Toon);
 end;
 
 // spanning op klem APin van voedingsonderdeel D (voor een draad die daar begint)
@@ -8402,6 +8485,152 @@ begin
   else if C is TjanSimBuzzer then Add(1, 18)
   else if C is TjanDisplay then Add(1, C.Height div 2 - 3)
   else if C is TjanDipSwitsh then Add(93, 17);
+end;
+
+// Elektronen langs de rails en door de signaaldraden naar de lampen e.d.
+// op de rails. Elke verbruiker C neemt LoadAmps12(C) x U / 12 V: die stroom
+// komt van de + rail via de invoer (bv. een drukknop) en de draad naar de
+// ingang van C, en gaat via de stekker van C naar de - rail. In elk stuk
+// rail is de stroom de som van wat er boven in- en uitgaat.
+procedure ElektronenRails(P: TWinControl; AU: Double; AToon: Boolean);
+var
+  Rails: array of TjanRail;
+  TapR, TapY: array of Integer;
+  TapI: array of Double;
+  NT, i, j, k, qi, ri, Tmp: Integer;
+  C, Src: TControl;
+  Con: TjanConnector;
+  Pa, Pb, Pin, Q: TPoint;
+  Pins: TPinArray;
+  IC, T: Double;
+  R: TjanRail;
+  Ys: array of Integer;
+  Is_: array of Double;
+  Cum: Double;
+
+  procedure Tap(AR: TjanRail; AY: Integer; AI: Double);
+  var
+    z: Integer;
+  begin
+    for z := 0 to High(Rails) do
+      if Rails[z] = AR then
+      begin
+        SetLength(TapR, NT + 1); SetLength(TapY, NT + 1); SetLength(TapI, NT + 1);
+        TapR[NT] := z; TapY[NT] := AY; TapI[NT] := AI;
+        Inc(NT);
+        Exit;
+      end;
+  end;
+
+  function Bij(const A, B: TPoint): Boolean;
+  begin
+    Result := (Abs(A.X - B.X) <= 3) and (Abs(A.Y - B.Y) <= 3);
+  end;
+
+begin
+  SetLength(Rails, 0);
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanRail) and P.Controls[i].Visible then
+    begin
+      SetLength(Rails, Length(Rails) + 1);
+      Rails[High(Rails)] := TjanRail(P.Controls[i]);
+    end;
+  NT := 0;
+  if AToon then
+  begin
+    // voedingsdraden die op een rail eindigen (al berekend in het netwerk)
+    for i := 0 to P.ControlCount - 1 do
+      if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
+      begin
+        Con := TjanConnector(P.Controls[i]);
+        if Abs(Con.FStroomA) <= ElektronMinA then Continue;
+        Con.EndCenters(Pa, Pb);
+        R := RailAtPoint(P, Pb);
+        if R <> nil then Tap(R, Pb.Y, Con.FStroomA);
+        R := RailAtPoint(P, Pa);
+        if R <> nil then Tap(R, Pa.Y, -Con.FStroomA);
+      end;
+    // verbruikers op de rails
+    for i := 0 to P.ControlCount - 1 do
+    begin
+      C := P.Controls[i];
+      if not (C.Visible and IsRailOutput(C)) then Continue;
+      IC := LoadAmps12(C) * AU / BronMaxVolt;
+      if IC <= ElektronMinA then Continue;
+      // via de stekker naar de - rail
+      R := RailOf(C);
+      if R <> nil then Tap(R, PowerDot(C, False).Y, IC);
+      // door de draad naar de ingang
+      Pins := InputPins(C);
+      for j := 0 to High(Pins) do
+      begin
+        Pin := Point(C.Left + Pins[j].X + 3, C.Top + Pins[j].Y + 3);
+        for k := 0 to P.ControlCount - 1 do
+          if (P.Controls[k] is TjanConnector) and P.Controls[k].Visible then
+          begin
+            Con := TjanConnector(P.Controls[k]);
+            Con.EndCenters(Pa, Pb);
+            if Bij(Pb, Pin) then
+            begin
+              Con.SetStroomA(IC);
+              Q := Pa;
+            end
+            else if Bij(Pa, Pin) then
+            begin
+              Con.SetStroomA(-IC);
+              Q := Pb;
+            end
+            else
+              Continue;
+            // waar komt de draad vandaan: een rail, of een ingeplugde invoer
+            R := RailAtPoint(P, Q);
+            if R <> nil then
+              Tap(R, Q.Y, -IC)
+            else
+              for qi := 0 to P.ControlCount - 1 do
+              begin
+                Src := P.Controls[qi];
+                if Src.Visible and IsRailInput(Src) and
+                   (Q.X >= Src.Left - 4) and (Q.X <= Src.Left + Src.Width + 4) and
+                   (Q.Y >= Src.Top - 4) and (Q.Y <= Src.Top + Src.Height + 4) then
+                begin
+                  R := RailOf(Src);
+                  if R <> nil then Tap(R, PowerDot(Src, True).Y, -IC);
+                  Break;
+                end;
+              end;
+            Break;   // één draad per ingang
+          end;
+      end;
+    end;
+  end;
+  // per rail: punten sorteren en de stroom per stuk optellen
+  for ri := 0 to High(Rails) do
+  begin
+    SetLength(Ys, 0); SetLength(Is_, 0);
+    for i := 0 to NT - 1 do
+      if TapR[i] = ri then
+      begin
+        SetLength(Ys, Length(Ys) + 1); SetLength(Is_, Length(Is_) + 1);
+        Ys[High(Ys)] := TapY[i]; Is_[High(Is_)] := TapI[i];
+      end;
+    for i := 1 to High(Ys) do
+      for j := i downto 1 do
+        if Ys[j] < Ys[j - 1] then
+        begin
+          Tmp := Ys[j]; Ys[j] := Ys[j - 1]; Ys[j - 1] := Tmp;
+          T := Is_[j]; Is_[j] := Is_[j - 1]; Is_[j - 1] := T;
+        end;
+    // Is_[k] wordt de stroom naar beneden tussen Ys[k] en Ys[k+1]
+    Cum := 0;
+    for i := 0 to High(Is_) do
+    begin
+      Cum := Cum + Is_[i];
+      Is_[i] := Cum;
+    end;
+    if Length(Is_) > 0 then SetLength(Is_, Length(Is_) - 1);
+    Rails[ri].SetElektronen(Ys, Is_);
+  end;
 end;
 
 // Middelpunt van het blokje aan het begin (APi, de bron, kant van conPos)
