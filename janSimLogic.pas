@@ -11339,6 +11339,21 @@ end;
 
 // Gloeilamp liggend op de draad Y (vanaf X = L): metalen fitting met
 // schroefdraad en een glazen bol met gloeidraad; geel als hij brandt.
+var
+  // helderheid van een brandende lamp bij Afbeelding (1 = vol, kleiner =
+  // gedimd: de kleuren schuiven naar die van een lamp die uit is)
+  LampPictureDim: Double = 1;
+
+function DimKleur(R1, G1, B1, R0, G0, B0: Integer): TColor;
+var F: Double;
+begin
+  F := LampPictureDim;
+  if F > 1 then F := 1;
+  if F < 0 then F := 0;
+  Result := RGBToColor(Round(R0 + (R1 - R0) * F), Round(G0 + (G1 - G0) * F),
+    Round(B0 + (B1 - B0) * F));
+end;
+
 procedure DrawLampPicture(C: TCanvas; L, Y: Integer; Lit: Boolean);
 var i, x0, bx0, bx1, by0, by1, cx: Integer;
 begin
@@ -11363,8 +11378,8 @@ begin
   C.Brush.Style := bsSolid;
   if Lit then
   begin
-    C.Brush.Color := RGBToColor(255, 225, 77);
-    C.Pen.Color := RGBToColor(200, 140, 0);
+    C.Brush.Color := DimKleur(255, 225, 77, 244, 247, 250);
+    C.Pen.Color := DimKleur(200, 140, 0, 130, 140, 150);
   end
   else
   begin
@@ -11373,7 +11388,7 @@ begin
   end;
   C.Ellipse(bx0, by0, bx1, by1);
   // gloeidraad: twee steuntjes en een zigzag
-  if Lit then C.Pen.Color := RGBToColor(200, 80, 0)
+  if Lit then C.Pen.Color := DimKleur(200, 80, 0, 110, 118, 128)
   else C.Pen.Color := RGBToColor(110, 118, 128);
   C.Line(bx0 + 1, Y + 1, cx - 4, Y + 1);
   C.Line(cx - 4, Y + 1, cx - 3, Y - 2);
@@ -20058,7 +20073,18 @@ begin
    // helderheid volgens de spanning van de voeding (12 V = vol); de pixels
    // die aan en uit verschillen worden gemengd
    Dim:=LampHelderheid(Self);
-   if FLit and (Dim<0.97) then
+   if FLit and (Dim<0.97) and (FKleur=lkLamp) and (SymOf(Self)=Afbeelding) then
+   begin
+     // Afbeelding: de lamp is met code getekend; gedimd = de kleuren mengen,
+     // rechtstreeks op het scherm (geen bitmap met doorzichtige kleur)
+     LampPictureDim:=Dim;
+     try
+       DrawLamp(Canvas,True);
+     finally
+       LampPictureDim:=1;
+     end;
+   end
+   else if FLit and (Dim<0.97) then
    begin
      // het gemengde beeld bewaren; alleen opnieuw mengen als de helderheid,
      // de grootte, de soort of de tekenwijze verandert
@@ -25792,7 +25818,7 @@ begin
       OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
-      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      Canvas.FillRect(Rect(X + 1, Y + 1, X + Bm.Width - 1, Y + Bm.Height - 1));
       DrawInputPictureIcon(Canvas, Kind, X, Y);
       Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
     end;
@@ -26019,7 +26045,7 @@ begin
       OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
-      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      Canvas.FillRect(Rect(X + 1, Y + 1, X + Bm.Width - 1, Y + Bm.Height - 1));
       DrawPictureIcon(Canvas, Kind, X, Y);
       Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
     end;
@@ -26072,7 +26098,7 @@ begin
       OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style;
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
-      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      Canvas.FillRect(Rect(X + 1, Y + 1, X + Bm.Width - 1, Y + Bm.Height - 1));
       DrawDipPicture(Canvas, Rect(X + 3, Y + 2, X + 12, Y + 22), True);
       DrawDipPicture(Canvas, Rect(X + 12, Y + 2, X + 21, Y + 22), False);
       Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle;
@@ -26109,7 +26135,7 @@ begin
     OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
     Canvas.Brush.Style := bsSolid;
     Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
-    Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+    Canvas.FillRect(Rect(X + 1, Y + 1, X + Bm.Width - 1, Y + Bm.Height - 1));
     SymPen(Canvas, clBlack);
     if AFunc = jlfNOT then
       Canvas.Line(X + 1, Y + 11, X + 5, Y + 11)
@@ -26131,6 +26157,9 @@ begin
     Canvas.Brush.Style := bsClear;
     Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 6;
     Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clNavy;
+    // lange woorden (NIET, NICHT, ODER, AND) kleiner, zodat ze in het blokje passen
+    if Canvas.TextWidth(S) > 14 then Canvas.Font.Size := 5;
+    if Canvas.TextWidth(S) > 14 then Canvas.Font.Style := [];
     Canvas.TextOut(X + 12 - Canvas.TextWidth(S) div 2,
                    Y + 11 - Canvas.TextHeight(S) div 2, S);
     Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
