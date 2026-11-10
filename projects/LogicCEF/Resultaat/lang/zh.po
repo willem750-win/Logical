@@ -1406,3 +1406,14 @@ msgstr "创建双接线柱开关"
 msgid "create Voltmeter with 2 terminals"
 msgstr "创建双接线柱电压表"
 
+msgid "Select wire"
+msgstr "选择导线"
+
+msgid "Deselect wire"
+msgstr "取消选择导线"
+
+msgid "Delete wire"
+msgstr "删除导线"
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr "导线\n单击: 选择 (变粗), 再次单击: 取消选择\n右键: 选择或删除的菜单\n拖动端点或拐点可移动导线"

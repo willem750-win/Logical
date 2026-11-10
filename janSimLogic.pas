@@ -256,6 +256,9 @@ type
     Tmemlist: Array[0..15] of integer;
     FParent:TWinControl;
     FPower:Boolean;
+    FSelected: Boolean;  // geselecteerd (rood kader), voor de knop Verwijderen
+    FPopup: TPopupMenu;  // rechtsklikmenu (selecteren, verwijderen)
+    FKlikSelect: Boolean; // linkse klik heeft de draad (de)geselecteerd
     FStroomA: Double;   // stroom van het begin naar het einde van de draad (A), voor de elektronen
     FStroomNieuw: Double; // nieuwe stroom tijdens UpdateSupply, pas op het einde toegepast
     mdp:TPoint;
@@ -299,6 +302,12 @@ type
     procedure SetJanEdge(value: extended);
     procedure SetLock(const Value:  Boolean);
     procedure DraadClick(sender:TObject); // verwijderen van draad ??
+    // rechtsklik op de draad: selecteren (voor de knop Verwijderen) of meteen
+    // verwijderen
+    procedure DraadSelectClick(Sender: TObject);
+    procedure DraadVerwijderClick(Sender: TObject);
+    procedure SetSelected(const Value: Boolean);
+    function InLijnStrook(X, Y: Integer): Boolean;
     procedure SetFromLogic(const Value: TjanLogic);
     procedure SetToLogic(const Value: TjanLogic);
     procedure SetToTeller(const Value: TjanTeller);
@@ -331,6 +340,10 @@ type
     constructor Create(AOwner:TComponent); override;
     destructor Destroy; override;
     procedure paint; override;
+    // de ingang aan het einde van de draad uitzetten, vlak voor de draad
+    // verwijderd wordt
+    procedure Losmaken;
+    property Selected: Boolean read FSelected write SetSelected;
     // alleen smalle stroken langs de draad hertekenen (de elektronen)
     procedure InvalidateElektronen;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -3487,6 +3500,8 @@ type
   end;
 var
   ElektronDraden: TList = nil;      // draden waar stroom door gaat
+  // de box van het programma (er is er een): de draden selecteren daarmee
+  DraadBox: TjanSimLogicBox = nil;
   ElektronTimer: TTimer = nil;
   ElektronKlok: TElektronKlok = nil;
   // tijd van de animatie (s). Loopt per tik hoogstens ElektronMaxStap op:
@@ -4541,6 +4556,9 @@ end;
 
 destructor TjanConnector.Destroy;
 begin
+  // geen verwijzing laten staan naar een draad die weg is
+  if (DraadBox <> nil) and (DraadBox.SelectedSender = Self) then
+    DraadBox.ClearSelectedSender;
   if ElektronDraden <> nil then
   begin
     ElektronDraden.Remove(Self);
@@ -4703,31 +4721,40 @@ end;
 procedure TjanConnector.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
   p: TPoint;
-  pop: TPopupMenu;
-  miSel: TMenuItem;
+  T: string;
+  mi: TMenuItem;
 begin
-  {
- // if FLock = false then
- // begin
-    pop := TPopupMenu.Create(Self);
-   // Select/Deselect voor delete-knop
-    miSel := TMenuItem.Create(pop);
+  // rechtsklik: menu om de draad te selecteren (dan verwijdert de knop
+  // Verwijderen alleen deze draad) of meteen te verwijderen
+  if Button = mbRight then
+  begin
+    if FLock then Exit;
+    if DraadBox <> nil then T := StatTaalToBTaal(DraadBox.Language) else T := 'NL';
+    if FPopup = nil then FPopup := TPopupMenu.Create(Self);
+    FPopup.Items.Clear;
+    mi := TMenuItem.Create(FPopup);
     if FSelected then
-      miSel.Caption := 'Deselecteer draad'
+      mi.Caption := Tr(T, 'Draad deselecteren', 'Deselect wire', 'Désélectionner le fil', 'Draht abwählen')
     else
-      miSel.Caption := 'Selecteer draad';
-
-    miSel.OnClick := DraadSelectClick;
-    pop.Items.Add(miSel);
-
-    if (Button = mbRight) then
-    begin
-      p.X := 0;
-      p.Y := Self.Height;
-      p := ClientToScreen(p);
-      pop.Popup(p.X, p.Y-1);
-    end;
- // end;}
+      mi.Caption := Tr(T, 'Draad selecteren', 'Select wire', 'Sélectionner le fil', 'Draht auswählen');
+    mi.OnClick := DraadSelectClick;
+    FPopup.Items.Add(mi);
+    mi := TMenuItem.Create(FPopup);
+    mi.Caption := Tr(T, 'Draad verwijderen', 'Delete wire', 'Supprimer le fil', 'Draht löschen');
+    mi.OnClick := DraadVerwijderClick;
+    FPopup.Items.Add(mi);
+    p := ClientToScreen(Point(X, Y));
+    FPopup.Popup(p.X, p.Y);
+    Exit;
+  end;
+  // klik op een horizontaal stuk van de draad: draad (de)selecteren, niet
+  // verslepen (slepen blijft aan de uiteinden en aan de knik)
+  if (Button = mbLeft) and (Screen.Cursor <> crDraad) and InLijnStrook(X, Y) then
+  begin
+    FKlikSelect := True;
+    DraadSelectClick(Self);
+    Exit;
+  end;
   // met de knop Verbinding op een blokje dat op een klem van de voedingskring
   // ligt: een NIEUWE draad op die klem beginnen (zo kan je meerdere draden
   // op dezelfde klem zetten) in plaats van deze draad te verslepen
@@ -4737,6 +4764,59 @@ begin
   DoMouseDown(x,y);
 
 
+end;
+
+procedure TjanConnector.SetSelected(const Value: Boolean);
+begin
+  if FSelected = Value then Exit;
+  FSelected := Value;
+  Invalidate;
+end;
+
+procedure TjanConnector.DraadSelectClick(Sender: TObject);
+begin
+  // zelfde werking als bij de onderdelen: nog eens kiezen = deselecteren
+  if DraadBox <> nil then DraadBox.SelectObject(Self);
+end;
+
+procedure DraadVrijgeven(Data: PtrInt);
+begin
+  TObject(Data).Free;
+end;
+
+type
+  TDraadOpruimer = class
+    procedure Vrij(Data: PtrInt);
+  end;
+
+procedure TDraadOpruimer.Vrij(Data: PtrInt);
+begin
+  DraadVrijgeven(Data);
+end;
+
+var
+  DraadOpruimer: TDraadOpruimer = nil;
+
+procedure TjanConnector.DraadVerwijderClick(Sender: TObject);
+begin
+  if (DraadBox <> nil) and (DraadBox.SelectedSender = Self) then
+    DraadBox.SelectObject(Self);      // selectie eraf (knop Verwijderen uit)
+  Losmaken;
+  Visible := False;
+  // pas vrijgeven na het menu (niet binnen de eigen klik)
+  if DraadOpruimer = nil then DraadOpruimer := TDraadOpruimer.Create;
+  Application.QueueAsyncCall(DraadOpruimer.Vrij, PtrInt(Self));
+end;
+
+procedure TjanConnector.Losmaken;
+var W: TWinControl;
+begin
+  W := Parent;
+  if W = nil then Exit;
+  // zoekt de ingang aan het einde van de draad en zet die uit
+  DisConnect;
+  DisConnectFinal;
+  W.Invalidate;
 end;
 
 function TjanConnector.StartWireOnPin(const P: TPoint): Boolean;
@@ -4924,7 +5004,7 @@ end;
 
 procedure TjanConnector.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
-   if (ssleft in shift) then
+   if (ssleft in shift) and not FKlikSelect then
    begin
 
      doMouseMove(x-oldp.x,y-oldp.y);
@@ -4935,6 +5015,14 @@ end;
 procedure TjanConnector.MouseUp(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
+// rechtsklik opent alleen het menu, een klik op de draad selecteert alleen:
+// de draad is niet versleept
+if Button = mbRight then Exit;
+if FKlikSelect then
+begin
+  FKlikSelect := False;
+  Exit;
+end;
 // uiteinde losgelaten vlak bij een ingang: exact op die ingang zetten
 if (not doEdge) and (not doMove) then
     SnapEndToInput;
@@ -5039,6 +5127,7 @@ var
   R: TRect;
   EndA, EndB: TPoint;
   MinWire: Boolean;
+  Dik: array[0..3] of TPoint;
 begin
   d  := conSize;
   d2 := d div 2;
@@ -5066,6 +5155,16 @@ begin
         Pen.Color := clBlue
       else
         Pen.Color := clBlack;
+      // de draad dikker tekenen, in zijn eigen kleur: 3 pixels als de muis
+      // erop staat, 5 pixels als hij geselecteerd is
+      if Select or FSelected then
+      begin
+        ElektronWeg(Dik);
+        Pen.Style := psSolid;
+        if FSelected then Pen.Width := 5 else Pen.Width := 3;
+        Polyline(Dik);
+        Pen.Width := 1;
+      end;
       case Shape of
         jcsTLBR:
           begin
@@ -5157,18 +5256,7 @@ begin
       // -----------------------------
       // Selectiekader ALS LAATSTE
       // -----------------------------
-      {if FSelected then
-      begin
-        R := ClientRect;
-       // InflateRect(R, -2, -2);
-        Brush.Style := bsClear;
-        Pen.Color := clRed;
-        Pen.Width := 1;
-        Rectangle(R);
-        // restore defaults (netjes)
-        Pen.Width := 1;
-        Brush.Style := bsSolid;
-      end;}
+      // (muis erop of geselecteerd: de draad is bovenaan dikker getekend)
 
     finally
       Unlock;
@@ -5447,7 +5535,7 @@ begin
   RegLO := CreateRectRgn(0, Height - d, d, Height);         // links-onder
   RegRB := CreateRectRgn(Width - d, 0, Width, d);           // rechts-boven
   RegRO := CreateRectRgn(Width - d, Height - d, Width, Height); // rechts-onder (lime)
-  RegM  := CreateRectRgn(w2 - 2, 0, w2 + 2, Height);        // middenlijn
+  RegM  := CreateRectRgn(w2 - 5, 0, w2 + 6, Height);        // middenlijn (11 breed)
 
   Msg.Result := HTNOWHERE;
 
@@ -5487,6 +5575,42 @@ begin
   DeleteObject(RegRB);
   DeleteObject(RegRO);
   DeleteObject(RegM);
+  // ook de horizontale stukken van de draad zijn te raken (om te selecteren)
+  if (Msg.Result = HTNOWHERE) and InLijnStrook(Msg.XPos, Msg.YPos) then
+    Msg.Result := HTCLIENT;
+end;
+
+// Ligt (X,Y) op een horizontaal stuk van de draad (tot 6 pixels ernaast),
+// buiten de blokjes aan de uiteinden en buiten het verticale middenstuk?
+function TjanConnector.InLijnStrook(X, Y: Integer): Boolean;
+const T = 6;
+var d, k: Integer;
+    Pt: array[0..3] of TPoint;
+    A, B: TPoint;
+begin
+  Result := False;
+  d := conSize;
+  // de knik (slepen) en de blokjes aan de uiteinden (slepen) niet
+  if Abs(X - Round(Edge * Width)) < 10 then Exit;
+  ElektronWeg(Pt);
+  if (Abs(X - Pt[0].X) <= d) and (Abs(Y - Pt[0].Y) <= d) then Exit;
+  if (Abs(X - Pt[3].X) <= d) and (Abs(Y - Pt[3].Y) <= d) then Exit;
+  // langs elk stuk van de draad (zoals hij getekend wordt)
+  for k := 0 to 2 do
+  begin
+    A := Pt[k]; B := Pt[k + 1];
+    if (A.X = B.X) and (A.Y = B.Y) then Continue;
+    if A.Y = B.Y then
+    begin
+      if (Abs(Y - A.Y) <= T) and (X >= KleinsteI(A.X, B.X)) and (X <= GrootsteI(A.X, B.X)) then
+        Exit(True);
+    end
+    else if A.X = B.X then
+    begin
+      if (Abs(X - A.X) <= T) and (Y >= KleinsteI(A.Y, B.Y)) and (Y <= GrootsteI(A.Y, B.Y)) then
+        Exit(True);
+    end;
+  end;
 end;
 
 
@@ -5502,7 +5626,24 @@ begin
 end;
 
 procedure TjanConnector.CMMouseEnter(var Msg: TMessage);
+var T: string;
 begin
+  // hint: hoe je een draad selecteert, verwijdert en versleept
+  if DraadBox <> nil then T := StatTaalToBTaal(DraadBox.Language) else T := 'NL';
+  Hint := Tr(T,
+    'Draad' + #13#10 + 'Klik: selecteren (dikker), nog eens klikken: deselecteren' + #13#10 +
+      'Rechtsklik: menu om te selecteren of te verwijderen' + #13#10 +
+      'Sleep aan een uiteinde of aan de knik om te verplaatsen',
+    'Wire' + #13#10 + 'Click: select (thicker), click again: deselect' + #13#10 +
+      'Right-click: menu to select or delete' + #13#10 +
+      'Drag an end or the bend to move it',
+    'Fil' + #13#10 + 'Clic : sélectionner (plus épais), cliquer encore : désélectionner' + #13#10 +
+      'Clic droit : menu pour sélectionner ou supprimer' + #13#10 +
+      'Faites glisser une extrémité ou le coude pour le déplacer',
+    'Draht' + #13#10 + 'Klick: auswählen (dicker), noch einmal klicken: abwählen' + #13#10 +
+      'Rechtsklick: Menü zum Auswählen oder Löschen' + #13#10 +
+      'Ein Ende oder den Knick ziehen, um ihn zu verschieben');
+  ShowHint := True;
   inherited;
 
   if Assigned (FOnEnter) then FOnEnter(Self);
@@ -10807,6 +10948,211 @@ begin
   SymPen(C, clBlack);
 end;
 
+// --- Tekenwijze Afbeelding voor de invoer: half-realistische tekeningen links,
+// draad, pijl en aansluitblokje rechts blijven uit het oude plaatje komen.
+
+procedure HalfFill(C: TCanvas; Fill, Border: TColor);
+begin
+  C.Pen.Style := psSolid;
+  C.Pen.Width := 1;
+  C.Pen.Color := Border;
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := Fill;
+end;
+
+procedure HalfGlans(C: TCanvas; L, T, Size: Integer);
+begin
+  HalfFill(C, clWhite, clWhite);
+  C.Ellipse(L, T, L + Size, T + Size);
+end;
+
+// Drukknop op (X,Y): metalen ring met een ronde knop; groen los, rood
+// ingedrukt (de knop zakt een beetje in en verliest zijn glans).
+procedure DrawButtonAt(C: TCanvas; X, Y: Integer; Down: Boolean);
+begin
+  SymPen(C, clBlack);
+  C.Line(X + 18, Y + 10, X + 22, Y + 10);
+  HalfFill(C, RGBToColor(92, 99, 108), RGBToColor(47, 52, 58));
+  C.Ellipse(X, Y + 1, X + 20, Y + 21);
+  HalfFill(C, RGBToColor(140, 147, 156), RGBToColor(70, 76, 84));
+  C.Ellipse(X + 2, Y + 3, X + 18, Y + 19);
+  if Down then
+  begin
+    HalfFill(C, RGBToColor(230, 60, 47), RGBToColor(150, 30, 20));
+    C.Ellipse(X + 5, Y + 6, X + 15, Y + 16);
+  end
+  else
+  begin
+    HalfFill(C, RGBToColor(60, 200, 90), RGBToColor(30, 120, 50));
+    C.Ellipse(X + 4, Y + 5, X + 16, Y + 17);
+    HalfGlans(C, X + 6, Y + 7, 3);
+  end;
+  SymPen(C, clBlack);
+end;
+
+procedure DrawButtonPicture(C: TCanvas; Down: Boolean);
+begin
+  DrawButtonAt(C, 0, 0, Down);
+end;
+
+// Kleine schuifschakelaar (dipschakelaar, A16 van het geheugen) in de
+// rechthoek R: donker kastje, aan = bovenkant rood, uit = onderkant groen.
+procedure DrawDipPicture(C: TCanvas; const R: TRect; On: Boolean);
+var M: Integer;
+begin
+  HalfFill(C, RGBToColor(59, 64, 72), RGBToColor(34, 38, 43));
+  C.RoundRect(R.Left, R.Top, R.Right, R.Bottom, 4, 4);
+  HalfFill(C, RGBToColor(201, 205, 210), RGBToColor(47, 52, 58));
+  C.Rectangle(R.Left + 3, R.Top + 3, R.Right - 3, R.Bottom - 3);
+  M := (R.Top + R.Bottom) div 2;
+  if On then
+  begin
+    HalfFill(C, RGBToColor(229, 69, 58), RGBToColor(150, 30, 20));
+    C.Rectangle(R.Left + 3, R.Top + 3, R.Right - 3, M + 1);
+  end
+  else
+  begin
+    HalfFill(C, RGBToColor(60, 200, 90), RGBToColor(30, 120, 50));
+    C.Rectangle(R.Left + 3, M, R.Right - 3, R.Bottom - 3);
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Schakelaar: tuimelschakelaar in een donker kastje. Aan: bovenkant rood
+// ingedrukt (I), uit: onderkant groen ingedrukt (O).
+procedure DrawSwitchPicture(C: TCanvas; On: Boolean);
+begin
+  SymPen(C, clBlack);
+  C.Line(14, 24, 24, 24);
+  HalfFill(C, RGBToColor(59, 64, 72), RGBToColor(34, 38, 43));
+  C.RoundRect(0, 9, 15, 40, 5, 5);
+  HalfFill(C, RGBToColor(201, 205, 210), RGBToColor(47, 52, 58));
+  C.Rectangle(3, 12, 12, 37);
+  if On then
+  begin
+    HalfFill(C, RGBToColor(229, 69, 58), RGBToColor(150, 30, 20));
+    C.Rectangle(3, 12, 12, 25);
+    SymPen(C, clWhite);
+    C.Line(7, 15, 7, 22);
+  end
+  else
+  begin
+    HalfFill(C, RGBToColor(60, 200, 90), RGBToColor(30, 120, 50));
+    C.Rectangle(3, 24, 12, 37);
+    SymPen(C, clWhite);
+    C.Brush.Style := bsClear;
+    C.Ellipse(5, 28, 10, 34);
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Lichtsensor (LDR): rond schijfje met een kronkelend spoor; in het licht
+// wordt het schijfje lichtgeel en het spoor oranje.
+procedure DrawLDRPicture(C: TCanvas; Lit: Boolean);
+var i, y: Integer;
+begin
+  SymPen(C, clBlack);
+  C.Line(19, 16, 22, 16);
+  if Lit then HalfFill(C, RGBToColor(255, 240, 150), RGBToColor(150, 120, 40))
+  else HalfFill(C, RGBToColor(232, 227, 214), RGBToColor(110, 100, 75));
+  C.Ellipse(0, 5, 21, 26);
+  if Lit then SymPen(C, RGBToColor(216, 106, 0))
+  else SymPen(C, RGBToColor(150, 75, 40));
+  for i := 0 to 4 do
+  begin
+    y := 9 + i * 3;
+    C.Line(4, y, 17, y);
+    if i < 4 then
+      if Odd(i) then C.Line(4, y, 4, y + 3)
+      else C.Line(16, y, 16, y + 3);
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Warmtesensor (NTC): druppel met twee pootjes; koud blauwgrijs, warm
+// oranjerood.
+procedure DrawNTCPicture(C: TCanvas; Warm: Boolean);
+begin
+  SymPen(C, RGBToColor(90, 96, 104));
+  C.Line(2, 17, 8, 17);
+  C.Line(8, 17, 9, 13);
+  C.Line(14, 13, 15, 17);
+  SymPen(C, clBlack);
+  C.Line(15, 17, 23, 17);
+  if Warm then HalfFill(C, RGBToColor(224, 86, 43), RGBToColor(150, 40, 15))
+  else HalfFill(C, RGBToColor(91, 127, 166), RGBToColor(45, 70, 100));
+  C.Ellipse(3, 0, 21, 15);
+  HalfGlans(C, 7, 3, 3);
+  SymPen(C, clBlack);
+end;
+
+// Impulsgenerator: klein donker schermpje (X,Y, 17 breed) met een groene
+// blokgolf als hij loopt, grijs als hij stilstaat.
+procedure DrawPulsPicture(C: TCanvas; X, Y: Integer; On: Boolean);
+begin
+  HalfFill(C, RGBToColor(35, 40, 46), RGBToColor(20, 22, 26));
+  C.RoundRect(X, Y, X + 18, Y + 18, 4, 4);
+  if On then SymPen(C, RGBToColor(60, 230, 90))
+  else SymPen(C, RGBToColor(120, 130, 140));
+  C.Line(X + 2, Y + 13, X + 4, Y + 13);
+  C.Line(X + 4, Y + 13, X + 4, Y + 4);
+  C.Line(X + 4, Y + 4, X + 8, Y + 4);
+  C.Line(X + 8, Y + 4, X + 8, Y + 13);
+  C.Line(X + 8, Y + 13, X + 12, Y + 13);
+  C.Line(X + 12, Y + 13, X + 12, Y + 4);
+  C.Line(X + 12, Y + 4, X + 16, Y + 4);
+  SymPen(C, clBlack);
+end;
+
+// Icoontje (24 x 24 op X,Y) in de knoppenbalk bij Afbeelding.
+// Kind: 0 drukknop, 1 schakelaar, 2 lichtsensor, 3 warmtesensor, 4 puls.
+procedure DrawInputPictureIcon(C: TCanvas; Kind, X, Y: Integer);
+var i, yy: Integer;
+begin
+  case Kind of
+    0: begin
+         HalfFill(C, RGBToColor(92, 99, 108), RGBToColor(47, 52, 58));
+         C.Ellipse(X + 2, Y + 2, X + 22, Y + 22);
+         HalfFill(C, RGBToColor(140, 147, 156), RGBToColor(70, 76, 84));
+         C.Ellipse(X + 4, Y + 4, X + 20, Y + 20);
+         HalfFill(C, RGBToColor(60, 200, 90), RGBToColor(30, 120, 50));
+         C.Ellipse(X + 6, Y + 6, X + 18, Y + 18);
+         HalfGlans(C, X + 8, Y + 8, 3);
+       end;
+    1: begin
+         HalfFill(C, RGBToColor(59, 64, 72), RGBToColor(34, 38, 43));
+         C.RoundRect(X + 5, Y + 1, X + 19, Y + 23, 5, 5);
+         HalfFill(C, RGBToColor(201, 205, 210), RGBToColor(47, 52, 58));
+         C.Rectangle(X + 8, Y + 4, X + 16, Y + 20);
+         HalfFill(C, RGBToColor(60, 200, 90), RGBToColor(30, 120, 50));
+         C.Rectangle(X + 8, Y + 12, X + 16, Y + 20);
+       end;
+    2: begin
+         HalfFill(C, RGBToColor(232, 227, 214), RGBToColor(110, 100, 75));
+         C.Ellipse(X + 2, Y + 2, X + 22, Y + 22);
+         SymPen(C, RGBToColor(150, 75, 40));
+         for i := 0 to 4 do
+         begin
+           yy := Y + 6 + i * 3;
+           C.Line(X + 6, yy, X + 18, yy);
+           if i < 4 then
+             if Odd(i) then C.Line(X + 6, yy, X + 6, yy + 3)
+             else C.Line(X + 17, yy, X + 17, yy + 3);
+         end;
+       end;
+    3: begin
+         SymPen(C, RGBToColor(90, 96, 104));
+         C.Line(X + 9, Y + 15, X + 8, Y + 23);
+         C.Line(X + 15, Y + 15, X + 16, Y + 23);
+         HalfFill(C, RGBToColor(91, 127, 166), RGBToColor(45, 70, 100));
+         C.Ellipse(X + 3, Y + 1, X + 21, Y + 17);
+         HalfGlans(C, X + 7, Y + 4, 3);
+       end;
+    4: DrawPulsPicture(C, X + 3, Y + 3, True);
+  end;
+  SymPen(C, clBlack);
+end;
+
 // Invoeronderdeel tekenen: het plaatje Bm bij Afbeelding, anders het
 // schemasymbool links en van het plaatje alleen draad en aansluitblokje.
 // Kind: 0 drukknop, 1 schakelaar, 2 lichtsensor, 3 warmtesensor, 4 puls.
@@ -10815,12 +11161,37 @@ var W, H: Integer;
     OldBrush: TColor;
     OldStyle: TBrushStyle;
 begin
+  W := Ctl.Width; H := Ctl.Height;
   if SymOf(Ctl) = Afbeelding then
   begin
-    C.Draw(0, 0, Bm);
+    OldBrush := C.Brush.Color; OldStyle := C.Brush.Style;
+    case Kind of
+      0: begin
+           DrawBitmapPart(C, Bm, Rect(21, 0, W, H));
+           DrawButtonPicture(C, On);
+         end;
+      1: begin
+           DrawBitmapPart(C, Bm, Rect(23, 0, W, H));
+           DrawSwitchPicture(C, On);
+         end;
+      2: begin
+           DrawBitmapPart(C, Bm, Rect(21, 0, W, H));
+           DrawLDRPicture(C, On);
+         end;
+      3: begin
+           DrawBitmapPart(C, Bm, Rect(22, 0, W, H));
+           DrawNTCPicture(C, On);
+         end;
+      4: begin
+           C.Draw(0, 0, Bm);
+           DrawPulsPicture(C, 0, 13, On);
+         end;
+    else
+      C.Draw(0, 0, Bm);
+    end;
+    C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
     Exit;
   end;
-  W := Ctl.Width; H := Ctl.Height;
   OldBrush := C.Brush.Color; OldStyle := C.Brush.Style;
   case Kind of
     0: begin
@@ -10962,8 +11333,255 @@ begin
   SymPen(C, clBlack);
 end;
 
-// Uitvoeronderdeel tekenen: het plaatje Bm bij Afbeelding, anders van het
-// plaatje alleen aansluitblokje, pijl (en ledje) en rechts het schemasymbool.
+// --- Tekenwijze Afbeelding: half-realistische tekeningen (effen kleuren met
+// een rand en een klein glansje). Het aansluitblokje en de pijl links blijven
+// uit het oude plaatje komen, zodat de aansluitingen niet verschuiven.
+
+// Gloeilamp liggend op de draad Y (vanaf X = L): metalen fitting met
+// schroefdraad en een glazen bol met gloeidraad; geel als hij brandt.
+procedure DrawLampPicture(C: TCanvas; L, Y: Integer; Lit: Boolean);
+var i, x0, bx0, bx1, by0, by1, cx: Integer;
+begin
+  SymPen(C, clBlack);
+  C.Line(L - 2, Y, L + 2, Y);
+  // fitting: ringen van de schroefdraad
+  x0 := L + 2;
+  C.Pen.Style := psClear;
+  C.Brush.Style := bsSolid;
+  for i := 0 to 3 do
+  begin
+    if Odd(i) then C.Brush.Color := RGBToColor(150, 158, 168)
+    else C.Brush.Color := RGBToColor(198, 204, 212);
+    C.Rectangle(x0 + i * 2, Y - 5, x0 + i * 2 + 3, Y + 7);
+  end;
+  C.Brush.Color := RGBToColor(118, 126, 136);
+  C.Rectangle(x0 + 8, Y - 4, x0 + 11, Y + 6);
+  C.Pen.Style := psSolid;
+  // glazen bol
+  bx0 := x0 + 9; bx1 := bx0 + 21; by0 := Y - 6; by1 := Y + 9;
+  cx := (bx0 + bx1) div 2;
+  C.Brush.Style := bsSolid;
+  if Lit then
+  begin
+    C.Brush.Color := RGBToColor(255, 225, 77);
+    C.Pen.Color := RGBToColor(200, 140, 0);
+  end
+  else
+  begin
+    C.Brush.Color := RGBToColor(244, 247, 250);
+    C.Pen.Color := RGBToColor(130, 140, 150);
+  end;
+  C.Ellipse(bx0, by0, bx1, by1);
+  // gloeidraad: twee steuntjes en een zigzag
+  if Lit then C.Pen.Color := RGBToColor(200, 80, 0)
+  else C.Pen.Color := RGBToColor(110, 118, 128);
+  C.Line(bx0 + 1, Y + 1, cx - 4, Y + 1);
+  C.Line(cx - 4, Y + 1, cx - 3, Y - 2);
+  C.Line(cx - 3, Y - 2, cx - 1, Y + 4);
+  C.Line(cx - 1, Y + 4, cx + 1, Y - 2);
+  C.Line(cx + 1, Y - 2, cx + 3, Y + 4);
+  C.Line(cx + 3, Y + 4, cx + 4, Y + 1);
+  // glansje
+  C.Pen.Color := clWhite;
+  C.Brush.Color := clWhite;
+  C.Ellipse(cx + 3, by0 + 2, cx + 6, by0 + 5);
+  SymPen(C, clBlack);
+end;
+
+// Zoemer: rond zwart huis met middelpunt (CX,CY) en straal Rad, aangesloten
+// met de draad Y vanaf X = L. Als hij zoemt: gele rand en geluidsgolfjes.
+procedure DrawBuzzerPicture(C: TCanvas; L, Y, CX, CY, Rad: Integer; On: Boolean);
+var i, a: Integer;
+begin
+  SymPen(C, clBlack);
+  C.Line(L, Y, CX - Rad + 1, Y);
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := RGBToColor(43, 47, 54);
+  if On then
+  begin
+    C.Pen.Color := RGBToColor(240, 180, 0);
+    C.Pen.Width := 2;
+  end
+  else
+    C.Pen.Color := RGBToColor(21, 24, 28);
+  C.Ellipse(CX - Rad, CY - Rad, CX + Rad + 1, CY + Rad + 1);
+  C.Pen.Width := 1;
+  // binnenring en gaatje
+  C.Pen.Color := RGBToColor(80, 88, 99);
+  C.Brush.Color := RGBToColor(58, 64, 73);
+  a := Rad * 2 div 3;
+  C.Ellipse(CX - a, CY - a, CX + a + 1, CY + a + 1);
+  if On then C.Brush.Color := RGBToColor(255, 212, 0)
+  else C.Brush.Color := RGBToColor(15, 15, 15);
+  C.Pen.Color := C.Brush.Color;
+  C.Ellipse(CX - 3, CY - 3, CX + 4, CY + 4);
+  // glansje bovenaan links
+  C.Pen.Color := RGBToColor(120, 128, 138);
+  C.Brush.Style := bsClear;
+  C.Arc(CX - Rad + 3, CY - Rad + 3, CX + Rad - 2, CY + Rad - 2,
+        CX - Rad, CY, CX, CY - Rad);
+  if On then
+  begin
+    // geluidsgolfjes in het huis, rond het gaatje
+    C.Pen.Color := RGBToColor(255, 212, 0);
+    for i := 1 to 2 do
+    begin
+      a := 3 + 4 * i;
+      C.Arc(CX - a, CY - a, CX + a + 1, CY + a + 1, CX + a, CY + a div 2, CX + a, CY - a div 2);
+      C.Arc(CX - a, CY - a, CX + a + 1, CY + a + 1, CX - a, CY - a div 2, CX - a, CY + a div 2);
+    end;
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Relais: grijs kastje met een koperen spoel op een ijzeren kern en rechts
+// het contact op x = CX tussen YTop en YBot (de aansluitingen R1 en R2).
+// Aan: de spoel trekt, het contact is dicht en rood.
+procedure DrawRelayPicture(C: TCanvas; L, Y, CX, YTop, YBot: Integer; On: Boolean);
+var i, yt, yb, xm: Integer;
+    Col: TColor;
+begin
+  SymPen(C, clBlack);
+  C.Line(L - 2, Y, L + 2, Y);
+  // kastje
+  C.Brush.Style := bsSolid;
+  C.Brush.Color := RGBToColor(242, 243, 245);
+  C.Pen.Color := RGBToColor(89, 96, 106);
+  C.RoundRect(L + 1, YTop + 13, CX + 10, YBot - 12, 6, 6);
+  // kern en wikkelingen
+  C.Brush.Color := RGBToColor(154, 163, 173);
+  C.Pen.Color := RGBToColor(110, 118, 128);
+  C.Rectangle(L + 3, Y - 4, L + 22, Y + 5);
+  C.Pen.Style := psClear;
+  for i := 0 to 4 do
+  begin
+    if On then C.Brush.Color := RGBToColor(224, 138, 46)
+    else C.Brush.Color := RGBToColor(184, 115, 51);
+    C.Rectangle(L + 5 + i * 3, Y - 8, L + 7 + i * 3, Y + 9);
+  end;
+  C.Pen.Style := psSolid;
+  // contact
+  yt := YTop + (YBot - YTop) div 3;
+  yb := YBot - (YBot - YTop) div 3;
+  if On then Col := clRed else Col := RGBToColor(60, 64, 70);
+  SymPen(C, RGBToColor(60, 64, 70));
+  C.Line(CX, YTop, CX, yt + 1);
+  C.Line(CX - 2, yt, CX + 3, yt);
+  SymPen(C, Col);
+  C.Line(CX, yb, CX, YBot + 1);
+  if On then
+  begin
+    C.Line(CX, yb, CX, yt);
+    C.Line(CX + 1, yb, CX + 1, yt);
+    xm := CX - 1;
+  end
+  else
+  begin
+    C.Line(CX, yb, CX - 5, yt + 1);
+    xm := CX - 4;
+  end;
+  // koppeling van de spoel naar het contact
+  for i := L + 23 to xm do
+    if ((i - L) mod 3) <> 0 then C.Pixels[i, Y] := RGBToColor(89, 96, 106);
+  SymPen(C, clBlack);
+end;
+
+// Knop van de voltmeter (S = 'V') of milliampèremeter (S = 'mA') bij
+// Afbeelding: een licht lcd-schermpje met donkergroene letters.
+procedure DrawMeterIcon(C: TCanvas; Bm: TBitmap; X, Y: Integer; const S: string);
+begin
+  // het oude zwarte plaatje niet meer; de balk eronder blijft zichtbaar
+  HalfFill(C, RGBToColor(214, 230, 206), RGBToColor(89, 96, 106));
+  C.RoundRect(X + 1, Y + 2, X + Bm.Width - 1, Y + Bm.Height - 2, 5, 5);
+  C.Brush.Style := bsClear;
+  C.Font.Name := 'Arial';
+  if Length(S) > 1 then C.Font.Size := 8 else C.Font.Size := 10;
+  C.Font.Style := [fsBold];
+  C.Font.Color := RGBToColor(25, 90, 40);
+  C.TextOut(X + Bm.Width div 2 - C.TextWidth(S) div 2,
+            Y + Bm.Height div 2 - C.TextHeight(S) div 2, S);
+  SymPen(C, clBlack);
+end;
+
+// Icoontje (24 x 24 op X,Y) in de knoppenbalk bij Afbeelding, in dezelfde
+// stijl als de tekeningen hierboven. Kind: 0 lamp, 1 relais, 2 zoemer.
+procedure DrawPictureIcon(C: TCanvas; Kind, X, Y: Integer);
+var i: Integer;
+begin
+  C.Pen.Width := 1;
+  C.Pen.Style := psSolid;
+  C.Brush.Style := bsSolid;
+  case Kind of
+    0: begin
+         // rechtopstaande gloeilamp: bol boven, fitting onder
+         C.Brush.Color := RGBToColor(244, 247, 250);
+         C.Pen.Color := RGBToColor(110, 118, 128);
+         C.Ellipse(X + 5, Y + 2, X + 19, Y + 16);
+         C.Pen.Color := RGBToColor(110, 118, 128);
+         C.Line(X + 9, Y + 15, X + 9, Y + 10);
+         C.Line(X + 15, Y + 15, X + 15, Y + 10);
+         C.Line(X + 9, Y + 10, X + 10, Y + 7);
+         C.Line(X + 10, Y + 7, X + 11, Y + 10);
+         C.Line(X + 11, Y + 10, X + 12, Y + 7);
+         C.Line(X + 12, Y + 7, X + 13, Y + 10);
+         C.Line(X + 13, Y + 10, X + 14, Y + 7);
+         C.Line(X + 14, Y + 7, X + 15, Y + 10);
+         C.Pen.Style := psClear;
+         for i := 0 to 2 do
+         begin
+           if Odd(i) then C.Brush.Color := RGBToColor(150, 158, 168)
+           else C.Brush.Color := RGBToColor(198, 204, 212);
+           C.Rectangle(X + 8, Y + 15 + i * 2, X + 17, Y + 18 + i * 2);
+         end;
+         C.Brush.Color := RGBToColor(80, 86, 94);
+         C.Rectangle(X + 10, Y + 21, X + 15, Y + 24);
+         C.Pen.Style := psSolid;
+         C.Pen.Color := clWhite;
+         C.Brush.Color := clWhite;
+         C.Ellipse(X + 8, Y + 5, X + 11, Y + 8);
+       end;
+    1: begin
+         // relais: kastje met koperen spoel en een contact erboven
+         C.Brush.Color := RGBToColor(242, 243, 245);
+         C.Pen.Color := RGBToColor(89, 96, 106);
+         C.RoundRect(X + 2, Y + 8, X + 22, Y + 22, 4, 4);
+         C.Brush.Color := RGBToColor(154, 163, 173);
+         C.Pen.Color := RGBToColor(110, 118, 128);
+         C.Rectangle(X + 4, Y + 13, X + 16, Y + 18);
+         C.Pen.Style := psClear;
+         C.Brush.Color := RGBToColor(184, 115, 51);
+         for i := 0 to 3 do
+           C.Rectangle(X + 5 + i * 3, Y + 11, X + 7 + i * 3, Y + 21);
+         C.Pen.Style := psSolid;
+         SymPen(C, RGBToColor(60, 64, 70));
+         C.Line(X + 1, Y + 4, X + 7, Y + 4);
+         C.Line(X + 7, Y + 4, X + 16, Y + 1);
+         C.Line(X + 17, Y + 4, X + 23, Y + 4);
+         C.Line(X + 17, Y + 4, X + 17, Y + 2);
+         C.Pixels[X + 12, Y + 5] := RGBToColor(89, 96, 106);
+         C.Pixels[X + 12, Y + 7] := RGBToColor(89, 96, 106);
+       end;
+    2: begin
+         // zoemer: rond zwart huis met binnenring en gaatje
+         C.Brush.Color := RGBToColor(43, 47, 54);
+         C.Pen.Color := RGBToColor(21, 24, 28);
+         C.Ellipse(X + 2, Y + 2, X + 22, Y + 22);
+         C.Pen.Color := RGBToColor(80, 88, 99);
+         C.Brush.Color := RGBToColor(58, 64, 73);
+         C.Ellipse(X + 6, Y + 6, X + 18, Y + 18);
+         C.Brush.Color := RGBToColor(15, 15, 15);
+         C.Pen.Color := C.Brush.Color;
+         C.Ellipse(X + 10, Y + 10, X + 14, Y + 14);
+         C.Pen.Color := RGBToColor(120, 128, 138);
+         C.Brush.Style := bsClear;
+         C.Arc(X + 4, Y + 4, X + 20, Y + 20, X + 2, Y + 12, X + 12, Y + 2);
+       end;
+  end;
+  SymPen(C, clBlack);
+end;
+
+// Uitvoeronderdeel tekenen: links uit het plaatje alleen aansluitblokje, pijl
+// (en ledje), rechts de tekening (Afbeelding) of het schemasymbool.
 // Kind: 0 lamp, 1 relais, 2 zoemer.
 procedure PaintOutputSymbol(Ctl: TControl; C: TCanvas; Bm: TBitmap; Kind: Integer; On: Boolean);
 var W, H: Integer;
@@ -10972,12 +11590,31 @@ var W, H: Integer;
     S: TjanSymbolen;
 begin
   S := SymOf(Ctl);
+  W := Ctl.Width; H := Ctl.Height;
   if S = Afbeelding then
   begin
-    C.Draw(0, 0, Bm);
+    OldBrush := C.Brush.Color; OldStyle := C.Brush.Style;
+    case Kind of
+      0: begin
+           DrawBitmapPart(C, Bm, Rect(0, 0, 37, H));
+           DrawLampPicture(C, 37, 6, On);
+         end;
+      1: begin
+           DrawBitmapPart(C, Bm, Rect(0, 0, 36, H));
+           DrawBitmapPart(C, Bm, Rect(62, 0, W, 9));      // R1
+           DrawBitmapPart(C, Bm, Rect(62, 53, W, H));     // R2
+           DrawRelayPicture(C, 36, 31, 69, 8, 53, On);
+         end;
+      2: begin
+           DrawBitmapPart(C, Bm, Rect(0, 0, 35, H));
+           DrawBuzzerPicture(C, 35, 21, 58, 22, 20, On);
+         end;
+    else
+      C.Draw(0, 0, Bm);
+    end;
+    C.Brush.Color := OldBrush; C.Brush.Style := OldStyle;
     Exit;
   end;
-  W := Ctl.Width; H := Ctl.Height;
   OldBrush := C.Brush.Color; OldStyle := C.Brush.Style;
   case Kind of
     0: begin
@@ -11219,15 +11856,17 @@ end;
 // Qual (bv. CTR4) op (QX,QY).
 procedure DrawBlockBody(C: TCanvas; const R: TRect; Fill: TColor; S: TjanSymbolen;
   const Qual: string; QX, QY: Integer);
-var F: TRect;
 begin
   C.Brush.Style := bsSolid;
   C.Brush.Color := Fill;
   if S = Afbeelding then
   begin
-    C.FillRect(R);
-    F := R;
-    C.Frame3D(F, clBtnHighlight, clBtnShadow, 1);
+    // afgerond blok met een rand (half-realistisch)
+    C.Pen.Style := psSolid;
+    C.Pen.Width := 1;
+    C.Pen.Color := RGBToColor(89, 96, 106);
+    C.RoundRect(R.Left, R.Top, R.Right, R.Bottom, 8, 8);
+    C.Pen.Color := clBlack;
     Exit;
   end;
   SymPen(C, clBlack);
@@ -11329,10 +11968,14 @@ begin
      Lock;
      if Sym=Afbeelding then
      begin
+       // poort als afgerond blok met een rand (half-realistisch)
        brush.color:=FPcolor;
+       brush.style:=bsSolid;
+       pen.color:=RGBToColor(89,96,106);
+       pen.width:=1;
        R:=rect(22,5,65,63);//ClientRect;
-       Fillrect(R);
-       Frame3D(R,clbtnhighlight,clbtnshadow,1);
+       RoundRect(R.Left,R.Top,R.Right,R.Bottom,8,8);
+       pen.color:=clBlack;
      end;
      brush.color:=clred;
      for i:=0 to 5 do
@@ -13454,7 +14097,11 @@ begin
      if FDepressed or FDown then
      begin
      BinAan.Transparent:=true;
-     if SymOf(Self) = Afbeelding then draw(17,0,BinAan)
+     if SymOf(Self) = Afbeelding then
+     begin
+       draw(17,0,BinAan);
+       DrawDipPicture(Canvas, Rect(17, 11, 30, 38), True);
+     end
      else begin
        // A16-schakelaar als schakelcontact (gesloten)
        DrawBitmapPartAt(Canvas, BinAan, 17, 0, Rect(30, 0, 70, 48));
@@ -13465,7 +14112,11 @@ begin
      else
      begin
      Bin.Transparent:=true;
-     if SymOf(Self) = Afbeelding then draw(17,0,Bin)
+     if SymOf(Self) = Afbeelding then
+     begin
+       draw(17,0,Bin);
+       DrawDipPicture(Canvas, Rect(17, 11, 30, 38), False);
+     end
      else begin
        // A16-schakelaar als schakelcontact (open)
        DrawBitmapPartAt(Canvas, Bin, 17, 0, Rect(30, 0, 70, 48));
@@ -16607,6 +17258,12 @@ Ingang.Transparent:=true;
      if FDepressed4 or FDown4 then begin draw(15,0,knopDown)end else Begin draw(15,0,knopUp);end;
      if FDepressed2 or FDown2 then begin draw(30,0,knopDown)end else Begin draw(30,0,knopUp);end;
      if FDepressed1 or FDown1 then begin draw(45,0,knopDown)end else Begin draw(45,0,knopUp);end;
+     // de schakelaartjes zelf getekend (half-realistisch), de cijfers en
+     // pijlen eronder blijven uit het plaatje
+     DrawDipPicture(Canvas, Rect(0, 11, 15, 40), FDepressed8 or FDown8);
+     DrawDipPicture(Canvas, Rect(15, 11, 30, 40), FDepressed4 or FDown4);
+     DrawDipPicture(Canvas, Rect(30, 11, 45, 40), FDepressed2 or FDown2);
+     DrawDipPicture(Canvas, Rect(45, 11, 60, 40), FDepressed1 or FDown1);
      moveto(9,height-20);lineto(70,height-20);moveto(70,20);lineto(113,20);
      moveto(70,20);lineto(70,68);moveto(113,20);lineto(113,68);moveto(70,68);lineto(width,68);
      moveto(8,60);lineto(70,60);
@@ -16614,6 +17271,8 @@ Ingang.Transparent:=true;
        begin draw(120,64,Connectoren);end;
      if (FDepressed or FDown) then
        draw(87,58,DrukDown)else draw(87,58,DrukUp);
+     DrawButtonAt(Canvas, 87, 58, FDepressed or FDown);
+     pen.Color:=clBlack;
      draw(91,15,Ingang);
      p:=point((width div 2),(height div 2)-7);
      brush.style:=bsclear;
@@ -20274,9 +20933,9 @@ begin
       if S = Afbeelding then
       begin
         Brush.Style := bsSolid;
-        Brush.Color := $8CE6E6;
-        Pen.Color := clBlack;
-        Rectangle(22, 1, 62, 54);
+        Brush.Color := RGBToColor(242, 243, 245);
+        Pen.Color := RGBToColor(89, 96, 106);
+        RoundRect(22, 1, 62, 54, 6, 6);
       end;
 
       // ---- contact bovenaan ----
@@ -20316,12 +20975,21 @@ begin
       Brush.Style := bsSolid;
       if S = Afbeelding then
       begin
-        if Closed then Brush.Color := $0040E040 else Brush.Color := $0000C0C0;
-        Rectangle(SR_COIL);
-        // wikkelingen
+        // ijzeren kern met koperen wikkelingen
+        Brush.Color := RGBToColor(154, 163, 173);
+        Pen.Color := RGBToColor(110, 118, 128);
+        Rectangle(SR_COIL.Left + 2, SR_COIL.Top, SR_COIL.Right - 2, SR_COIL.Bottom);
+        Pen.Style := psClear;
+        if Closed then Brush.Color := RGBToColor(224, 138, 46)
+        else Brush.Color := RGBToColor(184, 115, 51);
+        i := SR_COIL.Top + 2;
+        while i + 2 <= SR_COIL.Bottom - 1 do
+        begin
+          Rectangle(SR_COIL.Left, i, SR_COIL.Right + 1, i + 3);
+          Inc(i, 4);
+        end;
+        Pen.Style := psSolid;
         Pen.Color := clBlack;
-        for i := 0 to 3 do
-          Line(SR_COIL.Left, SR_COIL.Top + 3 + i * 5, SR_COIL.Right, SR_COIL.Top + 6 + i * 5);
       end
       else
       begin
@@ -20944,6 +21612,7 @@ end;
 constructor TjanSimLogicBox.create(AOwner: Tcomponent);
 begin
   inherited Create(AOwner);
+  DraadBox := Self;
   // Init Hint verschijning bij knoppen
   ShowHint := True;
   ParentShowHint := False;
@@ -21141,6 +21810,7 @@ end;
 
 destructor TjanSimLogicBox.Destroy;
 begin
+  if DraadBox = Self then DraadBox := nil;
  // FreeTools;
   cpu.free;
   bmBuzzer.Free;bmSensor.Free;bmWarm.Free;bmGrid.Free;bmCon.free;
@@ -24705,7 +25375,8 @@ procedure TjanSimLogicBox.SelectObject(AObj: TObject);
     else if Obj is TjanSimPersoon then TjanSimPersoon(Obj).Selected := AValue
     else if Obj is TjanSimEindschakelaar then TjanSimEindschakelaar(Obj).Selected := AValue
     else if Obj is TjanSimStappenteller then TjanSimStappenteller(Obj).Selected := AValue
-    else if Obj is TjanVoedingsDeel then TjanVoedingsDeel(Obj).Selected := AValue;
+    else if Obj is TjanVoedingsDeel then TjanVoedingsDeel(Obj).Selected := AValue
+    else if Obj is TjanConnector then TjanConnector(Obj).Selected := AValue;
     // aanpassen voor volgend object
   end;
 
@@ -25115,6 +25786,16 @@ begin
   if FSymbolen = Afbeelding then
   begin
     Canvas.Draw(X, Y, Bm);
+    if Kind in [0..4] then
+    begin
+      // de knop van het plaatje houden, binnenin de nieuwe tekening
+      OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
+      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      DrawInputPictureIcon(Canvas, Kind, X, Y);
+      Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    end;
     Exit;
   end;
   OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
@@ -25145,16 +25826,8 @@ begin
     Canvas.Pen.Width := 1;
     if FSymbolen = Afbeelding then
     begin
-      // het plaatje van de voltmeter, met mA in plaats van V
-      Canvas.Draw(X, Y, Bm);
-      Canvas.Brush.Style := bsSolid;
-      Canvas.Brush.Color := clBlack;
-      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
-      Canvas.Brush.Style := bsClear;
-      Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 9;
-      Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clLime;
-      Canvas.TextOut(X + Bm.Width div 2 - Canvas.TextWidth('mA') div 2,
-                     Y + Bm.Height div 2 - Canvas.TextHeight('mA') div 2, 'mA');
+      // zoals de voltmeter, met mA in plaats van V
+      DrawMeterIcon(Canvas, Bm, X, Y, 'mA');
     end
     else
     begin
@@ -25315,9 +25988,16 @@ begin
     Canvas.Pixels[X + 11, Y + 5] := clBlack;          // stippellijn
     Canvas.Pixels[X + 11, Y + 7] := clBlack;
     Canvas.Brush.Style := bsSolid;
-    if FSymbolen = Afbeelding then Canvas.Brush.Color := $0000C0C0
+    if FSymbolen = Afbeelding then Canvas.Brush.Color := RGBToColor(184, 115, 51)
     else Canvas.Brush.Color := clWhite;
     Canvas.Rectangle(X + 7, Y + 9, X + 16, Y + 19);   // spoel
+    if FSymbolen = Afbeelding then
+    begin
+      Canvas.Pen.Color := RGBToColor(120, 70, 30);
+      Canvas.Line(X + 8, Y + 12, X + 15, Y + 12);
+      Canvas.Line(X + 8, Y + 15, X + 15, Y + 15);
+      Canvas.Pen.Color := clBlack;
+    end;
     Canvas.Line(X + 11, Y + 19, X + 11, Y + 23);      // R+
     Canvas.Line(X + 16, Y + 14, X + 22, Y + 14);      // R-
     Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
@@ -25325,7 +26005,24 @@ begin
   end;
   if FSymbolen = Afbeelding then
   begin
+    if Kind = 3 then
+    begin
+      OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+      DrawMeterIcon(Canvas, Bm, X, Y, 'V');
+      Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+      Exit;
+    end;
     Canvas.Draw(X, Y, Bm);
+    if Kind in [0, 1, 2] then
+    begin
+      // de knop van het plaatje houden, binnenin de nieuwe tekening
+      OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
+      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      DrawPictureIcon(Canvas, Kind, X, Y);
+      Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+    end;
     Exit;
   end;
   OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
@@ -25369,6 +26066,17 @@ begin
   if FSymbolen = Afbeelding then
   begin
     Canvas.Draw(X, Y, Bm);
+    if Bm = bmDipSwitsh then
+    begin
+      // twee schakelaartjes zoals op het paneel
+      OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style;
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
+      Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+      DrawDipPicture(Canvas, Rect(X + 3, Y + 2, X + 12, Y + 22), True);
+      DrawDipPicture(Canvas, Rect(X + 12, Y + 2, X + 21, Y + 22), False);
+      Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle;
+    end;
     Exit;
   end;
   OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style;
@@ -25388,6 +26096,7 @@ end;
 // symbool in de gekozen stijl met korte aansluitdraden.
 procedure TjanSimLogicBox.DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
 var R: TRect;
+    S: string;
     M, Y1, Y2: Integer;
     OldPen, OldBrush: TColor;
     OldStyle: TBrushStyle;
@@ -25395,6 +26104,36 @@ begin
   if FSymbolen = Afbeelding then
   begin
     Canvas.Draw(X, Y, Bm);
+    // binnen de knop van het plaatje: afgerond blok met het woord, zoals de
+    // poort op het paneel
+    OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.Brush.Color := Bm.Canvas.Pixels[2, 2];
+    Canvas.FillRect(Rect(X + 2, Y + 2, X + Bm.Width - 2, Y + Bm.Height - 2));
+    SymPen(Canvas, clBlack);
+    if AFunc = jlfNOT then
+      Canvas.Line(X + 1, Y + 11, X + 5, Y + 11)
+    else
+    begin
+      Canvas.Line(X + 1, Y + 7, X + 5, Y + 7);
+      Canvas.Line(X + 1, Y + 15, X + 5, Y + 15);
+    end;
+    Canvas.Line(X + 19, Y + 11, X + 23, Y + 11);
+    Canvas.Brush.Color := RGBToColor(255, 250, 205);
+    Canvas.Pen.Color := RGBToColor(89, 96, 106);
+    Canvas.RoundRect(X + 4, Y + 3, X + 20, Y + 20, 5, 5);
+    case AFunc of
+      jlfAND: case FBoxTaal of stEnglish: S := 'AND'; stFrench: S := 'ET'; stGerman: S := 'UND'; else S := 'EN'; end;
+      jlfOR:  case FBoxTaal of stEnglish: S := 'OR'; stFrench: S := 'OU'; stGerman: S := 'ODER'; else S := 'OF'; end;
+    else
+      case FBoxTaal of stEnglish: S := 'NOT'; stFrench: S := 'PAS'; stGerman: S := 'NICHT'; else S := 'NIET'; end;
+    end;
+    Canvas.Brush.Style := bsClear;
+    Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 6;
+    Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clNavy;
+    Canvas.TextOut(X + 12 - Canvas.TextWidth(S) div 2,
+                   Y + 11 - Canvas.TextHeight(S) div 2, S);
+    Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
     Exit;
   end;
   OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style;

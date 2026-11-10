@@ -1096,3 +1096,14 @@ msgstr "crea interruttore a 2 morsetti"
 msgid "create Voltmeter with 2 terminals"
 msgstr "crea voltmetro a 2 morsetti"
 
+msgid "Select wire"
+msgstr "Seleziona filo"
+
+msgid "Deselect wire"
+msgstr "Deseleziona filo"
+
+msgid "Delete wire"
+msgstr "Elimina filo"
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr "Filo\nClic: seleziona (più spesso), clic di nuovo: deseleziona\nTasto destro: menu per selezionare o eliminare\nTrascina un'estremità o la piega per spostarlo"

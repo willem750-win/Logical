@@ -1406,3 +1406,14 @@ msgstr "criar interruptor com 2 terminais"
 msgid "create Voltmeter with 2 terminals"
 msgstr "criar voltímetro com 2 terminais"
 
+msgid "Select wire"
+msgstr "Selecionar fio"
+
+msgid "Deselect wire"
+msgstr "Desmarcar fio"
+
+msgid "Delete wire"
+msgstr "Excluir fio"
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr "Fio\nClique: selecionar (mais grosso), clique de novo: desmarcar\nClique direito: menu para selecionar ou excluir\nArraste uma ponta ou a dobra para movê-lo"

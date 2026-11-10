@@ -1419,3 +1419,14 @@ msgstr ""
 msgid "create Voltmeter with 2 terminals"
 msgstr ""
 
+msgid "Select wire"
+msgstr ""
+
+msgid "Deselect wire"
+msgstr ""
+
+msgid "Delete wire"
+msgstr ""
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr ""

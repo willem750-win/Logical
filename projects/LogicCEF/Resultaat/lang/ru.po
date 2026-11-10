@@ -1406,3 +1406,14 @@ msgstr "создать выключатель с 2 клеммами"
 msgid "create Voltmeter with 2 terminals"
 msgstr "создать вольтметр с 2 клеммами"
 
+msgid "Select wire"
+msgstr "Выбрать провод"
+
+msgid "Deselect wire"
+msgstr "Снять выбор провода"
+
+msgid "Delete wire"
+msgstr "Удалить провод"
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr "Провод\nЩелчок: выбрать (толще), ещё щелчок: снять выбор\nПравый щелчок: меню для выбора или удаления\nПеретащите конец или изгиб, чтобы переместить"

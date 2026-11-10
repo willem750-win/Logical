@@ -1406,3 +1406,14 @@ msgstr "2端子のスイッチを作成"
 msgid "create Voltmeter with 2 terminals"
 msgstr "2端子の電圧計を作成"
 
+msgid "Select wire"
+msgstr "配線を選択"
+
+msgid "Deselect wire"
+msgstr "配線の選択を解除"
+
+msgid "Delete wire"
+msgstr "配線を削除"
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr "配線\nクリック: 選択 (太く表示)、もう一度クリック: 選択解除\n右クリック: 選択または削除のメニュー\n端または折れ目をドラッグして移動"

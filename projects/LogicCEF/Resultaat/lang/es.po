@@ -1401,3 +1401,14 @@ msgstr "crear interruptor de 2 bornes"
 msgid "create Voltmeter with 2 terminals"
 msgstr "crear voltímetro de 2 bornes"
 
+msgid "Select wire"
+msgstr "Seleccionar cable"
+
+msgid "Deselect wire"
+msgstr "Deseleccionar cable"
+
+msgid "Delete wire"
+msgstr "Eliminar cable"
+
+msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
+msgstr "Cable\nClic: seleccionar (más grueso), otro clic: deseleccionar\nClic derecho: menú para seleccionar o eliminar\nArrastra un extremo o el codo para moverlo"

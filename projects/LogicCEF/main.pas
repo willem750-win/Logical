@@ -2067,7 +2067,9 @@ begin
   else if SelectedObj is TjanSimBuzzer then
     s := TjanSimBuzzer(SelectedObj).Naam
   else if SelectedObj is TjanDisplay then
-    s := TjanDisplay(SelectedObj).Naam;
+    s := TjanDisplay(SelectedObj).Naam
+  else if SelectedObj is TjanConnector then
+    s := 'draad';
   btDelCurObject.Hint := 'Verwijder geselecteerd: ' + s;
         // aanpassen / uitbreiden
 
@@ -2098,8 +2100,15 @@ begin
          (C is TjanSimBuzzer) or (C is TjanDisplay) or (C is TjanRail) or
          (C is TjanMeter) or (C is TjanLogicRun) or (C is TjanSimMotor) or
          (C is TjanSimPersoon) or (C is TjanSimEindschakelaar) or
-         (C is TjanSimStappenteller) or (C is TjanVoedingsDeel))  then
+         (C is TjanSimStappenteller) or (C is TjanVoedingsDeel) or
+         (C is TjanConnector))  then
     Exit;
+  // een draad: eerst de ingang aan het einde uitzetten
+  if C is TjanConnector then
+  begin
+    TjanConnector(C).Losmaken;
+    C.Visible := False;
+  end;
     // aanpassen om object te kunnen verwijderen
 
   // selection + current wissen
