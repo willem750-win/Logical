@@ -22277,8 +22277,8 @@ begin
       SFile.Add('Grid;True;')
     else
       SFile.Add('Grid;False;');
-    if not Paneel.ShowStatusBar then
-      SFile.Add('Statusbalk;False;');
+    // altijd bewaren: zonder regel volgt het paneel de instelling KStatusBalk
+    SFile.Add('Statusbalk;' + BoolToStr(Paneel.ShowStatusBar, True) + ';');
   finally
     ShiftPanelObjects(Sh.X, Sh.Y);
   end;
@@ -22541,8 +22541,7 @@ begin
     TempFile.Add('Grid;True;')
   else
     TempFile.Add('Grid;False;');
-  if not Paneel.ShowStatusBar then
-    TempFile.Add('Statusbalk;False;');
+  TempFile.Add('Statusbalk;' + BoolToStr(Paneel.ShowStatusBar, True) + ';');
   finally
     ShiftPanelObjects(Sh.X, Sh.Y);
   end;
@@ -22582,7 +22581,7 @@ begin
   wc := FParent;
   FFilterLijst.Clear;
   if Assigned(Paneel) then
-    Paneel.ShowStatusBar := True;   // panelen zonder regel 'Statusbalk' tonen de balk
+    Paneel.ShowStatusBar := Paneel.KStatusBalk;   // panelen zonder regel 'Statusbalk' volgen de instelling
 
   for i := 0 to AList.Count - 1 do
   begin
@@ -23808,7 +23807,7 @@ begin
   KillPanel;
   FFilterLijst.Clear;
   if Assigned(Paneel) then
-    Paneel.ShowStatusBar := True;   // panelen zonder regel 'Statusbalk' tonen de balk
+    Paneel.ShowStatusBar := Paneel.KStatusBalk;   // panelen zonder regel 'Statusbalk' volgen de instelling
   L := TStringList.Create;
   try
     // hele stream als tekst inlezen

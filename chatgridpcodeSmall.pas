@@ -55,6 +55,8 @@ type
     FCapture: Boolean;
     FKLogicRun: Boolean;
     FOnKLogicRunChange: TNotifyEvent;
+    FKStatusBalk: Boolean;
+    FOnKStatusBalkChange: TNotifyEvent;
     FSaveFormat: TSaveFormat;
     FShowGrid: Boolean;
     FGridX, FGridY: NativeInt;
@@ -162,6 +164,7 @@ type
     function BarHeight: Integer;
     procedure SetShowStatusBar(Value: Boolean);
     procedure SetKLogicRun(Value: Boolean);
+    procedure SetKStatusBalk(Value: Boolean);
 
     // knoppenbalk: links, boven of onder op het paneel
     function BoxControl: TControl;
@@ -203,19 +206,23 @@ type
     // getekend na raster en kaders, onder de objecten (bv. stekkers van voedingsrails)
     property OnPaintOverlay: TNotifyEvent read FOnPaintOverlay write FOnPaintOverlay;
     property OnKLogicRunChange: TNotifyEvent read FOnKLogicRunChange write FOnKLogicRunChange;
+    property OnKStatusBalkChange: TNotifyEvent read FOnKStatusBalkChange write FOnKStatusBalkChange;
 
   published
     property Capture: Boolean read FCapture write FCapture;
     property ShowGrid: Boolean read FShowGrid write FShowGrid;
     // knop LogicRun in de werkbalk tonen (uit voor beginners)
     property KLogicRun: Boolean read FKLogicRun write SetKLogicRun default True;
+    // instelling: balk Invoer / Verwerken / Uitvoer standaard tonen; geldt
+    // voor een nieuw paneel en voor panelen zonder eigen keuze (lessen)
+    property KStatusBalk: Boolean read FKStatusBalk write SetKStatusBalk default False;
     property GridX: NativeInt read FGridX write FGridX;
     property GridY: NativeInt read FGridY write FGridY;
     property DotColor: TColor read FGridColor write FGridColor;
     property SnapToGrid: Boolean read FSnapToGrid write FSnapToGrid;
 
     property StatusBarHeight: NativeInt read FStatusBarHeight write FStatusBarHeight default 25;
-    property ShowStatusBar: Boolean read FShowStatusBar write SetShowStatusBar default True;
+    property ShowStatusBar: Boolean read FShowStatusBar write SetShowStatusBar default False;
     property ColorInput: TColor read FColorInput write FColorInput default clGreen;
     property ColorProcessing: TColor read FColorProcessing write FColorProcessing default clRed;
     property ColorOutput: TColor read FColorOutput write FColorOutput default clBlue;
@@ -804,6 +811,7 @@ begin
   FSaveFormat := sfBMP;
   FShowGrid := True;
   FKLogicRun := True;
+  FKStatusBalk := False;
   FGridX := 10;
   FGridY := 10;
   FGridColor := clGray;
@@ -826,7 +834,7 @@ begin
 
   // statusbar / titel
   FStatusBarHeight := 25;
-  FShowStatusBar := True;
+  FShowStatusBar := False;   // volgt de instelling KStatusBalk
   FColorInput := clGreen;
   FColorProcessing := clRed;
   FColorOutput := clBlue;
@@ -1162,6 +1170,16 @@ begin
   if FShowStatusBar = Value then Exit;
   FShowStatusBar := Value;
   Invalidate;
+end;
+
+// Instelling gewijzigd: meteen toepassen op het open paneel; main zet dan
+// de knop in de titelbalk mee (OnKStatusBalkChange)
+procedure TjanGridS.SetKStatusBalk(Value: Boolean);
+begin
+  if FKStatusBalk = Value then Exit;
+  FKStatusBalk := Value;
+  ShowStatusBar := Value;
+  if Assigned(FOnKStatusBalkChange) then FOnKStatusBalkChange(Self);
 end;
 
 procedure TjanGridS.SetKLogicRun(Value: Boolean);

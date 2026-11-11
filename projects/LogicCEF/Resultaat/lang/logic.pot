@@ -1223,6 +1223,10 @@ msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
 msgstr ""
 
 #: fsettings.lfm
+msgid "Bar Input/Processing/Output Yes/No"
+msgstr ""
+
+#: fsettings.lfm
 msgid "Selected Color"
 msgstr ""
 

@@ -1121,6 +1121,9 @@ msgstr "锁定"
 msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
 msgstr "LogicRun/人/小车/音乐盒/交通灯 按钮 开/关"
 
+msgid "Bar Input/Processing/Output Yes/No"
+msgstr "输入/处理/输出 栏 是/否"
+
 #: fsettings.lfm
 msgid "Selected Color"
 msgstr "选中颜色"

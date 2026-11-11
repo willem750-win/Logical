@@ -174,6 +174,7 @@ type
      procedure SyncPropGridLanguageCombos;
      procedure btLogicRunClick(Sender: TObject);
      procedure GridKLogicRunChange(Sender: TObject);
+     procedure GridKStatusBalkChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
      function LogicRunTaal: string;
      procedure CreateUndoButtons;
@@ -889,7 +890,7 @@ Begin
     SettingsFrame.PropB2.DefaultPropHolder:=SettingsFrame.iniGrid;
     SettingsFrame.PropB2.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB2.AddRelevantProperties('Color,ColorInput,ColorOutput,ColorProcessing,GridX,GridY,'+
-                                  'DotColor,Titel,SavePicFormat,ShowGrid,Capture,KLogicRun');
+                                  'DotColor,Titel,SavePicFormat,ShowGrid,Capture,KLogicRun,KStatusBalk');
     SettingsFrame.PropB2.ConnectObject := mainForm.Grid;
     SettingsFrame.PropB2.Cols[0];
     //__________________________________
@@ -1658,6 +1659,9 @@ begin
   Box.KMuziek := Grid.KLogicRun;
   Box.KVerkeer := Grid.KLogicRun;
   Grid.OnKLogicRunChange := @GridKLogicRunChange;
+  // Instellingen > Algemeen: balk Invoer / Verwerken / Uitvoer standaard aan/uit
+  Grid.OnKStatusBalkChange := @GridKStatusBalkChange;
+  btStatusBalk.Down := Grid.ShowStatusBar;
   UpdateUndoHints;
   UpdateUndoButtons;
 end;
@@ -1746,6 +1750,14 @@ begin
   Box.KVerkeer := Grid.KLogicRun;
   if (not Grid.KLogicRun) and Assigned(FLogicRunForm) then
     FLogicRunForm.Hide;
+end;
+
+// Instelling KStatusBalk gewijzigd: de balk van het open paneel is al mee
+// aangepast (TjanGridS.SetKStatusBalk); de knop in de titelbalk volgt
+procedure TmainForm.GridKStatusBalkChange(Sender: TObject);
+begin
+  if Assigned(btStatusBalk) then
+    btStatusBalk.Down := Grid.ShowStatusBar;
 end;
 
 procedure TmainForm.UpdateUndoButtons;

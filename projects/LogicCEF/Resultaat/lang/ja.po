@@ -1121,6 +1121,9 @@ msgstr "ロック"
 msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
 msgstr "LogicRun/人/台車/オルゴール/信号機 ボタン オン/オフ"
 
+msgid "Bar Input/Processing/Output Yes/No"
+msgstr "入力/処理/出力 バー はい/いいえ"
+
 #: fsettings.lfm
 msgid "Selected Color"
 msgstr "選択色"

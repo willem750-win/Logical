@@ -1097,6 +1097,9 @@ msgstr "Cambiar idioma"
 msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
 msgstr "Botones LogicRun/Persona/Carrito/Caja de música/Semáforo sí/no"
 
+msgid "Bar Input/Processing/Output Yes/No"
+msgstr "Barra Entrada/Procesamiento/Salida sí/no"
+
 #: fsettings.lfm
 msgid "Selected Color"
 msgstr "Color de selección"

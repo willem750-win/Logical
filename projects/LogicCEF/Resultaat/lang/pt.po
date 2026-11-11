@@ -1121,6 +1121,9 @@ msgstr "Bloquear"
 msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
 msgstr "Botões LogicRun/Pessoa/Carrinho/Caixa de música/Semáforo sim/não"
 
+msgid "Bar Input/Processing/Output Yes/No"
+msgstr "Barra Entrada/Processamento/Saída sim/não"
+
 #: fsettings.lfm
 msgid "Selected Color"
 msgstr "Cor de seleção"

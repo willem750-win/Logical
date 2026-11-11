@@ -1121,6 +1121,9 @@ msgstr "Заблокировать"
 msgid "LogicRun/Person/Cart/Music box/Traffic light buttons Yes/No"
 msgstr "Кнопки LogicRun/Человек/Тележка/Музыкальная шкатулка/Светофор да/нет"
 
+msgid "Bar Input/Processing/Output Yes/No"
+msgstr "Полоса Вход/Обработка/Выход да/нет"
+
 #: fsettings.lfm
 msgid "Selected Color"
 msgstr "Цвет выделения"
