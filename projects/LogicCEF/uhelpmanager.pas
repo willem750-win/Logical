@@ -135,7 +135,7 @@ begin
       Result := 'invoer';
     'logic':
       begin Result := 'verwerking'; AAnchor := 'poorten'; end;
-    'teller', 'geheugen', 'stappenteller', 'stopwatch':
+    'teller', 'geheugen', 'stappenteller', 'stopwatch', 'flipflop':
       Result := 'verwerking';
     'lamp', 'relais', 'schakelrelais', 'zoemer', 'display':
       Result := 'uitvoer';
@@ -643,6 +643,7 @@ begin
     'tjansimeindschakelaar': AControl.HelpKeyword := 'eindschakelaar';
     'tjansimstappenteller': AControl.HelpKeyword := 'stappenteller';
     'tjansimstopwatch': AControl.HelpKeyword := 'stopwatch';
+    'tjansimflipflop': AControl.HelpKeyword := 'flipflop';
   end;
 end;
 

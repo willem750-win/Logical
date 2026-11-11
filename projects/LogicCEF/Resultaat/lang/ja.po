@@ -1447,3 +1447,27 @@ msgstr "NOR ゲートを作成 (否定論理和)"
 
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr "XOR ゲートを作成 (排他的論理和)"
+
+msgid "create Flip-flop (SR, D, JK or T)"
+msgstr "フリップフロップを作成 (SR, D, JK, T)"
+
+msgid "Flip-flop"
+msgstr "フリップフロップ"
+
+msgid "SR: S sets Q to 1, R resets Q to 0 (R wins)"
+msgstr "SR: S で Q が 1、R で Q が 0 (R が優先)"
+
+msgid "D: when C turns on, Q takes the value of D"
+msgstr "D: C がオンになると、Q は D の値になる"
+
+msgid "JK: when C turns on: J sets, K resets, J and K together toggle"
+msgstr "JK: C がオンになると: J でセット、K でリセット、J と K 両方で反転"
+
+msgid "T: every time T turns on, Q toggles"
+msgstr "T: T がオンになるたびに Q が反転する"
+
+msgid "Right-click: choose the type (SR, D, JK, T)"
+msgstr "右クリック: 種類を選ぶ (SR, D, JK, T)"
+
+msgid "Set Q to 0"
+msgstr "Q を 0 にする"

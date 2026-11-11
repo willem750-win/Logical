@@ -67,6 +67,22 @@
   <p>In den Schaltzeichen (<a href="instellingen.html#symbolen">IEC und ANSI</a>) erkennen Sie das NAND- und das NOR-Gatter am kleinen Kreis (Umkehrung) am Ausgang. Das XOR-Gatter trägt in IEC das Zeichen <b>=1</b> und hat in ANSI einen zusätzlichen Bogen an den Eingängen.</p>
   <div class="tip"><strong>Tipp:</strong> Durch Kombinieren von Gattern bauen Sie jede logische Funktion. Ein NAND-Gatter macht zum Beispiel dasselbe wie ein NICHT-Gatter hinter einem UND-Gatter.</div>
 
+  <h2 id="flipflop"><img src="../img/pal-flipflop.png" class="ico" alt="">Flipflop</h2>
+  <p>Ein Flipflop speichert ein Bit: Der Ausgang <span class="pin out">Q</span> bleibt 0 oder 1, auch wenn die Eingänge
+  wieder ausgehen. Der zweite Ausgang <span class="pin out">Q&#773;</span> (nicht-Q) ist immer das Gegenteil von Q.
+  Mit der rechten Maustaste wählen Sie die Art (der Block darf nicht gesperrt sein). Ein neues Flipflop beginnt mit Q = 0.</p>
+  <table>
+    <tr><th>Art</th><th>Eingänge</th><th>Was macht es?</th></tr>
+    <tr><td><b>SR</b></td><td><span class="pin in">S</span> <span class="pin in">R</span></td><td>S (set) setzt Q auf 1, R (reset) setzt Q auf 0. S und R gleichzeitig an ist eigentlich verboten: In Logic hat R Vorrang.</td></tr>
+    <tr><td><b>D</b></td><td><span class="pin in">D</span> <span class="pin in">C</span></td><td>In dem Moment, in dem der Takt C einschaltet, übernimmt Q den Wert von D. Danach darf sich D ändern, ohne dass sich Q ändert.</td></tr>
+    <tr><td><b>JK</b></td><td><span class="pin in">J</span> <span class="pin in">C</span> <span class="pin in">K</span></td><td>In dem Moment, in dem C einschaltet: J und K aus = Q bleibt, J an = Q wird 1, K an = Q wird 0, J und K zusammen an = Q wechselt.</td></tr>
+    <tr><td><b>T</b></td><td><span class="pin in">T</span></td><td>Jedes Mal, wenn T einschaltet, wechselt Q: 0, 1, 0, 1, &hellip;</td></tr>
+  </table>
+  <p>Der Takteingang C hat ein kleines Dreieck im Block. Das Flipflop reagiert nur auf das <b>Einschalten</b> von C
+  (die Flanke), nicht solange C an bleibt. Probieren Sie es in <a href="les27.html">Lektion 27</a> aus.</p>
+  <div class="tip"><strong>Tipp:</strong> Schalten Sie zwei T-Flipflops hintereinander und verbinden Sie nicht-Q des ersten mit T
+  des zweiten: Die Schaltung zählt dann von 0 bis 3, mit der Lampe an Q des ersten Flipflops für 1 und der des zweiten für 2.</div>
+
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Zählerbaustein</h2>
   <p>Zählt die Impulse an seinem Zähleingang und gibt den Stand binär an vier Ausgängen weiter.</p>
   <table>

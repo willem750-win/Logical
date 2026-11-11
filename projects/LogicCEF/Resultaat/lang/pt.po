@@ -1447,3 +1447,27 @@ msgstr "criar porta lógica NOR (não-ou)"
 
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr "criar porta lógica XOR (ou exclusivo)"
+
+msgid "create Flip-flop (SR, D, JK or T)"
+msgstr "criar Flip-flop (SR, D, JK ou T)"
+
+msgid "Flip-flop"
+msgstr "Flip-flop"
+
+msgid "SR: S sets Q to 1, R resets Q to 0 (R wins)"
+msgstr "SR: S põe Q a 1, R põe Q a 0 (R tem prioridade)"
+
+msgid "D: when C turns on, Q takes the value of D"
+msgstr "D: quando C liga, Q fica com o valor de D"
+
+msgid "JK: when C turns on: J sets, K resets, J and K together toggle"
+msgstr "JK: quando C liga: J põe a 1, K põe a 0, J e K juntos comutam"
+
+msgid "T: every time T turns on, Q toggles"
+msgstr "T: cada vez que T liga, Q comuta"
+
+msgid "Right-click: choose the type (SR, D, JK, T)"
+msgstr "Clique direito: escolher o tipo (SR, D, JK, T)"
+
+msgid "Set Q to 0"
+msgstr "Pôr Q a 0"

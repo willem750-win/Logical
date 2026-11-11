@@ -1838,6 +1838,7 @@ type
     FTeller:Boolean;
     FMemory:Boolean;
     FStappen:Boolean;
+    FFlipFlopK: Boolean;   // knop Flipflop
     FStopwatch:Boolean;
     FDipSwitsh:Boolean;
     FKnopLeft:Integer;
@@ -1954,6 +1955,8 @@ type
     DMemory:boolean;
     RStappen:TRect;
     DStappen:boolean;
+    RFlipFlop: TRect;
+    DFlipFlop: Boolean;
     RStopwatch:TRect;
     DStopwatch:boolean;
 
@@ -2006,6 +2009,7 @@ type
     FHTeller:String;
     FHMemory:String;
     FHStappen:String;
+    FHFlipFlop: String;
     FHStopwatch:String;
     FHDipSwitsh:String;
     FHDisplay:String;
@@ -2069,6 +2073,7 @@ type
     PROCEDURE SetTeller(const Value: Boolean);
     PROCEDURE SetMemory(const Value: Boolean);
     PROCEDURE SetStappen(const Value: Boolean);
+    PROCEDURE SetFlipFlopK(const Value: Boolean);
     PROCEDURE SetStopwatch(const Value: Boolean);
     PROCEDURE SetDipSwitsh(const Value: Boolean);
     PROCEDURE SetBuzzer(const Value: Boolean);
@@ -2143,6 +2148,7 @@ type
     procedure DrawRailButton(const R: TRect; APlus, ADown: Boolean);
     procedure DrawHalfKnop(const R: TRect; ADown: Boolean; Kind: Integer);
     procedure DrawStappenIcon(X, Y: Integer);
+    procedure DrawFlipFlopIcon(X, Y: Integer);
     procedure DrawStopwatchIcon(X, Y: Integer);
     PROCEDURE PaintBoxTop;
     PROCEDURE PaintBoxBottom;
@@ -2255,6 +2261,7 @@ type
     property KTeller:Boolean read FTeller write SetTeller;
     property KMemory:Boolean read FMemory write SetMemory;
     property KStappen:Boolean read FStappen write SetStappen default True;
+    property KFlipFlop: Boolean read FFlipFlopK write SetFlipFlopK default True;
     property KStopwatch:Boolean read FStopwatch write SetStopwatch default True;
     property KDipSwitsh:Boolean read FDipSwitsh write SetDipSwitsh;
     property KDisplay:Boolean read FDisplay write SetDisplay;
@@ -2316,6 +2323,7 @@ type
     property HTeller:String read FHTeller write SetHTeller;
     property HMemory:String read FHMemory write SetHMemory;
     property HStappen:String read FHStappen write FHStappen;
+    property HFlipFlop: String read FHFlipFlop write FHFlipFlop;
     property HStopwatch:String read FHStopwatch write FHStopwatch;
     property HDipSwitsh:string read FHDipSwitsh write SetHDipSwitsh;
     property HDisplay:String read FHDisplay write SetHDisplay;
@@ -2753,9 +2761,13 @@ end;
     // ingang 0 (T) of 1 (R) aan/uit, door de draden (Connect)
     procedure SetInput(I: Integer; Value: Boolean); virtual;
     // index van de ingang bij punt P (paneel), anders -1
-    function InputPinAt(const P: TPoint): Integer;
+    function InputPinAt(const P: TPoint): Integer; virtual;
     // ligt P (paneel) op de uitgang Q rechts?
-    function OutputPinAt(const P: TPoint): Boolean;
+    function OutputPinAt(const P: TPoint): Boolean; virtual;
+    // waarde van de uitgang bij punt P (paneel); False = daar geen uitgang
+    function OutValueAt(const P: TPoint; out V: Boolean): Boolean; virtual;
+    // Y (in het blok) van het aansluitvierkantje van de uitgang bij P, of -1
+    function OutPinYAt(const P: TPoint): Integer; virtual;
     // Y van het aansluitvierkantje (7x7) van ingang I, en van de uitgang
     class function InputPinY(I: Integer): Integer;
     class function OutputPinY: Integer;
@@ -2798,6 +2810,46 @@ end;
     procedure Paint; override;
     procedure UpdateHintText; override;
     procedure SetInput(I: Integer; Value: Boolean); override;
+  end;
+
+  { TjanSimFlipFlop: flipflop (geheugen van 1 bit), soort SR, D, JK of T
+    (rechtsklik). Links de ingangen, rechts de uitgangen Q (boven) en niet-Q
+    (onder).
+      SR: S zet Q op 1, R zet Q op 0; S en R samen (verboden): R gaat voor.
+      D : bij het aangaan van de klok C neemt Q de waarde van D over.
+      JK: bij het aangaan van C: J=K=0 houden, J=1 zetten, K=1 wissen,
+          J=K=1 omschakelen.
+      T : elke keer dat T aangaat, wisselt Q.
+    Erft draden, bewaren, vergrendelen en de balk van de stappenteller; de
+    soort staat in Eindwaarde (1 = SR, 2 = D, 3 = JK, 4 = T). }
+  TjanFlipFlopSoort = (ffSR, ffD, ffJK, ffT);
+  TjanSimFlipFlop = class(TjanSimStappenteller)
+  private
+    FQ: Boolean;
+    FIn3: array[0..2] of Boolean; // ingangen (tot 3)
+    FStartRonde: Cardinal;        // simulatieronde bij het maken of laden
+    function GetSoort: TjanFlipFlopSoort;
+    procedure SetSoort(Value: TjanFlipFlopSoort);
+    procedure SoortClick(Sender: TObject);
+    procedure NulQClick(Sender: TObject);
+    function StatusText: string; override;
+    procedure BuildPopup; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    procedure SetInput(I: Integer; Value: Boolean); override;
+    function InputPinAt(const P: TPoint): Integer; override;
+    function OutputPinAt(const P: TPoint): Boolean; override;
+    function OutValueAt(const P: TPoint; out V: Boolean): Boolean; override;
+    function OutPinYAt(const P: TPoint): Integer; override;
+    function Bereikt: Boolean; override;      // = Q
+    function InputCount: Integer;
+    function InPinY(I: Integer): Integer;     // Y van ingang I in het blok
+    function InLabel(I: Integer): string;     // S, R, D, C, J, K, T
+    class function QPinY(I: Integer): Integer; // 0 = Q, 1 = niet-Q
+    property Q: Boolean read FQ;
+    property Soort: TjanFlipFlopSoort read GetSoort write SetSoort;
   end;
 
   { TjanLogicRun: programmeermodule met een stappenprogramma (LogicRun).
@@ -8751,6 +8803,11 @@ begin
     Add(1, TjanSimMotor.InputPinY(0));
     Add(1, TjanSimMotor.InputPinY(1));
   end
+  else if C is TjanSimFlipFlop then
+  begin
+    for i := 0 to TjanSimFlipFlop(C).InputCount - 1 do
+      Add(1, TjanSimFlipFlop(C).InPinY(i));
+  end
   else if C is TjanSimStappenteller then
   begin
     Add(1, TjanSimStappenteller.InputPinY(0));
@@ -9438,11 +9495,9 @@ var Pi,Po:TPoint;
       // stappenteller: uitgang Q (eindwaarde bereikt)
       if (wc.controls[ii] is TjanSimStappenteller) then
       begin
-        if TjanSimStappenteller(wc.controls[ii]).OutputPinAt(Pi) then
-        begin
-          vi:=TjanSimStappenteller(wc.controls[ii]).Bereikt;
+        // (ook stopwatch en flipflop: die heeft twee uitgangen, Q en niet-Q)
+        if TjanSimStappenteller(wc.controls[ii]).OutValueAt(Pi, Vi) then
           exit;
-        end;
         continue;
       end;
       // eindschakelaar: een draad die op zijn uitgang begint (de stand van
@@ -21871,7 +21926,7 @@ begin
   // aantal imputobjecten
   FImputAantal:=6;
   // opzetten van knoppen (Verwerkingsobjecten)
-  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FLogicNand:=True;FLogicNor:=True;FLogicXor:=True;FStappen:=True;FStopwatch:=True;
+  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FLogicNand:=True;FLogicNor:=True;FLogicXor:=True;FStappen:=True;FFlipFlopK:=True;FStopwatch:=True;
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=7;
   // opzetten van knoppen (Uitvoerobjecten)
@@ -21886,7 +21941,7 @@ begin
   DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DWarm:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;DLogicNand:=false;DLogicNor:=false;DLogicXor:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
+  DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
 
   cpu:=TTimer.Create(self);
   cpu.Enabled:=false;
@@ -23431,9 +23486,11 @@ begin
 
       // ---- TjanSimStappenteller (of TjanSimStopwatch);height;left;top;width;eindwaarde;herhalen ----
       // bij de stopwatch is de eindwaarde de eindtijd in seconden
-      if (obj[1] = 'TjanSimStappenteller') or (obj[1] = 'TjanSimStopwatch') then
+      if (obj[1] = 'TjanSimStappenteller') or (obj[1] = 'TjanSimStopwatch') or (obj[1] = 'TjanSimFlipFlop') then
       begin
-        if obj[1] = 'TjanSimStopwatch' then
+        if obj[1] = 'TjanSimFlipFlop' then
+          StT := TjanSimFlipFlop.Create(self)
+        else if obj[1] = 'TjanSimStopwatch' then
           StT := TjanSimStopwatch.Create(self)
         else
           StT := TjanSimStappenteller.Create(self);
@@ -24323,7 +24380,7 @@ begin
   DSquare:=false;
   DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;DLogicNand:=false;DLogicNor:=false;DLogicXor:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
-  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
+  DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWeerstand:=false;
   DLamp2:=false;DSchak2:=false;DVolt2:=false;
@@ -24350,6 +24407,7 @@ begin
   else if ptinrect(RDisplay,p) and (KDisplay=true)then DDisplay:=true
   else if ptinrect(RTeller,p) and (KTeller=true)then DTeller:=true
   else if ptinrect(RStappen,p) and (KStappen=true)then DStappen:=true
+  else if PtInRect(RFlipFlop,p) and KFlipFlop then DFlipFlop:=true
   else if ptinrect(RStopwatch,p) and (KStopwatch=true)then DStopwatch:=true
   else if ptinrect(RMemory,p) and (KMemory=true)then DMemory:=true
   else if ptinrect(RDipSwitsh,p) and (KDipSwitsh=true)then DDipSwitsh:=true
@@ -24404,6 +24462,7 @@ begin
   else if PtInRect(RDisplay, P) then NewHint := FHDisplay
   else if PtInRect(RTeller, P) then NewHint := FHTeller
   else if PtInRect(RStappen, P) then NewHint := FHStappen
+  else if PtInRect(RFlipFlop, P) then NewHint := FHFlipFlop
   else if PtInRect(RStopwatch, P) then NewHint := FHStopwatch
   else if PtInRect(RMemory, P) then NewHint := FHMemory
   else if PtInRect(RDipSwitsh, P) then NewHint := FHDipSwitsh
@@ -24863,7 +24922,7 @@ var
     Dgrid := False;
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
-    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DLogicNand := False; DLogicNor := False; DLogicXor := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
+    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DLogicNand := False; DLogicNor := False; DLogicXor := False; DTeller := False; DStappen := False; DFlipFlop := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWeerstand := False;
@@ -24977,6 +25036,13 @@ begin
   end
   else if DStopwatch then
   with TjanSimStopwatch.Create(self) do
+  begin
+    Parent := wc; FNew := True; Tag := wc.ControlCount;
+    FObjectID := wc.ControlCount; Visible := False; Left := -200; Screen.Cursor := crCross;
+    BTaal := StatTaalToBTaal(Language);
+  end
+  else if DFlipFlop then
+  with TjanSimFlipFlop.Create(self) do
   begin
     Parent := wc; FNew := True; Tag := wc.ControlCount;
     FObjectID := wc.ControlCount; Visible := False; Left := -200; Screen.Cursor := crCross;
@@ -25672,6 +25738,7 @@ if FBoxTaal=stDutch then
   HSensor:='maak Lichtsensor';
   HTeller:='maak Tellerblok';
   HStappen:='maak Stappenteller (telt tot 9999)';
+  HFlipFlop:='maak Flipflop (SR, D, JK of T)';
   HStopwatch:='maak Stopwatch (tijd met eindtijd)';
   HWarm:='maak WarmteSensor';
   HMeter:='maak Voltmeter';
@@ -25716,6 +25783,7 @@ if FBoxTaal=stEnglish then
   HSensor:=LangTr('create Light sensor');
   HTeller:=LangTr('create Counter block');
   HStappen:=LangTr('create Step counter (counts up to 9999)');
+  HFlipFlop:=LangTr('create Flip-flop (SR, D, JK or T)');
   HStopwatch:=LangTr('create Stopwatch (time with end time)');
   HWarm:=LangTr('create HeatSensor');
   HMeter:=LangTr('create Voltmeter');
@@ -25757,6 +25825,7 @@ if FBoxTaal=stFrench then
   HSchakelaar:='faire un changement';
   HSensor:='faire Capteur de lumière';
   HTeller:='faire Bloc compteur';
+  HFlipFlop:='faire Bascule (SR, D, JK ou T)';
   HStappen:='faire Compteur de pas (compte jusqu''à 9999)';
   HStopwatch:='faire Chronomètre (temps avec heure de fin)';
   HWarm:='faire Capteur de chaleur';
@@ -25800,6 +25869,7 @@ if FBoxTaal=stFrench then
   HSchakelaar:='Schalter machen';
   HSensor:='Lichtsensor herstellen';
   HTeller:='Gegenblock erstellen';
+  HFlipFlop:='Flipflop erstellen (SR, D, JK oder T)';
   HStappen:='Stappenteller erstellen (zählt bis 9999)';
   HStopwatch:='Stoppuhr erstellen (Zeit mit Endzeit)';
   HWarm:='HeatSensor erstellen';
@@ -26471,6 +26541,11 @@ begin
   invalidate;
 end;
 
+procedure TjanSimLogicBox.SetFlipFlopK(const Value: Boolean);
+begin
+  if Value <> FFlipFlopK then begin FFlipFlopK := Value; Invalidate; end;
+end;
+
 procedure TjanSimLogicBox.SetStappen(const Value: Boolean);
 begin
   if value<>FStappen then
@@ -26936,6 +27011,19 @@ begin
         HK:= H+TOP;
       end;
 
+      RFlipFlop := Rect(0, 0, 0, 0);
+      if FFlipFlopK then
+      begin
+        RFlipFlop := Rect(LK, TOP, BK, HK);
+        Rb := RFlipFlop;
+        if not DFlipFlop then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawFlipFlopIcon(LK+1, TOP+2);
+        TOP := TOP + H + SPATIE;
+        HK := H + TOP;
+      end;
+
       If FStappen=true then
       Begin
         RStappen:= rect(LK,TOP,BK,HK);
@@ -27154,6 +27242,35 @@ begin
 end;
 
 // knop van de stappenteller: klein display met 123, altijd getekend
+// knop flipflop: blok met FF, ingangen links en de uitgangen Q en niet-Q rechts
+procedure TjanSimLogicBox.DrawFlipFlopIcon(X, Y: Integer);
+var OldBrush, OldPen, OldFont: TColor;
+    OldStyle: TBrushStyle;
+    OldSize: Integer;
+begin
+  OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
+  OldFont := Canvas.Font.Color; OldSize := Canvas.Font.Size;
+  Canvas.Pen.Width := 1;
+  Canvas.Pen.Color := clBlack;
+  Canvas.Line(X + 1, Y + 6, X + 5, Y + 6);
+  Canvas.Line(X + 1, Y + 16, X + 5, Y + 16);
+  Canvas.Line(X + 19, Y + 16, X + 23, Y + 16);
+  Canvas.Pen.Color := clRed;                    // uitgang Q aan
+  Canvas.Line(X + 19, Y + 6, X + 23, Y + 6);
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Pen.Color := clGray;
+  Canvas.Brush.Color := clCream;
+  Canvas.RoundRect(X + 5, Y + 2, X + 19, Y + 21, 4, 4);
+  Canvas.Brush.Style := bsClear;
+  Canvas.Font.Name := 'Arial';
+  Canvas.Font.Size := 6;
+  Canvas.Font.Style := [fsBold];
+  Canvas.Font.Color := clNavy;
+  Canvas.TextOut(X + 12 - Canvas.TextWidth('FF') div 2, Y + 11 - Canvas.TextHeight('FF') div 2, 'FF');
+  Canvas.Font.Style := []; Canvas.Font.Size := OldSize; Canvas.Font.Color := OldFont;
+  Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
+end;
+
 procedure TjanSimLogicBox.DrawStappenIcon(X, Y: Integer);
 var OldBrush, OldPen, OldFont: TColor;
     OldStyle: TBrushStyle;
@@ -27635,6 +27752,18 @@ begin
         NextX(B + SPATIE);
       end;
 
+
+      RFlipFlop := Rect(0, 0, 0, 0);
+      if FFlipFlopK then
+      begin
+        RFlipFlop := Rect(LK, TOP, BK, HK);
+        Rb := RFlipFlop;
+        if not DFlipFlop then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawFlipFlopIcon(LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
 
       if FStappen = True then
       begin
@@ -28147,6 +28276,18 @@ begin
         NextX(B + SPATIE);
       end;
 
+
+      RFlipFlop := Rect(0, 0, 0, 0);
+      if FFlipFlopK then
+      begin
+        RFlipFlop := Rect(LK, TOP, BK, HK);
+        Rb := RFlipFlop;
+        if not DFlipFlop then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawFlipFlopIcon(LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
 
       if FStappen = True then
       begin
@@ -32533,6 +32674,17 @@ begin
             (Abs(P.Y - (Top + OutputPinY + 3)) <= 10);
 end;
 
+function TjanSimStappenteller.OutValueAt(const P: TPoint; out V: Boolean): Boolean;
+begin
+  Result := OutputPinAt(P);
+  V := Result and Bereikt;
+end;
+
+function TjanSimStappenteller.OutPinYAt(const P: TPoint): Integer;
+begin
+  if OutputPinAt(P) then Result := OutputPinY else Result := -1;
+end;
+
 function TjanSimStappenteller.Bereikt: Boolean;
 begin
   Result := FStand >= FEind;
@@ -32879,9 +33031,9 @@ begin
 
   // met de knop Verbinding: een draad beginnen op de uitgang Q
   if (Button = mbLeft) and (Screen.Cursor = crDraad) and (Parent <> nil) and
-     OutputPinAt(Point(Left + X, Top + Y)) then
+     (OutPinYAt(Point(Left + X, Top + Y)) >= 0) then
   begin
-    Maakdraad(Top + OutputPinY + 3 - 4, Left + Width - 5 - 4, Parent);
+    Maakdraad(Top + OutPinYAt(Point(Left + X, Top + Y)) + 3 - 4, Left + Width - 5 - 4, Parent);
     movecursor;
     BringToFront;
     Exit;
@@ -33282,6 +33434,337 @@ procedure TjanSimStopwatch.NulTijdClick(Sender: TObject);
 begin
   FMs := 0;
   FStand := 0;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+
+// ============================================================
+// TjanSimFlipFlop: SR-, D-, JK- of T-flipflop
+// ============================================================
+
+const
+  FF_W = 100;           // breedte van het blok
+  FF_H = 64;            // hoogte van het blok
+
+constructor TjanSimFlipFlop.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := FF_W;
+  Height := FF_H;
+  FEind := 1;           // soort SR
+  FStartRonde := SimRonde;
+  FNaam := 'Flipflop';
+  HelpKeyword := 'flipflop';
+end;
+
+function TjanSimFlipFlop.GetSoort: TjanFlipFlopSoort;
+begin
+  case FEind of
+    2: Result := ffD;
+    3: Result := ffJK;
+    4: Result := ffT;
+  else
+    Result := ffSR;
+  end;
+end;
+
+procedure TjanSimFlipFlop.SetSoort(Value: TjanFlipFlopSoort);
+begin
+  FEind := Ord(Value) + 1;
+  FIn3[0] := False; FIn3[1] := False; FIn3[2] := False;
+  UpdateHintText;
+  Invalidate;
+end;
+
+function TjanSimFlipFlop.InputCount: Integer;
+begin
+  case Soort of
+    ffJK: Result := 3;
+    ffT:  Result := 1;
+  else
+    Result := 2;
+  end;
+end;
+
+function TjanSimFlipFlop.InPinY(I: Integer): Integer;
+begin
+  case InputCount of
+    1: Result := 28;
+    3: case I of 0: Result := 8; 1: Result := 28; else Result := 48; end;
+  else
+    if I = 0 then Result := 10 else Result := 46;
+  end;
+end;
+
+function TjanSimFlipFlop.InLabel(I: Integer): string;
+begin
+  case Soort of
+    ffSR: if I = 0 then Result := 'S' else Result := 'R';
+    ffD:  if I = 0 then Result := 'D' else Result := 'C';
+    ffJK: case I of 0: Result := 'J'; 1: Result := 'C'; else Result := 'K'; end;
+  else
+    Result := 'T';
+  end;
+end;
+
+class function TjanSimFlipFlop.QPinY(I: Integer): Integer;
+begin
+  if I = 0 then Result := 10 else Result := 46;
+end;
+
+function TjanSimFlipFlop.InputPinAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 8) or (P.X > Left + 18) then Exit;
+  for i := 0 to InputCount - 1 do
+    if Abs(P.Y - (Top + InPinY(i) + 3)) <= 8 then
+      Exit(i);
+end;
+
+function TjanSimFlipFlop.OutPinYAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left + Width - 18) or (P.X > Left + Width + 8) then Exit;
+  for i := 0 to 1 do
+    if Abs(P.Y - (Top + QPinY(i) + 3)) <= 10 then
+      Exit(QPinY(i));
+end;
+
+function TjanSimFlipFlop.OutputPinAt(const P: TPoint): Boolean;
+begin
+  Result := OutPinYAt(P) >= 0;
+end;
+
+function TjanSimFlipFlop.OutValueAt(const P: TPoint; out V: Boolean): Boolean;
+var
+  Y: Integer;
+begin
+  Y := OutPinYAt(P);
+  Result := Y >= 0;
+  if Y = QPinY(0) then V := FQ else V := not FQ;
+end;
+
+function TjanSimFlipFlop.Bereikt: Boolean;
+begin
+  Result := FQ;
+end;
+
+procedure TjanSimFlipFlop.SetInput(I: Integer; Value: Boolean);
+begin
+  if (I < 0) or (I >= InputCount) or (FIn3[I] = Value) then Exit;
+  FIn3[I] := Value;
+  // de eerste rondes na het maken of laden komen de beginwaarden binnen
+  // (bv. niet-Q = 1 van een andere flipflop): dat is geen klokflank
+  if (SimRonde <= FStartRonde + 3) and (Soort <> ffSR) then
+  begin
+    Invalidate;
+    Exit;
+  end;
+  case Soort of
+    ffSR:
+      // R gaat voor (ook als S en R samen aan zijn: verboden toestand)
+      if FIn3[1] then FQ := False
+      else if FIn3[0] then FQ := True;
+    ffD:
+      if (I = 1) and Value then FQ := FIn3[0];
+    ffJK:
+      if (I = 1) and Value then
+      begin
+        if FIn3[0] and FIn3[2] then FQ := not FQ
+        else if FIn3[0] then FQ := True
+        else if FIn3[2] then FQ := False;
+      end;
+    ffT:
+      if Value then FQ := not FQ;
+  end;
+  Invalidate;
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimFlipFlop.Paint;
+var
+  BW, BH, i, y, x: Integer;
+  S: string;
+begin
+  BW := Self.Width;
+  BH := Self.Height;
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    Pen.Color := clBlack;
+    // aansluitdraden naar het blok
+    for i := 0 to InputCount - 1 do
+    begin
+      y := InPinY(i) + 3;
+      Line(8, y, 12, y);
+    end;
+    for i := 0 to 1 do
+    begin
+      y := QPinY(i) + 3;
+      Line(BW - 12, y, BW - 8, y);
+    end;
+    // blok
+    Brush.Style := bsSolid;
+    Brush.Color := clCream;
+    Pen.Color := clGray;
+    RoundRect(12, 0, BW - 12, BH, 8, 8);
+    // soort in het midden, met de stand van Q eronder
+    case Soort of
+      ffSR: S := 'SR';
+      ffD:  S := 'D';
+      ffJK: S := 'JK';
+    else
+      S := 'T';
+    end;
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 11;
+    Font.Style := [fsBold];
+    Font.Color := clNavy;
+    TextOut((BW - TextWidth(S)) div 2, 12, S);
+    Font.Size := 7;
+    Font.Style := [];
+    Font.Color := clBlack;
+    S := 'FF';
+    TextOut((BW - TextWidth(S)) div 2, 32, S);
+    // klokingang: driehoekje aan de binnenkant van het blok
+    for i := 0 to InputCount - 1 do
+      if InLabel(i) = 'C' then
+      begin
+        y := InPinY(i) + 3;
+        Pen.Color := clBlack;
+        Line(12, y - 4, 18, y);
+        Line(18, y, 12, y + 4);
+      end;
+    // aansluitingen
+    Brush.Style := bsSolid;
+    Brush.Color := clLime;
+    Pen.Color := clGray;
+    for i := 0 to InputCount - 1 do
+      Rectangle(1, InPinY(i), 8, InPinY(i) + 7);
+    for i := 0 to 1 do
+    begin
+      if (i = 0) = FQ then Brush.Color := clRed else Brush.Color := clLime;
+      Rectangle(BW - 8, QPinY(i), BW - 1, QPinY(i) + 7);
+    end;
+    // letters
+    Brush.Style := bsClear;
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    for i := 0 to InputCount - 1 do
+    begin
+      if FIn3[i] then Font.Color := clRed else Font.Color := clNavy;
+      if InLabel(i) = 'C' then x := 20 else x := 15;
+      TextOut(x, InPinY(i) - 2, InLabel(i));
+    end;
+    if FQ then Font.Color := clRed else Font.Color := clNavy;
+    TextOut(BW - 23, QPinY(0) - 2, 'Q');
+    if FQ then Font.Color := clNavy else Font.Color := clRed;
+    TextOut(BW - 23, QPinY(1) - 2, 'Q');
+    // streep boven de tweede Q: niet-Q
+    Pen.Color := Font.Color;
+    x := BW - 23;
+    Line(x, QPinY(1) - 2, x + TextWidth('Q'), QPinY(1) - 2);
+    if FSelect or FSelected then
+    begin
+      Brush.Style := bsClear;
+      if FSelected then Pen.Color := clRed else Pen.Color := clBlack;
+      Pen.Style := psDot;
+      Rectangle(0, 0, BW, BH);
+      Pen.Style := psSolid;
+    end;
+    Brush.Style := bsSolid;
+  end;
+end;
+
+function TjanSimFlipFlop.StatusText: string;
+const
+  Namen: array[TjanFlipFlopSoort] of string = ('SR', 'D', 'JK', 'T');
+begin
+  Result := Namen[Soort] + '-flipflop: Q = ' + IntToStr(Ord(FQ));
+end;
+
+procedure TjanSimFlipFlop.UpdateHintText;
+var
+  S: string;
+begin
+  case Soort of
+    ffSR: S := Tr(FTaal, 'SR: S zet Q op 1, R zet Q op 0 (R gaat voor)', 'SR: S sets Q to 1, R resets Q to 0 (R wins)',
+                 'SR : S met Q à 1, R remet Q à 0 (R l''emporte)', 'SR: S setzt Q auf 1, R setzt Q auf 0 (R hat Vorrang)');
+    ffD:  S := Tr(FTaal, 'D: bij het aangaan van C neemt Q de waarde van D over', 'D: when C turns on, Q takes the value of D',
+                 'D : quand C s''allume, Q prend la valeur de D', 'D: wenn C einschaltet, übernimmt Q den Wert von D');
+    ffJK: S := Tr(FTaal, 'JK: bij het aangaan van C: J zet, K wist, J en K samen wisselen', 'JK: when C turns on: J sets, K resets, J and K together toggle',
+                 'JK : quand C s''allume : J met à 1, K remet à 0, J et K ensemble basculent', 'JK: wenn C einschaltet: J setzt, K löscht, J und K zusammen wechseln');
+  else
+    S := Tr(FTaal, 'T: elke keer dat T aangaat, wisselt Q', 'T: every time T turns on, Q toggles',
+           'T : à chaque fois que T s''allume, Q bascule', 'T: jedes Mal, wenn T einschaltet, wechselt Q');
+  end;
+  Hint := BuildSimHint(FNaam, FTaal) + #13#10 + S + #13#10 +
+    Tr(FTaal, 'Rechtsklik: soort kiezen (SR, D, JK, T)', 'Right-click: choose the type (SR, D, JK, T)',
+              'Clic droit : choisir le type (SR, D, JK, T)', 'Rechtsklick: Art wählen (SR, D, JK, T)');
+end;
+
+procedure TjanSimFlipFlop.BuildPopup;
+const
+  Namen: array[TjanFlipFlopSoort] of string = ('SR', 'D', 'JK', 'T');
+var
+  Mi: TMenuItem;
+  k: TjanFlipFlopSoort;
+begin
+  if not Assigned(PopupMenu) then
+    PopupMenu := TPopupMenu.Create(Self)
+  else
+    PopupMenu.Items.Clear;
+  Mi := TMenuItem.Create(PopupMenu);
+  if FLock then
+    Mi.Caption := Tr(FTaal, 'Ontgrendel', 'Unlock', 'Déverrouiller', 'Entsperren')
+  else
+    Mi.Caption := Tr(FTaal, 'Vergrendel', 'Lock', 'Verrouiller', 'Sperren');
+  Mi.OnClick := LockClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Selecteer object', 'Select object', 'Sélectionner l''objet', 'Objekt auswählen');
+  Mi.OnClick := SelectClick;
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := '-';
+  PopupMenu.Items.Add(Mi);
+  for k := Low(TjanFlipFlopSoort) to High(TjanFlipFlopSoort) do
+  begin
+    Mi := TMenuItem.Create(PopupMenu);
+    Mi.Caption := Namen[k] + '-flipflop';
+    Mi.Tag := Ord(k);
+    Mi.RadioItem := True;
+    Mi.Checked := Soort = k;
+    Mi.OnClick := SoortClick;
+    PopupMenu.Items.Add(Mi);
+  end;
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := '-';
+  PopupMenu.Items.Add(Mi);
+  Mi := TMenuItem.Create(PopupMenu);
+  Mi.Caption := Tr(FTaal, 'Q op 0 zetten', 'Set Q to 0', 'Mettre Q à 0', 'Q auf 0 setzen');
+  Mi.OnClick := NulQClick;
+  PopupMenu.Items.Add(Mi);
+end;
+
+procedure TjanSimFlipFlop.SoortClick(Sender: TObject);
+begin
+  Soort := TjanFlipFlopSoort(TMenuItem(Sender).Tag);
+  if FMouseOver then
+    SendStatusToBar;
+end;
+
+procedure TjanSimFlipFlop.NulQClick(Sender: TObject);
+begin
+  FQ := False;
   Invalidate;
   if FMouseOver then
     SendStatusToBar;

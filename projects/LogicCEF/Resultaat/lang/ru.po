@@ -1447,3 +1447,27 @@ msgstr "создать логический элемент ИЛИ-НЕ (NOR)"
 
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr "создать логический элемент исключающее ИЛИ (XOR)"
+
+msgid "create Flip-flop (SR, D, JK or T)"
+msgstr "создать триггер (SR, D, JK или T)"
+
+msgid "Flip-flop"
+msgstr "Триггер"
+
+msgid "SR: S sets Q to 1, R resets Q to 0 (R wins)"
+msgstr "SR: S ставит Q в 1, R сбрасывает Q в 0 (R важнее)"
+
+msgid "D: when C turns on, Q takes the value of D"
+msgstr "D: когда C включается, Q принимает значение D"
+
+msgid "JK: when C turns on: J sets, K resets, J and K together toggle"
+msgstr "JK: когда C включается: J ставит, K сбрасывает, J и K вместе переключают"
+
+msgid "T: every time T turns on, Q toggles"
+msgstr "T: каждый раз, когда T включается, Q переключается"
+
+msgid "Right-click: choose the type (SR, D, JK, T)"
+msgstr "Правый щелчок: выбрать тип (SR, D, JK, T)"
+
+msgid "Set Q to 0"
+msgstr "Сбросить Q в 0"

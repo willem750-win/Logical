@@ -1447,3 +1447,27 @@ msgstr "创建或非门 (NOR)"
 
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr "创建异或门 (XOR)"
+
+msgid "create Flip-flop (SR, D, JK or T)"
+msgstr "创建触发器 (SR, D, JK 或 T)"
+
+msgid "Flip-flop"
+msgstr "触发器"
+
+msgid "SR: S sets Q to 1, R resets Q to 0 (R wins)"
+msgstr "SR: S 使 Q 为 1, R 使 Q 为 0 (R 优先)"
+
+msgid "D: when C turns on, Q takes the value of D"
+msgstr "D: C 接通时, Q 取 D 的值"
+
+msgid "JK: when C turns on: J sets, K resets, J and K together toggle"
+msgstr "JK: C 接通时: J 置位, K 复位, J 和 K 同时则翻转"
+
+msgid "T: every time T turns on, Q toggles"
+msgstr "T: 每次 T 接通, Q 翻转"
+
+msgid "Right-click: choose the type (SR, D, JK, T)"
+msgstr "右键: 选择类型 (SR, D, JK, T)"
+
+msgid "Set Q to 0"
+msgstr "把 Q 置为 0"

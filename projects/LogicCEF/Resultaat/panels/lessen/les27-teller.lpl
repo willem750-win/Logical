@@ -1,0 +1,13 @@
+TjanSimButton;32;120;130;58;
+TjanSimFlipFlop;64;300;110;100;4;0;
+TjanSimFlipFlop;64;500;150;100;4;0;
+TjanSimLight;23;700;121;69;
+TjanSimLight;23;700;161;69;
+TjanConnector;9;169;136;136;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;22;395;159;110;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;9;395;123;314;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+TjanConnector;9;595;163;114;jcmBR;jcpTL;jcsTLBR;0,5;-1;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;
+Statusbalk;False;

@@ -1,0 +1,51 @@
+<!-- titel: Lektion 27 - Das Flipflop merkt sich etwas -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#rekenen">Rechnen mit Gattern</a> &rsaquo; Lektion 27 von 27</p>
+  <h1>Das Flipflop merkt sich etwas</h1>
+  <div class="goal"><strong>Ziel:</strong> mit einem SR-Flipflop einen kurzen Druck auf einen Taster speichern, wie bei einem Alarm, der weiter läuft.</div>
+
+  <p><a class="open" href="../../panels/lessen/les27-flipflop.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les27-flipflop.png" alt="Quelle von 12 V mit + und &minus; Schiene, zwei Taster an den Eingängen S und R eines SR-Flipflops und eine rote LED am Ausgang Q">
+    <figcaption>Der obere Taster (S) ist schon losgelassen, aber die LED leuchtet weiter: Das Flipflop hat es gespeichert.</figcaption>
+  </figure>
+
+  <h2>Ein Gatter vergisst, ein Flipflop speichert</h2>
+  <p>Bei einem Gatter hängt der Ausgang nur von den Eingängen <b>jetzt</b> ab. Lassen Sie den Taster los, geht die Lampe aus.
+  Ein <a href="verwerking.html#flipflop"><img src="../img/pal-flipflop.png" class="ico" alt="">Flipflop</a> hat einen
+  <b>Speicher</b> von einem Bit: Der Ausgang <b>Q</b> bleibt 1 oder 0, auch wenn die Eingänge wieder ausgehen.</p>
+  <table>
+    <tr><th>S (oberer Taster)</th><th>R (unterer Taster)</th><th>Q (LED)</th></tr>
+    <tr><td>0</td><td>0</td><td>bleibt wie vorher</td></tr>
+    <tr><td><b>1</b></td><td>0</td><td><b>1</b> (Set)</td></tr>
+    <tr><td>0</td><td><b>1</b></td><td>0 (Reset)</td></tr>
+    <tr><td>1</td><td>1</td><td>verboten; in Logic gewinnt R: 0</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Die LED ist aus: Ein neues Flipflop beginnt mit Q = 0.</li>
+    <li>Drücken Sie kurz auf den oberen Taster (S). Die LED geht an und <b>bleibt</b> an, wenn Sie loslassen.</li>
+    <li>Drücken Sie noch einmal auf S: Nichts ändert sich, Q ist schon 1.</li>
+    <li>Drücken Sie auf den unteren Taster (R). Jetzt geht die LED aus und bleibt aus.</li>
+  </ol>
+
+  <h2>Ein Alarm</h2>
+  <p>So funktioniert ein Alarm: Ein Türkontakt oder Bewegungsmelder gibt nur ein kurzes Signal auf S, aber die Sirene
+  soll weiter heulen, bis jemand auf <b>Reset</b> drückt. Ersetzen Sie die LED ruhig durch einen
+  <a href="uitvoer.html#zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Summer</a>.</p>
+
+  <h2>Aufgabe: bis drei zählen</h2>
+  <p>Klicken Sie mit der rechten Maustaste auf das Flipflop und wählen Sie <b>T</b>. Jetzt wechselt Q bei jedem Druck auf
+  den Taster: Das Flipflop teilt die Anzahl der Drücke durch zwei. Fügen Sie ein zweites Flipflop hinzu, auch vom Typ T.
+  Wie verbinden Sie die beiden, damit zwei Lampen binär zählen: 0, 1, 2, 3 und wieder 0?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Der Taster geht an T des ersten Flipflops. Sein <b>Q</b> geht an eine Lampe mit dem Wert 1. Sein
+    <b>Q&#773;</b> (nicht-Q) geht an T des zweiten Flipflops, und Q dieses zweiten Flipflops an eine Lampe mit dem Wert 2.
+    Jedes Mal, wenn die erste Lampe von 1 auf 0 geht, geht Q&#773; an und das zweite Flipflop wechselt: Das ist der Übertrag,
+    genau wie beim <a href="les26.html">Halbaddierer</a>.</p>
+    <p><a class="open" href="../../panels/lessen/les27-teller.lpl">&#9654; Den Zähler öffnen</a></p>
+  </details>
+
+  <div class="tip"><strong>Speicher:</strong> Der Arbeitsspeicher eines Computers besteht aus Milliarden solcher
+  Speicherzellen. Mit D-Flipflops speichert ein Prozessor Zahlen, mit T-Flipflops zählt er.</div>
+
+  <div class="pager"><a href="les26.html">&larr; Lektion 26: Der Halbaddierer</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

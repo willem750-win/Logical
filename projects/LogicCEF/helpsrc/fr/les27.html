@@ -1,0 +1,51 @@
+<!-- titel: Leçon 27 - La bascule se souvient -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#rekenen">Calculer avec des portes</a> &rsaquo; Leçon 27 sur 27</p>
+  <h1>La bascule se souvient</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> retenir un appui bref sur un bouton avec une bascule SR, comme une alarme qui continue à sonner.</div>
+
+  <p><a class="open" href="../../panels/lessen/les27-flipflop.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les27-flipflop.png" alt="Source de 12 V avec rail + et &minus;, deux boutons-poussoirs sur les entrées S et R d'une bascule SR, et une LED rouge sur la sortie Q">
+    <figcaption>Le bouton du haut (S) est déjà relâché, mais la LED reste allumée&nbsp;: la bascule s'en souvient.</figcaption>
+  </figure>
+
+  <h2>Une porte oublie, une bascule se souvient</h2>
+  <p>Avec une porte, la sortie dépend seulement des entrées <b>en ce moment</b>. Relâchez le bouton et la lampe s'éteint.
+  Une <a href="verwerking.html#flipflop"><img src="../img/pal-flipflop.png" class="ico" alt="">bascule</a> a une
+  <b>mémoire</b> d'un bit&nbsp;: la sortie <b>Q</b> reste à 1 ou à 0, même quand les entrées s'éteignent.</p>
+  <table>
+    <tr><th>S (bouton du haut)</th><th>R (bouton du bas)</th><th>Q (LED)</th></tr>
+    <tr><td>0</td><td>0</td><td>reste comme avant</td></tr>
+    <tr><td><b>1</b></td><td>0</td><td><b>1</b> (set)</td></tr>
+    <tr><td>0</td><td><b>1</b></td><td>0 (reset)</td></tr>
+    <tr><td>1</td><td>1</td><td>interdit&nbsp;; dans Logic, R l'emporte&nbsp;: 0</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Lancez la simulation. La LED est éteinte&nbsp;: une nouvelle bascule commence avec Q = 0.</li>
+    <li>Appuyez brièvement sur le bouton du haut (S). La LED s'allume et <b>reste</b> allumée quand vous relâchez.</li>
+    <li>Appuyez encore sur S&nbsp;: rien ne change, Q vaut déjà 1.</li>
+    <li>Appuyez sur le bouton du bas (R). La LED s'éteint et reste éteinte.</li>
+  </ol>
+
+  <h2>Une alarme</h2>
+  <p>C'est ainsi que fonctionne une alarme&nbsp;: un contact de porte ou un détecteur de mouvement ne donne qu'un bref
+  signal sur S, mais la sirène doit continuer à hurler jusqu'à ce que quelqu'un appuie sur <b>reset</b>. Vous pouvez
+  remplacer la LED par un <a href="uitvoer.html#zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">buzzer</a>.</p>
+
+  <h2>Exercice&nbsp;: compter jusqu'à trois</h2>
+  <p>Cliquez avec le bouton droit sur la bascule et choisissez <b>T</b>. Maintenant Q change à chaque appui sur le bouton&nbsp;:
+  la bascule divise le nombre d'appuis par deux. Ajoutez une deuxième bascule, elle aussi de type T. Comment les
+  relier pour que deux lampes comptent en binaire&nbsp;: 0, 1, 2, 3 et de nouveau 0&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Le bouton-poussoir va vers T de la première bascule. Sa sortie <b>Q</b> va vers une lampe de valeur 1. Sa sortie
+    <b>Q&#773;</b> (non-Q) va vers T de la deuxième bascule, et Q de cette deuxième bascule vers une lampe de valeur 2.
+    Chaque fois que la première lampe passe de 1 à 0, Q&#773; s'allume et la deuxième bascule change&nbsp;: c'est la
+    retenue, comme dans le <a href="les26.html">demi-additionneur</a>.</p>
+    <p><a class="open" href="../../panels/lessen/les27-teller.lpl">&#9654; Ouvrir le compteur</a></p>
+  </details>
+
+  <div class="tip"><strong>Mémoire&nbsp;:</strong> la mémoire de travail d'un ordinateur est faite de milliards de ces
+  cellules. Un processeur garde des nombres avec des bascules D et compte avec des bascules T.</div>
+
+  <div class="pager"><a href="les26.html">&larr; Leçon 26 : Le demi-additionneur</a><a href="leerpad.html">Parcours &rarr;</a></div>

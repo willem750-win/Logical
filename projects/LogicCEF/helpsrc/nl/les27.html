@@ -1,0 +1,51 @@
+<!-- titel: Les 27 - De flipflop onthoudt -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#rekenen">Rekenen met poorten</a> &rsaquo; Les 27 van 27</p>
+  <h1>De flipflop onthoudt</h1>
+  <div class="goal"><strong>Doel:</strong> met een SR-flipflop een korte druk op een knop onthouden, zoals een alarm dat blijft afgaan.</div>
+
+  <p><a class="open" href="../../panels/lessen/les27-flipflop.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les27-flipflop.png" alt="Bron van 12 V met + en &minus; rail, twee drukknoppen op de ingangen S en R van een SR-flipflop, en een rode led op de uitgang Q">
+    <figcaption>De bovenste drukknop (S) is al losgelaten, maar de led blijft branden: de flipflop onthoudt het.</figcaption>
+  </figure>
+
+  <h2>Een poort vergeet, een flipflop onthoudt</h2>
+  <p>Bij een poort hangt de uitgang alleen af van de ingangen <b>nu</b>. Laat je de knop los, dan gaat de lamp uit.
+  Een <a href="verwerking.html#flipflop"><img src="../img/pal-flipflop.png" class="ico" alt="">flipflop</a> heeft een
+  <b>geheugen</b> van één bit: de uitgang <b>Q</b> blijft 1 of 0, ook als de ingangen weer uit gaan.</p>
+  <table>
+    <tr><th>S (bovenste knop)</th><th>R (onderste knop)</th><th>Q (led)</th></tr>
+    <tr><td>0</td><td>0</td><td>blijft zoals hij was</td></tr>
+    <tr><td><b>1</b></td><td>0</td><td><b>1</b> (set)</td></tr>
+    <tr><td>0</td><td><b>1</b></td><td>0 (reset)</td></tr>
+    <tr><td>1</td><td>1</td><td>verboden; in Logic gaat R voor: 0</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Start de simulatie. De led is uit: een nieuwe flipflop begint met Q = 0.</li>
+    <li>Druk kort op de bovenste knop (S). De led gaat aan en <b>blijft</b> aan als je loslaat.</li>
+    <li>Druk nog eens op S: er verandert niets, Q is al 1.</li>
+    <li>Druk op de onderste knop (R). Nu gaat de led uit en blijft uit.</li>
+  </ol>
+
+  <h2>Een alarm</h2>
+  <p>Zo werkt een alarm: een deurcontact of bewegingssensor geeft maar een kort signaal op S, maar de sirene moet
+  blijven loeien tot iemand op <b>reset</b> drukt. Vervang de led gerust door een
+  <a href="uitvoer.html#zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">zoemer</a>.</p>
+
+  <h2>Opdracht: tellen tot drie</h2>
+  <p>Klik met de rechtermuisknop op de flipflop en kies <b>T</b>. Nu wisselt Q bij elke druk op de knop: de flipflop deelt
+  het aantal drukken door twee. Zet er een tweede flipflop bij, ook van de soort T. Hoe verbind je ze zodat twee lampen
+  binair tellen: 0, 1, 2, 3 en weer 0?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>De drukknop gaat naar T van de eerste flipflop. Zijn <b>Q</b> gaat naar een lamp met waarde 1. Zijn
+    <b>Q&#773;</b> (niet-Q) gaat naar T van de tweede flipflop, en Q van die tweede flipflop naar een lamp met waarde 2.
+    Telkens als de eerste lamp van 1 naar 0 gaat, gaat Q&#773; aan en wisselt de tweede flipflop: dat is de overdracht,
+    net zoals bij de <a href="les26.html">halve opteller</a>.</p>
+    <p><a class="open" href="../../panels/lessen/les27-teller.lpl">&#9654; Open de teller</a></p>
+  </details>
+
+  <div class="tip"><strong>Geheugen:</strong> het werkgeheugen van een computer bestaat uit miljarden van zulke
+  geheugencellen. Met D-flipflops bewaart een processor getallen, en met T-flipflops telt hij.</div>
+
+  <div class="pager"><a href="les26.html">&larr; Les 26: De halve opteller</a><a href="leerpad.html">Leerpad &rarr;</a></div>

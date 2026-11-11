@@ -67,6 +67,22 @@
   <p>Dans les symboles de schéma (<a href="instellingen.html#symbolen">IEC et ANSI</a>), vous reconnaissez les portes NON-ET et NON-OU au petit cercle (inversion) à la sortie. La porte OU-X porte le signe <b>=1</b> en IEC et un arc supplémentaire aux entrées en ANSI.</p>
   <div class="tip"><strong>Astuce&nbsp;:</strong> en combinant des portes, vous réalisez n&rsquo;importe quelle fonction logique. Une porte NON-ET, par exemple, fait la même chose qu&rsquo;une porte NON après une porte ET.</div>
 
+  <h2 id="flipflop"><img src="../img/pal-flipflop.png" class="ico" alt="">Bascule</h2>
+  <p>Une bascule mémorise un bit&nbsp;: la sortie <span class="pin out">Q</span> reste à 0 ou à 1, même quand les entrées
+  s&rsquo;éteignent. La deuxième sortie <span class="pin out">Q&#773;</span> (non-Q) est toujours l&rsquo;inverse de Q.
+  Avec le clic droit, vous choisissez le type (le bloc ne doit pas être verrouillé). Une nouvelle bascule commence avec Q = 0.</p>
+  <table>
+    <tr><th>Type</th><th>Entrées</th><th>Que fait-elle&nbsp;?</th></tr>
+    <tr><td><b>SR</b></td><td><span class="pin in">S</span> <span class="pin in">R</span></td><td>S (set) met Q à 1, R (reset) remet Q à 0. S et R allumés ensemble, c&rsquo;est en principe interdit&nbsp;: dans Logic, R l&rsquo;emporte.</td></tr>
+    <tr><td><b>D</b></td><td><span class="pin in">D</span> <span class="pin in">C</span></td><td>Au moment où l&rsquo;horloge C s&rsquo;allume, Q prend la valeur de D. Ensuite, D peut changer sans que Q change.</td></tr>
+    <tr><td><b>JK</b></td><td><span class="pin in">J</span> <span class="pin in">C</span> <span class="pin in">K</span></td><td>Au moment où C s&rsquo;allume&nbsp;: J et K éteints = Q reste, J allumé = Q passe à 1, K allumé = Q passe à 0, J et K allumés ensemble = Q bascule.</td></tr>
+    <tr><td><b>T</b></td><td><span class="pin in">T</span></td><td>Chaque fois que T s&rsquo;allume, Q bascule&nbsp;: 0, 1, 0, 1, &hellip;</td></tr>
+  </table>
+  <p>L&rsquo;entrée d&rsquo;horloge C a un petit triangle dans le bloc. La bascule ne réagit qu&rsquo;au moment où C <b>s&rsquo;allume</b>
+  (le front), pas tant que C reste allumée. Essayez-la dans la <a href="les27.html">leçon 27</a>.</p>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> placez deux bascules T l&rsquo;une après l&rsquo;autre et reliez non-Q de la première à T de
+  la seconde&nbsp;: le circuit compte alors de 0 à 3, avec la lampe sur Q de la première bascule pour 1 et celle de la seconde pour 2.</div>
+
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Bloc compteur</h2>
   <p>Compte les impulsions sur son entrée de comptage et transmet la valeur en binaire sur quatre sorties.</p>
   <table>
