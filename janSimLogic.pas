@@ -2016,6 +2016,9 @@ type
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
     FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2: string;
+    FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
+    FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
+    FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
     FBoxTaal:TStatTaal;
     FOnObjectMove: TObjectMoveEvent;
 
@@ -2080,7 +2083,8 @@ type
     procedure SetKLamp2(const Value: Boolean);
     procedure SetKSchakelaar2(const Value: Boolean);
     procedure SetKVoltmeter2(const Value: Boolean);
-    procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean);
+    procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
+      MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
     procedure DrawGateIcon(AFunc: TjanLogicFunc; Bm: TBitmap; X, Y: Integer);
     procedure DrawInputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
@@ -2111,6 +2115,7 @@ type
     PROCEDURE MouseMove(Shift: TShiftState; X, Y: Integer);override;
     PROCEDURE MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);override;
     PROCEDURE resize; override;
+    procedure HertekenLater(Data: PtrInt);
     PROCEDURE Loaded; override;
     PROCEDURE WMEraseBkgnd(var Message: TWMEraseBkgnd); message WM_ERASEBKGND;
     // Laatste aanpassen
@@ -21837,6 +21842,7 @@ end;
 destructor TjanSimLogicBox.Destroy;
 begin
   if DraadBox = Self then DraadBox := nil;
+  Application.RemoveAsyncCalls(Self);
  // FreeTools;
   cpu.free;
   bmBuzzer.Free;bmSensor.Free;bmWarm.Free;bmGrid.Free;bmCon.free;
@@ -22284,13 +22290,18 @@ var
   wc: TWinControl;
   i: Integer;
   c: TControl;
-  L: TStringList;
+  L, P: TStringList;
   s: string;
+  Sh: TPoint;
 begin
   Result := '';
   wc := FParent;
   if wc = nil then Exit;
+  Sh := LayoutShift;
   L := TStringList.Create;
+  P := TStringList.Create;
+  P.Delimiter := ';';
+  P.StrictDelimiter := True;
   try
     for i := 0 to wc.ControlCount - 1 do
     begin
@@ -22305,11 +22316,22 @@ begin
               (c is TjanSimPersoon) or (c is TjanSimEindschakelaar) or
               (c is TjanSimStappenteller) or (c is TjanVoedingsDeel)) then
         Continue;
-      s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left, c.Top, c.Width, c.Height]);
-      if c is TjanRail then
-        s := RailFileLine(TjanRail(c))
-      else if c is TjanVoedingsDeel then
-        s := VoedingFileLine(c)
+      // plaats ten opzichte van de knoppenbalk: een tweede rij knoppen
+      // schuift alles op, maar dat is geen wijziging van het paneel
+      s := Format('%s;%d;%d;%d;%d', [c.ClassName, c.Left - Sh.X, c.Top - Sh.Y, c.Width, c.Height]);
+      if (c is TjanRail) or (c is TjanVoedingsDeel) then
+      begin
+        if c is TjanRail then s := RailFileLine(TjanRail(c))
+        else s := VoedingFileLine(c);
+        // Type;Height;Left;Top;... : Left en Top relatief maken
+        P.DelimitedText := s;
+        if P.Count > 3 then
+        begin
+          P[2] := IntToStr(c.Left - Sh.X);
+          P[3] := IntToStr(c.Top - Sh.Y);
+          s := P.DelimitedText;
+        end;
+      end
       else if c is TjanConnector then
         with TjanConnector(c) do
           s := s + Format(';%d;%d;%.3f', [Ord(V_ConPos), Ord(V_ConShape), V_Edge])
@@ -22332,6 +22354,7 @@ begin
         BoolToStr(Paneel.ShowStatusBar, True)]));
     Result := L.Text;
   finally
+    P.Free;
     L.Free;
   end;
 end;
@@ -25745,12 +25768,17 @@ begin SetVoedingKnop(FVolt2K, Value); end;
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
-procedure TjanSimLogicBox.PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean);
+// Naast elkaar zijn de rails en de voltmeter halve knoppen (17 breed), de
+// andere even breed als de gewone knoppen (26). Met MaxX > 0 gaat een knop
+// die niet meer past naar een nieuwe rij vanaf StartX; FVoedingBottom geeft
+// de onderkant van de laatste rij.
+procedure TjanSimLogicBox.PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
+  MaxX: Integer; StartX: Integer);
 var
-  N: Integer;
+  N, X: Integer;
 
   procedure Knop(var R: TRect; Soort: Integer; ADown: Boolean);
-  var Y: Integer;
+  var Y, W: Integer;
   begin
     if Vertikaal then
     begin
@@ -25759,7 +25787,17 @@ var
       else R := Rect(LK + 15, Y, LK + 32, Y + H);
     end
     else
-      R := Rect(LK + N * 19, TOP, LK + N * 19 + 17, TOP + H);
+    begin
+      if (Soort = -2) or (Soort = -1) or (Soort = 6) then W := 17 else W := 26;
+      if (MaxX > 0) and (X + W > MaxX) and (X > StartX) then
+      begin
+        X := StartX;
+        TOP := TOP + H + 4;
+        FVoedingBottom := TOP + H;
+      end;
+      R := Rect(X, TOP, X + W, TOP + H);
+      X := X + W + 2;
+    end;
     if Soort = -1 then DrawRailButton(R, True, ADown)
     else if Soort = -2 then DrawRailButton(R, False, ADown)
     else DrawVoedingButton(R, Soort, ADown);
@@ -25776,6 +25814,8 @@ begin
   RSchak2 := Rect(0, 0, 0, 0);
   RVolt2 := Rect(0, 0, 0, 0);
   N := 0;
+  X := LK;
+  FVoedingBottom := TOP + H;
   if FVoeding then
   begin
     Knop(RRailPlus, -1, DRailPlus);
@@ -27055,11 +27095,47 @@ var
   RC,RB: TRect;
   Bmp: TBitmap;
 
-  // helper om de volgende "slot" horizontaal te zetten
+  // helper om de volgende "slot" horizontaal te zetten; past er geen knop
+  // meer naast, dan begint een nieuwe rij eronder (overloop)
   procedure NextX(Delta: Integer);
   begin
     LK := LK + Delta;
+    if LK + B > Width - 6 then
+    begin
+      LK := FKnopLeft;
+      TOP := TOP + H + 4;
+      HK := TOP + H;
+    end;
     BK := LK + B;
+  end;
+
+  // ruimte tussen twee groepen, niet aan het begin van een rij
+  procedure Gap(Delta: Integer);
+  begin
+    if LK > FKnopLeft then NextX(Delta);
+  end;
+
+  // de balk even hoog maken als de rijen knoppen; de objecten op het
+  // paneel schuiven mee, zodat ze op dezelfde plaats onder de balk blijven
+  procedure PasHoogteAan(Onder: Integer);
+  var Nodig, Oud, D: Integer;
+  begin
+    Nodig := Onder + 6;
+    if Nodig < 36 then Nodig := 36;
+    if FRijFix or ((Nodig = FBalkHoogte) and (Height = Nodig)) then Exit;
+    FRijFix := True;
+    try
+      Oud := Height;
+      FBalkHoogte := Nodig;   // resize houdt deze hoogte vast
+      Height := Nodig;
+      D := Height - Oud;      // alleen de echte verandering
+      if D <> 0 then ShiftPanelObjects(0, D);
+      // deze tekenbeurt mag alleen binnen de oude hoogte tekenen: na afloop
+      // de hele balk nog eens tekenen, anders blijft de nieuwe rij leeg
+      Application.QueueAsyncCall(HertekenLater, 0);
+    finally
+      FRijFix := False;
+    end;
   end;
 
 begin
@@ -27266,7 +27342,7 @@ begin
       end;
 
       // was: TOP := TOP + 20;
-      NextX(20);
+      Gap(20);
 
       // ===========================================================
       // GROEP: VERWERKING achtergrond (horizontale balk)
@@ -27366,7 +27442,7 @@ begin
         DrawStopwatchIcon(LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
-      NextX(20);
+      Gap(20);
 
       // ===========================================================
       // GROEP: OUTPUT achtergrond (horizontale balk)
@@ -27521,8 +27597,9 @@ begin
 
       // voeding: + en - rail, bron, zekering, weerstand, lamp, schakelaar en
       // voltmeter met 2 klemmen als halve knoppen in een aparte groep
-      NextX(8);
-      PlaatsVoeding(LK, TOP, HK - TOP, SPATIE, False);
+      Gap(8);
+      PlaatsVoeding(LK, TOP, H, SPATIE, False, Self.Width - 6, FKnopLeft);
+      PasHoogteAan(FVoedingBottom);
     end;
   end;
 end;
@@ -28020,11 +28097,20 @@ begin
   if (align = alBottom) then PaintBoxBottom; // apparte procedure
 end;
 
+procedure TjanSimLogicBox.HertekenLater(Data: PtrInt);
+begin
+  Invalidate;
+end;
+
 procedure TjanSimLogicBox.resize;
 begin
-if (Align=(alTop)) or (Align=(alBottom))then height:=36;
+if FBalkHoogte < 36 then FBalkHoogte := 36;
+if ((Align=(alTop)) or (Align=(alBottom))) and (height<>FBalkHoogte) then height:=FBalkHoogte;
 if (Align=(alLeft)) or (Align=(alRight)) then width:=45;
 FFirst:=false;
+// bij een smaller venster tekent Windows de balk niet vanzelf opnieuw:
+// zelf opnieuw tekenen, zodat de knoppen naar een tweede rij kunnen
+if (Align=alTop) and not FRijFix then Invalidate;
 end;
 
 procedure TjanSimLogicBox.WMEraseBkgnd(var Message: TWMEraseBkgnd);
