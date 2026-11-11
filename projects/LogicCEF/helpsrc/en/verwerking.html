@@ -34,8 +34,38 @@
     <tr><td>0</td><td><b>1</b></td></tr>
     <tr><td>1</td><td>0</td></tr>
   </table>
-  <div class="tip"><strong>Tip:</strong> by combining gates you can make any logic function,
-  for example a NOT gate after an AND gate (a NAND function).</div>
+
+  <h3 id="nen"><img src="../img/pal-nen.png" class="ico" alt="">NAND gate</h3>
+  <p>The opposite of an AND gate (not-and): the output is only <b>off</b> when both inputs are on.</p>
+  <table>
+    <tr><th>Input A1</th><th>Input A2</th><th>Output A</th></tr>
+    <tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+
+  <h3 id="nof"><img src="../img/pal-nof.png" class="ico" alt="">NOR gate</h3>
+  <p>The opposite of an OR gate (not-or): the output is only <b>on</b> when both inputs are off.</p>
+  <table>
+    <tr><th>Input O1</th><th>Input O2</th><th>Output O</th></tr>
+    <tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+
+  <h3 id="exof"><img src="../img/pal-exof.png" class="ico" alt="">XOR gate</h3>
+  <p>Exclusive or: the output is on when <b>exactly one</b> input is on. When both inputs are equal, the output is off. Add an AND gate and you have a <a href="les26.html">half adder</a>.</p>
+  <table>
+    <tr><th>Input X1</th><th>Input X2</th><th>Output X</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+  <p>In the schematic symbols (<a href="instellingen.html#symbolen">IEC and ANSI</a>) you recognise the NAND and NOR gates by the small circle (inversion) at the output. The XOR gate has the sign <b>=1</b> in IEC and an extra curve at the inputs in ANSI.</p>
+  <div class="tip"><strong>Tip:</strong> by combining gates you can make any logic function. A NAND gate, for example, does the same as a NOT gate after an AND gate.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Counter block</h2>
   <p>Counts the pulses on its count input and passes the count on in binary on four outputs.</p>

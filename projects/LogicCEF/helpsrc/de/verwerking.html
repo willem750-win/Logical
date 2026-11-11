@@ -34,8 +34,38 @@
     <tr><td>0</td><td><b>1</b></td></tr>
     <tr><td>1</td><td>0</td></tr>
   </table>
-  <div class="tip"><strong>Tipp:</strong> Durch Kombinieren von Gattern bauen Sie jede logische Funktion,
-  zum Beispiel ein NICHT-Gatter hinter einem UND-Gatter (eine NAND-Funktion).</div>
+
+  <h3 id="nen"><img src="../img/pal-nen.png" class="ico" alt="">NAND-Gatter</h3>
+  <p>Das Gegenteil eines UND-Gatters (nicht-und): Der Ausgang ist nur <b>aus</b>, wenn beide Eingänge an sind.</p>
+  <table>
+    <tr><th>Eingang A1</th><th>Eingang A2</th><th>Ausgang A</th></tr>
+    <tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+
+  <h3 id="nof"><img src="../img/pal-nof.png" class="ico" alt="">NOR-Gatter</h3>
+  <p>Das Gegenteil eines ODER-Gatters (nicht-oder): Der Ausgang ist nur <b>an</b>, wenn beide Eingänge aus sind.</p>
+  <table>
+    <tr><th>Eingang O1</th><th>Eingang O2</th><th>Ausgang O</th></tr>
+    <tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+
+  <h3 id="exof"><img src="../img/pal-exof.png" class="ico" alt="">XOR-Gatter</h3>
+  <p>Exklusives Oder: Der Ausgang ist an, wenn <b>genau ein</b> Eingang an ist. Sind beide Eingänge gleich, ist der Ausgang aus. Mit einem UND-Gatter dazu erhalten Sie einen <a href="les26.html">Halbaddierer</a>.</p>
+  <table>
+    <tr><th>Eingang X1</th><th>Eingang X2</th><th>Ausgang X</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+  <p>In den Schaltzeichen (<a href="instellingen.html#symbolen">IEC und ANSI</a>) erkennen Sie das NAND- und das NOR-Gatter am kleinen Kreis (Umkehrung) am Ausgang. Das XOR-Gatter trägt in IEC das Zeichen <b>=1</b> und hat in ANSI einen zusätzlichen Bogen an den Eingängen.</p>
+  <div class="tip"><strong>Tipp:</strong> Durch Kombinieren von Gattern bauen Sie jede logische Funktion. Ein NAND-Gatter macht zum Beispiel dasselbe wie ein NICHT-Gatter hinter einem UND-Gatter.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Zählerbaustein</h2>
   <p>Zählt die Impulse an seinem Zähleingang und gibt den Stand binär an vier Ausgängen weiter.</p>

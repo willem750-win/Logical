@@ -1415,3 +1415,30 @@ msgstr "Eliminar cable"
 
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr "Cable\nClic: seleccionar (más grueso), otro clic: deseleccionar\nClic derecho: menú para seleccionar o eliminar\nArrastra un extremo o el codo para moverlo"
+
+msgid "NAND"
+msgstr ""
+
+msgid "NOR"
+msgstr ""
+
+msgid "XOR"
+msgstr ""
+
+msgid "NAND gate"
+msgstr "Puerta NAND"
+
+msgid "NOR gate"
+msgstr "Puerta NOR"
+
+msgid "XOR gate"
+msgstr "Puerta XOR"
+
+msgid "create NAND-Logic gate (not-and)"
+msgstr "crear puerta lógica NAND (no-y)"
+
+msgid "create NOR-Logic gate (not-or)"
+msgstr "crear puerta lógica NOR (no-o)"
+
+msgid "create XOR-Logic gate (exclusive or)"
+msgstr "crear puerta lógica XOR (o exclusivo)"

@@ -1,0 +1,49 @@
+<!-- titel: Les 26 - De halve opteller -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#rekenen">Rekenen met poorten</a> &rsaquo; Les 26 van 26</p>
+  <h1>De halve opteller</h1>
+  <div class="goal"><strong>Doel:</strong> twee binaire cijfers (bits) optellen met een EX-OF-poort en een EN-poort.</div>
+
+  <p><a class="open" href="../../panels/lessen/les26-halve-opteller.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les26-halve-opteller.png" alt="Bron van 12 V met + en &minus; rail, twee schakelaars A en B, een EX-OF-poort met een rode led en een EN-poort met een lamp">
+    <figcaption>A en B staan allebei aan: 1 + 1 = 10 (twee). De som (rode led) is uit, de overdracht (lamp) brandt.</figcaption>
+  </figure>
+
+  <h2>Optellen in binair</h2>
+  <p>Een computer rekent met alleen 0 en 1. Tel je twee bits op, dan zijn er maar vier mogelijkheden:
+  0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1 en 1 + 1 = <b>10</b> (twee in binair). Bij 1 + 1 schrijf je 0 en
+  <b>onthoud</b> je 1, net zoals bij 5 + 5 = 10 in het tientallig stelsel. Dat onthouden cijfer heet de
+  <b>overdracht</b> (in het Engels <i>carry</i>, C). Het andere cijfer is de <b>som</b> (S).</p>
+  <table>
+    <tr><th>A (bovenste schakelaar)</th><th>B (onderste schakelaar)</th><th>Som S (led)</th><th>Overdracht C (lamp)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Twee poorten, twee kolommen</h2>
+  <p>Vergelijk de kolom <b>som</b> met de tabellen bij <a href="verwerking.html#poorten">Verwerking</a>: dat is precies een
+  <a href="verwerking.html#exof"><img src="../img/pal-exof.png" class="ico" alt="">EX-OF-poort</a>. Die is aan als
+  <b>precies één</b> ingang aan is. De kolom <b>overdracht</b> is een
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">EN-poort</a>: alleen aan als beide
+  ingangen aan zijn. Beide schakelaars gaan dus naar beide poorten.</p>
+  <ol class="steps">
+    <li>Start de simulatie en zet de schakelaars om, één voor één.</li>
+    <li>Controleer bij elke stand de tabel: brandt de led, de lamp of allebei?</li>
+    <li>Lees de lamp en de led samen als een binair getal: lamp = 2, led = 1.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Vervang de EX-OF-poort door een gewone OF-poort. Bij welke stand van de schakelaars klopt de som niet meer?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Bij 1 + 1. De OF-poort zet dan ook de led aan, zodat de led &eacute;n de lamp branden: dat is 11, of drie.
+    Maar 1 + 1 is twee (10). De som mag alleen aan zijn als <b>precies één</b> ingang aan is, en dat doet de EX-OF-poort.</p>
+  </details>
+
+  <div class="tip"><strong>Waarom &ldquo;half&rdquo;?</strong> Deze schakeling telt alleen twee bits op. Om grotere getallen op
+  te tellen moet je ook de overdracht van de vorige kolom meetellen. Met twee halve optellers en een OF-poort maak je
+  zo een <b>volledige opteller</b>, de basis van het rekenwerk in elke computer.</div>
+
+  <div class="pager"><a href="les25.html">&larr; Les 25: Lampen parallel</a><a href="leerpad.html">Leerpad &rarr;</a></div>

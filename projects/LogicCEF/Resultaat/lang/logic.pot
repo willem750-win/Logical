@@ -1434,3 +1434,39 @@ msgstr ""
 
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr ""
+
+#: janSimLogic.pas
+msgid "NAND"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "NOR"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "XOR"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "NAND gate"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "NOR gate"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "XOR gate"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "create NAND-Logic gate (not-and)"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "create NOR-Logic gate (not-or)"
+msgstr ""
+
+#: janSimLogic.pas
+msgid "create XOR-Logic gate (exclusive or)"
+msgstr ""

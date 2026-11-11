@@ -1,0 +1,49 @@
+<!-- titel: Lesson 26 - The half adder -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#rekenen">Calculating with gates</a> &rsaquo; Lesson 26 of 26</p>
+  <h1>The half adder</h1>
+  <div class="goal"><strong>Goal:</strong> add two binary digits (bits) with an XOR gate and an AND gate.</div>
+
+  <p><a class="open" href="../../panels/lessen/les26-halve-opteller.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les26-halve-opteller.png" alt="12 V source with + and &minus; rail, two switches A and B, an XOR gate with a red LED and an AND gate with a lamp">
+    <figcaption>A and B are both on: 1 + 1 = 10 (two). The sum (red LED) is off, the carry (lamp) is on.</figcaption>
+  </figure>
+
+  <h2>Adding in binary</h2>
+  <p>A computer calculates with only 0 and 1. When you add two bits, there are only four possibilities:
+  0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1 and 1 + 1 = <b>10</b> (two in binary). With 1 + 1 you write 0 and
+  <b>carry</b> 1, just like 5 + 5 = 10 in the decimal system. That carried digit is the
+  <b>carry</b> (C). The other digit is the <b>sum</b> (S).</p>
+  <table>
+    <tr><th>A (top switch)</th><th>B (bottom switch)</th><th>Sum S (LED)</th><th>Carry C (lamp)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Two gates, two columns</h2>
+  <p>Compare the <b>sum</b> column with the tables under <a href="verwerking.html#poorten">Processing</a>: it is exactly an
+  <a href="verwerking.html#exof"><img src="../img/pal-exof.png" class="ico" alt="">XOR gate</a>, which is on when
+  <b>exactly one</b> input is on. The <b>carry</b> column is an
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">AND gate</a>: only on when both
+  inputs are on. So both switches go to both gates.</p>
+  <ol class="steps">
+    <li>Start the simulation and turn the switches on and off, one at a time.</li>
+    <li>For each position, check the table: is the LED on, the lamp, or both?</li>
+    <li>Read the lamp and the LED together as a binary number: lamp = 2, LED = 1.</li>
+  </ol>
+
+  <h2>Assignment</h2>
+  <p>Replace the XOR gate with an ordinary OR gate. For which position of the switches is the sum no longer correct?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>For 1 + 1. The OR gate then also turns the LED on, so the LED and the lamp are both on: that is 11, or three.
+    But 1 + 1 is two (10). The sum may only be on when <b>exactly one</b> input is on, and that is what the XOR gate does.</p>
+  </details>
+
+  <div class="tip"><strong>Why &ldquo;half&rdquo;?</strong> This circuit only adds two bits. To add larger numbers you
+  also have to include the carry from the previous column. With two half adders and an OR gate you build a
+  <b>full adder</b>, the basis of the arithmetic in every computer.</div>
+
+  <div class="pager"><a href="les25.html">&larr; Lesson 25: Lamps in parallel</a><a href="leerpad.html">Learning path &rarr;</a></div>

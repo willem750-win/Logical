@@ -1110,3 +1110,30 @@ msgstr "Elimina filo"
 
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr "Filo\nClic: seleziona (più spesso), clic di nuovo: deseleziona\nTasto destro: menu per selezionare o eliminare\nTrascina un'estremità o la piega per spostarlo"
+
+msgid "NAND"
+msgstr ""
+
+msgid "NOR"
+msgstr ""
+
+msgid "XOR"
+msgstr ""
+
+msgid "NAND gate"
+msgstr "Porta NAND"
+
+msgid "NOR gate"
+msgstr "Porta NOR"
+
+msgid "XOR gate"
+msgstr "Porta XOR"
+
+msgid "create NAND-Logic gate (not-and)"
+msgstr "crea porta logica NAND (non-e)"
+
+msgid "create NOR-Logic gate (not-or)"
+msgstr "crea porta logica NOR (non-o)"
+
+msgid "create XOR-Logic gate (exclusive or)"
+msgstr "crea porta logica XOR (o esclusivo)"

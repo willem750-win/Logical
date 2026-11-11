@@ -1,0 +1,49 @@
+<!-- titel: Lektion 26 - Der Halbaddierer -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#rekenen">Rechnen mit Gattern</a> &rsaquo; Lektion 26 von 26</p>
+  <h1>Der Halbaddierer</h1>
+  <div class="goal"><strong>Ziel:</strong> zwei Binärziffern (Bits) mit einem XOR-Gatter und einem UND-Gatter addieren.</div>
+
+  <p><a class="open" href="../../panels/lessen/les26-halve-opteller.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les26-halve-opteller.png" alt="Quelle von 12 V mit + und &minus; Schiene, zwei Schalter A und B, ein XOR-Gatter mit einer roten LED und ein UND-Gatter mit einer Lampe">
+    <figcaption>A und B sind beide an: 1 + 1 = 10 (zwei). Die Summe (rote LED) ist aus, der Übertrag (Lampe) leuchtet.</figcaption>
+  </figure>
+
+  <h2>Addieren im Binärsystem</h2>
+  <p>Ein Computer rechnet nur mit 0 und 1. Wenn Sie zwei Bits addieren, gibt es nur vier Möglichkeiten:
+  0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1 und 1 + 1 = <b>10</b> (zwei im Binärsystem). Bei 1 + 1 schreiben Sie 0 und
+  <b>merken</b> sich 1, genau wie bei 5 + 5 = 10 im Zehnersystem. Diese gemerkte Ziffer heißt
+  <b>Übertrag</b> (englisch <i>carry</i>, C). Die andere Ziffer ist die <b>Summe</b> (S).</p>
+  <table>
+    <tr><th>A (oberer Schalter)</th><th>B (unterer Schalter)</th><th>Summe S (LED)</th><th>Übertrag C (Lampe)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Zwei Gatter, zwei Spalten</h2>
+  <p>Vergleichen Sie die Spalte <b>Summe</b> mit den Tabellen unter <a href="verwerking.html#poorten">Verarbeitung</a>: Das ist genau ein
+  <a href="verwerking.html#exof"><img src="../img/pal-exof.png" class="ico" alt="">XOR-Gatter</a>, das an ist, wenn
+  <b>genau ein</b> Eingang an ist. Die Spalte <b>Übertrag</b> ist ein
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">UND-Gatter</a>: nur an, wenn beide
+  Eingänge an sind. Beide Schalter gehen also zu beiden Gattern.</p>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und schalten Sie die Schalter nacheinander um.</li>
+    <li>Prüfen Sie bei jeder Stellung die Tabelle: Leuchtet die LED, die Lampe oder beide?</li>
+    <li>Lesen Sie Lampe und LED zusammen als Binärzahl: Lampe = 2, LED = 1.</li>
+  </ol>
+
+  <h2>Aufgabe</h2>
+  <p>Ersetzen Sie das XOR-Gatter durch ein gewöhnliches ODER-Gatter. Bei welcher Stellung der Schalter stimmt die Summe nicht mehr?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Bei 1 + 1. Das ODER-Gatter schaltet dann auch die LED ein, sodass LED und Lampe beide leuchten: Das ist 11, also drei.
+    Aber 1 + 1 ist zwei (10). Die Summe darf nur an sein, wenn <b>genau ein</b> Eingang an ist, und genau das macht das XOR-Gatter.</p>
+  </details>
+
+  <div class="tip"><strong>Warum &bdquo;halb&ldquo;?</strong> Diese Schaltung addiert nur zwei Bits. Um größere Zahlen zu addieren,
+  müssen Sie auch den Übertrag der vorigen Spalte mitzählen. Mit zwei Halbaddierern und einem ODER-Gatter bauen Sie
+  einen <b>Volladdierer</b>, die Grundlage des Rechnens in jedem Computer.</div>
+
+  <div class="pager"><a href="les25.html">&larr; Lektion 25: Lampen parallel</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

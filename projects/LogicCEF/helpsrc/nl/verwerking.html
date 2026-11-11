@@ -33,8 +33,38 @@
     <tr><td>0</td><td><b>1</b></td></tr>
     <tr><td>1</td><td>0</td></tr>
   </table>
-  <div class="tip"><strong>Tip:</strong> door poorten te combineren maak je elke logische functie,
-  bijvoorbeeld een NIET-poort achter een EN-poort (een NEN-functie).</div>
+
+  <h3 id="nen"><img src="../img/pal-nen.png" class="ico" alt="">NEN-poort</h3>
+  <p>Het omgekeerde van een EN-poort (niet-en): de uitgang is alleen <b>uit</b> als beide ingangen aan zijn.</p>
+  <table>
+    <tr><th>Ingang A1</th><th>Ingang A2</th><th>Uitgang A</th></tr>
+    <tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+
+  <h3 id="nof"><img src="../img/pal-nof.png" class="ico" alt="">NOF-poort</h3>
+  <p>Het omgekeerde van een OF-poort (niet-of): de uitgang is alleen <b>aan</b> als beide ingangen uit zijn.</p>
+  <table>
+    <tr><th>Ingang O1</th><th>Ingang O2</th><th>Uitgang O</th></tr>
+    <tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+
+  <h3 id="exof"><img src="../img/pal-exof.png" class="ico" alt="">EX-OF-poort</h3>
+  <p>Exclusieve of: de uitgang is aan als <b>precies één</b> ingang aan is. Zijn beide ingangen gelijk, dan is de uitgang uit. Met een EN-poort erbij maak je een <a href="les26.html">halve opteller</a>.</p>
+  <table>
+    <tr><th>Ingang X1</th><th>Ingang X2</th><th>Uitgang X</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td></tr>
+  </table>
+  <p>In de schemasymbolen (<a href="instellingen.html#symbolen">IEC en ANSI</a>) herken je de NEN- en NOF-poort aan het bolletje (omkering) aan de uitgang. De EX-OF-poort heeft in IEC het teken <b>=1</b> en in ANSI een extra boog aan de ingangen.</p>
+  <div class="tip"><strong>Tip:</strong> door poorten te combineren maak je elke logische functie. Een NEN-poort doet bijvoorbeeld hetzelfde als een NIET-poort achter een EN-poort.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Tellerblok</h2>
   <p>Telt de pulsen op zijn telingang en geeft de stand binair door op vier uitgangen.</p>

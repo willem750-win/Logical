@@ -1420,3 +1420,30 @@ msgstr "配線を削除"
 
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr "配線\nクリック: 選択 (太く表示)、もう一度クリック: 選択解除\n右クリック: 選択または削除のメニュー\n端または折れ目をドラッグして移動"
+
+msgid "NAND"
+msgstr ""
+
+msgid "NOR"
+msgstr ""
+
+msgid "XOR"
+msgstr ""
+
+msgid "NAND gate"
+msgstr "NAND ゲート"
+
+msgid "NOR gate"
+msgstr "NOR ゲート"
+
+msgid "XOR gate"
+msgstr "XOR ゲート"
+
+msgid "create NAND-Logic gate (not-and)"
+msgstr "NAND ゲートを作成 (否定論理積)"
+
+msgid "create NOR-Logic gate (not-or)"
+msgstr "NOR ゲートを作成 (否定論理和)"
+
+msgid "create XOR-Logic gate (exclusive or)"
+msgstr "XOR ゲートを作成 (排他的論理和)"

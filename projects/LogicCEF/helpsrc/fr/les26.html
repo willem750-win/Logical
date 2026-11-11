@@ -1,0 +1,49 @@
+<!-- titel: Leçon 26 - Le demi-additionneur -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#rekenen">Calculer avec des portes</a> &rsaquo; Leçon 26 sur 26</p>
+  <h1>Le demi-additionneur</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> additionner deux chiffres binaires (bits) avec une porte OU-X et une porte ET.</div>
+
+  <p><a class="open" href="../../panels/lessen/les26-halve-opteller.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les26-halve-opteller.png" alt="Source de 12 V avec rail + et rail &minus;, deux interrupteurs A et B, une porte OU-X avec une LED rouge et une porte ET avec une lampe">
+    <figcaption>A et B sont tous deux allumés&nbsp;: 1 + 1 = 10 (deux). La somme (LED rouge) est éteinte, la retenue (lampe) est allumée.</figcaption>
+  </figure>
+
+  <h2>Additionner en binaire</h2>
+  <p>Un ordinateur calcule seulement avec 0 et 1. Si vous additionnez deux bits, il n&rsquo;y a que quatre possibilités&nbsp;:
+  0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1 et 1 + 1 = <b>10</b> (deux en binaire). Pour 1 + 1, vous écrivez 0 et
+  vous <b>retenez</b> 1, comme pour 5 + 5 = 10 dans le système décimal. Ce chiffre retenu s&rsquo;appelle la
+  <b>retenue</b> (en anglais <i>carry</i>, C). L&rsquo;autre chiffre est la <b>somme</b> (S).</p>
+  <table>
+    <tr><th>A (interrupteur du haut)</th><th>B (interrupteur du bas)</th><th>Somme S (LED)</th><th>Retenue C (lampe)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td><b>1</b></td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+  </table>
+
+  <h2>Deux portes, deux colonnes</h2>
+  <p>Comparez la colonne <b>somme</b> avec les tableaux de <a href="verwerking.html#poorten">Traitement</a>&nbsp;: c&rsquo;est exactement une
+  <a href="verwerking.html#exof"><img src="../img/pal-exof.png" class="ico" alt="">porte OU-X</a>, allumée quand
+  <b>exactement une</b> entrée est allumée. La colonne <b>retenue</b> est une
+  <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">porte ET</a>&nbsp;: allumée seulement si les deux
+  entrées sont allumées. Les deux interrupteurs vont donc vers les deux portes.</p>
+  <ol class="steps">
+    <li>Lancez la simulation et basculez les interrupteurs, un par un.</li>
+    <li>Pour chaque position, vérifiez le tableau&nbsp;: la LED, la lampe ou les deux sont-elles allumées&nbsp;?</li>
+    <li>Lisez la lampe et la LED ensemble comme un nombre binaire&nbsp;: lampe = 2, LED = 1.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Remplacez la porte OU-X par une porte OU ordinaire. Pour quelle position des interrupteurs la somme n&rsquo;est-elle plus juste&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Pour 1 + 1. La porte OU allume alors aussi la LED, et la LED et la lampe sont toutes deux allumées&nbsp;: cela fait 11, soit trois.
+    Or 1 + 1 font deux (10). La somme ne doit être allumée que si <b>exactement une</b> entrée est allumée, et c&rsquo;est ce que fait la porte OU-X.</p>
+  </details>
+
+  <div class="tip"><strong>Pourquoi &laquo;&nbsp;demi&nbsp;&raquo;&nbsp;?</strong> Ce circuit n&rsquo;additionne que deux bits. Pour additionner de plus grands
+  nombres, il faut aussi compter la retenue de la colonne précédente. Avec deux demi-additionneurs et une porte OU, vous construisez
+  un <b>additionneur complet</b>, la base du calcul dans tout ordinateur.</div>
+
+  <div class="pager"><a href="les25.html">&larr; Leçon 25 : Des lampes en parallèle</a><a href="leerpad.html">Parcours &rarr;</a></div>

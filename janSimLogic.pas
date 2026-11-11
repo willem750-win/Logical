@@ -94,7 +94,8 @@ type
   TjanMemory=class;
 
   TjanGateStyle=(jgsDI,jgsDO);
-  TjanLogicFunc=(jlfAND,jlfOR,jlfNOT);
+  // nieuwe soorten achteraan: de volgorde (Ord) mag niet veranderen
+  TjanLogicFunc=(jlfAND,jlfOR,jlfNOT,jlfNAND,jlfNOR,jlfXOR);
   // tekenwijze van de onderdelen: Afbeelding (plaatjes, poorten als woord in een
   // rechthoek), IEC 60617 of ANSI/IEEE 91 (schemasymbolen; verschillen bij de poorten)
   TjanSymbolen=(Afbeelding,IEC,ANSI);
@@ -1826,6 +1827,7 @@ type
     FLamp:Boolean;
     FLogicAnd:Boolean;
     FLogicOr:Boolean;
+    FLogicNand, FLogicNor, FLogicXor: Boolean;  // knoppen NEN, NOF, EX-OF
     FLogicNot:Boolean;
     FDraad:Boolean;
     FRelais:Boolean;
@@ -1884,6 +1886,8 @@ type
     bmLogicOr:Tbitmap;
     RLogicOr:TRect;
     DLogicOr:Boolean;
+    RLogicNand, RLogicNor, RLogicXor: TRect;
+    DLogicNand, DLogicNor, DLogicXor: Boolean;
 
     bmLogicNot:Tbitmap;
     RLogicNot:TRect;
@@ -1989,6 +1993,7 @@ type
     FHLamp:String;
     FHLogicAnd:String;
     FHLogicOr:String;
+    FHLogicNand, FHLogicNor, FHLogicXor: String;
     FHLogicNot:String;
     FHDraad:String;
     FHRelais:String;
@@ -2053,6 +2058,9 @@ type
     PROCEDURE SetLamp(const Value: Boolean);
     PROCEDURE SetLogicAnd(const Value: Boolean);
     PROCEDURE SetLogicOr(const Value: Boolean);
+    PROCEDURE SetLogicNand(const Value: Boolean);
+    PROCEDURE SetLogicNor(const Value: Boolean);
+    PROCEDURE SetLogicXor(const Value: Boolean);
     PROCEDURE SetLogicNot(const Value: Boolean);
     PROCEDURE SetDraad(const Value: Boolean);
     PROCEDURE SetRelais(const Value: Boolean);
@@ -2232,6 +2240,9 @@ type
     property KLamp:Boolean read FLamp write SetLamp;
     property KLogicAnd:Boolean read FLogicAnd write SetLogicAnd;
     property KLogicOr:Boolean read FLogicOr write SetLogicOr;
+    property KLogicNand:Boolean read FLogicNand write SetLogicNand;
+    property KLogicNor:Boolean read FLogicNor write SetLogicNor;
+    property KLogicXor:Boolean read FLogicXor write SetLogicXor;
     property KLogicNot:Boolean read FLogicNot write SetLogicNot;
     property KDraad:Boolean read FDraad write SetDraad;
     property KRelais:Boolean read Frelais write Setrelais;
@@ -2285,6 +2296,9 @@ type
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
     property HLogicOr:String read FHLogicOr write SetHLogicOr;
+    property HLogicNand:String read FHLogicNand write FHLogicNand;
+    property HLogicNor:String read FHLogicNor write FHLogicNor;
+    property HLogicXor:String read FHLogicXor write FHLogicXor;
     property HLogicNot:String read FHLogicNot write SetHLogicNot;
     property HDraad:String read FHDraad write SetHDraad;
     property HRelais:String read FHrelais write SetHrelais;
@@ -3412,6 +3426,47 @@ begin
   else Result := ENG;
   // extra taal (lang\<code>.po): zie LangTrHook in chatgridpcodeSmall
   if Result = ENG then Result := LangTr(ENG);
+end;
+
+// Code van een poort in een paneelbestand (TjanLogic;H;Left;CODE;Top;W)
+function LogicFuncCode(F: TjanLogicFunc): string;
+begin
+  case F of
+    jlfAND:  Result := 'EN';
+    jlfOR:   Result := 'OF';
+    jlfNOT:  Result := 'NIET';
+    jlfNAND: Result := 'NEN';
+    jlfNOR:  Result := 'NOF';
+  else
+    Result := 'EXOF';
+  end;
+end;
+
+// Omgekeerd: code uit een paneelbestand naar soort; False = onbekend
+function LogicFuncFromCode(const S: string; out F: TjanLogicFunc): Boolean;
+begin
+  Result := True;
+  if S = 'EN' then F := jlfAND
+  else if S = 'OF' then F := jlfOR
+  else if S = 'NIET' then F := jlfNOT
+  else if S = 'NEN' then F := jlfNAND
+  else if S = 'NOF' then F := jlfNOR
+  else if S = 'EXOF' then F := jlfXOR
+  else Result := False;
+end;
+
+// Woord op de poort (Afbeelding) en in de knop, in de taal BTaal
+function LogicFuncWoord(F: TjanLogicFunc; const BTaal: string): string;
+begin
+  case F of
+    jlfAND:  Result := Tr(BTaal, 'EN', 'AND', 'ET', 'UND');
+    jlfOR:   Result := Tr(BTaal, 'OF', 'OR', 'OU', 'ODER');
+    jlfNOT:  Result := Tr(BTaal, 'NIET', 'NOT', 'PAS', 'NICHT');
+    jlfNAND: Result := Tr(BTaal, 'NEN', 'NAND', 'NON-ET', 'NAND');
+    jlfNOR:  Result := Tr(BTaal, 'NOF', 'NOR', 'NON-OU', 'NOR');
+  else
+    Result := Tr(BTaal, 'EX-OF', 'XOR', 'OU-X', 'XOR');
+  end;
 end;
 
 
@@ -10648,6 +10703,12 @@ var Pts: array of TPoint;
     Result := L + Round(Bk * Sin(Pi * (R.Bottom - 1 - y) / (H - 1)));
   end;
 
+  // EX-OF: de extra holle lijn helemaal achteraan
+  function BackX2(y: Integer): Integer;
+  begin
+    Result := R.Left + Round(Bk * Sin(Pi * (R.Bottom - 1 - y) / (H - 1)));
+  end;
+
 begin
   W := R.Right - R.Left;
   H := R.Bottom - R.Top;
@@ -10655,12 +10716,22 @@ begin
   Mid := R.Top + H div 2;
   L := R.Left;
   D := 0;
-  if F = jlfNOT then
+  if F in [jlfNOT, jlfNAND, jlfNOR] then
   begin
     D := H div 6;
     if D < 4 then D := 4;
   end;
   BR := R.Right - D;            // rechterkant van het lichaam
+  // ANSI EX-OF: het lichaam van de OF-poort schuift wat op, achteraan komt
+  // een tweede holle lijn
+  if (S <> IEC) and (F = jlfXOR) then
+  begin
+    k := (BR - R.Left) div 8;
+    if k < 3 then k := 3;
+    L := R.Left + k;
+  end;
+  Bk := (BR - L) div 5;
+  if Bk < 2 then Bk := 2;
 
   OldBrush := C.Brush.Color;
   OldBrushStyle := C.Brush.Style;
@@ -10678,8 +10749,9 @@ begin
     begin
       C.Rectangle(L, R.Top, BR, R.Bottom);
       case F of
-        jlfAND: Txt := '&';
-        jlfOR : Txt := #$E2#$89#$A5'1';   // >=1 (UTF-8)
+        jlfAND, jlfNAND: Txt := '&';
+        jlfOR, jlfNOR  : Txt := #$E2#$89#$A5'1';   // >=1 (UTF-8)
+        jlfXOR         : Txt := '=1';
       else
         Txt := '1';
       end;
@@ -10698,7 +10770,7 @@ begin
     else
     begin
       case F of
-        jlfAND:
+        jlfAND, jlfNAND:
           begin
             // recht achteraan, halve ellips vooraan
             k := L + (BR - L) div 3;
@@ -10712,11 +10784,9 @@ begin
             end;
             Pts[N + 2] := Point(L, R.Bottom - 1);
           end;
-        jlfOR:
+        jlfOR, jlfNOR, jlfXOR:
           begin
             // gebogen zijkanten naar een punt, holle achterkant
-            Bk := (BR - L) div 5;
-            if Bk < 2 then Bk := 2;
             n2 := 2 * N + 1;
             SetLength(Pts, n2 + N - 1);
             for i := 0 to N do
@@ -10746,10 +10816,23 @@ begin
         end;
       end;
       C.Polygon(Pts);
-      if F = jlfOR then
+      if F in [jlfOR, jlfNOR] then
       begin
         if InY1 >= 0 then C.Line(L, InY1, BackX(InY1) + 1, InY1);
         if InY2 >= 0 then C.Line(L, InY2, BackX(InY2) + 1, InY2);
+      end
+      else if F = jlfXOR then
+      begin
+        // tweede holle lijn achteraan; de ingangen lopen tot daar
+        SetLength(Pts, N + 1);
+        for i := 0 to N do
+        begin
+          k := R.Bottom - 1 - Round((H - 1) * i / N);
+          Pts[i] := Point(BackX2(k), k);
+        end;
+        C.Polyline(Pts);
+        if InY1 >= 0 then C.Line(R.Left, InY1, BackX2(InY1) + 1, InY1);
+        if InY2 >= 0 then C.Line(R.Left, InY2, BackX2(InY2) + 1, InY2);
       end;
     end;
 
@@ -12008,32 +12091,17 @@ begin
        // symbool na de aansluitingen, zodat het de korte draadjes afdekt
        if FLogicAndFunc=jlfNOT then
          DrawGateSymbol(Canvas,rect(22,5,72,63),FLogicAndFunc,Sym,FPcolor,-1,-1)
+       else if FLogicAndFunc in [jlfNAND,jlfNOR] then
+         // met bolletje (omkering): iets breder, zoals NIET
+         DrawGateSymbol(Canvas,rect(22,5,72,63),FLogicAndFunc,Sym,FPcolor,
+           FGates[0].pos.y+6,FGates[2].pos.y+6)
        else
          DrawGateSymbol(Canvas,rect(22,5,68,63),FLogicAndFunc,Sym,FPcolor,
            FGates[0].pos.y+6,FGates[2].pos.y+6);
      end
      else
-     // draw caption
-     case FLogicAndFunc of
-       jlfAND: begin
-               If BTaal='NL' then s:='EN';
-               If BTaal='ENG' then s:='AND';
-               If BTaal='FR' then s:='ET';
-               If BTaal='DU' then s:='UND';
-               end;
-       jlfOR : begin
-               If BTaal='NL' then s:='OF';
-               If BTaal='ENG' then s:='OR';
-               If BTaal='FR' then s:='OU';
-               If BTaal='DU' then s:='ODER';
-               end;
-       jlfNOT: begin
-               If BTaal='NL' then s:='NIET';
-               If BTaal='ENG' then s:='NOT';
-               If BTaal='FR' then s:='PAS';
-               If BTaal='DU' then s:='NICHT';
-               end;
-     end;
+       // draw caption
+       s:=LogicFuncWoord(FLogicAndFunc, BTaal);
      R:=rect(0,0,85,65);//ClientRect;
      brush.style:=bsclear;
      drawtext(canvas.handle,pchar(s),-1,R,DT_SINGLELINE or DT_CENTER or DT_VCENTER);
@@ -12059,6 +12127,18 @@ begin
      Begin
      TextOut(1,38,'N1');
      TextOut(90,38,'N');
+     end;
+     If FLogicAndFunc in [jlfNAND,jlfNOR,jlfXOR] then
+     Begin
+     case FLogicAndFunc of
+       jlfNAND: s:='A';
+       jlfNOR : s:='O';
+     else
+       s:='X';
+     end;
+     TextOut(1,20,s+'1');
+     TextOut(90,38,s);
+     TextOut(1,56,s+'2');
      end;
      Unlock;
      if select=true then
@@ -12120,9 +12200,12 @@ end;
 procedure TjanLogic.OutCalc;
 begin
   case FLogicAndFunc of
-  jlfAND: OutPut2:=Input1 and Input3;
-  jlfOR : OutPut2:=Input1 or Input3;
-  jlfNOT: OutPut2:=not Input2;
+  jlfAND : OutPut2:=Input1 and Input3;
+  jlfOR  : OutPut2:=Input1 or Input3;
+  jlfNOT : OutPut2:=not Input2;
+  jlfNAND: OutPut2:=not (Input1 and Input3);
+  jlfNOR : OutPut2:=not (Input1 or Input3);
+  jlfXOR : OutPut2:=Input1 xor Input3;
   end;
 
 end;
@@ -12287,7 +12370,7 @@ begin
       Result := Tr(BTaal,'NIET','NOT','NON','NICHT');
 
   else
-    Result := '';
+    Result := LogicFuncWoord(LogicFunc, BTaal);
   end;
 end;
 
@@ -12310,6 +12393,12 @@ var
       FOnStatus(Self, FNaam + '(OF-OR) > ', 0);
     if LogicFunc =jlfNOT then
       FOnStatus(Self, FNaam + '(NIET-NOT) > ', 0);
+    if LogicFunc =jlfNAND then
+      FOnStatus(Self, FNaam + '(NEN-NAND) > ', 0);
+    if LogicFunc =jlfNOR then
+      FOnStatus(Self, FNaam + '(NOF-NOR) > ', 0);
+    if LogicFunc =jlfXOR then
+      FOnStatus(Self, FNaam + '(EX-OF-XOR) > ', 0);
    // Panel 1
    if FDown then
      s := wStatus + ' = 1'
@@ -12384,6 +12473,17 @@ begin
         FGates[4].Active:=true;
         FGates[5].Active:=false;
         FType:='NIET';
+      end;
+    jlfNAND, jlfNOR, jlfXOR:
+      begin
+        // twee ingangen, zoals EN en OF
+        FGates[0].Active:=true;
+        FGates[1].Active:=false;
+        FGates[2].Active:=true;
+        FGates[3].Active:=false;
+        FGates[4].Active:=true;
+        FGates[5].Active:=false;
+        FType:=LogicFuncCode(FLogicAndFunc);
       end;
     end;
     invalidate;
@@ -21771,7 +21871,7 @@ begin
   // aantal imputobjecten
   FImputAantal:=6;
   // opzetten van knoppen (Verwerkingsobjecten)
-  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FStappen:=True;FStopwatch:=True;
+  FLogicAnd:=True;FMemory:=true;FTeller:=true;FLogicOr:=True;FLogicNot:=True;FLogicNand:=True;FLogicNor:=True;FLogicXor:=True;FStappen:=True;FStopwatch:=True;
   // aantal Verwerkingobjecten
   FVerwerkingAantal:=7;
   // opzetten van knoppen (Uitvoerobjecten)
@@ -21784,7 +21884,7 @@ begin
 
   //DReset:=false;
   DRelais:=false;DSchakel:=false;DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DWarm:=false;
-  DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
+  DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;DLogicNand:=false;DLogicNor:=false;DLogicXor:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;DGrid:=false;//DSave:=false;
 
@@ -22151,11 +22251,7 @@ begin
       if c is TjanLogic then
       with TjanLogic(c) do
       begin
-        case logicFunc of
-          jlfNOT: ltypeStr := 'NIET';
-          jlfAND: ltypeStr := 'EN';
-          jlfOR:  ltypeStr := 'OF';
-        end;
+        ltypeStr := LogicFuncCode(logicFunc);
 
         lijn := Format(
           'TjanLogic;%d;%d;%s;%d;%d;',
@@ -22416,11 +22512,7 @@ begin
     if c is TjanLogic then
     with TjanLogic(c) do
     begin
-      case logicFunc of
-        jlfNOT: ltypeStr := 'NIET';
-        jlfAND: ltypeStr := 'EN';
-        jlfOR:  ltypeStr := 'OF';
-      end;
+      ltypeStr := LogicFuncCode(logicFunc);
 
       lijn := Format(
         'TjanLogic;%d;%d;%s;%d;%d;',
@@ -22550,6 +22642,7 @@ end;
 procedure TjanSimLogicBox.InternalLoadFromList(AList: TStrings; Paneel: TjanGridS);
 var
   i, positie: Integer;
+  LF: TjanLogicFunc;
   LR: TjanLogicRun;
   StT: TjanSimStappenteller;
   S: string;
@@ -22916,9 +23009,7 @@ begin
         FObjectID := wc.ControlCount;
         Lock      := True;
 
-        if obj[4] = 'NIET' then logicFunc := jlfNOT;
-        if obj[4] = 'EN'   then logicFunc := jlfAND;
-        if obj[4] = 'OF'   then logicFunc := jlfOR;
+        if LogicFuncFromCode(obj[4], LF) then logicFunc := LF;
 
         AddFilter('TjanLogic.Left');
         AddFilter('TjanLogic.Top');
@@ -23838,6 +23929,7 @@ end;
 PROCEDURE TjanSimLogicBox.LoadStream(welke:TStream;Inf:Boolean); //xxxx
 VAR
 i,positie:integer;
+LF: TjanLogicFunc;
 S:string;
 templijst:TStringlist;
 obj:array[1..10] of string;
@@ -24182,9 +24274,7 @@ templijst.LoadFromStream(welke);
              Height:=StrToInt(obj[2]);
              width:=StrToInt(obj[6]);
              FObjectID:= wc.ControlCount;Lock:=true;
-             If obj[4]='NIET' then logicFunc:=jlfNOT;
-             If obj[4]='EN' then logicFunc:=jlfAND;
-             If obj[4]='OF' then logicFunc:=jlfOR;
+             if LogicFuncFromCode(obj[4], LF) then logicFunc:=LF;
               FObjectID:= wc.ControlCount;Lock:=true;
                if Language = stDutch   then BTaal := 'NL'  else
              if Language = stEnglish then BTaal := 'ENG' else
@@ -24231,7 +24321,7 @@ var p:TPoint;
 begin
   p:=point(x,y);
   DSquare:=false;
-  DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;
+  DCon:=false;DLogicAnd:=false;DLogicOr:=false;DLogicNot:=false;DLogicNand:=false;DLogicNor:=false;DLogicXor:=false;
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
@@ -24244,6 +24334,9 @@ begin
   else if ptinrect(RLogicAnd,p)and (KLogicAnd=true) then DLogicAnd:=true
   else if ptinrect(RLogicOr,p)and (KLogicOr=true) then DLogicOr:=true
   else if ptinrect(RLogicNot,p)and (KLogicNot=true) then DLogicNot:=true
+  else if PtInRect(RLogicNand,p) and KLogicNand then DLogicNand:=true
+  else if PtInRect(RLogicNor,p) and KLogicNor then DLogicNor:=true
+  else if PtInRect(RLogicXor,p) and KLogicXor then DLogicXor:=true
   else if ptinrect(RButton,p) and (KDrukknop=true) then DButton:=true
   else if ptinrect(RLight,p) and (KLamp=true) then DLight:=true
   else if ptinrect(RRelais,p) and (KRelais=true) then DRelais:=true
@@ -24295,6 +24388,9 @@ begin
   else if PtInRect(RLogicAnd, P) then NewHint := FHLogicAnd
   else if PtInRect(RLogicOr, P) then NewHint := FHLogicOr
   else if PtInRect(RLogicNot, P) then NewHint := FHLogicNot
+  else if PtInRect(RLogicNand, P) then NewHint := FHLogicNand
+  else if PtInRect(RLogicNor, P) then NewHint := FHLogicNor
+  else if PtInRect(RLogicXor, P) then NewHint := FHLogicXor
   else if PtInRect(RButton, P) then NewHint := FHDrukknop
   else if PtInRect(RLight, P) then NewHint := FHLamp
   else if PtInRect(RRelais, P) then NewHint := FHRelais
@@ -24767,7 +24863,7 @@ var
     Dgrid := False;
     DButton := False; DKnop := False; DPuls := False; DWarm := False; DSensor := False;
     DCon := False;
-    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
+    DLogicAnd := False; DLogicOr := False; DLogicNot := False; DLogicNand := False; DLogicNor := False; DLogicXor := False; DTeller := False; DStappen := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWeerstand := False;
@@ -24858,6 +24954,22 @@ begin
     if Language = stDutch then BTaal := 'NL'
     else if Language = stEnglish then BTaal := 'ENG'
     else if Language = stFrench then BTaal := 'FR';
+
+    AddF('TjanLogic.Left');   AddF('TjanLogic.Top');
+    AddF('TjanLogic.Width');  AddF('TjanLogic.Height');
+    AddF('TjanLogic.L_Type');
+  end
+  else if DLogicNand or DLogicNor or DLogicXor then
+  with TjanLogic.Create(self) do
+  begin
+    // NEN, NOF en EX-OF: twee ingangen, zoals EN en OF
+    Parent := wc; FNew := True; Tag := wc.ControlCount;
+    if DLogicNand then LogicFunc := jlfNAND
+    else if DLogicNor then LogicFunc := jlfNOR
+    else LogicFunc := jlfXOR;
+    FObjectID := wc.ControlCount; Visible := False; Left := -100;
+    if DLogicNand then Screen.Cursor := crAnd else Screen.Cursor := crOr;
+    BTaal := StatTaalToBTaal(Language);
 
     AddF('TjanLogic.Left');   AddF('TjanLogic.Top');
     AddF('TjanLogic.Width');  AddF('TjanLogic.Height');
@@ -25549,6 +25661,9 @@ if FBoxTaal=stDutch then
   HLogicAnd:='maak EN-poort';
   HLogicNot:='maak Niet-poort';
   HLogicOr:='maak OF-poort';
+  HLogicNand:='maak NEN-poort (niet-en)';
+  HLogicNor:='maak NOF-poort (niet-of)';
+  HLogicXor:='maak EX-OF-poort (exclusieve of)';
   HMemory:='maak Geheugenblok';
   HPuls:='maak Impulsgenerator';
   HRelais:='maak Relais';
@@ -25590,6 +25705,9 @@ if FBoxTaal=stEnglish then
   HLogicAnd:=LangTr('create AND-Logic gate');
   HLogicNot:=LangTr('create NOT-Logic gate');
   HLogicOr:=LangTr('create OR-Logic gate');
+  HLogicNand:=LangTr('create NAND-Logic gate (not-and)');
+  HLogicNor:=LangTr('create NOR-Logic gate (not-or)');
+  HLogicXor:=LangTr('create XOR-Logic gate (exclusive or)');
   HMemory:=LangTr('create Memory block');
   HPuls:=LangTr('create Impuls generator');
   HRelais:=LangTr('create Relay');
@@ -25629,6 +25747,9 @@ if FBoxTaal=stFrench then
   HLogicAnd:='faire ET-La porte logique';
   HLogicNot:='faire Pas-La porte logique';
   HLogicOr:='faire OU-La porte logique';
+  HLogicNand:='faire NON-ET-La porte logique';
+  HLogicNor:='faire NON-OU-La porte logique';
+  HLogicXor:='faire OU-X-La porte logique (ou exclusif)';
   HMemory:='faire Bloc mémoire';
   HPuls:='faire Générateur d"impulsions';
   HRelais:='faire Relais';
@@ -25669,6 +25790,9 @@ if FBoxTaal=stFrench then
   HLogicAnd:='UND-Gatter erstellen';
   HLogicNot:='Erstellen Sie keinen Port';
   HLogicOr:='ODER-Gatter erstellen';
+  HLogicNand:='NAND-Gatter erstellen (nicht-und)';
+  HLogicNor:='NOR-Gatter erstellen (nicht-oder)';
+  HLogicXor:='XOR-Gatter erstellen (exklusives oder)';
   HMemory:='Speicherblock erstellen';
   HPuls:='Impulsgenerator herstellen';
   HRelais:='Relais erstellen';
@@ -26187,20 +26311,28 @@ begin
     Canvas.Brush.Color := RGBToColor(255, 250, 205);
     Canvas.Pen.Color := RGBToColor(89, 96, 106);
     Canvas.RoundRect(X + 4, Y + 3, X + 20, Y + 20, 5, 5);
-    case AFunc of
-      jlfAND: case FBoxTaal of stEnglish: S := 'AND'; stFrench: S := 'ET'; stGerman: S := 'UND'; else S := 'EN'; end;
-      jlfOR:  case FBoxTaal of stEnglish: S := 'OR'; stFrench: S := 'OU'; stGerman: S := 'ODER'; else S := 'OF'; end;
-    else
-      case FBoxTaal of stEnglish: S := 'NOT'; stFrench: S := 'PAS'; stGerman: S := 'NICHT'; else S := 'NIET'; end;
-    end;
+    S := LogicFuncWoord(AFunc, StatTaalToBTaal(FBoxTaal));
     Canvas.Brush.Style := bsClear;
     Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 6;
     Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clNavy;
-    // lange woorden (NIET, NICHT, ODER, AND) kleiner, zodat ze in het blokje passen
+    // lange woorden (NIET, NICHT, ODER, AND, NAND, EX-OF) kleiner, zodat ze
+    // in het blokje passen
     if Canvas.TextWidth(S) > 14 then Canvas.Font.Size := 5;
     if Canvas.TextWidth(S) > 14 then Canvas.Font.Style := [];
-    Canvas.TextOut(X + 12 - Canvas.TextWidth(S) div 2,
-                   Y + 11 - Canvas.TextHeight(S) div 2, S);
+    M := Pos('-', S);
+    if (Canvas.TextWidth(S) > 15) and (M > 0) then
+    begin
+      // EX-OF, NON-ET, NON-OU, OU-X: op twee regels
+      Canvas.Font.Style := [fsBold];
+      Y1 := Canvas.TextHeight(S) - 2;
+      Canvas.TextOut(X + 12 - Canvas.TextWidth(Copy(S, 1, M - 1)) div 2,
+                     Y + 11 - Y1, Copy(S, 1, M - 1));
+      Canvas.TextOut(X + 12 - Canvas.TextWidth(Copy(S, M + 1, MaxInt)) div 2,
+                     Y + 11, Copy(S, M + 1, MaxInt));
+    end
+    else
+      Canvas.TextOut(X + 12 - Canvas.TextWidth(S) div 2,
+                     Y + 11 - Canvas.TextHeight(S) div 2, S);
     Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
     Exit;
   end;
@@ -26312,6 +26444,21 @@ begin
   if Value=true then FVerwerkingAantal:= FVerwerkingAantal+1 else FVerwerkingAantal:= FVerwerkingAantal-1;
   end;
   invalidate;
+end;
+
+procedure TjanSimLogicBox.SetLogicNand(const Value: Boolean);
+begin
+  if Value <> FLogicNand then begin FLogicNand := Value; Invalidate; end;
+end;
+
+procedure TjanSimLogicBox.SetLogicNor(const Value: Boolean);
+begin
+  if Value <> FLogicNor then begin FLogicNor := Value; Invalidate; end;
+end;
+
+procedure TjanSimLogicBox.SetLogicXor(const Value: Boolean);
+begin
+  if Value <> FLogicXor then begin FLogicXor := Value; Invalidate; end;
 end;
 
 procedure TjanSimLogicBox.SetTeller(const Value: Boolean);
@@ -26723,6 +26870,42 @@ begin
         DrawGateIcon(jlfNOT, bmLogicNot, Lk+1, top+2);
         TOP:=TOP+H+SPATIE;
         HK:= H+TOP;
+      end;
+
+      // NEN, NOF en EX-OF
+      RLogicNand := Rect(0, 0, 0, 0); RLogicNor := Rect(0, 0, 0, 0); RLogicXor := Rect(0, 0, 0, 0);
+      if FLogicNand then
+      begin
+        RLogicNand := Rect(LK, TOP, BK, HK);
+        Rb := RLogicNand;
+        if not DLogicNand then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfNAND, bmLogicAnd, LK+1, TOP+2);
+        TOP := TOP + H + SPATIE;
+        HK := H + TOP;
+      end;
+      if FLogicNor then
+      begin
+        RLogicNor := Rect(LK, TOP, BK, HK);
+        Rb := RLogicNor;
+        if not DLogicNor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfNOR, bmLogicAnd, LK+1, TOP+2);
+        TOP := TOP + H + SPATIE;
+        HK := H + TOP;
+      end;
+      if FLogicXor then
+      begin
+        RLogicXor := Rect(LK, TOP, BK, HK);
+        Rb := RLogicXor;
+        if not DLogicXor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfXOR, bmLogicAnd, LK+1, TOP+2);
+        TOP := TOP + H + SPATIE;
+        HK := H + TOP;
       end;
 
       If FTeller=true then
@@ -27397,6 +27580,39 @@ begin
         NextX(B + SPATIE);
       end;
 
+      // NEN, NOF en EX-OF
+      RLogicNand := Rect(0, 0, 0, 0); RLogicNor := Rect(0, 0, 0, 0); RLogicXor := Rect(0, 0, 0, 0);
+      if FLogicNand then
+      begin
+        RLogicNand := Rect(LK, TOP, BK, HK);
+        Rb := RLogicNand;
+        if not DLogicNand then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfNAND, bmLogicAnd, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+      if FLogicNor then
+      begin
+        RLogicNor := Rect(LK, TOP, BK, HK);
+        Rb := RLogicNor;
+        if not DLogicNor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfNOR, bmLogicAnd, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+      if FLogicXor then
+      begin
+        RLogicXor := Rect(LK, TOP, BK, HK);
+        Rb := RLogicXor;
+        if not DLogicXor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfXOR, bmLogicAnd, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
       if FTeller = True then
       begin
         RTeller := Rect(LK, TOP, BK, HK);
@@ -27873,6 +28089,39 @@ begin
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
         DrawGateIcon(jlfNOT, bmLogicNot, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
+      // NEN, NOF en EX-OF
+      RLogicNand := Rect(0, 0, 0, 0); RLogicNor := Rect(0, 0, 0, 0); RLogicXor := Rect(0, 0, 0, 0);
+      if FLogicNand then
+      begin
+        RLogicNand := Rect(LK, TOP, BK, HK);
+        Rb := RLogicNand;
+        if not DLogicNand then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfNAND, bmLogicAnd, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+      if FLogicNor then
+      begin
+        RLogicNor := Rect(LK, TOP, BK, HK);
+        Rb := RLogicNor;
+        if not DLogicNor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfNOR, bmLogicAnd, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+      if FLogicXor then
+      begin
+        RLogicXor := Rect(LK, TOP, BK, HK);
+        Rb := RLogicXor;
+        if not DLogicXor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawGateIcon(jlfXOR, bmLogicAnd, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 

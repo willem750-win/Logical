@@ -1420,3 +1420,30 @@ msgstr "Excluir fio"
 
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr "Fio\nClique: selecionar (mais grosso), clique de novo: desmarcar\nClique direito: menu para selecionar ou excluir\nArraste uma ponta ou a dobra para movê-lo"
+
+msgid "NAND"
+msgstr ""
+
+msgid "NOR"
+msgstr ""
+
+msgid "XOR"
+msgstr ""
+
+msgid "NAND gate"
+msgstr "Porta NAND"
+
+msgid "NOR gate"
+msgstr "Porta NOR"
+
+msgid "XOR gate"
+msgstr "Porta XOR"
+
+msgid "create NAND-Logic gate (not-and)"
+msgstr "criar porta lógica NAND (não-e)"
+
+msgid "create NOR-Logic gate (not-or)"
+msgstr "criar porta lógica NOR (não-ou)"
+
+msgid "create XOR-Logic gate (exclusive or)"
+msgstr "criar porta lógica XOR (ou exclusivo)"

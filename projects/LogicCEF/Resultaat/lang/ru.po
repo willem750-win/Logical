@@ -1420,3 +1420,30 @@ msgstr "Удалить провод"
 
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr "Провод\nЩелчок: выбрать (толще), ещё щелчок: снять выбор\nПравый щелчок: меню для выбора или удаления\nПеретащите конец или изгиб, чтобы переместить"
+
+msgid "NAND"
+msgstr ""
+
+msgid "NOR"
+msgstr ""
+
+msgid "XOR"
+msgstr ""
+
+msgid "NAND gate"
+msgstr "Элемент И-НЕ"
+
+msgid "NOR gate"
+msgstr "Элемент ИЛИ-НЕ"
+
+msgid "XOR gate"
+msgstr "Элемент исключающее ИЛИ"
+
+msgid "create NAND-Logic gate (not-and)"
+msgstr "создать логический элемент И-НЕ (NAND)"
+
+msgid "create NOR-Logic gate (not-or)"
+msgstr "создать логический элемент ИЛИ-НЕ (NOR)"
+
+msgid "create XOR-Logic gate (exclusive or)"
+msgstr "создать логический элемент исключающее ИЛИ (XOR)"
