@@ -80,8 +80,66 @@
   </table>
   <p>L&rsquo;entrée d&rsquo;horloge C a un petit triangle dans le bloc. La bascule ne réagit qu&rsquo;au moment où C <b>s&rsquo;allume</b>
   (le front), pas tant que C reste allumée. Essayez-la dans la <a href="les27.html">leçon 27</a>.</p>
-  <div class="tip"><strong>Astuce&nbsp;:</strong> placez deux bascules T l&rsquo;une après l&rsquo;autre et reliez non-Q de la première à T de
-  la seconde&nbsp;: le circuit compte alors de 0 à 3, avec la lampe sur Q de la première bascule pour 1 et celle de la seconde pour 2.</div>
+    <h3 id="ff-bouwen">À construire vous-même&nbsp;: quatre petits panneaux</h3>
+  <p>Pour chaque exemple, cliquez sur <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Bascule</b>, placez-la au
+  milieu du panneau et choisissez le type avec le bouton droit de la souris. Mettez les entrées à gauche et les lampes à
+  droite. Reliez tout avec <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>
+  (voir <a href="verbindingen.html">Connexions</a>), puis lancez la simulation.</p>
+
+  <h3 id="ff-sr">Bascule SR&nbsp;: une alarme qui continue à sonner</h3>
+  <ol class="steps">
+    <li>Placez deux <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">boutons-poussoirs</a> à gauche&nbsp;: celui du haut est &laquo;&nbsp;alarme&nbsp;&raquo;, celui du bas &laquo;&nbsp;reset&nbsp;&raquo;.</li>
+    <li>Reliez le bouton du haut à <span class="pin in">S</span> et celui du bas à <span class="pin in">R</span>.</li>
+    <li>Placez une <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">lampe</a> à droite et reliez-la à <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Que voyez-vous&nbsp;?</b> Appuyez brièvement sur &laquo;&nbsp;alarme&nbsp;&raquo;&nbsp;: la lampe s&rsquo;allume
+  et <b>reste</b> allumée quand vous relâchez. Seul &laquo;&nbsp;reset&nbsp;&raquo; l&rsquo;éteint. C&rsquo;est ainsi
+  qu&rsquo;une alarme retient qu&rsquo;une porte a été ouverte un instant. Cet exemple est détaillé dans la
+  <a href="les27.html">leçon 27</a>.</p>
+
+  <h3 id="ff-d">Bascule D&nbsp;: figer une valeur</h3>
+  <ol class="steps">
+    <li>Placez un <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">interrupteur</a> à gauche et reliez-le à <span class="pin in">D</span> (la donnée&nbsp;: ce qu&rsquo;il faut garder).</li>
+    <li>Placez un bouton-poussoir en dessous et reliez-le à <span class="pin in">C</span> (l&rsquo;horloge&nbsp;: quand il faut le garder).</li>
+    <li>Placez une lampe à droite et reliez-la à <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Que voyez-vous&nbsp;?</b> Allumez l&rsquo;interrupteur&nbsp;: la lampe reste éteinte. C&rsquo;est seulement quand
+  vous appuyez sur le bouton-poussoir que Q reprend la position de l&rsquo;interrupteur et que la lampe s&rsquo;allume.
+  Éteignez de nouveau l&rsquo;interrupteur&nbsp;: la lampe reste allumée jusqu&rsquo;au prochain appui. La bascule D
+  prend donc une &laquo;&nbsp;photo&nbsp;&raquo; de D au moment de l&rsquo;horloge. C&rsquo;est ainsi qu&rsquo;un
+  ordinateur garde un bit en mémoire&nbsp;: D dit <i>quoi</i>, l&rsquo;horloge dit <i>quand</i>.</p>
+
+  <h3 id="ff-jk">Bascule JK&nbsp;: quatre possibilités en une</h3>
+  <ol class="steps">
+    <li>Placez deux interrupteurs à gauche&nbsp;: reliez celui du haut à <span class="pin in">J</span> et celui du bas à <span class="pin in">K</span>.</li>
+    <li>Placez un bouton-poussoir entre les deux interrupteurs et reliez-le à l&rsquo;horloge <span class="pin in">C</span>.</li>
+    <li>Placez une lampe à droite et reliez-la à <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Que voyez-vous&nbsp;?</b> Choisissez une position de J et K, puis appuyez sur le bouton-poussoir. Rien ne se passe avant cet appui&nbsp;:</p>
+  <table>
+    <tr><th>J</th><th>K</th><th>Après un appui sur le bouton-poussoir (C)</th></tr>
+    <tr><td>0</td><td>0</td><td>Q reste comme avant</td></tr>
+    <tr><td>1</td><td>0</td><td>Q devient 1&nbsp;: la lampe s&rsquo;allume</td></tr>
+    <tr><td>0</td><td>1</td><td>Q devient 0&nbsp;: la lampe s&rsquo;éteint</td></tr>
+    <tr><td>1</td><td>1</td><td>Q change à chaque appui&nbsp;: allumée, éteinte, allumée, &hellip;</td></tr>
+  </table>
+  <p>La bascule JK sait donc tout faire&nbsp;: retenir, mettre à 1, mettre à 0 et changer. Avec J et K tous deux à 1,
+  elle fonctionne comme une bascule T. Placez une <a href="#niet"><img src="../img/pal-niet.png" class="ico" alt="">porte NON</a>
+  de J vers K (K est toujours l&rsquo;inverse de J)&nbsp;: elle fonctionne alors comme une bascule D, avec J comme D.</p>
+
+  <h3 id="ff-t">Bascule T&nbsp;: diviser par deux et compter</h3>
+  <ol class="steps">
+    <li>Placez un bouton-poussoir à gauche et reliez-le à <span class="pin in">T</span>.</li>
+    <li>Placez une lampe à droite et reliez-la à <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Que voyez-vous&nbsp;?</b> La lampe change à chaque appui&nbsp;: allumée au premier, éteinte au deuxième, de
+  nouveau allumée au troisième, &hellip; Placez un <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">générateur d&rsquo;impulsions</a>
+  sur T au lieu du bouton-poussoir&nbsp;: la lampe clignote deux fois moins vite que les impulsions. La bascule T divise par deux.</p>
+  <div class="tip"><strong>Un compteur de 0 à 3&nbsp;:</strong> placez une deuxième bascule T à droite de la première et
+  reliez <span class="pin out">Q&#773;</span> (non-Q) de la première à <span class="pin in">T</span> de la deuxième. Mettez
+  une lampe sur Q de chaque bascule&nbsp;: la lampe de la première compte 1, celle de la deuxième compte 2. Appuyez
+  quatre fois&nbsp;: 1, 2, 3 et de nouveau 0. Dans la <a href="les27.html">leçon 27</a>, vous pouvez ouvrir ce compteur
+  directement.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Bloc compteur</h2>
   <p>Compte les impulsions sur son entrée de comptage et transmet la valeur en binaire sur quatre sorties.</p>

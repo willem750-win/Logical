@@ -2028,6 +2028,8 @@ type
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
+    FBalkBreedte: Integer;    // breedte van de balk links/rechts (1 of meer kolommen)
+    FVoedingRight: Integer;   // rechterkant van de laatste kolom knoppen (PlaatsVoeding)
     FBoxTaal:TStatTaal;
     FOnObjectMove: TObjectMoveEvent;
 
@@ -2144,14 +2146,13 @@ type
     procedure DoObjectMove(Obj: TControl; X, Y: Integer);
     procedure StatusFromChild(Sender: TObject; const AText: string; APanel: Integer);
     PROCEDURE Paint; override;
-    PROCEDURE PaintBoxLeft;
     procedure DrawRailButton(const R: TRect; APlus, ADown: Boolean);
     procedure DrawHalfKnop(const R: TRect; ADown: Boolean; Kind: Integer);
     procedure DrawStappenIcon(X, Y: Integer);
     procedure DrawFlipFlopIcon(X, Y: Integer);
     procedure DrawStopwatchIcon(X, Y: Integer);
+    // tekent de balk boven, onder, links of rechts (met overloop)
     PROCEDURE PaintBoxTop;
-    PROCEDURE PaintBoxBottom;
     // kontrole of er connectors zijn gemaakt
     PROCEDURE MoveObjekten(hoeveel:Integer);
     PROCEDURE kontrolconnectors;
@@ -22227,7 +22228,8 @@ function TjanSimLogicBox.LayoutShift: TPoint;
 begin
   case Align of
     alTop:    Result := Point(-20, Height);
-    alBottom: Result := Point(-20, 0);
+    alBottom, alRight: Result := Point(-20, 0);
+    alLeft:   Result := Point(Width - 20, 0);
   else
     Result := Point(0, 0);
   end;
@@ -24944,6 +24946,20 @@ begin
     Exit;
   end;
 
+  // Staat er nog een nieuw onderdeel klaar dat nog niet op het paneel
+  // geplaatst is (nog onzichtbaar), dan dat weghalen: anders bleef het
+  // achter op het paneel als je intussen een andere knop koos.
+  if FNew then
+    for a := wc.ControlCount - 1 downto 0 do
+      if (wc.Controls[a] <> Self) and (wc.Controls[a].Tag = FObjectID) and
+         not wc.Controls[a].Visible then
+      begin
+        wc.Controls[a].Free;
+        FNew := False;
+        Screen.Cursor := crDefault;
+        Break;
+      end;
+
   // ------------------------------------------------------------
   // Connector mode toggle + Z-order
   // ------------------------------------------------------------
@@ -25968,20 +25984,26 @@ begin SetVoedingKnop(FVolt2K, Value); end;
 procedure TjanSimLogicBox.PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
   MaxX: Integer; StartX: Integer);
 var
-  N, X: Integer;
+  N, X, Y: Integer;
 
   procedure Knop(var R: TRect; Soort: Integer; ADown: Boolean);
-  var Y, W: Integer;
+  var W: Integer;
   begin
+    if (Soort = -2) or (Soort = -1) or (Soort = 6) then W := 17 else W := 26;
     if Vertikaal then
     begin
-      Y := TOP + (N div 2) * (H + SPATIE);
-      if N mod 2 = 0 then R := Rect(LK - 4, Y, LK + 13, Y + H)
-      else R := Rect(LK + 15, Y, LK + 32, Y + H);
+      // MaxX en StartX zijn hier de onderkant en de bovenkant van een kolom
+      if (MaxX > 0) and (Y + H > MaxX) and (Y > StartX) then
+      begin
+        Y := StartX;
+        LK := LK + 26 + 4;
+      end;
+      R := Rect(LK, Y, LK + W, Y + H);
+      Y := Y + H + 2;
+      if LK + W > FVoedingRight then FVoedingRight := LK + W;
     end
     else
     begin
-      if (Soort = -2) or (Soort = -1) or (Soort = 6) then W := 17 else W := 26;
       if (MaxX > 0) and (X + W > MaxX) and (X > StartX) then
       begin
         X := StartX;
@@ -26008,7 +26030,9 @@ begin
   RVolt2 := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
+  Y := TOP;
   FVoedingBottom := TOP + H;
+  FVoedingRight := 0;
   if FVoeding then
   begin
     Knop(RRailPlus, -1, DRailPlus);
@@ -26706,541 +26730,6 @@ begin
   DoStatusText(AText, APanel);
 end;
 
-Procedure TjanSimLogicBox.PaintBoxLeft;
-var
-B,H,LK,TOP,BK,HK,SPATIE:Integer;
-RC,RB:TRect;
-Bmp:TBitmap;
-
-X1,Y1,X2,Y2:integer;
-begin
-   if (align = alLeft) then
-  begin
-    SPATIE := FSpatie;
-    B := 26;                 // Breedte knop
-    H := 26;                 // hoogte knop
-    LK := FKnopLeft;         // X1
-    TOP := FKnopTop;         // Y1
-    BK := LK + B;            // X2
-    HK := TOP + H;           // Y2
-
-    RC := self.ClientRect;
-    // teken een soort van TBevel
-    Canvas.Brush.Style := bsClear;
-    Canvas.FillRect(RC);
-
-    // Tekenen van verhoogd effect (raised bevel)
-    Canvas.Pen.Color := clWhite;
-    Canvas.MoveTo(RC.Left, RC.Bottom - 1);
-    Canvas.LineTo(RC.Left, RC.Top);
-    Canvas.LineTo(RC.Right - 1, RC.Top);
-
-    Canvas.Pen.Color := clGray;
-    Canvas.MoveTo(RC.Right - 1, RC.Top);
-    Canvas.LineTo(RC.Right - 1, RC.Bottom - 1);
-    Canvas.LineTo(RC.Left, RC.Bottom - 1);
-
-    // Optioneel: Binnenste rand voor diepte-effect
-    InflateRect(RC, -2, -2);
-    Canvas.Pen.Color := clSilver;
-    Canvas.Rectangle(RC);
-
-    with canvas do
-    begin
-      bmp := TBitmap.Create;
-      bmp.Canvas.Brush.Color := FBColor;   /// achtergrond kleur LogicBox met property BColor
-      bmp.Width := Width;
-      bmp.Height := Height;
-      RB := ClientRect;
-      bmp.Canvas.FillRect(RB);
-      frame3D(RB, clbtnhighlight, clbtnshadow, 1);
-      frame3D(RB, clbtnshadow, clbtnhighlight, 2);
-      Draw(0, 0, bmp);
-      bmp.Free;
-
-       // teken een soort van TBevel
-      brush.Style :=bsClear;
-      FillRect(Rb);
-      frame3D(Rb, clbtnshadow, clbtnhighlight, 1);
-      brush.color := FBColor;
-
-      brush.color := clSilver;
-
-
-
-      // ===========================================================
-      // Connector (BESTAAND)
-      // ===========================================================
-      If FDraad=true then
-      Begin
-        RCon:= rect(LK-3,TOP,BK+3,HK);
-        Rb:=RCon;
-        if not DCon then
-           frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-           frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawPlainIcon(bmCon, Lk, top, Lk+2, top+3);
-        TOP:=TOP+ H -15 +SPATIE+10;
-        HK:= H+TOP;
-      end;
-
-      if A_Imput > 0 then
-      begin
-        bmp := TBitmap.Create;
-        bmp.Canvas.Brush.Style := bsSolid;
-        bmp.Canvas.Brush.Color :=  FBColor;//clGreen;//FImputColor;
-        bmp.Width := (BK);
-        bmp.Height := ((A_Imput * H)+((A_Imput-1) * Knopspatie)+ 7-28);
-        Rb:=Rect(0, 0, bmp.Width, bmp.Height);
-        bmp.Canvas.FillRect(Rb);
-        Draw(LK-4,TOP-4, bmp);
-        bmp.Free;
-        brush.color:=clSilver;
-      end;
-
-      // Begin invoer
-      If FDrukknop=true then
-      Begin
-       // brush.color:=clRed;
-
-        RButton:= rect(LK,TOP,BK,HK);
-        Rb:=RButton;
-        if not DButton then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawInputIcon(0, bmButton, LK+1, TOP+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FSchakelaar=true then
-      Begin
-        RKnop:= rect(LK,TOP,BK,HK);
-        Rb:=RKnop;
-        if not DKnop then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawInputIcon(1, bmKnop, LK+1, TOP+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FSensor=true then
-      Begin
-        RSensor:= rect(LK,TOP,BK,HK);
-        Rb:=RSensor;
-        if not DSensor then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawInputIcon(2, bmSensor, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FWarm=true then
-      Begin
-        RWarm:= rect(LK,TOP,BK,HK);
-        Rb:=RWarm;
-        if not DWarm then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawInputIcon(3, bmWarm, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FPuls=true then
-      Begin
-        RPuls:= rect(LK,TOP,BK,HK);
-        Rb:=RPuls;
-        if not DPuls then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawInputIcon(4, bmPuls, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FDipSwitsh=true then
-      Begin
-        RDipSwitsh:= rect(LK,TOP,BK,HK);
-        Rb:=RDipSwitsh;
-        if not DDipSwitsh then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawPlainIcon(bmDipSwitsh, Lk, top, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      TOP:=TOP+6; HK:=HK+6;   // was 12: plaats voor de stappenteller
-      //einde invoer
-
-      //begin verwerking
-      If A_Verwerking > 0 then
-      begin
-        bmp := TBitmap.Create;
-        bmp.Canvas.Brush.Style := bsSolid;
-        bmp.Canvas.Brush.Color := FBColor;//clRed;
-        bmp.Width := (BK);
-        bmp.Height := ((A_Verwerking * H)+((A_Verwerking-1) * Knopspatie)+ 7);
-        Rb:=rect(LK-5,TOP-5,BK+5,Top+(A_Verwerking * H)+((A_Verwerking-1) * Knopspatie)+ 5);
-        bmp.Canvas.FillRect(Rect(0, 0, bmp.Width, bmp.Height));
-        Draw(LK-4,TOP-4, bmp);//kader Verwerken
-        bmp.Free;
-      end;
-
-      brush.color:=clSilver;
-
-      If FLogicAnd=true then
-      Begin
-        RLogicAnd:= rect(LK,TOP,BK,HK);
-        Rb:=RLogicAnd;
-        if not DLogicAnd then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawGateIcon(jlfAND, bmLogicAnd, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FLogicOr=true then
-      Begin
-        RLogicOr:= rect(LK,TOP,BK,HK);
-        Rb:=RLogicOr;
-        if not DLogicOr then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawGateIcon(jlfOR, bmLogicOr, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FLogicNot=true then
-      Begin
-        RLogicNot:= rect(LK,TOP,BK,HK);
-        Rb:=RLogicNot;
-        if not DLogicNot then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawGateIcon(jlfNOT, bmLogicNot, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      // NEN, NOF en EX-OF
-      RLogicNand := Rect(0, 0, 0, 0); RLogicNor := Rect(0, 0, 0, 0); RLogicXor := Rect(0, 0, 0, 0);
-      if FLogicNand then
-      begin
-        RLogicNand := Rect(LK, TOP, BK, HK);
-        Rb := RLogicNand;
-        if not DLogicNand then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfNAND, bmLogicAnd, LK+1, TOP+2);
-        TOP := TOP + H + SPATIE;
-        HK := H + TOP;
-      end;
-      if FLogicNor then
-      begin
-        RLogicNor := Rect(LK, TOP, BK, HK);
-        Rb := RLogicNor;
-        if not DLogicNor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfNOR, bmLogicAnd, LK+1, TOP+2);
-        TOP := TOP + H + SPATIE;
-        HK := H + TOP;
-      end;
-      if FLogicXor then
-      begin
-        RLogicXor := Rect(LK, TOP, BK, HK);
-        Rb := RLogicXor;
-        if not DLogicXor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfXOR, bmLogicAnd, LK+1, TOP+2);
-        TOP := TOP + H + SPATIE;
-        HK := H + TOP;
-      end;
-
-      If FTeller=true then
-      Begin
-        RTeller:= rect(LK,TOP,BK,HK);
-        Rb:=RTeller;
-        if not DTeller then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawPlainIcon(bmTeller, Lk, top, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FMemory=true then
-      Begin
-        RMemory:= rect(LK,TOP,BK,HK);
-        Rb:=RMemory;
-        if not DMemory then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawPlainIcon(bmMemory, Lk, top, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      RFlipFlop := Rect(0, 0, 0, 0);
-      if FFlipFlopK then
-      begin
-        RFlipFlop := Rect(LK, TOP, BK, HK);
-        Rb := RFlipFlop;
-        if not DFlipFlop then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawFlipFlopIcon(LK+1, TOP+2);
-        TOP := TOP + H + SPATIE;
-        HK := H + TOP;
-      end;
-
-      If FStappen=true then
-      Begin
-        RStappen:= rect(LK,TOP,BK,HK);
-        Rb:=RStappen;
-        if not DStappen then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawStappenIcon(Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FStopwatch=true then
-      Begin
-        RStopwatch:= rect(LK,TOP,BK,HK);
-        Rb:=RStopwatch;
-        if not DStopwatch then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawStopwatchIcon(Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      Top:=Top+6; HK:=HK+6;   // was 12: plaats voor de stappenteller
-      // einde verwerking
-
-      //uitvoer
-      If A_Output > 0 then
-      begin
-        bmp := TBitmap.Create;
-        bmp.Canvas.Brush.Style := bsSolid;
-        bmp.Canvas.Brush.Color := FBColor;//clBlue;// FOutputColor;
-        bmp.Width := (BK);
-        bmp.Height := ((A_Output * H)+((A_Output-1) * Knopspatie)+ 7);
-        Rb:=rect(LK-3,TOP-5,BK+5,Top+(A_Output * H)+((A_Output-1) * Knopspatie)+ 5);
-        bmp.Canvas.FillRect(Rect(0, 0, bmp.Width, bmp.Height));
-        Draw(LK-4,TOP-4, bmp);
-        bmp.Free;
-      end;
-
-      brush.color:=clSilver;
-
-      If FLamp=true then
-      Begin
-        RLight:= rect(LK,TOP,BK,HK);
-        Rb:=RLight;
-        if not DLight then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(0, bmLight, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FRelais=true then
-      Begin
-        RRelais:= rect(LK,TOP,BK,HK);
-        Rb:=RRelais;
-        if not DRelais then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(1, bmRelais, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FSchakelRelais=true then
-      Begin
-        RSchakel:= rect(LK,TOP,BK,HK);
-        Rb:=RSchakel;
-        if not DSchakel then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(4, bmRelais, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FBuzzer=true then
-      Begin
-        RBuzzer:= rect(LK,TOP,BK,HK);
-        Rb:=RBuzzer;
-        if not DBuzzer then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(2, bmBuzzer, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FMotor=true then
-      Begin
-        RMotor:= rect(LK,TOP,BK,HK);
-        Rb:=RMotor;
-        if not DMotor then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(5, nil, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      If FDisplay=true then
-      Begin
-        RDisplay:= rect(LK,TOP,BK,HK);
-        Rb:=RDisplay;
-        if not DDisplay then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawPlainIcon(bmDisplay, Lk, top, Lk+1, top+2);
-        TOP:=TOP+H+4; // 4 in de plaats van SPATIE
-        HK:= H+TOP;
-      end;
-
-       brush.color:=clSilver;
-
-      If FMeter=true then
-      Begin
-        RMeter:= rect(LK,TOP,BK,HK);
-        Rb:=RMeter;
-        if not DMeter then
-          frame3D(Rb,clbtnhighlight,clbtnshadow,1)
-        else
-          frame3D(Rb,clbtnshadow,clbtnhighlight,1);
-        fillrect(Rb);
-        DrawOutputIcon(3, bmMeter, Lk+1, top+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      // milliampèremeter: zelfde soort knop, direct onder de voltmeter
-      RAmpMeter := Rect(0, 0, 0, 0);
-      if FAmpMeterK then
-      begin
-        RAmpMeter := Rect(LK, TOP, BK, HK);
-        Rb := RAmpMeter;
-        if not DAmpMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(11, bmMeter, LK+1, TOP+2);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      // persoon en wagentje: twee halve knoppen naast elkaar (zoals de rails)
-      RPersoon := Rect(0, 0, 0, 0);
-      RWagen := Rect(0, 0, 0, 0);
-      If FPersoon or FWagen then
-      Begin
-        if FPersoon then
-        begin
-          RPersoon := Rect(LK - 4, TOP, LK + 13, HK);
-          DrawHalfKnop(RPersoon, DPersoon, 6);
-        end;
-        if FWagen then
-        begin
-          RWagen := Rect(LK + 15, TOP, LK + 32, HK);
-          DrawHalfKnop(RWagen, DWagen, 7);
-        end;
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      // muziekdoos en verkeerslicht: halve knoppen op een eigen rij
-      RMuziek := Rect(0, 0, 0, 0);
-      RVerkeer := Rect(0, 0, 0, 0);
-      if FMuziek then
-      begin
-        RMuziek := Rect(LK - 4, TOP, LK + 13, HK);
-        DrawHalfKnop(RMuziek, DMuziek, 8);
-      end;
-      if FVerkeer then
-      begin
-        RVerkeer := Rect(LK + 15, TOP, LK + 32, HK);
-        DrawHalfKnop(RVerkeer, DVerkeer, 9);
-      end;
-      if FMuziek or FVerkeer then
-      begin
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      // slagboom: halve knop op een eigen rij
-      RSlagboom := Rect(0, 0, 0, 0);
-      if FSlagboom then
-      begin
-        RSlagboom := Rect(LK - 4, TOP, LK + 13, HK);
-        DrawHalfKnop(RSlagboom, DSlagboom, 10);
-        TOP:=TOP+H+SPATIE;
-        HK:= H+TOP;
-      end;
-
-      // voedingsrails: + en - als halve knoppen naast elkaar (KVoeding)
-      // (ook bron, zekering, weerstand, lamp, schakelaar en voltmeter met 2 klemmen)
-      PlaatsVoeding(LK, TOP + 2, H, SPATIE, True);
-    end;
-  end;
-
-end;
-
 // knop van de stappenteller: klein display met 123, altijd getekend
 // knop flipflop: blok met FF, ingangen links en de uitgangen Q en niet-Q rechts
 procedure TjanSimLogicBox.DrawFlipFlopIcon(X, Y: Integer);
@@ -27393,43 +26882,96 @@ var
   B,H,LK,TOP,BK,HK,SPATIE: Integer;
   RC,RB: TRect;
   Bmp: TBitmap;
+  Vert: Boolean;      // balk links of rechts: knoppen onder elkaar
+  MaxR: Integer;      // rechterkant van de laatste kolom (Vert)
 
-  // helper om de volgende "slot" horizontaal te zetten; past er geen knop
-  // meer naast, dan begint een nieuwe rij eronder (overloop)
+  // helper om de volgende "slot" te zetten. Boven of onder: naast elkaar;
+  // past er geen knop meer naast, dan begint een nieuwe rij eronder.
+  // Links of rechts: onder elkaar, met een nieuwe kolom ernaast (overloop).
   procedure NextX(Delta: Integer);
   begin
-    LK := LK + Delta;
-    if LK + B > Width - 6 then
+    if Vert then
     begin
-      LK := FKnopLeft;
-      TOP := TOP + H + 4;
+      if BK > MaxR then MaxR := BK;
+      TOP := TOP + Delta;
+      if TOP + H > Height - 6 then
+      begin
+        TOP := FKnopTop;
+        LK := LK + B + 4;
+      end;
       HK := TOP + H;
+    end
+    else
+    begin
+      LK := LK + Delta;
+      if LK + B > Width - 6 then
+      begin
+        LK := FKnopLeft;
+        TOP := TOP + H + 4;
+        HK := TOP + H;
+      end;
     end;
     BK := LK + B;
   end;
 
-  // ruimte tussen twee groepen, niet aan het begin van een rij
+  // ruimte tussen twee groepen, niet aan het begin van een rij of kolom
   procedure Gap(Delta: Integer);
   begin
-    if LK > FKnopLeft then NextX(Delta);
+    if Vert then
+    begin
+      if TOP > FKnopTop then NextX(Delta);
+    end
+    else if LK > FKnopLeft then NextX(Delta);
   end;
 
-  // de balk even hoog maken als de rijen knoppen; de objecten op het
-  // paneel schuiven mee, zodat ze op dezelfde plaats onder de balk blijven
-  procedure PasHoogteAan(Onder: Integer);
+  // achtergrond van een groep knoppen: een rij of een kolom
+  procedure GroepMaat(Bm: TBitmap; Aantal: Integer);
+  begin
+    if Vert then
+    begin
+      Bm.Width  := B + 7;
+      Bm.Height := (Aantal * H) + ((Aantal-1) * Knopspatie) + 7;
+    end
+    else
+    begin
+      Bm.Width  := (Aantal * B) + ((Aantal-1) * Knopspatie) + 7;
+      Bm.Height := H + 7;
+    end;
+  end;
+
+  // de balk even hoog (boven/onder) of even breed (links/rechts) maken als
+  // de rijen of kolommen knoppen; bij een balk boven of links schuiven de
+  // objecten op het paneel mee, zodat ze op dezelfde plaats blijven
+  procedure PasMaatAan(Rand: Integer);
   var Nodig, Oud, D: Integer;
   begin
-    Nodig := Onder + 6;
+    Nodig := Rand + 6;
     if Nodig < 36 then Nodig := 36;
-    if FRijFix or ((Nodig = FBalkHoogte) and (Height = Nodig)) then Exit;
+    if Vert then
+    begin
+      if FRijFix or ((Nodig = FBalkBreedte) and (Width = Nodig)) then Exit;
+    end
+    else
+      if FRijFix or ((Nodig = FBalkHoogte) and (Height = Nodig)) then Exit;
     FRijFix := True;
     try
-      Oud := Height;
-      FBalkHoogte := Nodig;   // resize houdt deze hoogte vast
-      Height := Nodig;
-      D := Height - Oud;      // alleen de echte verandering
-      if D <> 0 then ShiftPanelObjects(0, D);
-      // deze tekenbeurt mag alleen binnen de oude hoogte tekenen: na afloop
+      if Vert then
+      begin
+        Oud := Width;
+        FBalkBreedte := Nodig;  // resize houdt deze breedte vast
+        Width := Nodig;
+        D := Width - Oud;       // alleen de echte verandering
+        if (D <> 0) and (Align = alLeft) then ShiftPanelObjects(D, 0);
+      end
+      else
+      begin
+        Oud := Height;
+        FBalkHoogte := Nodig;   // resize houdt deze hoogte vast
+        Height := Nodig;
+        D := Height - Oud;
+        if (D <> 0) and (Align = alTop) then ShiftPanelObjects(0, D);
+      end;
+      // deze tekenbeurt mag alleen binnen de oude maat tekenen: na afloop
       // de hele balk nog eens tekenen, anders blijft de nieuwe rij leeg
       Application.QueueAsyncCall(HertekenLater, 0);
     finally
@@ -27438,8 +26980,9 @@ var
   end;
 
 begin
-  if (Align = alTop) then
+  if Align in [alTop, alBottom, alLeft, alRight] then
   begin
+    Vert := Align in [alLeft, alRight];
     SPATIE := FSpatie;
     B := 26;                 // Breedte knop
     H := 26;                 // Hoogte knop
@@ -27447,6 +26990,7 @@ begin
     TOP := FKnopTop;         // Y1
     BK := LK + B;            // X2
     HK := TOP + H;           // Y2
+    MaxR := BK;
 
     RC := Self.ClientRect;
 
@@ -27494,7 +27038,7 @@ begin
       // ===========================================================
       if FDraad = True then
       begin
-        RCon := Rect(LK, TOP,36, 32);
+        RCon := Rect(LK, TOP, LK + 29, TOP + 28);
         Rb := RCon;
 
         FHoverRect := RCon;
@@ -27523,9 +27067,8 @@ begin
         bmp.Canvas.Brush.Style := bsSolid;
         bmp.Canvas.Brush.Color := FBColor;
 
-        // breedte = aantal knoppen * B + spacing ertussen + kleine marge
-        bmp.Width  := (A_Imput * B) + ((A_Imput-1) * Knopspatie) + 7;
-        bmp.Height := H + 7;  // 1 rij hoog + marge
+        // aantal knoppen * B + spacing ertussen + kleine marge
+        GroepMaat(bmp, A_Imput);
 
         Rb := Rect(0, 0, bmp.Width, bmp.Height);
         bmp.Canvas.FillRect(Rb);
@@ -27652,8 +27195,7 @@ begin
         bmp.Canvas.Brush.Style := bsSolid;
         bmp.Canvas.Brush.Color := FBColor;
 
-        bmp.Width  := (A_Verwerking * B) + ((A_Verwerking-1) * Knopspatie) + 7;
-        bmp.Height := H + 7;
+        GroepMaat(bmp, A_Verwerking);
 
         // kader rond de groep (zoals je deed met rect(LK-5,...))
         Rb := Rect(LK-5, TOP-5, LK-5 + bmp.Width + 10, TOP-5 + bmp.Height + 10);
@@ -27797,8 +27339,7 @@ begin
         bmp.Canvas.Brush.Style := bsSolid;
         bmp.Canvas.Brush.Color := FBColor;
 
-        bmp.Width  := (A_Output * B) + ((A_Output-1) * Knopspatie) + 7;
-        bmp.Height := H + 7;
+        GroepMaat(bmp, A_Output);
 
         Rb := Rect(LK-3, TOP-5, LK-3 + bmp.Width + 8, TOP-5 + bmp.Height + 10);
         bmp.Canvas.FillRect(Rect(0, 0, bmp.Width, bmp.Height));
@@ -27942,531 +27483,17 @@ begin
       // voeding: + en - rail, bron, zekering, weerstand, lamp, schakelaar en
       // voltmeter met 2 klemmen als halve knoppen in een aparte groep
       Gap(8);
-      PlaatsVoeding(LK, TOP, H, SPATIE, False, Self.Width - 6, FKnopLeft);
-      PasHoogteAan(FVoedingBottom);
-    end;
-  end;
-end;
-
-PROCEDURE TjanSimLogicBox.PaintBoxBottom;
-var
-  B,H,LK,TOP,BK,HK,SPATIE: Integer;
-  RC,RB: TRect;
-  Bmp: TBitmap;
-
-  // helper om de volgende "slot" horizontaal te zetten
-  procedure NextX(Delta: Integer);
-  begin
-    LK := LK + Delta;
-    BK := LK + B;
-  end;
-
-begin
-  if (Align = alBottom) then
-  begin
-    SPATIE := FSpatie;
-    B := 26;                 // Breedte knop
-    H := 26;                 // Hoogte knop
-    LK := FKnopLeft;         // X1
-    TOP := FKnopTop;         // Y1
-    BK := LK + B;            // X2
-    HK := TOP + H;           // Y2
-
-    RC := Self.ClientRect;
-
-
-
-    // teken een soort van TBevel
-    Canvas.Brush.Style := bsClear;
-    Canvas.FillRect(RC);
-
-    // Tekenen van verhoogd effect (raised bevel)
-    Canvas.Pen.Color := clWhite;
-    Canvas.MoveTo(RC.Left, RC.Bottom - 1);
-    Canvas.LineTo(RC.Left, RC.Top);
-    Canvas.LineTo(RC.Right - 1, RC.Top);
-
-    Canvas.Pen.Color := clGray;
-    Canvas.MoveTo(RC.Right - 1, RC.Top);
-    Canvas.LineTo(RC.Right - 1, RC.Bottom - 1);
-    Canvas.LineTo(RC.Left, RC.Bottom - 1);
-
-    // Optioneel: Binnenste rand voor diepte-effect
-    InflateRect(RC, -2, -2);
-    Canvas.Pen.Color := clSilver;
-    Canvas.Rectangle(RC);
-
-    with Canvas do
-    begin
-      bmp := TBitmap.Create;
-      bmp.Canvas.Brush.Color := FBColor;   /// achtergrond kleur LogicBox met property BColor
-      bmp.Width := Width;
-      bmp.Height := Height;
-      RB := ClientRect;
-      bmp.Canvas.FillRect(RB);
-      Frame3D(RB, clBtnHighlight, clBtnShadow, 1);
-      Frame3D(RB, clBtnShadow, clBtnHighlight, 2);
-      Draw(0, 0, bmp);
-      bmp.Free;
-
-      Brush.Color := clSilver;
-
-
-
-      // ===========================================================
-      // Connector (BESTAAND)
-      // ===========================================================
-      if FDraad = True then
+      if Vert then
       begin
-        RCon := Rect(LK, TOP,36, 32);
-        Rb := RCon;
-
-        FHoverRect := RCon;
-        FHoverText := 'Connector tool – verbindt componenten';
-
-        DoStatusText(LangTr('Connector tool'),0);
-       if not DCon then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawPlainIcon(bmCon, LK, TOP, LK+4, TOP+4);
-
-        // was: TOP := TOP + H -15 +SPATIE+10;
-        NextX(B  + SPATIE + 10);
-        HK := TOP + H;
-      end;
-
-      // ===========================================================
-      // GROEP: INPUT achtergrond (horizontale balk)
-      // ===========================================================
-      if A_Imput > 0 then
+        PlaatsVoeding(LK, TOP, H, SPATIE, True, Self.Height - 6, FKnopTop);
+        if FVoedingRight > MaxR then MaxR := FVoedingRight;
+        PasMaatAan(MaxR);
+      end
+      else
       begin
-        bmp := TBitmap.Create;
-        bmp.Canvas.Brush.Style := bsSolid;
-        bmp.Canvas.Brush.Color := FBColor;
-
-        // breedte = aantal knoppen * B + spacing ertussen + kleine marge
-        bmp.Width  := (A_Imput * B) + ((A_Imput-1) * Knopspatie) + 7;
-        bmp.Height := H + 7;  // 1 rij hoog + marge
-
-        Rb := Rect(0, 0, bmp.Width, bmp.Height);
-        bmp.Canvas.FillRect(Rb);
-
-        Draw(LK-4, TOP-4, bmp);
-        bmp.Free;
-
-        Brush.Color := clSilver;
+        PlaatsVoeding(LK, TOP, H, SPATIE, False, Self.Width - 6, FKnopLeft);
+        PasMaatAan(FVoedingBottom);
       end;
-
-      // Begin invoer (nu horizontaal)
-      if FDrukknop = True then
-      begin
-        RButton := Rect(LK, TOP, BK, HK);
-        Rb := RButton;
-
-        if not DButton then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawInputIcon(0, bmButton, LK+1, TOP+2);
-
-        // was: TOP := TOP + H + SPATIE;
-        NextX(B + SPATIE);
-        HK := TOP + H;
-      end;
-
-      if FSchakelaar = True then
-      begin
-        RKnop := Rect(LK, TOP, BK, HK);
-        Rb := RKnop;
-
-        if not DKnop then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawInputIcon(1, bmKnop, LK+1, TOP+2);
-
-        NextX(B + SPATIE);
-        HK := TOP + H;
-      end;
-
-      if FSensor = True then
-      begin
-        RSensor := Rect(LK, TOP, BK, HK);
-        Rb := RSensor;
-
-        if not DSensor then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawInputIcon(2, bmSensor, LK+1, TOP+2);
-
-        NextX(B + SPATIE);
-        HK := TOP + H;
-      end;
-
-      if FWarm = True then
-      begin
-        RWarm := Rect(LK, TOP, BK, HK);
-        Rb := RWarm;
-
-        if not DWarm then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawInputIcon(3, bmWarm, LK+1, TOP+2);
-
-        NextX(B + SPATIE);
-        HK := TOP + H;
-      end;
-
-      if FPuls = True then
-      begin
-        RPuls := Rect(LK, TOP, BK, HK);
-        Rb := RPuls;
-
-        if not DPuls then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawInputIcon(4, bmPuls, LK+1, TOP+2);
-
-        NextX(B + SPATIE);
-        HK := TOP + H;
-      end;
-
-      if FDipSwitsh = True then
-      begin
-        RDipSwitsh := Rect(LK, TOP, BK, HK);
-        Rb := RDipSwitsh;
-
-        if not DDipSwitsh then
-          Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else
-          Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-
-        FillRect(Rb);
-        DrawPlainIcon(bmDipSwitsh, LK, TOP, LK+1, TOP+2);
-
-        NextX(B + SPATIE);
-        HK := TOP + H;
-      end;
-
-      // was: TOP := TOP + 20;
-      NextX(20);
-
-      // ===========================================================
-      // GROEP: VERWERKING achtergrond (horizontale balk)
-      // ===========================================================
-      if A_Verwerking > 0 then
-      begin
-        bmp := TBitmap.Create;
-        bmp.Canvas.Brush.Style := bsSolid;
-        bmp.Canvas.Brush.Color := FBColor;
-
-        bmp.Width  := (A_Verwerking * B) + ((A_Verwerking-1) * Knopspatie) + 7;
-        bmp.Height := H + 7;
-
-        // kader rond de groep (zoals je deed met rect(LK-5,...))
-        Rb := Rect(LK-5, TOP-5, LK-5 + bmp.Width + 10, TOP-5 + bmp.Height + 10);
-        bmp.Canvas.FillRect(Rect(0, 0, bmp.Width, bmp.Height));
-        Draw(LK-4, TOP-4, bmp);
-        bmp.Free;
-      end;
-
-      Brush.Color := clSilver;
-
-      if FLogicAnd = True then
-      begin
-        RLogicAnd := Rect(LK, TOP, BK, HK);
-        Rb := RLogicAnd;
-        if not DLogicAnd then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfAND, bmLogicAnd, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FLogicOr = True then
-      begin
-        RLogicOr := Rect(LK, TOP, BK, HK);
-        Rb := RLogicOr;
-        if not DLogicOr then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfOR, bmLogicOr, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FLogicNot = True then
-      begin
-        RLogicNot := Rect(LK, TOP, BK, HK);
-        Rb := RLogicNot;
-        if not DLogicNot then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfNOT, bmLogicNot, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      // NEN, NOF en EX-OF
-      RLogicNand := Rect(0, 0, 0, 0); RLogicNor := Rect(0, 0, 0, 0); RLogicXor := Rect(0, 0, 0, 0);
-      if FLogicNand then
-      begin
-        RLogicNand := Rect(LK, TOP, BK, HK);
-        Rb := RLogicNand;
-        if not DLogicNand then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfNAND, bmLogicAnd, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-      if FLogicNor then
-      begin
-        RLogicNor := Rect(LK, TOP, BK, HK);
-        Rb := RLogicNor;
-        if not DLogicNor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfNOR, bmLogicAnd, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-      if FLogicXor then
-      begin
-        RLogicXor := Rect(LK, TOP, BK, HK);
-        Rb := RLogicXor;
-        if not DLogicXor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawGateIcon(jlfXOR, bmLogicAnd, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FTeller = True then
-      begin
-        RTeller := Rect(LK, TOP, BK, HK);
-        Rb := RTeller;
-        if not DTeller then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawPlainIcon(bmTeller, LK, TOP, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FMemory = True then
-      begin
-        RMemory := Rect(LK, TOP, BK, HK);
-        Rb := RMemory;
-        if not DMemory then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawPlainIcon(bmMemory, LK, TOP, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-
-      RFlipFlop := Rect(0, 0, 0, 0);
-      if FFlipFlopK then
-      begin
-        RFlipFlop := Rect(LK, TOP, BK, HK);
-        Rb := RFlipFlop;
-        if not DFlipFlop then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawFlipFlopIcon(LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FStappen = True then
-      begin
-        RStappen := Rect(LK, TOP, BK, HK);
-        Rb := RStappen;
-        if not DStappen then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawStappenIcon(LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FStopwatch = True then
-      begin
-        RStopwatch := Rect(LK, TOP, BK, HK);
-        Rb := RStopwatch;
-        if not DStopwatch then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawStopwatchIcon(LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-      NextX(20);
-
-      // ===========================================================
-      // GROEP: OUTPUT achtergrond (horizontale balk)
-      // ===========================================================
-      if A_Output > 0 then
-      begin
-        bmp := TBitmap.Create;
-        bmp.Canvas.Brush.Style := bsSolid;
-        bmp.Canvas.Brush.Color := FBColor;
-
-        bmp.Width  := (A_Output * B) + ((A_Output-1) * Knopspatie) + 7;
-        bmp.Height := H + 7;
-
-        Rb := Rect(LK-3, TOP-5, LK-3 + bmp.Width + 8, TOP-5 + bmp.Height + 10);
-        bmp.Canvas.FillRect(Rect(0, 0, bmp.Width, bmp.Height));
-        Draw(LK-4, TOP-4, bmp);
-        bmp.Free;
-      end;
-
-      Brush.Color := clSilver;
-
-      if FLamp = True then
-      begin
-        RLight := Rect(LK, TOP, BK, HK);
-        Rb := RLight;
-        if not DLight then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(0, bmLight, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FRelais = True then
-      begin
-        RRelais := Rect(LK, TOP, BK, HK);
-        Rb := RRelais;
-        if not DRelais then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(1, bmRelais, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FSchakelRelais = True then
-      begin
-        RSchakel := Rect(LK, TOP, BK, HK);
-        Rb := RSchakel;
-        if not DSchakel then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(4, bmRelais, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FBuzzer = True then
-      begin
-        RBuzzer := Rect(LK, TOP, BK, HK);
-        Rb := RBuzzer;
-        if not DBuzzer then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(2, bmBuzzer, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FMotor = True then
-      begin
-        RMotor := Rect(LK, TOP, BK, HK);
-        Rb := RMotor;
-        if not DMotor then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(5, nil, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FDisplay = True then
-      begin
-        RDisplay := Rect(LK, TOP, BK, HK);
-        Rb := RDisplay;
-        if not DDisplay then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawPlainIcon(bmDisplay, LK, TOP, LK+1, TOP+2);
-
-        // was: TOP := TOP + H + 6;
-        NextX(B + 6);
-      end;
-
-      Brush.Color := clSilver;
-
-      if FMeter = True then
-      begin
-        RMeter := Rect(LK, TOP, BK, HK);
-        Rb := RMeter;
-        if not DMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(3, bmMeter, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      // milliampèremeter: zelfde soort knop, direct naast de voltmeter
-      RAmpMeter := Rect(0, 0, 0, 0);
-      if FAmpMeterK then
-      begin
-        RAmpMeter := Rect(LK, TOP, BK, HK);
-        Rb := RAmpMeter;
-        if not DAmpMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(11, bmMeter, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      // persoon, wagentje en muziekdoos: even breed als de andere knoppen
-      RPersoon := Rect(0, 0, 0, 0);
-      RWagen := Rect(0, 0, 0, 0);
-      if FPersoon then
-      begin
-        RPersoon := Rect(LK, TOP, BK, HK);
-        DrawHalfKnop(RPersoon, DPersoon, 6);
-        NextX(B + SPATIE);
-      end;
-      if FWagen then
-      begin
-        RWagen := Rect(LK, TOP, BK, HK);
-        DrawHalfKnop(RWagen, DWagen, 7);
-        NextX(B + SPATIE);
-      end;
-      RMuziek := Rect(0, 0, 0, 0);
-      if FMuziek then
-      begin
-        RMuziek := Rect(LK, TOP, BK, HK);
-        DrawHalfKnop(RMuziek, DMuziek, 8);
-        NextX(B + SPATIE);
-      end;
-      RVerkeer := Rect(0, 0, 0, 0);
-      if FVerkeer then
-      begin
-        RVerkeer := Rect(LK, TOP, BK, HK);
-        DrawHalfKnop(RVerkeer, DVerkeer, 9);
-        NextX(B + SPATIE);
-      end;
-      RSlagboom := Rect(0, 0, 0, 0);
-      if FSlagboom then
-      begin
-        RSlagboom := Rect(LK, TOP, BK, HK);
-        DrawHalfKnop(RSlagboom, DSlagboom, 10);
-        NextX(B + SPATIE);
-      end;
-
-      // voeding: + en - rail, bron, zekering, weerstand, lamp, schakelaar en
-      // voltmeter met 2 klemmen als halve knoppen in een aparte groep
-      NextX(8);
-      PlaatsVoeding(LK, TOP, HK - TOP, SPATIE, False);
     end;
   end;
 end;
@@ -28481,9 +27508,8 @@ begin
   if visible = false then exit;
   ControlStyle := ControlStyle + [csOpaque];
 
-  if (align = alLeft) then PaintBoxLeft; // apparte procedure
-  if (align = alTop) then PaintBoxTop; // apparte procedure
-  if (align = alBottom) then PaintBoxBottom; // apparte procedure
+  // boven, onder, links of rechts: dezelfde procedure
+  if Align in [alTop, alBottom, alLeft, alRight] then PaintBoxTop;
 end;
 
 procedure TjanSimLogicBox.HertekenLater(Data: PtrInt);
@@ -28494,12 +27520,13 @@ end;
 procedure TjanSimLogicBox.resize;
 begin
 if FBalkHoogte < 36 then FBalkHoogte := 36;
-if ((Align=(alTop)) or (Align=(alBottom))) and (height<>FBalkHoogte) then height:=FBalkHoogte;
-if (Align=(alLeft)) or (Align=(alRight)) then width:=45;
+if FBalkBreedte < 36 then FBalkBreedte := 36;
+if (Align in [alTop, alBottom]) and (Height <> FBalkHoogte) then Height := FBalkHoogte;
+if (Align in [alLeft, alRight]) and (Width <> FBalkBreedte) then Width := FBalkBreedte;
 FFirst:=false;
-// bij een smaller venster tekent Windows de balk niet vanzelf opnieuw:
-// zelf opnieuw tekenen, zodat de knoppen naar een tweede rij kunnen
-if (Align=alTop) and not FRijFix then Invalidate;
+// bij een kleiner venster tekent Windows de balk niet vanzelf opnieuw:
+// zelf opnieuw tekenen, zodat de knoppen naar een tweede rij of kolom kunnen
+if (Align in [alTop, alBottom, alLeft, alRight]) and not FRijFix then Invalidate;
 end;
 
 procedure TjanSimLogicBox.WMEraseBkgnd(var Message: TWMEraseBkgnd);

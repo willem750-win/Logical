@@ -80,8 +80,63 @@
   </table>
   <p>Der Takteingang C hat ein kleines Dreieck im Block. Das Flipflop reagiert nur auf das <b>Einschalten</b> von C
   (die Flanke), nicht solange C an bleibt. Probieren Sie es in <a href="les27.html">Lektion 27</a> aus.</p>
-  <div class="tip"><strong>Tipp:</strong> Schalten Sie zwei T-Flipflops hintereinander und verbinden Sie nicht-Q des ersten mit T
-  des zweiten: Die Schaltung zählt dann von 0 bis 3, mit der Lampe an Q des ersten Flipflops für 1 und der des zweiten für 2.</div>
+    <h3 id="ff-bouwen">Selbst bauen: vier kleine Panels</h3>
+  <p>Für jedes Beispiel klicken Sie auf <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flipflop</b>, setzen es
+  in die Mitte des Panels und wählen den Typ mit der rechten Maustaste. Die Eingänge kommen nach links, die Lampen nach
+  rechts. Verbinden Sie alles mit <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>
+  (siehe <a href="verbindingen.html">Verbindungen</a>) und starten Sie dann die Simulation.</p>
+
+  <h3 id="ff-sr">SR-Flipflop: ein Alarm, der weiterläuft</h3>
+  <ol class="steps">
+    <li>Setzen Sie zwei <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Taster</a> nach links: der obere ist &bdquo;Alarm&ldquo;, der untere &bdquo;Reset&ldquo;.</li>
+    <li>Verbinden Sie den oberen Taster mit <span class="pin in">S</span> und den unteren mit <span class="pin in">R</span>.</li>
+    <li>Setzen Sie eine <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</a> nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Was sehen Sie?</b> Drücken Sie kurz auf &bdquo;Alarm&ldquo;: Die Lampe geht an und <b>bleibt</b> an, wenn Sie
+  loslassen. Erst &bdquo;Reset&ldquo; schaltet sie wieder aus. So merkt sich eine Alarmanlage, dass eine Tür kurz offen
+  war. Dieses Beispiel ist in <a href="les27.html">Lektion 27</a> ausgearbeitet.</p>
+
+  <h3 id="ff-d">D-Flipflop: einen Wert festhalten</h3>
+  <ol class="steps">
+    <li>Setzen Sie einen <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">Schalter</a> nach links und verbinden Sie ihn mit <span class="pin in">D</span> (die Daten: was gespeichert werden soll).</li>
+    <li>Setzen Sie einen Taster darunter und verbinden Sie ihn mit <span class="pin in">C</span> (der Takt: wann gespeichert werden soll).</li>
+    <li>Setzen Sie eine Lampe nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Was sehen Sie?</b> Schalten Sie den Schalter ein: Die Lampe bleibt aus. Erst wenn Sie auf den Taster drücken,
+  übernimmt Q die Stellung des Schalters und die Lampe geht an. Schalten Sie den Schalter wieder aus: Die Lampe leuchtet
+  weiter, bis Sie erneut drücken. Das D-Flipflop macht also ein &bdquo;Foto&ldquo; von D im Moment des Takts. So speichert
+  ein Computer ein Bit: D sagt <i>was</i>, der Takt sagt <i>wann</i>.</p>
+
+  <h3 id="ff-jk">JK-Flipflop: vier Möglichkeiten in einem</h3>
+  <ol class="steps">
+    <li>Setzen Sie zwei Schalter nach links: verbinden Sie den oberen mit <span class="pin in">J</span> und den unteren mit <span class="pin in">K</span>.</li>
+    <li>Setzen Sie einen Taster zwischen die beiden Schalter und verbinden Sie ihn mit dem Takt <span class="pin in">C</span>.</li>
+    <li>Setzen Sie eine Lampe nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Was sehen Sie?</b> Wählen Sie eine Stellung von J und K und drücken Sie dann auf den Taster. Erst bei diesem Druck passiert etwas:</p>
+  <table>
+    <tr><th>J</th><th>K</th><th>Nach einem Druck auf den Taster (C)</th></tr>
+    <tr><td>0</td><td>0</td><td>Q bleibt wie vorher</td></tr>
+    <tr><td>1</td><td>0</td><td>Q wird 1: die Lampe geht an</td></tr>
+    <tr><td>0</td><td>1</td><td>Q wird 0: die Lampe geht aus</td></tr>
+    <tr><td>1</td><td>1</td><td>Q wechselt bei jedem Druck: an, aus, an, &hellip;</td></tr>
+  </table>
+  <p>Das JK-Flipflop kann also alles: speichern, setzen, zurücksetzen und wechseln. Mit J und K beide an arbeitet es wie
+  ein T-Flipflop. Setzen Sie ein <a href="#niet"><img src="../img/pal-niet.png" class="ico" alt="">NICHT-Gatter</a> von J
+  nach K (K ist immer das Gegenteil von J), dann arbeitet es wie ein D-Flipflop mit J als D.</p>
+
+  <h3 id="ff-t">T-Flipflop: durch zwei teilen und zählen</h3>
+  <ol class="steps">
+    <li>Setzen Sie einen Taster nach links und verbinden Sie ihn mit <span class="pin in">T</span>.</li>
+    <li>Setzen Sie eine Lampe nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Was sehen Sie?</b> Die Lampe wechselt bei jedem Druck: beim ersten an, beim zweiten aus, beim dritten wieder an,
+  &hellip; Setzen Sie statt des Tasters einen <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">Impulsgeber</a>
+  auf T, dann blinkt die Lampe halb so schnell wie die Impulse: Das T-Flipflop teilt durch zwei.</p>
+  <div class="tip"><strong>Ein Zähler von 0 bis 3:</strong> Setzen Sie ein zweites T-Flipflop rechts neben das erste und
+  verbinden Sie <span class="pin out">Q&#773;</span> (nicht-Q) des ersten mit <span class="pin in">T</span> des zweiten.
+  Setzen Sie eine Lampe an Q jedes Flipflops: Die Lampe des ersten zählt 1, die des zweiten zählt 2. Drücken Sie viermal:
+  1, 2, 3 und wieder 0. In <a href="les27.html">Lektion 27</a> können Sie diesen Zähler direkt öffnen.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Zählerbaustein</h2>
   <p>Zählt die Impulse an seinem Zähleingang und gibt den Stand binär an vier Ausgängen weiter.</p>

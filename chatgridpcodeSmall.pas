@@ -166,11 +166,14 @@ type
     procedure SetKLogicRun(Value: Boolean);
     procedure SetKStatusBalk(Value: Boolean);
 
-    // knoppenbalk: links, boven of onder op het paneel
+    // knoppenbalk: links, rechts, boven of onder op het paneel
     function BoxControl: TControl;
     function BoxSide: TAlign;
     function BoxTopH: Integer;
     function BoxBottomH: Integer;
+    function BoxLeftW: Integer;
+    function BoxRightW: Integer;
+    function GetGridRightEdge: Integer;
 
     // rulers helpers
     function GetTitleHeight: Integer;
@@ -894,14 +897,14 @@ begin
 end;
 
 
-// De knoppenbalk is een kind van het paneel met Align links, boven of onder.
+// De knoppenbalk is een kind van het paneel met Align links, rechts, boven of onder.
 function TjanGridS.BoxControl: TControl;
 var
   i: Integer;
 begin
   Result := nil;
   for i := 0 to ControlCount - 1 do
-    if Controls[i].Align in [alLeft, alTop, alBottom] then
+    if Controls[i].Align in [alLeft, alRight, alTop, alBottom] then
       Exit(Controls[i]);
 end;
 
@@ -933,16 +936,36 @@ begin
     Result := 0;
 end;
 
-// links blijft ruimte vrij: 48 voor de balk links, 28 voor het vlak links
-// als de balk boven of onder staat
+function TjanGridS.BoxLeftW: Integer;
+begin
+  if BoxSide = alLeft then
+    Result := BoxControl.Width
+  else
+    Result := 0;
+end;
+
+function TjanGridS.BoxRightW: Integer;
+begin
+  if BoxSide = alRight then
+    Result := BoxControl.Width
+  else
+    Result := 0;
+end;
+
+// rechterrand van het paneel (links van een balk rechts)
+function TjanGridS.GetGridRightEdge: Integer;
+begin
+  Result := Width - 3 - BoxRightW;
+end;
+
+// links blijft ruimte vrij: de breedte van een balk links plus 28 voor het
+// vlak met de liniaal links (de balk staat links, rechts, boven of onder)
 function TjanGridS.GetGridLeftOffset: Integer;
 begin
-  case BoxSide of
-    alLeft:            Result := 48;
-    alTop, alBottom:   Result := 28;
+  if BoxSide = alNone then
+    Result := 3
   else
-    Result := 3;
-  end;
+    Result := BoxLeftW + 28;
 end;
 
 function TjanGridS.GetTitleTop: Integer;
@@ -957,7 +980,7 @@ begin
   L := GetGridLeftOffset;
   TopY := GetTitleTop + GetTitleHeight;
 
-  RightEdge := Width - 3;
+  RightEdge := GetGridRightEdge;
   if FShowRulers then
     Dec(RightEdge, FRulerRightWidth);
 
@@ -971,7 +994,7 @@ var
   TopY: Integer;
 begin
   TopY := GetTopRulerRect.Bottom;
-  Result := Rect(Width - 3 - FRulerRightWidth, TopY, Width - 3, Height - 3 - BoxBottomH);
+  Result := Rect(GetGridRightEdge - FRulerRightWidth, TopY, GetGridRightEdge, Height - 3 - BoxBottomH);
 end;
 
 function TjanGridS.GetWorkAreaRect: TRect;
@@ -984,7 +1007,7 @@ begin
   if FShowRulers then
     Inc(T, FRulerTopHeight);
 
-  R := Width - 3;
+  R := GetGridRightEdge;
   if FShowRulers then
     Dec(R, FRulerRightWidth);
 
@@ -1153,7 +1176,7 @@ end;
 
 function TjanGridS.GetStatusBarRect: TRect;
 begin
-  Result := Rect(GetGridLeftOffset, 2 + BoxTopH, Width - 3, FStatusBarHeight + BoxTopH);
+  Result := Rect(GetGridLeftOffset, 2 + BoxTopH, GetGridRightEdge, FStatusBarHeight + BoxTopH);
 end;
 
 // hoogte die de balk Invoer / Verwerken / Uitvoer inneemt (0 als verborgen)
@@ -1249,7 +1272,7 @@ begin
     if BoxSide = alNone then
       TextX := (Width - TextWidth) div 2
     else
-      TextX := ((Width - TextWidth) div 2) + (GetGridLeftOffset - 3) div 2;
+      TextX := (GetGridLeftOffset + GetGridRightEdge - TextWidth) div 2;
 
     TextY := GetTitleTop + 2;
     RectT := Rect(TextX, TextY, TextX + TextWidth, TextY + TextHeight);
@@ -1261,7 +1284,7 @@ end;
 procedure TjanGridS.DrawRulers;
 var
   RTop, RRight, WorkR: TRect;
-  x, y, Offset: Integer;
+  x, y, Offset, LX: Integer;
   Txt: string;
   TxtH: Integer;
 begin
@@ -1326,10 +1349,12 @@ begin
     Inc(y);
   end;
 
-  // balk boven of onder: ook een verticale ruler op het vlak links
-  // (streepjes aan de rechterkant, tegen het werkvlak)
-  if BoxSide in [alTop, alBottom] then
+  // ook een verticale ruler op het vlak links (streepjes aan de
+  // rechterkant, tegen het werkvlak); bij een balk links staat het vlak
+  // rechts van de balk
+  if BoxSide <> alNone then
   begin
+    LX := BoxLeftW;
     Canvas.Pen.Color := FRulerTickColor;
     y := WorkR.Top;
     while y <= WorkR.Bottom do
@@ -1337,15 +1362,15 @@ begin
       Offset := y - WorkR.Top;
       if (FGridY > 0) and ((Offset mod (FGridY * 5)) = 0) then
       begin
-        Canvas.MoveTo(25, y);
-        Canvas.LineTo(20, y);
+        Canvas.MoveTo(LX + 25, y);
+        Canvas.LineTo(LX + 20, y);
         Txt := IntToStr(Offset);
-        Canvas.TextOut(19 - Canvas.TextWidth(Txt), y - (TxtH div 2), Txt);
+        Canvas.TextOut(LX + 19 - Canvas.TextWidth(Txt), y - (TxtH div 2), Txt);
       end
       else if (FGridY > 0) and ((Offset mod FGridY) = 0) then
       begin
-        Canvas.MoveTo(25, y);
-        Canvas.LineTo(22, y);
+        Canvas.MoveTo(LX + 25, y);
+        Canvas.LineTo(LX + 22, y);
       end;
       Inc(y);
     end;
@@ -1353,8 +1378,8 @@ begin
        (FGuidePoint.Y >= WorkR.Top) and (FGuidePoint.Y <= WorkR.Bottom) then
     begin
       Canvas.Pen.Color := clRed;
-      Canvas.MoveTo(2, FGuidePoint.Y);
-      Canvas.LineTo(25, FGuidePoint.Y);
+      Canvas.MoveTo(LX + 2, FGuidePoint.Y);
+      Canvas.LineTo(LX + 25, FGuidePoint.Y);
     end;
   end;
 
@@ -1402,12 +1427,12 @@ begin
   Binnen := (Clip.Left >= WorkR.Left) and (Clip.Top >= WorkR.Top) and
             (Clip.Right <= WorkR.Right) and (Clip.Bottom <= WorkR.Bottom);
 
-  // balk boven of onder: links een vlak in de kleur van de linialen,
-  // 25 pixels breed
-  if (not Binnen) and (BoxSide in [alTop, alBottom]) then
+  // links een vlak in de kleur van de linialen, 25 pixels breed (bij een
+  // balk links rechts naast de balk)
+  if (not Binnen) and (BoxSide <> alNone) then
   begin
     // met een opstaande rand, zoals een TPanel
-    R := Rect(1, 1 + BoxTopH, 26, Height - 1 - BoxBottomH);
+    R := Rect(1 + BoxLeftW, 1 + BoxTopH, 26 + BoxLeftW, Height - 1 - BoxBottomH);
     Canvas.Frame3D(R, clBtnHighlight, clBtnShadow, 1);
     Canvas.Brush.Color := FRulerColor;
     Canvas.FillRect(R);
@@ -1512,7 +1537,7 @@ begin
   if BoxSide = alNone then
     TextX := (Width - TxtWidth) div 2
   else
-    TextX := ((Width - TxtWidth) div 2) + (GetGridLeftOffset - 3) div 2;
+    TextX := (GetGridLeftOffset + GetGridRightEdge - TxtWidth) div 2;
 
   TextY := GetTitleTop + 2;
 

@@ -79,8 +79,63 @@
   </table>
   <p>De klokingang C heeft een driehoekje in het blok. De flipflop reageert alleen op het <b>aangaan</b> van C
   (de flank), niet zolang C aan blijft. Probeer het in <a href="les27.html">les 27</a>.</p>
-  <div class="tip"><strong>Tip:</strong> zet twee T-flipflops achter elkaar en verbind niet-Q van de eerste met T van
-  de tweede: zo telt de schakeling van 0 tot 3, met de lamp op Q van de eerste flipflop voor 1 en die van de tweede voor 2.</div>
+    <h3 id="ff-bouwen">Zelf bouwen: vier kleine panelen</h3>
+  <p>Voor elk voorbeeld klik je op <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flipflop</b>, zet je hem
+  midden op het paneel en kies je met de rechtermuisknop de soort. De ingangen zet je links, de lampen rechts.
+  Verbind alles met <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbinding</b>
+  (zie <a href="verbindingen.html">Verbindingen</a>) en start daarna de simulatie.</p>
+
+  <h3 id="ff-sr">SR-flipflop: een alarm dat blijft afgaan</h3>
+  <ol class="steps">
+    <li>Zet twee <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">drukknoppen</a> links: de bovenste is &ldquo;alarm&rdquo;, de onderste &ldquo;reset&rdquo;.</li>
+    <li>Verbind de bovenste drukknop met <span class="pin in">S</span> en de onderste met <span class="pin in">R</span>.</li>
+    <li>Zet een <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">lamp</a> rechts en verbind ze met <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Wat zie je?</b> Druk kort op &ldquo;alarm&rdquo;: de lamp gaat aan en <b>blijft</b> aan als je loslaat.
+  Pas met &ldquo;reset&rdquo; gaat ze weer uit. Zo onthoudt een alarm dat een deur even open was. Dit voorbeeld
+  staat uitgewerkt in <a href="les27.html">les 27</a>.</p>
+
+  <h3 id="ff-d">D-flipflop: een waarde vastleggen</h3>
+  <ol class="steps">
+    <li>Zet een <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">schakelaar</a> links en verbind hem met <span class="pin in">D</span> (de gegevens: wat moet bewaard worden).</li>
+    <li>Zet er een drukknop onder en verbind hem met <span class="pin in">C</span> (de klok: wanneer moet het bewaard worden).</li>
+    <li>Zet een lamp rechts en verbind ze met <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Wat zie je?</b> Zet de schakelaar aan: de lamp blijft uit. Pas als je op de drukknop drukt, neemt Q de stand
+  van de schakelaar over en gaat de lamp aan. Zet de schakelaar weer uit: de lamp blijft branden tot je opnieuw
+  drukt. De D-flipflop maakt dus een &ldquo;foto&rdquo; van D op het moment van de klok. Zo bewaart een computer
+  een bit in zijn geheugen: D zegt <i>wat</i>, de klok zegt <i>wanneer</i>.</p>
+
+  <h3 id="ff-jk">JK-flipflop: vier mogelijkheden in één</h3>
+  <ol class="steps">
+    <li>Zet twee schakelaars links: verbind de bovenste met <span class="pin in">J</span> en de onderste met <span class="pin in">K</span>.</li>
+    <li>Zet een drukknop tussen de twee schakelaars en verbind hem met de klok <span class="pin in">C</span>.</li>
+    <li>Zet een lamp rechts en verbind ze met <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Wat zie je?</b> Kies een stand van J en K en druk dan op de drukknop. Er gebeurt pas iets bij die druk:</p>
+  <table>
+    <tr><th>J</th><th>K</th><th>Na een druk op de drukknop (C)</th></tr>
+    <tr><td>0</td><td>0</td><td>Q blijft zoals hij was</td></tr>
+    <tr><td>1</td><td>0</td><td>Q wordt 1: de lamp gaat aan</td></tr>
+    <tr><td>0</td><td>1</td><td>Q wordt 0: de lamp gaat uit</td></tr>
+    <tr><td>1</td><td>1</td><td>Q wisselt bij elke druk: aan, uit, aan, &hellip;</td></tr>
+  </table>
+  <p>De JK-flipflop kan dus alles: onthouden, zetten, wissen en wisselen. Met J en K allebei aan werkt hij als een
+  T-flipflop. Zet je een <a href="#niet"><img src="../img/pal-niet.png" class="ico" alt="">NIET-poort</a> van J naar K
+  (K is altijd het omgekeerde van J), dan werkt hij als een D-flipflop met J als D.</p>
+
+  <h3 id="ff-t">T-flipflop: delen door twee en tellen</h3>
+  <ol class="steps">
+    <li>Zet een drukknop links en verbind hem met <span class="pin in">T</span>.</li>
+    <li>Zet een lamp rechts en verbind ze met <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>Wat zie je?</b> Bij elke druk wisselt de lamp: de eerste druk aan, de tweede uit, de derde weer aan, &hellip;
+  Zet je een <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">impulsgenerator</a> op T in
+  plaats van de drukknop, dan knippert de lamp half zo snel als de impulsen: de T-flipflop deelt door twee.</p>
+  <div class="tip"><strong>Een teller van 0 tot 3:</strong> zet een tweede T-flipflop rechts van de eerste en verbind
+  <span class="pin out">Q&#773;</span> (niet-Q) van de eerste met <span class="pin in">T</span> van de tweede. Zet een lamp
+  op Q van elke flipflop: de lamp van de eerste telt 1, die van de tweede telt 2. Druk vier keer: 1, 2, 3 en weer 0.
+  In <a href="les27.html">les 27</a> kan je deze teller meteen openen.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Tellerblok</h2>
   <p>Telt de pulsen op zijn telingang en geeft de stand binair door op vier uitgangen.</p>

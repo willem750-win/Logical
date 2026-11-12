@@ -80,8 +80,63 @@
   </table>
   <p>The clock input C has a small triangle in the block. The flip-flop only reacts to C <b>turning on</b>
   (the edge), not while C stays on. Try it in <a href="les27.html">lesson 27</a>.</p>
-  <div class="tip"><strong>Tip:</strong> put two T flip-flops one after the other and connect not-Q of the first to T of
-  the second: the circuit then counts from 0 to 3, with the lamp on Q of the first flip-flop for 1 and the one of the second for 2.</div>
+    <h3 id="ff-bouwen">Build it yourself: four small panels</h3>
+  <p>For each example, click <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flip-flop</b>, place it in the
+  middle of the panel and choose the type with the right mouse button. Put the inputs on the left and the lamps on the
+  right. Connect everything with <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>
+  (see <a href="verbindingen.html">Connections</a>) and then start the simulation.</p>
+
+  <h3 id="ff-sr">SR flip-flop: an alarm that keeps going</h3>
+  <ol class="steps">
+    <li>Put two <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">push buttons</a> on the left: the top one is &ldquo;alarm&rdquo;, the bottom one &ldquo;reset&rdquo;.</li>
+    <li>Connect the top push button to <span class="pin in">S</span> and the bottom one to <span class="pin in">R</span>.</li>
+    <li>Put a <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">lamp</a> on the right and connect it to <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>What do you see?</b> Briefly press &ldquo;alarm&rdquo;: the lamp comes on and <b>stays</b> on when you release
+  it. Only &ldquo;reset&rdquo; switches it off again. This is how an alarm remembers that a door was open for a moment.
+  This example is worked out in <a href="les27.html">lesson 27</a>.</p>
+
+  <h3 id="ff-d">D flip-flop: capturing a value</h3>
+  <ol class="steps">
+    <li>Put a <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">switch</a> on the left and connect it to <span class="pin in">D</span> (the data: what must be stored).</li>
+    <li>Put a push button below it and connect it to <span class="pin in">C</span> (the clock: when it must be stored).</li>
+    <li>Put a lamp on the right and connect it to <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>What do you see?</b> Switch the switch on: the lamp stays off. Only when you press the push button does Q take
+  over the position of the switch and the lamp comes on. Switch the switch off again: the lamp stays on until you press
+  again. So the D flip-flop takes a &ldquo;photo&rdquo; of D at the moment of the clock. This is how a computer stores
+  a bit in its memory: D says <i>what</i>, the clock says <i>when</i>.</p>
+
+  <h3 id="ff-jk">JK flip-flop: four options in one</h3>
+  <ol class="steps">
+    <li>Put two switches on the left: connect the top one to <span class="pin in">J</span> and the bottom one to <span class="pin in">K</span>.</li>
+    <li>Put a push button between the two switches and connect it to the clock <span class="pin in">C</span>.</li>
+    <li>Put a lamp on the right and connect it to <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>What do you see?</b> Choose a position of J and K and then press the push button. Nothing happens until that press:</p>
+  <table>
+    <tr><th>J</th><th>K</th><th>After a press on the push button (C)</th></tr>
+    <tr><td>0</td><td>0</td><td>Q stays as it was</td></tr>
+    <tr><td>1</td><td>0</td><td>Q becomes 1: the lamp comes on</td></tr>
+    <tr><td>0</td><td>1</td><td>Q becomes 0: the lamp goes off</td></tr>
+    <tr><td>1</td><td>1</td><td>Q toggles on every press: on, off, on, &hellip;</td></tr>
+  </table>
+  <p>So the JK flip-flop can do everything: remember, set, reset and toggle. With J and K both on it works as a
+  T flip-flop. Put a <a href="#niet"><img src="../img/pal-niet.png" class="ico" alt="">NOT gate</a> from J to K
+  (K is always the opposite of J) and it works as a D flip-flop with J as D.</p>
+
+  <h3 id="ff-t">T flip-flop: dividing by two and counting</h3>
+  <ol class="steps">
+    <li>Put a push button on the left and connect it to <span class="pin in">T</span>.</li>
+    <li>Put a lamp on the right and connect it to <span class="pin out">Q</span>.</li>
+  </ol>
+  <p><b>What do you see?</b> The lamp toggles on every press: the first press on, the second off, the third on again,
+  &hellip; Put a <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">pulse generator</a> on T
+  instead of the push button and the lamp blinks half as fast as the pulses: the T flip-flop divides by two.</p>
+  <div class="tip"><strong>A counter from 0 to 3:</strong> put a second T flip-flop to the right of the first and connect
+  <span class="pin out">Q&#773;</span> (not-Q) of the first to <span class="pin in">T</span> of the second. Put a lamp on
+  Q of each flip-flop: the lamp of the first counts 1, the one of the second counts 2. Press four times: 1, 2, 3 and back
+  to 0. In <a href="les27.html">lesson 27</a> you can open this counter straight away.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Counter block</h2>
   <p>Counts the pulses on its count input and passes the count on in binary on four outputs.</p>
