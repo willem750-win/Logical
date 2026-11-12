@@ -1,0 +1,43 @@
+<!-- titel: Wahrheitstabelle -->
+  <h1 id="waarheidstabel"><img src="../img/knop-waarheid.png" class="ico" alt="">Wahrheitstabelle</h1>
+  <p class="lead">Eine Wahrheitstabelle zeigt für jede Stellung der Schalter, welche Lampen leuchten. Logic erstellt
+  diese Tabelle selbst: Es setzt die Schalter und Taster Ihres Panels nacheinander in jede Stellung und schaut, welche
+  Lampen und Summer angehen.</p>
+
+  <figure>
+    <img src="../img/waarheidstabel-voorbeeld.png" alt="Fenster Wahrheitstabelle mit den Spalten A, B, L1 und L2 und vier Zeilen">
+    <figcaption>Die Wahrheitstabelle des Halbaddierers aus <a href="les26.html">Lektion 26</a>: L1 (die LED, Summe)
+    leuchtet bei 01 und 10, L2 (die Lampe, Übertrag) nur bei 11.</figcaption>
+  </figure>
+
+  <h2>So benutzen Sie sie</h2>
+  <ol class="steps">
+    <li>Bauen Sie eine Schaltung mit <a href="invoer.html#schakelaar">Schaltern</a> oder <a href="invoer.html#drukknop">Tastern</a>,
+      Gattern und <a href="uitvoer.html#lamp">Lampen</a> oder <a href="uitvoer.html#zoemer">Summern</a>, oder öffnen Sie ein Beispiel.</li>
+    <li>Klicken Sie in der Titelleiste auf <img src="../img/knop-waarheid.png" class="ico" alt=""><b>Wahrheitstabelle</b>.</li>
+    <li>Das Fenster zeigt die Tabelle und folgt Ihrem Panel: Fügen Sie ein Bauteil oder einen Draht hinzu, entfernen oder verschieben Sie einen, rechnet Logic die Tabelle von selbst neu.</li>
+    <li>Legen Sie einen Schalter um (in der Simulation): Die Zeile mit dem <b>roten Rand</b> ist die jetzige Stellung und wechselt mit.</li>
+  </ol>
+
+  <h2>Die Tabelle lesen</h2>
+  <ul>
+    <li><b>A, B, C &hellip;</b> (hellblau) sind die Eingänge, von oben nach unten: <a href="invoer.html#schakelaar">Schalter</a>, <a href="invoer.html#drukknop">Taster</a>, <a href="invoer.html#dipswitch">DIP-Schalter</a>, der <a href="invoer.html#sensor">Lichtsensor</a> und der <a href="invoer.html#warm">Wärmesensor</a>. Stehen zwei auf
+      derselben Höhe, kommt der linke zuerst.</li>
+    <li><b>L1, L2 &hellip;</b> (hellgelb) sind die Lampen und LEDs, ebenfalls von oben nach unten; <b>S1, S2 &hellip;</b> sind die Summer, <b>R1</b> &hellip; die Relais und Schaltrelais.</li>
+    <li>Ein <b>Motor</b> (<b>M1</b> &hellip;) zeigt <b>L</b> (dreht links herum), <b>R</b> (rechts herum) oder <b>0</b> (steht). Eine <b>Anzeige</b> (<b>D1</b> &hellip;) zeigt ihre Ziffer; <b>-</b> bedeutet dunkel (keine Spannung).</li>
+    <li>Der Pulsgeber, der Endschalter und die Bauteile von LogicRun (Person, Wagen &hellip;) zählen nicht mit: Sie hängen von der Zeit oder von einem Programm ab.</li>
+    <li>Eine <b>1</b> bedeutet an, eine <b>0</b> aus. Ein Ausgang, der an ist, wird grün.</li>
+    <li>Jede Zeile ist eine Stellung. Mit 2 Schaltern gibt es 4 Zeilen, mit 3 Schaltern 8 Zeilen; die Tabelle schafft bis zu 6 Schalter (64 Zeilen).</li>
+  </ul>
+  <p>Mit <b>Kopieren</b> legen Sie die Tabelle in die Zwischenablage, um sie in eine Textverarbeitung oder
+  Tabellenkalkulation einzufügen. Nach dem Erstellen der Tabelle stehen die Schalter wieder wie vorher.</p>
+
+  <div class="tip"><strong>Achtung:</strong> Eine Wahrheitstabelle passt zu Schaltungen mit <a href="verwerking.html#poorten">Gattern</a>:
+  Dort hängen die Ausgänge nur von der jetzigen Stellung der Schalter ab. Steht ein
+  <a href="verwerking.html#flipflop">Flipflop</a>, ein Zähler oder ein anderes Bauteil mit einem Speicher auf dem Panel,
+  hängt der Ausgang auch davon ab, was vorher geschah. Logic warnt dann, und die Tabelle gilt nicht immer.</div>
+
+  <h2>Probieren Sie es</h2>
+  <p>Erstellen Sie die Wahrheitstabelle von <a href="les04.html">Lektion 4</a> (UND-Gatter), <a href="les05.html">Lektion 5</a>
+  (ODER-Gatter) und <a href="les26.html">Lektion 26</a> (Halbaddierer), und vergleichen Sie sie mit den Tabellen unter
+  <a href="verwerking.html#poorten">Verarbeitung</a>.</p>

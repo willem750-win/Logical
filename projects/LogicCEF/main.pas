@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid;
 const
   IniFileName = 'taal.ini';
 
@@ -165,6 +165,8 @@ type
      btUndo, btRedo: TSpeedButton;
      btLogicRun: TSpeedButton;          // LogicRun-venster openen
      FLogicRunForm: TLogicRunForm;
+     btWaarheid: TSpeedButton;          // waarheidstabel van het paneel
+     FWaarheidForm: TWaarheidForm;
      // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
      // vaste talen: FPoCodes[i] hoort bij Taal.Items[4 + i]
      FPoCodes: TStringList;
@@ -173,6 +175,7 @@ type
      function TaalIndex: Integer;
      procedure SyncPropGridLanguageCombos;
      procedure btLogicRunClick(Sender: TObject);
+     procedure btWaarheidClick(Sender: TObject);
      procedure GridKLogicRunChange(Sender: TObject);
      procedure GridKStatusBalkChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
@@ -1568,6 +1571,35 @@ begin
 end;
 
 // Knop LogicRun: een lijstje (het programma) met een groene startpijl.
+// tabelletje met 0 en 1: knop Waarheidstabel
+function MakeWaarheidGlyph: TBitmap;
+var
+  i: Integer;
+begin
+  Result := TBitmap.Create;
+  Result.SetSize(16, 16);
+  Result.Canvas.Brush.Color := clFuchsia;
+  Result.Canvas.FillRect(0, 0, 16, 16);
+  Result.Canvas.Brush.Color := $00F5E6D8;   // ingangen lichtblauw
+  Result.Canvas.FillRect(1, 1, 10, 15);
+  Result.Canvas.Brush.Color := $0090EE90;   // uitgang groen
+  Result.Canvas.FillRect(10, 1, 15, 15);
+  Result.Canvas.Pen.Color := clNavy;
+  Result.Canvas.Brush.Style := bsClear;
+  Result.Canvas.Rectangle(0, 0, 16, 16);
+  for i := 1 to 2 do
+  begin
+    Result.Canvas.MoveTo(1, i * 5);
+    Result.Canvas.LineTo(15, i * 5);
+  end;
+  Result.Canvas.MoveTo(5, 1);  Result.Canvas.LineTo(5, 15);
+  Result.Canvas.Pen.Width := 2;
+  Result.Canvas.MoveTo(10, 1); Result.Canvas.LineTo(10, 15);
+  Result.Canvas.Pen.Width := 1;
+  Result.TransparentColor := clFuchsia;
+  Result.Transparent := True;
+end;
+
 function MakeLogicRunGlyph: TBitmap;
 var
   i: Integer;
@@ -1629,11 +1661,11 @@ begin
   // van de bewerkbalk op een vaste plaats staan (Bewaren, Openen, ...)
   // schuiven evenveel mee, anders liggen ze onder de nieuwe knoppen
   OldRight := Panel2.Left + Panel2.Width;
-  Panel2.Width := Panel2.Width + 84;
+  Panel2.Width := Panel2.Width + 112;
   for i := 0 to Panel2.Parent.ControlCount - 1 do
     with Panel2.Parent.Controls[i] do
       if (Align = alNone) and (Left >= OldRight) then
-        Left := Left + 84;
+        Left := Left + 112;
   btUndo := MakeButton(BSettings2.Left + BSettings2.Width + 2, False, @btUndoClick);
   btRedo := MakeButton(btUndo.Left + btUndo.Width + 2, True, @btRedoClick);
   // LogicRun (programmeermodule) rechts daarvan
@@ -1652,6 +1684,23 @@ begin
   btLogicRun.OnClick := @btLogicRunClick;
   btLogicRun.OnMouseEnter := @btSimulateMouseEnter;
   btLogicRun.HelpKeyword := 'logicrun';
+  // waarheidstabel rechts van LogicRun (vaste plaats, ook als LogicRun
+  // verborgen is)
+  btWaarheid := TSpeedButton.Create(Self);
+  btWaarheid.Parent := Panel2;
+  btWaarheid.SetBounds(btLogicRun.Left + btLogicRun.Width + 2, 2, 26, 22);
+  btWaarheid.Flat := True;
+  btWaarheid.ShowHint := True;
+  btWaarheid.ParentShowHint := False;
+  G := MakeWaarheidGlyph;
+  try
+    btWaarheid.Glyph := G;
+  finally
+    G.Free;
+  end;
+  btWaarheid.OnClick := @btWaarheidClick;
+  btWaarheid.OnMouseEnter := @btSimulateMouseEnter;
+  btWaarheid.HelpKeyword := 'waarheidstabel';
   // Instellingen > Algemeen: knop LogicRun en balkknoppen Persoon en Wagentje aan/uit
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
@@ -1697,6 +1746,16 @@ begin
     else
       btLogicRun.Hint := 'LogicRun: programma in stappen';
     end;
+  if Assigned(btWaarheid) then
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: btWaarheid.Hint := PoTr('Truth table of the panel');
+      chatgridpcodeSmall.lgFrench:  btWaarheid.Hint := 'Table de vérité du panneau';
+      chatgridpcodeSmall.lgGerman:  btWaarheid.Hint := 'Wahrheitstabelle des Panels';
+    else
+      btWaarheid.Hint := 'Waarheidstabel van het paneel';
+    end;
+  if Assigned(FWaarheidForm) then
+    FWaarheidForm.SetTaal(LogicRunTaal);
   if Assigned(FLogicRunForm) then
     FLogicRunForm.SetTaal(LogicRunTaal);
 end;
@@ -1736,6 +1795,26 @@ end;
 procedure TmainForm.btLogicRunClick(Sender: TObject);
 begin
   LogicRunEdit(nil);
+end;
+
+// Waarheidstabel: venster naast het hoofdvenster, telkens opnieuw berekend
+procedure TmainForm.btWaarheidClick(Sender: TObject);
+var
+  L: Integer;
+begin
+  if FWaarheidForm = nil then
+  begin
+    FWaarheidForm := TWaarheidForm.CreateFor(Self, Grid, Box);
+    FWaarheidForm.SetTaal(LogicRunTaal);
+  end;
+  FWaarheidForm.Bereken;
+  L := Left + Width;
+  if L + FWaarheidForm.Width > Screen.WorkAreaRect.Right then
+    L := Screen.WorkAreaRect.Right - FWaarheidForm.Width;
+  if not FWaarheidForm.Visible then
+    FWaarheidForm.SetBounds(L, Top, FWaarheidForm.Width, FWaarheidForm.Height);
+  FWaarheidForm.Show;
+  FWaarheidForm.BringToFront;
 end;
 
 // Instelling KLogicRun gewijzigd: knoppen tonen of verbergen. Een LogicRun-blok

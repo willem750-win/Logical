@@ -1466,3 +1466,72 @@ msgstr "Clic derecho: elegir el tipo (SR, D, JK, T)"
 
 msgid "Set Q to 0"
 msgstr "Poner Q a 0"
+
+msgid "Show electrons"
+msgstr "Mostrar los electrones"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit.\nAt 12 V: "
+msgstr "Lámpara con dos bornes: ponla en serie o en paralelo en el circuito.\nA 12 V: "
+
+msgid " and "
+msgstr " y "
+
+msgid ". The more power, the brighter it shines. Right-click: choose the resistance."
+msgstr ". Cuanta más potencia, más brilla. Clic derecho: elige la resistencia."
+
+msgid "open: no current flows"
+msgstr "abierto: no pasa corriente"
+
+msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
+msgstr "Interruptor con dos bornes en el circuito. Haz clic en la palanca para abrirlo o cerrarlo."
+
+msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
+msgstr "Conecta el borne + (izquierda) y el borne − (derecha) con un cable a los dos lados\nde una lámpara, un contacto o una fuente. El medidor no consume corriente."
+
+msgid "Truth table of the panel"
+msgstr "Tabla de verdad del panel"
+
+msgid "Truth table"
+msgstr "Tabla de verdad"
+
+msgid "Again"
+msgstr "Otra vez"
+
+msgid "Copy"
+msgstr "Copiar"
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "There is no switch or push button on the panel."
+msgstr "En el panel no hay ningún interruptor ni pulsador."
+
+msgid "There is no lamp or buzzer on the panel."
+msgstr "En el panel no hay ninguna lámpara ni zumbador."
+
+msgid "There are %d switches and push buttons on the panel; the table can handle at most %d."
+msgstr "En el panel hay %d interruptores y pulsadores; la tabla admite como máximo %d."
+
+msgid "Each row is a position of the switches and push buttons: A is the top one, B the next, ... On the right you see whether the lamps (L1 = the top one) and buzzers are on (1) or off (0)."
+msgstr "Cada fila es una posición de los interruptores y pulsadores: A es el de arriba, B el siguiente, ... A la derecha ves si las lámparas (L1 = la de arriba) y los zumbadores están encendidos (1) o apagados (0)."
+
+msgid "Note: the panel has components with a memory (flip-flop, counter, ...). Their output also depends on what happened before, so the table does not always apply."
+msgstr "Atención: en el panel hay componentes con memoria (biestable, contador, ...). Su salida depende también de lo que pasó antes, así que la tabla no siempre vale."
+
+msgid "B"
+msgstr "Z"
+
+msgid "The row with the red border is the current position: flip a switch and watch it move."
+msgstr "La fila con el borde rojo es la posición actual: mueve un interruptor y mira cómo cambia."
+
+msgid "There is no switch, push button or sensor on the panel."
+msgstr "En el panel no hay ningún interruptor, pulsador ni sensor."
+
+msgid "There is no lamp, buzzer, relay, motor or display on the panel."
+msgstr "En el panel no hay ninguna lámpara, zumbador, relé, motor ni display."
+
+msgid "There are %d inputs (switches, push buttons, sensors) on the panel; the table can handle at most %d."
+msgstr "En el panel hay %d entradas (interruptores, pulsadores, sensores); la tabla admite como máximo %d."
+
+msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
+msgstr "Cada fila es una posición de las entradas (interruptores, pulsadores, sensores): A es la de arriba, B la siguiente, ... A la derecha ves si las salidas están encendidas (1) o apagadas (0): L = lámpara o LED (L1 = la de arriba), Z = zumbador, R = relé. Un motor (M) gira L (a la izquierda) o R (a la derecha), un display (D) muestra su cifra."

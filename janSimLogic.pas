@@ -2177,6 +2177,27 @@ type
     procedure ShiftPanelObjects(DX, DY: Integer);
     function PanelText(Paneel: TjanGridS): string;
     procedure LoadPanelText(const AText: string; Paneel: TjanGridS);
+    // Waarheidstabel: zet de schakelaars en drukknoppen (Ins, van boven naar
+    // onder) in elke stand en leest de lampen en zoemers (Outs). Elke rij in
+    // Rijen is een reeks '0'/'1': eerst de ingangen, dan de uitgangen.
+    // Resultaat: 0 = goed, 1 = geen ingangen, 2 = geen uitgangen,
+    // 3 = te veel ingangen (meer dan MaxIn). Geheugen wordt True als er
+    // onderdelen met een geheugen op het paneel staan (flipflop, teller ...).
+    function Waarheidstabel(Ins, Outs: TList; Rijen: TStrings;
+      out Geheugen: Boolean; MaxIn: Integer = 6): Integer;
+    // De vorm van het paneel: welke onderdelen en draden er staan en waar,
+    // zonder de stand van de schakelaars. Verandert de vorm, dan moet de
+    // waarheidstabel opnieuw berekend worden.
+    function Paneelvorm: string;
+    // Hulp voor de waarheidstabel: is C een ingang (schakelaar, drukknop,
+    // dipswitch, lichtsensor, warmtesensor) of een uitgang (lamp, LED,
+    // zoemer, relais, schakelrelais, motor, display)?
+    class function IsInvoer(C: TControl): Boolean;
+    class function IsUitvoer(C: TControl): Boolean;
+    class function InvoerAan(C: TControl): Boolean;
+    class procedure ZetInvoer(C: TControl; V: Boolean);
+    // '0' of '1'; een motor geeft 'L', 'R' of '0', een display zijn cijfer
+    class function UitvoerTeken(C: TControl): Char;
     // telt hoe vaak het paneel leeggemaakt werd (laden, nieuw paneel)
     property KillCount: Integer read FKillCount;
     // Samenvatting van de inhoud van het paneel (objecten, draden en de
@@ -21794,6 +21815,173 @@ begin
     if (wc.controls[i] is TjanConnector) then
       TjanConnector(wc.controls[i]).connect;
 
+end;
+
+function TjanSimLogicBox.Waarheidstabel(Ins, Outs: TList; Rijen: TStrings;
+  out Geheugen: Boolean; MaxIn: Integer): Integer;
+var
+  wc: TWinControl;
+  c: TControl;
+  i, k, r, NIn, Rondes, Draden: Integer;
+  Oud: array of Boolean;
+  S: string;
+
+  // van boven naar onder, bij dezelfde hoogte van links naar rechts
+  procedure Sorteer(L: TList);
+  var a, b: Integer; t: Pointer;
+  begin
+    for a := 1 to L.Count - 1 do
+    begin
+      b := a;
+      while (b > 0) and
+        ((TControl(L[b - 1]).Top > TControl(L[b]).Top) or
+         ((TControl(L[b - 1]).Top = TControl(L[b]).Top) and
+          (TControl(L[b - 1]).Left > TControl(L[b]).Left))) do
+      begin
+        t := L[b - 1]; L[b - 1] := L[b]; L[b] := t;
+        Dec(b);
+      end;
+    end;
+  end;
+
+  function IsDown(C: TControl): Boolean;
+  begin
+    Result := InvoerAan(C);
+  end;
+
+  procedure ZetDown(C: TControl; V: Boolean);
+  begin
+    ZetInvoer(C, V);
+  end;
+
+  // alle draden genoeg keer laten rekenen: per ronde gaat een signaal
+  // minstens één draad verder
+  procedure Reken;
+  var j: Integer;
+  begin
+    for j := 1 to Rondes do cpuOnTimer(nil);
+  end;
+
+begin
+  Ins.Clear; Outs.Clear; Rijen.Clear;
+  Geheugen := False;
+  wc := Parent;
+  if wc = nil then Exit(1);
+  Draden := 0;
+  for i := 0 to wc.ControlCount - 1 do
+  begin
+    c := wc.Controls[i];
+    if not c.Visible then Continue;
+    if IsInvoer(c) then Ins.Add(c)
+    else if IsUitvoer(c) then Outs.Add(c)
+    else if c is TjanConnector then Inc(Draden)
+    else if (c is TjanSimStappenteller) or (c is TjanTeller) or (c is TjanMemory) or
+            (c is TjanSimPuls) or (c is TjanLogicRun) or (c is TjanSimStopwatch) then
+      Geheugen := True;
+  end;
+  Sorteer(Ins);
+  Sorteer(Outs);
+  if Ins.Count = 0 then Exit(1);
+  if Outs.Count = 0 then Exit(2);
+  if Ins.Count > MaxIn then Exit(3);
+  NIn := Ins.Count;
+  Rondes := Draden + 5;
+  if Rondes > 400 then Rondes := 400;
+  SetLength(Oud, NIn);
+  for i := 0 to NIn - 1 do Oud[i] := IsDown(TControl(Ins[i]));
+  try
+    for k := 0 to (1 shl NIn) - 1 do
+    begin
+      // A (de bovenste) is het hoogste bit: 00, 01, 10, 11 ...
+      for i := 0 to NIn - 1 do
+        ZetDown(TControl(Ins[i]), ((k shr (NIn - 1 - i)) and 1) = 1);
+      Reken;
+      S := '';
+      for i := 0 to NIn - 1 do
+        if ((k shr (NIn - 1 - i)) and 1) = 1 then S := S + '1' else S := S + '0';
+      for r := 0 to Outs.Count - 1 do
+        S := S + UitvoerTeken(TControl(Outs[r]));
+      Rijen.Add(S);
+    end;
+  finally
+    for i := 0 to NIn - 1 do ZetDown(TControl(Ins[i]), Oud[i]);
+    Reken;
+  end;
+  Result := 0;
+end;
+
+class function TjanSimLogicBox.IsInvoer(C: TControl): Boolean;
+begin
+  Result := (C is TjanSimKnop) or (C is TjanSimButton) or (C is TjanDipSwitsh) or
+    (C is TjanSimSensor) or (C is TjanSimWarm);
+end;
+
+class function TjanSimLogicBox.IsUitvoer(C: TControl): Boolean;
+begin
+  Result := (C is TjanSimLight) or (C is TjanSimBuzzer) or (C is TjanSimRelais) or
+    (C is TjanSimMotor) or (C is TjanDisplay);
+end;
+
+class function TjanSimLogicBox.InvoerAan(C: TControl): Boolean;
+begin
+  if C is TjanSimKnop then Result := TjanSimKnop(C).Down
+  else if C is TjanSimButton then Result := TjanSimButton(C).Down
+  else if C is TjanDipSwitsh then Result := TjanDipSwitsh(C).Down
+  else if C is TjanSimSensor then Result := TjanSimSensor(C).Down
+  else if C is TjanSimWarm then Result := TjanSimWarm(C).Down
+  else Result := False;
+end;
+
+class procedure TjanSimLogicBox.ZetInvoer(C: TControl; V: Boolean);
+begin
+  if C is TjanSimKnop then TjanSimKnop(C).Down := V
+  else if C is TjanSimButton then TjanSimButton(C).Down := V
+  else if C is TjanDipSwitsh then TjanDipSwitsh(C).Down := V
+  else if C is TjanSimSensor then TjanSimSensor(C).Down := V
+  else if C is TjanSimWarm then TjanSimWarm(C).Down := V;
+end;
+
+class function TjanSimLogicBox.UitvoerTeken(C: TControl): Char;
+var
+  B: Boolean;
+begin
+  Result := '0';
+  if C is TjanSimMotor then
+  begin
+    if TjanSimMotor(C).Inputs[0] and not TjanSimMotor(C).Inputs[1] then Result := 'L'
+    else if TjanSimMotor(C).Inputs[1] and not TjanSimMotor(C).Inputs[0] then Result := 'R';
+    Exit;
+  end;
+  if C is TjanDisplay then
+  begin
+    Result := TjanDisplay(C).Digit;
+    if Result = ' ' then Result := '-';   // zonder voeding: donker
+    Exit;
+  end;
+  if C is TjanSimLight then B := TjanSimLight(C).Lit
+  else if C is TjanSimBuzzer then B := TjanSimBuzzer(C).Lit
+  else if C is TjanSimRelais then B := TjanSimRelais(C).Lit
+  else B := False;
+  if B then Result := '1';
+end;
+
+function TjanSimLogicBox.Paneelvorm: string;
+var
+  wc: TWinControl;
+  c: TControl;
+  i: Integer;
+begin
+  Result := IntToStr(FKillCount);
+  wc := Parent;
+  if wc = nil then Exit;
+  for i := 0 to wc.ControlCount - 1 do
+  begin
+    c := wc.Controls[i];
+    if (not c.Visible) or (c is TjanGroupSelect) or (c = Self) then Continue;
+    Result := Result + '|' + c.ClassName + ':' + IntToStr(c.Left) + ',' +
+      IntToStr(c.Top) + ',' + IntToStr(c.Width) + ',' + IntToStr(c.Height);
+    if c is TjanLogic then Result := Result + ':' + TjanLogic(c).L_Type;
+  end;
 end;
 
 constructor TjanSimLogicBox.create(AOwner: Tcomponent);

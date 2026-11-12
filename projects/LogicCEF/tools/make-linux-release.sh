@@ -154,11 +154,19 @@ else
   fi
   rm -rf "$TMPZIP" "$HELPTMP"
 fi
-# De PDF's van de help worden onder Windows gemaakt (Edge): haal ze van de
-# GitHub-release v$VERSION als ze er nog niet zijn.
+# De PDF's van de help worden onder Windows gemaakt (Edge). Eerst kijken of
+# ze als Logic-$VERSION-help-<taal>.pdf in Resultaat/help staan (met scp
+# gekopieerd uit de Windows-release; dat werkt ook als de GitHub-release nog
+# een concept is). Door het versienummer in de naam gaat er nooit een oude PDF
+# mee. Anders halen we ze van de GitHub-release v$VERSION.
 for L in nl en fr de; do
   PDF="$DST/help/Logic-help-$L.pdf"
   [ -f "$PDF" ] && continue
+  if [ -f "$SRC/help/Logic-$VERSION-help-$L.pdf" ]; then
+    cp "$SRC/help/Logic-$VERSION-help-$L.pdf" "$PDF"
+    echo "PDF uit Resultaat/help: Logic-$VERSION-help-$L.pdf"
+    continue
+  fi
   curl -fsSL -o "$PDF" \
     "https://github.com/willem750-win/Logical/releases/download/v$VERSION/Logic-$VERSION-help-$L.pdf" \
     || { rm -f "$PDF"; echo "LET OP: Logic-$VERSION-help-$L.pdf niet gevonden op GitHub; PDF ontbreekt."; }

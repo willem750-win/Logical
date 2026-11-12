@@ -1471,3 +1471,72 @@ msgstr "Правый щелчок: выбрать тип (SR, D, JK, T)"
 
 msgid "Set Q to 0"
 msgstr "Сбросить Q в 0"
+
+msgid "Show electrons"
+msgstr "Показать электроны"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit.\nAt 12 V: "
+msgstr "Лампа с двумя клеммами: включите её в цепь последовательно или параллельно.\nПри 12 В: "
+
+msgid " and "
+msgstr " и "
+
+msgid ". The more power, the brighter it shines. Right-click: choose the resistance."
+msgstr ". Чем больше мощность, тем ярче она светит. Правый щелчок: выбор сопротивления."
+
+msgid "open: no current flows"
+msgstr "разомкнут: ток не идёт"
+
+msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
+msgstr "Выключатель с двумя клеммами в цепи. Щёлкните по рычагу, чтобы разомкнуть или замкнуть его."
+
+msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
+msgstr "Соедините клемму + (слева) и клемму − (справа) проводом с обеими сторонами\nлампы, контакта или источника. Прибор не потребляет ток."
+
+msgid "Truth table of the panel"
+msgstr "Таблица истинности панели"
+
+msgid "Truth table"
+msgstr "Таблица истинности"
+
+msgid "Again"
+msgstr "Снова"
+
+msgid "Copy"
+msgstr "Копировать"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "There is no switch or push button on the panel."
+msgstr "На панели нет ни выключателя, ни кнопки."
+
+msgid "There is no lamp or buzzer on the panel."
+msgstr "На панели нет ни лампы, ни зуммера."
+
+msgid "There are %d switches and push buttons on the panel; the table can handle at most %d."
+msgstr "На панели %d выключателей и кнопок; таблица обрабатывает не больше %d."
+
+msgid "Each row is a position of the switches and push buttons: A is the top one, B the next, ... On the right you see whether the lamps (L1 = the top one) and buzzers are on (1) or off (0)."
+msgstr "Каждая строка — одно положение выключателей и кнопок: A — самый верхний, B — следующий, ... Справа видно, включены (1) или выключены (0) лампы (L1 = самая верхняя) и зуммеры."
+
+msgid "Note: the panel has components with a memory (flip-flop, counter, ...). Their output also depends on what happened before, so the table does not always apply."
+msgstr "Внимание: на панели есть элементы с памятью (триггер, счётчик, ...). Их выход зависит и от того, что было раньше, поэтому таблица верна не всегда."
+
+msgid "B"
+msgstr "З"
+
+msgid "The row with the red border is the current position: flip a switch and watch it move."
+msgstr "Строка с красной рамкой — текущее положение: переключите выключатель и посмотрите, как она сменится."
+
+msgid "There is no switch, push button or sensor on the panel."
+msgstr "На панели нет ни выключателя, ни кнопки, ни датчика."
+
+msgid "There is no lamp, buzzer, relay, motor or display on the panel."
+msgstr "На панели нет ни лампы, ни зуммера, ни реле, ни мотора, ни индикатора."
+
+msgid "There are %d inputs (switches, push buttons, sensors) on the panel; the table can handle at most %d."
+msgstr "На панели %d входов (выключатели, кнопки, датчики); таблица обрабатывает не больше %d."
+
+msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
+msgstr "Каждая строка — одно положение входов (выключатели, кнопки, датчики): A — самый верхний, B — следующий, ... Справа видно, включены (1) или выключены (0) выходы: L = лампа или светодиод (L1 = самая верхняя), З = зуммер, R = реле. Мотор (M) вращается L (влево) или R (вправо), индикатор (D) показывает свою цифру."

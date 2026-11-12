@@ -1,0 +1,43 @@
+<!-- titel: Truth table -->
+  <h1 id="waarheidstabel"><img src="../img/knop-waarheid.png" class="ico" alt="">Truth table</h1>
+  <p class="lead">A truth table shows which lamps are on for every position of the switches. Logic makes this
+  table itself: it puts the switches and push buttons of your panel in every position, one by one, and looks
+  which lamps and buzzers come on.</p>
+
+  <figure>
+    <img src="../img/waarheidstabel-voorbeeld.png" alt="Truth table window with the columns A, B, L1 and L2 and four rows">
+    <figcaption>The truth table of the half adder from <a href="les26.html">lesson 26</a>: L1 (the LED, sum) is on at
+    01 and 10, L2 (the lamp, carry) only at 11.</figcaption>
+  </figure>
+
+  <h2>How to use it</h2>
+  <ol class="steps">
+    <li>Build a circuit with <a href="invoer.html#schakelaar">switches</a> or <a href="invoer.html#drukknop">push buttons</a>,
+      gates and <a href="uitvoer.html#lamp">lamps</a> or <a href="uitvoer.html#zoemer">buzzers</a>, or open an example.</li>
+    <li>In the title bar, click <img src="../img/knop-waarheid.png" class="ico" alt=""><b>Truth table</b>.</li>
+    <li>The window shows the table and follows your panel: if you add, remove or move a component or wire, Logic works out the table again by itself.</li>
+    <li>Flip a switch (in the simulation): the row with the <b>red border</b> is the current position and moves along.</li>
+  </ol>
+
+  <h2>Reading the table</h2>
+  <ul>
+    <li><b>A, B, C &hellip;</b> (light blue) are the inputs, from top to bottom: <a href="invoer.html#schakelaar">switches</a>, <a href="invoer.html#drukknop">push buttons</a>, <a href="invoer.html#dipswitch">DIP switches</a>, the <a href="invoer.html#sensor">light sensor</a> and the <a href="invoer.html#warm">heat sensor</a>. If two are at the
+      same height, the left one comes first.</li>
+    <li><b>L1, L2 &hellip;</b> (light yellow) are the lamps and LEDs, also from top to bottom; <b>B1, B2 &hellip;</b> are the buzzers, <b>R1</b> &hellip; the relays and switching relays.</li>
+    <li>A <b>motor</b> (<b>M1</b> &hellip;) shows <b>L</b> (turns anticlockwise), <b>R</b> (clockwise) or <b>0</b> (stopped). A <b>display</b> (<b>D1</b> &hellip;) shows the digit on it; <b>-</b> means dark (no power).</li>
+    <li>The pulse generator, the limit switch and the LogicRun components (person, cart &hellip;) are left out: they depend on time or on a program.</li>
+    <li>A <b>1</b> means on, a <b>0</b> off. An output that is on turns green.</li>
+    <li>Each row is one position. With 2 switches there are 4 rows, with 3 switches 8 rows; the table handles up to 6 switches (64 rows).</li>
+  </ul>
+  <p>With <b>Copy</b> you put the table on the clipboard, to paste it into a word processor or spreadsheet.
+  After the table is made, the switches are back as they were.</p>
+
+  <div class="tip"><strong>Note:</strong> a truth table suits circuits with <a href="verwerking.html#poorten">gates</a>:
+  there the outputs only depend on the position of the switches right now. If there is a
+  <a href="verwerking.html#flipflop">flip-flop</a>, counter or other component with a memory on the panel, the output
+  also depends on what happened before. Logic then warns you, and the table does not always apply.</div>
+
+  <h2>Try it</h2>
+  <p>Make the truth table of <a href="les04.html">lesson 4</a> (AND gate), <a href="les05.html">lesson 5</a> (OR gate)
+  and <a href="les26.html">lesson 26</a> (half adder), and compare them with the tables in
+  <a href="verwerking.html#poorten">Processing</a>.</p>

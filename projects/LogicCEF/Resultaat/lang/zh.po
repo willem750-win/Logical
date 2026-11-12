@@ -1471,3 +1471,72 @@ msgstr "右键: 选择类型 (SR, D, JK, T)"
 
 msgid "Set Q to 0"
 msgstr "把 Q 置为 0"
+
+msgid "Show electrons"
+msgstr "显示电子"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit.\nAt 12 V: "
+msgstr "有两个端子的灯: 把它串联或并联到电路中。\n在 12 V 时: "
+
+msgid " and "
+msgstr " 和 "
+
+msgid ". The more power, the brighter it shines. Right-click: choose the resistance."
+msgstr "。功率越大，灯越亮。右键: 选择电阻。"
+
+msgid "open: no current flows"
+msgstr "断开: 没有电流"
+
+msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
+msgstr "电路中有两个端子的开关。点击拨杆可以断开或闭合。"
+
+msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
+msgstr "用导线把 + 端子(左)和 − 端子(右)接到灯、触点或电源的两侧。\n电表不消耗电流。"
+
+msgid "Truth table of the panel"
+msgstr "面板的真值表"
+
+msgid "Truth table"
+msgstr "真值表"
+
+msgid "Again"
+msgstr "重新计算"
+
+msgid "Copy"
+msgstr "复制"
+
+msgid "Close"
+msgstr "关闭"
+
+msgid "There is no switch or push button on the panel."
+msgstr "面板上没有开关，也没有按钮。"
+
+msgid "There is no lamp or buzzer on the panel."
+msgstr "面板上没有灯，也没有蜂鸣器。"
+
+msgid "There are %d switches and push buttons on the panel; the table can handle at most %d."
+msgstr "面板上有 %d 个开关和按钮；此表最多只能处理 %d 个。"
+
+msgid "Each row is a position of the switches and push buttons: A is the top one, B the next, ... On the right you see whether the lamps (L1 = the top one) and buzzers are on (1) or off (0)."
+msgstr "每一行是开关和按钮的一种状态: A 是最上面的，B 是下一个，... 右边显示灯 (L1 = 最上面的) 和蜂鸣器是开 (1) 还是关 (0)。"
+
+msgid "Note: the panel has components with a memory (flip-flop, counter, ...). Their output also depends on what happened before, so the table does not always apply."
+msgstr "注意: 面板上有带存储的元件(触发器、计数器等)。它们的输出也取决于之前发生的事情，所以此表并不总是成立。"
+
+msgid "B"
+msgstr "B"
+
+msgid "The row with the red border is the current position: flip a switch and watch it move."
+msgstr "红框的那一行是当前状态: 拨动一个开关，看看它怎样变化。"
+
+msgid "There is no switch, push button or sensor on the panel."
+msgstr "面板上没有开关、按钮或传感器。"
+
+msgid "There is no lamp, buzzer, relay, motor or display on the panel."
+msgstr "面板上没有灯、蜂鸣器、继电器、电机或显示器。"
+
+msgid "There are %d inputs (switches, push buttons, sensors) on the panel; the table can handle at most %d."
+msgstr "面板上有 %d 个输入(开关、按钮、传感器)；此表最多只能处理 %d 个。"
+
+msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
+msgstr "每一行是输入(开关、按钮、传感器)的一种状态: A 是最上面的，B 是下一个，... 右边显示输出是开 (1) 还是关 (0): L = 灯或 LED (L1 = 最上面的)，B = 蜂鸣器，R = 继电器。电机 (M) 向 L (左) 或 R (右) 转，显示器 (D) 显示它的数字。"

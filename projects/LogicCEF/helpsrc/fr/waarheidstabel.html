@@ -1,0 +1,44 @@
+<!-- titel: Table de vérité -->
+  <h1 id="waarheidstabel"><img src="../img/knop-waarheid.png" class="ico" alt="">Table de vérité</h1>
+  <p class="lead">Une table de vérité montre, pour chaque position des interrupteurs, quelles lampes sont allumées.
+  Logic fait cette table lui-même&nbsp;: il met les interrupteurs et boutons-poussoirs de votre panneau dans chaque
+  position, l&rsquo;une après l&rsquo;autre, et regarde quelles lampes et quels buzzers s&rsquo;allument.</p>
+
+  <figure>
+    <img src="../img/waarheidstabel-voorbeeld.png" alt="Fenêtre Table de vérité avec les colonnes A, B, L1 et L2 et quatre lignes">
+    <figcaption>La table de vérité du demi-additionneur de la <a href="les26.html">leçon 26</a>&nbsp;: L1 (la LED, somme)
+    est allumée pour 01 et 10, L2 (la lampe, retenue) seulement pour 11.</figcaption>
+  </figure>
+
+  <h2>Utilisation</h2>
+  <ol class="steps">
+    <li>Construisez un circuit avec des <a href="invoer.html#schakelaar">interrupteurs</a> ou des <a href="invoer.html#drukknop">boutons-poussoirs</a>,
+      des portes et des <a href="uitvoer.html#lamp">lampes</a> ou des <a href="uitvoer.html#zoemer">buzzers</a>, ou ouvrez un exemple.</li>
+    <li>Dans la barre de titre, cliquez sur <img src="../img/knop-waarheid.png" class="ico" alt=""><b>Table de vérité</b>.</li>
+    <li>La fenêtre affiche la table et suit votre panneau&nbsp;: si vous ajoutez, enlevez ou déplacez un composant ou un fil, Logic refait la table tout seul.</li>
+    <li>Basculez un interrupteur (dans la simulation)&nbsp;: la ligne avec le <b>bord rouge</b> est la position actuelle et change avec lui.</li>
+  </ol>
+
+  <h2>Lire la table</h2>
+  <ul>
+    <li><b>A, B, C &hellip;</b> (bleu clair) sont les entrées, de haut en bas&nbsp;: <a href="invoer.html#schakelaar">interrupteurs</a>, <a href="invoer.html#drukknop">boutons-poussoirs</a>, <a href="invoer.html#dipswitch">interrupteurs DIP</a>, le <a href="invoer.html#sensor">capteur de lumière</a> et le <a href="invoer.html#warm">capteur de chaleur</a>. S&rsquo;il y
+      en a deux à la même hauteur, celui de gauche vient d&rsquo;abord.</li>
+    <li><b>L1, L2 &hellip;</b> (jaune clair) sont les lampes et LED, aussi de haut en bas&nbsp;; <b>B1, B2 &hellip;</b> sont les buzzers, <b>R1</b> &hellip; les relais et relais de commutation.</li>
+    <li>Un <b>moteur</b> (<b>M1</b> &hellip;) affiche <b>L</b> (tourne à gauche), <b>R</b> (à droite) ou <b>0</b> (arrêté). Un <b>afficheur</b> (<b>D1</b> &hellip;) montre son chiffre&nbsp;; <b>-</b> signifie éteint (pas d&rsquo;alimentation).</li>
+    <li>Le générateur d&rsquo;impulsions, l&rsquo;interrupteur de fin de course et les composants de LogicRun (personne, chariot &hellip;) ne sont pas pris en compte&nbsp;: ils dépendent du temps ou d&rsquo;un programme.</li>
+    <li>Un <b>1</b> signifie allumé, un <b>0</b> éteint. Une sortie allumée devient verte.</li>
+    <li>Chaque ligne est une position. Avec 2 interrupteurs il y a 4 lignes, avec 3 interrupteurs 8 lignes&nbsp;; la table accepte jusqu&rsquo;à 6 interrupteurs (64 lignes).</li>
+  </ul>
+  <p>Avec <b>Copier</b>, vous mettez la table dans le presse-papiers, pour la coller dans un traitement de texte ou
+  un tableur. Une fois la table faite, les interrupteurs reviennent à leur position.</p>
+
+  <div class="tip"><strong>Attention&nbsp;:</strong> une table de vérité convient aux circuits avec des
+  <a href="verwerking.html#poorten">portes</a>&nbsp;: les sorties y dépendent seulement de la position actuelle des
+  interrupteurs. S&rsquo;il y a une <a href="verwerking.html#flipflop">bascule</a>, un compteur ou un autre composant
+  avec une mémoire sur le panneau, la sortie dépend aussi de ce qui s&rsquo;est passé avant. Logic vous prévient alors,
+  et la table ne vaut pas toujours.</div>
+
+  <h2>Essayez</h2>
+  <p>Faites la table de vérité de la <a href="les04.html">leçon 4</a> (porte ET), de la <a href="les05.html">leçon 5</a>
+  (porte OU) et de la <a href="les26.html">leçon 26</a> (demi-additionneur), et comparez-les avec les tables de
+  <a href="verwerking.html#poorten">Traitement</a>.</p>

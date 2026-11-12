@@ -1471,3 +1471,72 @@ msgstr "右クリック: 種類を選ぶ (SR, D, JK, T)"
 
 msgid "Set Q to 0"
 msgstr "Q を 0 にする"
+
+msgid "Show electrons"
+msgstr "電子を表示"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit.\nAt 12 V: "
+msgstr "端子が2つあるランプ: 回路に直列または並列に入れます。\n12 V のとき: "
+
+msgid " and "
+msgstr " と "
+
+msgid ". The more power, the brighter it shines. Right-click: choose the resistance."
+msgstr "。電力が大きいほど明るく光ります。右クリック: 抵抗を選びます。"
+
+msgid "open: no current flows"
+msgstr "開: 電流は流れません"
+
+msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
+msgstr "回路に入れる端子が2つあるスイッチ。レバーをクリックすると開閉します。"
+
+msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
+msgstr "+ 端子(左)と − 端子(右)を線でランプ、接点、電源の両側につなぎます。\nメーターは電流を消費しません。"
+
+msgid "Truth table of the panel"
+msgstr "パネルの真理値表"
+
+msgid "Truth table"
+msgstr "真理値表"
+
+msgid "Again"
+msgstr "もう一度"
+
+msgid "Copy"
+msgstr "コピー"
+
+msgid "Close"
+msgstr "閉じる"
+
+msgid "There is no switch or push button on the panel."
+msgstr "パネルにスイッチも押しボタンもありません。"
+
+msgid "There is no lamp or buzzer on the panel."
+msgstr "パネルにランプもブザーもありません。"
+
+msgid "There are %d switches and push buttons on the panel; the table can handle at most %d."
+msgstr "パネルにスイッチと押しボタンが %d 個あります。表で扱えるのは最大 %d 個です。"
+
+msgid "Each row is a position of the switches and push buttons: A is the top one, B the next, ... On the right you see whether the lamps (L1 = the top one) and buzzers are on (1) or off (0)."
+msgstr "各行はスイッチと押しボタンの1つの状態です: A が一番上、B が次、... 右側にランプ (L1 = 一番上) とブザーがオン (1) かオフ (0) かが表示されます。"
+
+msgid "Note: the panel has components with a memory (flip-flop, counter, ...). Their output also depends on what happened before, so the table does not always apply."
+msgstr "注意: パネルにメモリを持つ部品(フリップフロップ、カウンターなど)があります。その出力は以前の出来事にも左右されるため、表がいつも当てはまるとは限りません。"
+
+msgid "B"
+msgstr "B"
+
+msgid "The row with the red border is the current position: flip a switch and watch it move."
+msgstr "赤い枠の行が現在の状態です。スイッチを切り替えて、行が移るのを見てください。"
+
+msgid "There is no switch, push button or sensor on the panel."
+msgstr "パネルにスイッチも押しボタンもセンサーもありません。"
+
+msgid "There is no lamp, buzzer, relay, motor or display on the panel."
+msgstr "パネルにランプ、ブザー、リレー、モーター、ディスプレイがありません。"
+
+msgid "There are %d inputs (switches, push buttons, sensors) on the panel; the table can handle at most %d."
+msgstr "パネルに入力(スイッチ、押しボタン、センサー)が %d 個あります。表で扱えるのは最大 %d 個です。"
+
+msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
+msgstr "各行は入力(スイッチ、押しボタン、センサー)の1つの状態です: A が一番上、B が次、... 右側に出力がオン (1) かオフ (0) かが表示されます: L = ランプまたは LED (L1 = 一番上)、B = ブザー、R = リレー。モーター (M) は L (左回り) または R (右回り) に回り、ディスプレイ (D) は数字を表示します。"

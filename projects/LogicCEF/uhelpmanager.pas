@@ -179,6 +179,8 @@ begin
       Result := 'instellingen';
     'logicrun':
       begin Result := 'logicrun'; AAnchor := ''; end;
+    'waarheidstabel':
+      begin Result := 'waarheidstabel'; AAnchor := ''; end;
   else
     begin Result := 'index'; AAnchor := ''; end;
   end;
