@@ -1540,3 +1540,24 @@ msgstr "パネルに入力(スイッチ、押しボタン、センサー)が %d 
 
 msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
 msgstr "各行は入力(スイッチ、押しボタン、センサー)の1つの状態です: A が一番上、B が次、... 右側に出力がオン (1) かオフ (0) かが表示されます: L = ランプまたは LED (L1 = 一番上)、B = ブザー、R = リレー。モーター (M) は L (左回り) または R (右回り) に回り、ディスプレイ (D) は数字を表示します。"
+
+msgid "Timing diagram of the panel"
+msgstr "パネルのタイミング図"
+
+msgid "Timing diagram"
+msgstr "タイミング図"
+
+msgid "Continue"
+msgstr "続ける"
+
+msgid "Clear"
+msgstr "消去"
+
+msgid "There are no inputs or outputs on the panel."
+msgstr "パネルに入力も出力もありません。"
+
+msgid "Switch the simulation on and operate the switches: the timing diagram draws how the inputs and outputs change over time."
+msgstr "シミュレーションを開始してスイッチを操作してください。タイミング図が、入力と出力の時間による変化を描きます。"
+
+msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
+msgstr "各線は入力または出力です: 上 = オン (1)、下 = オフ (0)。1マスは1秒です。一時停止で画面を止めると、さかのぼって見られます。"

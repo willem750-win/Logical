@@ -181,6 +181,8 @@ begin
       begin Result := 'logicrun'; AAnchor := ''; end;
     'waarheidstabel':
       begin Result := 'waarheidstabel'; AAnchor := ''; end;
+    'tijddiagram':
+      begin Result := 'tijddiagram'; AAnchor := ''; end;
   else
     begin Result := 'index'; AAnchor := ''; end;
   end;

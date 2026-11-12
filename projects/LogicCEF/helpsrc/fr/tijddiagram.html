@@ -1,0 +1,43 @@
+<!-- titel: Chronogramme -->
+  <h1 id="tijddiagram"><img src="../img/knop-tijd.png" class="ico" alt="">Chronogramme</h1>
+  <p class="lead">Un chronogramme montre comment les entrées et les sorties de votre panneau changent dans le temps,
+  comme un analyseur logique dans un vrai labo. Chaque entrée et chaque sortie a sa ligne&nbsp;: en haut, c&rsquo;est
+  allumé, en bas, c&rsquo;est éteint.</p>
+
+  <h2>Utilisation</h2>
+  <ol class="steps">
+    <li>Ouvrez un panneau ou construisez un circuit avec des entrées (<a href="invoer.html#schakelaar">interrupteurs</a>,
+      <a href="invoer.html#drukknop">boutons-poussoirs</a>, <a href="invoer.html#puls">générateurs d&rsquo;impulsions</a> &hellip;)
+      et des sorties (<a href="uitvoer.html#lamp">lampes</a>, <a href="uitvoer.html#zoemer">buzzers</a> &hellip;).</li>
+    <li>Dans la barre de titre, cliquez sur <img src="../img/knop-tijd.png" class="ico" alt=""><b>Chronogramme</b>.
+      La fenêtre s&rsquo;ouvre à droite de Logic.</li>
+    <li>Lancez la <a href="simulatie.html">simulation</a> et manœuvrez les interrupteurs et boutons-poussoirs. Dix fois par
+      seconde, Logic dessine l&rsquo;état de chaque ligne&nbsp;; l&rsquo;image défile vers la gauche.</li>
+  </ol>
+
+  <h2>Lire le chronogramme</h2>
+  <ul>
+    <li><b>A, B, C &hellip;</b> (bleu) sont les interrupteurs, boutons-poussoirs, interrupteurs DIP et capteurs, de haut
+      en bas, comme dans la <a href="waarheidstabel.html">table de vérité</a>. <b>P1, P2 &hellip;</b> sont les générateurs d&rsquo;impulsions.</li>
+    <li>Sous la ligne grise se trouvent les sorties (vert)&nbsp;: <b>L</b> = lampe ou LED, <b>B</b> = buzzer, <b>R</b> = relais,
+      <b>M</b> = moteur (avec <b>L</b> ou <b>R</b> pour le sens) et <b>D</b> = afficheur (avec le chiffre).</li>
+    <li>Une case vaut <b>une seconde</b>&nbsp;; en bas, vous voyez le temps depuis le début de l&rsquo;enregistrement.</li>
+    <li>La fenêtre garde les 5 dernières minutes.</li>
+  </ul>
+
+  <h2>Les boutons</h2>
+  <ul>
+    <li><b>Pause</b> fige l&rsquo;image. Avec la barre de défilement sous le chronogramme, vous pouvez alors revenir en arrière. <b>Continuer</b> suit de nouveau le temps.</li>
+    <li><b>Effacer</b> vide le chronogramme et recommence à 0 seconde.</li>
+    <li>Si vous ajoutez ou enlevez un composant, le chronogramme recommence aussi.</li>
+  </ul>
+
+  <div class="tip"><strong>Astuce&nbsp;:</strong> un chronogramme est surtout utile pour les circuits qui changent dans le
+  temps&nbsp;: une <a href="verwerking.html#flipflop">bascule</a>, un compteur ou un <a href="invoer.html#puls">générateur
+  d&rsquo;impulsions</a>. Là, une <a href="waarheidstabel.html">table de vérité</a> ne dit pas tout, car la sortie dépend
+  aussi de ce qui s&rsquo;est passé avant.</div>
+
+  <h2>Essayez</h2>
+  <p>Ouvrez la <a href="les27.html">leçon 27</a> (bascule), lancez la simulation et appuyez quelques fois sur S et R.
+  Dans le chronogramme, vous voyez que la LED reste allumée après un court appui sur S, jusqu&rsquo;à ce que vous
+  appuyiez sur R&nbsp;: c&rsquo;est la mémoire de la bascule.</p>

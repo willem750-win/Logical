@@ -21977,7 +21977,8 @@ begin
   for i := 0 to wc.ControlCount - 1 do
   begin
     c := wc.Controls[i];
-    if (not c.Visible) or (c is TjanGroupSelect) or (c = Self) then Continue;
+    if (not c.Visible) or (c is TjanGroupSelect) or (c = Self) or
+       (c is TjanSimPersoon) then Continue;   // persoon, wagentje ... bewegen zelf
     Result := Result + '|' + c.ClassName + ':' + IntToStr(c.Left) + ',' +
       IntToStr(c.Top) + ',' + IntToStr(c.Width) + ',' + IntToStr(c.Height);
     if c is TjanLogic then Result := Result + ':' + TjanLogic(c).L_Type;

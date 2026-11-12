@@ -1535,3 +1535,24 @@ msgstr "En el panel hay %d entradas (interruptores, pulsadores, sensores); la ta
 
 msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
 msgstr "Cada fila es una posición de las entradas (interruptores, pulsadores, sensores): A es la de arriba, B la siguiente, ... A la derecha ves si las salidas están encendidas (1) o apagadas (0): L = lámpara o LED (L1 = la de arriba), Z = zumbador, R = relé. Un motor (M) gira L (a la izquierda) o R (a la derecha), un display (D) muestra su cifra."
+
+msgid "Timing diagram of the panel"
+msgstr "Cronograma del panel"
+
+msgid "Timing diagram"
+msgstr "Cronograma"
+
+msgid "Continue"
+msgstr "Continuar"
+
+msgid "Clear"
+msgstr "Borrar"
+
+msgid "There are no inputs or outputs on the panel."
+msgstr "En el panel no hay entradas ni salidas."
+
+msgid "Switch the simulation on and operate the switches: the timing diagram draws how the inputs and outputs change over time."
+msgstr "Activa la simulación y usa los interruptores: el cronograma dibuja cómo cambian en el tiempo las entradas y las salidas."
+
+msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
+msgstr "Cada línea es una entrada o una salida: arriba = encendido (1), abajo = apagado (0). Un cuadro es un segundo. Con Pausa congelas la imagen y puedes volver atrás."

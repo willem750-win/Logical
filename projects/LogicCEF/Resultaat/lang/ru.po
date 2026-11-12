@@ -1540,3 +1540,24 @@ msgstr "На панели %d входов (выключатели, кнопки,
 
 msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
 msgstr "Каждая строка — одно положение входов (выключатели, кнопки, датчики): A — самый верхний, B — следующий, ... Справа видно, включены (1) или выключены (0) выходы: L = лампа или светодиод (L1 = самая верхняя), З = зуммер, R = реле. Мотор (M) вращается L (влево) или R (вправо), индикатор (D) показывает свою цифру."
+
+msgid "Timing diagram of the panel"
+msgstr "Временная диаграмма панели"
+
+msgid "Timing diagram"
+msgstr "Временная диаграмма"
+
+msgid "Continue"
+msgstr "Продолжить"
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "There are no inputs or outputs on the panel."
+msgstr "На панели нет ни входов, ни выходов."
+
+msgid "Switch the simulation on and operate the switches: the timing diagram draws how the inputs and outputs change over time."
+msgstr "Включите моделирование и переключайте выключатели: временная диаграмма рисует, как входы и выходы меняются со временем."
+
+msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
+msgstr "Каждая линия — вход или выход: вверху = включено (1), внизу = выключено (0). Одна клетка — одна секунда. Кнопкой «Пауза» вы останавливаете картинку и можете прокрутить назад."

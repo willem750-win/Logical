@@ -1540,3 +1540,24 @@ msgstr "面板上有 %d 个输入(开关、按钮、传感器)；此表最多只
 
 msgid "Each row is a position of the inputs (switches, push buttons, sensors): A is the top one, B the next, ... On the right you see whether the outputs are on (1) or off (0): L = lamp or LED (L1 = the top one), B = buzzer, R = relay. A motor (M) turns L (anticlockwise) or R (clockwise), a display (D) shows its digit."
 msgstr "每一行是输入(开关、按钮、传感器)的一种状态: A 是最上面的，B 是下一个，... 右边显示输出是开 (1) 还是关 (0): L = 灯或 LED (L1 = 最上面的)，B = 蜂鸣器，R = 继电器。电机 (M) 向 L (左) 或 R (右) 转，显示器 (D) 显示它的数字。"
+
+msgid "Timing diagram of the panel"
+msgstr "面板的时序图"
+
+msgid "Timing diagram"
+msgstr "时序图"
+
+msgid "Continue"
+msgstr "继续"
+
+msgid "Clear"
+msgstr "清除"
+
+msgid "There are no inputs or outputs on the panel."
+msgstr "面板上没有输入，也没有输出。"
+
+msgid "Switch the simulation on and operate the switches: the timing diagram draws how the inputs and outputs change over time."
+msgstr "打开仿真并操作开关: 时序图会画出输入和输出随时间的变化。"
+
+msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
+msgstr "每条线是一个输入或输出: 高 = 开 (1)，低 = 关 (0)。一格是一秒。按暂停可以定住画面并向后翻看。"

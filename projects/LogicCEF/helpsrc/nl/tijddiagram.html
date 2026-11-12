@@ -1,0 +1,41 @@
+<!-- titel: Tijddiagram -->
+  <h1 id="tijddiagram"><img src="../img/knop-tijd.png" class="ico" alt="">Tijddiagram</h1>
+  <p class="lead">Een tijddiagram toont hoe de ingangen en uitgangen van je paneel veranderen in de tijd, zoals een
+  logic analyzer in een echt labo. Elke ingang en uitgang krijgt een lijn: hoog is aan, laag is uit.</p>
+
+  <h2>Zo gebruik je het</h2>
+  <ol class="steps">
+    <li>Open een paneel of bouw een schakeling met ingangen (<a href="invoer.html#schakelaar">schakelaars</a>,
+      <a href="invoer.html#drukknop">drukknoppen</a>, <a href="invoer.html#puls">pulsgevers</a> &hellip;) en uitgangen
+      (<a href="uitvoer.html#lamp">lampen</a>, <a href="uitvoer.html#zoemer">zoemers</a> &hellip;).</li>
+    <li>Klik in de titelbalk op <img src="../img/knop-tijd.png" class="ico" alt=""><b>Tijddiagram</b>. Het venster
+      opent rechts naast Logic.</li>
+    <li>Zet de <a href="simulatie.html">simulatie</a> aan en bedien de schakelaars en drukknoppen. Tien keer per seconde
+      tekent Logic de toestand van elke lijn; het beeld schuift naar links.</li>
+  </ol>
+
+  <h2>Het diagram lezen</h2>
+  <ul>
+    <li><b>A, B, C &hellip;</b> (blauw) zijn de schakelaars, drukknoppen, dipswitches en sensoren, van boven naar onder,
+      net als in de <a href="waarheidstabel.html">waarheidstabel</a>. <b>P1, P2 &hellip;</b> zijn de pulsgevers.</li>
+    <li>Onder de grijze lijn staan de uitgangen (groen): <b>L</b> = lamp of led, <b>Z</b> = zoemer, <b>R</b> = relais,
+      <b>M</b> = motor (met <b>L</b> of <b>R</b> voor de draairichting) en <b>D</b> = display (met het cijfer).</li>
+    <li>Eén vakje is <b>één seconde</b>; onderaan staat de tijd sinds het begin van de opname.</li>
+    <li>Het venster onthoudt de laatste 5 minuten.</li>
+  </ul>
+
+  <h2>De knoppen</h2>
+  <ul>
+    <li><b>Pauze</b> zet het beeld stil. Met de schuifbalk onder het diagram kijk je dan terug. <b>Verder</b> gaat weer mee met de tijd.</li>
+    <li><b>Wissen</b> maakt het diagram leeg en begint opnieuw bij 0 seconden.</li>
+    <li>Zet je een onderdeel erbij of haal je er een weg, dan begint het diagram ook opnieuw.</li>
+  </ul>
+
+  <div class="tip"><strong>Tip:</strong> een tijddiagram is vooral handig bij schakelingen die met de tijd veranderen:
+  een <a href="verwerking.html#flipflop">flipflop</a>, een teller of een <a href="invoer.html#puls">pulsgever</a>.
+  Daar zegt een <a href="waarheidstabel.html">waarheidstabel</a> niet alles, want de uitgang hangt ook af van wat er
+  vroeger gebeurde.</div>
+
+  <h2>Probeer het</h2>
+  <p>Open <a href="les27.html">les 27</a> (flipflop), zet de simulatie aan en druk een paar keer op S en R. In het
+  tijddiagram zie je dat de led aan blijft na een korte druk op S, tot je op R drukt: dat is het geheugen van de flipflop.</p>

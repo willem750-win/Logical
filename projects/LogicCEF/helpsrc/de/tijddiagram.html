@@ -1,0 +1,42 @@
+<!-- titel: Zeitdiagramm -->
+  <h1 id="tijddiagram"><img src="../img/knop-tijd.png" class="ico" alt="">Zeitdiagramm</h1>
+  <p class="lead">Ein Zeitdiagramm zeigt, wie sich die Eingänge und Ausgänge Ihres Panels mit der Zeit ändern, wie ein
+  Logikanalysator in einem echten Labor. Jeder Eingang und Ausgang bekommt eine Linie: hoch ist an, tief ist aus.</p>
+
+  <h2>So benutzen Sie es</h2>
+  <ol class="steps">
+    <li>Öffnen Sie ein Panel oder bauen Sie eine Schaltung mit Eingängen (<a href="invoer.html#schakelaar">Schaltern</a>,
+      <a href="invoer.html#drukknop">Tastern</a>, <a href="invoer.html#puls">Pulsgebern</a> &hellip;) und Ausgängen
+      (<a href="uitvoer.html#lamp">Lampen</a>, <a href="uitvoer.html#zoemer">Summern</a> &hellip;).</li>
+    <li>Klicken Sie in der Titelleiste auf <img src="../img/knop-tijd.png" class="ico" alt=""><b>Zeitdiagramm</b>. Das
+      Fenster öffnet sich rechts neben Logic.</li>
+    <li>Schalten Sie die <a href="simulatie.html">Simulation</a> ein und bedienen Sie die Schalter und Taster. Zehnmal pro
+      Sekunde zeichnet Logic den Zustand jeder Linie; das Bild läuft nach links.</li>
+  </ol>
+
+  <h2>Das Diagramm lesen</h2>
+  <ul>
+    <li><b>A, B, C &hellip;</b> (blau) sind die Schalter, Taster, DIP-Schalter und Sensoren, von oben nach unten, genau
+      wie in der <a href="waarheidstabel.html">Wahrheitstabelle</a>. <b>P1, P2 &hellip;</b> sind die Pulsgeber.</li>
+    <li>Unter der grauen Linie stehen die Ausgänge (grün): <b>L</b> = Lampe oder LED, <b>S</b> = Summer, <b>R</b> = Relais,
+      <b>M</b> = Motor (mit <b>L</b> oder <b>R</b> für die Drehrichtung) und <b>D</b> = Anzeige (mit der Ziffer).</li>
+    <li>Ein Kästchen ist <b>eine Sekunde</b>; unten steht die Zeit seit dem Beginn der Aufnahme.</li>
+    <li>Das Fenster merkt sich die letzten 5 Minuten.</li>
+  </ul>
+
+  <h2>Die Knöpfe</h2>
+  <ul>
+    <li><b>Pause</b> hält das Bild an. Mit der Bildlaufleiste unter dem Diagramm schauen Sie dann zurück. <b>Weiter</b> folgt wieder der Zeit.</li>
+    <li><b>Löschen</b> leert das Diagramm und beginnt wieder bei 0 Sekunden.</li>
+    <li>Fügen Sie ein Bauteil hinzu oder entfernen Sie eines, beginnt das Diagramm ebenfalls neu.</li>
+  </ul>
+
+  <div class="tip"><strong>Tipp:</strong> Ein Zeitdiagramm ist vor allem nützlich bei Schaltungen, die sich mit der Zeit
+  ändern: ein <a href="verwerking.html#flipflop">Flipflop</a>, ein Zähler oder ein <a href="invoer.html#puls">Pulsgeber</a>.
+  Dort sagt eine <a href="waarheidstabel.html">Wahrheitstabelle</a> nicht alles, denn der Ausgang hängt auch davon ab,
+  was vorher geschah.</div>
+
+  <h2>Probieren Sie es</h2>
+  <p>Öffnen Sie <a href="les27.html">Lektion 27</a> (Flipflop), schalten Sie die Simulation ein und drücken Sie ein paar
+  Mal auf S und R. Im Zeitdiagramm sehen Sie, dass die LED nach einem kurzen Druck auf S an bleibt, bis Sie auf R
+  drücken: Das ist der Speicher des Flipflops.</p>

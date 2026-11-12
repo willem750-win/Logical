@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram;
 const
   IniFileName = 'taal.ini';
 
@@ -167,6 +167,8 @@ type
      FLogicRunForm: TLogicRunForm;
      btWaarheid: TSpeedButton;          // waarheidstabel van het paneel
      FWaarheidForm: TWaarheidForm;
+     btTijd: TSpeedButton;              // tijddiagram van het paneel
+     FTijdForm: TTijdForm;
      // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
      // vaste talen: FPoCodes[i] hoort bij Taal.Items[4 + i]
      FPoCodes: TStringList;
@@ -176,6 +178,7 @@ type
      procedure SyncPropGridLanguageCombos;
      procedure btLogicRunClick(Sender: TObject);
      procedure btWaarheidClick(Sender: TObject);
+     procedure btTijdClick(Sender: TObject);
      procedure GridKLogicRunChange(Sender: TObject);
      procedure GridKStatusBalkChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
@@ -1600,6 +1603,23 @@ begin
   Result.Transparent := True;
 end;
 
+// twee blokgolven boven elkaar: knop Tijddiagram
+function MakeTijdGlyph: TBitmap;
+begin
+  Result := TBitmap.Create;
+  Result.SetSize(16, 16);
+  Result.Canvas.Brush.Color := clWhite;
+  Result.Canvas.FillRect(0, 0, 16, 16);
+  Result.Canvas.Pen.Color := clNavy;
+  Result.Canvas.Rectangle(0, 0, 16, 16);
+  Result.Canvas.Pen.Color := clBlue;
+  Result.Canvas.MoveTo(2, 7); Result.Canvas.LineTo(5, 7); Result.Canvas.LineTo(5, 3);
+  Result.Canvas.LineTo(9, 3); Result.Canvas.LineTo(9, 7); Result.Canvas.LineTo(14, 7);
+  Result.Canvas.Pen.Color := clGreen;
+  Result.Canvas.MoveTo(2, 13); Result.Canvas.LineTo(7, 13); Result.Canvas.LineTo(7, 9);
+  Result.Canvas.LineTo(11, 9); Result.Canvas.LineTo(11, 13); Result.Canvas.LineTo(14, 13);
+end;
+
 function MakeLogicRunGlyph: TBitmap;
 var
   i: Integer;
@@ -1661,11 +1681,11 @@ begin
   // van de bewerkbalk op een vaste plaats staan (Bewaren, Openen, ...)
   // schuiven evenveel mee, anders liggen ze onder de nieuwe knoppen
   OldRight := Panel2.Left + Panel2.Width;
-  Panel2.Width := Panel2.Width + 112;
+  Panel2.Width := Panel2.Width + 140;
   for i := 0 to Panel2.Parent.ControlCount - 1 do
     with Panel2.Parent.Controls[i] do
       if (Align = alNone) and (Left >= OldRight) then
-        Left := Left + 112;
+        Left := Left + 140;
   btUndo := MakeButton(BSettings2.Left + BSettings2.Width + 2, False, @btUndoClick);
   btRedo := MakeButton(btUndo.Left + btUndo.Width + 2, True, @btRedoClick);
   // LogicRun (programmeermodule) rechts daarvan
@@ -1701,6 +1721,22 @@ begin
   btWaarheid.OnClick := @btWaarheidClick;
   btWaarheid.OnMouseEnter := @btSimulateMouseEnter;
   btWaarheid.HelpKeyword := 'waarheidstabel';
+  // tijddiagram rechts van de waarheidstabel
+  btTijd := TSpeedButton.Create(Self);
+  btTijd.Parent := Panel2;
+  btTijd.SetBounds(btWaarheid.Left + btWaarheid.Width + 2, 2, 26, 22);
+  btTijd.Flat := True;
+  btTijd.ShowHint := True;
+  btTijd.ParentShowHint := False;
+  G := MakeTijdGlyph;
+  try
+    btTijd.Glyph := G;
+  finally
+    G.Free;
+  end;
+  btTijd.OnClick := @btTijdClick;
+  btTijd.OnMouseEnter := @btSimulateMouseEnter;
+  btTijd.HelpKeyword := 'tijddiagram';
   // Instellingen > Algemeen: knop LogicRun en balkknoppen Persoon en Wagentje aan/uit
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
@@ -1754,8 +1790,18 @@ begin
     else
       btWaarheid.Hint := 'Waarheidstabel van het paneel';
     end;
+  if Assigned(btTijd) then
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: btTijd.Hint := PoTr('Timing diagram of the panel');
+      chatgridpcodeSmall.lgFrench:  btTijd.Hint := 'Chronogramme du panneau';
+      chatgridpcodeSmall.lgGerman:  btTijd.Hint := 'Zeitdiagramm des Panels';
+    else
+      btTijd.Hint := 'Tijddiagram van het paneel';
+    end;
   if Assigned(FWaarheidForm) then
     FWaarheidForm.SetTaal(LogicRunTaal);
+  if Assigned(FTijdForm) then
+    FTijdForm.SetTaal(LogicRunTaal);
   if Assigned(FLogicRunForm) then
     FLogicRunForm.SetTaal(LogicRunTaal);
 end;
@@ -1815,6 +1861,30 @@ begin
     FWaarheidForm.SetBounds(L, Top, FWaarheidForm.Width, FWaarheidForm.Height);
   FWaarheidForm.Show;
   FWaarheidForm.BringToFront;
+end;
+
+// Tijddiagram: venster onder de waarheidstabel, rechts naast het hoofdvenster
+procedure TmainForm.btTijdClick(Sender: TObject);
+var
+  L, Tp: Integer;
+begin
+  if FTijdForm = nil then
+  begin
+    FTijdForm := TTijdForm.CreateFor(Self, Box);
+    FTijdForm.SetTaal(LogicRunTaal);
+  end;
+  FTijdForm.Loopt := FRunMode;
+  if not FTijdForm.Visible then
+  begin
+    L := Left + Width;
+    if L + FTijdForm.Width > Screen.WorkAreaRect.Right then
+      L := Screen.WorkAreaRect.Right - FTijdForm.Width;
+    Tp := Top + Height - FTijdForm.Height;
+    if Tp < Top then Tp := Top;
+    FTijdForm.SetBounds(L, Tp, FTijdForm.Width, FTijdForm.Height);
+  end;
+  FTijdForm.Show;
+  FTijdForm.BringToFront;
 end;
 
 // Instelling KLogicRun gewijzigd: knoppen tonen of verbergen. Een LogicRun-blok
@@ -2285,6 +2355,8 @@ var
 begin
  huidigeGuideLines:= Grid.GuideLinesAll;
   FRunMode := btSimulate.Down;
+  if Assigned(FTijdForm) then
+    FTijdForm.Loopt := FRunMode;
   UpdateUndoButtons;
   if FRunMode then
     FGroup.Clear;   // geen groepsselectie tijdens de simulatie
