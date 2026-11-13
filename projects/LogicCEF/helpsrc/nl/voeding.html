@@ -23,6 +23,8 @@
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Zekering</a></td><td>Smelt als er te veel stroom loopt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremeter</a></td><td>Meet de stroom die de schakeling verbruikt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Weerstand (contact)</a></td><td>Een contact of draad met een kleine weerstand: er gaat spanning verloren.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">Led met 2 klemmen</a></td><td>Geleidt maar in één richting; hoort met een voorschakelweerstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
   </table>
   <ol class="steps">
     <li>Klik op de knop van het onderdeel dat je wil plaatsen.</li>
@@ -161,6 +163,7 @@
     <tr><td>lange dunne draad</td><td>1&nbsp;&Omega;</td><td>een te dunne kabel naar een verre lamp</td></tr>
     <tr><td>slecht contact</td><td>2&nbsp;&Omega;</td><td>een losse of geoxideerde klem (standaard)</td></tr>
     <tr><td>verbrand contact</td><td>10&nbsp;&Omega;</td><td>een klem die te warm geworden is</td></tr>
+    <tr><td>voorschakelweerstand</td><td>100, 220, 470 of 1000&nbsp;&Omega;</td><td>een echte weerstand, bv. in serie met een <a href="#led">led</a></td></tr>
   </table>
   <p>Het blokje kleurt oranje tot rood naarmate het warmer wordt. Meet de spanningsval met een
   <a href="#voltmeter">voltmeter</a>: + aan de klem aan de kant van de bron, &minus; aan de andere klem.
@@ -180,6 +183,30 @@
   </ul>
   <p>Wil je twee draden op dezelfde klem? Klik op <b>Verbinding</b> en daarna op de klem, ook als er al een draad op
   zit: er begint een nieuwe draad. Zie <a href="les25.html">les 25</a>.</p>
+
+  <h2 id="led"><img src="../img/pal-led2.png" class="ico" alt="">De led met twee klemmen</h2>
+  <p>Een led (lichtgevende diode) is geen lamp: ze laat de stroom maar in <b>één richting</b> door, van de
+  <b>+ klem (anode, links)</b> naar de <b>&minus; klem (kathode, rechts)</b>. En ze begint pas te geleiden boven haar
+  <b>drempelspanning</b>: rood 1,8&nbsp;V, geel 2,0&nbsp;V, groen 2,2&nbsp;V, blauw 3,0&nbsp;V (rechtsklik &rsaquo; <b>Kleur</b>).</p>
+  <p>Boven de drempel stijgt de stroom heel snel. Een led brandt vol bij <b>20&nbsp;mA</b> en is <b>kapot boven 30&nbsp;mA</b>.
+  Sluit je ze rechtstreeks op 12&nbsp;V aan, dan gaat ze meteen stuk (rechtsklik &rsaquo; <b>Led vervangen</b>). Daarom zet je
+  er altijd een <b>voorschakelweerstand</b> in serie mee (de <a href="#weerstand">weerstand</a>, soort
+  voorschakelweerstand). Die neemt de rest van de spanning op:</p>
+  <p class="formula">R = (U<sub>bron</sub> &minus; U<sub>led</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &rarr; neem 470&nbsp;&Omega;</p>
+  <p>Draai je de led om, dan blijft ze uit: er loopt geen stroom, en de voltmeter toont de volle spanning over de led.</p>
+
+  <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">De condensator</h2>
+  <p>Een condensator slaat lading op, een beetje zoals een kleine oplaadbare batterij. Staat er spanning op, dan
+  <b>laadt hij op</b>; haal je de bron weg, dan geeft hij de lading weer af en <b>ontlaadt</b> hij. Dat gaat niet in één
+  keer: hoe groter de condensator en hoe groter de weerstand, hoe langer het duurt. De <b>tijdconstante</b> is</p>
+  <p class="formula">&tau; = R &times; C &nbsp; (bv. 1000&nbsp;&Omega; &times; 1000&nbsp;&micro;F = 1&nbsp;s)</p>
+  <p>Na &tau; seconden is de condensator voor ongeveer 63&nbsp;% op- of ontladen, na 5&nbsp;&tau; zo goed als helemaal.
+  De + klem staat links. Het blauwe vlak tussen de platen toont hoe vol hij is, en onder het symbool staat zijn spanning.
+  Rechtsklik &rsaquo; <b>Capaciteit</b>: 100, 470, 1000, 2200 of 4700&nbsp;&micro;F; <b>Ontladen</b> maakt hem leeg.</p>
+  <div class="tip"><strong>Probeer het:</strong> bouw bron &rarr; schakelaar &rarr; weerstand 470&nbsp;&Omega; &rarr; led &rarr;
+  terug naar de &minus; van de bron, en zet een condensator van 2200&nbsp;&micro;F parallel over de led en de weerstand
+  (+ aan de kant van de schakelaar). Zet de schakelaar aan en weer uit: de led dooft niet meteen, maar wordt langzaam
+  zwakker, omdat de condensator zijn lading via de weerstand door de led stuurt.</div>
 
   <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
   <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er

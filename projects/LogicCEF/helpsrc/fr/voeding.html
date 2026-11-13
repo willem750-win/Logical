@@ -23,6 +23,8 @@
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fusible</a></td><td>Fond quand le courant est trop fort.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremètre</a></td><td>Mesure le courant consommé par le circuit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Résistance (contact)</a></td><td>Un contact ou un fil avec une petite résistance&nbsp;: une partie de la tension est perdue.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens ; va avec une résistance série.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
   </table>
   <ol class="steps">
     <li>Cliquez sur le bouton du composant à placer.</li>
@@ -165,6 +167,7 @@
     <tr><td>long fil fin</td><td>1&nbsp;&Omega;</td><td>un câble trop fin vers une lampe éloignée</td></tr>
     <tr><td>mauvais contact</td><td>2&nbsp;&Omega;</td><td>une borne desserrée ou oxydée (par défaut)</td></tr>
     <tr><td>contact brûlé</td><td>10&nbsp;&Omega;</td><td>une borne devenue trop chaude</td></tr>
+    <tr><td>résistance série</td><td>100, 220, 470 ou 1000&nbsp;&Omega;</td><td>une vraie résistance, p. ex. en série avec une <a href="#led">LED</a></td></tr>
   </table>
   <p>Le bloc devient orange puis rouge à mesure qu&rsquo;il chauffe. Mesurez la chute de tension avec un
   <a href="#voltmeter">voltmètre</a>&nbsp;: + sur la borne du côté de la source, &minus; sur l&rsquo;autre borne.
@@ -184,6 +187,31 @@
   </ul>
   <p>Vous voulez deux fils sur la même borne&nbsp;? Cliquez sur <b>Connexion</b> puis sur la borne, même s&rsquo;il y a
   déjà un fil&nbsp;: un nouveau fil commence. Voir la <a href="les25.html">leçon 25</a>.</p>
+
+  <h2 id="led"><img src="../img/pal-led2.png" class="ico" alt="">La LED à deux bornes</h2>
+  <p>Une LED (diode électroluminescente) n&rsquo;est pas une lampe&nbsp;: elle ne laisse passer le courant que dans
+  <b>un sens</b>, de la <b>borne + (anode, à gauche)</b> vers la <b>borne &minus; (cathode, à droite)</b>. Et elle ne conduit
+  qu&rsquo;au-dessus de sa <b>tension de seuil</b>&nbsp;: rouge 1,8&nbsp;V, jaune 2,0&nbsp;V, vert 2,2&nbsp;V, bleu 3,0&nbsp;V
+  (clic droit &rsaquo; <b>Couleur</b>).</p>
+  <p>Au-dessus du seuil, le courant monte très vite. Une LED donne toute sa lumière à <b>20&nbsp;mA</b> et est <b>grillée
+  au-dessus de 30&nbsp;mA</b>. Branchée directement sur 12&nbsp;V, elle grille aussitôt (clic droit &rsaquo; <b>Remplacer la
+  LED</b>). C&rsquo;est pourquoi on met toujours une <b>résistance série</b> avec elle (la <a href="#weerstand">résistance</a>,
+  type résistance série). Elle prend le reste de la tension&nbsp;:</p>
+  <p class="formula">R = (U<sub>source</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &rarr; prenez 470&nbsp;&Omega;</p>
+  <p>Retournez la LED et elle reste éteinte&nbsp;: aucun courant ne passe, et le voltmètre montre toute la tension aux bornes de la LED.</p>
+
+  <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">Le condensateur</h2>
+  <p>Un condensateur stocke de la charge, un peu comme une petite batterie rechargeable. Sous tension, il se
+  <b>charge</b>&nbsp;; retirez la source et il rend sa charge&nbsp;: il se <b>décharge</b>. Cela ne se fait pas d&rsquo;un
+  coup&nbsp;: plus le condensateur et la résistance sont grands, plus c&rsquo;est long. La <b>constante de temps</b> est</p>
+  <p class="formula">&tau; = R &times; C &nbsp; (p. ex. 1000&nbsp;&Omega; &times; 1000&nbsp;&micro;F = 1&nbsp;s)</p>
+  <p>Après &tau; secondes, le condensateur est chargé ou déchargé à environ 63&nbsp;%, après 5&nbsp;&tau; presque entièrement.
+  La borne + est à gauche. La zone bleue entre les plaques montre son niveau de charge, et sa tension est affichée sous le
+  symbole. Clic droit &rsaquo; <b>Capacité</b>&nbsp;: 100, 470, 1000, 2200 ou 4700&nbsp;&micro;F&nbsp;; <b>Décharger</b> le vide.</p>
+  <div class="tip"><strong>Essayez&nbsp;:</strong> construisez source &rarr; interrupteur &rarr; résistance 470&nbsp;&Omega; &rarr;
+  LED &rarr; retour au &minus; de la source, et placez un condensateur de 2200&nbsp;&micro;F en parallèle sur la LED et la
+  résistance (+ du côté de l&rsquo;interrupteur). Allumez puis éteignez&nbsp;: la LED ne s&rsquo;éteint pas tout de suite mais
+  faiblit lentement, car le condensateur envoie sa charge à travers la résistance et la LED.</div>
 
   <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>
   <p>Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau, tout fonctionne comme avant. Dès qu&rsquo;il y a

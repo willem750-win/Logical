@@ -1603,3 +1603,48 @@ msgstr "还不完全对："
 
 msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
 msgstr "提示：打开真值表并启动仿真，就能看到你的电路在做什么。"
+
+msgid "series resistor"
+msgstr "串联电阻"
+
+msgid "yellow"
+msgstr "黄色"
+
+msgid "blue"
+msgstr "蓝色"
+
+msgid "Replace LED"
+msgstr "更换 LED"
+
+msgid "broken"
+msgstr "已损坏"
+
+msgid "LED"
+msgstr "LED"
+
+msgid "Broken: more than 30 mA went through it. Right-click: replace LED."
+msgstr "已损坏：通过的电流超过了 30 mA。右键：更换 LED。"
+
+msgid "Discharge"
+msgstr "放电"
+
+msgid "Capacitance"
+msgstr "电容量"
+
+msgid "Capacitor"
+msgstr "电容器"
+
+msgid "Capacitor with two terminals: + on the left. It charges when there is a voltage on it and gives\nthat charge back. How long that takes: time constant tau = R × C (e.g. 1000 ohm × 1000 µF = 1 s).\nRight-click: choose the capacitance or discharge."
+msgstr "两端电容器：+ 在左边。加上电压时它会充电，之后\n再把电荷释放出来。所需时间：时间常数 tau = R × C（例如 1000 欧 × 1000 µF = 1 秒）。\n右键：选择电容量或放电。"
+
+msgid "create LED with 2 terminals (with series resistor)"
+msgstr "创建两端 LED（带串联电阻）"
+
+msgid "create Capacitor (charging and discharging)"
+msgstr "创建电容器（充电和放电）"
+
+msgid "LED with 2 terminals"
+msgstr "两端 LED"
+
+msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
+msgstr "两端 LED：+（阳极）在左边，-（阴极）在右边。它只向一个方向导电，\n而且只在高于 %s 时导电。20 mA 时最亮，超过 30 mA 会损坏。\n请串联一个电阻：R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s。右键：选择颜色。"

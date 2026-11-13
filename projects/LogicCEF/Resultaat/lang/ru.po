@@ -1603,3 +1603,48 @@ msgstr "Пока не совсем правильно:"
 
 msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
 msgstr "Подсказка: откройте таблицу истинности и включите симуляцию, чтобы увидеть, что делает ваша схема."
+
+msgid "series resistor"
+msgstr "добавочный резистор"
+
+msgid "yellow"
+msgstr "жёлтый"
+
+msgid "blue"
+msgstr "синий"
+
+msgid "Replace LED"
+msgstr "Заменить светодиод"
+
+msgid "broken"
+msgstr "сгорел"
+
+msgid "LED"
+msgstr "Светодиод"
+
+msgid "Broken: more than 30 mA went through it. Right-click: replace LED."
+msgstr "Сгорел: через него прошло больше 30 мА. Правый щелчок: заменить светодиод."
+
+msgid "Discharge"
+msgstr "Разрядить"
+
+msgid "Capacitance"
+msgstr "Ёмкость"
+
+msgid "Capacitor"
+msgstr "Конденсатор"
+
+msgid "Capacitor with two terminals: + on the left. It charges when there is a voltage on it and gives\nthat charge back. How long that takes: time constant tau = R × C (e.g. 1000 ohm × 1000 µF = 1 s).\nRight-click: choose the capacitance or discharge."
+msgstr "Конденсатор с двумя клеммами: + слева. Он заряжается, когда на нём есть напряжение, и потом\nотдаёт этот заряд. Сколько это длится: постоянная времени tau = R × C (напр. 1000 Ом × 1000 мкФ = 1 с).\nПравый щелчок: выбрать ёмкость или разрядить."
+
+msgid "create LED with 2 terminals (with series resistor)"
+msgstr "создать Светодиод с 2 клеммами (с добавочным резистором)"
+
+msgid "create Capacitor (charging and discharging)"
+msgstr "создать Конденсатор (заряд и разряд)"
+
+msgid "LED with 2 terminals"
+msgstr "Светодиод с 2 клеммами"
+
+msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
+msgstr "Светодиод с двумя клеммами: + (анод) слева, - (катод) справа. Он проводит только в одну сторону,\nи только выше %s. Полный свет при 20 мА, сгорает выше 30 мА.\nПоставьте последовательно добавочный резистор: R = (U - Ud) / I = (12 В - %s) / 0,02 А = %s. Правый щелчок: выбрать цвет."

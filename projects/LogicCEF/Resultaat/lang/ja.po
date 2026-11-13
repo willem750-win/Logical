@@ -1603,3 +1603,48 @@ msgstr "まだ完全ではありません:"
 
 msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
 msgstr "ヒント: 真理値表を開いてシミュレーションをオンにすると、回路の動きがわかります。"
+
+msgid "series resistor"
+msgstr "直列抵抗"
+
+msgid "yellow"
+msgstr "黄"
+
+msgid "blue"
+msgstr "青"
+
+msgid "Replace LED"
+msgstr "LED を交換"
+
+msgid "broken"
+msgstr "故障"
+
+msgid "LED"
+msgstr "LED"
+
+msgid "Broken: more than 30 mA went through it. Right-click: replace LED."
+msgstr "故障: 30 mA を超える電流が流れました。右クリック: LED を交換。"
+
+msgid "Discharge"
+msgstr "放電"
+
+msgid "Capacitance"
+msgstr "静電容量"
+
+msgid "Capacitor"
+msgstr "コンデンサー"
+
+msgid "Capacitor with two terminals: + on the left. It charges when there is a voltage on it and gives\nthat charge back. How long that takes: time constant tau = R × C (e.g. 1000 ohm × 1000 µF = 1 s).\nRight-click: choose the capacitance or discharge."
+msgstr "2 端子のコンデンサー: + は左。電圧がかかると充電され、あとで\nその電荷を放出します。かかる時間: 時定数 tau = R × C (例: 1000 Ω × 1000 µF = 1 秒)。\n右クリック: 容量を選ぶ、または放電。"
+
+msgid "create LED with 2 terminals (with series resistor)"
+msgstr "2 端子の LED を作る (直列抵抗付き)"
+
+msgid "create Capacitor (charging and discharging)"
+msgstr "コンデンサーを作る (充電と放電)"
+
+msgid "LED with 2 terminals"
+msgstr "2 端子の LED"
+
+msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
+msgstr "2 端子の LED: + (アノード) は左、- (カソード) は右。電流は一方向にしか流れず、\n%s を超えたときだけ流れます。20 mA で最大の明るさ、30 mA を超えると故障。\n直列抵抗を入れてください: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s。右クリック: 色を選ぶ。"

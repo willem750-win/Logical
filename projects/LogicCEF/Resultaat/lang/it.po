@@ -1293,3 +1293,48 @@ msgstr "Non ancora del tutto giusto:"
 
 msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
 msgstr "Suggerimento: apri la tabella di verità e avvia la simulazione per vedere cosa fa il tuo circuito."
+
+msgid "series resistor"
+msgstr "resistenza in serie"
+
+msgid "yellow"
+msgstr "giallo"
+
+msgid "blue"
+msgstr "blu"
+
+msgid "Replace LED"
+msgstr "Sostituisci il LED"
+
+msgid "broken"
+msgstr "guasto"
+
+msgid "LED"
+msgstr "LED"
+
+msgid "Broken: more than 30 mA went through it. Right-click: replace LED."
+msgstr "Guasto: è passata più di 30 mA. Clic destro: sostituisci il LED."
+
+msgid "Discharge"
+msgstr "Scarica"
+
+msgid "Capacitance"
+msgstr "Capacità"
+
+msgid "Capacitor"
+msgstr "Condensatore"
+
+msgid "Capacitor with two terminals: + on the left. It charges when there is a voltage on it and gives\nthat charge back. How long that takes: time constant tau = R × C (e.g. 1000 ohm × 1000 µF = 1 s).\nRight-click: choose the capacitance or discharge."
+msgstr "Condensatore con due morsetti: + a sinistra. Si carica quando c'è tensione e poi\nrestituisce quella carica. Quanto dura: costante di tempo tau = R × C (es. 1000 ohm × 1000 µF = 1 s).\nClic destro: scegli la capacità o scarica."
+
+msgid "create LED with 2 terminals (with series resistor)"
+msgstr "crea LED con 2 morsetti (con resistenza in serie)"
+
+msgid "create Capacitor (charging and discharging)"
+msgstr "crea Condensatore (carica e scarica)"
+
+msgid "LED with 2 terminals"
+msgstr "LED con 2 morsetti"
+
+msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
+msgstr "LED con due morsetti: + (anodo) a sinistra, - (catodo) a destra. Conduce in un solo verso,\ne solo sopra %s. Luce piena a 20 mA, guasto sopra 30 mA.\nMetti una resistenza in serie: R = (U - Ud) / I = (12 V - %s) / 0,02 A = %s. Clic destro: scegli il colore."

@@ -23,6 +23,8 @@
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Sicherung</a></td><td>Brennt durch, wenn zu viel Strom fließt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliamperemeter</a></td><td>Misst den Strom, den die Schaltung verbraucht.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Widerstand (Kontakt)</a></td><td>Ein Kontakt oder Draht mit einem kleinen Widerstand: Es geht Spannung verloren.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED mit 2 Klemmen</a></td><td>Leitet nur in eine Richtung; gehört mit einem Vorwiderstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
   </table>
   <ol class="steps">
     <li>Klicken Sie auf die Schaltfläche des Bauteils, das Sie platzieren möchten.</li>
@@ -162,6 +164,7 @@
     <tr><td>langer dünner Draht</td><td>1&nbsp;&Omega;</td><td>ein zu dünnes Kabel zu einer weit entfernten Lampe</td></tr>
     <tr><td>schlechter Kontakt</td><td>2&nbsp;&Omega;</td><td>eine lose oder oxidierte Klemme (Standard)</td></tr>
     <tr><td>verbrannter Kontakt</td><td>10&nbsp;&Omega;</td><td>eine Klemme, die zu heiß geworden ist</td></tr>
+    <tr><td>Vorwiderstand</td><td>100, 220, 470 oder 1000&nbsp;&Omega;</td><td>ein echter Widerstand, z. B. in Reihe mit einer <a href="#led">LED</a></td></tr>
   </table>
   <p>Der Block färbt sich orange bis rot, je wärmer er wird. Messen Sie den Spannungsabfall mit einem
   <a href="#voltmeter">Voltmeter</a>: + an die Klemme auf der Seite der Quelle, &minus; an die andere Klemme.
@@ -181,6 +184,30 @@
   </ul>
   <p>Sie möchten zwei Drähte an derselben Klemme? Klicken Sie auf <b>Verbindung</b> und dann auf die Klemme, auch wenn
   schon ein Draht daran ist: Ein neuer Draht beginnt. Siehe <a href="les25.html">Lektion 25</a>.</p>
+
+  <h2 id="led"><img src="../img/pal-led2.png" class="ico" alt="">Die LED mit zwei Klemmen</h2>
+  <p>Eine LED (Leuchtdiode) ist keine Lampe: Sie lässt den Strom nur in <b>eine Richtung</b> durch, von der
+  <b>+ Klemme (Anode, links)</b> zur <b>&minus; Klemme (Kathode, rechts)</b>. Und sie leitet erst über ihrer
+  <b>Durchlassspannung</b>: rot 1,8&nbsp;V, gelb 2,0&nbsp;V, grün 2,2&nbsp;V, blau 3,0&nbsp;V (Rechtsklick &rsaquo; <b>Farbe</b>).</p>
+  <p>Darüber steigt der Strom sehr schnell. Eine LED leuchtet voll bei <b>20&nbsp;mA</b> und ist <b>über 30&nbsp;mA kaputt</b>.
+  Direkt an 12&nbsp;V geht sie sofort kaputt (Rechtsklick &rsaquo; <b>LED ersetzen</b>). Deshalb setzt man immer einen
+  <b>Vorwiderstand</b> in Reihe dazu (den <a href="#weerstand">Widerstand</a>, Art Vorwiderstand). Er nimmt den Rest der
+  Spannung auf:</p>
+  <p class="formula">R = (U<sub>Quelle</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &rarr; nehmen Sie 470&nbsp;&Omega;</p>
+  <p>Drehen Sie die LED um, bleibt sie aus: Es fließt kein Strom, und das Voltmeter zeigt die volle Spannung über der LED.</p>
+
+  <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">Der Kondensator</h2>
+  <p>Ein Kondensator speichert Ladung, ein bisschen wie ein kleiner Akku. Liegt Spannung an, <b>lädt er sich auf</b>;
+  nehmen Sie die Quelle weg, gibt er die Ladung wieder ab und <b>entlädt</b> sich. Das geht nicht auf einmal: Je größer
+  der Kondensator und je größer der Widerstand, desto länger dauert es. Die <b>Zeitkonstante</b> ist</p>
+  <p class="formula">&tau; = R &times; C &nbsp; (z. B. 1000&nbsp;&Omega; &times; 1000&nbsp;&micro;F = 1&nbsp;s)</p>
+  <p>Nach &tau; Sekunden ist der Kondensator zu etwa 63&nbsp;% ge- oder entladen, nach 5&nbsp;&tau; fast ganz. Die + Klemme
+  ist links. Die blaue Fläche zwischen den Platten zeigt, wie voll er ist, und unter dem Symbol steht seine Spannung.
+  Rechtsklick &rsaquo; <b>Kapazität</b>: 100, 470, 1000, 2200 oder 4700&nbsp;&micro;F; <b>Entladen</b> leert ihn.</p>
+  <div class="tip"><strong>Probieren Sie es:</strong> Bauen Sie Quelle &rarr; Schalter &rarr; Widerstand 470&nbsp;&Omega; &rarr;
+  LED &rarr; zurück zum &minus; der Quelle, und setzen Sie einen Kondensator von 2200&nbsp;&micro;F parallel über LED und
+  Widerstand (+ auf der Seite des Schalters). Schalten Sie ein und wieder aus: Die LED geht nicht sofort aus, sondern wird
+  langsam schwächer, weil der Kondensator seine Ladung über den Widerstand durch die LED schickt.</div>
 
   <h2 id="regels">Was ändert sich, wenn Schienen auf dem Panel stehen?</h2>
   <p>Solange keine Schiene auf dem Panel steht, funktioniert alles wie bisher. Sobald <b>mindestens eine</b>

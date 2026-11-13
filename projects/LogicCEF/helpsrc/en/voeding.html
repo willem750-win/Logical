@@ -23,6 +23,8 @@
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fuse</a></td><td>Blows when too much current flows.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliammeter</a></td><td>Measures the current the circuit uses.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Resistance (contact)</a></td><td>A contact or wire with a small resistance: some voltage is lost.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
   </table>
   <ol class="steps">
     <li>Click the button of the component you want to place.</li>
@@ -161,6 +163,7 @@
     <tr><td>long thin wire</td><td>1&nbsp;&Omega;</td><td>a cable that is too thin to a distant lamp</td></tr>
     <tr><td>poor contact</td><td>2&nbsp;&Omega;</td><td>a loose or oxidised terminal (default)</td></tr>
     <tr><td>burnt contact</td><td>10&nbsp;&Omega;</td><td>a terminal that has become too hot</td></tr>
+    <tr><td>series resistor</td><td>100, 220, 470 or 1000&nbsp;&Omega;</td><td>a real resistor, e.g. in series with an <a href="#led">LED</a></td></tr>
   </table>
   <p>The block turns orange to red as it gets warmer. Measure the voltage drop with a
   <a href="#voltmeter">voltmeter</a>: + on the terminal on the source side, &minus; on the other terminal.
@@ -180,6 +183,30 @@
   </ul>
   <p>Want two wires on the same terminal? Click <b>Connection</b> and then the terminal, even if a wire is already on
   it: a new wire starts. See <a href="les25.html">lesson 25</a>.</p>
+
+  <h2 id="led"><img src="../img/pal-led2.png" class="ico" alt="">The LED with two terminals</h2>
+  <p>An LED (light-emitting diode) is not a lamp: it lets the current through in <b>one direction</b> only, from the
+  <b>+ terminal (anode, left)</b> to the <b>&minus; terminal (cathode, right)</b>. And it only starts to conduct above its
+  <b>forward voltage</b>: red 1.8&nbsp;V, yellow 2.0&nbsp;V, green 2.2&nbsp;V, blue 3.0&nbsp;V (right-click &rsaquo; <b>Colour</b>).</p>
+  <p>Above that voltage the current rises very quickly. An LED gives full light at <b>20&nbsp;mA</b> and is <b>broken above
+  30&nbsp;mA</b>. Connect it straight to 12&nbsp;V and it breaks at once (right-click &rsaquo; <b>Replace LED</b>). That is why you
+  always put a <b>series resistor</b> with it (the <a href="#weerstand">resistance</a>, kind series resistor). It takes the
+  rest of the voltage:</p>
+  <p class="formula">R = (U<sub>source</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1.8&nbsp;V) / 0.020&nbsp;A = 510&nbsp;&Omega; &rarr; take 470&nbsp;&Omega;</p>
+  <p>Turn the LED round and it stays off: no current flows, and the voltmeter shows the full voltage across the LED.</p>
+
+  <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">The capacitor</h2>
+  <p>A capacitor stores charge, a bit like a small rechargeable battery. When there is a voltage on it, it
+  <b>charges</b>; take the source away and it gives the charge back and <b>discharges</b>. That does not happen at once:
+  the bigger the capacitor and the bigger the resistance, the longer it takes. The <b>time constant</b> is</p>
+  <p class="formula">&tau; = R &times; C &nbsp; (e.g. 1000&nbsp;&Omega; &times; 1000&nbsp;&micro;F = 1&nbsp;s)</p>
+  <p>After &tau; seconds the capacitor is about 63&nbsp;% charged or discharged, after 5&nbsp;&tau; almost completely.
+  The + terminal is on the left. The blue area between the plates shows how full it is, and its voltage is shown under
+  the symbol. Right-click &rsaquo; <b>Capacitance</b>: 100, 470, 1000, 2200 or 4700&nbsp;&micro;F; <b>Discharge</b> empties it.</p>
+  <div class="tip"><strong>Try it:</strong> build source &rarr; switch &rarr; resistor 470&nbsp;&Omega; &rarr; LED &rarr; back to
+  the &minus; of the source, and put a 2200&nbsp;&micro;F capacitor in parallel across the LED and the resistor (+ on the side
+  of the switch). Switch on and off again: the LED does not go out at once but slowly gets weaker, because the capacitor
+  sends its charge through the resistor and the LED.</div>
 
   <h2 id="regels">What changes when there are rails on the panel?</h2>
   <p>As long as there is no rail on the panel, everything works as before. As soon as there is

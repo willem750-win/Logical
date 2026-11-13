@@ -167,6 +167,10 @@ begin
       begin Result := 'voeding'; AAnchor := 'weerstand'; end;
     'lamp2', 'schakelaar2', 'voltmeter2':
       begin Result := 'voeding'; AAnchor := 'serie'; end;
+    'led2':
+      begin Result := 'voeding'; AAnchor := 'led'; end;
+    'condensator':
+      begin Result := 'voeding'; AAnchor := 'condensator'; end;
     'statusbalk':
       begin Result := 'paneel'; AAnchor := 'statusbalk'; end;
     'connector':
