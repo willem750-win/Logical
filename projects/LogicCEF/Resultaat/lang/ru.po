@@ -1561,3 +1561,6 @@ msgstr "Включите моделирование и переключайте 
 
 msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
 msgstr "Каждая линия — вход или выход: вверху = включено (1), внизу = выключено (0). Одна клетка — одна секунда. Кнопкой «Пауза» вы останавливаете картинку и можете прокрутить назад."
+
+msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
+msgstr "Выбрано объектов: %d\nПеретащите, чтобы переместить их вместе; Delete = удалить, Ctrl+C = копировать, Ctrl+V = вставить, Ctrl+D = дублировать; Esc или щелчок рядом — снять выделение"

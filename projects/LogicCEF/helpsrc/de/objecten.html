@@ -48,11 +48,25 @@
   Bauteil außerhalb der Auswahl wird gedehnt. Gesperrte Bauteile bleiben stehen, und während der
   <a href="simulatie.html">Simulation</a> können Sie nicht auswählen.</p>
 
+  <h2 id="groepbewerken">Eine Auswahl löschen, kopieren oder duplizieren</h2>
+  <p>Haben Sie Bauteile ausgewählt (blaue gestrichelte Linie), können Sie sie auch auf einmal bearbeiten:</p>
+  <ul>
+    <li><kbd>Entf</kbd>: Alle ausgewählten Bauteile verschwinden, zusammen mit den Drähten daran.</li>
+    <li><kbd>Strg</kbd>+<kbd>C</kbd>: Logic merkt sich die Auswahl, mit den Drähten zwischen den ausgewählten Bauteilen und den Drähten zu einer Schiene oder zur Quelle (auch wenn diese Schiene nicht ausgewählt ist). Beim Einfügen bleiben diese Drähte an der Schiene angeschlossen.</li>
+    <li><kbd>Strg</kbd>+<kbd>V</kbd>: Setzen Sie zuerst den Mauszeiger auf eine freie Stelle: Dort kommt die linke obere Ecke des gemerkten Teils hin. Er ist gleich ausgewählt, Sie können ihn also noch verschieben. Steht die Maus nicht auf dem Panel, kommt der Teil etwas versetzt hinzu.</li>
+    <li><kbd>Strg</kbd>+<kbd>D</kbd>: duplizieren: Die Kopie erscheint gleich rechts neben der Auswahl.</li>
+  </ul>
+  <p>Ein Fehler? Mit <kbd>Strg</kbd>+<kbd>Z</kbd> machen Sie ihn rückgängig. So bauen Sie zum Beispiel schnell eine zweite Gatterschaltung oder ein zweites Flipflop.</p>
+
   <h2>Tasten</h2>
   <table>
     <tr><th>Taste</th><th>Was macht sie?</th></tr>
     <tr><td><kbd>F1</kbd></td><td>Öffnet die Hilfe zum Bauteil oder zur Schaltfläche unter der Maus.</td></tr>
     <tr><td><kbd>Strg</kbd>+<kbd>A</kbd></td><td>Wählt alle Bauteile aus, um sie gemeinsam zu verschieben.</td></tr>
+    <tr><td><kbd>Entf</kbd></td><td>Löscht die ausgewählten Bauteile mit ihren Drähten.</td></tr>
+    <tr><td><kbd>Strg</kbd>+<kbd>C</kbd></td><td>Kopiert die ausgewählten Bauteile.</td></tr>
+    <tr><td><kbd>Strg</kbd>+<kbd>V</kbd></td><td>Fügt die kopierten Bauteile ein.</td></tr>
+    <tr><td><kbd>Strg</kbd>+<kbd>D</kbd></td><td>Dupliziert die ausgewählten Bauteile.</td></tr>
     <tr><td><kbd>Strg</kbd>+<kbd>Z</kbd></td><td>Macht die letzte Änderung am Panel rückgängig (bis zu 50 Schritte; nicht während der Simulation).</td></tr>
     <tr><td><kbd>Strg</kbd>+<kbd>Y</kbd> oder <kbd>Strg</kbd>+<kbd>Umschalt</kbd>+<kbd>Z</kbd></td><td>Stellt eine rückgängig gemachte Änderung wieder her.</td></tr>
     <tr><td><kbd>Esc</kbd></td><td>Hebt die Auswahl mehrerer Bauteile auf.</td></tr>

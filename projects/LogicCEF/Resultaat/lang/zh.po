@@ -1561,3 +1561,6 @@ msgstr "打开仿真并操作开关: 时序图会画出输入和输出随时间�
 
 msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
 msgstr "每条线是一个输入或输出: 高 = 开 (1)，低 = 关 (0)。一格是一秒。按暂停可以定住画面并向后翻看。"
+
+msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
+msgstr "已选择 %d 个对象\n拖动可一起移动; Delete = 删除，Ctrl+C = 复制，Ctrl+V = 粘贴，Ctrl+D = 再制; Esc 或点击外面取消选择"

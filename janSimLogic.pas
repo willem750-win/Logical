@@ -1809,6 +1809,8 @@ type
     FKillCount: Integer;
     templijst:TStringlist;
     FFilterLijst: TStringList;
+    FSaveOnly: TList;      // bij kopiëren: alleen deze objecten bewaren
+    FAppend: Boolean;      // bij plakken: het paneel niet eerst leegmaken
     FFirst:Boolean;
     FImputColor:TColor;
     FOutputColor:TColor;
@@ -2170,6 +2172,14 @@ type
     // De inhoud van het paneel als regels (zelfde als een .lpl-bestand), en
     // zo'n tekst weer laden. Gebruikt voor ongedaan maken / opnieuw.
     procedure SavePanelToList(SFile: TStrings; Paneel: TjanGridS);
+    // Kopiëren en plakken: alleen de objecten in Only bewaren (zonder de
+    // paneelinstellingen), en zo'n lijst bij het paneel voegen, DX/DY
+    // verschoven. Nieuw krijgt de geplakte objecten.
+    procedure SaveSelectionToList(SFile: TStrings; Paneel: TjanGridS; Only: TList);
+    // AtPos: DX,DY is de plaats (linksboven) waar het stuk moet komen,
+    // anders een verschuiving
+    procedure AddFromList(AList: TStrings; Paneel: TjanGridS; DX, DY: Integer; Nieuw: TList;
+      AtPos: Boolean = False);
     // Panelen bewaren de plaatsen zoals bij de balk links. Staat de balk
     // boven of onder, dan schuift alles bij het laden met LayoutShift op
     // (en bij het bewaren even terug).
@@ -3321,6 +3331,8 @@ end;
     FBTaal: string;
     FRailMoving: Boolean;
     function IsGroupable(C: TControl): Boolean;
+    function EndInGroup(const P: TPoint): Boolean;
+    function EndOnVoeding(const P: TPoint): Boolean;
     procedure UpdateFrame;
     procedure PrepareDrag;
     procedure ApplyDelta(DX, DY: Integer);
@@ -3346,6 +3358,16 @@ end;
     procedure RailMove(DX, DY: Integer);
     procedure EndRailMove;
     function Count: Integer;
+    // de geselecteerde objecten
+    procedure GetItems(L: TList);
+    // de draden aan de selectie: Beide = met beide uiteinden op een
+    // geselecteerd object (kopiëren), anders met minstens één (verwijderen)
+    procedure GetWires(L: TList; Beide: Boolean);
+    // de draden om te kopiëren: met beide uiteinden op een geselecteerd
+    // object, of van een geselecteerd object naar een rail of bron
+    procedure GetCopyWires(L: TList);
+    // deze objecten selecteren (na plakken)
+    procedure SelectList(L: TList);
     property Banding: Boolean read FBanding;
     property BTaal: string read FBTaal write FBTaal;
   end;
@@ -22457,6 +22479,8 @@ begin
     for i := 0 to wc.ControlCount - 1 do
     begin
       c := wc.Controls[i];
+      if Assigned(FSaveOnly) and (FSaveOnly.IndexOf(c) < 0) then
+        Continue;
 
       // --- TjanConnector ---
       if c is TjanConnector then
@@ -22611,7 +22635,9 @@ begin
         SFile.Add(VoedingFileLine(c));
     end;
 
-    // Paneel-instellingen achteraan
+    // Paneel-instellingen achteraan (niet bij kopiëren)
+    if not Assigned(FSaveOnly) then
+    begin
     SFile.Add(Format('Paneelkleur;%d;', [Paneel.Color]));
     SFile.Add(Format('Dotkleur;%d;', [Paneel.DotColor]));
     SFile.Add('Voeding;1;');   // paneel met bron (geen bron bijzetten bij laden)
@@ -22621,11 +22647,196 @@ begin
       SFile.Add('Grid;False;');
     // altijd bewaren: zonder regel volgt het paneel de instelling KStatusBalk
     SFile.Add('Statusbalk;' + BoolToStr(Paneel.ShowStatusBar, True) + ';');
+    end;
   finally
     ShiftPanelObjects(Sh.X, Sh.Y);
   end;
 end;
 
+
+procedure TjanSimLogicBox.SaveSelectionToList(SFile: TStrings; Paneel: TjanGridS; Only: TList);
+begin
+  FSaveOnly := Only;
+  try
+    SavePanelToList(SFile, Paneel);
+  finally
+    FSaveOnly := nil;
+  end;
+end;
+
+procedure TjanSimLogicBox.AddFromList(AList: TStrings; Paneel: TjanGridS; DX, DY: Integer; Nieuw: TList;
+  AtPos: Boolean);
+var
+  Oud: TList;
+  i, MinL, MinT: Integer;
+  c, Ref: TControl;
+  wc: TWinControl;
+  Sh, PA, PB, P0, Doel, C0, Snapped: TPoint;
+  WorkR: TRect;
+  Con: TjanConnector;
+  Rc: TRect;
+  MA, MB: TjanConMode;
+  InA, InB: Boolean;
+
+  // ligt P op een van de geplakte objecten (geen draad)?
+  function OpNieuw(const P: TPoint): Boolean;
+  var
+    k: Integer;
+    R: TRect;
+  begin
+    Result := False;
+    for k := 0 to Nieuw.Count - 1 do
+      if not (TObject(Nieuw[k]) is TjanConnector) then
+      begin
+        R := TControl(Nieuw[k]).BoundsRect;
+        InflateRect(R, 8, 8);
+        if PtInRect(R, P) then
+          Exit(True);
+      end;
+  end;
+
+  // het losse uiteinde P van een geplakte draad: waar moet het komen?
+  // Lag het origineel (P - DX,DY) op een rail, dan schuift het langs die
+  // rail mee (binnen de rail); op een bron of elders blijft het staan.
+  function LosDoel(const P: TPoint): TPoint;
+  var
+    k: Integer;
+    R: TRect;
+    o: TControl;
+  begin
+    P0 := Point(P.X - DX, P.Y - DY);
+    Result := P0;
+    for k := 0 to Oud.Count - 1 do
+    begin
+      o := TControl(Oud[k]);
+      if not (o is TjanRail) or not o.Visible then Continue;
+      R := o.BoundsRect;
+      InflateRect(R, 8, 8);
+      if not PtInRect(R, P0) then Continue;
+      R := o.BoundsRect;
+      if o.Height >= o.Width then
+      begin
+        Result.Y := P.Y;
+        if Result.Y > R.Bottom - 4 then Result.Y := R.Bottom - 4;
+        if Result.Y < R.Top + 4 then Result.Y := R.Top + 4;
+      end
+      else
+      begin
+        Result.X := P.X;
+        if Result.X > R.Right - 4 then Result.X := R.Right - 4;
+        if Result.X < R.Left + 4 then Result.X := R.Left + 4;
+      end;
+      Exit;
+    end;
+  end;
+
+begin
+  Nieuw.Clear;
+  wc := FParent;
+  if wc = nil then Exit;
+  Oud := TList.Create;
+  try
+    for i := 0 to wc.ControlCount - 1 do
+      Oud.Add(wc.Controls[i]);
+    FAppend := True;
+    try
+      InternalLoadFromList(AList, Paneel);
+    finally
+      FAppend := False;
+    end;
+    // bewaard zoals bij de balk links: terugschuiven naar de balk van nu
+    Sh := LayoutShift;
+    for i := 0 to wc.ControlCount - 1 do
+    begin
+      c := wc.Controls[i];
+      if Oud.IndexOf(c) >= 0 then Continue;
+      Nieuw.Add(c);
+      c.SetBounds(c.Left + Sh.X, c.Top + Sh.Y, c.Width, c.Height);
+    end;
+    // plakken aan de muis: linksboven van het stuk op DX,DY, en net als
+    // bij slepen het eerste object op de liniaal laten springen
+    if AtPos then
+    begin
+      MinL := MaxInt; MinT := MaxInt; Ref := nil;
+      for i := 0 to Nieuw.Count - 1 do
+      begin
+        c := TControl(Nieuw[i]);
+        if c.Left < MinL then MinL := c.Left;
+        if c.Top < MinT then MinT := c.Top;
+        if (Ref = nil) and not (c is TjanConnector) then Ref := c;
+      end;
+      if MinL = MaxInt then
+      begin
+        DX := 0; DY := 0;
+      end
+      else
+      begin
+        Doel := Point(DX, DY);
+        if Assigned(Paneel) then
+        begin
+          WorkR := Paneel.GetWorkAreaRect;
+          if Doel.X < WorkR.Left then Doel.X := WorkR.Left;
+          if Doel.Y < WorkR.Top then Doel.Y := WorkR.Top;
+        end;
+        DX := Doel.X - MinL;
+        DY := Doel.Y - MinT;
+        if Assigned(Paneel) and Assigned(Ref) then
+        begin
+          C0 := Point(Ref.Left + Ref.Width div 2 + DX, Ref.Top + Ref.Height div 2 + DY);
+          Snapped := Paneel.SnapPointToRuler(C0, WorkR);
+          DX := DX + (Snapped.X - C0.X);
+          DY := DY + (Snapped.Y - C0.Y);
+        end;
+      end;
+    end;
+    for i := 0 to Nieuw.Count - 1 do
+    begin
+      c := TControl(Nieuw[i]);
+      c.SetBounds(c.Left + DX, c.Top + DY, c.Width, c.Height);
+    end;
+    // een draad naar een rail of bron die niet mee gekopieerd is: dat
+    // uiteinde weer op de rail (of de bron) leggen
+    if (DX <> 0) or (DY <> 0) then
+      for i := 0 to Nieuw.Count - 1 do
+        if TObject(Nieuw[i]) is TjanConnector then
+        begin
+          Con := TjanConnector(Nieuw[i]);
+          Rc := Con.BoundsRect;
+          if Con.V_ConShape = jcsTLBR then
+          begin
+            PA := Point(Rc.Left, Rc.Top);     MA := jcmTL;
+            PB := Point(Rc.Right, Rc.Bottom); MB := jcmBR;
+          end
+          else
+          begin
+            PA := Point(Rc.Right, Rc.Top);    MA := jcmTR;
+            PB := Point(Rc.Left, Rc.Bottom);  MB := jcmBL;
+          end;
+          InA := OpNieuw(PA);
+          InB := OpNieuw(PB);
+          if InA <> InB then
+          begin
+            if InA then
+            begin
+              Doel := LosDoel(PB);
+              Con.AnchorCorner(Point(0, 0), MB);
+              Con.MoveConnector(Point(Doel.X - PB.X, Doel.Y - PB.Y));
+            end
+            else
+            begin
+              Doel := LosDoel(PA);
+              Con.AnchorCorner(Point(0, 0), MA);
+              Con.MoveConnector(Point(Doel.X - PA.X, Doel.Y - PA.Y));
+            end;
+          end;
+        end;
+  finally
+    Oud.Free;
+  end;
+  BlokkeerObjecten(False);
+  UpdateSupply(wc, True);
+  wc.Invalidate;
+end;
 
 function TjanSimLogicBox.PanelSignature(Paneel: TjanGridS): string;
 var
@@ -22911,16 +23122,20 @@ var
   end;
 
 begin
-  KillPanel;
+  if not FAppend then
+    KillPanel;
   // Geen nieuw object meer "aan de muis": koos je in de balk een component
   // maar plaatste je het niet, dan zou anders na het laden een object van
   // het paneel de muis volgen (zie GridMouseMove in main.pas).
   VoedingMark := False;
   FNew := False;
   wc := FParent;
-  FFilterLijst.Clear;
-  if Assigned(Paneel) then
-    Paneel.ShowStatusBar := Paneel.KStatusBalk;   // panelen zonder regel 'Statusbalk' volgen de instelling
+  if not FAppend then
+  begin
+    FFilterLijst.Clear;
+    if Assigned(Paneel) then
+      Paneel.ShowStatusBar := Paneel.KStatusBalk;
+  end;   // panelen zonder regel 'Statusbalk' volgen de instelling
 
   for i := 0 to AList.Count - 1 do
   begin
@@ -23756,6 +23971,7 @@ begin
   // ingelezen object. ObjectID hoort alleen bij een nieuw geplaatst object.
   FNew := False;
   FObjectID := -1;
+  if FAppend then Exit;   // plakken: AddFromList doet de rest
   // bewaard met de balk links: bij de balk boven of onder opschuiven
   ShiftPanelObjects(LayoutShift.X, LayoutShift.Y);
   BlokkeerObjecten(False);
@@ -28190,6 +28406,123 @@ begin
     Result := GetOrdProp(C, 'Lock') = 0;
 end;
 
+function TjanGroupSelect.EndInGroup(const P: TPoint): Boolean;
+var
+  k: Integer;
+  R: TRect;
+begin
+  Result := False;
+  for k := 0 to FItems.Count - 1 do
+  begin
+    R := TControl(FItems[k]).BoundsRect;
+    InflateRect(R, 8, 8);   // zelfde marge als PrepareDrag
+    if PtInRect(R, P) then
+      Exit(True);
+  end;
+end;
+
+procedure TjanGroupSelect.GetItems(L: TList);
+var
+  i: Integer;
+begin
+  for i := 0 to FItems.Count - 1 do
+    L.Add(FItems[i]);
+end;
+
+procedure TjanGroupSelect.GetWires(L: TList; Beide: Boolean);
+var
+  j: Integer;
+  C: TControl;
+  Rc: TRect;
+  InA, InB: Boolean;
+begin
+  if (Parent = nil) or (FItems.Count = 0) then Exit;
+  for j := 0 to Parent.ControlCount - 1 do
+  begin
+    C := Parent.Controls[j];
+    if not (C is TjanConnector) or not C.Visible then Continue;
+    Rc := C.BoundsRect;
+    if TjanConnector(C).Shape = jcsTLBR then
+    begin
+      InA := EndInGroup(Point(Rc.Left, Rc.Top));
+      InB := EndInGroup(Point(Rc.Right, Rc.Bottom));
+    end
+    else
+    begin
+      InA := EndInGroup(Point(Rc.Right, Rc.Top));
+      InB := EndInGroup(Point(Rc.Left, Rc.Bottom));
+    end;
+    if (Beide and InA and InB) or ((not Beide) and (InA or InB)) then
+      L.Add(C);
+  end;
+end;
+
+// ligt P op een rail of een bron? (ook als die niet geselecteerd is: de
+// rails lopen meestal over het hele paneel en vallen dan buiten het kader)
+function TjanGroupSelect.EndOnVoeding(const P: TPoint): Boolean;
+var
+  k: Integer;
+  C: TControl;
+  R: TRect;
+begin
+  Result := False;
+  if Parent = nil then Exit;
+  for k := 0 to Parent.ControlCount - 1 do
+  begin
+    C := Parent.Controls[k];
+    if not C.Visible or not ((C is TjanRail) or (C is TjanBron)) then Continue;
+    R := C.BoundsRect;
+    InflateRect(R, 8, 8);
+    if PtInRect(R, P) then
+      Exit(True);
+  end;
+end;
+
+procedure TjanGroupSelect.GetCopyWires(L: TList);
+var
+  j: Integer;
+  C: TControl;
+  Rc: TRect;
+  PA, PB: TPoint;
+  InA, InB: Boolean;
+begin
+  if (Parent = nil) or (FItems.Count = 0) then Exit;
+  for j := 0 to Parent.ControlCount - 1 do
+  begin
+    C := Parent.Controls[j];
+    if not (C is TjanConnector) or not C.Visible then Continue;
+    Rc := C.BoundsRect;
+    if TjanConnector(C).Shape = jcsTLBR then
+    begin
+      PA := Point(Rc.Left, Rc.Top);
+      PB := Point(Rc.Right, Rc.Bottom);
+    end
+    else
+    begin
+      PA := Point(Rc.Right, Rc.Top);
+      PB := Point(Rc.Left, Rc.Bottom);
+    end;
+    InA := EndInGroup(PA);
+    InB := EndInGroup(PB);
+    if (InA and InB) or (InA and EndOnVoeding(PB)) or (InB and EndOnVoeding(PA)) then
+      L.Add(C);
+  end;
+end;
+
+procedure TjanGroupSelect.SelectList(L: TList);
+var
+  i: Integer;
+begin
+  Clear;
+  for i := 0 to L.Count - 1 do
+    if IsGroupable(TControl(L[i])) then
+    begin
+      FItems.Add(L[i]);
+      TComponent(L[i]).FreeNotification(Self);
+    end;
+  UpdateFrame;
+end;
+
 function TjanGroupSelect.Count: Integer;
 begin
   Result := FItems.Count;
@@ -28236,11 +28569,12 @@ begin
   end;
   InflateRect(U, 6, 6);
   BoundsRect := U;
-  Hint := Tr(FBTaal,
-    Format('%d objecten geselecteerd'#13#10'Sleep om ze samen te verplaatsen, Esc of klik ernaast om te deselecteren', [FItems.Count]),
-    Format('%d objects selected'#13#10'Drag to move them together, Esc or click outside to deselect', [FItems.Count]),
-    Format('%d objets sélectionnés'#13#10'Faites glisser pour les déplacer ensemble, Échap ou clic à côté pour désélectionner', [FItems.Count]),
-    Format('%d Objekte ausgewählt'#13#10'Ziehen, um sie gemeinsam zu verschieben, Esc oder daneben klicken zum Abwählen', [FItems.Count]));
+  // eerst vertalen, dan invullen: anders vindt LangTr (extra talen) de tekst niet
+  Hint := Format(Tr(FBTaal,
+    '%d objecten geselecteerd'#13#10'Sleep om ze samen te verplaatsen; Delete = verwijderen, Ctrl+C = kopiëren, Ctrl+V = plakken, Ctrl+D = dupliceren; Esc of klik ernaast om te deselecteren',
+    '%d objects selected'#13#10'Drag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect',
+    '%d objets sélectionnés'#13#10'Faites glisser pour les déplacer ensemble ; Suppr = supprimer, Ctrl+C = copier, Ctrl+V = coller, Ctrl+D = dupliquer ; Échap ou clic à côté pour désélectionner',
+    '%d Objekte ausgewählt'#13#10'Ziehen, um sie gemeinsam zu verschieben; Entf = löschen, Strg+C = kopieren, Strg+V = einfügen, Strg+D = duplizieren; Esc oder daneben klicken zum Abwählen'), [FItems.Count]);
   Visible := True;
   BringToFront;
   Invalidate;

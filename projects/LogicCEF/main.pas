@@ -146,6 +146,8 @@ type
      FPanel0HasKind  : Boolean;  // of we hem moeten tekenen
      FLastHelpObject: TObject;
      FGroup: TjanGroupSelect;    // meerdere objecten selecteren/verplaatsen
+     FKlembord: TStringList;     // gekopieerde objecten (paneelregels)
+     FPlakKeer: Integer;         // hoe vaak al geplakt: telkens verder opschuiven
      // Welk ingebouwd paneel is open (0 = geen / extern bestand), zodat de
      // titel bij een taalwissel mee vertaald wordt.
      FBuiltinPanel: Integer;
@@ -222,6 +224,9 @@ type
     procedure BoxSelected(Sender: TObject; SelectedObj: TObject);
     procedure UpdateDeleteButtonVisual;
     procedure FreeObjAsync(Data: PtrInt);
+    procedure GroepVerwijderen;
+    procedure GroepKopieren;
+    procedure GroepPlakken(Naast: Boolean = False);
 
     procedure BoxObjectMove(Sender: TObject; Obj: TControl; X, Y: Integer);
     procedure StatusFromLogicBox(Sender: TObject; const AText: string; APanel: Integer);
@@ -1675,6 +1680,7 @@ var
 
 begin
   FUndoList := TStringList.Create;
+  FKlembord := TStringList.Create;
   FRedoList := TStringList.Create;
   FUndoKill := -1;   // de eerste UndoCheck begint met lege lijsten
   // rechts van de knop Instellingen in de werkbalk; de knoppen die rechts
@@ -2242,6 +2248,92 @@ begin
   TObject(Data).Free;
 end;
 
+// Delete: alle geselecteerde objecten weg, met de draden die eraan vastzitten
+procedure TmainForm.GroepVerwijderen;
+var
+  Items, Draden: TList;
+  i: Integer;
+begin
+  if FGroup.Count = 0 then Exit;
+  Items := TList.Create;
+  Draden := TList.Create;
+  try
+    FGroup.GetItems(Items);
+    FGroup.GetWires(Draden, False);
+    FGroup.Clear;
+    Box.ClearSelectedSender;
+    BoxSelected(Box, nil);
+    FCurrentSender := nil;
+    UpdateDeleteButtonVisual;
+    // eerst de draden: de ingang aan het einde uitzetten
+    for i := 0 to Draden.Count - 1 do
+    begin
+      TjanConnector(Draden[i]).Losmaken;
+      TControl(Draden[i]).Visible := False;
+      Application.QueueAsyncCall(@FreeObjAsync, PtrInt(Draden[i]));
+    end;
+    for i := 0 to Items.Count - 1 do
+    begin
+      TControl(Items[i]).Visible := False;
+      Application.QueueAsyncCall(@FreeObjAsync, PtrInt(Items[i]));
+    end;
+  finally
+    Draden.Free;
+    Items.Free;
+  end;
+  Grid.Invalidate;
+end;
+
+// Ctrl+C: de selectie (met de draden ertussen) onthouden
+procedure TmainForm.GroepKopieren;
+var
+  L: TList;
+begin
+  if FGroup.Count = 0 then Exit;
+  L := TList.Create;
+  try
+    FGroup.GetItems(L);
+    FGroup.GetCopyWires(L);
+    Box.SaveSelectionToList(FKlembord, Grid, L);
+  finally
+    L.Free;
+  end;
+  FPlakKeer := 0;
+end;
+
+// Ctrl+V: het onthouden stuk erbij zetten op de plaats van de muispijl
+// (linksboven van het stuk), en het meteen selecteren zodat je het nog
+// kunt verschuiven. Staat de muis niet op het paneel, dan een eindje
+// verschoven. Naast (Ctrl+D): rechts naast de selectie.
+procedure TmainForm.GroepPlakken(Naast: Boolean);
+var
+  Nieuw: TList;
+  P: TPoint;
+  R: TRect;
+begin
+  if FKlembord.Count = 0 then Exit;
+  Nieuw := TList.Create;
+  try
+    P := Grid.ScreenToClient(Mouse.CursorPos);
+    if Naast and (FGroup.Count > 0) then
+    begin
+      R := FGroup.BoundsRect;
+      Box.AddFromList(FKlembord, Grid, R.Right + 20, R.Top, Nieuw, True);
+    end
+    else if PtInRect(Grid.GetWorkAreaRect, P) then
+      Box.AddFromList(FKlembord, Grid, P.X, P.Y, Nieuw, True)
+    else
+    begin
+      Inc(FPlakKeer);
+      Box.AddFromList(FKlembord, Grid, 20 * FPlakKeer, 20 * FPlakKeer, Nieuw);
+    end;
+    FGroup.SelectList(Nieuw);
+  finally
+    Nieuw.Free;
+  end;
+  FocusPanel;   // pijltjestoetsen daarna naar de selectie
+end;
+
 procedure TmainForm.btDelCurObjectClick(Sender: TObject);
 var
   Obj: TObject;
@@ -2654,6 +2746,38 @@ begin
     FocusPanel;   // pijltjestoetsen daarna naar de selectie
     Key := 0;
     Exit;
+  end;
+
+  // Delete: selectie verwijderen; Ctrl+C kopiëren, Ctrl+V plakken,
+  // Ctrl+D dupliceren (niet in een invoerveld of keuzelijst)
+  if (not FRunMode) and (not fr_Settingsbestaat) and
+     not (ActiveControl is TCustomEdit) and not (ActiveControl is TCustomComboBox) then
+  begin
+    if (Key = VK_DELETE) and (Shift = []) and (FGroup.Count > 0) then
+    begin
+      GroepVerwijderen;
+      Key := 0;
+      Exit;
+    end;
+    if (ssCtrl in Shift) and (Key = VK_C) and (FGroup.Count > 0) then
+    begin
+      GroepKopieren;
+      Key := 0;
+      Exit;
+    end;
+    if (ssCtrl in Shift) and (Key = VK_V) and (FKlembord.Count > 0) then
+    begin
+      GroepPlakken;
+      Key := 0;
+      Exit;
+    end;
+    if (ssCtrl in Shift) and (Key = VK_D) and (FGroup.Count > 0) then
+    begin
+      GroepKopieren;
+      GroepPlakken(True);
+      Key := 0;
+      Exit;
+    end;
   end;
 
   // Ctrl+Z: ongedaan maken; Ctrl+Y of Ctrl+Shift+Z: opnieuw (niet in een

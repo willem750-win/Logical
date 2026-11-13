@@ -1561,3 +1561,6 @@ msgstr "シミュレーションを開始してスイッチを操作してくだ
 
 msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
 msgstr "各線は入力または出力です: 上 = オン (1)、下 = オフ (0)。1マスは1秒です。一時停止で画面を止めると、さかのぼって見られます。"
+
+msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
+msgstr "%d 個のオブジェクトを選択中\nドラッグでまとめて移動; Delete = 削除、Ctrl+C = コピー、Ctrl+V = 貼り付け、Ctrl+D = 複製; Esc または外側をクリックで選択解除"

@@ -1251,3 +1251,6 @@ msgstr "Avvia la simulazione e usa gli interruttori: il diagramma temporale dise
 
 msgid "Each line is an input or output: high = on (1), low = off (0). One box is one second. With Pause you freeze the picture and can scroll back."
 msgstr "Ogni linea è un ingresso o un'uscita: alto = acceso (1), basso = spento (0). Un quadretto è un secondo. Con Pausa fermi l'immagine e puoi tornare indietro."
+
+msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
+msgstr "%d oggetti selezionati\nTrascina per spostarli insieme; Canc = elimina, Ctrl+C = copia, Ctrl+V = incolla, Ctrl+D = duplica; Esc o clic fuori per deselezionare"

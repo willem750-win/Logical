@@ -30,11 +30,11 @@ msgstr ""
 msgid "Click here to change the title"
 msgstr ""
 
-#: chatgridpcodeSmall.pas:396 janSimLogic.pas:3470
+#: chatgridpcodeSmall.pas:396 janSimLogic.pas:3485
 msgid "Right mouse button for extra settings"
 msgstr ""
 
-#: chatgridpcodeSmall.pas:1120 chatgridpcodeSmall.pas:1120 janSimLogic.pas:12978
+#: chatgridpcodeSmall.pas:1120 chatgridpcodeSmall.pas:1120 janSimLogic.pas:12993
 msgid "Input"
 msgstr ""
 
@@ -50,975 +50,975 @@ msgstr ""
 msgid "Logic Panel"
 msgstr ""
 
-#: janSimLogic.pas:3536 janSimLogic.pas:12441
+#: janSimLogic.pas:3551 janSimLogic.pas:12456
 msgid "AND"
 msgstr ""
 
-#: janSimLogic.pas:3537 janSimLogic.pas:12444
+#: janSimLogic.pas:3552 janSimLogic.pas:12459
 msgid "OR"
 msgstr ""
 
-#: janSimLogic.pas:3538 janSimLogic.pas:12447
+#: janSimLogic.pas:3553 janSimLogic.pas:12462
 msgid "NOT"
 msgstr ""
 
-#: janSimLogic.pas:3539
+#: janSimLogic.pas:3554
 msgid "NAND"
 msgstr ""
 
-#: janSimLogic.pas:3540
+#: janSimLogic.pas:3555
 msgid "NOR"
 msgstr ""
 
-#: janSimLogic.pas:3542
+#: janSimLogic.pas:3557
 msgid "XOR"
 msgstr ""
 
-#: janSimLogic.pas:3578
+#: janSimLogic.pas:3593
 msgid "Cancel"
 msgstr ""
 
-#: janSimLogic.pas:3811 janSimLogic.pas:19818 janSimLogic.pas:20441
+#: janSimLogic.pas:3826 janSimLogic.pas:19833 janSimLogic.pas:20456
 msgid "Export"
 msgstr ""
 
-#: janSimLogic.pas:3812 janSimLogic.pas:12464 janSimLogic.pas:12979
+#: janSimLogic.pas:3827 janSimLogic.pas:12479 janSimLogic.pas:12994
 msgid "Status"
 msgstr ""
 
-#: janSimLogic.pas:3924 janSimLogic.pas:10698 janSimLogic.pas:12902
+#: janSimLogic.pas:3939 janSimLogic.pas:10713 janSimLogic.pas:12917
 msgid "Verrouiller"
 msgstr ""
 
-#: janSimLogic.pas:3928 janSimLogic.pas:10702 janSimLogic.pas:12906
+#: janSimLogic.pas:3943 janSimLogic.pas:10717 janSimLogic.pas:12921
 msgid "Sperren"
 msgstr ""
 
-#: janSimLogic.pas:3943 janSimLogic.pas:10717 janSimLogic.pas:12921
+#: janSimLogic.pas:3958 janSimLogic.pas:10732 janSimLogic.pas:12936
 msgid "Change name"
 msgstr ""
 
-#: janSimLogic.pas:3955 janSimLogic.pas:6622 janSimLogic.pas:7731
+#: janSimLogic.pas:3970 janSimLogic.pas:6637 janSimLogic.pas:7746
 msgid "Select object"
 msgstr ""
 
-#: janSimLogic.pas:3962 janSimLogic.pas:6620 janSimLogic.pas:7729
+#: janSimLogic.pas:3977 janSimLogic.pas:6635 janSimLogic.pas:7744
 msgid "Deselect object"
 msgstr ""
 
-#: janSimLogic.pas:3975 janSimLogic.pas:7722 janSimLogic.pas:10749
+#: janSimLogic.pas:3990 janSimLogic.pas:7737 janSimLogic.pas:10764
 msgid "Information off"
 msgstr ""
 
-#: janSimLogic.pas:3982 janSimLogic.pas:7724 janSimLogic.pas:10756
+#: janSimLogic.pas:3997 janSimLogic.pas:7739 janSimLogic.pas:10771
 msgid "Information on"
 msgstr ""
 
-#: janSimLogic.pas:4871
+#: janSimLogic.pas:4886
 msgid "Deselect wire"
 msgstr ""
 
-#: janSimLogic.pas:4873
+#: janSimLogic.pas:4888
 msgid "Select wire"
 msgstr ""
 
-#: janSimLogic.pas:4877
+#: janSimLogic.pas:4892
 msgid "Delete wire"
 msgstr ""
 
-#: janSimLogic.pas:5771
+#: janSimLogic.pas:5786
 msgid "Wire\nClick: select (thicker), click again: deselect\nRight-click: menu to select or delete\nDrag an end or the bend to move it"
 msgstr ""
 
-#: janSimLogic.pas:6473
+#: janSimLogic.pas:6488
 msgid "+ rail (supply):"
 msgstr ""
 
-#: janSimLogic.pas:6478
+#: janSimLogic.pas:6493
 msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
 msgstr ""
 
-#: janSimLogic.pas:6488
+#: janSimLogic.pas:6503
 msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
 msgstr ""
 
-#: janSimLogic.pas:6501
+#: janSimLogic.pas:6516
 msgid "+ rail"
 msgstr ""
 
-#: janSimLogic.pas:6506
+#: janSimLogic.pas:6521
 msgid "- rail"
 msgstr ""
 
-#: janSimLogic.pas:6507
+#: janSimLogic.pas:6522
 msgid "Ground"
 msgstr ""
 
-#: janSimLogic.pas:6612 janSimLogic.pas:7715 janSimLogic.pas:14888
+#: janSimLogic.pas:6627 janSimLogic.pas:7730 janSimLogic.pas:14903
 msgid "Unlock"
 msgstr ""
 
-#: janSimLogic.pas:6614 janSimLogic.pas:7717 janSimLogic.pas:14890
+#: janSimLogic.pas:6629 janSimLogic.pas:7732 janSimLogic.pas:14905
 msgid "Lock"
 msgstr ""
 
-#: janSimLogic.pas:6820
+#: janSimLogic.pas:6835
 msgid "good contact"
 msgstr ""
 
-#: janSimLogic.pas:6821
+#: janSimLogic.pas:6836
 msgid "long thin wire"
 msgstr ""
 
-#: janSimLogic.pas:6822
+#: janSimLogic.pas:6837
 msgid "poor contact"
 msgstr ""
 
-#: janSimLogic.pas:6824
+#: janSimLogic.pas:6839
 msgid "burnt contact"
 msgstr ""
 
-#: janSimLogic.pas:7937
+#: janSimLogic.pas:7952
 msgid "Internal resistance"
 msgstr ""
 
-#: janSimLogic.pas:7950
+#: janSimLogic.pas:7965
 msgid "Show electrons"
 msgstr ""
 
-#: janSimLogic.pas:8021 janSimLogic.pas:8048 fsettings.lfm
+#: janSimLogic.pas:8036 janSimLogic.pas:8063 fsettings.lfm
 msgid "Source (battery)"
 msgstr ""
 
-#: janSimLogic.pas:8034
+#: janSimLogic.pas:8049
 msgid "Slider: voltage 0 to 12 V.\n+ with a wire to the + rail, - to the - rail.\nRight-click: internal resistance."
 msgstr ""
 
-#: janSimLogic.pas:8113
+#: janSimLogic.pas:8128
 msgid "Replace fuse"
 msgstr ""
 
-#: janSimLogic.pas:8118
+#: janSimLogic.pas:8133
 msgid "Rated current"
 msgstr ""
 
-#: janSimLogic.pas:8201 janSimLogic.pas:8216 fsettings.lfm
+#: janSimLogic.pas:8216 janSimLogic.pas:8231 fsettings.lfm
 msgid "Fuse"
 msgstr ""
 
-#: janSimLogic.pas:8205
+#: janSimLogic.pas:8220
 msgid "In series between the source and the + rail.\nBlows when the current is too high: right-click to replace."
 msgstr ""
 
-#: janSimLogic.pas:8218
+#: janSimLogic.pas:8233
 msgid "blown"
 msgstr ""
 
-#: janSimLogic.pas:8220
+#: janSimLogic.pas:8235
 msgid "OK"
 msgstr ""
 
-#: janSimLogic.pas:8279 janSimLogic.pas:8295 fsettings.lfm
+#: janSimLogic.pas:8294 janSimLogic.pas:8310 fsettings.lfm
 msgid "Milliammeter"
 msgstr ""
 
-#: janSimLogic.pas:8284
+#: janSimLogic.pas:8299
 msgid "In series between the source and the + rail.\nShows the current the circuit uses."
 msgstr ""
 
-#: janSimLogic.pas:8352
+#: janSimLogic.pas:8367
 msgid "Kind"
 msgstr ""
 
-#: janSimLogic.pas:8429 janSimLogic.pas:8449 janSimLogic.pas:8502
+#: janSimLogic.pas:8444 janSimLogic.pas:8464 janSimLogic.pas:8517
 msgid "Resistance"
 msgstr ""
 
-#: janSimLogic.pas:8438
+#: janSimLogic.pas:8453
 msgid "In series in the supply line: some voltage is lost (U = I × R).\nMeasure it with a voltmeter across both terminals. Right-click: choose the kind."
 msgstr ""
 
-#: janSimLogic.pas:8580 janSimLogic.pas:8605 janSimLogic.pas:20074
+#: janSimLogic.pas:8595 janSimLogic.pas:8620 janSimLogic.pas:20089
 msgid "Lamp"
 msgstr ""
 
-#: janSimLogic.pas:8591
+#: janSimLogic.pas:8606
 msgid "Lamp with two terminals: put it in series or in parallel in the circuit.\nAt 12 V: "
 msgstr ""
 
-#: janSimLogic.pas:8592
+#: janSimLogic.pas:8607
 msgid " and "
 msgstr ""
 
-#: janSimLogic.pas:8593
+#: janSimLogic.pas:8608
 msgid ". The more power, the brighter it shines. Right-click: choose the resistance."
 msgstr ""
 
-#: janSimLogic.pas:8674 janSimLogic.pas:8686 janSimLogic.pas:8702
+#: janSimLogic.pas:8689 janSimLogic.pas:8701 janSimLogic.pas:8717
 msgid "closed"
 msgstr ""
 
-#: janSimLogic.pas:8675 janSimLogic.pas:8704 janSimLogic.pas:31317
+#: janSimLogic.pas:8690 janSimLogic.pas:8719 janSimLogic.pas:31455
 msgid "open"
 msgstr ""
 
-#: janSimLogic.pas:8684 janSimLogic.pas:8700 fsettings.lfm
+#: janSimLogic.pas:8699 janSimLogic.pas:8715 fsettings.lfm
 msgid "Switch"
 msgstr ""
 
-#: janSimLogic.pas:8688
+#: janSimLogic.pas:8703
 msgid "open: no current flows"
 msgstr ""
 
-#: janSimLogic.pas:8692
+#: janSimLogic.pas:8707
 msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
 msgstr ""
 
-#: janSimLogic.pas:8772 janSimLogic.pas:8787 fsettings.lfm
+#: janSimLogic.pas:8787 janSimLogic.pas:8802 fsettings.lfm
 msgid "Voltmeter"
 msgstr ""
 
-#: janSimLogic.pas:8776
+#: janSimLogic.pas:8791
 msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
 msgstr ""
 
-#: janSimLogic.pas:13014
+#: janSimLogic.pas:13029
 msgid "Processing --> Counter block"
 msgstr ""
 
-#: janSimLogic.pas:14656 fsettings.lfm fsettings.lfm
+#: janSimLogic.pas:14671 fsettings.lfm fsettings.lfm
 msgid "Memory block"
 msgstr ""
 
-#: janSimLogic.pas:15117
+#: janSimLogic.pas:15132
 msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
 msgstr ""
 
-#: janSimLogic.pas:16159 janSimLogic.pas:16192 fsettings.lfm
+#: janSimLogic.pas:16174 janSimLogic.pas:16207 fsettings.lfm
 msgid "Push button"
 msgstr ""
 
-#: janSimLogic.pas:16161
+#: janSimLogic.pas:16176
 msgid "Down"
 msgstr ""
 
-#: janSimLogic.pas:16163
+#: janSimLogic.pas:16178
 msgid "Upwards"
 msgstr ""
 
-#: janSimLogic.pas:16850 janSimLogic.pas:19093
+#: janSimLogic.pas:16865 janSimLogic.pas:19108
 msgid "switch"
 msgstr ""
 
-#: janSimLogic.pas:16907
+#: janSimLogic.pas:16922
 msgid "DipSwitsh"
 msgstr ""
 
-#: janSimLogic.pas:17864
+#: janSimLogic.pas:17879
 msgid "emperature sensor"
 msgstr ""
 
-#: janSimLogic.pas:18110
+#: janSimLogic.pas:18125
 msgid "Frequency"
 msgstr ""
 
-#: janSimLogic.pas:18116
+#: janSimLogic.pas:18131
 msgid "every "
 msgstr ""
 
-#: janSimLogic.pas:18119
+#: janSimLogic.pas:18134
 msgid "default"
 msgstr ""
 
-#: janSimLogic.pas:19521
+#: janSimLogic.pas:19536
 msgid "cold"
 msgstr ""
 
-#: janSimLogic.pas:19521
+#: janSimLogic.pas:19536
 msgid "hot"
 msgstr ""
 
-#: janSimLogic.pas:19719
+#: janSimLogic.pas:19734
 msgid "Temperature sensor"
 msgstr ""
 
-#: janSimLogic.pas:20068
+#: janSimLogic.pas:20083
 msgid "Colour"
 msgstr ""
 
-#: janSimLogic.pas:20075
+#: janSimLogic.pas:20090
 msgid "Red LED"
 msgstr ""
 
-#: janSimLogic.pas:20076
+#: janSimLogic.pas:20091
 msgid "Green LED"
 msgstr ""
 
-#: janSimLogic.pas:20077
+#: janSimLogic.pas:20092
 msgid "Orange LED"
 msgstr ""
 
-#: janSimLogic.pas:25055 janSimLogic.pas:25055
+#: janSimLogic.pas:25128 janSimLogic.pas:25128
 msgid "create Switch"
 msgstr ""
 
-#: janSimLogic.pas:25970 janSimLogic.pas:25970
+#: janSimLogic.pas:26043 janSimLogic.pas:26043
 msgid "create Buzzer"
 msgstr ""
 
-#: janSimLogic.pas:25971 janSimLogic.pas:25971
+#: janSimLogic.pas:26044 janSimLogic.pas:26044
 msgid "create Motor"
 msgstr ""
 
-#: janSimLogic.pas:25972 janSimLogic.pas:25972
+#: janSimLogic.pas:26045 janSimLogic.pas:26045
 msgid "create DipSwitsh"
 msgstr ""
 
-#: janSimLogic.pas:25973 janSimLogic.pas:25973
+#: janSimLogic.pas:26046 janSimLogic.pas:26046
 msgid "create 7 segment display"
 msgstr ""
 
-#: janSimLogic.pas:25974 janSimLogic.pas:25974
+#: janSimLogic.pas:26047 janSimLogic.pas:26047
 msgid "create Connection"
 msgstr ""
 
-#: janSimLogic.pas:25975 janSimLogic.pas:25975
+#: janSimLogic.pas:26048 janSimLogic.pas:26048
 msgid "create Push button"
 msgstr ""
 
-#: janSimLogic.pas:25976 janSimLogic.pas:25976
+#: janSimLogic.pas:26049 janSimLogic.pas:26049
 msgid "create Lamp"
 msgstr ""
 
-#: janSimLogic.pas:25977 janSimLogic.pas:25977
+#: janSimLogic.pas:26050 janSimLogic.pas:26050
 msgid "create AND-Logic gate"
 msgstr ""
 
-#: janSimLogic.pas:25978 janSimLogic.pas:25978
+#: janSimLogic.pas:26051 janSimLogic.pas:26051
 msgid "create NOT-Logic gate"
 msgstr ""
 
-#: janSimLogic.pas:25979 janSimLogic.pas:25979
+#: janSimLogic.pas:26052 janSimLogic.pas:26052
 msgid "create OR-Logic gate"
 msgstr ""
 
-#: janSimLogic.pas:25980 janSimLogic.pas:25980
+#: janSimLogic.pas:26053 janSimLogic.pas:26053
 msgid "create NAND-Logic gate (not-and)"
 msgstr ""
 
-#: janSimLogic.pas:25981 janSimLogic.pas:25981
+#: janSimLogic.pas:26054 janSimLogic.pas:26054
 msgid "create NOR-Logic gate (not-or)"
 msgstr ""
 
-#: janSimLogic.pas:25982 janSimLogic.pas:25982
+#: janSimLogic.pas:26055 janSimLogic.pas:26055
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr ""
 
-#: janSimLogic.pas:25983 janSimLogic.pas:25983
+#: janSimLogic.pas:26056 janSimLogic.pas:26056
 msgid "create Memory block"
 msgstr ""
 
-#: janSimLogic.pas:25984 janSimLogic.pas:25984
+#: janSimLogic.pas:26057 janSimLogic.pas:26057
 msgid "create Impuls generator"
 msgstr ""
 
-#: janSimLogic.pas:25985 janSimLogic.pas:25985
+#: janSimLogic.pas:26058 janSimLogic.pas:26058
 msgid "create Relay"
 msgstr ""
 
-#: janSimLogic.pas:25986 janSimLogic.pas:25986
+#: janSimLogic.pas:26059 janSimLogic.pas:26059
 msgid "create Switching relay (relay with contact)"
 msgstr ""
 
-#: janSimLogic.pas:25987 janSimLogic.pas:25987
+#: janSimLogic.pas:26060 janSimLogic.pas:26060
 msgid "create Switsh"
 msgstr ""
 
-#: janSimLogic.pas:25988 janSimLogic.pas:25988
+#: janSimLogic.pas:26061 janSimLogic.pas:26061
 msgid "create Light sensor"
 msgstr ""
 
-#: janSimLogic.pas:25989 janSimLogic.pas:25989
+#: janSimLogic.pas:26062 janSimLogic.pas:26062
 msgid "create Counter block"
 msgstr ""
 
-#: janSimLogic.pas:25990 janSimLogic.pas:25990
+#: janSimLogic.pas:26063 janSimLogic.pas:26063
 msgid "create Step counter (counts up to 9999)"
 msgstr ""
 
-#: janSimLogic.pas:25991 janSimLogic.pas:25991
+#: janSimLogic.pas:26064 janSimLogic.pas:26064
 msgid "create Flip-flop (SR, D, JK or T)"
 msgstr ""
 
-#: janSimLogic.pas:25992 janSimLogic.pas:25992
+#: janSimLogic.pas:26065 janSimLogic.pas:26065
 msgid "create Stopwatch (time with end time)"
 msgstr ""
 
-#: janSimLogic.pas:25993 janSimLogic.pas:25993
+#: janSimLogic.pas:26066 janSimLogic.pas:26066
 msgid "create HeatSensor"
 msgstr ""
 
-#: janSimLogic.pas:25994 janSimLogic.pas:25994
+#: janSimLogic.pas:26067 janSimLogic.pas:26067
 msgid "create Voltmeter"
 msgstr ""
 
-#: janSimLogic.pas:25995 janSimLogic.pas:25995
+#: janSimLogic.pas:26068 janSimLogic.pas:26068
 msgid "create Person (with limit switches)"
 msgstr ""
 
-#: janSimLogic.pas:25996 janSimLogic.pas:25996
+#: janSimLogic.pas:26069 janSimLogic.pas:26069
 msgid "create Cart (road with posts)"
 msgstr ""
 
-#: janSimLogic.pas:25997 janSimLogic.pas:25997
+#: janSimLogic.pas:26070 janSimLogic.pas:26070
 msgid "create Music box (8 piano keys)"
 msgstr ""
 
-#: janSimLogic.pas:25998 janSimLogic.pas:25998
+#: janSimLogic.pas:26071 janSimLogic.pas:26071
 msgid "create Traffic light (with pedestrian light)"
 msgstr ""
 
-#: janSimLogic.pas:25999 janSimLogic.pas:25999
+#: janSimLogic.pas:26072 janSimLogic.pas:26072
 msgid "create Barrier gate (car park)"
 msgstr ""
 
-#: janSimLogic.pas:26000 janSimLogic.pas:26000
+#: janSimLogic.pas:26073 janSimLogic.pas:26073
 msgid "create + rail (supply)"
 msgstr ""
 
-#: janSimLogic.pas:26001 janSimLogic.pas:26001
+#: janSimLogic.pas:26074 janSimLogic.pas:26074
 msgid "create - rail (ground)"
 msgstr ""
 
-#: janSimLogic.pas:26002 janSimLogic.pas:26002
+#: janSimLogic.pas:26075 janSimLogic.pas:26075
 msgid "create Source (battery, 0 to 12 V)"
 msgstr ""
 
-#: janSimLogic.pas:26003 janSimLogic.pas:26003
+#: janSimLogic.pas:26076 janSimLogic.pas:26076
 msgid "create Fuse"
 msgstr ""
 
-#: janSimLogic.pas:26004 janSimLogic.pas:26004
+#: janSimLogic.pas:26077 janSimLogic.pas:26077
 msgid "create Milliammeter"
 msgstr ""
 
-#: janSimLogic.pas:26005 janSimLogic.pas:26005
+#: janSimLogic.pas:26078 janSimLogic.pas:26078
 msgid "create Resistance (contact, long wire)"
 msgstr ""
 
-#: janSimLogic.pas:26006 janSimLogic.pas:26006
+#: janSimLogic.pas:26079 janSimLogic.pas:26079
 msgid "create Lamp with 2 terminals (series and parallel)"
 msgstr ""
 
-#: janSimLogic.pas:26007 janSimLogic.pas:26007
+#: janSimLogic.pas:26080 janSimLogic.pas:26080
 msgid "create Switch with 2 terminals"
 msgstr ""
 
-#: janSimLogic.pas:26008 janSimLogic.pas:26008
+#: janSimLogic.pas:26081 janSimLogic.pas:26081
 msgid "create Voltmeter with 2 terminals"
 msgstr ""
 
-#: janSimLogic.pas:27236
+#: janSimLogic.pas:27309
 msgid "Connector tool"
 msgstr ""
 
-#: janSimLogic.pas:28241
-msgid "%d objects selected\nDrag to move them together, Esc or click outside to deselect"
+#: janSimLogic.pas:28379
+msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
 msgstr ""
 
-#: janSimLogic.pas:28564 uLogicRun.pas:286
+#: janSimLogic.pas:28702 uLogicRun.pas:286
 msgid "start/stop"
 msgstr ""
 
-#: janSimLogic.pas:28565 uLogicRun.pas:287
+#: janSimLogic.pas:28703 uLogicRun.pas:287
 msgid "reset"
 msgstr ""
 
-#: janSimLogic.pas:28567 uLogicRun.pas:289
+#: janSimLogic.pas:28705 uLogicRun.pas:289
 msgid "on/off"
 msgstr ""
 
-#: janSimLogic.pas:29086 janSimLogic.pas:29114 janSimLogic.pas:29484
+#: janSimLogic.pas:29224 janSimLogic.pas:29252 janSimLogic.pas:29622
 msgid "stopped"
 msgstr ""
 
-#: janSimLogic.pas:29089 janSimLogic.pas:29116 uLogicRun.pas:260
+#: janSimLogic.pas:29227 janSimLogic.pas:29254 uLogicRun.pas:260
 msgid "step"
 msgstr ""
 
-#: janSimLogic.pas:29103
+#: janSimLogic.pas:29241
 msgid "Double-click: edit program"
 msgstr ""
 
-#: janSimLogic.pas:29163
+#: janSimLogic.pas:29301
 msgid "Edit program..."
 msgstr ""
 
-#: janSimLogic.pas:29477
+#: janSimLogic.pas:29615
 msgid "L and R on together: fault!"
 msgstr ""
 
-#: janSimLogic.pas:29480
+#: janSimLogic.pas:29618
 msgid "turning left"
 msgstr ""
 
-#: janSimLogic.pas:29482
+#: janSimLogic.pas:29620
 msgid "turning right"
 msgstr ""
 
-#: janSimLogic.pas:29490
+#: janSimLogic.pas:29628
 msgid "L: turn left, R: turn right"
 msgstr ""
 
-#: janSimLogic.pas:30010
+#: janSimLogic.pas:30148
 msgid "L and R on together: stands still"
 msgstr ""
 
-#: janSimLogic.pas:30013
+#: janSimLogic.pas:30151
 msgid "at the left (S1 on)"
 msgstr ""
 
-#: janSimLogic.pas:30016
+#: janSimLogic.pas:30154
 msgid "at the right (S2 on)"
 msgstr ""
 
-#: janSimLogic.pas:30019
+#: janSimLogic.pas:30157
 msgid "walking left"
 msgstr ""
 
-#: janSimLogic.pas:30021
+#: janSimLogic.pas:30159
 msgid "walking right"
 msgstr ""
 
-#: janSimLogic.pas:30023 janSimLogic.pas:30509
+#: janSimLogic.pas:30161 janSimLogic.pas:30647
 msgid "standing still"
 msgstr ""
 
-#: janSimLogic.pas:30030
+#: janSimLogic.pas:30168
 msgid "L: walk left, R: walk right\nS1/S2: limit switch left/right\nright-click: place limit switches"
 msgstr ""
 
-#: janSimLogic.pas:30097
+#: janSimLogic.pas:30235
 msgid "Back to the start"
 msgstr ""
 
-#: janSimLogic.pas:30100
+#: janSimLogic.pas:30238
 msgid "Close the barrier now"
 msgstr ""
 
-#: janSimLogic.pas:30103
+#: janSimLogic.pas:30241
 msgid "Back to the left (S1)"
 msgstr ""
 
-#: janSimLogic.pas:30108
+#: janSimLogic.pas:30246
 msgid "Place limit switches"
 msgstr ""
 
-#: janSimLogic.pas:30493
+#: janSimLogic.pas:30631
 msgid "V and A on together: stands still"
 msgstr ""
 
-#: janSimLogic.pas:30496
+#: janSimLogic.pas:30634
 msgid "at the start (Start on)"
 msgstr ""
 
-#: janSimLogic.pas:30499
+#: janSimLogic.pas:30637
 msgid "at the finish (Finish on)"
 msgstr ""
 
-#: janSimLogic.pas:30502
+#: janSimLogic.pas:30640
 msgid "at post %d (Tel on)"
 msgstr ""
 
-#: janSimLogic.pas:30505
+#: janSimLogic.pas:30643
 msgid "driving forward"
 msgstr ""
 
-#: janSimLogic.pas:30507
+#: janSimLogic.pas:30645
 msgid "driving backward"
 msgstr ""
 
-#: janSimLogic.pas:30517
+#: janSimLogic.pas:30655
 msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
 msgstr ""
 
-#: janSimLogic.pas:30843
+#: janSimLogic.pas:30981
 msgid "Sound"
 msgstr ""
 
-#: janSimLogic.pas:30862
+#: janSimLogic.pas:31000
 msgid "silent"
 msgstr ""
 
-#: janSimLogic.pas:30864
+#: janSimLogic.pas:31002
 msgid "plays "
 msgstr ""
 
-#: janSimLogic.pas:30866 janSimLogic.pas:30907
+#: janSimLogic.pas:31004 janSimLogic.pas:31045
 msgid " (sound off)"
 msgstr ""
 
-#: janSimLogic.pas:30873
+#: janSimLogic.pas:31011
 msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
 msgstr ""
 
-#: janSimLogic.pas:31088 janSimLogic.pas:31094
+#: janSimLogic.pas:31226 janSimLogic.pas:31232
 msgid "red"
 msgstr ""
 
-#: janSimLogic.pas:31089
+#: janSimLogic.pas:31227
 msgid "amber"
 msgstr ""
 
-#: janSimLogic.pas:31090 janSimLogic.pas:31095
+#: janSimLogic.pas:31228 janSimLogic.pas:31233
 msgid "green"
 msgstr ""
 
-#: janSimLogic.pas:31091 janSimLogic.pas:31096 uLogicRun.pas:713
+#: janSimLogic.pas:31229 janSimLogic.pas:31234 uLogicRun.pas:713
 msgid "off"
 msgstr ""
 
-#: janSimLogic.pas:31092
+#: janSimLogic.pas:31230
 msgid "cars: "
 msgstr ""
 
-#: janSimLogic.pas:31097
+#: janSimLogic.pas:31235
 msgid " - pedestrians: "
 msgstr ""
 
-#: janSimLogic.pas:31099
+#: janSimLogic.pas:31237
 msgid " - DANGER: both green!"
 msgstr ""
 
-#: janSimLogic.pas:31107
+#: janSimLogic.pas:31245
 msgid "inputs R, A, G: red, amber, green for the cars\nPR, PG: red and green figure for the pedestrians\nsame height as OUT0..OUT4 of LogicRun"
 msgstr ""
 
-#: janSimLogic.pas:31279
+#: janSimLogic.pas:31417
 msgid "Closed"
 msgstr ""
 
-#: janSimLogic.pas:31281
+#: janSimLogic.pas:31419
 msgid "Open"
 msgstr ""
 
-#: janSimLogic.pas:31313
+#: janSimLogic.pas:31451
 msgid "opening"
 msgstr ""
 
-#: janSimLogic.pas:31314
+#: janSimLogic.pas:31452
 msgid "closing"
 msgstr ""
 
-#: janSimLogic.pas:31321
+#: janSimLogic.pas:31459
 msgid "barrier: "
 msgstr ""
 
-#: janSimLogic.pas:31329
+#: janSimLogic.pas:31467
 msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
 msgstr ""
 
-#: janSimLogic.pas:31613
+#: janSimLogic.pas:31751
 msgid "no person or cart on the panel"
 msgstr ""
 
-#: janSimLogic.pas:31616
+#: janSimLogic.pas:31754
 msgid ": on"
 msgstr ""
 
-#: janSimLogic.pas:31618
+#: janSimLogic.pas:31756
 msgid ": off"
 msgstr ""
 
-#: janSimLogic.pas:31625
+#: janSimLogic.pas:31763
 msgid "Follows the person or the cart (without a wire).\nRight-click: choose S1, S2 or Start, Tel, Finish"
 msgstr ""
 
-#: janSimLogic.pas:32048 janSimLogic.pas:32516
+#: janSimLogic.pas:32186 janSimLogic.pas:32654
 msgid "repeat"
 msgstr ""
 
-#: janSimLogic.pas:32050 janSimLogic.pas:32518
+#: janSimLogic.pas:32188 janSimLogic.pas:32656
 msgid "to "
 msgstr ""
 
-#: janSimLogic.pas:32065
+#: janSimLogic.pas:32203
 msgid "count "
 msgstr ""
 
-#: janSimLogic.pas:32066 janSimLogic.pas:32534
+#: janSimLogic.pas:32204 janSimLogic.pas:32672
 msgid " of "
 msgstr ""
 
-#: janSimLogic.pas:32068 janSimLogic.pas:32536
+#: janSimLogic.pas:32206 janSimLogic.pas:32674
 msgid ": reached (Q on)"
 msgstr ""
 
-#: janSimLogic.pas:32076
+#: janSimLogic.pas:32214
 msgid "T: +1 per pulse, R: back to 0\nQ: on when the end value is reached\nRight-click: choose the end value"
 msgstr ""
 
-#: janSimLogic.pas:32153 janSimLogic.pas:32580
+#: janSimLogic.pas:32291 janSimLogic.pas:32718
 msgid "To "
 msgstr ""
 
-#: janSimLogic.pas:32162
+#: janSimLogic.pas:32300
 msgid "Other end value..."
 msgstr ""
 
-#: janSimLogic.pas:32171
+#: janSimLogic.pas:32309
 msgid "Repeat (start again at 1 after the end value)"
 msgstr ""
 
-#: janSimLogic.pas:32177
+#: janSimLogic.pas:32315
 msgid "Set to 0"
 msgstr ""
 
-#: janSimLogic.pas:32209
+#: janSimLogic.pas:32347
 msgid "End value"
 msgstr ""
 
-#: janSimLogic.pas:32210
+#: janSimLogic.pas:32348
 msgid "Count up to (1 to 9999)?"
 msgstr ""
 
-#: janSimLogic.pas:32533
+#: janSimLogic.pas:32671
 msgid "time "
 msgstr ""
 
-#: janSimLogic.pas:32544
+#: janSimLogic.pas:32682
 msgid "S: time runs while S is on, R: back to 00:00\nQ: on when the end time is reached\nRight-click: choose the end time"
 msgstr ""
 
-#: janSimLogic.pas:32589
+#: janSimLogic.pas:32727
 msgid "Other end time..."
 msgstr ""
 
-#: janSimLogic.pas:32598
+#: janSimLogic.pas:32736
 msgid "Repeat (start again at 00:01 after the end time)"
 msgstr ""
 
-#: janSimLogic.pas:32604
+#: janSimLogic.pas:32742
 msgid "Set to 00:00"
 msgstr ""
 
-#: janSimLogic.pas:32624
+#: janSimLogic.pas:32762
 msgid "End time"
 msgstr ""
 
-#: janSimLogic.pas:32625
+#: janSimLogic.pas:32763
 msgid "End time as mm:ss (00:01 to 99:59)?"
 msgstr ""
 
-#: janSimLogic.pas:32915
+#: janSimLogic.pas:33053
 msgid "SR: S sets Q to 1, R resets Q to 0 (R wins)"
 msgstr ""
 
-#: janSimLogic.pas:32917
+#: janSimLogic.pas:33055
 msgid "D: when C turns on, Q takes the value of D"
 msgstr ""
 
-#: janSimLogic.pas:32919
+#: janSimLogic.pas:33057
 msgid "JK: when C turns on: J sets, K resets, J and K together toggle"
 msgstr ""
 
-#: janSimLogic.pas:32922
+#: janSimLogic.pas:33060
 msgid "T: every time T turns on, Q toggles"
 msgstr ""
 
-#: janSimLogic.pas:32926
+#: janSimLogic.pas:33064
 msgid "Right-click: choose the type (SR, D, JK, T)"
 msgstr ""
 
-#: janSimLogic.pas:32969
+#: janSimLogic.pas:33107
 msgid "Set Q to 0"
 msgstr ""
 
-#: main.pas:264
+#: main.pas:269
 msgid "Stop simulation"
 msgstr ""
 
-#: main.pas:266 main.pas:1398
+#: main.pas:271 main.pas:1403
 msgid "Start simulation"
 msgstr ""
 
-#: main.pas:327
+#: main.pas:332
 msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
 msgstr ""
 
-#: main.pas:382
+#: main.pas:387
 msgid "Shows the name or info of the active object"
 msgstr ""
 
-#: main.pas:388
+#: main.pas:393
 msgid "Shows the current status or function"
 msgstr ""
 
-#: main.pas:394
+#: main.pas:399
 msgid "Displays the X and Y position of the current object"
 msgstr ""
 
-#: main.pas:400
+#: main.pas:405
 msgid "Shows the object type"
 msgstr ""
 
-#: main.pas:406
+#: main.pas:411
 msgid "Shows extra debug information"
 msgstr ""
 
-#: main.pas:414
+#: main.pas:419
 msgid "Status bar"
 msgstr ""
 
-#: main.pas:431
+#: main.pas:436
 msgid "Algemeen"
 msgstr ""
 
-#: main.pas:431
+#: main.pas:436
 msgid "General"
 msgstr ""
 
-#: main.pas:432
+#: main.pas:437
 msgid "SchakelElementen"
 msgstr ""
 
-#: main.pas:432
+#: main.pas:437
 msgid "Switch Elements"
 msgstr ""
 
-#: main.pas:433 main.pas:433
+#: main.pas:438 main.pas:438
 msgid "Hints"
 msgstr ""
 
-#: main.pas:1378
+#: main.pas:1383
 msgid "Logic Circuits"
 msgstr ""
 
-#: main.pas:1379
+#: main.pas:1384
 msgid "Choose language..."
 msgstr ""
 
-#: main.pas:1380
+#: main.pas:1385
 msgid "Copy the panel to the clipboard..."
 msgstr ""
 
-#: main.pas:1382
+#: main.pas:1387
 msgid "Grid Yes/No\nGo to open settings for additional options..."
 msgstr ""
 
-#: main.pas:1383
+#: main.pas:1388
 msgid "Guidelines on grid YES/NO..."
 msgstr ""
 
-#: main.pas:1384
+#: main.pas:1389
 msgid "Draw frame on grid..."
 msgstr ""
 
-#: main.pas:1385
+#: main.pas:1390
 msgid "Change panel title..."
 msgstr ""
 
-#: main.pas:1386
+#: main.pas:1391
 msgid "Bar Input / Processing / Output on/off"
 msgstr ""
 
-#: main.pas:1387
+#: main.pas:1392
 msgid "Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)"
 msgstr ""
 
-#: main.pas:1389
+#: main.pas:1394
 msgid "Open settings"
 msgstr ""
 
-#: main.pas:1390
+#: main.pas:1395
 msgid "Close application"
 msgstr ""
 
-#: main.pas:1391
+#: main.pas:1396
 msgid "About Logic..."
 msgstr ""
 
-#: main.pas:1392
+#: main.pas:1397
 msgid "Open help (F1)"
 msgstr ""
 
-#: main.pas:1393
+#: main.pas:1398
 msgid "Open saved panel..."
 msgstr ""
 
-#: main.pas:1394
+#: main.pas:1399
 msgid "Save panel..."
 msgstr ""
 
-#: main.pas:1395
+#: main.pas:1400
 msgid "Click here to select the panel..."
 msgstr ""
 
-#: main.pas:1396
+#: main.pas:1401
 msgid "Remove connections..."
 msgstr ""
 
-#: main.pas:1397
+#: main.pas:1402
 msgid "Delete selected object..."
 msgstr ""
 
-#: main.pas:1479
+#: main.pas:1484
 msgid "Decision panel"
 msgstr ""
 
-#: main.pas:1480
+#: main.pas:1485
 msgid "Counter panel"
 msgstr ""
 
-#: main.pas:1481
+#: main.pas:1486
 msgid "Memory panel"
 msgstr ""
 
-#: main.pas:1482
+#: main.pas:1487
 msgid "New standard panel"
 msgstr ""
 
-#: main.pas:1760
+#: main.pas:1766
 msgid "Undo (Ctrl+Z)"
 msgstr ""
 
-#: main.pas:1761
+#: main.pas:1767
 msgid "Redo (Ctrl+Y)"
 msgstr ""
 
-#: main.pas:1779
+#: main.pas:1785
 msgid "LogicRun: program in steps"
 msgstr ""
 
-#: main.pas:1787 main.pas:1787
+#: main.pas:1793 main.pas:1793
 msgid "Truth table of the panel"
 msgstr ""
 
-#: main.pas:1795 main.pas:1795
+#: main.pas:1801 main.pas:1801
 msgid "Timing diagram of the panel"
 msgstr ""
 
-#: main.pas:2087 main.pas:2087
+#: main.pas:2093 main.pas:2093
 msgid "without name"
 msgstr ""
 
-#: main.pas:2088 main.pas:2088
+#: main.pas:2094 main.pas:2094
 msgid "The panel \"%s\" has been changed."
 msgstr ""
 
-#: main.pas:2089 main.pas:2089
+#: main.pas:2095 main.pas:2095
 msgid "Do you want to save the changes?"
 msgstr ""
 
-#: main.pas:2756
+#: main.pas:2867
 msgid "Screenshot of the panel has been copied to the clipboard."
 msgstr ""
 
-#: main.pas:2960
+#: main.pas:3071
 msgid "Change title"
 msgstr ""
 
-#: main.pas:2961
+#: main.pas:3072
 msgid "Enter new title:"
 msgstr ""
 

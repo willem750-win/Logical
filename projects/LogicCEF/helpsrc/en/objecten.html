@@ -47,11 +47,25 @@
   the selection stretches. Locked components stay where they are, and you cannot select during the
   <a href="simulatie.html">simulation</a>.</p>
 
+  <h2 id="groepbewerken">Removing, copying or duplicating a selection</h2>
+  <p>Once you have selected components (blue dotted line), you can also edit them in one go:</p>
+  <ul>
+    <li><kbd>Delete</kbd>: all selected components disappear, together with the wires attached to them.</li>
+    <li><kbd>Ctrl</kbd>+<kbd>C</kbd>: Logic remembers the selection, with the wires between the selected components and the wires to a rail or the source (even if that rail is not selected). When you paste, those wires stay connected to the rail.</li>
+    <li><kbd>Ctrl</kbd>+<kbd>V</kbd>: first put the mouse pointer on an empty spot: the top left corner of the remembered part goes there. It is selected straight away, so you can still move it. If the mouse is not on the panel, the part is added a little shifted.</li>
+    <li><kbd>Ctrl</kbd>+<kbd>D</kbd>: duplicate: the copy appears right next to the selection.</li>
+  </ul>
+  <p>Made a mistake? Undo it with <kbd>Ctrl</kbd>+<kbd>Z</kbd>. This way you quickly build, for example, a second gate circuit or a second flip-flop.</p>
+
   <h2>Keys</h2>
   <table>
     <tr><th>Key</th><th>What does it do?</th></tr>
     <tr><td><kbd>F1</kbd></td><td>Opens the help about the component or button under the mouse.</td></tr>
     <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Selects all components to move them together.</td></tr>
+    <tr><td><kbd>Delete</kbd></td><td>Removes the selected components with their wires.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>Copies the selected components.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>Pastes the copied components.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Duplicates the selected components.</td></tr>
     <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Undoes the last change to the panel (up to 50 steps; not during the simulation).</td></tr>
     <tr><td><kbd>Ctrl</kbd>+<kbd>Y</kbd> or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></td><td>Redoes a change you undid.</td></tr>
     <tr><td><kbd>Esc</kbd></td><td>Cancels the selection of several components.</td></tr>

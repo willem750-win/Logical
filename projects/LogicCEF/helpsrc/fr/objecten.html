@@ -49,11 +49,25 @@
   composant hors de la sélection s&rsquo;étire. Les composants verrouillés restent en place, et pendant la
   <a href="simulatie.html">simulation</a> vous ne pouvez pas sélectionner.</p>
 
+  <h2 id="groepbewerken">Supprimer, copier ou dupliquer une sélection</h2>
+  <p>Une fois des composants sélectionnés (pointillé bleu), vous pouvez aussi les modifier en une fois&nbsp;:</p>
+  <ul>
+    <li><kbd>Suppr</kbd>&nbsp;: tous les composants sélectionnés disparaissent, avec les fils qui y sont attachés.</li>
+    <li><kbd>Ctrl</kbd>+<kbd>C</kbd>&nbsp;: Logic retient la sélection, avec les fils entre les composants sélectionnés et les fils vers un rail ou la source (même si ce rail n&rsquo;est pas sélectionné). Au collage, ces fils restent branchés sur le rail.</li>
+    <li><kbd>Ctrl</kbd>+<kbd>V</kbd>&nbsp;: placez d&rsquo;abord le pointeur de la souris sur un endroit libre&nbsp;: le coin supérieur gauche de la partie retenue y arrive. Elle est tout de suite sélectionnée, vous pouvez donc encore la déplacer. Si la souris n&rsquo;est pas sur le panneau, la partie est ajoutée un peu décalée.</li>
+    <li><kbd>Ctrl</kbd>+<kbd>D</kbd>&nbsp;: dupliquer&nbsp;: la copie apparaît juste à droite de la sélection.</li>
+  </ul>
+  <p>Une erreur&nbsp;? Annulez-la avec <kbd>Ctrl</kbd>+<kbd>Z</kbd>. Vous construisez ainsi vite, par exemple, un deuxième circuit de portes ou une deuxième bascule.</p>
+
   <h2>Touches</h2>
   <table>
     <tr><th>Touche</th><th>Que fait-elle&nbsp;?</th></tr>
     <tr><td><kbd>F1</kbd></td><td>Ouvre l&rsquo;aide du composant ou du bouton sous la souris.</td></tr>
     <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Sélectionne tous les composants pour les déplacer ensemble.</td></tr>
+    <tr><td><kbd>Suppr</kbd></td><td>Supprime les composants sélectionnés avec leurs fils.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>Copie les composants sélectionnés.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>Colle les composants copiés.</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Duplique les composants sélectionnés.</td></tr>
     <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Annule la dernière modification du panneau (jusqu'à 50 étapes ; pas pendant la simulation).</td></tr>
     <tr><td><kbd>Ctrl</kbd>+<kbd>Y</kbd> ou <kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>Z</kbd></td><td>Rétablit une modification annulée.</td></tr>
     <tr><td><kbd>Échap</kbd></td><td>Annule la sélection de plusieurs composants.</td></tr>
