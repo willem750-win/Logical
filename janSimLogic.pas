@@ -6917,7 +6917,7 @@ const
   // condensator: capaciteit in microfarad
   CondUF: array[0..4] of Double = (100, 470, 1000, 2200, 4700);
   CondStandaard = 2;      // 1000 uF
-  CondW = 64; CondH = 46;
+  CondW = 64; CondH = 58;   // twee regels tekst onder het symbool
 
 var
   // tijdstap van de voedingskring voor de condensatoren (s), en of deze
@@ -8980,7 +8980,8 @@ begin
     if FDoorgebrand then
       S := Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt')
     else
-      S := LedKleurNaam(FTaal, FKleur) + ' ' + VoltText(Drempel);
+      S := LedKleurNaam(FTaal, FKleur) + ' ' + FormatFloat('0.0', Drempel) + ' V';
+    Font.Size := 6;
     TW := TextWidth(S);
     TextOut(CX - TW div 2, CY + 11, S);
   end;
@@ -9139,9 +9140,14 @@ begin
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
     TextOut(CX - 12, CY - 15, '+');
     Font.Style := [];
-    S := UFText(CondUF[FSoort]) + '  ' + VoltText(FU);
+    // capaciteit en spanning op twee regels (anders te breed)
+    Font.Size := 6;
+    S := UFText(CondUF[FSoort]);
     TW := TextWidth(S);
     TextOut(CX - TW div 2, CY + 14, S);
+    S := FormatFloat('0.0', FU) + ' V';
+    TW := TextWidth(S);
+    TextOut(CX - TW div 2, CY + 24, S);
   end;
   PaintSelection;
 end;

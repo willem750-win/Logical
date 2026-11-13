@@ -1,0 +1,59 @@
+<!-- titel: Leçon 28 - La LED et le condensateur -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 28 sur 28</p>
+  <h1>La LED et le condensateur</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> allumer une LED sans danger avec une résistance série, et voir comment
+  un condensateur stocke une charge et la rend.</div>
+
+  <p><a class="open" href="../../panels/lessen/les28-led-condensator.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les28.png" alt="Source de 12 V, interrupteur, résistance série de 470 ohms et LED bleue en série ; un condensateur de 2200 microfarads en parallèle sur la résistance et la LED">
+    <figcaption>Source &rarr; interrupteur &rarr; résistance 470&nbsp;&Omega; &rarr; LED bleue &rarr; retour à la source. Le condensateur est en parallèle sur la résistance et la LED.</figcaption>
+  </figure>
+
+  <h2>Pourquoi une résistance série&nbsp;?</h2>
+  <p>Une <a href="voeding.html#led"><img src="../img/pal-led2.png" class="ico" alt="">LED</a> n&rsquo;est pas une lampe
+  ordinaire. Elle ne conduit qu&rsquo;au-dessus de sa <b>tension de seuil</b> (une LED bleue&nbsp;: 3,0&nbsp;V), et au-delà le
+  courant monte très vite. Sans rien devant elle, il passe tant de courant qu&rsquo;elle grille aussitôt. La
+  <a href="voeding.html#weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">résistance série</a> prend le reste
+  de la tension et limite le courant&nbsp;:</p>
+  <p class="formula">I = (U<sub>source</sub> &minus; U<sub>LED</sub>) / R = (12&nbsp;V &minus; 3,0&nbsp;V) / 470&nbsp;&Omega; &asymp; 0,019&nbsp;A = 19&nbsp;mA</p>
+  <p>C&rsquo;est juste sous les 20&nbsp;mA où une LED donne toute sa lumière. Au-dessus de 30&nbsp;mA, elle grille.</p>
+  <ol class="steps">
+    <li>Allumez l&rsquo;interrupteur. La LED s&rsquo;allume. Pointez la LED&nbsp;: l&rsquo;info-bulle montre la tension et le courant.</li>
+    <li>Placez un <a href="voeding.html#serie">voltmètre</a> aux bornes de la résistance et un aux bornes de la LED.
+      Ensemble, ils donnent (presque) les 12&nbsp;V de la source.</li>
+    <li>Clic droit sur la résistance et choisissez une valeur plus petite, par exemple 100&nbsp;&Omega;. Calculez&nbsp;:
+      (12 &minus; 3) / 100 = 90&nbsp;mA. Que devient la LED&nbsp;? Remplacez-la par clic droit &rsaquo; <b>Remplacer la LED</b>
+      et remettez la résistance sur 470&nbsp;&Omega;.</li>
+    <li>Retournez la LED (échangez les deux fils). Elle reste éteinte&nbsp;: une LED ne conduit que dans un sens.</li>
+  </ol>
+
+  <h2>Le condensateur&nbsp;: charge et décharge</h2>
+  <p>Le <a href="voeding.html#condensator"><img src="../img/pal-condensator.png" class="ico" alt="">condensateur</a> est en
+  parallèle sur la résistance et la LED. Quand l&rsquo;interrupteur est allumé, il se charge aussitôt à presque 12&nbsp;V&nbsp;:
+  la zone bleue entre les plaques est pleine.</p>
+  <ol class="steps">
+    <li>Éteignez l&rsquo;interrupteur. La LED ne s&rsquo;éteint <b>pas</b> tout de suite mais faiblit lentement&nbsp;: le
+      condensateur rend sa charge à travers la résistance et la LED.</li>
+    <li>Regardez la tension sous le condensateur. Elle descend jusqu&rsquo;à environ 3&nbsp;V&nbsp;; en dessous, la LED ne
+      conduit plus et le reste de la charge reste.</li>
+    <li>Choisissez par clic droit un condensateur plus petit (100&nbsp;&micro;F) et réessayez. La LED s&rsquo;éteint bien plus vite.</li>
+  </ol>
+  <p>Combien de temps cela prend, la <b>constante de temps</b> le dit&nbsp;:</p>
+  <p class="formula">&tau; = R &times; C = 470&nbsp;&Omega; &times; 0,0022&nbsp;F &asymp; 1&nbsp;s</p>
+  <p>Une résistance ou un condensateur plus grand&nbsp;: plus long. Plus petit&nbsp;: plus court.</p>
+
+  <h2>Exercice&nbsp;: une lampe à extinction lente</h2>
+  <p>Dans une voiture, l&rsquo;éclairage intérieur reste allumé un moment quand on ferme la porte. Faites en sorte que la
+  LED continue à briller environ <b>5 secondes</b> après l&rsquo;extinction. Quel condensateur choisissez-vous, et quelle résistance&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Prenez le plus grand condensateur, 4700&nbsp;&micro;F. Avec 470&nbsp;&Omega;, &tau; = 470 &times; 0,0047 &asymp; 2,2&nbsp;s&nbsp;;
+    avec 1000&nbsp;&Omega;, &tau; = 1000 &times; 0,0047 = 4,7&nbsp;s. Avec 1000&nbsp;&Omega; la LED brille moins fort
+    (I = 9 / 1000 = 9&nbsp;mA), mais elle reste allumée bien plus longtemps.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> il y a des condensateurs dans presque tous les appareils. Ils lissent les
+  petites chutes de l&rsquo;alimentation, retardent un signal ou, comme ici, font s&rsquo;éteindre une lampe lentement.</div>
+
+  <div class="pager"><a href="les27.html">&larr; Leçon 27 : La bascule se souvient</a><a href="leerpad.html">Parcours &rarr;</a></div>

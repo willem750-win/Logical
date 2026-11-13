@@ -1,0 +1,59 @@
+<!-- titel: Les 28 - De led en de condensator -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 28 van 28</p>
+  <h1>De led en de condensator</h1>
+  <div class="goal"><strong>Doel:</strong> een led veilig laten branden met een voorschakelweerstand, en zien hoe een
+  condensator lading opslaat en weer afgeeft.</div>
+
+  <p><a class="open" href="../../panels/lessen/les28-led-condensator.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les28.png" alt="Bron van 12 V, schakelaar, voorschakelweerstand van 470 ohm en een blauwe led in serie; een condensator van 2200 microfarad parallel over de weerstand en de led">
+    <figcaption>Bron &rarr; schakelaar &rarr; weerstand 470&nbsp;&Omega; &rarr; blauwe led &rarr; terug naar de bron. De condensator staat parallel over de weerstand en de led.</figcaption>
+  </figure>
+
+  <h2>Waarom een voorschakelweerstand?</h2>
+  <p>Een <a href="voeding.html#led"><img src="../img/pal-led2.png" class="ico" alt="">led</a> is geen gewone lamp. Ze
+  geleidt pas boven haar <b>drempelspanning</b> (een blauwe led: 3,0&nbsp;V), en daarboven stijgt de stroom heel snel. Zonder
+  iets ervoor gaat er zoveel stroom door dat ze meteen kapot is. De
+  <a href="voeding.html#weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">voorschakelweerstand</a> neemt
+  de rest van de spanning op en houdt de stroom klein:</p>
+  <p class="formula">I = (U<sub>bron</sub> &minus; U<sub>led</sub>) / R = (12&nbsp;V &minus; 3,0&nbsp;V) / 470&nbsp;&Omega; &asymp; 0,019&nbsp;A = 19&nbsp;mA</p>
+  <p>Dat is net onder de 20&nbsp;mA waarbij een led vol brandt. Boven 30&nbsp;mA gaat ze stuk.</p>
+  <ol class="steps">
+    <li>Zet de schakelaar aan. De led brandt. Wijs de led aan: de hint toont de spanning en de stroom.</li>
+    <li>Zet een <a href="voeding.html#serie">voltmeter</a> over de weerstand en een over de led. Samen geven ze
+      (bijna) de 12&nbsp;V van de bron.</li>
+    <li>Klik met de rechtermuisknop op de weerstand en kies een kleinere waarde, bijvoorbeeld 100&nbsp;&Omega;. Reken uit:
+      (12 &minus; 3) / 100 = 90&nbsp;mA. Wat gebeurt er met de led? Vervang ze met rechtsklik &rsaquo; <b>Led vervangen</b>
+      en zet de weerstand terug op 470&nbsp;&Omega;.</li>
+    <li>Draai de led om (verwissel de twee draden). Nu blijft ze uit: een led geleidt maar in één richting.</li>
+  </ol>
+
+  <h2>De condensator: laden en ontladen</h2>
+  <p>De <a href="voeding.html#condensator"><img src="../img/pal-condensator.png" class="ico" alt="">condensator</a> staat
+  parallel over de weerstand en de led. Als de schakelaar aan staat, laadt hij meteen op tot bijna 12&nbsp;V: het blauwe
+  vlak tussen de platen is vol.</p>
+  <ol class="steps">
+    <li>Zet de schakelaar uit. De led dooft <b>niet</b> meteen, maar wordt langzaam zwakker: de condensator geeft zijn
+      lading af via de weerstand en de led.</li>
+    <li>Kijk naar de spanning onder de condensator. Ze zakt tot ongeveer 3&nbsp;V; daaronder geleidt de led niet meer en
+      blijft de rest van de lading zitten.</li>
+    <li>Kies met rechtsklik een kleinere condensator (100&nbsp;&micro;F) en probeer opnieuw. De led dooft nu veel sneller.</li>
+  </ol>
+  <p>Hoe lang dat duurt, zegt de <b>tijdconstante</b>:</p>
+  <p class="formula">&tau; = R &times; C = 470&nbsp;&Omega; &times; 0,0022&nbsp;F &asymp; 1&nbsp;s</p>
+  <p>Een grotere weerstand of een grotere condensator: langer. Een kleinere: korter.</p>
+
+  <h2>Opdracht: een nalichtende lamp</h2>
+  <p>In een auto blijft de binnenverlichting nog even branden als je de deur dichtdoet. Zorg dat de led na het uitzetten
+  ongeveer <b>5 seconden</b> blijft nagloeien. Welke condensator kies je, en welke weerstand?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Neem de grootste condensator, 4700&nbsp;&micro;F. Met 470&nbsp;&Omega; is &tau; = 470 &times; 0,0047 &asymp; 2,2&nbsp;s,
+    met 1000&nbsp;&Omega; is &tau; = 1000 &times; 0,0047 = 4,7&nbsp;s. Met 1000&nbsp;&Omega; brandt de led wel zwakker
+    (I = 9 / 1000 = 9&nbsp;mA), maar ze gloeit veel langer na.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> condensatoren zitten in bijna elk toestel. Ze vangen korte dipjes in de
+  voeding op, vertragen een signaal of laten, zoals hier, een lampje langzaam doven.</div>
+
+  <div class="pager"><a href="les27.html">&larr; Les 27: De flipflop onthoudt</a><a href="leerpad.html">Leerpad &rarr;</a></div>
