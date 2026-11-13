@@ -1254,3 +1254,42 @@ msgstr "Ogni linea è un ingresso o un'uscita: alto = acceso (1), basso = spento
 
 msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
 msgstr "%d oggetti selezionati\nTrascina per spostarli insieme; Canc = elimina, Ctrl+C = copia, Ctrl+V = incolla, Ctrl+D = duplica; Esc o clic fuori per deselezionare"
+
+msgid "Exercise: assignment and check"
+msgstr "Esercizio: consegna e verifica"
+
+msgid "This panel is not an exercise. Open an exercise from the help (Exercises)."
+msgstr "Questo pannello non è un esercizio. Apri un esercizio dalla guida (Esercizi)."
+
+msgid "Exercise"
+msgstr "Esercizio"
+
+msgid "Check"
+msgstr "Verifica"
+
+msgid "Build the circuit and then click Check. You may also switch the simulation on first and try it yourself."
+msgstr "Costruisci il circuito e poi fai clic su Verifica. Puoi anche avviare prima la simulazione e provare da solo."
+
+msgid "This exercise needs %d inputs (switches, push buttons or sensors); there are %d on the panel."
+msgstr "Questo esercizio richiede %d ingressi (interruttori, pulsanti o sensori); sul pannello ce ne sono %d."
+
+msgid "This exercise needs %d outputs (lamps, LEDs, buzzers ...); there are %d on the panel."
+msgstr "Questo esercizio richiede %d uscite (lampade, LED, cicalini ...); sul pannello ce ne sono %d."
+
+msgid "In this exercise you may not use a %s gate. Build it from the other gates."
+msgstr "In questo esercizio non puoi usare una porta %s. Costruiscila con le altre porte."
+
+msgid "With %s, %s is %s, but it should be %s."
+msgstr "Con %s, %s è %s, ma dovrebbe essere %s."
+
+msgid "Well done! Your circuit is right in all %d positions of the switches."
+msgstr "Bravo! Il tuo circuito è giusto in tutte le %d posizioni degli interruttori."
+
+msgid "(The panel has components with a memory; also try it yourself in the simulation.)"
+msgstr "(Sul pannello ci sono componenti con memoria; prova anche tu nella simulazione.)"
+
+msgid "Not quite right yet:"
+msgstr "Non ancora del tutto giusto:"
+
+msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
+msgstr "Suggerimento: apri la tabella di verità e avvia la simulazione per vedere cosa fa il tuo circuito."

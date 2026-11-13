@@ -183,6 +183,8 @@ begin
       begin Result := 'waarheidstabel'; AAnchor := ''; end;
     'tijddiagram':
       begin Result := 'tijddiagram'; AAnchor := ''; end;
+    'oefeningen':
+      begin Result := 'oefeningen'; AAnchor := ''; end;
   else
     begin Result := 'index'; AAnchor := ''; end;
   end;

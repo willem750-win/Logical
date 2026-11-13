@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening;
 const
   IniFileName = 'taal.ini';
 
@@ -171,6 +171,8 @@ type
      FWaarheidForm: TWaarheidForm;
      btTijd: TSpeedButton;              // tijddiagram van het paneel
      FTijdForm: TTijdForm;
+     btOefening: TSpeedButton;          // opdracht van een oefening + controle
+     FOefForm: TOefForm;
      // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
      // vaste talen: FPoCodes[i] hoort bij Taal.Items[4 + i]
      FPoCodes: TStringList;
@@ -181,6 +183,9 @@ type
      procedure btLogicRunClick(Sender: TObject);
      procedure btWaarheidClick(Sender: TObject);
      procedure btTijdClick(Sender: TObject);
+     procedure btOefeningClick(Sender: TObject);
+     // na het openen van een paneel: oefening? dan het venster tonen
+     procedure ToonOefening;
      procedure GridKLogicRunChange(Sender: TObject);
      procedure GridKStatusBalkChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
@@ -1625,6 +1630,27 @@ begin
   Result.Canvas.LineTo(11, 9); Result.Canvas.LineTo(11, 13); Result.Canvas.LineTo(14, 13);
 end;
 
+// blad met een groen vinkje
+function MakeOefGlyph: TBitmap;
+begin
+  Result := TBitmap.Create;
+  Result.SetSize(16, 16);
+  Result.Canvas.Brush.Color := clFuchsia;
+  Result.Canvas.FillRect(0, 0, 16, 16);
+  Result.Canvas.Brush.Color := clWhite;
+  Result.Canvas.Pen.Color := clNavy;
+  Result.Canvas.Rectangle(1, 0, 13, 16);
+  Result.Canvas.Pen.Color := clGray;
+  Result.Canvas.MoveTo(3, 3); Result.Canvas.LineTo(11, 3);
+  Result.Canvas.MoveTo(3, 6); Result.Canvas.LineTo(9, 6);
+  Result.Canvas.Pen.Color := clGreen;
+  Result.Canvas.Pen.Width := 2;
+  Result.Canvas.MoveTo(5, 11); Result.Canvas.LineTo(8, 14); Result.Canvas.LineTo(15, 6);
+  Result.Canvas.Pen.Width := 1;
+  Result.TransparentColor := clFuchsia;
+  Result.Transparent := True;
+end;
+
 function MakeLogicRunGlyph: TBitmap;
 var
   i: Integer;
@@ -1687,11 +1713,11 @@ begin
   // van de bewerkbalk op een vaste plaats staan (Bewaren, Openen, ...)
   // schuiven evenveel mee, anders liggen ze onder de nieuwe knoppen
   OldRight := Panel2.Left + Panel2.Width;
-  Panel2.Width := Panel2.Width + 140;
+  Panel2.Width := Panel2.Width + 168;
   for i := 0 to Panel2.Parent.ControlCount - 1 do
     with Panel2.Parent.Controls[i] do
       if (Align = alNone) and (Left >= OldRight) then
-        Left := Left + 140;
+        Left := Left + 168;
   btUndo := MakeButton(BSettings2.Left + BSettings2.Width + 2, False, @btUndoClick);
   btRedo := MakeButton(btUndo.Left + btUndo.Width + 2, True, @btRedoClick);
   // LogicRun (programmeermodule) rechts daarvan
@@ -1743,6 +1769,22 @@ begin
   btTijd.OnClick := @btTijdClick;
   btTijd.OnMouseEnter := @btSimulateMouseEnter;
   btTijd.HelpKeyword := 'tijddiagram';
+  // oefening rechts van het tijddiagram
+  btOefening := TSpeedButton.Create(Self);
+  btOefening.Parent := Panel2;
+  btOefening.SetBounds(btTijd.Left + btTijd.Width + 2, 2, 26, 22);
+  btOefening.Flat := True;
+  btOefening.ShowHint := True;
+  btOefening.ParentShowHint := False;
+  G := MakeOefGlyph;
+  try
+    btOefening.Glyph := G;
+  finally
+    G.Free;
+  end;
+  btOefening.OnClick := @btOefeningClick;
+  btOefening.OnMouseEnter := @btSimulateMouseEnter;
+  btOefening.HelpKeyword := 'oefeningen';
   // Instellingen > Algemeen: knop LogicRun en balkknoppen Persoon en Wagentje aan/uit
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
@@ -1796,6 +1838,16 @@ begin
     else
       btWaarheid.Hint := 'Waarheidstabel van het paneel';
     end;
+  if Assigned(btOefening) then
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: btOefening.Hint := PoTr('Exercise: assignment and check');
+      chatgridpcodeSmall.lgFrench:  btOefening.Hint := 'Exercice : consigne et vérification';
+      chatgridpcodeSmall.lgGerman:  btOefening.Hint := 'Übung: Aufgabe und Prüfung';
+    else
+      btOefening.Hint := 'Oefening: opdracht en controle';
+    end;
+  if Assigned(FOefForm) then
+    FOefForm.SetTaal(LogicRunTaal);
   if Assigned(btTijd) then
     case Grid.Language of
       chatgridpcodeSmall.lgEnglish: btTijd.Hint := PoTr('Timing diagram of the panel');
@@ -1867,6 +1919,46 @@ begin
     FWaarheidForm.SetBounds(L, Top, FWaarheidForm.Width, FWaarheidForm.Height);
   FWaarheidForm.Show;
   FWaarheidForm.BringToFront;
+end;
+
+// Oefening: venster met de opdracht en de knop Controleer, rechts naast het
+// hoofdvenster
+procedure TmainForm.ToonOefening;
+var
+  L: Integer;
+begin
+  if not IsOefening(Box) then
+  begin
+    if Assigned(FOefForm) then FOefForm.Toon;   // verbergt het venster
+    Exit;
+  end;
+  if FOefForm = nil then
+  begin
+    FOefForm := TOefForm.CreateFor(Self, Box);
+    FOefForm.SetTaal(LogicRunTaal);
+  end;
+  if not FOefForm.Visible then
+  begin
+    L := Left + Width;
+    if L + FOefForm.Width > Screen.WorkAreaRect.Right then
+      L := Screen.WorkAreaRect.Right - FOefForm.Width;
+    FOefForm.SetBounds(L, Top + 40, FOefForm.Width, FOefForm.Height);
+  end;
+  FOefForm.Toon;
+end;
+
+procedure TmainForm.btOefeningClick(Sender: TObject);
+begin
+  if IsOefening(Box) then
+    ToonOefening
+  else
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: ShowMessage(PoTr('This panel is not an exercise. Open an exercise from the help (Exercises).'));
+      chatgridpcodeSmall.lgFrench:  ShowMessage('Ce panneau n''est pas un exercice. Ouvrez un exercice depuis l''aide (Exercices).');
+      chatgridpcodeSmall.lgGerman:  ShowMessage('Dieses Panel ist keine Übung. Öffnen Sie eine Übung aus der Hilfe (Übungen).');
+    else
+      ShowMessage('Dit paneel is geen oefening. Open een oefening vanuit de help (Oefeningen).');
+    end;
 end;
 
 // Tijddiagram: venster onder de waarheidstabel, rechts naast het hoofdvenster
@@ -2523,6 +2615,7 @@ begin
   FCurrentFile := '';
   SetPanelTitle(ChangeFileExt(ExtractFileName(AFileName), ''));
   MarkPanelClean;
+  ToonOefening;
 end;
 
 procedure TmainForm.btOpenPaneelClick(Sender: TObject);
@@ -2554,6 +2647,7 @@ begin
        FCurrentFile := OpenDialog.FileName;
        SetPanelTitle(ChangeFileExt(ExtractFileName(OpenDialog.FileName), ''));
        MarkPanelClean;
+       ToonOefening;
        end;
  OpenDialog.Free;
 end;

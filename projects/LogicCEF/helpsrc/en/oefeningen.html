@@ -1,0 +1,46 @@
+<!-- titel: Exercises -->
+  <h1 id="oefeningen"><img src="../img/knop-oef.png" class="ico" alt="">Exercises</h1>
+  <p class="lead">In an exercise you get an assignment and a panel with the switches and lamps already in place. You build
+  the circuit in between. With the <b>Check</b> button Logic tells you whether your circuit is right.</p>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li>Click an exercise below. The panel opens, and to the right of Logic the
+      <img src="../img/knop-oef.png" class="ico" alt=""><b>Exercise</b> window appears with the assignment.</li>
+    <li>Put the gates you need on the panel and connect everything with wires. Preferably do not move the switches and
+      lamps: A is the top switch, B the next one, ...</li>
+    <li>Click <b>Check</b>. Logic puts the switches in every position, just like the
+      <a href="waarheidstabel.html">truth table</a>, and compares with the right solution.</li>
+    <li>If everything is right, the box turns green. Otherwise it turns red and tells you in which position of the
+      switches a lamp or buzzer is wrong, for example: <i>With A=1, B=1, L1 is off, but it should be on.</i></li>
+  </ol>
+  <p>Closed the window? Click <img src="../img/knop-oef.png" class="ico" alt=""><b>Exercise</b> in the title bar to open
+  it again. If you save the panel, it stays an exercise: you can carry on later and check again.</p>
+
+  <h2>The exercises</h2>
+  <table>
+    <tr><th>Exercise</th><th>What do you build?</th><th>Goes with</th></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef01-en-poort.lpl">&#9654; 1. The AND gate</a></td><td>The lamp only lights when A and B are both on.</td><td><a href="les04.html">lesson 4</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef02-of-poort.lpl">&#9654; 2. The OR gate</a></td><td>The lamp lights when A or B is on, or both.</td><td><a href="les05.html">lesson 5</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef03-niet-poort.lpl">&#9654; 3. The NOT gate</a></td><td>The lamp lights when the switch is off.</td><td><a href="les03.html">lesson 3</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef04-exof-zelf-bouwen.lpl">&#9654; 4. Build your own XOR</a></td><td>Exactly one switch on, without an XOR gate: only AND, OR and NOT.</td><td><a href="les26.html">lesson 26</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef05-alarm.lpl">&#9654; 5. An alarm</a></td><td>Three inputs: the buzzer sounds when the alarm is on and the door or the window is open.</td><td><a href="les07.html">lesson 7</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef06-halve-opteller.lpl">&#9654; 6. The half adder</a></td><td>Add two bits: one lamp for the sum and one for the carry.</td><td><a href="les26.html">lesson 26</a></td></tr>
+  </table>
+
+  <div class="tip"><strong>Tip:</strong> stuck? Open the <a href="waarheidstabel.html">truth table</a> and switch the
+  <a href="simulatie.html">simulation</a> on: you then see what your circuit does now, and which row differs from the assignment.</div>
+
+  <h2>Making your own exercise</h2>
+  <p>An exercise is an ordinary panel file (<code>.lpl</code>) with a few extra lines. Open it in Notepad and add at the
+  bottom, for example:</p>
+  <pre>Titel;EN;My exercise;
+Opdracht;EN;Make the lamp light when A and B are on.|Use one gate.;
+Verwacht;2;1;000;010;100;111;
+Verboden;EXOF;</pre>
+  <ul>
+    <li><b>Titel</b> (title) and <b>Opdracht</b> (assignment) can be given per language (NL, EN, FR, DE ...). A <code>|</code> is a new line.</li>
+    <li><b>Verwacht</b> (expected): first the number of inputs and outputs, then the right truth table, row by row: the
+      inputs (A, B ...) and then the outputs (L1, L2 ...), as in the <a href="waarheidstabel.html">truth table</a>.</li>
+    <li><b>Verboden</b> (forbidden, optional): gates that may not be used: EN (AND), OF (OR), NIET (NOT), NEN (NAND), NOF (NOR) or EXOF (XOR).</li>
+  </ul>

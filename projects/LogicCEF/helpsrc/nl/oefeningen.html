@@ -1,0 +1,46 @@
+<!-- titel: Oefeningen -->
+  <h1 id="oefeningen"><img src="../img/knop-oef.png" class="ico" alt="">Oefeningen</h1>
+  <p class="lead">In een oefening krijg je een opdracht en een paneel met de schakelaars en lampen al klaar. Jij bouwt de
+  schakeling ertussen. Met de knop <b>Controleer</b> kijkt Logic of je schakeling klopt.</p>
+
+  <h2>Zo werkt het</h2>
+  <ol class="steps">
+    <li>Klik hieronder op een oefening. Het paneel opent, en rechts van Logic verschijnt het venster
+      <img src="../img/knop-oef.png" class="ico" alt=""><b>Oefening</b> met de opdracht.</li>
+    <li>Zet de poorten die je nodig hebt op het paneel en verbind alles met draden. Verplaats de schakelaars en lampen
+      liefst niet: A is de bovenste schakelaar, B de volgende, ...</li>
+    <li>Klik op <b>Controleer</b>. Logic zet de schakelaars in elke stand, net als bij de
+      <a href="waarheidstabel.html">waarheidstabel</a>, en vergelijkt met de juiste oplossing.</li>
+    <li>Klopt alles, dan wordt het vak groen. Anders wordt het rood en staat er bij welke stand van de schakelaars een
+      lamp of zoemer verkeerd is, bijvoorbeeld: <i>Bij A=1, B=1 is L1 uit, maar die moet aan zijn.</i></li>
+  </ol>
+  <p>Venster gesloten? Klik in de titelbalk op <img src="../img/knop-oef.png" class="ico" alt=""><b>Oefening</b> om het
+  terug te openen. Bewaar je het paneel, dan blijft het een oefening: je kunt later verder werken en opnieuw controleren.</p>
+
+  <h2>De oefeningen</h2>
+  <table>
+    <tr><th>Oefening</th><th>Wat bouw je?</th><th>Hoort bij</th></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef01-en-poort.lpl">&#9654; 1. De EN-poort</a></td><td>De lamp brandt alleen als A en B allebei aan zijn.</td><td><a href="les04.html">les 4</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef02-of-poort.lpl">&#9654; 2. De OF-poort</a></td><td>De lamp brandt als A of B aan is, of allebei.</td><td><a href="les05.html">les 5</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef03-niet-poort.lpl">&#9654; 3. De NIET-poort</a></td><td>De lamp brandt als de schakelaar uit staat.</td><td><a href="les03.html">les 3</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef04-exof-zelf-bouwen.lpl">&#9654; 4. EX-OF zelf bouwen</a></td><td>Precies één schakelaar aan, zonder EX-OF-poort: alleen EN, OF en NIET.</td><td><a href="les26.html">les 26</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef05-alarm.lpl">&#9654; 5. Een alarm</a></td><td>Drie ingangen: de zoemer klinkt als het alarm aan staat en de deur of het raam open is.</td><td><a href="les07.html">les 7</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef06-halve-opteller.lpl">&#9654; 6. De halve opteller</a></td><td>Twee bits optellen: een lamp voor de som en een voor de overdracht.</td><td><a href="les26.html">les 26</a></td></tr>
+  </table>
+
+  <div class="tip"><strong>Tip:</strong> lukt het niet? Open de <a href="waarheidstabel.html">waarheidstabel</a> en zet
+  de <a href="simulatie.html">simulatie</a> aan: dan zie je wat je schakeling nu doet, en welke rij verschilt van de opdracht.</div>
+
+  <h2>Zelf een oefening maken</h2>
+  <p>Een oefening is een gewoon paneelbestand (<code>.lpl</code>) met enkele regels extra. Open het met Kladblok en zet
+  onderaan bijvoorbeeld:</p>
+  <pre>Titel;NL;Mijn oefening;
+Opdracht;NL;Laat de lamp branden als A en B aan zijn.|Gebruik een poort.;
+Verwacht;2;1;000;010;100;111;
+Verboden;EXOF;</pre>
+  <ul>
+    <li><b>Titel</b> en <b>Opdracht</b> mogen er per taal staan (NL, EN, FR, DE ...). Een <code>|</code> is een nieuwe regel.</li>
+    <li><b>Verwacht</b>: eerst het aantal ingangen en uitgangen, dan de juiste waarheidstabel, rij per rij: de ingangen
+      (A, B ...) en daarna de uitgangen (L1, L2 ...), zoals in de <a href="waarheidstabel.html">waarheidstabel</a>.</li>
+    <li><b>Verboden</b> (mag weg): poorten die niet mogen: EN, OF, NIET, NEN, NOF of EXOF.</li>
+  </ul>

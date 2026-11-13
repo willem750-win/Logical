@@ -1,0 +1,47 @@
+<!-- titel: Übungen -->
+  <h1 id="oefeningen"><img src="../img/knop-oef.png" class="ico" alt="">Übungen</h1>
+  <p class="lead">In einer Übung bekommen Sie eine Aufgabe und ein Panel, auf dem die Schalter und Lampen schon stehen. Sie
+  bauen die Schaltung dazwischen. Mit der Schaltfläche <b>Prüfen</b> sagt Logic Ihnen, ob Ihre Schaltung stimmt.</p>
+
+  <h2>So funktioniert es</h2>
+  <ol class="steps">
+    <li>Klicken Sie unten auf eine Übung. Das Panel öffnet sich, und rechts neben Logic erscheint das Fenster
+      <img src="../img/knop-oef.png" class="ico" alt=""><b>Übung</b> mit der Aufgabe.</li>
+    <li>Setzen Sie die nötigen Gatter auf das Panel und verbinden Sie alles mit Drähten. Verschieben Sie die Schalter und
+      Lampen möglichst nicht: A ist der oberste Schalter, B der nächste, ...</li>
+    <li>Klicken Sie auf <b>Prüfen</b>. Logic stellt die Schalter in jede Stellung, genau wie bei der
+      <a href="waarheidstabel.html">Wahrheitstabelle</a>, und vergleicht mit der richtigen Lösung.</li>
+    <li>Stimmt alles, wird das Feld grün. Sonst wird es rot und zeigt, bei welcher Stellung der Schalter eine Lampe oder
+      ein Summer falsch ist, zum Beispiel: <i>Bei A=1, B=1 ist L1 aus, sollte aber an sein.</i></li>
+  </ol>
+  <p>Fenster geschlossen? Klicken Sie in der Titelleiste auf <img src="../img/knop-oef.png" class="ico" alt=""><b>Übung</b>,
+  um es wieder zu öffnen. Speichern Sie das Panel, bleibt es eine Übung: Sie können später weitermachen und erneut prüfen.</p>
+
+  <h2>Die Übungen</h2>
+  <table>
+    <tr><th>Übung</th><th>Was bauen Sie?</th><th>Gehört zu</th></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef01-en-poort.lpl">&#9654; 1. Das UND-Gatter</a></td><td>Die Lampe leuchtet nur, wenn A und B beide an sind.</td><td><a href="les04.html">Lektion 4</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef02-of-poort.lpl">&#9654; 2. Das ODER-Gatter</a></td><td>Die Lampe leuchtet, wenn A oder B an ist, oder beide.</td><td><a href="les05.html">Lektion 5</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef03-niet-poort.lpl">&#9654; 3. Das NICHT-Gatter</a></td><td>Die Lampe leuchtet, wenn der Schalter aus ist.</td><td><a href="les03.html">Lektion 3</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef04-exof-zelf-bouwen.lpl">&#9654; 4. XOR selbst bauen</a></td><td>Genau ein Schalter an, ohne XOR-Gatter: nur UND, ODER und NICHT.</td><td><a href="les26.html">Lektion 26</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef05-alarm.lpl">&#9654; 5. Eine Alarmanlage</a></td><td>Drei Eingänge: Der Summer ertönt, wenn die Alarmanlage an ist und die Tür oder das Fenster offen ist.</td><td><a href="les07.html">Lektion 7</a></td></tr>
+    <tr><td><a class="open" href="../../panels/lessen/oef06-halve-opteller.lpl">&#9654; 6. Der Halbaddierer</a></td><td>Zwei Bits addieren: eine Lampe für die Summe und eine für den Übertrag.</td><td><a href="les26.html">Lektion 26</a></td></tr>
+  </table>
+
+  <div class="tip"><strong>Tipp:</strong> Kommen Sie nicht weiter? Öffnen Sie die <a href="waarheidstabel.html">Wahrheitstabelle</a>
+  und schalten Sie die <a href="simulatie.html">Simulation</a> ein: Dann sehen Sie, was Ihre Schaltung jetzt tut und
+  welche Zeile von der Aufgabe abweicht.</div>
+
+  <h2>Eine eigene Übung erstellen</h2>
+  <p>Eine Übung ist eine gewöhnliche Panel-Datei (<code>.lpl</code>) mit ein paar zusätzlichen Zeilen. Öffnen Sie sie mit
+  dem Editor und fügen Sie unten zum Beispiel hinzu:</p>
+  <pre>Titel;DE;Meine Übung;
+Opdracht;DE;Die Lampe soll leuchten, wenn A und B an sind.|Verwenden Sie ein Gatter.;
+Verwacht;2;1;000;010;100;111;
+Verboden;EXOF;</pre>
+  <ul>
+    <li><b>Titel</b> und <b>Opdracht</b> (Aufgabe) können pro Sprache angegeben werden (NL, EN, FR, DE ...). Ein <code>|</code> ist eine neue Zeile.</li>
+    <li><b>Verwacht</b> (erwartet): zuerst die Zahl der Eingänge und Ausgänge, dann die richtige Wahrheitstabelle, Zeile
+      für Zeile: die Eingänge (A, B ...) und danach die Ausgänge (L1, L2 ...), wie in der <a href="waarheidstabel.html">Wahrheitstabelle</a>.</li>
+    <li><b>Verboden</b> (verboten, optional): Gatter, die nicht verwendet werden dürfen: EN (UND), OF (ODER), NIET (NICHT), NEN (NAND), NOF (NOR) oder EXOF (XOR).</li>
+  </ul>

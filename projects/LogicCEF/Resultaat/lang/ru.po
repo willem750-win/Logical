@@ -1564,3 +1564,42 @@ msgstr "Каждая линия — вход или выход: вверху = �
 
 msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
 msgstr "Выбрано объектов: %d\nПеретащите, чтобы переместить их вместе; Delete = удалить, Ctrl+C = копировать, Ctrl+V = вставить, Ctrl+D = дублировать; Esc или щелчок рядом — снять выделение"
+
+msgid "Exercise: assignment and check"
+msgstr "Упражнение: задание и проверка"
+
+msgid "This panel is not an exercise. Open an exercise from the help (Exercises)."
+msgstr "Эта панель не является упражнением. Откройте упражнение из справки (Упражнения)."
+
+msgid "Exercise"
+msgstr "Упражнение"
+
+msgid "Check"
+msgstr "Проверить"
+
+msgid "Build the circuit and then click Check. You may also switch the simulation on first and try it yourself."
+msgstr "Соберите схему и нажмите «Проверить». Можно также сначала включить симуляцию и попробовать самому."
+
+msgid "This exercise needs %d inputs (switches, push buttons or sensors); there are %d on the panel."
+msgstr "Для этого упражнения нужно входов: %d (переключатели, кнопки или датчики); на панели их: %d."
+
+msgid "This exercise needs %d outputs (lamps, LEDs, buzzers ...); there are %d on the panel."
+msgstr "Для этого упражнения нужно выходов: %d (лампы, светодиоды, зуммеры ...); на панели их: %d."
+
+msgid "In this exercise you may not use a %s gate. Build it from the other gates."
+msgstr "В этом упражнении нельзя использовать элемент %s. Соберите его из других элементов."
+
+msgid "With %s, %s is %s, but it should be %s."
+msgstr "При %s: %s — %s, а должно быть %s."
+
+msgid "Well done! Your circuit is right in all %d positions of the switches."
+msgstr "Отлично! Ваша схема верна во всех %d положениях переключателей."
+
+msgid "(The panel has components with a memory; also try it yourself in the simulation.)"
+msgstr "(На панели есть компоненты с памятью; попробуйте также сами в симуляции.)"
+
+msgid "Not quite right yet:"
+msgstr "Пока не совсем правильно:"
+
+msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
+msgstr "Подсказка: откройте таблицу истинности и включите симуляцию, чтобы увидеть, что делает ваша схема."

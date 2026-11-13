@@ -1564,3 +1564,42 @@ msgstr "每条线是一个输入或输出: 高 = 开 (1)，低 = 关 (0)。一�
 
 msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
 msgstr "已选择 %d 个对象\n拖动可一起移动; Delete = 删除，Ctrl+C = 复制，Ctrl+V = 粘贴，Ctrl+D = 再制; Esc 或点击外面取消选择"
+
+msgid "Exercise: assignment and check"
+msgstr "练习：题目与检查"
+
+msgid "This panel is not an exercise. Open an exercise from the help (Exercises)."
+msgstr "这个面板不是练习。请从帮助（练习）中打开一个练习。"
+
+msgid "Exercise"
+msgstr "练习"
+
+msgid "Check"
+msgstr "检查"
+
+msgid "Build the circuit and then click Check. You may also switch the simulation on first and try it yourself."
+msgstr "搭好电路后点击“检查”。你也可以先打开仿真，自己试一试。"
+
+msgid "This exercise needs %d inputs (switches, push buttons or sensors); there are %d on the panel."
+msgstr "这个练习需要 %d 个输入（开关、按钮或传感器）；面板上有 %d 个。"
+
+msgid "This exercise needs %d outputs (lamps, LEDs, buzzers ...); there are %d on the panel."
+msgstr "这个练习需要 %d 个输出（灯、LED、蜂鸣器……）；面板上有 %d 个。"
+
+msgid "In this exercise you may not use a %s gate. Build it from the other gates."
+msgstr "这个练习不能使用 %s 门。请用其他门把它搭出来。"
+
+msgid "With %s, %s is %s, but it should be %s."
+msgstr "当 %s 时，%s 是%s，但应该是%s。"
+
+msgid "Well done! Your circuit is right in all %d positions of the switches."
+msgstr "做得好！你的电路在开关的全部 %d 种状态下都正确。"
+
+msgid "(The panel has components with a memory; also try it yourself in the simulation.)"
+msgstr "（面板上有带记忆的元件；也请在仿真中自己试一试。）"
+
+msgid "Not quite right yet:"
+msgstr "还不完全对："
+
+msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
+msgstr "提示：打开真值表并启动仿真，就能看到你的电路在做什么。"

@@ -1811,6 +1811,7 @@ type
     FFilterLijst: TStringList;
     FSaveOnly: TList;      // bij kopiëren: alleen deze objecten bewaren
     FAppend: Boolean;      // bij plakken: het paneel niet eerst leegmaken
+    FOefening: TStringList; // regels Titel/Opdracht/Verwacht/Verboden van een oefening
     FFirst:Boolean;
     FImputColor:TColor;
     FOutputColor:TColor;
@@ -2208,6 +2209,14 @@ type
     class procedure ZetInvoer(C: TControl; V: Boolean);
     // '0' of '1'; een motor geeft 'L', 'R' of '0', een display zijn cijfer
     class function UitvoerTeken(C: TControl): Char;
+    // Oefening: de regels Titel;taal;tekst  Opdracht;taal;tekst
+    // Verwacht;ingangen;uitgangen;rij;rij;...  Verboden;code;code;...
+    // uit het paneelbestand (leeg = geen oefening). Ze worden mee bewaard.
+    property Oefening: TStringList read FOefening;
+    // hoeveel poorten met deze code (EN, OF, NIET, NEN, NOF, EXOF) staan er?
+    function TelPoort(const Code: string): Integer;
+    // het woord voor die poort in de taal BTaal (EN / AND / ET / UND ...)
+    class function PoortWoord(const Code, BTaal: string): string;
     // telt hoe vaak het paneel leeggemaakt werd (laden, nieuw paneel)
     property KillCount: Integer read FKillCount;
     // Samenvatting van de inhoud van het paneel (objecten, draden en de
@@ -21932,6 +21941,34 @@ begin
   Result := 0;
 end;
 
+function TjanSimLogicBox.TelPoort(const Code: string): Integer;
+var
+  i: Integer;
+  wc: TWinControl;
+  c: TControl;
+begin
+  Result := 0;
+  wc := Parent;
+  if wc = nil then Exit;
+  for i := 0 to wc.ControlCount - 1 do
+  begin
+    c := wc.Controls[i];
+    if c.Visible and (c is TjanLogic) and
+       SameText(LogicFuncCode(TjanLogic(c).LogicFunc), Code) then
+      Inc(Result);
+  end;
+end;
+
+class function TjanSimLogicBox.PoortWoord(const Code, BTaal: string): string;
+var
+  F: TjanLogicFunc;
+begin
+  if LogicFuncFromCode(UpperCase(Code), F) then
+    Result := LogicFuncWoord(F, BTaal)
+  else
+    Result := Code;
+end;
+
 class function TjanSimLogicBox.IsInvoer(C: TControl): Boolean;
 begin
   Result := (C is TjanSimKnop) or (C is TjanSimButton) or (C is TjanDipSwitsh) or
@@ -22045,6 +22082,7 @@ begin
   FBoxTaal:= stDutch;
   FVerwerkingColor:=clSilver;//clRed;
   FFilterLijst:= TStringList.Create;
+  FOefening := TStringList.Create;
   templijst:=TStringList.Create;
   tempFile:=TStringList.Create;
   // opladen van speciale cursors
@@ -22217,6 +22255,7 @@ begin
   bmButton.free;bmKnop.Free;bmPuls.Free;bmLight.free;bmRelais.Free;
   bmTeller.Free;bmMemory.Free;bmDisplay.Free;bmDipSwitsh.Free;
   FFilterLijst.Free;templijst.Free;tempFile.Free;
+  FOefening.Free;
 
   inherited Destroy;
 end;
@@ -22647,6 +22686,8 @@ begin
       SFile.Add('Grid;False;');
     // altijd bewaren: zonder regel volgt het paneel de instelling KStatusBalk
     SFile.Add('Statusbalk;' + BoolToStr(Paneel.ShowStatusBar, True) + ';');
+    // een oefening blijft een oefening
+    SFile.AddStrings(FOefening);
     end;
   finally
     ShiftPanelObjects(Sh.X, Sh.Y);
@@ -23205,6 +23246,15 @@ begin
       obj[2] := Copy(S, 1, positie - 1);           // True / False
       if Assigned(Paneel) then
          Paneel.ShowGrid := (Trim(obj[2]) = 'True');
+      Continue;
+    end;
+
+    // oefening (zie Oefening): de regels onthouden, niet bij plakken
+    if (obj[1] = 'Titel') or (obj[1] = 'Opdracht') or (obj[1] = 'Verwacht') or
+       (obj[1] = 'Verboden') then
+    begin
+      if not FAppend then
+        FOefening.Add(Trim(AList.Strings[i]));
       Continue;
     end;
 
@@ -25149,6 +25199,7 @@ wc:TWinControl;
 i:integer;
 begin
    Inc(FKillCount);   // zie KillCount (ongedaan maken begint opnieuw)
+   FOefening.Clear;   // een ander paneel is geen oefening meer
    wc:=Fparent;
    for i := wc.ControlCount - 1 downto 0 do
       if (wc.controls[i] is TjanLogicRun) then

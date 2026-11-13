@@ -1564,3 +1564,42 @@ msgstr "各線は入力または出力です: 上 = オン (1)、下 = オフ (0
 
 msgid "%d objects selected\nDrag to move them together; Delete = remove, Ctrl+C = copy, Ctrl+V = paste, Ctrl+D = duplicate; Esc or click outside to deselect"
 msgstr "%d 個のオブジェクトを選択中\nドラッグでまとめて移動; Delete = 削除、Ctrl+C = コピー、Ctrl+V = 貼り付け、Ctrl+D = 複製; Esc または外側をクリックで選択解除"
+
+msgid "Exercise: assignment and check"
+msgstr "練習: 課題とチェック"
+
+msgid "This panel is not an exercise. Open an exercise from the help (Exercises)."
+msgstr "このパネルは練習ではありません。ヘルプ (練習) から練習を開いてください。"
+
+msgid "Exercise"
+msgstr "練習"
+
+msgid "Check"
+msgstr "チェック"
+
+msgid "Build the circuit and then click Check. You may also switch the simulation on first and try it yourself."
+msgstr "回路を作ってから [チェック] をクリックしてください。先にシミュレーションをオンにして自分で試すこともできます。"
+
+msgid "This exercise needs %d inputs (switches, push buttons or sensors); there are %d on the panel."
+msgstr "この練習には入力が %d 個必要です (スイッチ、押しボタン、センサー)。パネルには %d 個あります。"
+
+msgid "This exercise needs %d outputs (lamps, LEDs, buzzers ...); there are %d on the panel."
+msgstr "この練習には出力が %d 個必要です (ランプ、LED、ブザー ...)。パネルには %d 個あります。"
+
+msgid "In this exercise you may not use a %s gate. Build it from the other gates."
+msgstr "この練習では %s ゲートは使えません。ほかのゲートで作ってください。"
+
+msgid "With %s, %s is %s, but it should be %s."
+msgstr "%s のとき、%s は %s ですが、%s でなければなりません。"
+
+msgid "Well done! Your circuit is right in all %d positions of the switches."
+msgstr "よくできました! スイッチの %d 通りすべての組み合わせで回路は正しいです。"
+
+msgid "(The panel has components with a memory; also try it yourself in the simulation.)"
+msgstr "(パネルにはメモリーを持つ部品があります。シミュレーションでも自分で試してください。)"
+
+msgid "Not quite right yet:"
+msgstr "まだ完全ではありません:"
+
+msgid "Tip: open the truth table and switch the simulation on to see what your circuit does."
+msgstr "ヒント: 真理値表を開いてシミュレーションをオンにすると、回路の動きがわかります。"
