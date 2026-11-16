@@ -4,7 +4,7 @@
 ;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=1.13.0 projects\LogicCEF\logic.iss
 ; of via tools\make-release.ps1, dat ook de zip maakt.
 ;
-; Resultaat: C:\fpcupdeluxe\publish\release\Logic-<versie>-setup.exe
+; Resultaat: C:\Logic-release\Logic-<versie>-setup.exe
 ;
 ; Waarom per gebruiker installeren?
 ; Logic schrijft naast zijn eigen programmabestand (taal.ini, ini\, panels\,
@@ -49,7 +49,7 @@ UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
-OutputDir=C:\fpcupdeluxe\publish\release
+OutputDir=C:\Logic-release
 OutputBaseFilename=Logic-{#MyAppVersion}-setup
 Compression=lzma2/max
 SolidCompression=yes

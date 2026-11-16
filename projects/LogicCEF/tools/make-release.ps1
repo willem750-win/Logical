@@ -3,7 +3,7 @@
 #
 #   powershell -ExecutionPolicy Bypass -File projects\LogicCEF\tools\make-release.ps1 [-Version 1.13.0] [-NoBuild]
 #
-# Resultaat in C:\fpcupdeluxe\publish\release:
+# Resultaat in C:\Logic-release:
 #   Logic-<versie>-win64.zip    uitpakken en logicCEF.exe starten
 #   Logic-<versie>-setup.exe    installeert per gebruiker, zonder beheerdersrechten
 #
@@ -17,8 +17,8 @@
 
 param(
   [string]$Version = '1.13.0',
-  [string]$Lazbuild = 'C:\fpcupdeluxe\lazarus\lazbuild.exe',
-  [string]$OutDir = 'C:\fpcupdeluxe\publish\release',
+  [string]$Lazbuild = 'C:\lazarus\lazbuild.exe',
+  [string]$OutDir = 'C:\Logic-release',
   [switch]$NoBuild
 )
 
