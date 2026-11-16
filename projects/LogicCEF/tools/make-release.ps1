@@ -135,8 +135,13 @@ try {
   # ----------------------------------------------------------------
   # Installatieprogramma met Inno Setup 6, uit dezelfde samengestelde map
   # ----------------------------------------------------------------
-  $iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
-  if (Test-Path $iscc) {
+  # Inno Setup staat in Program Files (installatie voor iedereen) of in
+  # %LOCALAPPDATA%\Programs (installatie per gebruiker, zoals winget doet)
+  $iscc = @(
+    'C:\Program Files (x86)\Inno Setup 6\ISCC.exe',
+    (Join-Path $env:LOCALAPPDATA 'Programs\Inno Setup 6\ISCC.exe')
+  ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+  if ($iscc) {
     & $iscc /Q "/DMyAppVersion=$Version" "/DSrc=$stage" "/O$OutDir" (Join-Path $proj 'logic.iss')
     if ($LASTEXITCODE -ne 0) { throw "ISCC faalde ($LASTEXITCODE)" }
     $setup = Join-Path $OutDir "Logic-$Version-setup.exe"
