@@ -25558,43 +25558,6 @@ begin
       Application.ActivateHint(ClientToScreen(Point(X, Y)));
   end;
 end;
-{
-procedure TjanSimLogicBox.MouseMove(Shift: TShiftState; X, Y: Integer);
-var
- p:TPoint;
-begin
-  inherited;
-  p:=point(x,y);
-  Fx:=x;Fy:=y;
-
-{  if ptinrect(RCon,p) then DoStatusText(FHDraad , 0)
-  else if ptinrect(RLogicAnd,p)then DoStatusText(FHLogicAnd , 0)
-  else if ptinrect(RLogicOr,p) then DoStatusText(FHLogicOr , 0)
-  else if ptinrect(RLogicNot,p) then DoStatusText(FHLogicNot , 0)
-  else if ptinrect(RButton,p) then DoStatusText(FHDrukknop , 0)
-  else if ptinrect(RSquare,p) then DoStatusText(FHKader , 0)
-  else if ptinrect(RLight,p) then DoStatusText(FHLamp , 0)
-  else if ptinrect(RRelais,p) then DoStatusText(FHRelais , 0)
-  else if ptinrect(RSchakel,p) then DoStatusText(FHSchakel , 0)
-  else if ptinrect(RBuzzer,p) then DoStatusText(FHBuzzer , 0)
-  else if ptinrect(RMotor,p) then DoStatusText(FHMotor , 0)
-  else if ptinrect(RSensor,p) then DoStatusText(FHSensor , 0)
-
-  else if ptinrect(RWarm,p) then DoStatusText(FHWarm , 0)
-  else if ptinrect(RKnop,p) then DoStatusText(FHSchakelaar , 0)
-  else if ptinrect(RPuls,p) then DoStatusText(FHPuls , 0)
-  else if ptinrect(RDisplay,p) then DoStatusText(FHDisplay , 0)
-  else if ptinrect(RTeller,p) then DoStatusText(FHTeller , 0)
-  else if ptinrect(RStappen,p) then DoStatusText(FHStappen , 0)
-  else if ptinrect(RStopwatch,p) then DoStatusText(FHStopwatch , 0)
-  else if ptinrect(RMemory,p) then DoStatusText(FHMemory , 0)
-  else if ptinrect(RDipSwitsh,p)then DoStatusText(FHDipSwitsh , 0)
-  else if ptinrect(RGrid,p) then DoStatusText(FHGrid , 0)
-  else if ptinrect(RMeter,p) then DoStatusText(FHMeter, 0)
-  else DoStatusText('', 0);
-
-
-end;}
 
 procedure TjanSimLogicBox.maakpanel;
 var

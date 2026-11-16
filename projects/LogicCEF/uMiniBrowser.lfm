@@ -1,12 +1,12 @@
 object MiniBrowserFrm: TMiniBrowserFrm
   Left = 348
-  Height = 440
+  Height = 471
   Top = 119
-  Width = 705
+  Width = 747
   BorderIcons = [biSystemMenu]
   Caption = 'Browser LogicNew'
-  ClientHeight = 440
-  ClientWidth = 705
+  ClientHeight = 471
+  ClientWidth = 747
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -17,8 +17,8 @@ object MiniBrowserFrm: TMiniBrowserFrm
   OnDestroy = FormDestroy
   OnShow = FormShow
   object Splitter1: TSplitter
-    Left = 700
-    Height = 391
+    Left = 742
+    Height = 422
     Top = 25
     Width = 5
     Align = alRight
@@ -29,11 +29,11 @@ object MiniBrowserFrm: TMiniBrowserFrm
     Left = 0
     Height = 25
     Top = 0
-    Width = 705
+    Width = 747
     Align = alTop
     BevelOuter = bvNone
     ClientHeight = 25
-    ClientWidth = 705
+    ClientWidth = 747
     Enabled = False
     ParentBackground = False
     TabOrder = 1
@@ -109,18 +109,18 @@ object MiniBrowserFrm: TMiniBrowserFrm
       Left = 133
       Height = 25
       Top = 0
-      Width = 499
+      Width = 541
       Align = alClient
       BevelOuter = bvNone
       ClientHeight = 25
-      ClientWidth = 499
+      ClientWidth = 541
       ParentBackground = False
       TabOrder = 1
       object URLCbx: TComboBox
         Left = 0
         Height = 21
         Top = 3
-        Width = 499
+        Width = 541
         Anchors = [akTop, akLeft, akRight, akBottom]
         ItemHeight = 13
         ItemIndex = 0
@@ -132,7 +132,7 @@ object MiniBrowserFrm: TMiniBrowserFrm
       end
     end
     object ConfigPnl: TPanel
-      Left = 632
+      Left = 674
       Height = 25
       Top = 0
       Width = 73
@@ -177,17 +177,17 @@ object MiniBrowserFrm: TMiniBrowserFrm
   end
   object CEFWindowParent1: TCEFWindowParent
     Left = 0
-    Height = 391
+    Height = 422
     Top = 25
-    Width = 700
+    Width = 742
     Align = alClient
     TabStop = True
     TabOrder = 0
     OnDragDrop = CEFWindowParent1DragDrop
   end
   object DevTools: TCEFWindowParent
-    Left = 705
-    Height = 391
+    Left = 747
+    Height = 422
     Top = 25
     Width = 0
     Align = alRight
@@ -197,8 +197,8 @@ object MiniBrowserFrm: TMiniBrowserFrm
   object StatusPnl: TPanel
     Left = 0
     Height = 24
-    Top = 416
-    Width = 705
+    Top = 447
+    Width = 747
     Align = alBottom
     BevelOuter = bvLowered
     ParentBackground = False

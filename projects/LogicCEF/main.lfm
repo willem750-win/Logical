@@ -1,14 +1,15 @@
 object mainForm: TmainForm
   Left = 400
-  Height = 748
+  Height = 719
   Top = 177
   Width = 960
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Logisch Schakelen'
-  ClientHeight = 748
+  ClientHeight = 719
   ClientWidth = 960
   Position = poScreenCenter
   ShowHint = True
+  LCLVersion = '4.8.0.0'
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
@@ -31,7 +32,7 @@ object mainForm: TmainForm
     ParentShowHint = False
     TabOrder = 0
     object btClose1: TSpeedButton
-      Left = 877
+      Left = 937
       Height = 25
       Top = 0
       Width = 23
@@ -73,7 +74,7 @@ object mainForm: TmainForm
       OnClick = btOpenPaneelClick
     end
     object btInfo2: TSpeedButton
-      Left = 827
+      Left = 887
       Height = 25
       Hint = 'Info'
       Top = 0
@@ -119,7 +120,7 @@ object mainForm: TmainForm
       OnClick = LGPanelsClick
     end
     object brInfo1: TSpeedButton
-      Left = 804
+      Left = 864
       Height = 25
       Hint = 'Informatie'
       Top = 0
@@ -135,7 +136,7 @@ object mainForm: TmainForm
       OnMouseEnter = brInfo1MouseEnter
     end
     object btSimulate: TSpeedButton
-      Left = 852
+      Left = 912
       Height = 21
       Hint = 'Start simulatie'
       Top = 2
@@ -305,11 +306,11 @@ object mainForm: TmainForm
   end
   object Grid: TjanGridS
     Left = 0
-    Height = 701
+    Height = 672
     Top = 25
     Width = 960
     Align = alClient
-    ClientHeight = 701
+    ClientHeight = 672
     ClientWidth = 960
     Color = cl3DLight
     ParentBackground = False
@@ -337,7 +338,7 @@ object mainForm: TmainForm
     OnTitleClick = GridTitleClick
     object Box: TjanSimLogicBox
       Left = 1
-      Height = 36
+      Height = 66
       Top = 1
       Width = 958
       Language = stDutch
@@ -349,6 +350,9 @@ object mainForm: TmainForm
       KLamp = True
       KLogicAnd = True
       KLogicOr = True
+      KLogicNand = True
+      KLogicNor = True
+      KLogicXor = True
       KLogicNot = True
       KDraad = True
       KRelais = True
@@ -368,10 +372,22 @@ object mainForm: TmainForm
       HMeter = 'maak Voltmeter'
       HRailPlus = 'maak + rail (voeding)'
       HRailMin = 'maak - rail (massa)'
+      HBron = 'maak Bron (accu, 0 tot 12 V)'
+      HZekering = 'maak Zekering'
+      HAmpMeter = 'maak Milliampèremeter'
+      HWeerstand = 'maak Weerstand (contact, lange draad)'
+      HLamp2 = 'maak Lamp met 2 klemmen (serie en parallel)'
+      HSchakelaar2 = 'maak Schakelaar met 2 klemmen'
+      HVoltmeter2 = 'maak Voltmeter met 2 klemmen'
+      HLed2 = 'maak Led met 2 klemmen (met voorschakelweerstand)'
+      HCondensator = 'maak Condensator (laden en ontladen)'
       HPuls = 'maak Impulsgenerator'
       HLamp = 'maak Lamp'
       HLogicAnd = 'maak EN-poort'
       HLogicOr = 'maak OF-poort'
+      HLogicNand = 'maak NEN-poort (niet-en)'
+      HLogicNor = 'maak NOF-poort (niet-of)'
+      HLogicXor = 'maak EX-OF-poort (exclusieve of)'
       HLogicNot = 'maak Niet-poort'
       HDraad = 'maak Verbinding'
       HRelais = 'maak Relais'
@@ -381,11 +397,15 @@ object mainForm: TmainForm
       HPersoon = 'maak Persoon (met eindschakelaars)'
       HWagen = 'maak Wagentje (parcours met paaltjes)'
       HMuziek = 'maak Muziekdoos (8 pianotoetsen)'
+      HVerkeer = 'maak Verkeerslicht (met voetgangerslicht)'
+      HSlagboom = 'maak Slagboom (parking)'
       HWarm = 'maak WarmteSensor'
       HSensor = 'maak Lichtsensor'
       HTeller = 'maak Tellerblok'
       HMemory = 'maak Geheugenblok'
       HStappen = 'maak Stappenteller (telt tot 9999)'
+      HFlipFlop = 'maak Flipflop (SR, D, JK of T)'
+      HStopwatch = 'maak Stopwatch (tijd met eindtijd)'
       HDipSwitsh = 'maak DipSwitsh'
       HDisplay = 'maak 7 segmentdisplay'
       BColor = clGradientActiveCaption
@@ -409,7 +429,7 @@ object mainForm: TmainForm
   object Panel1: TPanel
     Left = 0
     Height = 22
-    Top = 726
+    Top = 697
     Width = 960
     Align = alBottom
     BevelOuter = bvNone
@@ -457,7 +477,7 @@ object mainForm: TmainForm
     end
     object Taal: TComboBox
       Cursor = crHandPoint
-      Left = 835
+      Left = 895
       Height = 23
       Hint = 'Kies taal...'
       Top = 0
@@ -1044,8 +1064,8 @@ object mainForm: TmainForm
     DrawingStyle = dsTransparent
     Height = 13
     Width = 18
-    Left = 720
-    Top = 112
+    Left = 712
+    Top = 176
     Bitmap = {
       4C7A04000000120000000D000000260100000000000078DAED96BB0D83301040
       99818A019881367566A0F1162ED2D050D032015350D352A54CC1008C71F119EC

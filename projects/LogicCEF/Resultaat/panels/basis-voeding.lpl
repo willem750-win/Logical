@@ -1,0 +1,11 @@
+TjanRail;364;94;251;23;+;50;
+TjanRail;486;863;138;23;-;0;
+TjanZekering;58;85;181;40;2;
+TjanBron;84;98;89;112;65;1;
+TjanConnector;28;101;162;9;jcmBR;jcpTL;jcsTLBR;0,5;7;
+TjanConnector;72;101;230;8;jcmBL;jcpTL;jcsTLBR;0,5;7;
+TjanConnector;9;199;162;680;jcmBR;jcpTL;jcsTLBR;0,5;7;
+Paneelkleur;-2147483624;
+Dotkleur;8421504;
+Voeding;1;
+Grid;False;

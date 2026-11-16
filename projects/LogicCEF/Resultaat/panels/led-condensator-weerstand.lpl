@@ -1,0 +1,16 @@
+TjanLed2;46;691;262;64;3;0;
+TjanBron;84;386;105;112;120;1;0;
+TjanSchakelaar2;40;391;257;64;0;
+TjanWeerstand;42;543;268;100;6;
+TjanCondensator;46;546;338;64;3;
+TjanConnector;9;634;278;66;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;109;487;178;268;jcmBR;jcpTL;jcsTLBR;0,986970684039088;11;
+TjanConnector;108;389;178;11;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;9;446;278;106;jcmBR;jcpBL;jcsTRBL;0,5;11;
+TjanConnector;85;540;278;15;jcmTL;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;85;601;278;153;jcmBL;jcpTR;jcsTRBL;0,5;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Voeding;1;
+Grid;True;
+Statusbalk;False;
