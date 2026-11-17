@@ -1648,3 +1648,15 @@ msgstr "Светодиод с 2 клеммами"
 
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr "Светодиод с двумя клеммами: + (анод) слева, - (катод) справа. Он проводит только в одну сторону,\nи только выше %s. Полный свет при 20 мА, сгорает выше 30 мА.\nПоставьте последовательно добавочный резистор: R = (U - Ud) / I = (12 В - %s) / 0,02 А = %s. Правый щелчок: выбрать цвет."
+
+msgid "Wattmeter"
+msgstr "Ваттметр"
+
+msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
+msgstr "Последовательно, как миллиамперметр. Показывает мощность P = U x I\nвсего, что подключено после прибора (до «-» источника)."
+
+msgid "create Wattmeter"
+msgstr "создать ваттметр"
+
+msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
+msgstr "Ваттметр\n\n- Последовательно, как миллиамперметр.\n- Показывает мощность P = U x I всего, что подключено после прибора."

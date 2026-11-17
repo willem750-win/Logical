@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les32-vermogen.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les32.png" alt="12 V source with four branches: a 24 ohm lamp and a 480 ohm lamp in series, each lamp on its own once more, and a 100 ohm resistor">
-    <figcaption>Row 1: a 6&nbsp;W lamp (24&nbsp;&Omega;) and a 0.3&nbsp;W lamp (480&nbsp;&Omega;) in series. Rows 2 and 3: the same lamps on their own. Row 4: a 100&nbsp;&Omega; resistor. Each row has a milliammeter.</figcaption>
+    <img src="../img/les32.png" alt="12 V source with four branches: a 24 ohm lamp and a 480 ohm lamp in series, each lamp on its own once more, and a 100 ohm resistor; in each row a milliammeter and a wattmeter">
+    <figcaption>Row 1: a 6&nbsp;W lamp (24&nbsp;&Omega;) and a 0.3&nbsp;W lamp (480&nbsp;&Omega;) in series. Rows 2 and 3: the same lamps on their own. Row 4: a 100&nbsp;&Omega; resistor. Each row has a milliammeter and a <a href="voeding.html#wattmeter">wattmeter</a>.</figcaption>
   </figure>
 
   <h2>What is power?</h2>
@@ -17,7 +17,9 @@
   The smaller the resistance, the bigger the power at the same voltage.</p>
   <ol class="steps">
     <li>Switch on rows 2 and 3. Both lamps are fully lit. The milliammeters show 500&nbsp;mA and 25&nbsp;mA:
-      P = 12&nbsp;V &times; 0.5&nbsp;A = 6&nbsp;W and 12&nbsp;V &times; 0.025&nbsp;A = 0.3&nbsp;W. Point at a lamp: the hint shows U, I and P.</li>
+      P = 12&nbsp;V &times; 0.5&nbsp;A = 6&nbsp;W and 12&nbsp;V &times; 0.025&nbsp;A = 0.3&nbsp;W.</li>
+    <li>Look at the <a href="voeding.html#wattmeter"><img src="../img/pal-wattmeter.png" class="ico" alt="">wattmeters</a>:
+      6.00&nbsp;W and 0.30&nbsp;W. They work out U &times; I for you.</li>
   </ol>
 
   <h2>A strong and a weak lamp in series</h2>
@@ -30,16 +32,21 @@
   <a href="les29.html">voltage divider</a>, the biggest resistance gets the biggest part of the voltage: 11.4&nbsp;V across
   the 480&nbsp;&Omega; lamp, but only 0.6&nbsp;V across the 24&nbsp;&Omega; lamp. The power:</p>
   <p class="formula">P = U &times; I = 11.4&nbsp;V &times; 0.024&nbsp;A &asymp; 0.27&nbsp;W &nbsp;&nbsp; and &nbsp;&nbsp; 0.6&nbsp;V &times; 0.024&nbsp;A &asymp; 0.014&nbsp;W</p>
+  <ol class="steps">
+    <li>The wattmeter of row 1 shows 0.29&nbsp;W: the two lamps together (0.27 + 0.014).</li>
+    <li>Put the wattmeter <b>between</b> the two lamps: undo the wires and connect it between the 24&nbsp;&Omega; lamp and the
+      480&nbsp;&Omega; lamp. Now it shows 0.27&nbsp;W: it only measures what comes after it, the 480&nbsp;&Omega; lamp.</li>
+  </ol>
 
   <h2>A resistor gets warm</h2>
   <ol class="steps">
     <li>Switch on row 4. The 100&nbsp;&Omega; resistor turns orange: it gets hot.</li>
-    <li>The milliammeter shows 120&nbsp;mA. Work it out: P = 12&nbsp;V &times; 0.12&nbsp;A = 1.44&nbsp;W. All the energy becomes heat.</li>
+    <li>The milliammeter shows 120&nbsp;mA, the wattmeter 1.44&nbsp;W: P = 12&nbsp;V &times; 0.12&nbsp;A = 1.44&nbsp;W. All the energy becomes heat.</li>
   </ol>
 
   <h2>Assignment: a quarter-watt resistor</h2>
   <p>Ordinary small resistors can only take <b>0.25&nbsp;W</b>; above that they burn. Which resistor can you safely put in
-  row 4 at 12&nbsp;V? Choose 100, 220, 470 or 1000&nbsp;&Omega; and check with the hint.</p>
+  row 4 at 12&nbsp;V? Choose 100, 220, 470 or 1000&nbsp;&Omega; and check with the wattmeter.</p>
   <details>
     <summary>Solution</summary>
     <p>Needed: P = 144 / R &le; 0.25, so R &ge; 576&nbsp;&Omega;. Only 1000&nbsp;&Omega; is safe: P = 144 / 1000 = 0.144&nbsp;W.

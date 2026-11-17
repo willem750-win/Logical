@@ -1648,3 +1648,15 @@ msgstr "两端 LED"
 
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr "两端 LED：+（阳极）在左边，-（阴极）在右边。它只向一个方向导电，\n而且只在高于 %s 时导电。20 mA 时最亮，超过 30 mA 会损坏。\n请串联一个电阻：R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s。右键：选择颜色。"
+
+msgid "Wattmeter"
+msgstr "功率表"
+
+msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
+msgstr "像毫安表一样串联。显示功率 P = U x I\n（表后面的所有部分，直到电源的 -）。"
+
+msgid "create Wattmeter"
+msgstr "创建功率表"
+
+msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
+msgstr "功率表\n\n- 像毫安表一样串联。\n- 显示表后面所有部分的功率 P = U x I。"

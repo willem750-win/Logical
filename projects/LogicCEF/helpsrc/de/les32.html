@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les32-vermogen.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les32.png" alt="Quelle von 12 V mit vier Zweigen: eine Lampe von 24 Ohm und eine von 480 Ohm in Reihe, jede Lampe noch einmal allein, und ein Widerstand von 100 Ohm">
-    <figcaption>Reihe 1: eine Lampe von 6&nbsp;W (24&nbsp;&Omega;) und eine von 0,3&nbsp;W (480&nbsp;&Omega;) in Reihe. Reihe 2 und 3: dieselben Lampen jeweils allein. Reihe 4: ein Widerstand von 100&nbsp;&Omega;. Jede Reihe hat ein Milliamperemeter.</figcaption>
+    <img src="../img/les32.png" alt="Quelle von 12 V mit vier Zweigen: eine Lampe von 24 Ohm und eine von 480 Ohm in Reihe, jede Lampe noch einmal allein, und ein Widerstand von 100 Ohm; in jeder Reihe ein Milliamperemeter und ein Wattmeter">
+    <figcaption>Reihe 1: eine Lampe von 6&nbsp;W (24&nbsp;&Omega;) und eine von 0,3&nbsp;W (480&nbsp;&Omega;) in Reihe. Reihe 2 und 3: dieselben Lampen jeweils allein. Reihe 4: ein Widerstand von 100&nbsp;&Omega;. Jede Reihe hat ein Milliamperemeter und ein <a href="voeding.html#wattmeter">Wattmeter</a>.</figcaption>
   </figure>
 
   <h2>Was ist Leistung?</h2>
@@ -17,7 +17,9 @@
   P = 144 / 480 = 0,3&nbsp;W. Je kleiner der Widerstand, desto größer die Leistung bei derselben Spannung.</p>
   <ol class="steps">
     <li>Schalten Sie Reihe 2 und 3 ein. Beide Lampen leuchten voll. Die Milliamperemeter zeigen 500&nbsp;mA und 25&nbsp;mA:
-      P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W und 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W. Zeigen Sie auf eine Lampe: Der Hinweis zeigt U, I und P.</li>
+      P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W und 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W.</li>
+    <li>Schauen Sie auf die <a href="voeding.html#wattmeter"><img src="../img/pal-wattmeter.png" class="ico" alt="">Wattmeter</a>:
+      6,00&nbsp;W und 0,30&nbsp;W. Sie rechnen U &times; I für Sie aus.</li>
   </ol>
 
   <h2>Eine starke und eine schwache Lampe in Reihe</h2>
@@ -30,16 +32,22 @@
   <a href="les29.html">Spannungsteiler</a> bekommt der größte Widerstand den größten Teil der Spannung: 11,4&nbsp;V über der
   Lampe von 480&nbsp;&Omega;, aber nur 0,6&nbsp;V über der Lampe von 24&nbsp;&Omega;. Die Leistung:</p>
   <p class="formula">P = U &times; I = 11,4&nbsp;V &times; 0,024&nbsp;A &asymp; 0,27&nbsp;W &nbsp;&nbsp; und &nbsp;&nbsp; 0,6&nbsp;V &times; 0,024&nbsp;A &asymp; 0,014&nbsp;W</p>
+  <ol class="steps">
+    <li>Das Wattmeter von Reihe 1 zeigt 0,29&nbsp;W: die beiden Lampen zusammen (0,27 + 0,014).</li>
+    <li>Setzen Sie das Wattmeter <b>zwischen</b> die beiden Lampen: Lösen Sie die Drähte und schließen Sie es zwischen der
+      Lampe von 24&nbsp;&Omega; und der von 480&nbsp;&Omega; an. Jetzt zeigt es 0,27&nbsp;W: Es misst nur, was dahinter hängt,
+      die Lampe von 480&nbsp;&Omega;.</li>
+  </ol>
 
   <h2>Ein Widerstand wird warm</h2>
   <ol class="steps">
     <li>Schalten Sie Reihe 4 ein. Der Widerstand von 100&nbsp;&Omega; wird orange: Er wird heiß.</li>
-    <li>Das Milliamperemeter zeigt 120&nbsp;mA. Rechnen Sie: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Die ganze Energie wird zu Wärme.</li>
+    <li>Das Milliamperemeter zeigt 120&nbsp;mA, das Wattmeter 1,44&nbsp;W: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Die ganze Energie wird zu Wärme.</li>
   </ol>
 
   <h2>Aufgabe: ein Viertelwatt-Widerstand</h2>
   <p>Gewöhnliche kleine Widerstände vertragen nur <b>0,25&nbsp;W</b>; darüber verbrennen sie. Welchen Widerstand können Sie
-  bei 12&nbsp;V sicher in Reihe 4 setzen? Wählen Sie 100, 220, 470 oder 1000&nbsp;&Omega; und prüfen Sie mit dem Hinweis.</p>
+  bei 12&nbsp;V sicher in Reihe 4 setzen? Wählen Sie 100, 220, 470 oder 1000&nbsp;&Omega; und prüfen Sie mit dem Wattmeter.</p>
   <details>
     <summary>Lösung</summary>
     <p>Nötig: P = 144 / R &le; 0,25, also R &ge; 576&nbsp;&Omega;. Nur 1000&nbsp;&Omega; ist sicher: P = 144 / 1000 = 0,144&nbsp;W.

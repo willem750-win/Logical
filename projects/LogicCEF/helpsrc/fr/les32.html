@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les32-vermogen.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les32.png" alt="Source de 12 V avec quatre branches : une lampe de 24 ohms et une de 480 ohms en série, chaque lampe encore une fois seule, et une résistance de 100 ohms">
-    <figcaption>Rangée 1&nbsp;: une lampe de 6&nbsp;W (24&nbsp;&Omega;) et une de 0,3&nbsp;W (480&nbsp;&Omega;) en série. Rangées 2 et 3&nbsp;: les mêmes lampes chacune seule. Rangée 4&nbsp;: une résistance de 100&nbsp;&Omega;. Chaque rangée a un milliampèremètre.</figcaption>
+    <img src="../img/les32.png" alt="Source de 12 V avec quatre branches : une lampe de 24 ohms et une de 480 ohms en série, chaque lampe encore une fois seule, et une résistance de 100 ohms ; dans chaque rangée un milliampèremètre et un wattmètre">
+    <figcaption>Rangée 1&nbsp;: une lampe de 6&nbsp;W (24&nbsp;&Omega;) et une de 0,3&nbsp;W (480&nbsp;&Omega;) en série. Rangées 2 et 3&nbsp;: les mêmes lampes chacune seule. Rangée 4&nbsp;: une résistance de 100&nbsp;&Omega;. Chaque rangée a un milliampèremètre et un <a href="voeding.html#wattmeter">wattmètre</a>.</figcaption>
   </figure>
 
   <h2>Qu&rsquo;est-ce que la puissance&nbsp;?</h2>
@@ -18,7 +18,9 @@
   P = 144 / 480 = 0,3&nbsp;W. Plus la résistance est petite, plus la puissance est grande sous la même tension.</p>
   <ol class="steps">
     <li>Allumez les rangées 2 et 3. Les deux lampes brillent à fond. Les milliampèremètres affichent 500&nbsp;mA et
-      25&nbsp;mA&nbsp;: P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W et 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W. Pointez une lampe&nbsp;: l&rsquo;info-bulle montre U, I et P.</li>
+      25&nbsp;mA&nbsp;: P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W et 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W.</li>
+    <li>Regardez les <a href="voeding.html#wattmeter"><img src="../img/pal-wattmeter.png" class="ico" alt="">wattmètres</a>&nbsp;:
+      6,00&nbsp;W et 0,30&nbsp;W. Ils calculent U &times; I pour vous.</li>
   </ol>
 
   <h2>Une lampe forte et une lampe faible en série</h2>
@@ -32,17 +34,23 @@
   tension&nbsp;: 11,4&nbsp;V aux bornes de la lampe de 480&nbsp;&Omega;, mais seulement 0,6&nbsp;V aux bornes de celle de
   24&nbsp;&Omega;. La puissance&nbsp;:</p>
   <p class="formula">P = U &times; I = 11,4&nbsp;V &times; 0,024&nbsp;A &asymp; 0,27&nbsp;W &nbsp;&nbsp; et &nbsp;&nbsp; 0,6&nbsp;V &times; 0,024&nbsp;A &asymp; 0,014&nbsp;W</p>
+  <ol class="steps">
+    <li>Le wattmètre de la rangée 1 affiche 0,29&nbsp;W&nbsp;: les deux lampes ensemble (0,27 + 0,014).</li>
+    <li>Placez le wattmètre <b>entre</b> les deux lampes&nbsp;: défaites les fils et branchez-le entre la lampe de
+      24&nbsp;&Omega; et celle de 480&nbsp;&Omega;. Il affiche maintenant 0,27&nbsp;W&nbsp;: il ne mesure que ce qui suit, la
+      lampe de 480&nbsp;&Omega;.</li>
+  </ol>
 
   <h2>Une résistance chauffe</h2>
   <ol class="steps">
     <li>Allumez la rangée 4. La résistance de 100&nbsp;&Omega; devient orange&nbsp;: elle chauffe.</li>
-    <li>Le milliampèremètre affiche 120&nbsp;mA. Calculez&nbsp;: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Toute l&rsquo;énergie devient de la chaleur.</li>
+    <li>Le milliampèremètre affiche 120&nbsp;mA, le wattmètre 1,44&nbsp;W&nbsp;: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Toute l&rsquo;énergie devient de la chaleur.</li>
   </ol>
 
   <h2>Exercice&nbsp;: une résistance d&rsquo;un quart de watt</h2>
   <p>Les petites résistances ordinaires ne supportent que <b>0,25&nbsp;W</b>&nbsp;; au-delà, elles brûlent. Quelle
   résistance pouvez-vous mettre sans danger dans la rangée 4 sous 12&nbsp;V&nbsp;? Choisissez 100, 220, 470 ou
-  1000&nbsp;&Omega; et vérifiez avec l&rsquo;info-bulle.</p>
+  1000&nbsp;&Omega; et vérifiez avec le wattmètre.</p>
   <details>
     <summary>Solution</summary>
     <p>Il faut P = 144 / R &le; 0,25, donc R &ge; 576&nbsp;&Omega;. Seule 1000&nbsp;&Omega; est sûre&nbsp;:

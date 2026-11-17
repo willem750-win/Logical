@@ -1648,3 +1648,15 @@ msgstr "LED com 2 terminais"
 
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr "LED com dois terminais: + (ânodo) à esquerda, - (cátodo) à direita. Só conduz num sentido,\ne só acima de %s. Luz total a 20 mA, avariado acima de 30 mA.\nPonha uma resistência em série: R = (U - Ud) / I = (12 V - %s) / 0,02 A = %s. Clique direito: escolher a cor."
+
+msgid "Wattmeter"
+msgstr "Wattímetro"
+
+msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
+msgstr "Em série, como um miliamperímetro. Mostra a potência P = U x I\nde tudo o que está depois do medidor (até ao - da fonte)."
+
+msgid "create Wattmeter"
+msgstr "criar wattímetro"
+
+msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
+msgstr "Wattímetro\n\n- Em série, como um miliamperímetro.\n- Mostra a potência P = U x I de tudo o que está depois do medidor."

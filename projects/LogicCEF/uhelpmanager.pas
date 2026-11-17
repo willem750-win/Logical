@@ -163,6 +163,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'zekering'; end;
     'ampmeter':
       begin Result := 'voeding'; AAnchor := 'ampmeter'; end;
+    'wattmeter':
+      begin Result := 'voeding'; AAnchor := 'wattmeter'; end;
     'weerstand':
       begin Result := 'voeding'; AAnchor := 'weerstand'; end;
     'lamp2', 'schakelaar2', 'voltmeter2':
@@ -360,6 +362,21 @@ begin
         'Milliamperemeter'#13#10#13#10 +
         '- In Reihe zwischen Quelle und + Schiene.'#13#10 +
         '- Zeigt den Strom, den die Schaltung verbraucht.');
+
+    'wattmeter':
+      Result := TrHelp(ABTaal,
+        'Wattmeter'#13#10#13#10 +
+        '- In serie, zoals een milliampèremeter.'#13#10 +
+        '- Toont het vermogen P = U x I van alles wat achter de meter hangt.',
+        'Wattmeter'#13#10#13#10 +
+        '- In series, like a milliammeter.'#13#10 +
+        '- Shows the power P = U x I of everything after the meter.',
+        'Wattmètre'#13#10#13#10 +
+        '- En série, comme un milliampèremètre.'#13#10 +
+        '- Affiche la puissance P = U x I de tout ce qui est après le wattmètre.',
+        'Wattmeter'#13#10#13#10 +
+        '- In Reihe, wie ein Milliamperemeter.'#13#10 +
+        '- Zeigt die Leistung P = U x I von allem, was hinter dem Messgerät hängt.');
 
     'weerstand':
       Result := TrHelp(ABTaal,
@@ -639,6 +656,7 @@ begin
     'tjanbron':         AControl.HelpKeyword := 'bron';
     'tjanzekering':     AControl.HelpKeyword := 'zekering';
     'tjanampmeter':     AControl.HelpKeyword := 'ampmeter';
+    'tjanwattmeter':    AControl.HelpKeyword := 'wattmeter';
     'tjanweerstand':    AControl.HelpKeyword := 'weerstand';
     'tjanconnector':    AControl.HelpKeyword := 'connector';
     'tjansimlogicbox':  AControl.HelpKeyword := 'logicbox';

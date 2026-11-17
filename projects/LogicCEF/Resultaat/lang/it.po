@@ -1338,3 +1338,15 @@ msgstr "LED con 2 morsetti"
 
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr "LED con due morsetti: + (anodo) a sinistra, - (catodo) a destra. Conduce in un solo verso,\ne solo sopra %s. Luce piena a 20 mA, guasto sopra 30 mA.\nMetti una resistenza in serie: R = (U - Ud) / I = (12 V - %s) / 0,02 A = %s. Clic destro: scegli il colore."
+
+msgid "Wattmeter"
+msgstr "Wattmetro"
+
+msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
+msgstr "In serie, come un milliamperometro. Mostra la potenza P = U x I\ndi tutto ciò che c'è dopo lo strumento (fino al - della sorgente)."
+
+msgid "create Wattmeter"
+msgstr "crea wattmetro"
+
+msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
+msgstr "Wattmetro\n\n- In serie, come un milliamperometro.\n- Mostra la potenza P = U x I di tutto ciò che c'è dopo lo strumento."

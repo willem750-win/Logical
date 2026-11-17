@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les32-vermogen.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les32.png" alt="Bron van 12 V met vier takken: een lamp van 24 ohm en een van 480 ohm in serie, elke lamp nog eens alleen, en een weerstand van 100 ohm">
-    <figcaption>Rij 1: een lamp van 6&nbsp;W (24&nbsp;&Omega;) en een van 0,3&nbsp;W (480&nbsp;&Omega;) in serie. Rij 2 en 3: dezelfde lampen elk alleen. Rij 4: een weerstand van 100&nbsp;&Omega;. Elke rij heeft een milliampèremeter.</figcaption>
+    <img src="../img/les32.png" alt="Bron van 12 V met vier takken: een lamp van 24 ohm en een van 480 ohm in serie, elke lamp nog eens alleen, en een weerstand van 100 ohm; in elke rij een milliampèremeter en een wattmeter">
+    <figcaption>Rij 1: een lamp van 6&nbsp;W (24&nbsp;&Omega;) en een van 0,3&nbsp;W (480&nbsp;&Omega;) in serie. Rij 2 en 3: dezelfde lampen elk alleen. Rij 4: een weerstand van 100&nbsp;&Omega;. Elke rij heeft een milliampèremeter en een <a href="voeding.html#wattmeter">wattmeter</a>.</figcaption>
   </figure>
 
   <h2>Wat is vermogen?</h2>
@@ -17,7 +17,9 @@
   Hoe kleiner de weerstand, hoe groter het vermogen op dezelfde spanning.</p>
   <ol class="steps">
     <li>Zet de schakelaars van rij 2 en rij 3 aan. Beide lampen branden vol. De milliampèremeters tonen 500&nbsp;mA en
-      25&nbsp;mA: P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W en 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W. Wijs een lamp aan: de hint toont U, I en P.</li>
+      25&nbsp;mA: P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W en 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W.</li>
+    <li>Kijk naar de <a href="voeding.html#wattmeter"><img src="../img/pal-wattmeter.png" class="ico" alt="">wattmeters</a>:
+      6,00&nbsp;W en 0,30&nbsp;W. Zij rekenen U &times; I voor je uit.</li>
   </ol>
 
   <h2>Een sterke en een zwakke lamp in serie</h2>
@@ -30,16 +32,21 @@
   <a href="les29.html">spanningsdeler</a> krijgt de grootste weerstand het grootste deel van de spanning: 11,4&nbsp;V over de
   lamp van 480&nbsp;&Omega;, maar maar 0,6&nbsp;V over de lamp van 24&nbsp;&Omega;. Het vermogen:</p>
   <p class="formula">P = U &times; I = 11,4&nbsp;V &times; 0,024&nbsp;A &asymp; 0,27&nbsp;W &nbsp;&nbsp; en &nbsp;&nbsp; 0,6&nbsp;V &times; 0,024&nbsp;A &asymp; 0,014&nbsp;W</p>
+  <ol class="steps">
+    <li>De wattmeter van rij 1 toont 0,29&nbsp;W: de twee lampen samen (0,27 + 0,014).</li>
+    <li>Zet de wattmeter <b>tussen</b> de twee lampen: haal de draden los en sluit hem aan tussen de lamp van 24&nbsp;&Omega;
+      en die van 480&nbsp;&Omega;. Nu toont hij 0,27&nbsp;W: hij meet alleen wat achter hem hangt, de lamp van 480&nbsp;&Omega;.</li>
+  </ol>
 
   <h2>Een weerstand wordt warm</h2>
   <ol class="steps">
     <li>Zet rij 4 aan. De weerstand van 100&nbsp;&Omega; kleurt oranje: hij wordt heet.</li>
-    <li>De milliampèremeter toont 120&nbsp;mA. Reken: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Alle energie wordt warmte.</li>
+    <li>De milliampèremeter toont 120&nbsp;mA, de wattmeter 1,44&nbsp;W: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Alle energie wordt warmte.</li>
   </ol>
 
   <h2>Opdracht: een weerstand van een kwart watt</h2>
   <p>Gewone kleine weerstanden kunnen maar <b>0,25&nbsp;W</b> verdragen; daarboven verbranden ze. Welke weerstand kun je bij
-  12&nbsp;V veilig in rij 4 zetten? Kies 100, 220, 470 of 1000&nbsp;&Omega; en controleer met de hint.</p>
+  12&nbsp;V veilig in rij 4 zetten? Kies 100, 220, 470 of 1000&nbsp;&Omega; en controleer met de wattmeter.</p>
   <details>
     <summary>Oplossing</summary>
     <p>Nodig: P = 144 / R &le; 0,25, dus R &ge; 576&nbsp;&Omega;. Alleen 1000&nbsp;&Omega; is veilig: P = 144 / 1000 = 0,144&nbsp;W.

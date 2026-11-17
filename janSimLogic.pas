@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1980,10 +1980,10 @@ type
     RRailPlus, RRailMin: TRect;
     DRailPlus, DRailMin: Boolean;
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
-    RBron, RZekering, RAmpMeter, RWeerstand: TRect;
+    RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
     RLed2, RCond: TRect;                      // led en condensator met 2 klemmen
-    DBron, DZekering, DAmpMeter, DWeerstand: Boolean;
+    DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
     DLed2, DCond: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2099,6 +2099,7 @@ type
     procedure SetKBron(const Value: Boolean);
     procedure SetKZekering(const Value: Boolean);
     procedure SetKAmpMeter(const Value: Boolean);
+    procedure SetKWattMeter(const Value: Boolean);
     procedure SetKWeerstand(const Value: Boolean);
     procedure SetKLamp2(const Value: Boolean);
     procedure SetKSchakelaar2(const Value: Boolean);
@@ -2322,6 +2323,7 @@ type
     property KBron: Boolean read FBronK write SetKBron default True;
     property KZekering: Boolean read FZekeringK write SetKZekering default True;
     property KAmpMeter: Boolean read FAmpMeterK write SetKAmpMeter default True;
+    property KWattMeter: Boolean read FWattMeterK write SetKWattMeter default True;
     property KWeerstand: Boolean read FWeerstandK write SetKWeerstand default True;
     property KLamp2: Boolean read FLamp2K write SetKLamp2 default True;
     property KSchakelaar2: Boolean read FSchak2K write SetKSchakelaar2 default True;
@@ -2342,6 +2344,7 @@ type
     property HBron: string read FHBron write FHBron;
     property HZekering: string read FHZekering write FHZekering;
     property HAmpMeter: string read FHAmpMeter write FHAmpMeter;
+    property HWattMeter: string read FHWattMeter write FHWattMeter;
     property HWeerstand: string read FHWeerstand write FHWeerstand;
     property HLamp2: string read FHLamp2 write FHLamp2;
     property HSchakelaar2: string read FHSchak2 write FHSchak2;
@@ -3242,6 +3245,21 @@ end;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Stroom: Double read FStroom;
+  end;
+
+  { TjanWattMeter: vermogensmeter met twee klemmen, zoals een
+    stekker-energiemeter. Staat in serie zoals de milliampèremeter (de
+    voedingskring rekent hem als een meter van bijna 0 ohm) en toont het
+    vermogen van alles wat achter hem hangt: P = U x I, met I de stroom door
+    de meter en U de spanning van zijn uitgang tot de - klem van de bron. }
+  TjanWattMeter = class(TjanAmpMeter)
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function Spanning: Double;   // V achter de meter (t.o.v. de - van de bron)
+    function Watt: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
   end;
 
   { TjanWeerstand: weerstand of contact in de voedingsleiding. Er staat een
@@ -7779,6 +7797,8 @@ begin
   else if C is TjanCondensator then
     Result := Format('TjanCondensator;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanCondensator(C).Soort])
+  else if C is TjanWattMeter then
+    Result := Format('TjanWattMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else
     Result := Format('TjanAmpMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width]);
 end;
@@ -8516,6 +8536,89 @@ begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Milliampèremeter', 'Milliammeter', 'Milliampèremètre', 'Milliamperemeter') + ' > ', 0);
   FOnStatus(Self, 'I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanWattMeter }
+
+constructor TjanWattMeter.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  HelpKeyword := 'wattmeter';
+end;
+
+function TjanWattMeter.Spanning: Double;
+begin
+  // de kant waar de stroom naartoe gaat (FAmp: van klem 0 naar klem 1)
+  if FAmp >= 0 then Result := FUitVolt else Result := FInVolt;
+  if Result < 0 then Result := 0;
+end;
+
+function TjanWattMeter.Watt: Double;
+begin
+  Result := FStroom * Spanning;
+  if Result < 0.00005 then Result := 0;
+end;
+
+procedure TjanWattMeter.Paint;
+var
+  R: TRect;
+  S: string;
+  TW: Integer;
+  P: Double;
+begin
+  P := Watt;
+  with Canvas do
+  begin
+    Brush.Style := bsSolid;
+    Brush.Color := clSilver;
+    R := ClientRect;
+    FillRect(R);
+    Frame3D(R, clBtnHighlight, clBtnShadow, 1);
+    Brush.Color := RGBToColor(255, 245, 215);
+    R := Rect(14, 5, 86, 30);
+    FillRect(R);
+    Frame3D(R, clBtnShadow, clBtnHighlight, 2);
+    Brush.Style := bsClear;
+    // het getal zonder eenheid (de W staat ernaast): 0,014 / 0,30 / 1,44 / 6,0
+    if P >= 10 then S := FormatFloat('0.0', P)
+    else if P >= 0.1 then S := FormatFloat('0.00', P)
+    else S := FormatFloat('0.000', P);
+    Font.Name := 'Arial'; Font.Size := 12; Font.Style := [fsBold];
+    if P > 0 then Font.Color := clRed else Font.Color := clGray;
+    TW := TextWidth(S);
+    TextOut(68 - TW, 8, S);
+    Font.Size := 9; Font.Color := clBlack; Font.Style := [];
+    TextOut(71, 11, 'W');
+    PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+    Brush.Style := bsClear;
+    Font.Size := 8; Font.Style := [fsBold]; Font.Color := clNavy;
+    TextOut(40, 34, 'W');
+  end;
+  PaintSelection;
+end;
+
+procedure TjanWattMeter.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Wattmeter', 'Wattmeter', 'Wattmètre', 'Wattmeter') +
+    ': P = ' + WattText(Watt) + '   (U = ' + VoltText(Spanning) + '   ' + StroomRegel(FStroom) + ')' + #13#10 +
+    Tr(FTaal,
+      'In serie, zoals een milliampèremeter. Toont het vermogen P = U x I' + #13#10 +
+        'van alles wat achter de meter hangt (tot aan de - van de bron).',
+      'In series, like a milliammeter. Shows the power P = U x I' + #13#10 +
+        'of everything after the meter (up to the - of the source).',
+      'En série, comme un milliampèremètre. Affiche la puissance P = U x I' + #13#10 +
+        'de tout ce qui est branché après le wattmètre (jusqu''au - de la source).',
+      'In Reihe, wie ein Milliamperemeter. Zeigt die Leistung P = U x I' + #13#10 +
+        'von allem, was hinter dem Messgerät hängt (bis zum - der Quelle).');
+end;
+
+procedure TjanWattMeter.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Wattmeter', 'Wattmeter', 'Wattmètre', 'Wattmeter') + ' > ', 0);
+  FOnStatus(Self, 'P = ' + WattText(Watt), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
 
@@ -22752,10 +22855,11 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
+  FHWattMeter:='maak Wattmeter';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -23845,7 +23949,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') then
     begin
       with TStringList.Create do
       try
@@ -23862,6 +23966,7 @@ begin
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
+          else if obj[1] = 'TjanWattMeter' then VD := TjanWattMeter.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -24724,6 +24829,7 @@ begin
     6: D := TjanVoltmeter2.Create(Self);
     7: D := TjanLed2.Create(Self);
     8: D := TjanCondensator.Create(Self);
+    9: D := TjanWattMeter.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -25447,7 +25553,7 @@ begin
   DButton:=false;DLight:=false;DKnop:=false;DPuls:=false;
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
-  DBron:=false;DZekering:=false;DAmpMeter:=false;DWeerstand:=false;
+  DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
   DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
@@ -25487,6 +25593,7 @@ begin
   else if PtInRect(RBron, P) then DBron := True
   else if PtInRect(RZekering, P) then DZekering := True
   else if PtInRect(RAmpMeter, P) then DAmpMeter := True
+  else if PtInRect(RWattMeter, P) then DWattMeter := True
   else if PtInRect(RWeerstand, P) then DWeerstand := True
   else if PtInRect(RLamp2, P) then DLamp2 := True
   else if PtInRect(RSchak2, P) then DSchak2 := True
@@ -25544,6 +25651,7 @@ begin
   else if PtInRect(RBron, P) then NewHint := FHBron
   else if PtInRect(RZekering, P) then NewHint := FHZekering
   else if PtInRect(RAmpMeter, P) then NewHint := FHAmpMeter
+  else if PtInRect(RWattMeter, P) then NewHint := FHWattMeter
   else if PtInRect(RWeerstand, P) then NewHint := FHWeerstand
   else if PtInRect(RLamp2, P) then NewHint := FHLamp2
   else if PtInRect(RSchak2, P) then NewHint := FHSchak2
@@ -25958,7 +26066,7 @@ var
     DLogicAnd := False; DLogicOr := False; DLogicNot := False; DLogicNand := False; DLogicNor := False; DLogicXor := False; DTeller := False; DStappen := False; DFlipFlop := False; DStopwatch := False; DMemory := False; DDipSwitsh := False;
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
-    DBron := False; DZekering := False; DAmpMeter := False; DWeerstand := False;
+    DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
     DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False;
 
     // nieuw
@@ -26209,6 +26317,8 @@ begin
     NewVoedingsDeel(1)
   else if DAmpMeter then
     NewVoedingsDeel(2)
+  else if DWattMeter then
+    NewVoedingsDeel(9)
   else if DWeerstand then
     NewVoedingsDeel(3)
   else if DLamp2 then
@@ -26803,6 +26913,7 @@ if FBoxTaal=stDutch then
   HBron:='maak Bron (accu, 0 tot 12 V)';
   HZekering:='maak Zekering';
   HAmpMeter:='maak Milliampèremeter';
+  HWattMeter:='maak Wattmeter';
   HWeerstand:='maak Weerstand (contact, lange draad)';
   HLamp2:='maak Lamp met 2 klemmen (serie en parallel)';
   HSchakelaar2:='maak Schakelaar met 2 klemmen';
@@ -26850,6 +26961,7 @@ if FBoxTaal=stEnglish then
   HBron:=LangTr('create Source (battery, 0 to 12 V)');
   HZekering:=LangTr('create Fuse');
   HAmpMeter:=LangTr('create Milliammeter');
+  HWattMeter:=LangTr('create Wattmeter');
   HWeerstand:=LangTr('create Resistance (contact, long wire)');
   HLamp2:=LangTr('create Lamp with 2 terminals (series and parallel)');
   HSchakelaar2:=LangTr('create Switch with 2 terminals');
@@ -26895,6 +27007,7 @@ if FBoxTaal=stFrench then
   HBron:='faire Source (batterie, 0 à 12 V)';
   HZekering:='faire Fusible';
   HAmpMeter:='faire Milliampèremètre';
+  HWattMeter:='faire Wattmètre';
   HWeerstand:='faire Résistance (contact, long fil)';
   HLamp2:='faire Lampe à 2 bornes (série et parallèle)';
   HSchakelaar2:='faire Interrupteur à 2 bornes';
@@ -26941,6 +27054,7 @@ if FBoxTaal=stFrench then
   HBron:='Quelle erstellen (Akku, 0 bis 12 V)';
   HZekering:='Sicherung erstellen';
   HAmpMeter:='Milliamperemeter erstellen';
+  HWattMeter:='Wattmeter erstellen';
   HWeerstand:='Widerstand erstellen (Kontakt, langer Draht)';
   HLamp2:='Lampe mit 2 Klemmen erstellen (Reihe und parallel)';
   HSchakelaar2:='Schalter mit 2 Klemmen erstellen';
@@ -27004,6 +27118,9 @@ begin SetVoedingKnop(FZekeringK, Value); end;
 
 procedure TjanSimLogicBox.SetKAmpMeter(const Value: Boolean);
 begin SetVoedingKnop(FAmpMeterK, Value); end;
+
+procedure TjanSimLogicBox.SetKWattMeter(const Value: Boolean);
+begin SetVoedingKnop(FWattMeterK, Value); end;
 
 procedure TjanSimLogicBox.SetKWeerstand(const Value: Boolean);
 begin SetVoedingKnop(FWeerstandK, Value); end;
@@ -27154,20 +27271,22 @@ end;
 procedure TjanSimLogicBox.DrawOutputIcon(Kind: Integer; Bm: TBitmap; X, Y: Integer);
 var OldBrush, OldPen: TColor;
     OldStyle: TBrushStyle;
+    Eenheid: string;
 begin
-  if Kind = 11 then
+  if (Kind = 11) or (Kind = 12) then
   begin
-    // milliampèremeter: zoals de voltmeter, maar met mA
+    // milliampèremeter (11) en wattmeter (12): zoals de voltmeter, met mA of W
+    if Kind = 12 then Eenheid := 'W' else Eenheid := 'mA';
     OldBrush := Canvas.Brush.Color; OldStyle := Canvas.Brush.Style; OldPen := Canvas.Pen.Color;
     Canvas.Pen.Width := 1;
     if FSymbolen = Afbeelding then
     begin
-      // zoals de voltmeter, met mA in plaats van V
-      DrawMeterIcon(Canvas, Bm, X, Y, 'mA');
+      // zoals de voltmeter, met mA of W in plaats van V
+      DrawMeterIcon(Canvas, Bm, X, Y, Eenheid);
     end
     else
     begin
-      // schemasymbool: cirkel met mA
+      // schemasymbool: cirkel met mA of W
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Color := SymKnopKleur;
       Canvas.FillRect(Rect(X, Y - 1, X + 24, Y + 23));
@@ -27179,8 +27298,8 @@ begin
       Canvas.Brush.Style := bsClear;
       Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 7;
       Canvas.Font.Style := [fsBold]; Canvas.Font.Color := clBlack;
-      Canvas.TextOut(X + 12 - Canvas.TextWidth('mA') div 2,
-                     Y + 11 - Canvas.TextHeight('mA') div 2, 'mA');
+      Canvas.TextOut(X + 12 - Canvas.TextWidth(Eenheid) div 2,
+                     Y + 11 - Canvas.TextHeight(Eenheid) div 2, Eenheid);
     end;
     Canvas.Brush.Color := OldBrush; Canvas.Brush.Style := OldStyle; Canvas.Pen.Color := OldPen;
     Exit;
@@ -28493,6 +28612,19 @@ begin
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
         DrawOutputIcon(11, bmMeter, LK+1, TOP+2);
+        NextX(B + SPATIE);
+      end;
+
+      // wattmeter: zelfde soort knop, direct naast de milliampèremeter
+      RWattMeter := Rect(0, 0, 0, 0);
+      if FWattMeterK then
+      begin
+        RWattMeter := Rect(LK, TOP, BK, HK);
+        Rb := RWattMeter;
+        if not DWattMeter then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
+        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
+        FillRect(Rb);
+        DrawOutputIcon(12, bmMeter, LK+1, TOP+2);
         NextX(B + SPATIE);
       end;
 

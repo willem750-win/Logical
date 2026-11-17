@@ -1643,3 +1643,15 @@ msgstr "LED con 2 bornes"
 
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr "LED con dos bornes: + (ánodo) a la izquierda, - (cátodo) a la derecha. Solo conduce en un sentido,\ny solo por encima de %s. Luz plena a 20 mA, roto por encima de 30 mA.\nPon una resistencia en serie: R = (U - Ud) / I = (12 V - %s) / 0,02 A = %s. Clic derecho: elegir el color."
+
+msgid "Wattmeter"
+msgstr "Vatímetro"
+
+msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
+msgstr "En serie, como un miliamperímetro. Muestra la potencia P = U x I\nde todo lo que hay después del medidor (hasta el - de la fuente)."
+
+msgid "create Wattmeter"
+msgstr "crear vatímetro"
+
+msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
+msgstr "Vatímetro\n\n- En serie, como un miliamperímetro.\n- Muestra la potencia P = U x I de todo lo que hay después del medidor."

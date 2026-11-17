@@ -1648,3 +1648,15 @@ msgstr "2 端子の LED"
 
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr "2 端子の LED: + (アノード) は左、- (カソード) は右。電流は一方向にしか流れず、\n%s を超えたときだけ流れます。20 mA で最大の明るさ、30 mA を超えると故障。\n直列抵抗を入れてください: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s。右クリック: 色を選ぶ。"
+
+msgid "Wattmeter"
+msgstr "電力計"
+
+msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
+msgstr "ミリアンペア計と同じく直列に入れます。電力 P = U x I を表示します\n（計器の後ろにあるすべて、電源の - まで）。"
+
+msgid "create Wattmeter"
+msgstr "電力計を作成"
+
+msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
+msgstr "電力計\n\n- ミリアンペア計と同じく直列。\n- 計器の後ろにあるすべての電力 P = U x I を表示。"
