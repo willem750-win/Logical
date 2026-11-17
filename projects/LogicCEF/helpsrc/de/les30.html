@@ -1,0 +1,45 @@
+<!-- titel: Lektion 30 - Widerstände parallel -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 30 von 32</p>
+  <h1>Widerstände parallel</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, dass jeder parallele Zweig seinen eigenen Strom zieht, dass sich die
+  Ströme addieren, und den Ersatzwiderstand verschiedener Widerstände berechnen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les30-weerstanden-parallel.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les30.png" alt="Quelle von 12 V und Milliamperemeter, drei Zweige mit je einem Schalter und einem Widerstand von 1000, 470 und 220 Ohm">
+    <figcaption>Drei Zweige parallel: 1000&nbsp;&Omega;, 470&nbsp;&Omega; und 220&nbsp;&Omega;. Alle drei an: Das Milliamperemeter misst 92&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Jeder Zweig sein eigener Strom</h2>
+  <p>In <a href="les25.html">Lektion 25</a> haben Sie drei gleiche Lampen parallel geschaltet. Jetzt sind die Widerstände
+  verschieden. Jeder Zweig bekommt die vollen 12&nbsp;V, und das ohmsche Gesetz gibt den Strom pro Zweig:</p>
+  <p class="formula">I = 12&nbsp;V / 1000&nbsp;&Omega; = 12&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 470&nbsp;&Omega; &asymp; 25,5&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 220&nbsp;&Omega; &asymp; 54,5&nbsp;mA</p>
+  <ol class="steps">
+    <li>Beim Öffnen ist nur der oberste Zweig an (1000&nbsp;&Omega;). Das Milliamperemeter zeigt 12&nbsp;mA.</li>
+    <li>Schalten Sie den zweiten Schalter ein. Der Strom steigt auf 12 + 25,5 = 37,5&nbsp;mA.</li>
+    <li>Schalten Sie auch den dritten ein: 12 + 25,5 + 54,5 = 92&nbsp;mA. Zeigen Sie auf einen Widerstand: Der Hinweis zeigt
+      seinen eigenen Strom.</li>
+  </ol>
+  <p>Der kleinste Widerstand zieht den größten Strom. Ein Zweig mit kleinem Widerstand ist wie eine breite Straße: Dort
+  fährt der meiste Verkehr.</p>
+
+  <h2>Der Ersatzwiderstand</h2>
+  <p>Welcher einzelne Widerstand würde dieselben 92&nbsp;mA ziehen? Mit dem ohmschen Gesetz: 12&nbsp;V / 0,092&nbsp;A &asymp; 130&nbsp;&Omega;.
+  Man kann ihn auch direkt berechnen:</p>
+  <p class="formula">1 / R<sub>ers</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub> + 1 / R<sub>3</sub> = 1/1000 + 1/470 + 1/220 &rArr; R<sub>ers</sub> &asymp; 130&nbsp;&Omega;</p>
+  <p>Achtung: Der Ersatzwiderstand ist immer <b>kleiner</b> als der kleinste Widerstand. Jeder Zweig, den Sie dazuschalten,
+  öffnet einen weiteren Weg für den Strom.</p>
+
+  <h2>Aufgabe: 80 Milliampere</h2>
+  <p>Schalten Sie genau die Schalter ein, bei denen das Milliamperemeter <b>80&nbsp;mA</b> zeigt. Wie groß ist dann der
+  Ersatzwiderstand?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Schalten Sie den zweiten und den dritten Schalter ein, den ersten aus: 25,5 + 54,5 = 80&nbsp;mA. Der Ersatzwiderstand ist
+    12&nbsp;V / 0,080&nbsp;A = 150&nbsp;&Omega;, kleiner als 220&nbsp;&Omega;.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Alle Geräte im Haus hängen parallel an den Steckdosen. Je mehr Geräte
+  an sind, desto mehr Strom fließt durch die Leitung. Deshalb kann die Sicherung im Sicherungskasten auslösen.</div>
+
+  <div class="pager"><a href="les29.html">&larr; Lektion 29: Der Spannungsteiler</a><a href="les31.html">Lektion 31: LED-Farben &rarr;</a></div>

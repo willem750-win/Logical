@@ -1,0 +1,44 @@
+<!-- titel: Lesson 30 - Resistors in parallel -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 30 of 32</p>
+  <h1>Resistors in parallel</h1>
+  <div class="goal"><strong>Goal:</strong> see that each parallel branch draws its own current, that the currents add
+  up, and work out the equivalent resistance of different resistors.</div>
+
+  <p><a class="open" href="../../panels/lessen/les30-weerstanden-parallel.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les30.png" alt="12 V source and milliammeter, three branches each with a switch and a resistor of 1000, 470 and 220 ohm">
+    <figcaption>Three branches in parallel: 1000&nbsp;&Omega;, 470&nbsp;&Omega; and 220&nbsp;&Omega;. All three on: the milliammeter measures 92&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Each branch its own current</h2>
+  <p>In <a href="les25.html">lesson 25</a> you put three equal lamps in parallel. Now the resistors are different. Each
+  branch gets the full 12&nbsp;V, and Ohm's law gives the current per branch:</p>
+  <p class="formula">I = 12&nbsp;V / 1000&nbsp;&Omega; = 12&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 470&nbsp;&Omega; &asymp; 25.5&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 220&nbsp;&Omega; &asymp; 54.5&nbsp;mA</p>
+  <ol class="steps">
+    <li>When you open the example only the top branch is on (1000&nbsp;&Omega;). The milliammeter shows 12&nbsp;mA.</li>
+    <li>Switch on the second switch. The current rises to 12 + 25.5 = 37.5&nbsp;mA.</li>
+    <li>Switch on the third as well: 12 + 25.5 + 54.5 = 92&nbsp;mA. Point at a resistor: the hint shows its own current.</li>
+  </ol>
+  <p>The smallest resistor draws the biggest current. A branch with a small resistance is like a wide road: most of the
+  traffic goes that way.</p>
+
+  <h2>The equivalent resistance</h2>
+  <p>Which single resistor would draw the same 92&nbsp;mA? With Ohm's law: 12&nbsp;V / 0.092&nbsp;A &asymp; 130&nbsp;&Omega;.
+  You can also work it out directly:</p>
+  <p class="formula">1 / R<sub>eq</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub> + 1 / R<sub>3</sub> = 1/1000 + 1/470 + 1/220 &rArr; R<sub>eq</sub> &asymp; 130&nbsp;&Omega;</p>
+  <p>Note: the equivalent resistance is always <b>smaller</b> than the smallest resistor. Every branch you add opens an extra
+  way for the current.</p>
+
+  <h2>Assignment: 80 milliamps</h2>
+  <p>Switch on exactly those switches that make the milliammeter show <b>80&nbsp;mA</b>. What is the equivalent
+  resistance then?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Switch on the second and the third switch, the first one off: 25.5 + 54.5 = 80&nbsp;mA. The equivalent resistance is
+    12&nbsp;V / 0.080&nbsp;A = 150&nbsp;&Omega;, smaller than 220&nbsp;&Omega;.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> all the appliances in a house are in parallel on the wall sockets. The
+  more appliances are on, the more current flows through the wiring. That is why the fuse in the fuse box can blow.</div>
+
+  <div class="pager"><a href="les29.html">&larr; Lesson 29: The voltage divider</a><a href="les31.html">Lesson 31: LED colours &rarr;</a></div>

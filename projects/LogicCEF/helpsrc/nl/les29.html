@@ -1,0 +1,46 @@
+<!-- titel: Les 29 - De spanningsdeler -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 29 van 32</p>
+  <h1>De spanningsdeler</h1>
+  <div class="goal"><strong>Doel:</strong> zien hoe twee weerstanden in serie de spanning van de bron onder elkaar
+  verdelen, en die verdeling zelf uitrekenen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les29-spanningsdeler.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les29.png" alt="Bron van 12 V, schakelaar, milliampèremeter en twee weerstanden van 470 ohm in serie, met onder elke weerstand een voltmeter">
+    <figcaption>Bron &rarr; schakelaar &rarr; milliampèremeter &rarr; R1 470&nbsp;&Omega; &rarr; R2 470&nbsp;&Omega; &rarr; terug naar de bron. Elke voltmeter meet de spanning over één weerstand.</figcaption>
+  </figure>
+
+  <h2>Twee gelijke weerstanden</h2>
+  <p>Door weerstanden in <a href="voeding.html#serie">serie</a> gaat overal dezelfde stroom. De totale weerstand is de som:
+  470 + 470 = 940&nbsp;&Omega;. Met de <a href="voeding.html#ohm">wet van Ohm</a>:</p>
+  <p class="formula">I = U / R = 12&nbsp;V / 940&nbsp;&Omega; &asymp; 0,0128&nbsp;A = 12,8&nbsp;mA</p>
+  <ol class="steps">
+    <li>Zet de schakelaar aan. De <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">milliampèremeter</a>
+      toont 13&nbsp;mA.</li>
+    <li>Kijk naar de twee <a href="voeding.html#voltmeter">voltmeters</a>: elk 6,0&nbsp;V. De weerstanden zijn even groot,
+      dus elk krijgt de helft van de 12&nbsp;V.</li>
+    <li>Tel de twee spanningen op: 6,0 + 6,0 = 12,0&nbsp;V, precies de spanning van de bron.</li>
+  </ol>
+
+  <h2>Twee verschillende weerstanden</h2>
+  <ol class="steps">
+    <li>Klik met de rechtermuisknop op R2 (rechts) en kies 1000&nbsp;&Omega;. De stroom daalt tot 12 / 1470 &asymp; 8,2&nbsp;mA.</li>
+    <li>De voltmeters tonen nu 3,8&nbsp;V over R1 en 8,2&nbsp;V over R2. Samen nog altijd 12&nbsp;V.</li>
+  </ol>
+  <p>De grootste weerstand krijgt het grootste deel van de spanning. Je rekent het deel over R2 zo uit:</p>
+  <p class="formula">U<sub>2</sub> = U &times; R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>) = 12&nbsp;V &times; 1000 / 1470 &asymp; 8,2&nbsp;V</p>
+
+  <h2>Opdracht: ongeveer 4 volt</h2>
+  <p>Een schakeling heeft maar 4&nbsp;V nodig, maar de bron geeft 12&nbsp;V. Kies de twee weerstanden zo dat er ongeveer
+  <b>4&nbsp;V over R2</b> staat. Je kunt kiezen uit 100, 220, 470 en 1000&nbsp;&Omega;.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>4&nbsp;V is een derde van 12&nbsp;V, dus R1 moet twee keer zo groot zijn als R2. Neem R1 = 1000&nbsp;&Omega; en
+    R2 = 470&nbsp;&Omega;: U<sub>2</sub> = 12 &times; 470 / 1470 &asymp; 3,8&nbsp;V. Ook R1 = 470&nbsp;&Omega; en
+    R2 = 220&nbsp;&Omega; geeft 12 &times; 220 / 690 &asymp; 3,8&nbsp;V, maar dan met meer stroom (17&nbsp;mA in plaats van 8&nbsp;mA).</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> een volumeknop is een spanningsdeler die je kunt verdraaien. Ook veel
+  sensoren werken zo: een weerstand die verandert met licht of warmte, in serie met een vaste weerstand.</div>
+
+  <div class="pager"><a href="les28.html">&larr; Les 28: De led en de condensator</a><a href="les30.html">Les 30: Weerstanden parallel &rarr;</a></div>

@@ -1,0 +1,52 @@
+<!-- titel: Lesson 32 - Power -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 32 of 32</p>
+  <h1>Power</h1>
+  <div class="goal"><strong>Goal:</strong> work out the power P = U &times; I, see why a strong lamp in series with a weak
+  lamp stays dark, and choose a resistor that does not get too hot.</div>
+
+  <p><a class="open" href="../../panels/lessen/les32-vermogen.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les32.png" alt="12 V source with four branches: a 24 ohm lamp and a 480 ohm lamp in series, each lamp on its own once more, and a 100 ohm resistor">
+    <figcaption>Row 1: a 6&nbsp;W lamp (24&nbsp;&Omega;) and a 0.3&nbsp;W lamp (480&nbsp;&Omega;) in series. Rows 2 and 3: the same lamps on their own. Row 4: a 100&nbsp;&Omega; resistor. Each row has a milliammeter.</figcaption>
+  </figure>
+
+  <h2>What is power?</h2>
+  <p>Power says how much energy per second a device turns into light or heat. You measure it in <b>watts</b> (W):</p>
+  <p class="formula">P = U &times; I &nbsp;&nbsp; and with Ohm's law also &nbsp;&nbsp; P = U<sup>2</sup> / R</p>
+  <p>A 24&nbsp;&Omega; lamp at 12&nbsp;V: P = 12 &times; 12 / 24 = 6&nbsp;W. A 480&nbsp;&Omega; lamp: P = 144 / 480 = 0.3&nbsp;W.
+  The smaller the resistance, the bigger the power at the same voltage.</p>
+  <ol class="steps">
+    <li>Switch on rows 2 and 3. Both lamps are fully lit. The milliammeters show 500&nbsp;mA and 25&nbsp;mA:
+      P = 12&nbsp;V &times; 0.5&nbsp;A = 6&nbsp;W and 12&nbsp;V &times; 0.025&nbsp;A = 0.3&nbsp;W. Point at a lamp: the hint shows U, I and P.</li>
+  </ol>
+
+  <h2>A strong and a weak lamp in series</h2>
+  <ol class="steps">
+    <li>Switch rows 2 and 3 off and row 1 on. Which lamp lights?</li>
+    <li>Surprise: the weak 0.3&nbsp;W lamp is almost fully lit, the strong 6&nbsp;W lamp stays dark. The
+      milliammeter shows only 24&nbsp;mA.</li>
+  </ol>
+  <p>In series the same current flows through both lamps: I = 12&nbsp;V / (24 + 480)&nbsp;&Omega; &asymp; 24&nbsp;mA. As with the
+  <a href="les29.html">voltage divider</a>, the biggest resistance gets the biggest part of the voltage: 11.4&nbsp;V across
+  the 480&nbsp;&Omega; lamp, but only 0.6&nbsp;V across the 24&nbsp;&Omega; lamp. The power:</p>
+  <p class="formula">P = U &times; I = 11.4&nbsp;V &times; 0.024&nbsp;A &asymp; 0.27&nbsp;W &nbsp;&nbsp; and &nbsp;&nbsp; 0.6&nbsp;V &times; 0.024&nbsp;A &asymp; 0.014&nbsp;W</p>
+
+  <h2>A resistor gets warm</h2>
+  <ol class="steps">
+    <li>Switch on row 4. The 100&nbsp;&Omega; resistor turns orange: it gets hot.</li>
+    <li>The milliammeter shows 120&nbsp;mA. Work it out: P = 12&nbsp;V &times; 0.12&nbsp;A = 1.44&nbsp;W. All the energy becomes heat.</li>
+  </ol>
+
+  <h2>Assignment: a quarter-watt resistor</h2>
+  <p>Ordinary small resistors can only take <b>0.25&nbsp;W</b>; above that they burn. Which resistor can you safely put in
+  row 4 at 12&nbsp;V? Choose 100, 220, 470 or 1000&nbsp;&Omega; and check with the hint.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Needed: P = 144 / R &le; 0.25, so R &ge; 576&nbsp;&Omega;. Only 1000&nbsp;&Omega; is safe: P = 144 / 1000 = 0.144&nbsp;W.
+    With 470&nbsp;&Omega; it is already 0.31&nbsp;W, just too much.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> every appliance shows its power: an 8&nbsp;W LED bulb, a 2000&nbsp;W
+  kettle. The electricity meter counts power times time, in kilowatt-hours (kWh).</div>
+
+  <div class="pager"><a href="les31.html">&larr; Lesson 31: LED colours</a><a href="leerpad.html">Learning path &rarr;</a></div>

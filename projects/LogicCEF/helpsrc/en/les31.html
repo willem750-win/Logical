@@ -1,0 +1,56 @@
+<!-- titel: Lesson 31 - LED colours -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 31 of 32</p>
+  <h1>LED colours</h1>
+  <div class="goal"><strong>Goal:</strong> find out that each colour of LED has a different forward voltage, and work
+  out the right series resistor for each colour.</div>
+
+  <p><a class="open" href="../../panels/lessen/les31-ledkleuren.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les31.png" alt="12 V source with four branches in parallel: each a milliammeter, a 470 ohm resistor and an LED, red, yellow, green and blue">
+    <figcaption>Four branches, each with a milliammeter, a 470&nbsp;&Omega; series resistor and an LED: red, yellow, green and blue.</figcaption>
+  </figure>
+
+  <h2>Each colour its own forward voltage</h2>
+  <p>An <a href="voeding.html#led"><img src="../img/pal-led2.png" class="ico" alt="">LED</a> only conducts above its forward
+  voltage. That depends on the colour: blue light needs more energy than red light.</p>
+  <table>
+    <tr><th>Colour</th><th>Forward voltage</th><th>Current at 12&nbsp;V and 470&nbsp;&Omega;</th></tr>
+    <tr><td>red</td><td>1.8&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>yellow</td><td>2.0&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>green</td><td>2.2&nbsp;V</td><td>20&nbsp;mA</td></tr>
+    <tr><td>blue</td><td>3.0&nbsp;V</td><td>19&nbsp;mA</td></tr>
+  </table>
+  <p>At 12&nbsp;V that hardly matters: the resistor takes almost all the voltage, and all the LEDs are about equally bright.
+  The <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">milliammeters</a> show it: 21, 21, 20 and 19&nbsp;mA.</p>
+
+  <h2>Turning the voltage down</h2>
+  <ol class="steps">
+    <li>Drag the slider of the <a href="voeding.html#bron"><img src="../img/pal-bron.png" class="ico" alt="">source</a>
+      to the left. The source moves in steps of 0.5&nbsp;V.</li>
+    <li>Set the source to 3.0&nbsp;V and look at the milliammeters. The <b>blue</b> LED gets 0&nbsp;mA:
+      nothing is left above its forward voltage. Red still gets 2.5&nbsp;mA, but is now dim, because full light needs 20&nbsp;mA.</li>
+    <li>At 2.0&nbsp;V <b>yellow</b> and <b>green</b> get no current either. Only <b>red</b> still gets 0.4&nbsp;mA:
+      2.0 &minus; 1.8 = 0.2&nbsp;V above its forward voltage.</li>
+    <li>At 1.5&nbsp;V no LED gets any current. Then set the source back to 12&nbsp;V.</li>
+  </ol>
+
+  <h2>The right resistor for each colour</h2>
+  <p>If you want exactly 20&nbsp;mA, you work out the series resistor for each colour:</p>
+  <p class="formula">R = (U<sub>source</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1.8&nbsp;V) / 0.020&nbsp;A = 510&nbsp;&Omega; &nbsp;(red)</p>
+  <p>For blue: (12 &minus; 3.0) / 0.020 = 450&nbsp;&Omega;. Resistors only come in fixed values; 470&nbsp;&Omega; is close
+  enough to both.</p>
+
+  <h2>Assignment: which resistor is too small?</h2>
+  <p>Above 30&nbsp;mA an LED breaks. Can you also use 220&nbsp;&Omega; at 12&nbsp;V? Work it out first, then try it
+  (right-click a resistor). You replace a broken LED with right-click &rsaquo; <b>Replace LED</b>.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>No. With 220&nbsp;&Omega;, (12 &minus; 1.8) / 220 &asymp; 46&nbsp;mA flows through red, and even through blue
+    (12 &minus; 3.0) / 220 &asymp; 41&nbsp;mA. All the LEDs break. The resistor must be at least
+    (12 &minus; 1.8) / 0.030 = 340&nbsp;&Omega;.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> a 3&nbsp;V coin cell lights a red LED easily, a blue LED only just. That
+  is why torches with white LEDs (blue with a yellow coating) often have two or three batteries.</div>
+
+  <div class="pager"><a href="les30.html">&larr; Lesson 30: Resistors in parallel</a><a href="les32.html">Lesson 32: Power &rarr;</a></div>

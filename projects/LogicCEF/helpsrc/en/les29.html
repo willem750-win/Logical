@@ -1,0 +1,46 @@
+<!-- titel: Lesson 29 - The voltage divider -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 29 of 32</p>
+  <h1>The voltage divider</h1>
+  <div class="goal"><strong>Goal:</strong> see how two resistors in series share the voltage of the source between them,
+  and work out that share yourself.</div>
+
+  <p><a class="open" href="../../panels/lessen/les29-spanningsdeler.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les29.png" alt="12 V source, switch, milliammeter and two 470 ohm resistors in series, with a voltmeter under each resistor">
+    <figcaption>Source &rarr; switch &rarr; milliammeter &rarr; R1 470&nbsp;&Omega; &rarr; R2 470&nbsp;&Omega; &rarr; back to the source. Each voltmeter measures the voltage across one resistor.</figcaption>
+  </figure>
+
+  <h2>Two equal resistors</h2>
+  <p>The same current flows through resistors in <a href="voeding.html#serie">series</a>. The total resistance is the sum:
+  470 + 470 = 940&nbsp;&Omega;. With <a href="voeding.html#ohm">Ohm's law</a>:</p>
+  <p class="formula">I = U / R = 12&nbsp;V / 940&nbsp;&Omega; &asymp; 0.0128&nbsp;A = 12.8&nbsp;mA</p>
+  <ol class="steps">
+    <li>Switch on. The <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">milliammeter</a>
+      shows 13&nbsp;mA.</li>
+    <li>Look at the two <a href="voeding.html#voltmeter">voltmeters</a>: 6.0&nbsp;V each. The resistors are equal, so each
+      gets half of the 12&nbsp;V.</li>
+    <li>Add the two voltages: 6.0 + 6.0 = 12.0&nbsp;V, exactly the voltage of the source.</li>
+  </ol>
+
+  <h2>Two different resistors</h2>
+  <ol class="steps">
+    <li>Right-click R2 (on the right) and choose 1000&nbsp;&Omega;. The current drops to 12 / 1470 &asymp; 8.2&nbsp;mA.</li>
+    <li>The voltmeters now show 3.8&nbsp;V across R1 and 8.2&nbsp;V across R2. Together still 12&nbsp;V.</li>
+  </ol>
+  <p>The biggest resistor gets the biggest part of the voltage. You work out the part across R2 like this:</p>
+  <p class="formula">U<sub>2</sub> = U &times; R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>) = 12&nbsp;V &times; 1000 / 1470 &asymp; 8.2&nbsp;V</p>
+
+  <h2>Assignment: about 4 volts</h2>
+  <p>A circuit only needs 4&nbsp;V, but the source gives 12&nbsp;V. Choose the two resistors so that there is about
+  <b>4&nbsp;V across R2</b>. You can choose from 100, 220, 470 and 1000&nbsp;&Omega;.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>4&nbsp;V is a third of 12&nbsp;V, so R1 must be twice as big as R2. Take R1 = 1000&nbsp;&Omega; and
+    R2 = 470&nbsp;&Omega;: U<sub>2</sub> = 12 &times; 470 / 1470 &asymp; 3.8&nbsp;V. R1 = 470&nbsp;&Omega; and
+    R2 = 220&nbsp;&Omega; also gives 12 &times; 220 / 690 &asymp; 3.8&nbsp;V, but with more current (17&nbsp;mA instead of 8&nbsp;mA).</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> a volume knob is a voltage divider you can turn. Many sensors work the
+  same way: a resistor that changes with light or heat, in series with a fixed resistor.</div>
+
+  <div class="pager"><a href="les28.html">&larr; Lesson 28: The LED and the capacitor</a><a href="les30.html">Lesson 30: Resistors in parallel &rarr;</a></div>

@@ -1,0 +1,52 @@
+<!-- titel: Les 32 - Vermogen -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 32 van 32</p>
+  <h1>Vermogen</h1>
+  <div class="goal"><strong>Doel:</strong> het vermogen P = U &times; I berekenen, zien waarom een sterke lamp in serie
+  met een zwakke lamp donker blijft, en een weerstand kiezen die niet te warm wordt.</div>
+
+  <p><a class="open" href="../../panels/lessen/les32-vermogen.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les32.png" alt="Bron van 12 V met vier takken: een lamp van 24 ohm en een van 480 ohm in serie, elke lamp nog eens alleen, en een weerstand van 100 ohm">
+    <figcaption>Rij 1: een lamp van 6&nbsp;W (24&nbsp;&Omega;) en een van 0,3&nbsp;W (480&nbsp;&Omega;) in serie. Rij 2 en 3: dezelfde lampen elk alleen. Rij 4: een weerstand van 100&nbsp;&Omega;. Elke rij heeft een milliampèremeter.</figcaption>
+  </figure>
+
+  <h2>Wat is vermogen?</h2>
+  <p>Vermogen zegt hoeveel energie per seconde een toestel omzet in licht of warmte. Je meet het in <b>watt</b> (W):</p>
+  <p class="formula">P = U &times; I &nbsp;&nbsp; en met de wet van Ohm ook &nbsp;&nbsp; P = U<sup>2</sup> / R</p>
+  <p>Een lamp van 24&nbsp;&Omega; op 12&nbsp;V: P = 12 &times; 12 / 24 = 6&nbsp;W. Een lamp van 480&nbsp;&Omega;: P = 144 / 480 = 0,3&nbsp;W.
+  Hoe kleiner de weerstand, hoe groter het vermogen op dezelfde spanning.</p>
+  <ol class="steps">
+    <li>Zet de schakelaars van rij 2 en rij 3 aan. Beide lampen branden vol. De milliampèremeters tonen 500&nbsp;mA en
+      25&nbsp;mA: P = 12&nbsp;V &times; 0,5&nbsp;A = 6&nbsp;W en 12&nbsp;V &times; 0,025&nbsp;A = 0,3&nbsp;W. Wijs een lamp aan: de hint toont U, I en P.</li>
+  </ol>
+
+  <h2>Een sterke en een zwakke lamp in serie</h2>
+  <ol class="steps">
+    <li>Zet rij 2 en 3 uit en zet rij 1 aan. Welke lamp brandt?</li>
+    <li>Verrassend: de zwakke lamp van 0,3&nbsp;W brandt bijna vol, de sterke lamp van 6&nbsp;W blijft donker. De
+      milliampèremeter toont maar 24&nbsp;mA.</li>
+  </ol>
+  <p>In serie gaat door beide lampen dezelfde stroom: I = 12&nbsp;V / (24 + 480)&nbsp;&Omega; &asymp; 24&nbsp;mA. Zoals bij de
+  <a href="les29.html">spanningsdeler</a> krijgt de grootste weerstand het grootste deel van de spanning: 11,4&nbsp;V over de
+  lamp van 480&nbsp;&Omega;, maar maar 0,6&nbsp;V over de lamp van 24&nbsp;&Omega;. Het vermogen:</p>
+  <p class="formula">P = U &times; I = 11,4&nbsp;V &times; 0,024&nbsp;A &asymp; 0,27&nbsp;W &nbsp;&nbsp; en &nbsp;&nbsp; 0,6&nbsp;V &times; 0,024&nbsp;A &asymp; 0,014&nbsp;W</p>
+
+  <h2>Een weerstand wordt warm</h2>
+  <ol class="steps">
+    <li>Zet rij 4 aan. De weerstand van 100&nbsp;&Omega; kleurt oranje: hij wordt heet.</li>
+    <li>De milliampèremeter toont 120&nbsp;mA. Reken: P = 12&nbsp;V &times; 0,12&nbsp;A = 1,44&nbsp;W. Alle energie wordt warmte.</li>
+  </ol>
+
+  <h2>Opdracht: een weerstand van een kwart watt</h2>
+  <p>Gewone kleine weerstanden kunnen maar <b>0,25&nbsp;W</b> verdragen; daarboven verbranden ze. Welke weerstand kun je bij
+  12&nbsp;V veilig in rij 4 zetten? Kies 100, 220, 470 of 1000&nbsp;&Omega; en controleer met de hint.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Nodig: P = 144 / R &le; 0,25, dus R &ge; 576&nbsp;&Omega;. Alleen 1000&nbsp;&Omega; is veilig: P = 144 / 1000 = 0,144&nbsp;W.
+    Met 470&nbsp;&Omega; is het al 0,31&nbsp;W, net te veel.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> op elk toestel staat het vermogen: een ledlamp van 8&nbsp;W, een
+  waterkoker van 2000&nbsp;W. De energiemeter telt het vermogen maal de tijd, in kilowattuur (kWh).</div>
+
+  <div class="pager"><a href="les31.html">&larr; Les 31: Ledkleuren</a><a href="leerpad.html">Leerpad &rarr;</a></div>

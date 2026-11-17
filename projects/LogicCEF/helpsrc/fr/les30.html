@@ -1,0 +1,45 @@
+<!-- titel: Leçon 30 - Des résistances en parallèle -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 30 sur 32</p>
+  <h1>Des résistances en parallèle</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir que chaque branche en parallèle tire son propre courant, que les
+  courants s&rsquo;additionnent, et calculer la résistance équivalente de résistances différentes.</div>
+
+  <p><a class="open" href="../../panels/lessen/les30-weerstanden-parallel.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les30.png" alt="Source de 12 V et milliampèremètre, trois branches avec chacune un interrupteur et une résistance de 1000, 470 et 220 ohms">
+    <figcaption>Trois branches en parallèle&nbsp;: 1000&nbsp;&Omega;, 470&nbsp;&Omega; et 220&nbsp;&Omega;. Toutes les trois allumées&nbsp;: le milliampèremètre mesure 92&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Chaque branche son propre courant</h2>
+  <p>Dans la <a href="les25.html">leçon 25</a>, vous avez mis trois lampes égales en parallèle. Maintenant les résistances
+  sont différentes. Chaque branche reçoit les 12&nbsp;V complets, et la loi d&rsquo;Ohm donne le courant par branche&nbsp;:</p>
+  <p class="formula">I = 12&nbsp;V / 1000&nbsp;&Omega; = 12&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 470&nbsp;&Omega; &asymp; 25,5&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 220&nbsp;&Omega; &asymp; 54,5&nbsp;mA</p>
+  <ol class="steps">
+    <li>À l&rsquo;ouverture, seule la branche du haut est allumée (1000&nbsp;&Omega;). Le milliampèremètre affiche 12&nbsp;mA.</li>
+    <li>Allumez le deuxième interrupteur. Le courant monte à 12 + 25,5 = 37,5&nbsp;mA.</li>
+    <li>Allumez aussi le troisième&nbsp;: 12 + 25,5 + 54,5 = 92&nbsp;mA. Pointez une résistance&nbsp;: l&rsquo;info-bulle montre son propre courant.</li>
+  </ol>
+  <p>La plus petite résistance tire le plus grand courant. Une branche de faible résistance est comme une route large&nbsp;:
+  c&rsquo;est par là que passe le plus de trafic.</p>
+
+  <h2>La résistance équivalente</h2>
+  <p>Quelle résistance unique tirerait les mêmes 92&nbsp;mA&nbsp;? Avec la loi d&rsquo;Ohm&nbsp;: 12&nbsp;V / 0,092&nbsp;A &asymp; 130&nbsp;&Omega;.
+  On peut aussi la calculer directement&nbsp;:</p>
+  <p class="formula">1 / R<sub>éq</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub> + 1 / R<sub>3</sub> = 1/1000 + 1/470 + 1/220 &rArr; R<sub>éq</sub> &asymp; 130&nbsp;&Omega;</p>
+  <p>Attention&nbsp;: la résistance équivalente est toujours <b>plus petite</b> que la plus petite résistance. Chaque branche
+  ajoutée ouvre un chemin de plus pour le courant.</p>
+
+  <h2>Exercice&nbsp;: 80 milliampères</h2>
+  <p>Allumez exactement les interrupteurs qui font afficher <b>80&nbsp;mA</b> au milliampèremètre. Quelle est alors la
+  résistance équivalente&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Allumez le deuxième et le troisième interrupteur, le premier éteint&nbsp;: 25,5 + 54,5 = 80&nbsp;mA. La résistance
+    équivalente est 12&nbsp;V / 0,080&nbsp;A = 150&nbsp;&Omega;, plus petite que 220&nbsp;&Omega;.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> tous les appareils d&rsquo;une maison sont en parallèle sur les prises.
+  Plus il y a d&rsquo;appareils allumés, plus le courant dans les fils est grand. C&rsquo;est pourquoi le fusible du tableau
+  électrique peut sauter.</div>
+
+  <div class="pager"><a href="les29.html">&larr; Leçon 29 : Le diviseur de tension</a><a href="les31.html">Leçon 31 : Les couleurs des LED &rarr;</a></div>

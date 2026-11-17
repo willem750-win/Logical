@@ -1,0 +1,59 @@
+<!-- titel: Lektion 31 - LED-Farben -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 31 von 32</p>
+  <h1>LED-Farben</h1>
+  <div class="goal"><strong>Ziel:</strong> entdecken, dass jede LED-Farbe eine andere Durchlassspannung hat, und für jede
+  Farbe den richtigen Vorwiderstand berechnen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les31-ledkleuren.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les31.png" alt="Quelle von 12 V mit vier Zweigen parallel: je ein Milliamperemeter, ein Widerstand von 470 Ohm und eine LED, rot, gelb, grün und blau">
+    <figcaption>Vier Zweige, jeder mit einem Milliamperemeter, einem Vorwiderstand von 470&nbsp;&Omega; und einer LED: rot, gelb, grün und blau.</figcaption>
+  </figure>
+
+  <h2>Jede Farbe ihre eigene Durchlassspannung</h2>
+  <p>Eine <a href="voeding.html#led"><img src="../img/pal-led2.png" class="ico" alt="">LED</a> leitet erst über ihrer
+  Durchlassspannung. Die hängt von der Farbe ab: Blaues Licht braucht mehr Energie als rotes Licht.</p>
+  <table>
+    <tr><th>Farbe</th><th>Durchlassspannung</th><th>Strom bei 12&nbsp;V und 470&nbsp;&Omega;</th></tr>
+    <tr><td>rot</td><td>1,8&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>gelb</td><td>2,0&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>grün</td><td>2,2&nbsp;V</td><td>20&nbsp;mA</td></tr>
+    <tr><td>blau</td><td>3,0&nbsp;V</td><td>19&nbsp;mA</td></tr>
+  </table>
+  <p>Bei 12&nbsp;V spielt das kaum eine Rolle: Der Widerstand nimmt fast die ganze Spannung auf, und alle LEDs leuchten
+  etwa gleich hell. Die <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">Milliamperemeter</a>
+  zeigen es: 21, 21, 20 und 19&nbsp;mA.</p>
+
+  <h2>Die Spannung herunterdrehen</h2>
+  <ol class="steps">
+    <li>Ziehen Sie den Schieberegler der <a href="voeding.html#bron"><img src="../img/pal-bron.png" class="ico" alt="">Quelle</a>
+      nach links. Die Quelle ändert sich in Schritten von 0,5&nbsp;V.</li>
+    <li>Stellen Sie die Quelle auf 3,0&nbsp;V und schauen Sie auf die Milliamperemeter. Die <b>blaue</b> LED
+      bekommt 0&nbsp;mA: Über ihrer Durchlassspannung bleibt nichts übrig. Rot bekommt noch 2,5&nbsp;mA, leuchtet aber
+      schwach, denn volles Licht braucht 20&nbsp;mA.</li>
+    <li>Bei 2,0&nbsp;V bekommen auch <b>gelb</b> und <b>grün</b> keinen Strom mehr. Nur <b>rot</b> bekommt noch 0,4&nbsp;mA:
+      2,0 &minus; 1,8 = 0,2&nbsp;V über ihrer Durchlassspannung.</li>
+    <li>Bei 1,5&nbsp;V bekommt keine LED mehr Strom. Stellen Sie die Quelle danach wieder auf 12&nbsp;V.</li>
+  </ol>
+
+  <h2>Der richtige Widerstand für jede Farbe</h2>
+  <p>Wenn Sie genau 20&nbsp;mA wollen, berechnen Sie den Vorwiderstand für jede Farbe:</p>
+  <p class="formula">R = (U<sub>Quelle</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &nbsp;(rot)</p>
+  <p>Für blau: (12 &minus; 3,0) / 0,020 = 450&nbsp;&Omega;. Widerstände gibt es nur in festen Werten; 470&nbsp;&Omega; liegt
+  nah genug an beiden.</p>
+
+  <h2>Aufgabe: Welcher Widerstand ist zu klein?</h2>
+  <p>Über 30&nbsp;mA geht eine LED kaputt. Können Sie bei 12&nbsp;V auch 220&nbsp;&Omega; verwenden? Rechnen Sie zuerst,
+  probieren Sie es danach aus (Rechtsklick auf einen Widerstand). Eine kaputte LED ersetzen Sie mit Rechtsklick &rsaquo;
+  <b>LED ersetzen</b>.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Nein. Mit 220&nbsp;&Omega; fließen durch rot (12 &minus; 1,8) / 220 &asymp; 46&nbsp;mA und selbst durch blau
+    (12 &minus; 3,0) / 220 &asymp; 41&nbsp;mA. Alle LEDs gehen kaputt. Der Widerstand muss mindestens
+    (12 &minus; 1,8) / 0,030 = 340&nbsp;&Omega; groß sein.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Eine Knopfzelle von 3&nbsp;V lässt eine rote LED leicht leuchten, eine
+  blaue LED nur knapp. Deshalb haben Taschenlampen mit weißen LEDs (blau mit einer gelben Schicht) oft zwei oder drei Batterien.</div>
+
+  <div class="pager"><a href="les30.html">&larr; Lektion 30: Widerstände parallel</a><a href="les32.html">Lektion 32: Leistung &rarr;</a></div>

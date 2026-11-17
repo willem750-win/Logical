@@ -1,0 +1,57 @@
+<!-- titel: Leçon 31 - Les couleurs des LED -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 31 sur 32</p>
+  <h1>Les couleurs des LED</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> découvrir que chaque couleur de LED a une autre tension de seuil, et
+  calculer la bonne résistance série pour chaque couleur.</div>
+
+  <p><a class="open" href="../../panels/lessen/les31-ledkleuren.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les31.png" alt="Source de 12 V avec quatre branches en parallèle : chacune un milliampèremètre, une résistance de 470 ohms et une LED, rouge, jaune, verte et bleue">
+    <figcaption>Quatre branches, chacune avec un milliampèremètre, une résistance série de 470&nbsp;&Omega; et une LED&nbsp;: rouge, jaune, verte et bleue.</figcaption>
+  </figure>
+
+  <h2>Chaque couleur son propre seuil</h2>
+  <p>Une <a href="voeding.html#led"><img src="../img/pal-led2.png" class="ico" alt="">LED</a> ne conduit qu&rsquo;au-dessus
+  de sa tension de seuil. Celle-ci dépend de la couleur&nbsp;: la lumière bleue demande plus d&rsquo;énergie que la lumière rouge.</p>
+  <table>
+    <tr><th>Couleur</th><th>Tension de seuil</th><th>Courant à 12&nbsp;V et 470&nbsp;&Omega;</th></tr>
+    <tr><td>rouge</td><td>1,8&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>jaune</td><td>2,0&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>verte</td><td>2,2&nbsp;V</td><td>20&nbsp;mA</td></tr>
+    <tr><td>bleue</td><td>3,0&nbsp;V</td><td>19&nbsp;mA</td></tr>
+  </table>
+  <p>À 12&nbsp;V, cela compte peu&nbsp;: la résistance prend presque toute la tension, et toutes les LED brillent à peu près autant.
+  Les <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">milliampèremètres</a> le montrent&nbsp;: 21, 21, 20 et 19&nbsp;mA.</p>
+
+  <h2>Baisser la tension</h2>
+  <ol class="steps">
+    <li>Faites glisser le curseur de la <a href="voeding.html#bron"><img src="../img/pal-bron.png" class="ico" alt="">source</a>
+      vers la gauche. La source change par pas de 0,5&nbsp;V.</li>
+    <li>Réglez la source sur 3,0&nbsp;V et regardez les milliampèremètres. La LED
+      <b>bleue</b> reçoit 0&nbsp;mA&nbsp;: il ne reste rien au-dessus de son seuil. La rouge reçoit encore 2,5&nbsp;mA, mais
+      brille faiblement, car la pleine lumière demande 20&nbsp;mA.</li>
+    <li>À 2,0&nbsp;V, la <b>jaune</b> et la <b>verte</b> ne reçoivent plus de courant non plus. Seule la <b>rouge</b> reçoit
+      encore 0,4&nbsp;mA&nbsp;: 2,0 &minus; 1,8 = 0,2&nbsp;V au-dessus de son seuil.</li>
+    <li>À 1,5&nbsp;V, aucune LED ne reçoit de courant. Remettez ensuite la source sur 12&nbsp;V.</li>
+  </ol>
+
+  <h2>La bonne résistance pour chaque couleur</h2>
+  <p>Pour avoir exactement 20&nbsp;mA, on calcule la résistance série pour chaque couleur&nbsp;:</p>
+  <p class="formula">R = (U<sub>source</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &nbsp;(rouge)</p>
+  <p>Pour la bleue&nbsp;: (12 &minus; 3,0) / 0,020 = 450&nbsp;&Omega;. Les résistances n&rsquo;existent qu&rsquo;en valeurs
+  fixes&nbsp;; 470&nbsp;&Omega; est assez proche des deux.</p>
+
+  <h2>Exercice&nbsp;: quelle résistance est trop petite&nbsp;?</h2>
+  <p>Au-dessus de 30&nbsp;mA, une LED grille. Peut-on aussi utiliser 220&nbsp;&Omega; à 12&nbsp;V&nbsp;? Calculez d&rsquo;abord,
+  essayez ensuite (clic droit sur une résistance). On remplace une LED grillée avec clic droit &rsaquo; <b>Remplacer la LED</b>.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Non. Avec 220&nbsp;&Omega;, il passe (12 &minus; 1,8) / 220 &asymp; 46&nbsp;mA dans la rouge, et même
+    (12 &minus; 3,0) / 220 &asymp; 41&nbsp;mA dans la bleue. Toutes les LED grillent. La résistance doit faire au moins
+    (12 &minus; 1,8) / 0,030 = 340&nbsp;&Omega;.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> une pile bouton de 3&nbsp;V allume facilement une LED rouge, une LED bleue
+  tout juste. C&rsquo;est pourquoi les lampes de poche à LED blanches (bleues avec une couche jaune) ont souvent deux ou trois piles.</div>
+
+  <div class="pager"><a href="les30.html">&larr; Leçon 30 : Des résistances en parallèle</a><a href="les32.html">Leçon 32 : La puissance &rarr;</a></div>

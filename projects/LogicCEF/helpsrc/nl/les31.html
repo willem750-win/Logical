@@ -1,0 +1,56 @@
+<!-- titel: Les 31 - Ledkleuren -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 31 van 32</p>
+  <h1>Ledkleuren</h1>
+  <div class="goal"><strong>Doel:</strong> ontdekken dat elke kleur led een andere drempelspanning heeft, en per kleur
+  de juiste voorschakelweerstand berekenen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les31-ledkleuren.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les31.png" alt="Bron van 12 V met vier takken parallel: elk een milliampèremeter, een weerstand van 470 ohm en een led, rood, geel, groen en blauw">
+    <figcaption>Vier takken, elk met een milliampèremeter, een voorschakelweerstand van 470&nbsp;&Omega; en een led: rood, geel, groen en blauw.</figcaption>
+  </figure>
+
+  <h2>Elke kleur zijn eigen drempel</h2>
+  <p>Een <a href="voeding.html#led"><img src="../img/pal-led2.png" class="ico" alt="">led</a> geleidt pas boven haar
+  drempelspanning. Die hangt af van de kleur: blauw licht heeft meer energie nodig dan rood licht.</p>
+  <table>
+    <tr><th>Kleur</th><th>Drempelspanning</th><th>Stroom bij 12&nbsp;V en 470&nbsp;&Omega;</th></tr>
+    <tr><td>rood</td><td>1,8&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>geel</td><td>2,0&nbsp;V</td><td>21&nbsp;mA</td></tr>
+    <tr><td>groen</td><td>2,2&nbsp;V</td><td>20&nbsp;mA</td></tr>
+    <tr><td>blauw</td><td>3,0&nbsp;V</td><td>19&nbsp;mA</td></tr>
+  </table>
+  <p>Bij 12&nbsp;V maakt dat weinig uit: de weerstand neemt bijna alle spanning op, en alle leds branden ongeveer even fel.
+  De <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">milliampèremeters</a> tonen het: 21, 21, 20 en 19&nbsp;mA.</p>
+
+  <h2>De spanning omlaag</h2>
+  <ol class="steps">
+    <li>Sleep de schuifregelaar van de <a href="voeding.html#bron"><img src="../img/pal-bron.png" class="ico" alt="">bron</a>
+      naar links. De bron gaat in stappen van 0,5&nbsp;V.</li>
+    <li>Zet de bron op 3,0&nbsp;V en kijk naar de milliampèremeters. De <b>blauwe</b> led krijgt 0&nbsp;mA: er
+      blijft niets over boven haar drempel. Rood krijgt nog 2,5&nbsp;mA, maar brandt nu zwak, want vol licht vraagt 20&nbsp;mA.</li>
+    <li>Bij 2,0&nbsp;V krijgen ook <b>geel</b> en <b>groen</b> geen stroom meer. Alleen <b>rood</b> krijgt nog 0,4&nbsp;mA:
+      2,0 &minus; 1,8 = 0,2&nbsp;V boven haar drempel.</li>
+    <li>Bij 1,5&nbsp;V krijgt geen enkele led nog stroom. Zet de bron daarna terug op 12&nbsp;V.</li>
+  </ol>
+
+  <h2>De juiste weerstand per kleur</h2>
+  <p>Wil je precies 20&nbsp;mA, dan reken je per kleur de voorschakelweerstand uit:</p>
+  <p class="formula">R = (U<sub>bron</sub> &minus; U<sub>led</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &nbsp;(rood)</p>
+  <p>Voor blauw: (12 &minus; 3,0) / 0,020 = 450&nbsp;&Omega;. Weerstanden bestaan alleen in vaste waarden; 470&nbsp;&Omega;
+  ligt dicht genoeg bij allebei.</p>
+
+  <h2>Opdracht: welke weerstand is te klein?</h2>
+  <p>Boven 30&nbsp;mA gaat een led kapot. Kun je bij 12&nbsp;V ook 220&nbsp;&Omega; gebruiken? Reken eerst, probeer daarna
+  (rechtsklik op een weerstand). Een kapotte led vervang je met rechtsklik &rsaquo; <b>Led vervangen</b>.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Nee. Met 220&nbsp;&Omega; gaat er bij rood (12 &minus; 1,8) / 220 &asymp; 46&nbsp;mA door, en zelfs bij blauw
+    (12 &minus; 3,0) / 220 &asymp; 41&nbsp;mA. Alle leds gaan kapot. De weerstand moet minstens
+    (12 &minus; 1,8) / 0,030 = 340&nbsp;&Omega; zijn.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> een knoopcel van 3&nbsp;V laat een rode led makkelijk branden, een blauwe
+  led maar net. Daarom zitten in zaklampen met witte leds (blauw met een gele laag) vaak twee of drie batterijen.</div>
+
+  <div class="pager"><a href="les30.html">&larr; Les 30: Weerstanden parallel</a><a href="les32.html">Les 32: Vermogen &rarr;</a></div>

@@ -8476,7 +8476,11 @@ begin
     FillRect(R);
     Frame3D(R, clBtnShadow, clBtnHighlight, 2);
     Brush.Style := bsClear;
-    S := FormatFloat('0', FStroom * 1000);
+    // onder 10 mA één decimaal (bv. 0,4 mA bij een led net boven de drempel)
+    if FStroom < 0.00995 then
+      S := FormatFloat('0.0', FStroom * 1000)
+    else
+      S := FormatFloat('0', FStroom * 1000);
     Font.Name := 'Arial'; Font.Size := 12; Font.Style := [fsBold];
     if FStroom > 0.00005 then Font.Color := clRed else Font.Color := clGray;
     TW := TextWidth(S);

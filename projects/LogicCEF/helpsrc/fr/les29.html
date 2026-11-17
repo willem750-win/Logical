@@ -1,0 +1,47 @@
+<!-- titel: Leçon 29 - Le diviseur de tension -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 29 sur 32</p>
+  <h1>Le diviseur de tension</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir comment deux résistances en série se partagent la tension de la
+  source, et calculer ce partage vous-même.</div>
+
+  <p><a class="open" href="../../panels/lessen/les29-spanningsdeler.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les29.png" alt="Source de 12 V, interrupteur, milliampèremètre et deux résistances de 470 ohms en série, avec un voltmètre sous chaque résistance">
+    <figcaption>Source &rarr; interrupteur &rarr; milliampèremètre &rarr; R1 470&nbsp;&Omega; &rarr; R2 470&nbsp;&Omega; &rarr; retour à la source. Chaque voltmètre mesure la tension aux bornes d&rsquo;une résistance.</figcaption>
+  </figure>
+
+  <h2>Deux résistances égales</h2>
+  <p>Dans des résistances en <a href="voeding.html#serie">série</a> passe partout le même courant. La résistance totale est
+  la somme&nbsp;: 470 + 470 = 940&nbsp;&Omega;. Avec la <a href="voeding.html#ohm">loi d&rsquo;Ohm</a>&nbsp;:</p>
+  <p class="formula">I = U / R = 12&nbsp;V / 940&nbsp;&Omega; &asymp; 0,0128&nbsp;A = 12,8&nbsp;mA</p>
+  <ol class="steps">
+    <li>Allumez l&rsquo;interrupteur. Le <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">milliampèremètre</a>
+      affiche 13&nbsp;mA.</li>
+    <li>Regardez les deux <a href="voeding.html#voltmeter">voltmètres</a>&nbsp;: 6,0&nbsp;V chacun. Les résistances sont
+      égales, donc chacune reçoit la moitié des 12&nbsp;V.</li>
+    <li>Additionnez les deux tensions&nbsp;: 6,0 + 6,0 = 12,0&nbsp;V, exactement la tension de la source.</li>
+  </ol>
+
+  <h2>Deux résistances différentes</h2>
+  <ol class="steps">
+    <li>Clic droit sur R2 (à droite) et choisissez 1000&nbsp;&Omega;. Le courant baisse à 12 / 1470 &asymp; 8,2&nbsp;mA.</li>
+    <li>Les voltmètres affichent maintenant 3,8&nbsp;V aux bornes de R1 et 8,2&nbsp;V aux bornes de R2. Ensemble, toujours 12&nbsp;V.</li>
+  </ol>
+  <p>La plus grande résistance reçoit la plus grande part de la tension. La part aux bornes de R2 se calcule ainsi&nbsp;:</p>
+  <p class="formula">U<sub>2</sub> = U &times; R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>) = 12&nbsp;V &times; 1000 / 1470 &asymp; 8,2&nbsp;V</p>
+
+  <h2>Exercice&nbsp;: environ 4 volts</h2>
+  <p>Un circuit n&rsquo;a besoin que de 4&nbsp;V, mais la source donne 12&nbsp;V. Choisissez les deux résistances pour avoir
+  environ <b>4&nbsp;V aux bornes de R2</b>. Vous pouvez choisir parmi 100, 220, 470 et 1000&nbsp;&Omega;.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>4&nbsp;V est un tiers de 12&nbsp;V, donc R1 doit être deux fois plus grande que R2. Prenez R1 = 1000&nbsp;&Omega; et
+    R2 = 470&nbsp;&Omega;&nbsp;: U<sub>2</sub> = 12 &times; 470 / 1470 &asymp; 3,8&nbsp;V. R1 = 470&nbsp;&Omega; et
+    R2 = 220&nbsp;&Omega; donne aussi 12 &times; 220 / 690 &asymp; 3,8&nbsp;V, mais avec plus de courant (17&nbsp;mA au lieu de 8&nbsp;mA).</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> un bouton de volume est un diviseur de tension que l&rsquo;on peut tourner.
+  Beaucoup de capteurs fonctionnent de la même façon&nbsp;: une résistance qui change avec la lumière ou la chaleur, en
+  série avec une résistance fixe.</div>
+
+  <div class="pager"><a href="les28.html">&larr; Leçon 28 : La LED et le condensateur</a><a href="les30.html">Leçon 30 : Des résistances en parallèle &rarr;</a></div>

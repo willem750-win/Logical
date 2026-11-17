@@ -1,0 +1,47 @@
+<!-- titel: Lektion 29 - Der Spannungsteiler -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 29 von 32</p>
+  <h1>Der Spannungsteiler</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, wie zwei Widerstände in Reihe die Spannung der Quelle unter sich
+  aufteilen, und diese Aufteilung selbst ausrechnen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les29-spanningsdeler.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les29.png" alt="Quelle von 12 V, Schalter, Milliamperemeter und zwei Widerstände von 470 Ohm in Reihe, mit einem Voltmeter unter jedem Widerstand">
+    <figcaption>Quelle &rarr; Schalter &rarr; Milliamperemeter &rarr; R1 470&nbsp;&Omega; &rarr; R2 470&nbsp;&Omega; &rarr; zurück zur Quelle. Jedes Voltmeter misst die Spannung über einem Widerstand.</figcaption>
+  </figure>
+
+  <h2>Zwei gleiche Widerstände</h2>
+  <p>Durch Widerstände in <a href="voeding.html#serie">Reihe</a> fließt überall derselbe Strom. Der Gesamtwiderstand ist die
+  Summe: 470 + 470 = 940&nbsp;&Omega;. Mit dem <a href="voeding.html#ohm">ohmschen Gesetz</a>:</p>
+  <p class="formula">I = U / R = 12&nbsp;V / 940&nbsp;&Omega; &asymp; 0,0128&nbsp;A = 12,8&nbsp;mA</p>
+  <ol class="steps">
+    <li>Schalten Sie ein. Das <a href="voeding.html#ampmeter"><img src="../img/pal-ampmeter.png" class="ico" alt="">Milliamperemeter</a>
+      zeigt 13&nbsp;mA.</li>
+    <li>Schauen Sie auf die beiden <a href="voeding.html#voltmeter">Voltmeter</a>: je 6,0&nbsp;V. Die Widerstände sind
+      gleich groß, also bekommt jeder die Hälfte der 12&nbsp;V.</li>
+    <li>Zählen Sie die beiden Spannungen zusammen: 6,0 + 6,0 = 12,0&nbsp;V, genau die Spannung der Quelle.</li>
+  </ol>
+
+  <h2>Zwei verschiedene Widerstände</h2>
+  <ol class="steps">
+    <li>Klicken Sie mit der rechten Maustaste auf R2 (rechts) und wählen Sie 1000&nbsp;&Omega;. Der Strom sinkt auf
+      12 / 1470 &asymp; 8,2&nbsp;mA.</li>
+    <li>Die Voltmeter zeigen jetzt 3,8&nbsp;V über R1 und 8,2&nbsp;V über R2. Zusammen immer noch 12&nbsp;V.</li>
+  </ol>
+  <p>Der größte Widerstand bekommt den größten Teil der Spannung. Den Teil über R2 rechnen Sie so aus:</p>
+  <p class="formula">U<sub>2</sub> = U &times; R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>) = 12&nbsp;V &times; 1000 / 1470 &asymp; 8,2&nbsp;V</p>
+
+  <h2>Aufgabe: etwa 4 Volt</h2>
+  <p>Eine Schaltung braucht nur 4&nbsp;V, aber die Quelle liefert 12&nbsp;V. Wählen Sie die beiden Widerstände so, dass etwa
+  <b>4&nbsp;V über R2</b> liegen. Sie können zwischen 100, 220, 470 und 1000&nbsp;&Omega; wählen.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>4&nbsp;V ist ein Drittel von 12&nbsp;V, also muss R1 doppelt so groß sein wie R2. Nehmen Sie R1 = 1000&nbsp;&Omega; und
+    R2 = 470&nbsp;&Omega;: U<sub>2</sub> = 12 &times; 470 / 1470 &asymp; 3,8&nbsp;V. Auch R1 = 470&nbsp;&Omega; und
+    R2 = 220&nbsp;&Omega; ergibt 12 &times; 220 / 690 &asymp; 3,8&nbsp;V, aber mit mehr Strom (17&nbsp;mA statt 8&nbsp;mA).</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> ein Lautstärkeregler ist ein Spannungsteiler, den man drehen kann.
+  Viele Sensoren arbeiten genauso: ein Widerstand, der sich mit Licht oder Wärme ändert, in Reihe mit einem festen Widerstand.</div>
+
+  <div class="pager"><a href="les28.html">&larr; Lektion 28: Die LED und der Kondensator</a><a href="les30.html">Lektion 30: Widerstände parallel &rarr;</a></div>

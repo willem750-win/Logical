@@ -1,0 +1,44 @@
+<!-- titel: Les 30 - Weerstanden parallel -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 30 van 32</p>
+  <h1>Weerstanden parallel</h1>
+  <div class="goal"><strong>Doel:</strong> zien dat elke parallelle tak zijn eigen stroom trekt, dat de stromen
+  optellen, en de vervangingsweerstand van verschillende weerstanden berekenen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les30-weerstanden-parallel.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les30.png" alt="Bron van 12 V en milliampèremeter, drie takken met elk een schakelaar en een weerstand van 1000, 470 en 220 ohm">
+    <figcaption>Drie takken parallel: 1000&nbsp;&Omega;, 470&nbsp;&Omega; en 220&nbsp;&Omega;. Alle drie aan: de milliampèremeter meet 92&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Elke tak zijn eigen stroom</h2>
+  <p>In <a href="les25.html">les 25</a> zette je drie gelijke lampen parallel. Nu zijn de weerstanden verschillend. Elke tak
+  krijgt de volle 12&nbsp;V, en de wet van Ohm geeft per tak de stroom:</p>
+  <p class="formula">I = 12&nbsp;V / 1000&nbsp;&Omega; = 12&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 470&nbsp;&Omega; &asymp; 25,5&nbsp;mA &nbsp;&nbsp; I = 12&nbsp;V / 220&nbsp;&Omega; &asymp; 54,5&nbsp;mA</p>
+  <ol class="steps">
+    <li>Bij het openen staat alleen de bovenste tak aan (1000&nbsp;&Omega;). De milliampèremeter toont 12&nbsp;mA.</li>
+    <li>Zet de tweede schakelaar aan. De stroom stijgt tot 12 + 25,5 = 37,5&nbsp;mA.</li>
+    <li>Zet ook de derde aan: 12 + 25,5 + 54,5 = 92&nbsp;mA. Wijs een weerstand aan: de hint toont zijn eigen stroom.</li>
+  </ol>
+  <p>De kleinste weerstand trekt de grootste stroom. Een tak met een kleine weerstand is als een brede weg: daar gaat
+  het meeste verkeer door.</p>
+
+  <h2>De vervangingsweerstand</h2>
+  <p>Welke ene weerstand zou dezelfde 92&nbsp;mA trekken? Met de wet van Ohm: 12&nbsp;V / 0,092&nbsp;A &asymp; 130&nbsp;&Omega;.
+  Je kunt die ook rechtstreeks uitrekenen:</p>
+  <p class="formula">1 / R<sub>v</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub> + 1 / R<sub>3</sub> = 1/1000 + 1/470 + 1/220 &rArr; R<sub>v</sub> &asymp; 130&nbsp;&Omega;</p>
+  <p>Let op: de vervangingsweerstand is altijd <b>kleiner</b> dan de kleinste weerstand. Elke tak die je bijzet, opent een
+  extra weg voor de stroom.</p>
+
+  <h2>Opdracht: 80 milliampère</h2>
+  <p>Zet precies die schakelaars aan zodat de milliampèremeter <b>80&nbsp;mA</b> toont. Hoe groot is dan de
+  vervangingsweerstand?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Zet de tweede en de derde schakelaar aan, de eerste uit: 25,5 + 54,5 = 80&nbsp;mA. De vervangingsweerstand is
+    12&nbsp;V / 0,080&nbsp;A = 150&nbsp;&Omega;, kleiner dan 220&nbsp;&Omega;.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> alle toestellen in huis staan parallel op het stopcontact. Hoe meer
+  toestellen aan, hoe meer stroom er door de leiding gaat. Daarom kan de zekering in de meterkast springen.</div>
+
+  <div class="pager"><a href="les29.html">&larr; Les 29: De spanningsdeler</a><a href="les31.html">Les 31: Ledkleuren &rarr;</a></div>
