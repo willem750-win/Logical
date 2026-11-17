@@ -1655,3 +1655,18 @@ msgstr "crear vatímetro"
 
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr "Vatímetro\n\n- En serie, como un miliamperímetro.\n- Muestra la potencia P = U x I de todo lo que hay después del medidor."
+
+msgid "Potentiometer"
+msgstr "Potenciómetro"
+
+msgid "wiper at"
+msgstr "cursor al"
+
+msgid "Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.\nRight-click: choose the value."
+msgstr "Tres bornes: los extremos A y B, y el cursor L. Arrastra el cursor con el ratón.\nClic derecho: elegir el valor."
+
+msgid "create Potentiometer (three terminals)"
+msgstr "crear potenciómetro (tres bornes)"
+
+msgid "Potentiometer (three terminals)"
+msgstr "Potenciómetro (tres bornes)"

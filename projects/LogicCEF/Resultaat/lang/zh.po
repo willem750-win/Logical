@@ -1660,3 +1660,18 @@ msgstr "创建功率表"
 
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr "功率表\n\n- 像毫安表一样串联。\n- 显示表后面所有部分的功率 P = U x I。"
+
+msgid "Potentiometer"
+msgstr "电位器"
+
+msgid "wiper at"
+msgstr "滑片位于"
+
+msgid "Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.\nRight-click: choose the value."
+msgstr "三个端子：两端 A 和 B，以及滑片 L。用鼠标拖动滑片。\n右键：选择阻值。"
+
+msgid "create Potentiometer (three terminals)"
+msgstr "创建电位器（三个端子）"
+
+msgid "Potentiometer (three terminals)"
+msgstr "电位器（三个端子）"

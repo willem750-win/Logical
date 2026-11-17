@@ -1660,3 +1660,18 @@ msgstr "criar wattímetro"
 
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr "Wattímetro\n\n- Em série, como um miliamperímetro.\n- Mostra a potência P = U x I de tudo o que está depois do medidor."
+
+msgid "Potentiometer"
+msgstr "Potenciómetro"
+
+msgid "wiper at"
+msgstr "cursor a"
+
+msgid "Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.\nRight-click: choose the value."
+msgstr "Três terminais: as extremidades A e B e o cursor L. Arraste o cursor com o rato.\nClique direito: escolher o valor."
+
+msgid "create Potentiometer (three terminals)"
+msgstr "criar potenciómetro (três terminais)"
+
+msgid "Potentiometer (three terminals)"
+msgstr "Potenciómetro (três terminais)"

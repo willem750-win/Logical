@@ -1660,3 +1660,18 @@ msgstr "создать ваттметр"
 
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr "Ваттметр\n\n- Последовательно, как миллиамперметр.\n- Показывает мощность P = U x I всего, что подключено после прибора."
+
+msgid "Potentiometer"
+msgstr "Потенциометр"
+
+msgid "wiper at"
+msgstr "движок на"
+
+msgid "Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.\nRight-click: choose the value."
+msgstr "Три вывода: концы A и B и движок L. Перетащите движок мышью.\nПравый щелчок: выбрать номинал."
+
+msgid "create Potentiometer (three terminals)"
+msgstr "создать потенциометр (три вывода)"
+
+msgid "Potentiometer (three terminals)"
+msgstr "Потенциометр (три вывода)"

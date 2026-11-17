@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond: Boolean;
+    DLed2, DCond, DPot: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2106,6 +2106,7 @@ type
     procedure SetKVoltmeter2(const Value: Boolean);
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
+    procedure SetKPotmeter(const Value: Boolean);
     procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
       MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
@@ -2330,6 +2331,7 @@ type
     property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
+    property KPotmeter: Boolean read FPotK write SetKPotmeter default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2351,6 +2353,7 @@ type
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
+    property HPotmeter: string read FHPot write FHPot;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -3131,7 +3134,7 @@ end;
     procedure SetTaal(const Value: string);
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
   protected
-    FPinV: array[0..1] of Double;  // spanning op de klemmen t.o.v. de - klem van de bron (UpdateSupply)
+    FPinV: array[0..2] of Double;  // spanning op de klemmen t.o.v. de - klem van de bron (UpdateSupply; hoogstens 3 klemmen)
     FAmp: Double;                  // stroom van klem 0 naar klem 1, in A (UpdateSupply)
   private
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -3260,6 +3263,44 @@ end;
     function Watt: Double;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
+  end;
+
+  { TjanPotmeter: potentiometer met drie klemmen. Pin 0 = uiteinde A (links),
+    pin 1 = uiteinde B (rechts), pin 2 = loper L (onderaan). Tussen A en B
+    staat de hele weerstand; de loper verdeelt die in R(A-L) = R x stand en
+    R(L-B) = R x (1 - stand). Sleep de loper met de muis (0 tot 100 %);
+    rechtsklik: waarde kiezen (zie PotOhm). }
+  TjanPotmeter = class(TjanVoedingsDeel)
+  private
+    FSoort: Integer;       // index in PotOhm
+    FProcent: Integer;     // stand van de loper, 0 (bij A) tot 100 (bij B)
+    FIa, FIb: Double;      // stroom van A naar de loper en van de loper naar B (A)
+    FSliding: Boolean;
+    procedure SetSoort(const Value: Integer);
+    procedure SetProcent(const Value: Integer);
+    procedure SoortClick(Sender: TObject);
+    function SliderRect: TRect;
+    procedure SlideTo(X: Integer);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function HandleClick(X, Y: Integer): Boolean; override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double;        // hele weerstand A-B
+    function OhmAL: Double;      // A tot de loper
+    function OhmLB: Double;      // de loper tot B
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property StroomAL: Double read FIa;
+    property StroomLB: Double read FIb;
+  published
+    property Soort: Integer read FSoort write SetSoort;
+    property Procent: Integer read FProcent write SetProcent;
   end;
 
   { TjanWeerstand: weerstand of contact in de voedingsleiding. Er staat een
@@ -6936,6 +6977,10 @@ const
   CondUF: array[0..4] of Double = (100, 470, 1000, 2200, 4700);
   CondStandaard = 2;      // 1000 uF
   CondW = 64; CondH = 58;   // twee regels tekst onder het symbool
+  // potentiometer: hele weerstand in ohm
+  PotOhm: array[0..3] of Double = (470, 1000, 4700, 10000);
+  PotStandaard = 1;       // 1 kohm
+  PotW = 120; PotH = 64;
 
 var
   // tijdstap van de voedingskring voor de condensatoren (s), en of deze
@@ -7189,7 +7234,8 @@ var
   Iv, V: array of Double;           // bronstromen, knooppuntspanningen
   CompGnd: array of Integer;        // massa per samenhangend deel
   NewVolt: array of Double;
-  i, k, j, N, NP, NR, A, B, Ronde, PlusR, Mass: Integer;
+  PinBase: array of Integer;        // eerste klem van onderdeel k in Ouder/NodeOf
+  i, k, j, N, NP, NR, NK, A, B, Ronde, PlusR, Mass: Integer;
   C: TControl;
   Con: TjanConnector;
   Pa, Pb: TPoint;
@@ -7237,12 +7283,12 @@ var
     for q := 0 to NP - 1 do
     begin
       pn := Parts[q].PinAt(Pt);
-      if pn >= 0 then Exit(2 * q + pn);
+      if pn >= 0 then Exit(PinBase[q] + pn);
     end;
     R := RailAtPoint(P, Pt);
     if R <> nil then
       for q := 0 to NR - 1 do
-        if Rails[q] = R then Exit(2 * NP + q);
+        if Rails[q] = R then Exit(NK + q);
     Result := -1;
   end;
 
@@ -7265,7 +7311,7 @@ var
 
   function PinNode(Q, K: Integer): Integer;
   begin
-    Result := NodeOf[2 * Q + K];
+    Result := NodeOf[PinBase[Q] + K];
   end;
 
   // Gauss-eliminatie met spilkeuze: Gm * V = Iv
@@ -7371,8 +7417,16 @@ begin
       G := G + LoadAmps12(C) / BronMaxVolt;
   end;
 
-  // knooppunten: klemmen (2 per onderdeel) en rails, samengevoegd door draden
-  SetLength(Ouder, 2 * NP + NR);
+  // knooppunten: klemmen (PinCount per onderdeel) en rails, samengevoegd door draden
+  SetLength(PinBase, NP + 1);
+  NK := 0;
+  for k := 0 to NP - 1 do
+  begin
+    PinBase[k] := NK;
+    NK := NK + Parts[k].PinCount;
+  end;
+  PinBase[NP] := NK;
+  SetLength(Ouder, NK + NR);
   for i := 0 to High(Ouder) do Ouder[i] := i;
   for i := 0 to P.ControlCount - 1 do
     if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
@@ -7405,14 +7459,14 @@ begin
     begin
       if PlusR < 0 then
       begin
-        PlusR := NodeOf[2 * NP + k];
-        LoadItA := 2 * NP + k;
+        PlusR := NodeOf[NK + k];
+        LoadItA := NK + k;
       end;
     end
     else if Mass < 0 then
     begin
-      Mass := NodeOf[2 * NP + k];
-      LoadItB := 2 * NP + k;
+      Mass := NodeOf[NK + k];
+      LoadItB := NK + k;
     end;
 
   SetLength(V, N);
@@ -7446,6 +7500,12 @@ begin
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / RKlein, Parts[k])
       else if Parts[k] is TjanWeerstand then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanWeerstand(Parts[k]).Ohm, Parts[k])
+      else if Parts[k] is TjanPotmeter then
+      begin
+        // twee weerstanden: A tot de loper en de loper tot B
+        AddTak(PinNode(k, 0), PinNode(k, 2), 1 / NietNul(TjanPotmeter(Parts[k]).OhmAL), Parts[k]);
+        AddTak(PinNode(k, 2), PinNode(k, 1), 1 / NietNul(TjanPotmeter(Parts[k]).OhmLB), Parts[k]);
+      end
       else if Parts[k] is TjanLamp2 then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanLamp2(Parts[k]).Ohm, Parts[k])
       else if Parts[k] is TjanSchakelaar2 then
@@ -7468,7 +7528,7 @@ begin
         if (Parts[k] is TjanBron) and (Find(PinNode(k, 0)) = Find(PlusR)) then
         begin
           j := PinNode(k, 1);
-          if Mass < 0 then LoadItB := 2 * k + 1;
+          if Mass < 0 then LoadItB := PinBase[k] + 1;
           Break;
         end;
     LoadG := 0;
@@ -7562,8 +7622,8 @@ begin
   // resultaten: klemspanningen en stromen van de onderdelen
   for k := 0 to NP - 1 do
   begin
-    for j := 0 to 1 do
-      if j < Parts[k].PinCount then
+    for j := 0 to Parts[k].PinCount - 1 do
+      if j <= High(Parts[k].FPinV) then
         SetPinV(Parts[k], j, V[PinNode(k, j)]);
     A := PinNode(k, 0); B := PinNode(k, 1);
     U := V[A] - V[B];
@@ -7587,6 +7647,19 @@ begin
       SetStroom(Parts[k], U / RKlein)
     else if Parts[k] is TjanWeerstand then
       SetStroom(Parts[k], U / TjanWeerstand(Parts[k]).Ohm)
+    else if Parts[k] is TjanPotmeter then
+      with TjanPotmeter(Parts[k]) do
+      begin
+        Amp := (V[PinNode(k, 0)] - V[PinNode(k, 2)]) / NietNul(OhmAL);
+        Hulp := (V[PinNode(k, 2)] - V[PinNode(k, 1)]) / NietNul(OhmLB);
+        if (Abs(FIa - Amp) > 0.00005) or (Abs(FIb - Hulp) > 0.00005) then
+        begin
+          FIa := Amp;
+          FIb := Hulp;
+          if AInval then Invalidate;
+        end;
+        SetStroom(Parts[k], Amp);
+      end
     else if Parts[k] is TjanLamp2 then
       SetStroom(Parts[k], U / TjanLamp2(Parts[k]).Ohm)
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Aan then
@@ -7620,7 +7693,7 @@ begin
   begin
     NewVolt[k] := 0;
     if not Rails[k].Plus then Continue;
-    i := NodeOf[2 * NP + k];
+    i := NodeOf[NK + k];
     if Mass >= 0 then Hulp := V[Mass] else Hulp := 0;
     U := V[i] - Hulp;
     if U < 0.0005 then U := 0;
@@ -7650,7 +7723,7 @@ begin
   Toon := False;
   for k := 0 to NP - 1 do
     if (Parts[k] is TjanBron) and TjanBron(Parts[k]).Elektronen then Toon := True;
-  NI := 2 * NP + NR;
+  NI := NK + NR;
   SetLength(Draad, 0); SetLength(DrA, 0); SetLength(DrB, 0);
   ND := 0;
   for i := 0 to P.ControlCount - 1 do
@@ -7687,8 +7760,16 @@ begin
   for k := 0 to NP - 1 do
   begin
     if Parts[k] is TjanBron then Amp := -TjanBron(Parts[k]).FStroom else Amp := Parts[k].FAmp;
-    Vraag[2 * k] := Amp;
-    Vraag[2 * k + 1] := -Amp;
+    Vraag[PinBase[k]] := Amp;
+    Vraag[PinBase[k] + 1] := -Amp;
+    if Parts[k] is TjanPotmeter then
+      with TjanPotmeter(Parts[k]) do
+      begin
+        // A neemt FIa uit de draden, B geeft FIb terug, de loper het verschil
+        Vraag[PinBase[k]] := FIa;
+        Vraag[PinBase[k] + 1] := -FIb;
+        Vraag[PinBase[k] + 2] := FIb - FIa;
+      end;
   end;
   if (LoadG > 0) and (LoadItA >= 0) and (LoadItB >= 0) then
   begin
@@ -7765,7 +7846,7 @@ end;
 // spanning op klem APin van voedingsonderdeel D (voor een draad die daar begint)
 function VoedingsPinVolt(D: TjanVoedingsDeel; APin: Integer): Double;
 begin
-  if (APin >= 0) and (APin <= 1) then
+  if (APin >= 0) and (APin <= High(D.FPinV)) and (APin < D.PinCount) then
     Result := D.FPinV[APin]
   else
     Result := 0;
@@ -7799,6 +7880,9 @@ begin
       TjanCondensator(C).Soort])
   else if C is TjanWattMeter then
     Result := Format('TjanWattMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanPotmeter then
+    Result := Format('TjanPotmeter;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanPotmeter(C).Soort, TjanPotmeter(C).Procent])
   else
     Result := Format('TjanAmpMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width]);
 end;
@@ -8774,6 +8858,231 @@ begin
   FOnStatus(Self, Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand') + ' > ', 0);
   FOnStatus(Self, WeerstandNaam(FTaal, FSoort) + ' ' + OhmText(Ohm) + '   I = ' +
     FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanPotmeter }
+
+constructor TjanPotmeter.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := PotW;
+  Height := PotH;
+  FSoort := PotStandaard;
+  FProcent := 50;
+  HelpKeyword := 'potmeter';
+end;
+
+function TjanPotmeter.PinCount: Integer;
+begin
+  Result := 3;
+end;
+
+// A links en B rechts op de hoogte van het symbool, de loper onderaan in het midden
+function TjanPotmeter.PinPos(I: Integer): TPoint;
+begin
+  case I of
+    0: Result := Point(1, 17);
+    1: Result := Point(PotW - 8, 17);
+  else
+    Result := Point(PotW div 2 - 3, PotH - 8);
+  end;
+end;
+
+function TjanPotmeter.Ohm: Double;
+begin
+  Result := PotOhm[FSoort];
+end;
+
+function TjanPotmeter.OhmAL: Double;
+begin
+  Result := Ohm * FProcent / 100;
+end;
+
+function TjanPotmeter.OhmLB: Double;
+begin
+  Result := Ohm * (100 - FProcent) / 100;
+end;
+
+procedure TjanPotmeter.SetSoort(const Value: Integer);
+begin
+  if (Value < Low(PotOhm)) or (Value > High(PotOhm)) or (Value = FSoort) then Exit;
+  FSoort := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanPotmeter.SetProcent(const Value: Integer);
+var
+  V: Integer;
+begin
+  V := Value;
+  if V < 0 then V := 0;
+  if V > 100 then V := 100;
+  if V = FProcent then Exit;
+  FProcent := V;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanPotmeter.SoortClick(Sender: TObject);
+begin
+  Soort := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanPotmeter.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Waarde', 'Value', 'Valeur', 'Wert');
+  APop.Items.Add(Mi);
+  for i := Low(PotOhm) to High(PotOhm) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := OhmText(PotOhm[i]);
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FSoort;
+    Sub.OnClick := SoortClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+// de baan waarover de loper schuift (onder het symbool)
+function TjanPotmeter.SliderRect: TRect;
+begin
+  Result := Rect(22, 30, PotW - 22, 44);
+end;
+
+procedure TjanPotmeter.SlideTo(X: Integer);
+var
+  R: TRect;
+begin
+  R := SliderRect;
+  Procent := Round((X - R.Left) / (R.Right - R.Left) * 100);
+end;
+
+function TjanPotmeter.HandleClick(X, Y: Integer): Boolean;
+var
+  R: TRect;
+begin
+  R := SliderRect;
+  InflateRect(R, 4, 2);
+  Result := PtInRect(R, Point(X, Y));
+  if Result then
+  begin
+    FSliding := True;
+    SlideTo(X);
+  end;
+end;
+
+procedure TjanPotmeter.MouseMove(Shift: TShiftState; X, Y: Integer);
+begin
+  if FSliding then
+  begin
+    if ssLeft in Shift then SlideTo(X) else FSliding := False;
+    Exit;
+  end;
+  inherited MouseMove(Shift, X, Y);
+end;
+
+procedure TjanPotmeter.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  FSliding := False;
+  inherited MouseUp(Button, Shift, X, Y);
+end;
+
+procedure TjanPotmeter.Paint;
+var
+  R: TRect;
+  S: string;
+  CY, TW, XL, PX, YB: Integer;
+begin
+  CY := PinPos(0).Y + 3;
+  R := SliderRect;
+  XL := R.Left + Round((R.Right - R.Left) * FProcent / 100);   // x van de loper
+  PX := PinPos(2).X + 3;                                         // x van de loperklem
+  YB := 37;                                                      // hoogte van de schuifbaan
+  with Canvas do
+  begin
+    // aansluitdraadjes naar A en B
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(PinPos(0).X + 7, CY); LineTo(22, CY);
+    MoveTo(PotW - 22, CY); LineTo(PinPos(1).X, CY);
+    Pen.Width := 1;
+    // het weerstandsblokje: A-L en L-B in een eigen tint
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(255, 200, 150);
+    FillRect(Rect(22, CY - 7, XL, CY + 8));
+    Brush.Color := RGBToColor(255, 228, 200);
+    FillRect(Rect(XL, CY - 7, PotW - 22, CY + 8));
+    Brush.Style := bsClear;
+    Rectangle(Rect(22, CY - 7, PotW - 22, CY + 8));
+    // waarde en stand bovenaan
+    Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
+    S := OhmText(Ohm) + '   ' + IntToStr(FProcent) + ' %';
+    TW := TextWidth(S);
+    TextOut((PotW - TW) div 2, 0, S);
+    Font.Size := 6; Font.Style := [fsBold];
+    TextOut(10, CY + 6, 'A');
+    TextOut(PotW - 16, CY + 6, 'B');
+    TextOut(PX + 6, PotH - 16, 'L');
+    // schuifbaan (grijze gleuf) met de loper: een pijl die op het blokje drukt
+    Brush.Style := bsSolid; Brush.Color := RGBToColor(200, 200, 200);
+    Pen.Color := clGray;
+    RoundRect(R.Left - 2, YB - 2, R.Right + 3, YB + 3, 4, 4);
+    // de loperdraad: van de klem L naar de schuifknop
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(PX, PinPos(2).Y + 1); LineTo(PX, YB + 9);
+    LineTo(XL, YB + 9); LineTo(XL, YB + 5);
+    // de pijl van de schuifknop naar het blokje
+    MoveTo(XL, YB - 6); LineTo(XL, CY + 12);
+    Pen.Width := 1;
+    Brush.Color := clBlack;
+    Polygon([Point(XL - 4, CY + 13), Point(XL + 4, CY + 13), Point(XL, CY + 8)]);
+    // de schuifknop zelf
+    Brush.Color := RGBToColor(40, 80, 160);
+    Pen.Color := RGBToColor(20, 40, 90);
+    Rectangle(Rect(XL - 5, YB - 5, XL + 6, YB + 6));
+    Pen.Color := clBlack;
+    Brush.Style := bsClear;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+    PaintPin(PinPos(2).X, PinPos(2).Y, FPinV[2] >= RailMinVolt);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanPotmeter.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Potentiometer', 'Potentiometer', 'Potentiomètre', 'Potentiometer') + ': ' +
+    OhmText(Ohm) + ', ' + Tr(FTaal, 'loper op', 'wiper at', 'curseur à', 'Schleifer bei') + ' ' +
+    IntToStr(FProcent) + ' %' + #13#10 +
+    'A-L: ' + OhmText(OhmAL) + '   U = ' + VoltText(FPinV[0] - FPinV[2]) + '   I = ' + MilliAmpText(Abs(FIa)) + #13#10 +
+    'L-B: ' + OhmText(OhmLB) + '   U = ' + VoltText(FPinV[2] - FPinV[1]) + '   I = ' + MilliAmpText(Abs(FIb)) + #13#10 +
+    Tr(FTaal,
+      'Drie klemmen: de uiteinden A en B, en de loper L. Sleep de loper met de muis.' + #13#10 +
+        'Rechtsklik: waarde kiezen.',
+      'Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.' + #13#10 +
+        'Right-click: choose the value.',
+      'Trois bornes : les extrémités A et B, et le curseur L. Faites glisser le curseur avec la souris.' + #13#10 +
+        'Clic droit : choisir la valeur.',
+      'Drei Klemmen: die Enden A und B und der Schleifer L. Ziehen Sie den Schleifer mit der Maus.' + #13#10 +
+        'Rechtsklick: Wert wählen.');
+end;
+
+procedure TjanPotmeter.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Potentiometer', 'Potentiometer', 'Potentiomètre', 'Potentiometer') + ' > ', 0);
+  FOnStatus(Self, OhmText(Ohm) + '   ' + IntToStr(FProcent) + ' %   A-L ' + OhmText(OhmAL) +
+    '   L-B ' + OhmText(OhmLB), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
 
@@ -22855,11 +23164,12 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
   FHWattMeter:='maak Wattmeter';
+  FHPot:='maak Potentiometer (drie klemmen)';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -23949,7 +24259,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') then
     begin
       with TStringList.Create do
       try
@@ -23967,6 +24277,7 @@ begin
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
           else if obj[1] = 'TjanWattMeter' then VD := TjanWattMeter.Create(Self)
+          else if obj[1] = 'TjanPotmeter' then VD := TjanPotmeter.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -23995,7 +24306,13 @@ begin
               TjanLed2(VD).Doorgebrand := Trim(Strings[5]) = '1';
           end
           else if (VD is TjanCondensator) and (Count >= 5) then
-            TjanCondensator(VD).Soort := StrToIntDef(Trim(Strings[4]), CondStandaard);
+            TjanCondensator(VD).Soort := StrToIntDef(Trim(Strings[4]), CondStandaard)
+          else if (VD is TjanPotmeter) and (Count >= 5) then
+          begin
+            TjanPotmeter(VD).Soort := StrToIntDef(Trim(Strings[4]), PotStandaard);
+            if Count >= 6 then
+              TjanPotmeter(VD).Procent := StrToIntDef(Trim(Strings[5]), 50);
+          end;
         end;
       finally
         Free;
@@ -24830,6 +25147,7 @@ begin
     7: D := TjanLed2.Create(Self);
     8: D := TjanCondensator.Create(Self);
     9: D := TjanWattMeter.Create(Self);
+    10: D := TjanPotmeter.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -25068,6 +25386,20 @@ begin
           Brush.Style := bsSolid; Brush.Color := clBlack;
           FillRect(Rect(CX - 3, CY - 6, CX - 1, CY + 7));
           FillRect(Rect(CX + 2, CY - 6, CX + 4, CY + 7));
+        end;
+      10:
+        begin
+          // potentiometer: weerstand met een pijl (de loper) van onderen
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(255, 200, 150);
+          FillRect(Rect(CX - 6, CY - 5, CX + 7, CY + 1));
+          Brush.Style := bsClear;
+          Rectangle(Rect(CX - 6, CY - 5, CX + 7, CY + 1));
+          MoveTo(R.Left + 2, CY - 2); LineTo(CX - 6, CY - 2);
+          MoveTo(CX + 7, CY - 2); LineTo(R.Right - 2, CY - 2);
+          MoveTo(CX, CY + 7); LineTo(CX, CY + 2);
+          Brush.Style := bsSolid; Brush.Color := clBlack;
+          Polygon([Point(CX - 2, CY + 4), Point(CX + 3, CY + 4), Point(CX, CY + 1)]);
         end;
       6:
         begin
@@ -25554,7 +25886,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -25600,6 +25932,7 @@ begin
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
+  else if PtInRect(RPot, P) then DPot := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -25658,6 +25991,7 @@ begin
   else if PtInRect(RVolt2, P) then NewHint := FHVolt2
   else if PtInRect(RLed2, P) then NewHint := FHLed2
   else if PtInRect(RCond, P) then NewHint := FHCond
+  else if PtInRect(RPot, P) then NewHint := FHPot
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -26067,7 +26401,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False;
 
     // nieuw
     DSquare := False;
@@ -26331,6 +26665,8 @@ begin
     NewVoedingsDeel(7)
   else if DCond then
     NewVoedingsDeel(8)
+  else if DPot then
+    NewVoedingsDeel(10)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -26920,6 +27256,7 @@ if FBoxTaal=stDutch then
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
+  HPotmeter:='maak Potentiometer (drie klemmen)';
  end;
 
 if FBoxTaal=stEnglish then
@@ -26968,6 +27305,7 @@ if FBoxTaal=stEnglish then
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
+  HPotmeter:=LangTr('create Potentiometer (three terminals)');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -27014,6 +27352,7 @@ if FBoxTaal=stFrench then
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
+  HPotmeter:='faire Potentiomètre (trois bornes)';
  end;
 
  if FBoxTaal=stGerman then
@@ -27061,6 +27400,7 @@ if FBoxTaal=stFrench then
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
+  HPotmeter:='Potentiometer erstellen (drei Klemmen)';
   end;
   invalidate;
  // willy
@@ -27140,6 +27480,9 @@ begin SetVoedingKnop(FLed2K, Value); end;
 procedure TjanSimLogicBox.SetKCondensator(const Value: Boolean);
 begin SetVoedingKnop(FCondK, Value); end;
 
+procedure TjanSimLogicBox.SetKPotmeter(const Value: Boolean);
+begin SetVoedingKnop(FPotK, Value); end;
+
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
@@ -27196,6 +27539,7 @@ begin
   RVolt2 := Rect(0, 0, 0, 0);
   RLed2 := Rect(0, 0, 0, 0);
   RCond := Rect(0, 0, 0, 0);
+  RPot := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -27209,6 +27553,7 @@ begin
   if FBronK then Knop(RBron, 0, DBron);
   if FZekeringK then Knop(RZekering, 1, DZekering);
   if FWeerstandK then Knop(RWeerstand, 3, DWeerstand);
+  if FPotK then Knop(RPot, 10, DPot);
   if FLamp2K then Knop(RLamp2, 4, DLamp2);
   if FLed2K then Knop(RLed2, 7, DLed2);
   if FCondK then Knop(RCond, 8, DCond);

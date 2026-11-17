@@ -1,0 +1,54 @@
+<!-- titel: Lektion 33 - Das Potentiometer -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 33 von 33</p>
+  <h1>Das Potentiometer</h1>
+  <div class="goal"><strong>Ziel:</strong> mit einem Potentiometer eine Spannung einstellen, sehen, dass eine Last diese
+  Spannung sinken lässt, und damit eine LED dimmen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les33-potentiometer.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les33.png" alt="Quelle von 12 V mit einem Potentiometer von 1000 Ohm: A an Plus, B an Minus; ein Voltmeter am Schleifer und ein Zweig mit Schalter, Widerstand von 470 Ohm und roter LED vom Schleifer nach Minus">
+    <figcaption>A an +, B an &minus;. Das Voltmeter misst die Spannung am Schleifer L. Unten ein Zweig vom Schleifer nach &minus;: Schalter, 470&nbsp;&Omega; und eine rote LED.</figcaption>
+  </figure>
+
+  <h2>Eine Spannung einstellen</h2>
+  <p>Ein <a href="voeding.html#potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">Potentiometer</a> ist ein
+  <a href="les29.html">Spannungsteiler</a> in einem Bauteil. Zwischen A und B liegen die ganzen 1000&nbsp;&Omega;. Der
+  Schleifer L teilt sie in zwei Teile. Steht der Schleifer auf 30&nbsp;%, ist R(A&ndash;L) = 300&nbsp;&Omega; und
+  R(L&ndash;B) = 700&nbsp;&Omega;. Zeigen Sie auf das Potentiometer: Der Hinweis zeigt beide Teile.</p>
+  <p>Solange am Schleifer nichts hängt, ist die Spannung am Schleifer:</p>
+  <p class="formula">U<sub>L</sub> = 12&nbsp;V &times; (100&nbsp;% &minus; Stellung)</p>
+  <ol class="steps">
+    <li>Lassen Sie den Schalter offen. Bei 50&nbsp;% zeigt das Voltmeter 6,0&nbsp;V.</li>
+    <li>Ziehen Sie den blauen Schieber nach links. Bei 25&nbsp;% sind es 9,0&nbsp;V, bei 0&nbsp;% (der Schleifer an A) die vollen 12&nbsp;V.</li>
+    <li>Ziehen Sie ihn nach rechts: Bei 100&nbsp;% steht der Schleifer an B, und es sind 0&nbsp;V.</li>
+  </ol>
+
+  <h2>Eine Last lässt die Spannung sinken</h2>
+  <ol class="steps">
+    <li>Stellen Sie den Schieber wieder auf 50&nbsp;% und schalten Sie ein. Das Voltmeter sinkt von 6,0 auf 4,6&nbsp;V.</li>
+    <li>Der Zweig mit der LED liegt jetzt parallel zum Teil L&ndash;B. Dadurch wird der Widerstand unter dem Schleifer
+      kleiner, und der Teil A&ndash;L bekommt einen größeren Anteil der Spannung.</li>
+  </ol>
+  <p>Ein Spannungsteiler liefert die berechnete Spannung also nur, solange man ihm kaum Strom entnimmt.</p>
+
+  <h2>Eine LED dimmen</h2>
+  <ol class="steps">
+    <li>Lassen Sie den Schalter an und ziehen Sie den Schleifer langsam nach links. Die LED leuchtet heller.</li>
+    <li>Bei 0&nbsp;% liegen die vollen 12&nbsp;V am Schleifer, und die LED bekommt 21&nbsp;mA: volles Licht. Zeigen Sie auf die LED, um es zu sehen.</li>
+    <li>Der Widerstand von 470&nbsp;&Omega; bleibt nötig: Ohne ihn flösse bei 0&nbsp;% viel zu viel Strom durch die LED.</li>
+  </ol>
+
+  <h2>Aufgabe: Wann geht die LED an?</h2>
+  <p>Eine rote LED leitet erst über 1,8&nbsp;V. Bei welcher Stellung des Schleifers beginnt sie zu leuchten? Rechnen Sie
+  zuerst mit der Formel oben, probieren Sie es danach mit eingeschaltetem Schalter aus.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>12&nbsp;V &times; (100&nbsp;% &minus; Stellung) = 1,8&nbsp;V ergibt 100&nbsp;% &minus; Stellung = 15&nbsp;%, also Stellung = 85&nbsp;%.
+    Bei 85&nbsp;% liegen genau 1,8&nbsp;V am Schleifer, und die LED leitet noch nicht. Bei 84&nbsp;% beginnt sie, mit einem sehr
+    kleinen Strom von 0,2&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Der Lautstärkeregler eines Radios, der Dimmer einer Lampe und der
+  Joystick einer Spielkonsole sind Potentiometer. Ein Joystick hat zwei: eines für links&ndash;rechts und eines für vor&ndash;zurück.</div>
+
+  <div class="pager"><a href="les32.html">&larr; Lektion 32: Leistung</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

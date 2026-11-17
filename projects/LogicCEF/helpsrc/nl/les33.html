@@ -1,0 +1,54 @@
+<!-- titel: Les 33 - De potentiometer -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 33 van 33</p>
+  <h1>De potentiometer</h1>
+  <div class="goal"><strong>Doel:</strong> met een potentiometer een spanning instellen, zien dat een belasting die
+  spanning laat zakken, en er een led mee dimmen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les33-potentiometer.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les33.png" alt="Bron van 12 V met een potentiometer van 1000 ohm: A aan de plus, B aan de min; een voltmeter op de loper en een tak met schakelaar, weerstand van 470 ohm en rode led van de loper naar de min">
+    <figcaption>A aan de +, B aan de &minus;. De voltmeter meet de spanning op de loper L. Onderaan een tak van de loper naar de &minus;: schakelaar, 470&nbsp;&Omega; en een rode led.</figcaption>
+  </figure>
+
+  <h2>Een spanning instellen</h2>
+  <p>Een <a href="voeding.html#potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">potentiometer</a> is een
+  <a href="les29.html">spanningsdeler</a> in één onderdeel. Tussen A en B staat de hele weerstand van 1000&nbsp;&Omega;.
+  De loper L verdeelt die in twee stukken. Staat de loper op 30&nbsp;%, dan is R(A&ndash;L) = 300&nbsp;&Omega; en
+  R(L&ndash;B) = 700&nbsp;&Omega;. Wijs de potentiometer aan: de hint toont beide stukken.</p>
+  <p>Zolang er niets aan de loper hangt, is de spanning op de loper:</p>
+  <p class="formula">U<sub>L</sub> = 12&nbsp;V &times; (100&nbsp;% &minus; stand)</p>
+  <ol class="steps">
+    <li>Laat de schakelaar open. Bij 50&nbsp;% toont de voltmeter 6,0&nbsp;V.</li>
+    <li>Sleep de blauwe schuifknop naar links. Bij 25&nbsp;% is het 9,0&nbsp;V, bij 0&nbsp;% (de loper tegen A) de volle 12&nbsp;V.</li>
+    <li>Sleep naar rechts: bij 100&nbsp;% staat de loper tegen B en is het 0&nbsp;V.</li>
+  </ol>
+
+  <h2>Een belasting laat de spanning zakken</h2>
+  <ol class="steps">
+    <li>Zet de schuifknop terug op 50&nbsp;% en zet de schakelaar aan. De voltmeter zakt van 6,0 naar 4,6&nbsp;V.</li>
+    <li>De tak met de led staat nu parallel aan het stuk L&ndash;B. Daardoor wordt de weerstand onder de loper kleiner, en
+      krijgt het stuk A&ndash;L een groter deel van de spanning.</li>
+  </ol>
+  <p>Een spanningsdeler geeft dus alleen de berekende spanning zolang je er bijna geen stroom uit neemt.</p>
+
+  <h2>Een led dimmen</h2>
+  <ol class="steps">
+    <li>Laat de schakelaar aan en sleep de loper langzaam naar links. De led brandt feller.</li>
+    <li>Bij 0&nbsp;% staat de volle 12&nbsp;V op de loper en krijgt de led 21&nbsp;mA: vol licht. Wijs de led aan om het te zien.</li>
+    <li>De weerstand van 470&nbsp;&Omega; blijft nodig: zonder hem zou bij 0&nbsp;% veel te veel stroom door de led gaan.</li>
+  </ol>
+
+  <h2>Opdracht: wanneer gaat de led aan?</h2>
+  <p>Een rode led geleidt pas boven 1,8&nbsp;V. Bij welke stand van de loper begint ze te branden? Reken eerst met de
+  formule hierboven, probeer daarna met de schakelaar aan.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>12&nbsp;V &times; (100&nbsp;% &minus; stand) = 1,8&nbsp;V geeft 100&nbsp;% &minus; stand = 15&nbsp;%, dus stand = 85&nbsp;%.
+    Bij 85&nbsp;% staat er precies 1,8&nbsp;V op de loper en geleidt de led nog niet. Bij 84&nbsp;% begint ze, met een heel kleine
+    stroom van 0,2&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> de volumeknop van een radio, de dimmer van een lamp en de stuurknuppel van
+  een spelcomputer zijn potentiometers. Een stuurknuppel heeft er twee: een voor links&ndash;rechts en een voor voor&ndash;achter.</div>
+
+  <div class="pager"><a href="les32.html">&larr; Les 32: Vermogen</a><a href="leerpad.html">Leerpad &rarr;</a></div>

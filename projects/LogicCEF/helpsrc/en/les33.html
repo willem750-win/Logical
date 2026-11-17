@@ -1,0 +1,54 @@
+<!-- titel: Lesson 33 - The potentiometer -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 33 of 33</p>
+  <h1>The potentiometer</h1>
+  <div class="goal"><strong>Goal:</strong> set a voltage with a potentiometer, see that a load makes that voltage drop,
+  and dim an LED with it.</div>
+
+  <p><a class="open" href="../../panels/lessen/les33-potentiometer.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les33.png" alt="12 V source with a 1000 ohm potentiometer: A to plus, B to minus; a voltmeter on the wiper and a branch with switch, 470 ohm resistor and red LED from the wiper to minus">
+    <figcaption>A to +, B to &minus;. The voltmeter measures the voltage on the wiper L. At the bottom a branch from the wiper to &minus;: switch, 470&nbsp;&Omega; and a red LED.</figcaption>
+  </figure>
+
+  <h2>Setting a voltage</h2>
+  <p>A <a href="voeding.html#potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">potentiometer</a> is a
+  <a href="les29.html">voltage divider</a> in one part. The whole 1000&nbsp;&Omega; is between A and B. The wiper L splits it
+  into two parts. With the wiper at 30&nbsp;%, R(A&ndash;L) = 300&nbsp;&Omega; and R(L&ndash;B) = 700&nbsp;&Omega;. Point at the
+  potentiometer: the hint shows both parts.</p>
+  <p>As long as nothing is connected to the wiper, the voltage on the wiper is:</p>
+  <p class="formula">U<sub>L</sub> = 12&nbsp;V &times; (100&nbsp;% &minus; position)</p>
+  <ol class="steps">
+    <li>Leave the switch open. At 50&nbsp;% the voltmeter shows 6.0&nbsp;V.</li>
+    <li>Drag the blue slider to the left. At 25&nbsp;% it is 9.0&nbsp;V, at 0&nbsp;% (the wiper against A) the full 12&nbsp;V.</li>
+    <li>Drag it to the right: at 100&nbsp;% the wiper is against B and it is 0&nbsp;V.</li>
+  </ol>
+
+  <h2>A load makes the voltage drop</h2>
+  <ol class="steps">
+    <li>Set the slider back to 50&nbsp;% and switch on. The voltmeter drops from 6.0 to 4.6&nbsp;V.</li>
+    <li>The branch with the LED is now in parallel with the part L&ndash;B. That makes the resistance below the wiper
+      smaller, so the part A&ndash;L gets a bigger share of the voltage.</li>
+  </ol>
+  <p>So a voltage divider only gives the calculated voltage as long as you draw hardly any current from it.</p>
+
+  <h2>Dimming an LED</h2>
+  <ol class="steps">
+    <li>Keep the switch on and slowly drag the wiper to the left. The LED gets brighter.</li>
+    <li>At 0&nbsp;% the full 12&nbsp;V is on the wiper and the LED gets 21&nbsp;mA: full light. Point at the LED to see it.</li>
+    <li>The 470&nbsp;&Omega; resistor is still needed: without it, far too much current would flow through the LED at 0&nbsp;%.</li>
+  </ol>
+
+  <h2>Assignment: when does the LED come on?</h2>
+  <p>A red LED only conducts above 1.8&nbsp;V. At which wiper position does it start to light? Work it out with the formula
+  above first, then try it with the switch on.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>12&nbsp;V &times; (100&nbsp;% &minus; position) = 1.8&nbsp;V gives 100&nbsp;% &minus; position = 15&nbsp;%, so position = 85&nbsp;%.
+    At 85&nbsp;% there is exactly 1.8&nbsp;V on the wiper and the LED does not conduct yet. At 84&nbsp;% it starts, with a very
+    small current of 0.2&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> the volume knob of a radio, the dimmer of a lamp and the joystick of a game
+  console are potentiometers. A joystick has two: one for left&ndash;right and one for forward&ndash;back.</div>
+
+  <div class="pager"><a href="les32.html">&larr; Lesson 32: Power</a><a href="leerpad.html">Learning path &rarr;</a></div>

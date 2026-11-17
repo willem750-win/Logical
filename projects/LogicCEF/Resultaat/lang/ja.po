@@ -1660,3 +1660,18 @@ msgstr "電力計を作成"
 
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr "電力計\n\n- ミリアンペア計と同じく直列。\n- 計器の後ろにあるすべての電力 P = U x I を表示。"
+
+msgid "Potentiometer"
+msgstr "ポテンショメータ"
+
+msgid "wiper at"
+msgstr "ワイパー位置"
+
+msgid "Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.\nRight-click: choose the value."
+msgstr "3 つの端子: 両端 A と B、ワイパー L。ワイパーをマウスでドラッグします。\n右クリック: 値を選択。"
+
+msgid "create Potentiometer (three terminals)"
+msgstr "ポテンショメータを作成（3 端子）"
+
+msgid "Potentiometer (three terminals)"
+msgstr "ポテンショメータ（3 端子）"

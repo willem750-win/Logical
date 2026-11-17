@@ -24,6 +24,7 @@
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliammeter</a></td><td>Measures the current the circuit uses.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmeter</a></td><td>Measures the power P = U &times; I of everything after it.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Resistance (contact)</a></td><td>A contact or wire with a small resistance: some voltage is lost.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Resistor with a wiper and three terminals: an adjustable voltage divider.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
   </table>
@@ -190,6 +191,14 @@
   </ul>
   <p>Want two wires on the same terminal? Click <b>Connection</b> and then the terminal, even if a wire is already on
   it: a new wire starts. See <a href="les25.html">lesson 25</a>.</p>
+
+  <h2 id="potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">The potentiometer</h2>
+  <p>A potentiometer is a resistor with a <b>wiper</b>: a contact you slide along the resistor. It has three terminals: the
+  ends <b>A</b> (left) and <b>B</b> (right), and the wiper <b>L</b> (at the bottom). The whole resistance is always between A and B;
+  the wiper splits it into two parts: R(A&ndash;L) = R &times; position and R(L&ndash;B) = R &times; (100&nbsp;% &minus; position).</p>
+  <p>Drag the blue slider with the mouse, from 0 to 100&nbsp;%. Right-click &rsaquo; <b>Value</b>: 470&nbsp;&Omega;, 1&nbsp;k&Omega;,
+  4.7&nbsp;k&Omega; or 10&nbsp;k&Omega;. Connect A to + and B to &minus;, and the wiper carries U &times; (100&nbsp;% &minus; position):
+  an adjustable voltage divider. See <a href="les33.html">lesson 33</a>.</p>
 
   <h2 id="led"><img src="../img/pal-led2.png" class="ico" alt="">The LED with two terminals</h2>
   <p>An LED (light-emitting diode) is not a lamp: it lets the current through in <b>one direction</b> only, from the

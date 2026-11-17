@@ -1,0 +1,55 @@
+<!-- titel: Leçon 33 - Le potentiomètre -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 33 sur 33</p>
+  <h1>Le potentiomètre</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> régler une tension avec un potentiomètre, voir qu&rsquo;une charge fait
+  baisser cette tension, et faire varier l&rsquo;éclat d&rsquo;une LED.</div>
+
+  <p><a class="open" href="../../panels/lessen/les33-potentiometer.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les33.png" alt="Source de 12 V avec un potentiomètre de 1000 ohms : A au plus, B au moins ; un voltmètre sur le curseur et une branche avec interrupteur, résistance de 470 ohms et LED rouge du curseur vers le moins">
+    <figcaption>A au +, B au &minus;. Le voltmètre mesure la tension sur le curseur L. En bas, une branche du curseur vers le &minus;&nbsp;: interrupteur, 470&nbsp;&Omega; et une LED rouge.</figcaption>
+  </figure>
+
+  <h2>Régler une tension</h2>
+  <p>Un <a href="voeding.html#potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">potentiomètre</a> est un
+  <a href="les29.html">diviseur de tension</a> en un seul composant. Toute la résistance de 1000&nbsp;&Omega; est entre A et B.
+  Le curseur L la partage en deux. Avec le curseur à 30&nbsp;%, R(A&ndash;L) = 300&nbsp;&Omega; et R(L&ndash;B) = 700&nbsp;&Omega;.
+  Pointez le potentiomètre&nbsp;: l&rsquo;info-bulle montre les deux parties.</p>
+  <p>Tant que rien n&rsquo;est branché sur le curseur, la tension sur le curseur vaut&nbsp;:</p>
+  <p class="formula">U<sub>L</sub> = 12&nbsp;V &times; (100&nbsp;% &minus; position)</p>
+  <ol class="steps">
+    <li>Laissez l&rsquo;interrupteur ouvert. À 50&nbsp;%, le voltmètre affiche 6,0&nbsp;V.</li>
+    <li>Faites glisser le bouton bleu vers la gauche. À 25&nbsp;%, c&rsquo;est 9,0&nbsp;V&nbsp;; à 0&nbsp;% (le curseur contre A), les 12&nbsp;V complets.</li>
+    <li>Faites-le glisser vers la droite&nbsp;: à 100&nbsp;%, le curseur est contre B et c&rsquo;est 0&nbsp;V.</li>
+  </ol>
+
+  <h2>Une charge fait baisser la tension</h2>
+  <ol class="steps">
+    <li>Remettez le bouton à 50&nbsp;% et fermez l&rsquo;interrupteur. Le voltmètre baisse de 6,0 à 4,6&nbsp;V.</li>
+    <li>La branche avec la LED est maintenant en parallèle avec la partie L&ndash;B. La résistance sous le curseur devient
+      plus petite, et la partie A&ndash;L reçoit une plus grande part de la tension.</li>
+  </ol>
+  <p>Un diviseur de tension ne donne donc la tension calculée que tant qu&rsquo;on n&rsquo;y prélève presque pas de courant.</p>
+
+  <h2>Faire varier une LED</h2>
+  <ol class="steps">
+    <li>Laissez l&rsquo;interrupteur fermé et faites glisser lentement le curseur vers la gauche. La LED brille plus fort.</li>
+    <li>À 0&nbsp;%, les 12&nbsp;V complets sont sur le curseur et la LED reçoit 21&nbsp;mA&nbsp;: pleine lumière. Pointez la LED pour le voir.</li>
+    <li>La résistance de 470&nbsp;&Omega; reste nécessaire&nbsp;: sans elle, il passerait beaucoup trop de courant dans la LED à 0&nbsp;%.</li>
+  </ol>
+
+  <h2>Exercice&nbsp;: quand la LED s&rsquo;allume-t-elle&nbsp;?</h2>
+  <p>Une LED rouge ne conduit qu&rsquo;au-dessus de 1,8&nbsp;V. À quelle position du curseur commence-t-elle à briller&nbsp;?
+  Calculez d&rsquo;abord avec la formule ci-dessus, essayez ensuite avec l&rsquo;interrupteur fermé.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>12&nbsp;V &times; (100&nbsp;% &minus; position) = 1,8&nbsp;V donne 100&nbsp;% &minus; position = 15&nbsp;%, donc position = 85&nbsp;%.
+    À 85&nbsp;%, il y a exactement 1,8&nbsp;V sur le curseur et la LED ne conduit pas encore. À 84&nbsp;%, elle commence, avec un
+    très petit courant de 0,2&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> le bouton de volume d&rsquo;une radio, le variateur d&rsquo;une lampe et la
+  manette d&rsquo;une console de jeu sont des potentiomètres. Une manette en a deux&nbsp;: un pour gauche&ndash;droite et un pour
+  avant&ndash;arrière.</div>
+
+  <div class="pager"><a href="les32.html">&larr; Leçon 32 : La puissance</a><a href="leerpad.html">Parcours &rarr;</a></div>
