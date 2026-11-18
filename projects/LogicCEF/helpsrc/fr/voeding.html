@@ -20,6 +20,7 @@
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">Rail + (alimentation)</td><td>Rail rouge pour les entrées. En haut s&rsquo;affiche la tension qu&rsquo;il reçoit de la source, par exemple <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">Rail &minus; (masse)</td><td>Rail bleu avec <b>0V</b> en haut et le symbole de masse en bas.</td></tr>
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Source (batterie)</a></td><td>Source de tension de 0 à 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselbron.png" alt=""></td><td class="name"><a href="#wisselbron">Source alternative</a></td><td>Tension qui change de sens comme une sinusoïde (ralentie&nbsp;: 0,5 à 2&nbsp;Hz).</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fusible</a></td><td>Fond quand le courant est trop fort.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremètre</a></td><td>Mesure le courant consommé par le circuit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmètre</a></td><td>Mesure la puissance P = U &times; I de tout ce qui suit.</td></tr>
@@ -139,6 +140,12 @@
   borne +. Le <b>sens conventionnel du courant</b> sur les sch&eacute;mas est l'inverse&nbsp;: de + vers &minus;. En
   r&eacute;alit&eacute;, les &eacute;lectrons avancent tr&egrave;s lentement, moins d'un millim&egrave;tre par
   seconde&nbsp;; dans l'animation, c'est beaucoup plus rapide.</div>
+
+  <h2 id="wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">La source de tension alternative</h2>
+  <p>Une source de tension alternative fonctionne comme la <a href="#bron">source</a>, mais sa tension change de sens comme une
+  <b>sinusoïde</b>&nbsp;: une borne est tour à tour + puis &minus;. Le curseur règle la <b>valeur de crête</b> (0 à 12&nbsp;V)&nbsp;; l&rsquo;affichage
+  montre la tension de l&rsquo;instant, avec son signe. Le secteur change 50 fois par seconde (50&nbsp;Hz), trop vite pour le voir. C&rsquo;est
+  pourquoi la source est ici <b>ralentie</b>&nbsp;: clic droit &rsaquo; <b>Fréquence</b> 0,5, 1 ou 2&nbsp;Hz. Le temps n&rsquo;avance que pendant la simulation.</p>
 
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">Le fusible</h2>
   <p>Un fusible protège le circuit&nbsp;: quand le courant dépasse le <b>courant nominal</b>, le filament

@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2108,6 +2108,7 @@ type
     procedure SetKCondensator(const Value: Boolean);
     procedure SetKPotmeter(const Value: Boolean);
     procedure SetKDiode(const Value: Boolean);
+    procedure SetKWisselbron(const Value: Boolean);
     procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
       MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
@@ -2334,6 +2335,7 @@ type
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
     property KPotmeter: Boolean read FPotK write SetKPotmeter default True;
     property KDiode: Boolean read FDiodeK write SetKDiode default True;
+    property KWisselbron: Boolean read FWisselK write SetKWisselbron default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2357,6 +2359,7 @@ type
     property HCondensator: string read FHCond write FHCond;
     property HPotmeter: string read FHPot write FHPot;
     property HDiode: string read FHDiode write FHDiode;
+    property HWisselbron: string read FHWissel write FHWissel;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -3200,6 +3203,7 @@ end;
     function PinCount: Integer; override;
     function PinPos(I: Integer): TPoint; override;
     function Ri: Double;
+    function Emk: Double; virtual;   // bronspanning nu (bij een wisselbron: de sinus)
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Klem: Double read FKlem;
@@ -3208,6 +3212,29 @@ end;
     property Volt: Double read FVolt write SetVolt;
     property RiIdx: Integer read FRiIdx write SetRiIdx;
     property Elektronen: Boolean read FElektronen write SetElektronen;
+  end;
+
+  { TjanWisselbron: wisselspanningsbron. Zoals de bron, maar de bronspanning
+    is een sinus: e(t) = Volt x sin(2 pi f t). Volt is de topwaarde (de
+    schuifregelaar), f een vertraagde frequentie (0,5, 1 of 2 Hz) zodat je
+    het verloop op het scherm ziet; de tijd loopt tijdens de simulatie.
+    Pin 0 en pin 1 wisselen om de beurt van + en -. }
+  TjanWisselbron = class(TjanBron)
+  private
+    FFreqIdx: Integer;     // index in WisselHz
+    procedure SetFreqIdx(const Value: Integer);
+    procedure FreqClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function Emk: Double; override;
+    function Hz: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property FreqIdx: Integer read FFreqIdx write SetFreqIdx;
   end;
 
   { TjanZekering: smeltzekering in de voedingsleiding. Pin 0 = ingang
@@ -3576,6 +3603,12 @@ procedure DrawRailOverlay(Grid: TjanGridS);
 
 // het LogicRun-blok op paneel P, anders nil (er is er hoogstens één)
 function FindLogicRun(P: TWinControl): TjanLogicRun;
+
+// simulatietijd van de voedingskring (s); loopt met de cpu-timer verder
+function SimulatieTijd: Double;
+procedure ZetSimulatieTijd(T: Double);
+// de voedingskring van paneel P opnieuw uitrekenen (zonder de tijd te laten lopen)
+procedure VoedingBijwerken(P: TWinControl);
 
 var
   // opent het LogicRun-venster voor het blok (Sender); gezet door het
@@ -6982,6 +7015,9 @@ const
   ZekeringMA: array[0..4] of Integer = (100, 250, 500, 1000, 2000);
   VoedingPinTol = 5;      // zo dicht bij een klem telt een draadeinde
   BronW = 112; BronH = 84;
+  // wisselbron: vertraagde frequenties (Hz)
+  WisselHz: array[0..2] of Double = (0.5, 1, 2);
+  WisselStandaard = 1;    // 1 Hz
   ZekeringW = 40; ZekeringH = 58;
   AmpMeterW = 100; AmpMeterH = 51;
   // weerstand/contact: goed contact, lange dunne draad, slecht contact,
@@ -7021,6 +7057,8 @@ var
   CondDt: Double = 0.05;
   CondStap: Boolean = False;
   CondLaatste: QWord = 0;
+  // simulatietijd (s): loopt met de cpu-timer verder (wisselbron)
+  SimTijd: Double = 0;
 
 // naam van soort I van de weerstand (zie WeerstandOhm)
 function WeerstandNaam(const ATaal: string; I: Integer): string;
@@ -7512,7 +7550,7 @@ begin
     begin
       if Parts[k] is TjanBron then
         AddTakE(PinNode(k, 0), PinNode(k, 1), 1 / NietNul(TjanBron(Parts[k]).Ri),
-          TjanBron(Parts[k]).Volt, Parts[k])
+          TjanBron(Parts[k]).Emk, Parts[k])
       else if Parts[k] is TjanLed2 then
       begin
         // boven de drempel: drempelspanning met een kleine weerstand
@@ -7663,7 +7701,7 @@ begin
     if Parts[k] is TjanBron then
     begin
       Gs := 1 / NietNul(TjanBron(Parts[k]).Ri);
-      E := TjanBron(Parts[k]).Volt;
+      E := TjanBron(Parts[k]).Emk;
       Amp := (E - U) * Gs;
       if Abs(Amp) < 0.00001 then Amp := 0;
       if (Abs(TjanBron(Parts[k]).FKlem - U) > 0.0005) or
@@ -7888,7 +7926,10 @@ end;
 // regel in het paneelbestand voor bron, zekering of milliampèremeter
 function VoedingFileLine(C: TControl): string;
 begin
-  if C is TjanBron then
+  if C is TjanWisselbron then
+    Result := Format('TjanWisselbron;%d;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Round(TjanBron(C).Volt * 10), TjanBron(C).RiIdx, Ord(TjanBron(C).Elektronen), TjanWisselbron(C).FreqIdx])
+  else if C is TjanBron then
     Result := Format('TjanBron;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       Round(TjanBron(C).Volt * 10), TjanBron(C).RiIdx, Ord(TjanBron(C).Elektronen)])
   else if C is TjanZekering then
@@ -8201,6 +8242,11 @@ begin
   Result := BronRi[FRiIdx];
 end;
 
+function TjanBron.Emk: Double;
+begin
+  Result := FVolt;
+end;
+
 procedure TjanBron.SetVolt(const Value: Double);
 var
   V: Double;
@@ -8406,6 +8452,170 @@ begin
   FOnStatus(Self, Tr(FTaal, 'Bron (accu)', 'Source (battery)', 'Source (batterie)', 'Quelle (Akku)') + ' > ', 0);
   FOnStatus(Self, 'E = ' + FormatFloat('0.0', FVolt) + ' V   U = ' + FormatFloat('0.00', FKlem) +
     ' V   I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+function SimulatieTijd: Double;
+begin
+  Result := SimTijd;
+end;
+
+procedure ZetSimulatieTijd(T: Double);
+begin
+  SimTijd := T;
+end;
+
+procedure VoedingBijwerken(P: TWinControl);
+begin
+  UpdateSupply(P, True);
+end;
+
+{ TjanWisselbron }
+
+constructor TjanWisselbron.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FFreqIdx := WisselStandaard;
+  HelpKeyword := 'wisselbron';
+end;
+
+function TjanWisselbron.Hz: Double;
+begin
+  Result := WisselHz[FFreqIdx];
+end;
+
+function TjanWisselbron.Emk: Double;
+begin
+  Result := Volt * Sin(2 * Pi * Hz * SimTijd);
+end;
+
+procedure TjanWisselbron.SetFreqIdx(const Value: Integer);
+begin
+  if (Value < Low(WisselHz)) or (Value > High(WisselHz)) or (Value = FFreqIdx) then Exit;
+  FFreqIdx := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanWisselbron.FreqClick(Sender: TObject);
+begin
+  FreqIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanWisselbron.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Frequentie', 'Frequency', 'Fréquence', 'Frequenz');
+  APop.Items.Add(Mi);
+  for i := Low(WisselHz) to High(WisselHz) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := FormatFloat('0.#', WisselHz[i]) + ' Hz';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FFreqIdx;
+    Sub.OnClick := FreqClick;
+    Mi.Add(Sub);
+  end;
+  inherited AddMenuItems(APop);   // inwendige weerstand, elektronen
+end;
+
+procedure TjanWisselbron.Paint;
+var
+  R: TRect;
+  S: string;
+  KX, TW, i, X, Y: Integer;
+  E: Double;
+begin
+  E := Emk;
+  with Canvas do
+  begin
+    Brush.Style := bsClear;
+    Pen.Color := clGray; Pen.Width := 1; Pen.Style := psDashDot;
+    Rectangle(ClientRect);
+    Pen.Style := psSolid;
+    // symbool: cirkel met een sinus
+    Pen.Color := clBlack; Pen.Width := 1;
+    Brush.Style := bsSolid; Brush.Color := clWhite;
+    Ellipse(Rect(6, 4, 38, 36));
+    Pen.Width := 2;
+    for i := 0 to 22 do
+    begin
+      X := 11 + i;
+      Y := 20 - Round(8 * Sin(2 * Pi * i / 22));
+      if i = 0 then MoveTo(X, Y) else LineTo(X, Y);
+    end;
+    Pen.Width := 1;
+    Font.Name := 'Arial';
+    // display: de spanning van dit ogenblik, met teken
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(250, 250, 220);
+    R := Rect(46, 6, 106, 28);
+    FillRect(R);
+    Frame3D(R, clBtnShadow, clBtnHighlight, 1);
+    Brush.Style := bsClear;
+    S := FormatFloat('+0.0;-0.0;0.0', E) + ' V';
+    Font.Size := 11; Font.Style := [fsBold];
+    if Abs(E) > 0.05 then Font.Color := clRed else Font.Color := clGray;
+    TW := TextWidth(S);
+    TextOut(76 - TW div 2, 8, S);
+    // topwaarde, frequentie en inwendige weerstand
+    Font.Size := 7; Font.Style := []; Font.Color := clNavy;
+    TextOut(46, 31, Tr(FTaal, 'top', 'peak', 'crête', 'Spitze') + ' ' + FormatFloat('0.0', Volt) + ' V  ' +
+      FormatFloat('0.#', Hz) + ' Hz');
+    TextOut(46, 41, 'Ri ' + FormatFloat('0.#', Ri) + ' Ω');
+    // klemmen onderaan: ~ aan beide kanten
+    Font.Size := 8; Font.Style := [fsBold];
+    Font.Color := clBlack; TextOut(14, BronH - 15, '~');
+    TextOut(BronW - 22, BronH - 15, '~');
+    PaintPin(PinPos(0).X, PinPos(0).Y, Abs(E) >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, False);
+    // schuifregelaar voor de topwaarde 0 .. 12 V
+    R := SliderRect;
+    Brush.Style := bsSolid;
+    Brush.Color := clGray;
+    FillRect(Rect(R.Left, R.Top + 2, R.Right, R.Bottom - 2));
+    KX := R.Left + Round((R.Right - R.Left) * Volt / BronMaxVolt);
+    Brush.Color := clNavy;
+    FillRect(Rect(KX - 3, R.Top - 4, KX + 3, R.Bottom + 4));
+    Brush.Style := bsClear;
+    Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+    TextOut(R.Right + 4, R.Top - 3, '12V');
+  end;
+  PaintSelection;
+end;
+
+procedure TjanWisselbron.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Wisselspanningsbron', 'AC voltage source', 'Source de tension alternative', 'Wechselspannungsquelle') +
+    ': ' + Tr(FTaal, 'top', 'peak', 'crête', 'Spitze') + ' ' + FormatFloat('0.0', Volt) + ' V, ' +
+    FormatFloat('0.#', Hz) + ' Hz    Ri = ' + OhmText(Ri) + #13#10 +
+    'e = ' + FormatFloat('0.0', Volt) + ' V × sin(2π × ' + FormatFloat('0.#', Hz) + ' Hz × t) = ' +
+      FormatFloat('+0.00;-0.00;0.00', Emk) + ' V' + #13#10 +
+    Tr(FTaal,
+      'De spanning wisselt als een sinus van richting; de tijd loopt tijdens de simulatie.' + #13#10 +
+        'Vertraagd: het lichtnet is 50 Hz, hier 0,5 tot 2 Hz zodat je het ziet.' + #13#10 +
+        'Schuifregelaar: topwaarde 0 tot 12 V. Rechtsklik: frequentie, inwendige weerstand.',
+      'The voltage changes direction like a sine; time runs during the simulation.' + #13#10 +
+        'Slowed down: the mains is 50 Hz, here 0.5 to 2 Hz so that you can see it.' + #13#10 +
+        'Slider: peak value 0 to 12 V. Right-click: frequency, internal resistance.',
+      'La tension change de sens comme une sinusoïde ; le temps avance pendant la simulation.' + #13#10 +
+        'Ralenti : le secteur est à 50 Hz, ici 0,5 à 2 Hz pour que vous le voyiez.' + #13#10 +
+        'Curseur : valeur de crête de 0 à 12 V. Clic droit : fréquence, résistance interne.',
+      'Die Spannung wechselt wie ein Sinus die Richtung; die Zeit läuft während der Simulation.' + #13#10 +
+        'Verlangsamt: Das Netz hat 50 Hz, hier 0,5 bis 2 Hz, damit Sie es sehen.' + #13#10 +
+        'Schieberegler: Spitzenwert 0 bis 12 V. Rechtsklick: Frequenz, Innenwiderstand.');
+end;
+
+procedure TjanWisselbron.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Wisselspanningsbron', 'AC voltage source', 'Source de tension alternative', 'Wechselspannungsquelle') + ' > ', 0);
+  FOnStatus(Self, Tr(FTaal, 'top', 'peak', 'crête', 'Spitze') + ' ' + FormatFloat('0.0', Volt) + ' V   ' +
+    FormatFloat('0.#', Hz) + ' Hz   e = ' + FormatFloat('+0.0;-0.0;0.0', Emk) + ' V', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
 
@@ -23026,6 +23236,7 @@ begin
       if CondDt > 0.2 then CondDt := 0.2;
     end;
     CondLaatste := GetTickCount64;
+    SimTijd := SimTijd + CondDt;
     CondStap := True;
     try
       UpdateSupply(wc, True);
@@ -23375,13 +23586,14 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
   FHWattMeter:='maak Wattmeter';
   FHPot:='maak Potentiometer (drie klemmen)';
   FHDiode:='maak Diode';
+  FHWissel:='maak Wisselspanningsbron';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -24471,7 +24683,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') then
     begin
       with TStringList.Create do
       try
@@ -24491,6 +24703,7 @@ begin
           else if obj[1] = 'TjanWattMeter' then VD := TjanWattMeter.Create(Self)
           else if obj[1] = 'TjanPotmeter' then VD := TjanPotmeter.Create(Self)
           else if obj[1] = 'TjanDiode' then VD := TjanDiode.Create(Self)
+          else if obj[1] = 'TjanWisselbron' then VD := TjanWisselbron.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -24503,6 +24716,8 @@ begin
             TjanBron(VD).Volt := StrToIntDef(Trim(Strings[4]), 120) / 10;
             if Count >= 7 then
               TjanBron(VD).Elektronen := Trim(Strings[6]) = '1';
+            if (VD is TjanWisselbron) and (Count >= 8) then
+              TjanWisselbron(VD).FreqIdx := StrToIntDef(Trim(Strings[7]), WisselStandaard);
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
@@ -25364,6 +25579,7 @@ begin
     9: D := TjanWattMeter.Create(Self);
     10: D := TjanPotmeter.Create(Self);
     11: D := TjanDiode.Create(Self);
+    12: D := TjanWisselbron.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -25602,6 +25818,15 @@ begin
           Brush.Style := bsSolid; Brush.Color := clBlack;
           FillRect(Rect(CX - 3, CY - 6, CX - 1, CY + 7));
           FillRect(Rect(CX + 2, CY - 6, CX + 4, CY + 7));
+        end;
+      12:
+        begin
+          // wisselbron: cirkel met een sinus
+          Brush.Style := bsSolid; Brush.Color := clWhite;
+          Ellipse(Rect(CX - 7, CY - 7, CX + 8, CY + 8));
+          MoveTo(CX - 5, CY);
+          for K := 1 to 10 do
+            LineTo(CX - 5 + K, CY - Round(4 * Sin(2 * Pi * K / 10)));
         end;
       11:
         begin
@@ -26111,7 +26336,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -26159,6 +26384,7 @@ begin
   else if PtInRect(RCond, P) then DCond := True
   else if PtInRect(RPot, P) then DPot := True
   else if PtInRect(RDiode, P) then DDiode := True
+  else if PtInRect(RWissel, P) then DWissel := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -26219,6 +26445,7 @@ begin
   else if PtInRect(RCond, P) then NewHint := FHCond
   else if PtInRect(RPot, P) then NewHint := FHPot
   else if PtInRect(RDiode, P) then NewHint := FHDiode
+  else if PtInRect(RWissel, P) then NewHint := FHWissel
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -26628,7 +26855,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False;
 
     // nieuw
     DSquare := False;
@@ -26896,6 +27123,8 @@ begin
     NewVoedingsDeel(10)
   else if DDiode then
     NewVoedingsDeel(11)
+  else if DWissel then
+    NewVoedingsDeel(12)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -27487,6 +27716,7 @@ if FBoxTaal=stDutch then
   HCondensator:='maak Condensator (laden en ontladen)';
   HPotmeter:='maak Potentiometer (drie klemmen)';
   HDiode:='maak Diode';
+  HWisselbron:='maak Wisselspanningsbron';
  end;
 
 if FBoxTaal=stEnglish then
@@ -27537,6 +27767,7 @@ if FBoxTaal=stEnglish then
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
   HPotmeter:=LangTr('create Potentiometer (three terminals)');
   HDiode:=LangTr('create Diode');
+  HWisselbron:=LangTr('create AC voltage source');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -27585,6 +27816,7 @@ if FBoxTaal=stFrench then
   HCondensator:='faire Condensateur (charge et décharge)';
   HPotmeter:='faire Potentiomètre (trois bornes)';
   HDiode:='faire Diode';
+  HWisselbron:='faire Source de tension alternative';
  end;
 
  if FBoxTaal=stGerman then
@@ -27634,6 +27866,7 @@ if FBoxTaal=stFrench then
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
   HPotmeter:='Potentiometer erstellen (drei Klemmen)';
   HDiode:='Diode erstellen';
+  HWisselbron:='Wechselspannungsquelle erstellen';
   end;
   invalidate;
  // willy
@@ -27719,6 +27952,9 @@ begin SetVoedingKnop(FPotK, Value); end;
 procedure TjanSimLogicBox.SetKDiode(const Value: Boolean);
 begin SetVoedingKnop(FDiodeK, Value); end;
 
+procedure TjanSimLogicBox.SetKWisselbron(const Value: Boolean);
+begin SetVoedingKnop(FWisselK, Value); end;
+
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
@@ -27777,6 +28013,7 @@ begin
   RCond := Rect(0, 0, 0, 0);
   RPot := Rect(0, 0, 0, 0);
   RDiode := Rect(0, 0, 0, 0);
+  RWissel := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -27788,6 +28025,7 @@ begin
     Knop(RRailMin, -2, DRailMin);
   end;
   if FBronK then Knop(RBron, 0, DBron);
+  if FWisselK then Knop(RWissel, 12, DWissel);
   if FZekeringK then Knop(RZekering, 1, DZekering);
   if FWeerstandK then Knop(RWeerstand, 3, DWeerstand);
   if FPotK then Knop(RPot, 10, DPot);

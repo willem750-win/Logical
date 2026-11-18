@@ -1702,3 +1702,15 @@ msgstr "翻转"
 
 msgid "Right-click: turn round."
 msgstr "右键：翻转。"
+
+msgid "peak"
+msgstr "峰值"
+
+msgid "AC voltage source"
+msgstr "交流电压源"
+
+msgid "The voltage changes direction like a sine; time runs during the simulation.\nSlowed down: the mains is 50 Hz, here 0.5 to 2 Hz so that you can see it.\nSlider: peak value 0 to 12 V. Right-click: frequency, internal resistance."
+msgstr "电压像正弦波一样改变方向；时间在仿真时流逝。\n放慢：电网为 50 Hz，这里为 0.5 到 2 Hz，以便看清。\n滑块：峰值 0 到 12 V。右键：频率、内阻。"
+
+msgid "create AC voltage source"
+msgstr "创建交流电压源"

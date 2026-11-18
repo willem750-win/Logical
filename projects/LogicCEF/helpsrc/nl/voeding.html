@@ -20,6 +20,7 @@
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (voeding)</td><td>Rode rail voor de invoer. Bovenaan staat de spanning die hij van de bron krijgt, bijvoorbeeld <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; rail (massa)</td><td>Blauwe rail met bovenaan <b>0V</b> en onderaan het massasymbool.</td></tr>
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Bron (accu)</a></td><td>Spanningsbron van 0 tot 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselbron.png" alt=""></td><td class="name"><a href="#wisselbron">Wisselspanningsbron</a></td><td>Spanning die als een sinus van richting wisselt (vertraagd: 0,5 tot 2&nbsp;Hz).</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Zekering</a></td><td>Smelt als er te veel stroom loopt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremeter</a></td><td>Meet de stroom die de schakeling verbruikt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmeter</a></td><td>Meet het vermogen P = U &times; I van alles wat erachter hangt.</td></tr>
@@ -135,6 +136,12 @@
   <div class="tip"><strong>Goed om te weten:</strong> de elektronen lopen van de &minus; pool naar de + pool. De
   <b>afgesproken stroomzin</b> op schema's is omgekeerd: van + naar &minus;. In werkelijkheid schuiven de elektronen
   heel traag, minder dan een millimeter per seconde; in de animatie gaat het veel sneller.</div>
+
+  <h2 id="wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">De wisselspanningsbron</h2>
+  <p>Een wisselspanningsbron werkt zoals de <a href="#bron">bron</a>, maar haar spanning wisselt als een <b>sinus</b> van richting:
+  de ene klem is beurtelings + en dan &minus;. Met de schuifregelaar stel je de <b>topwaarde</b> in (0 tot 12&nbsp;V); het display toont de
+  spanning van dit ogenblik, met teken. Het lichtnet wisselt 50 keer per seconde (50&nbsp;Hz), te snel om te zien. Daarom loopt de bron
+  hier <b>vertraagd</b>: rechtsklik &rsaquo; <b>Frequentie</b> 0,5, 1 of 2&nbsp;Hz. De tijd loopt alleen tijdens de simulatie.</p>
 
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">De zekering</h2>
   <p>Een zekering beschermt de kring: wordt de stroom groter dan de <b>nominale stroom</b>, dan <b>smelt</b> het

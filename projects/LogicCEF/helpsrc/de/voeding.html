@@ -20,6 +20,7 @@
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ Schiene (Versorgung)</td><td>Rote Schiene für die Eingänge. Oben steht die Spannung, die sie von der Quelle bekommt, zum Beispiel <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; Schiene (Masse)</td><td>Blaue Schiene mit <b>0V</b> oben und dem Massesymbol unten.</td></tr>
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Quelle (Akku)</a></td><td>Spannungsquelle von 0 bis 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselbron.png" alt=""></td><td class="name"><a href="#wisselbron">Wechselspannungsquelle</a></td><td>Spannung, die wie ein Sinus die Richtung wechselt (verlangsamt: 0,5 bis 2&nbsp;Hz).</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Sicherung</a></td><td>Brennt durch, wenn zu viel Strom fließt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliamperemeter</a></td><td>Misst den Strom, den die Schaltung verbraucht.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmeter</a></td><td>Misst die Leistung P = U &times; I von allem, was dahinter hängt.</td></tr>
@@ -136,6 +137,13 @@
   <div class="tip"><strong>Gut zu wissen:</strong> Die Elektronen wandern vom &minus;&nbsp;Pol zum +&nbsp;Pol. Die
   <b>technische Stromrichtung</b> in Schaltpl&auml;nen ist umgekehrt: von + nach &minus;. In Wirklichkeit wandern die
   Elektronen sehr langsam, weniger als einen Millimeter pro Sekunde; in der Animation geht es viel schneller.</div>
+
+  <h2 id="wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">Die Wechselspannungsquelle</h2>
+  <p>Eine Wechselspannungsquelle arbeitet wie die <a href="#bron">Quelle</a>, aber ihre Spannung wechselt wie ein <b>Sinus</b>
+  die Richtung: Eine Klemme ist abwechselnd + und dann &minus;. Mit dem Schieberegler stellen Sie den <b>Spitzenwert</b> ein (0 bis
+  12&nbsp;V); die Anzeige zeigt die Spannung dieses Augenblicks, mit Vorzeichen. Das Stromnetz wechselt 50-mal pro Sekunde (50&nbsp;Hz),
+  zu schnell zum Sehen. Darum läuft die Quelle hier <b>verlangsamt</b>: Rechtsklick &rsaquo; <b>Frequenz</b> 0,5, 1 oder 2&nbsp;Hz. Die Zeit
+  läuft nur während der Simulation.</p>
 
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">Die Sicherung</h2>
   <p>Eine Sicherung schützt den Kreis: Wird der Strom größer als der <b>Nennstrom</b>, <b>brennt</b> der Draht

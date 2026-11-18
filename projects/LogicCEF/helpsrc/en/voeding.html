@@ -20,6 +20,7 @@
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (supply)</td><td>Red rail for the inputs. The voltage it gets from the source is shown at the top, for example <b>5V</b>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-rail-min.png" alt=""></td><td class="name">&minus; rail (ground)</td><td>Blue rail with <b>0V</b> at the top and the ground symbol at the bottom.</td></tr>
     <tr><td class="btn"><img src="../img/pal-bron.png" alt=""></td><td class="name"><a href="#bron">Source (battery)</a></td><td>Voltage source of 0 to 12&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselbron.png" alt=""></td><td class="name"><a href="#wisselbron">AC voltage source</a></td><td>Voltage that changes direction like a sine (slowed down: 0.5 to 2&nbsp;Hz).</td></tr>
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fuse</a></td><td>Blows when too much current flows.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliammeter</a></td><td>Measures the current the circuit uses.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmeter</a></td><td>Measures the power P = U &times; I of everything after it.</td></tr>
@@ -135,6 +136,12 @@
   <div class="tip"><strong>Good to know:</strong> the electrons move from the &minus; terminal to the + terminal. The
   <b>conventional current direction</b> on diagrams is the opposite: from + to &minus;. In reality the electrons drift
   very slowly, less than a millimetre per second; in the animation it is much faster.</div>
+
+  <h2 id="wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">The AC voltage source</h2>
+  <p>An AC voltage source works like the <a href="#bron">source</a>, but its voltage changes direction like a <b>sine</b>: one
+  terminal is + in turn and then &minus;. The slider sets the <b>peak value</b> (0 to 12&nbsp;V); the display shows the voltage at this
+  moment, with its sign. The mains changes 50 times a second (50&nbsp;Hz), too fast to see. That is why the source runs
+  <b>slowed down</b> here: right-click &rsaquo; <b>Frequency</b> 0.5, 1 or 2&nbsp;Hz. Time only runs during the simulation.</p>
 
   <h2 id="zekering"><img src="../img/pal-zekering.png" class="ico" alt="">The fuse</h2>
   <p>A fuse protects the circuit: when the current becomes larger than the <b>rated current</b>, the wire inside

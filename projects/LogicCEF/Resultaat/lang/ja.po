@@ -1702,3 +1702,15 @@ msgstr "向きを反転"
 
 msgid "Right-click: turn round."
 msgstr "右クリック: 向きを反転。"
+
+msgid "peak"
+msgstr "ピーク"
+
+msgid "AC voltage source"
+msgstr "交流電圧源"
+
+msgid "The voltage changes direction like a sine; time runs during the simulation.\nSlowed down: the mains is 50 Hz, here 0.5 to 2 Hz so that you can see it.\nSlider: peak value 0 to 12 V. Right-click: frequency, internal resistance."
+msgstr "電圧は正弦波のように向きを変えます。時間はシミュレーション中に進みます。\n減速: 商用電源は 50 Hz ですが、見えるようにここでは 0.5～2 Hz です。\nスライダー: ピーク値 0～12 V。右クリック: 周波数、内部抵抗。"
+
+msgid "create AC voltage source"
+msgstr "交流電圧源を作成"

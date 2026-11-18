@@ -1702,3 +1702,15 @@ msgstr "Развернуть"
 
 msgid "Right-click: turn round."
 msgstr "Правый щелчок: развернуть."
+
+msgid "peak"
+msgstr "амплитуда"
+
+msgid "AC voltage source"
+msgstr "Источник переменного напряжения"
+
+msgid "The voltage changes direction like a sine; time runs during the simulation.\nSlowed down: the mains is 50 Hz, here 0.5 to 2 Hz so that you can see it.\nSlider: peak value 0 to 12 V. Right-click: frequency, internal resistance."
+msgstr "Напряжение меняет направление по синусоиде; время идёт во время моделирования.\nЗамедлено: в сети 50 Гц, здесь 0,5–2 Гц, чтобы это было видно.\nПолзунок: амплитуда 0–12 В. Правый щелчок: частота, внутреннее сопротивление."
+
+msgid "create AC voltage source"
+msgstr "создать источник переменного напряжения"

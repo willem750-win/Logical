@@ -1697,3 +1697,15 @@ msgstr "Girar"
 
 msgid "Right-click: turn round."
 msgstr "Clic derecho: girar."
+
+msgid "peak"
+msgstr "pico"
+
+msgid "AC voltage source"
+msgstr "Fuente de tensión alterna"
+
+msgid "The voltage changes direction like a sine; time runs during the simulation.\nSlowed down: the mains is 50 Hz, here 0.5 to 2 Hz so that you can see it.\nSlider: peak value 0 to 12 V. Right-click: frequency, internal resistance."
+msgstr "La tensión cambia de sentido como una senoide; el tiempo avanza durante la simulación.\nRalentizada: la red es de 50 Hz, aquí de 0,5 a 2 Hz para que se vea.\nDeslizador: valor de pico de 0 a 12 V. Clic derecho: frecuencia, resistencia interna."
+
+msgid "create AC voltage source"
+msgstr "crear fuente de tensión alterna"
