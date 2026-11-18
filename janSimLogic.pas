@@ -3147,7 +3147,25 @@ end;
     FAmp: Double;                  // stroom van klem 0 naar klem 1, in A (UpdateSupply)
   private
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+    procedure DraaiClick(Sender: TObject);
+    procedure SetGedraaid(const Value: Boolean);
   protected
+    FGedraaid: Boolean;           // een kwartslag gedraaid (rechtsklik > Draaien): x en y gespiegeld
+    // mag dit onderdeel gedraaid worden? (dan ook StdMaat en ExtraBreedte geven)
+    function KanDraaien: Boolean; virtual;
+    // maat in de gewone stand (Width, Height)
+    function StdMaat: TPoint; virtual;
+    // gedraaid: extra breedte rechts voor de tekst
+    function ExtraBreedte: Integer; virtual;
+    // staan de klemmen boven en onder in de gewone stand? (zekering)
+    function StdRechtop: Boolean; virtual;
+    // Width/Height zetten voor de huidige stand (FGedraaid)
+    procedure PasMaatAan; virtual;
+    // tekenhulp: coördinaten van de tekening in de gewone stand, gespiegeld
+    // over de diagonaal als het onderdeel gedraaid is (x <-> y)
+    function TP(X, Y: Integer): TPoint;
+    function TRc(L, T, R, B: Integer): TRect;
+    procedure TLijn(X1, Y1, X2, Y2: Integer);
     // eigen menu-items voor het rechtsklikmenu (vóór vergrendelen e.d.)
     procedure AddMenuItems(APop: TPopupMenu); virtual;
     // muisklik op het onderdeel zelf (bv. de schuifregelaar); True = afgehandeld
@@ -3168,6 +3186,10 @@ end;
     function PinCenter(I: Integer): TPoint;
     procedure UpdateHintText; virtual; abstract;
     procedure SendStatusToBar; virtual; abstract;
+    // een kwartslag draaien rond het midden; de draden aan de klemmen gaan mee
+    procedure Draai;
+    // stand zetten zonder draden te verplaatsen (bij het laden)
+    property Gedraaid: Boolean read FGedraaid write SetGedraaid;
   published
     property Lock: Boolean read FLock write FLock;
     property Selected: Boolean read FSelected write FSelected;
@@ -3253,6 +3275,10 @@ end;
     procedure NomClick(Sender: TObject);
     procedure VervangClick(Sender: TObject);
   protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+    function StdRechtop: Boolean; override;
     procedure AddMenuItems(APop: TPopupMenu); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -3349,6 +3375,9 @@ end;
     procedure SoortClick(Sender: TObject);
   protected
     procedure AddMenuItems(APop: TPopupMenu); override;
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
   public
     constructor Create(AOwner: TComponent); override;
     procedure Paint; override;
@@ -3373,6 +3402,9 @@ end;
     procedure SetSoort(const Value: Integer);
     procedure SoortClick(Sender: TObject);
   protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
     procedure AddMenuItems(APop: TPopupMenu); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -3395,6 +3427,9 @@ end;
     FAan: Boolean;
     procedure SetAan(const Value: Boolean);
   protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
     function HandleClick(X, Y: Integer): Boolean; override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -3468,6 +3503,9 @@ end;
     procedure KleurClick(Sender: TObject);
     procedure VervangClick(Sender: TObject);
   protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
     procedure AddMenuItems(APop: TPopupMenu); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -3521,6 +3559,9 @@ end;
     procedure SoortClick(Sender: TObject);
     procedure OntlaadClick(Sender: TObject);
   protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
     procedure AddMenuItems(APop: TPopupMenu); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -8011,6 +8052,9 @@ begin
       TjanPotmeter(C).Soort, TjanPotmeter(C).Procent])
   else
     Result := Format('TjanAmpMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width]);
+  // rechtop gezet: extra veld V achteraan (oudere versies negeren het)
+  if (C is TjanVoedingsDeel) and TjanVoedingsDeel(C).Gedraaid then
+    Result := Result + 'V;';
 end;
 
 { TjanVoedingsDeel }
@@ -8079,6 +8123,139 @@ begin
   end;
 end;
 
+function TjanVoedingsDeel.KanDraaien: Boolean;
+begin
+  Result := False;
+end;
+
+function TjanVoedingsDeel.StdMaat: TPoint;
+begin
+  Result := Point(Width, Height);
+end;
+
+function TjanVoedingsDeel.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanVoedingsDeel.StdRechtop: Boolean;
+begin
+  Result := False;
+end;
+
+procedure TjanVoedingsDeel.PasMaatAan;
+var
+  M: TPoint;
+begin
+  if not KanDraaien then Exit;
+  M := StdMaat;
+  if FGedraaid then
+  begin
+    Width := M.Y + ExtraBreedte;
+    Height := M.X;
+  end
+  else
+  begin
+    Width := M.X;
+    Height := M.Y;
+  end;
+end;
+
+function TjanVoedingsDeel.TP(X, Y: Integer): TPoint;
+begin
+  if FGedraaid then Result := Point(Y, X) else Result := Point(X, Y);
+end;
+
+function TjanVoedingsDeel.TRc(L, T, R, B: Integer): TRect;
+begin
+  if FGedraaid then Result := Rect(T, L, B, R) else Result := Rect(L, T, R, B);
+end;
+
+procedure TjanVoedingsDeel.TLijn(X1, Y1, X2, Y2: Integer);
+begin
+  Canvas.MoveTo(TP(X1, Y1));
+  Canvas.LineTo(TP(X2, Y2));
+end;
+
+procedure TjanVoedingsDeel.SetGedraaid(const Value: Boolean);
+begin
+  if (Value = FGedraaid) or not KanDraaien then Exit;
+  FGedraaid := Value;
+  PasMaatAan;
+  Invalidate;
+end;
+
+procedure TjanVoedingsDeel.DraaiClick(Sender: TObject);
+begin
+  Draai;
+end;
+
+procedure TjanVoedingsDeel.Draai;
+var
+  OudC: array of TPoint;
+  Cons: TList;
+  KBegin, KEinde: array of Integer;
+  i, n, CX, CY: Integer;
+  Con: TjanConnector;
+  A, B: TPoint;
+
+  function KlemBij(const P: TPoint): Integer;
+  var
+    j: Integer;
+  begin
+    for j := 0 to n - 1 do
+      if (Abs(OudC[j].X - P.X) <= VoedingPinTol) and (Abs(OudC[j].Y - P.Y) <= VoedingPinTol) then
+        Exit(j);
+    Result := -1;
+  end;
+
+begin
+  if not KanDraaien or (Parent = nil) then Exit;
+  n := PinCount;
+  SetLength(OudC, n);
+  for i := 0 to n - 1 do
+    OudC[i] := PinCenter(i);
+  Cons := TList.Create;
+  try
+    // draden waarvan een uiteinde op een klem van dit onderdeel ligt
+    for i := 0 to Parent.ControlCount - 1 do
+      if Parent.Controls[i] is TjanConnector then
+      begin
+        Con := TjanConnector(Parent.Controls[i]);
+        Con.EndCenters(A, B);
+        if (KlemBij(A) >= 0) or (KlemBij(B) >= 0) then
+        begin
+          Cons.Add(Con);
+          SetLength(KBegin, Cons.Count);
+          SetLength(KEinde, Cons.Count);
+          KBegin[Cons.Count - 1] := KlemBij(A);
+          KEinde[Cons.Count - 1] := KlemBij(B);
+        end;
+      end;
+    // draaien rond het midden
+    CX := Left + Width div 2;
+    CY := Top + Height div 2;
+    FGedraaid := not FGedraaid;
+    PasMaatAan;
+    SetBounds(CX - Width div 2, CY - Height div 2, Width, Height);
+    // de uiteinden naar de nieuwe plaats van hun klem
+    for i := 0 to Cons.Count - 1 do
+    begin
+      Con := TjanConnector(Cons[i]);
+      Con.EndCenters(A, B);
+      if KBegin[i] >= 0 then A := PinCenter(KBegin[i]);
+      if KEinde[i] >= 0 then B := PinCenter(KEinde[i]);
+      Con.PlaceEnds(A, B);
+    end;
+  finally
+    Cons.Free;
+  end;
+  Invalidate;
+  if Assigned(GlobalSimBox) then
+    GlobalSimBox.DoObjectMove(Self, Left, Top);
+  UpdateSupply(Parent, True);
+end;
+
 procedure TjanVoedingsDeel.SetTaal(const Value: string);
 begin
   FTaal := Value;
@@ -8120,7 +8297,7 @@ begin
   FConnectors.Clear;
   if Parent = nil then Exit;
   R := BoundsRect;
-  InflateRect(R, 8, 0);
+  if FGedraaid <> StdRechtop then InflateRect(R, 0, 8) else InflateRect(R, 8, 0);
   for i := 0 to Parent.ControlCount - 1 do
     if Parent.Controls[i] is TjanConnector then
     begin
@@ -8152,6 +8329,14 @@ begin
   begin
     Pop := TPopupMenu.Create(Self);
     AddMenuItems(Pop);
+    if KanDraaien then
+    begin
+      Mi := TMenuItem.Create(Pop);
+      Mi.Caption := Tr(FTaal, 'Draaien', 'Rotate', 'Pivoter', 'Drehen');
+      Mi.OnClick := DraaiClick;
+      Mi.Enabled := not FLock;
+      Pop.Items.Add(Mi);
+    end;
     if Pop.Items.Count > 0 then
     begin
       Mi := TMenuItem.Create(Pop);
@@ -8698,7 +8883,27 @@ end;
 
 function TjanZekering.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := Point(17, 1) else Result := Point(17, ZekeringH - 8);
+  if I = 0 then Result := TP(17, 1) else Result := TP(17, ZekeringH - 8);
+end;
+
+function TjanZekering.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanZekering.StdMaat: TPoint;
+begin
+  Result := Point(ZekeringW, ZekeringH);
+end;
+
+function TjanZekering.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanZekering.StdRechtop: Boolean;
+begin
+  Result := True;   // gewone stand: staand buisje, klemmen boven en onder
 end;
 
 function TjanZekering.NominaalA: Double;
@@ -8768,7 +8973,8 @@ var
   S: string;
   CX, CY, TW: Integer;
 begin
-  CX := PinPos(0).X + 3;
+  // tekening in de gewone (staande) stand; TP/TRc spiegelen ze als hij gedraaid is
+  CX := 17 + 3;
   CY := 24;
   with Canvas do
   begin
@@ -8777,27 +8983,31 @@ begin
     // staand glazen buisje met het smeltdraadje
     if FDoorgebrand then Brush.Color := RGBToColor(255, 210, 210)
     else Brush.Color := RGBToColor(235, 245, 255);
-    R := Rect(CX - 6, 14, CX + 7, 34);
+    R := TRc(CX - 6, 14, CX + 7, 34);
     FillRect(R);
     Pen.Color := clGray; Pen.Width := 1;
     Brush.Style := bsClear;
     Rectangle(R);
     Brush.Style := bsSolid; Brush.Color := clGray;
-    FillRect(Rect(CX - 5, 10, CX + 6, 14));
-    FillRect(Rect(CX - 5, 34, CX + 6, 38));
+    FillRect(TRc(CX - 5, 10, CX + 6, 14));
+    FillRect(TRc(CX - 5, 34, CX + 6, 38));
     Pen.Color := clBlack; Pen.Width := 2;
     if FDoorgebrand then
     begin
       // gesmolten: het draadje is onderbroken
-      MoveTo(CX, 8); LineTo(CX, CY - 5);
-      MoveTo(CX, CY + 5); LineTo(CX, 38);
+      TLijn(CX, 8, CX, CY - 5);
+      TLijn(CX, CY + 5, CX, 38);
       Pen.Color := clRed;
-      MoveTo(CX - 4, CY - 4); LineTo(CX + 4, CY + 4);
-      MoveTo(CX + 4, CY - 4); LineTo(CX - 4, CY + 4);
+      TLijn(CX - 4, CY - 4, CX + 4, CY + 4);
+      TLijn(CX + 4, CY - 4, CX - 4, CY + 4);
     end
     else
+      TLijn(CX, 8, CX, 38);
+    // liggend staat de tekst niet in de draad: die loopt dan door
+    if FGedraaid then
     begin
-      MoveTo(CX, 8); LineTo(CX, 38);
+      Pen.Color := clBlack;
+      TLijn(CX, 38, CX, 48);
     end;
     Pen.Width := 1;
     PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
@@ -8811,10 +9021,13 @@ begin
     Font.Name := 'Arial'; Font.Size := 6; Font.Style := [fsBold];
     if FDoorgebrand then Font.Color := clRed else Font.Color := clNavy;
     TW := TextWidth(S);
-    TextOut((ZekeringW - TW) div 2, 38, S);
+    if FGedraaid then
+      TextOut((ZekeringH - TW) div 2, CX + 9, S)    // onder het liggende buisje
+    else
+      TextOut((ZekeringW - TW) div 2, 38, S);
     // het draadje loopt door tot de onderste klem
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(CX, 48); LineTo(CX, ZekeringH - 8);
+    TLijn(CX, 48, CX, ZekeringH - 8);
     Pen.Width := 1;
   end;
   PaintSelection;
@@ -9032,7 +9245,22 @@ end;
 
 function TjanWeerstand.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := Point(1, 11) else Result := Point(WeerstandW - 8, 11);
+  if I = 0 then Result := TP(1, 11) else Result := TP(WeerstandW - 8, 11);
+end;
+
+function TjanWeerstand.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanWeerstand.StdMaat: TPoint;
+begin
+  Result := Point(WeerstandW, WeerstandH);
+end;
+
+function TjanWeerstand.ExtraBreedte: Integer;
+begin
+  Result := 74;   // waarde en soort rechts naast het blokje
 end;
 
 function TjanWeerstand.Ohm: Double;
@@ -9087,20 +9315,21 @@ var
   CY, TW, X, H, K: Integer;
   Heat: Double;
 begin
-  CY := PinPos(0).Y + 3;
+  // tekening in liggende coördinaten; TP/TRc spiegelen ze als hij rechtop staat
+  CY := 11 + 3;
   with Canvas do
   begin
     // doorzichtig: alleen de draadjes, het blokje en de tekst
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(PinPos(0).X + 7, CY); LineTo(26, CY);
-    MoveTo(WeerstandW - 26, CY); LineTo(PinPos(1).X, CY);
+    TLijn(8, CY, 26, CY);
+    TLijn(WeerstandW - 26, CY, WeerstandW - 8, CY);
     Pen.Width := 1;
     // schemasymbool (rechthoek); kleurt rood als het warm wordt
     Heat := Vermogen / 0.5;
     if Heat > 1 then Heat := 1;
     Brush.Style := bsSolid;
     Brush.Color := RGBToColor(255, 255 - Round(140 * Heat), 255 - Round(255 * Heat));
-    R := Rect(26, CY - 8, WeerstandW - 26, CY + 9);
+    R := TRc(26, CY - 8, WeerstandW - 26, CY + 9);
     FillRect(R);
     Pen.Color := clBlack;
     Brush.Style := bsClear;
@@ -9114,16 +9343,34 @@ begin
       begin
         H := 4 + (X mod 2) * 2;
         if X < 2 then K := 28 + X * 4 else K := WeerstandW - 36 + (X - 2) * 4;
-        Ellipse(Rect(K, CY - 6 + (X mod 2) * 6, K + H, CY - 6 + (X mod 2) * 6 + H));
+        Ellipse(TRc(K, CY - 6 + (X mod 2) * 6, K + H, CY - 6 + (X mod 2) * 6 + H));
       end;
       Pen.Color := clBlack;
       Brush.Style := bsClear;
     end;
     PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
     PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
-    // waarde in het blokje, soort eronder
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
     S := OhmText(Ohm);
+    if FGedraaid then
+    begin
+      // rechtop: waarde en soort rechts naast het blokje, de soort op twee regels
+      X := CY + 13;
+      TextOut(X, WeerstandW div 2 - 16, S);
+      Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+      S := WeerstandNaam(FTaal, FSoort);
+      K := Pos(' ', S);
+      if (TextWidth(S) > Width - X) and (K > 0) then
+      begin
+        TextOut(X, WeerstandW div 2 - 2, Copy(S, 1, K - 1));
+        TextOut(X, WeerstandW div 2 + 8, Copy(S, K + 1, MaxInt));
+      end
+      else
+        TextOut(X, WeerstandW div 2 - 2, S);
+      PaintSelection;
+      Exit;
+    end;
+    // liggend: waarde in het blokje, soort eronder
     if FSoort = 3 then
     begin
       TW := TextWidth(S);
@@ -9412,7 +9659,22 @@ end;
 
 function TjanLamp2.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := Point(1, 17) else Result := Point(Lamp2W - 8, 17);
+  if I = 0 then Result := TP(1, 17) else Result := TP(Lamp2W - 8, 17);
+end;
+
+function TjanLamp2.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanLamp2.StdMaat: TPoint;
+begin
+  Result := Point(Lamp2W, Lamp2H);
+end;
+
+function TjanLamp2.ExtraBreedte: Integer;
+begin
+  Result := 28;   // de weerstand rechts naast de lamp
 end;
 
 function TjanLamp2.Ohm: Double;
@@ -9472,8 +9734,9 @@ var
   K: Double;
   S: string;
 begin
+  // tekening in de gewone stand; TP/TRc spiegelen ze als de lamp gedraaid is
   CX := Lamp2W div 2;
-  CY := PinPos(0).Y + 3;
+  CY := 17 + 3;
   Rr := 12;
   // helderheid volgt het vermogen: vol bij het vermogen van de lamp op 12 V
   K := Vermogen / (BronMaxVolt * BronMaxVolt / Ohm);
@@ -9481,15 +9744,15 @@ begin
   with Canvas do
   begin
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(PinPos(0).X + 7, CY); LineTo(CX - Rr, CY);
-    MoveTo(CX + Rr, CY); LineTo(PinPos(1).X, CY);
+    TLijn(8, CY, CX - Rr, CY);
+    TLijn(CX + Rr, CY, Lamp2W - 8, CY);
     // gloed rond de lamp
     if K > 0.02 then
     begin
       Pen.Style := psClear;
       Brush.Style := bsSolid;
       Brush.Color := RGBToColor(255, 240, Round(200 - 120 * K));
-      Ellipse(Rect(CX - Rr - 5, CY - Rr - 5, CX + Rr + 6, CY + Rr + 6));
+      Ellipse(TRc(CX - Rr - 5, CY - Rr - 5, CX + Rr + 6, CY + Rr + 6));
       Pen.Style := psSolid;
     end;
     Brush.Style := bsSolid;
@@ -9498,10 +9761,10 @@ begin
     else
       Brush.Color := clWhite;
     Pen.Width := 2;
-    Ellipse(Rect(CX - Rr, CY - Rr, CX + Rr + 1, CY + Rr + 1));
+    Ellipse(TRc(CX - Rr, CY - Rr, CX + Rr + 1, CY + Rr + 1));
     // kruis: het schemasymbool van een lamp
-    MoveTo(CX - 8, CY - 8); LineTo(CX + 9, CY + 9);
-    MoveTo(CX + 8, CY - 8); LineTo(CX - 9, CY + 9);
+    TLijn(CX - 8, CY - 8, CX + 9, CY + 9);
+    TLijn(CX + 8, CY - 8, CX - 9, CY + 9);
     Pen.Width := 1;
     PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
@@ -9509,7 +9772,10 @@ begin
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := []; Font.Color := clNavy;
     S := OhmText(Ohm);
     TW := TextWidth(S);
-    TextOut(CX - TW div 2, CY + Rr + 4, S);
+    if FGedraaid then
+      TextOut(CY + Rr + 6, CX - 6, S)          // rechts naast de lamp
+    else
+      TextOut(CX - TW div 2, CY + Rr + 4, S);
   end;
   PaintSelection;
 end;
@@ -9567,7 +9833,22 @@ end;
 
 function TjanLed2.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := Point(1, 17) else Result := Point(Led2W - 8, 17);
+  if I = 0 then Result := TP(1, 17) else Result := TP(Led2W - 8, 17);
+end;
+
+function TjanLed2.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanLed2.StdMaat: TPoint;
+begin
+  Result := Point(Led2W, Led2H);
+end;
+
+function TjanLed2.ExtraBreedte: Integer;
+begin
+  Result := 26;   // kleur en spanning rechts naast het symbool, op twee regels
 end;
 
 function TjanLed2.Drempel: Double;
@@ -9661,8 +9942,9 @@ var
   end;
 
 begin
+  // tekening in de gewone stand; TP/TRc spiegelen ze als de led gedraaid is
   CX := Led2W div 2;
-  CY := PinPos(0).Y + 3;
+  CY := 17 + 3;
   K := Abs(FAmp) / LedVolA;
   if K > 1 then K := 1;
   if FDoorgebrand then K := 0;
@@ -9675,49 +9957,63 @@ begin
       Pen.Style := psClear;
       Brush.Style := bsSolid;
       Brush.Color := Meng(Col, 0.35 * K);
-      Ellipse(Rect(CX - 15, CY - 15, CX + 14, CY + 14));
+      Ellipse(TRc(CX - 15, CY - 15, CX + 14, CY + 14));
       Pen.Style := psSolid;
     end;
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(PinPos(0).X + 7, CY); LineTo(CX - 8, CY);
-    MoveTo(CX + 7, CY); LineTo(PinPos(1).X, CY);
+    TLijn(8, CY, CX - 8, CY);
+    TLijn(CX + 7, CY, Led2W - 8, CY);
     // schemasymbool: driehoek (van + naar -) met een streep
     Pen.Width := 1;
     Brush.Style := bsSolid;
     if FDoorgebrand then Brush.Color := RGBToColor(90, 80, 70)
     else if K > 0.03 then Brush.Color := Meng(Col, 0.4 + 0.6 * K)
     else Brush.Color := Meng(Col, 0.25);
-    Polygon([Point(CX - 8, CY - 8), Point(CX + 6, CY), Point(CX - 8, CY + 8)]);
+    Polygon([TP(CX - 8, CY - 8), TP(CX + 6, CY), TP(CX - 8, CY + 8)]);
     Pen.Width := 2;
-    MoveTo(CX + 6, CY - 8); LineTo(CX + 6, CY + 9);
+    TLijn(CX + 6, CY - 8, CX + 6, CY + 9);
     // pijltjes: licht
     Pen.Width := 1;
     if K > 0.03 then Pen.Color := Col else Pen.Color := clGray;
-    MoveTo(CX, CY - 10); LineTo(CX + 5, CY - 15); LineTo(CX + 2, CY - 15);
-    MoveTo(CX + 5, CY - 15); LineTo(CX + 5, CY - 12);
-    MoveTo(CX + 5, CY - 9); LineTo(CX + 10, CY - 14); LineTo(CX + 7, CY - 14);
-    MoveTo(CX + 10, CY - 14); LineTo(CX + 10, CY - 11);
+    TLijn(CX, CY - 10, CX + 5, CY - 15); TLijn(CX + 5, CY - 15, CX + 2, CY - 15);
+    TLijn(CX + 5, CY - 15, CX + 5, CY - 12);
+    TLijn(CX + 5, CY - 9, CX + 10, CY - 14); TLijn(CX + 10, CY - 14, CX + 7, CY - 14);
+    TLijn(CX + 10, CY - 14, CX + 10, CY - 11);
     Pen.Color := clBlack;
     if FDoorgebrand then
     begin
       Pen.Width := 2; Pen.Color := clRed;
-      MoveTo(CX - 10, CY - 10); LineTo(CX + 10, CY + 10);
-      MoveTo(CX + 10, CY - 10); LineTo(CX - 10, CY + 10);
+      TLijn(CX - 10, CY - 10, CX + 10, CY + 10);
+      TLijn(CX + 10, CY - 10, CX - 10, CY + 10);
       Pen.Width := 1; Pen.Color := clBlack;
     end;
     PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
-    TextOut(PinPos(0).X + 8, CY - 15, '+');
+    with TP(9, CY - 15) do TextOut(X, Y, '+');
     Font.Style := [];
-    if FDoorgebrand then
-      S := Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt')
-    else
-      S := LedKleurNaam(FTaal, FKleur) + ' ' + FormatFloat('0.0', Drempel) + ' V';
     Font.Size := 6;
-    TW := TextWidth(S);
-    TextOut(CX - TW div 2, CY + 11, S);
+    if FGedraaid then
+    begin
+      // rechts naast het symbool: kleur en spanning op twee regels
+      if FDoorgebrand then
+        TextOut(CY + 17, CX - 5, Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt'))
+      else
+      begin
+        TextOut(CY + 17, CX - 10, LedKleurNaam(FTaal, FKleur));
+        TextOut(CY + 17, CX, FormatFloat('0.0', Drempel) + ' V');
+      end;
+    end
+    else
+    begin
+      if FDoorgebrand then
+        S := Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt')
+      else
+        S := LedKleurNaam(FTaal, FKleur) + ' ' + FormatFloat('0.0', Drempel) + ' V';
+      TW := TextWidth(S);
+      TextOut(CX - TW div 2, CY + 11, S);
+    end;
   end;
   PaintSelection;
 end;
@@ -9799,7 +10095,7 @@ end;
 // blijven liggen, dus ze zitten nu aan de andere klem.
 function TjanDiode.PinPos(I: Integer): TPoint;
 begin
-  if (I = 0) <> FOmgekeerd then Result := Point(1, 17) else Result := Point(Led2W - 8, 17);
+  if (I = 0) <> FOmgekeerd then Result := TP(1, 17) else Result := TP(Led2W - 8, 17);
 end;
 
 procedure TjanDiode.SetOmgekeerd(const Value: Boolean);
@@ -9838,54 +10134,63 @@ var
   S: string;
   Aan: Boolean;
 begin
+  // tekening in de gewone stand; TP/TRc spiegelen ze als de diode gedraaid is
   CX := Led2W div 2;
-  CY := PinPos(0).Y + 3;
+  CY := 17 + 3;
   // R = 1: de driehoek wijst naar rechts (anode links); -1: omgedraaid
   if FOmgekeerd then R := -1 else R := 1;
   Aan := (Abs(FAmp) > 0.0005) and not FDoorgebrand;
   with Canvas do
   begin
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(8, CY); LineTo(CX - 8, CY);
-    MoveTo(CX + 7, CY); LineTo(Led2W - 8, CY);
+    TLijn(8, CY, CX - 8, CY);
+    TLijn(CX + 7, CY, Led2W - 8, CY);
     // schemasymbool: driehoek in de doorlaatrichting met een streep (kathode)
     Pen.Width := 1;
     Brush.Style := bsSolid;
     if FDoorgebrand then Brush.Color := RGBToColor(90, 80, 70)
     else if Aan then Brush.Color := RGBToColor(255, 150, 120)   // geleidt
     else Brush.Color := RGBToColor(200, 200, 200);              // spert
-    Polygon([Point(CX - 8 * R, CY - 8), Point(CX + 6 * R, CY), Point(CX - 8 * R, CY + 8)]);
+    Polygon([TP(CX - 8 * R, CY - 8), TP(CX + 6 * R, CY), TP(CX - 8 * R, CY + 8)]);
     Pen.Width := 2;
-    MoveTo(CX + 6 * R, CY - 8); LineTo(CX + 6 * R, CY + 9);
+    TLijn(CX + 6 * R, CY - 8, CX + 6 * R, CY + 9);
     Pen.Width := 1;
     if FDoorgebrand then
     begin
       Pen.Width := 2; Pen.Color := clRed;
-      MoveTo(CX - 10, CY - 10); LineTo(CX + 10, CY + 10);
-      MoveTo(CX + 10, CY - 10); LineTo(CX - 10, CY + 10);
+      TLijn(CX - 10, CY - 10, CX + 10, CY + 10);
+      TLijn(CX + 10, CY - 10, CX - 10, CY + 10);
       Pen.Width := 1; Pen.Color := clBlack;
     end;
     PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 6; Font.Style := [fsBold]; Font.Color := clNavy;
-    if FOmgekeerd then
+    if FOmgekeerd then S := 'K' else S := 'A';
+    with TP(9, CY - 15) do TextOut(X, Y, S);
+    if FOmgekeerd then S := 'A' else S := 'K';
+    with TP(Led2W - 14, CY - 15) do TextOut(X, Y, S);
+    Font.Style := [];
+    if FGedraaid then
     begin
-      TextOut(9, CY - 15, 'K');
-      TextOut(Led2W - 14, CY - 15, 'A');
+      // rechts naast het symbool, op twee regels
+      if FDoorgebrand then
+        TextOut(CY + 17, CX - 5, Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt'))
+      else
+      begin
+        TextOut(CY + 17, CX - 10, Tr(FTaal, 'diode', 'diode', 'diode', 'Diode'));
+        TextOut(CY + 17, CX, FormatFloat('0.0', Drempel) + ' V');
+      end;
     end
     else
     begin
-      TextOut(9, CY - 15, 'A');
-      TextOut(Led2W - 14, CY - 15, 'K');
+      if FDoorgebrand then
+        S := Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt')
+      else
+        S := Tr(FTaal, 'diode', 'diode', 'diode', 'Diode') + ' ' + FormatFloat('0.0', Drempel) + ' V';
+      TW := TextWidth(S);
+      TextOut(CX - TW div 2, CY + 11, S);
     end;
-    Font.Style := [];
-    if FDoorgebrand then
-      S := Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt')
-    else
-      S := Tr(FTaal, 'diode', 'diode', 'diode', 'Diode') + ' ' + FormatFloat('0.0', Drempel) + ' V';
-    TW := TextWidth(S);
-    TextOut(CX - TW div 2, CY + 11, S);
   end;
   PaintSelection;
 end;
@@ -9948,7 +10253,22 @@ end;
 
 function TjanCondensator.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := Point(1, 17) else Result := Point(CondW - 8, 17);
+  if I = 0 then Result := TP(1, 17) else Result := TP(CondW - 8, 17);
+end;
+
+function TjanCondensator.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanCondensator.StdMaat: TPoint;
+begin
+  Result := Point(CondW, CondH);
+end;
+
+function TjanCondensator.ExtraBreedte: Integer;
+begin
+  Result := 14;   // capaciteit en spanning rechts naast het symbool
 end;
 
 function TjanCondensator.Farad: Double;
@@ -10009,44 +10329,57 @@ var
   K: Double;
   S: string;
 begin
+  // tekening in de gewone stand; TP/TRc spiegelen ze als hij gedraaid is
   CX := CondW div 2;
-  CY := PinPos(0).Y + 3;
+  CY := 17 + 3;
   // lading: hoe vol (tot 12 V)
   K := Abs(FU) / BronMaxVolt;
   if K > 1 then K := 1;
   with Canvas do
   begin
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(PinPos(0).X + 7, CY); LineTo(CX - 4, CY);
-    MoveTo(CX + 4, CY); LineTo(PinPos(1).X, CY);
-    // de lading tussen de platen (blauw, hoe hoger hoe voller)
+    TLijn(8, CY, CX - 4, CY);
+    TLijn(CX + 4, CY, CondW - 8, CY);
+    // de lading tussen de platen (blauw, hoe hoger hoe voller); gedraaid
+    // vult ze van links naar rechts
     Hh := Round(24 * K);
     if Hh > 0 then
     begin
       Brush.Style := bsSolid;
       Brush.Color := RGBToColor(120, 170, 255);
-      FillRect(Rect(CX - 3, CY + 12 - Hh, CX + 4, CY + 12));
+      if FGedraaid then
+        FillRect(Rect(CY - 12, CX - 3, CY - 12 + Hh, CX + 4))
+      else
+        FillRect(Rect(CX - 3, CY + 12 - Hh, CX + 4, CY + 12));
     end;
     // schemasymbool: twee platen, de - plaat dik (elco)
     Pen.Width := 2;
-    MoveTo(CX - 4, CY - 12); LineTo(CX - 4, CY + 13);
+    TLijn(CX - 4, CY - 12, CX - 4, CY + 13);
     Brush.Style := bsSolid; Brush.Color := clBlack;
-    FillRect(Rect(CX + 3, CY - 12, CX + 7, CY + 13));
+    FillRect(TRc(CX + 3, CY - 12, CX + 7, CY + 13));
     Pen.Width := 1;
     PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
-    TextOut(CX - 12, CY - 15, '+');
+    with TP(CX - 12, CY - 15) do TextOut(X, Y, '+');
     Font.Style := [];
     // capaciteit en spanning op twee regels (anders te breed)
     Font.Size := 6;
-    S := UFText(CondUF[FSoort]);
-    TW := TextWidth(S);
-    TextOut(CX - TW div 2, CY + 14, S);
-    S := FormatFloat('0.0', FU) + ' V';
-    TW := TextWidth(S);
-    TextOut(CX - TW div 2, CY + 24, S);
+    if FGedraaid then
+    begin
+      TextOut(CY + 16, CX - 10, UFText(CondUF[FSoort]));
+      TextOut(CY + 16, CX, FormatFloat('0.0', FU) + ' V');
+    end
+    else
+    begin
+      S := UFText(CondUF[FSoort]);
+      TW := TextWidth(S);
+      TextOut(CX - TW div 2, CY + 14, S);
+      S := FormatFloat('0.0', FU) + ' V';
+      TW := TextWidth(S);
+      TextOut(CX - TW div 2, CY + 24, S);
+    end;
   end;
   PaintSelection;
 end;
@@ -10101,7 +10434,22 @@ end;
 
 function TjanSchakelaar2.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := Point(1, 21) else Result := Point(Schakelaar2W - 8, 21);
+  if I = 0 then Result := TP(1, 21) else Result := TP(Schakelaar2W - 8, 21);
+end;
+
+function TjanSchakelaar2.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanSchakelaar2.StdMaat: TPoint;
+begin
+  Result := Point(Schakelaar2W, Schakelaar2H);
+end;
+
+function TjanSchakelaar2.ExtraBreedte: Integer;
+begin
+  Result := 24;   // dicht/open rechts naast de hendel
 end;
 
 procedure TjanSchakelaar2.SetAan(const Value: Boolean);
@@ -10116,8 +10464,9 @@ end;
 
 function TjanSchakelaar2.HandleClick(X, Y: Integer): Boolean;
 begin
-  // de hendel (tussen de twee contacten)
-  Result := (X >= 12) and (X <= Schakelaar2W - 12) and (Y >= 4) and (Y <= 30);
+  // de hendel (tussen de twee contacten); gedraaid: x en y gespiegeld
+  with TP(X, Y) do
+    Result := (X >= 12) and (X <= Schakelaar2W - 12) and (Y >= 4) and (Y <= 30);
   if Result then Aan := not Aan;
 end;
 
@@ -10126,24 +10475,25 @@ var
   CY, XL, XR, TW: Integer;
   S: string;
 begin
-  CY := PinPos(0).Y + 3;
+  // tekening in de gewone stand; TP/TRc spiegelen ze als hij gedraaid is
+  CY := 21 + 3;
   XL := 16;
   XR := Schakelaar2W - 16;
   with Canvas do
   begin
     Pen.Color := clBlack; Pen.Width := 2;
-    MoveTo(PinPos(0).X + 7, CY); LineTo(XL, CY);
-    MoveTo(XR, CY); LineTo(PinPos(1).X, CY);
+    TLijn(8, CY, XL, CY);
+    TLijn(XR, CY, Schakelaar2W - 8, CY);
     // hendel: dicht = recht naar het andere contact, open = schuin omhoog
+    // (gedraaid: schuin naar links)
     if FAan then Pen.Color := clRed else Pen.Color := clBlack;
     Pen.Width := 3;
-    MoveTo(XL, CY);
-    if FAan then LineTo(XR - 1, CY) else LineTo(XR - 4, CY - 13);
+    if FAan then TLijn(XL, CY, XR - 1, CY) else TLijn(XL, CY, XR - 4, CY - 13);
     Pen.Width := 1; Pen.Color := clBlack;
     Brush.Style := bsSolid; Brush.Color := clBlack;
-    Ellipse(Rect(XL - 3, CY - 3, XL + 4, CY + 4));
+    Ellipse(TRc(XL - 3, CY - 3, XL + 4, CY + 4));
     Brush.Color := clWhite;
-    Ellipse(Rect(XR - 3, CY - 3, XR + 4, CY + 4));
+    Ellipse(TRc(XR - 3, CY - 3, XR + 4, CY + 4));
     PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
@@ -10151,7 +10501,10 @@ begin
     if FAan then S := Tr(FTaal, 'dicht', 'closed', 'fermé', 'zu')
     else S := Tr(FTaal, 'open', 'open', 'ouvert', 'offen');
     TW := TextWidth(S);
-    TextOut((Schakelaar2W - TW) div 2, CY + 6, S);
+    if FGedraaid then
+      TextOut(CY + 8, (Schakelaar2W - TextHeight(S)) div 2, S)
+    else
+      TextOut((Schakelaar2W - TW) div 2, CY + 6, S);
   end;
   PaintSelection;
 end;
@@ -25028,6 +25381,9 @@ begin
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
           SetupVoedingsDeel(VD);
+          // rechtop gezet: veld V achteraan
+          if (Trim(Strings[Count - 1]) = 'V') or ((Count >= 2) and (Trim(Strings[Count - 2]) = 'V')) then
+            VD.Gedraaid := True;
           VD.SetBounds(StrToIntDef(Trim(Strings[1]), 0), StrToIntDef(Trim(Strings[2]), 0),
             VD.Width, VD.Height);
           if (VD is TjanBron) and (Count >= 6) then

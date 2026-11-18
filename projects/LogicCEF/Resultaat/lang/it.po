@@ -1422,3 +1422,6 @@ msgstr "Disegna la tensione tra + e − nel tempo, come un voltmetro che scrive.
 
 msgid "create Oscilloscope"
 msgstr "crea oscilloscopio"
+
+msgid "Rotate"
+msgstr "Ruota"

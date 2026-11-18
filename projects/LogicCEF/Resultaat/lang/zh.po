@@ -1732,3 +1732,6 @@ msgstr "随时间绘制 + 与 − 之间的电压，就像会画线的电压表�
 
 msgid "create Oscilloscope"
 msgstr "创建示波器"
+
+msgid "Rotate"
+msgstr "旋转"

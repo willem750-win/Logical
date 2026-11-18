@@ -1732,3 +1732,6 @@ msgstr "+ と − の間の電圧を時間とともに描きます（書く電�
 
 msgid "create Oscilloscope"
 msgstr "オシロスコープを作成"
+
+msgid "Rotate"
+msgstr "回転"

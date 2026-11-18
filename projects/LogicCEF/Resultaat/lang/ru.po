@@ -1732,3 +1732,6 @@ msgstr "Рисует напряжение между + и − во времен�
 
 msgid "create Oscilloscope"
 msgstr "создать осциллограф"
+
+msgid "Rotate"
+msgstr "Повернуть"
