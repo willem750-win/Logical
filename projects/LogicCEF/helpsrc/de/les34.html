@@ -1,0 +1,42 @@
+<!-- titel: Lektion 34 - Die Diode -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 34 von 37</p>
+  <h1>Die Diode</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, dass eine Diode Strom nur in eine Richtung durchlässt, und die Spannung über
+  der Diode in jeder Richtung messen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les34-diode.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les34.png" alt="Quelle von 12 V mit zwei Zweigen: Schalter, Diode und Lampe von 120 Ohm; oben in Durchlassrichtung, unten umgedreht; ein Voltmeter über jeder Diode">
+    <figcaption>Zwei Zweige mit Schalter, Diode und Lampe. Oben liegt die Diode in Durchlassrichtung (A an +), unten umgedreht (K an +). Ein Voltmeter misst über jeder Diode.</figcaption>
+  </figure>
+
+  <h2>Durchlassrichtung</h2>
+  <p>Eine <a href="voeding.html#diode"><img src="../img/pal-diode.png" class="ico" alt="">Diode</a> hat eine Anode <b>A</b> und eine
+  Kathode <b>K</b> (beim Strich). Strom fließt nur von A nach K, und erst über 0,7&nbsp;V.</p>
+  <ol class="steps">
+    <li>Schalten Sie den oberen Schalter ein. Die Lampe leuchtet, und die Diode wird lachsrot: Sie leitet.</li>
+    <li>Das Voltmeter über der Diode zeigt 0,7&nbsp;V. Der Rest, 11,3&nbsp;V, liegt über der Lampe.</li>
+    <li>Zeigen Sie auf die Lampe: Es fließen I = (12 &minus; 0,7)&nbsp;V / 120&nbsp;&Omega; &asymp; 94&nbsp;mA.</li>
+  </ol>
+
+  <h2>Sperrrichtung</h2>
+  <ol class="steps">
+    <li>Schalten Sie den unteren Schalter ein. Die Lampe bleibt aus, und die Diode ist grau: Sie <b>sperrt</b>.</li>
+    <li>Das Voltmeter über der Diode zeigt 12,0&nbsp;V: Die volle Spannung liegt über der Diode, und es fließt kein Strom.</li>
+    <li>Klicken Sie mit der rechten Maustaste auf die untere Diode und wählen Sie <b>Umdrehen</b>. Jetzt leuchtet auch die untere Lampe.</li>
+  </ol>
+  <p>Eine Diode ist also eine Art <b>Einbahnstraße</b> für den Strom.</p>
+
+  <h2>Aufgabe: Schutz vor Verpolung</h2>
+  <p>Ein Batteriegerät kann kaputtgehen, wenn man die Batterie falsch herum einlegt. Wo setzen Sie eine Diode ein, damit bei einer
+  falsch eingelegten Batterie kein Strom fließen kann? Probieren Sie es mit dem oberen Zweig: Vertauschen Sie die Drähte an der Quelle.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>In Reihe mit dem Gerät, mit der Anode am + der Batterie. Liegt die Batterie richtig, leitet die Diode (0,7&nbsp;V gehen
+    verloren). Liegt sie falsch, sperrt die Diode, und das Gerät bleibt geschützt.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Dioden stecken in fast jedem Ladegerät und jedem Netzteil. Auch eine LED ist
+  eine Diode, eine, die leuchtet.</div>
+
+  <div class="pager"><a href="les33.html">&larr; Lektion 33: Das Potentiometer</a><a href="les35.html">Lektion 35: Wechselspannung &rarr;</a></div>

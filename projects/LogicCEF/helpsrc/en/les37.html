@@ -1,0 +1,53 @@
+<!-- titel: Lesson 37 - The Graetz bridge -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 37 of 37</p>
+  <h1>The Graetz bridge</h1>
+  <div class="goal"><strong>Goal:</strong> use four diodes to use both halves of an AC voltage (full-wave rectification), and
+  smooth the voltage with a capacitor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les37-graetz.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les37.png" alt="AC voltage source with four diodes in a bridge, a lamp and a branch with switch and capacitor; the oscilloscope across the lamp shows eight humps in four seconds">
+    <figcaption>The Graetz bridge: four diodes, a lamp as the load and a branch with a switch and a 4700&nbsp;&micro;F capacitor. The oscilloscope across the lamp shows both halves, pointing up.</figcaption>
+  </figure>
+  <p>Wires that cross are not connected to each other: a wire is only connected at its ends.</p>
+
+  <h2>Both halves pointing up</h2>
+  <ol class="steps">
+    <li>Leave the switch open and start the simulation. The oscilloscope shows <b>humps</b>: every half wave, the negative ones too,
+      points up. In 4 seconds you see 8 of them.</li>
+    <li>Look at the diodes. When the source voltage is positive, the first and the third diode (counted from the top) conduct;
+      when it is negative, the second and the fourth. Each time the current flows from left to right through the lamp.</li>
+    <li>The lamp again gets bright <b>twice per period</b>, as in <a href="les35.html">lesson 35</a>, but the voltage across the lamp
+      no longer changes direction.</li>
+  </ol>
+  <p>This is called <b>full-wave rectification</b>. The peak across the lamp is 12 &minus; 2 &times; 0.7 = 10.6&nbsp;V, because the
+  current always flows through two diodes.</p>
+
+  <h2>Smoothing with a capacitor</h2>
+  <figure>
+    <img src="../img/les37b.png" alt="The same bridge with the capacitor switch on; the oscilloscope shows a voltage that varies between about 6 and 10.6 volts">
+    <figcaption>With the capacitor: the voltage no longer drops to 0 but varies between about 6 and 10.6&nbsp;V.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Switch on. The <a href="voeding.html#condensator"><img src="../img/pal-condensator.png" class="ico" alt="">capacitor</a>
+      charges at every hump and gives its charge back when the voltage drops.</li>
+    <li>The oscilloscope now shows a voltage that no longer drops to 0: it varies between about 6 and 10.6&nbsp;V. That variation is
+      called the <b>ripple</b>.</li>
+    <li>Right-click to choose a smaller capacitor: with 2200&nbsp;&micro;F the voltage drops to about 4.2&nbsp;V, with
+      1000&nbsp;&micro;F to 2.1&nbsp;V. The bigger the capacitor, the smaller the ripple.</li>
+  </ol>
+
+  <h2>Assignment: almost DC voltage</h2>
+  <p>The 120&nbsp;&Omega; lamp draws a lot of current and discharges the capacitor quickly. Right-click to choose a 480&nbsp;&Omega;
+  lamp and keep the 4700&nbsp;&micro;F capacitor on. What does the voltage look like now?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>The ripple gets much smaller: the voltage only varies between about 8.9 and 10.6&nbsp;V. The lamp draws less current, so the
+    capacitor discharges more slowly (&tau; = R &times; C = 480 &times; 0.0047 &asymp; 2.3&nbsp;s). This is how a power supply turns an AC
+    voltage into an almost flat DC voltage.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> every charger for a phone or laptop contains such a bridge with four diodes and a
+  smoothing capacitor. At 50&nbsp;Hz there are 100 humps per second, so a smaller capacitor is already enough.</div>
+
+  <div class="pager"><a href="les36.html">&larr; Lesson 36: Half-wave rectification</a><a href="leerpad.html">Learning path &rarr;</a></div>

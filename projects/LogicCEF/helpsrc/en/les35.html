@@ -1,0 +1,46 @@
+<!-- titel: Lesson 35 - AC voltage -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 35 of 37</p>
+  <h1>AC voltage</h1>
+  <div class="goal"><strong>Goal:</strong> see how an AC voltage changes direction, read its shape on an oscilloscope, and
+  understand why a lamp on it gets bright twice per period.</div>
+
+  <p><a class="open" href="../../panels/lessen/les35-wisselspanning.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les35.png" alt="AC voltage source of 12 V peak and 1 hertz with a 120 ohm lamp and an oscilloscope across the lamp showing a sine">
+    <figcaption>An AC voltage source (12&nbsp;V peak, 1&nbsp;Hz) with a lamp. The oscilloscope across the lamp draws a sine.</figcaption>
+  </figure>
+
+  <h2>A voltage that changes direction</h2>
+  <p>A battery always gives the same voltage, with the + always on the same side: <b>DC voltage</b>. The wall socket gives
+  <b>AC voltage</b>: the voltage rises, falls, becomes negative and rises again, over and over. The
+  <a href="voeding.html#wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">AC voltage source</a> does that here
+  slowed down, so that you can follow it.</p>
+  <ol class="steps">
+    <li>Start the simulation. Look at the display of the source: the voltage goes from 0 to +12&nbsp;V, back to 0, to
+      &minus;12&nbsp;V and back to 0.</li>
+    <li>The <a href="voeding.html#scoop"><img src="../img/pal-scoop.png" class="ico" alt="">oscilloscope</a> draws that voltage over
+      time: a <b>sine</b>. The highest value is the <b>peak value</b>, 12&nbsp;V here.</li>
+    <li>One complete wave takes 1 second: the <b>period</b>. In 4 seconds (the whole screen) you see 4 waves. The
+      <b>frequency</b> is the number of waves per second: f = 1 / period = 1&nbsp;Hz.</li>
+  </ol>
+
+  <h2>The lamp</h2>
+  <ol class="steps">
+    <li>Look at the lamp: it gets bright when the voltage is +12&nbsp;V, and also when it is &minus;12&nbsp;V. A lamp lights in both
+      directions.</li>
+    <li>So it gets bright <b>twice per period</b>, and dims briefly when the voltage passes through 0.</li>
+  </ol>
+
+  <h2>Assignment: another frequency</h2>
+  <p>Right-click the source and choose <b>Frequency</b> &rsaquo; 2&nbsp;Hz. How many waves do you see on the screen now, and how often
+  per second does the lamp get bright?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>At 2&nbsp;Hz a period takes 0.5&nbsp;s. In 4 seconds you see 8 waves. The lamp gets bright 2 &times; 2 = 4 times per second.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> the mains changes direction 50 times a second (50&nbsp;Hz) in Europe. An
+  incandescent lamp then flickers 100 times a second, far too fast to see. The 230&nbsp;V of the wall socket is an average (the
+  RMS value); the peak value is about 325&nbsp;V.</div>
+
+  <div class="pager"><a href="les34.html">&larr; Lesson 34: The diode</a><a href="les36.html">Lesson 36: Half-wave rectification &rarr;</a></div>

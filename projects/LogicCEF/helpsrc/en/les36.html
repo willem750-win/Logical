@@ -1,0 +1,34 @@
+<!-- titel: Lesson 36 - Half-wave rectification -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 36 of 37</p>
+  <h1>Half-wave rectification</h1>
+  <div class="goal"><strong>Goal:</strong> use one diode to turn an AC voltage into a voltage that always has the same
+  direction, and see the difference on two oscilloscopes.</div>
+
+  <p><a class="open" href="../../panels/lessen/les36-enkelzijdig.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les36.png" alt="AC voltage source with a diode and a lamp in series; on the left an oscilloscope across the source showing a sine, on the right one across the lamp showing only the positive half waves">
+    <figcaption>Source &rarr; diode &rarr; lamp. On the left the oscilloscope across the source (the whole sine), on the right the one across the lamp (only the upper halves).</figcaption>
+  </figure>
+
+  <h2>The diode lets half through</h2>
+  <ol class="steps">
+    <li>Start the simulation. The left oscilloscope shows the AC voltage of the source: a sine from +12 to &minus;12&nbsp;V.</li>
+    <li>The right oscilloscope shows the voltage across the lamp: only the <b>positive half waves</b>. In between it is 0&nbsp;V.</li>
+    <li>Look at the diode: in the positive half it conducts (salmon red), in the negative half it blocks (grey).</li>
+    <li>The lamp now gets bright only <b>once per period</b>, and then stays dark for half a period.</li>
+  </ol>
+  <p>The voltage across the lamp no longer changes direction: it is <b>rectified</b>. Because only one half of each wave is used,
+  this is called <b>half-wave</b> rectification. The peak across the lamp is 12 &minus; 0.7 = 11.3&nbsp;V: the diode takes 0.7&nbsp;V.</p>
+
+  <h2>Assignment: the other half</h2>
+  <p>Turn the diode round (right-click &rsaquo; <b>Turn round</b>). What does the right oscilloscope show now?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Now only the negative half waves get through: the voltage across the lamp is always negative, down to &minus;11.3&nbsp;V. It is
+    still rectified, but in the other direction.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> half-wave rectification throws away half of the energy and gives a voltage with big
+  gaps. That is why most power supplies use four diodes: the Graetz bridge of the next lesson.</div>
+
+  <div class="pager"><a href="les35.html">&larr; Lesson 35: AC voltage</a><a href="les37.html">Lesson 37: The Graetz bridge &rarr;</a></div>

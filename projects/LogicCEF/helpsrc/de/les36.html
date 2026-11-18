@@ -1,0 +1,35 @@
+<!-- titel: Lektion 36 - Einweggleichrichtung -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 36 von 37</p>
+  <h1>Einweggleichrichtung</h1>
+  <div class="goal"><strong>Ziel:</strong> mit einer Diode aus einer Wechselspannung eine Spannung machen, die immer dieselbe
+  Richtung hat, und den Unterschied auf zwei Oszilloskopen sehen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les36-enkelzijdig.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les36.png" alt="Wechselspannungsquelle mit einer Diode und einer Lampe in Reihe; links ein Oszilloskop über der Quelle mit einem Sinus, rechts eines über der Lampe mit nur den positiven Halbwellen">
+    <figcaption>Quelle &rarr; Diode &rarr; Lampe. Links das Oszilloskop über der Quelle (der ganze Sinus), rechts das über der Lampe (nur die oberen Hälften).</figcaption>
+  </figure>
+
+  <h2>Die Diode lässt die Hälfte durch</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Das linke Oszilloskop zeigt die Wechselspannung der Quelle: einen Sinus von +12 bis &minus;12&nbsp;V.</li>
+    <li>Das rechte Oszilloskop zeigt die Spannung über der Lampe: nur die <b>positiven Halbwellen</b>. Dazwischen sind es 0&nbsp;V.</li>
+    <li>Schauen Sie auf die Diode: In der positiven Hälfte leitet sie (lachsrot), in der negativen sperrt sie (grau).</li>
+    <li>Die Lampe wird nur noch <b>einmal pro Periode</b> hell und bleibt dann eine halbe Periode dunkel.</li>
+  </ol>
+  <p>Die Spannung über der Lampe wechselt nicht mehr die Richtung: Sie ist <b>gleichgerichtet</b>. Weil nur eine Hälfte jeder Welle
+  genutzt wird, heißt das <b>Einweggleichrichtung</b>. Die Spitze über der Lampe beträgt 12 &minus; 0,7 = 11,3&nbsp;V: Die Diode nimmt
+  0,7&nbsp;V.</p>
+
+  <h2>Aufgabe: die andere Hälfte</h2>
+  <p>Drehen Sie die Diode um (Rechtsklick &rsaquo; <b>Umdrehen</b>). Was zeigt das rechte Oszilloskop jetzt?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Jetzt kommen nur die negativen Halbwellen durch: Die Spannung über der Lampe ist immer negativ, bis &minus;11,3&nbsp;V. Sie ist
+    weiter gleichgerichtet, aber in die andere Richtung.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Die Einweggleichrichtung wirft die Hälfte der Energie weg und liefert eine
+  Spannung mit großen Lücken. Darum nutzen die meisten Netzteile vier Dioden: die Graetz-Brücke der nächsten Lektion.</div>
+
+  <div class="pager"><a href="les35.html">&larr; Lektion 35: Wechselspannung</a><a href="les37.html">Lektion 37: Die Graetz-Brücke &rarr;</a></div>

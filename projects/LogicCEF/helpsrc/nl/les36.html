@@ -1,0 +1,35 @@
+<!-- titel: Les 36 - Enkelzijdige gelijkrichting -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 36 van 37</p>
+  <h1>Enkelzijdige gelijkrichting</h1>
+  <div class="goal"><strong>Doel:</strong> met één diode van een wisselspanning een spanning maken die altijd dezelfde
+  richting heeft, en het verschil zien op twee oscilloscopen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les36-enkelzijdig.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les36.png" alt="Wisselspanningsbron met een diode en een lamp in serie; links een oscilloscoop over de bron met een sinus, rechts een over de lamp met alleen de positieve halve golven">
+    <figcaption>Bron &rarr; diode &rarr; lamp. Links de oscilloscoop over de bron (de hele sinus), rechts die over de lamp (alleen de bovenste helften).</figcaption>
+  </figure>
+
+  <h2>De diode laat de helft door</h2>
+  <ol class="steps">
+    <li>Start de simulatie. De linker oscilloscoop toont de wisselspanning van de bron: een sinus van +12 tot &minus;12&nbsp;V.</li>
+    <li>De rechter oscilloscoop toont de spanning over de lamp: alleen de <b>positieve halve golven</b>. Daartussen is het 0&nbsp;V.</li>
+    <li>Kijk naar de diode: in de positieve helft geleidt ze (zalmrood), in de negatieve spert ze (grijs).</li>
+    <li>De lamp wordt nog maar <b>één keer per periode</b> fel, en blijft daarna een halve periode donker.</li>
+  </ol>
+  <p>De spanning over de lamp wisselt niet meer van richting: ze is <b>gelijkgericht</b>. Omdat maar één helft van elke golf
+  gebruikt wordt, heet dit <b>enkelzijdige</b> gelijkrichting. De top over de lamp is 12 &minus; 0,7 = 11,3&nbsp;V: de diode neemt
+  0,7&nbsp;V.</p>
+
+  <h2>Opdracht: de andere helft</h2>
+  <p>Draai de diode om (rechtsklik &rsaquo; <b>Omdraaien</b>). Wat toont de rechter oscilloscoop nu?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Nu komen alleen de negatieve halve golven door: de spanning over de lamp is altijd negatief, tot &minus;11,3&nbsp;V. Ze is
+    nog altijd gelijkgericht, maar in de andere richting.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> enkelzijdige gelijkrichting gooit de helft van de energie weg en geeft een spanning
+  met grote gaten. Daarom gebruiken de meeste voedingen vier diodes: de Graetz-brug van de volgende les.</div>
+
+  <div class="pager"><a href="les35.html">&larr; Les 35: Wisselspanning</a><a href="les37.html">Les 37: De Graetz-brug &rarr;</a></div>

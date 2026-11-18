@@ -3442,6 +3442,9 @@ end;
     function PinPos(I: Integer): TPoint; override;
     procedure Meet(AU: Double);   // meetpunt op de huidige simulatietijd
     procedure Wis;
+    // hoogste en laagste meting van de laatste ASec seconden
+    function MaxLaatste(ASec: Double): Double;
+    function MinLaatste(ASec: Double): Double;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Aantal: Integer read FN;
@@ -3642,6 +3645,9 @@ function SimulatieTijd: Double;
 procedure ZetSimulatieTijd(T: Double);
 // de voedingskring van paneel P opnieuw uitrekenen (zonder de tijd te laten lopen)
 procedure VoedingBijwerken(P: TWinControl);
+// één stap van de simulatieklok: de tijd loopt ADt seconden verder en de
+// condensatoren laden of ontladen mee (zoals de cpu-timer)
+procedure SimulatieStap(P: TWinControl; ADt: Double);
 
 var
   // opent het LogicRun-venster voor het blok (Sender); gezet door het
@@ -8513,6 +8519,18 @@ begin
   UpdateSupply(P, True);
 end;
 
+procedure SimulatieStap(P: TWinControl; ADt: Double);
+begin
+  CondDt := ADt;
+  SimTijd := SimTijd + ADt;
+  CondStap := True;
+  try
+    UpdateSupply(P, True);
+  finally
+    CondStap := False;
+  end;
+end;
+
 { TjanWisselbron }
 
 constructor TjanWisselbron.Create(AOwner: TComponent);
@@ -10300,6 +10318,40 @@ begin
   FKop := (FKop + 1) mod ScoopMax;
   if FN < ScoopMax then Inc(FN);
   Invalidate;
+end;
+
+function TjanScoop.MaxLaatste(ASec: Double): Double;
+var
+  i, j: Integer;
+  TNu: Double;
+begin
+  Result := 0;
+  if FN = 0 then Exit;
+  TNu := FT[(FKop - 1 + ScoopMax) mod ScoopMax];
+  Result := -1E9;
+  for i := 0 to FN - 1 do
+  begin
+    j := (FKop - 1 - i + 2 * ScoopMax) mod ScoopMax;
+    if FT[j] < TNu - ASec then Break;
+    if FU[j] > Result then Result := FU[j];
+  end;
+end;
+
+function TjanScoop.MinLaatste(ASec: Double): Double;
+var
+  i, j: Integer;
+  TNu: Double;
+begin
+  Result := 0;
+  if FN = 0 then Exit;
+  TNu := FT[(FKop - 1 + ScoopMax) mod ScoopMax];
+  Result := 1E9;
+  for i := 0 to FN - 1 do
+  begin
+    j := (FKop - 1 - i + 2 * ScoopMax) mod ScoopMax;
+    if FT[j] < TNu - ASec then Break;
+    if FU[j] < Result then Result := FU[j];
+  end;
 end;
 
 procedure TjanScoop.SetBereikIdx(const Value: Integer);

@@ -1,0 +1,46 @@
+<!-- titel: Les 35 - Wisselspanning -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 35 van 37</p>
+  <h1>Wisselspanning</h1>
+  <div class="goal"><strong>Doel:</strong> zien hoe een wisselspanning van richting verandert, haar vorm aflezen op een
+  oscilloscoop, en begrijpen waarom een lamp er twee keer per periode op fel wordt.</div>
+
+  <p><a class="open" href="../../panels/lessen/les35-wisselspanning.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les35.png" alt="Wisselspanningsbron van 12 V top en 1 hertz met een lamp van 120 ohm en een oscilloscoop over de lamp die een sinus toont">
+    <figcaption>Een wisselspanningsbron (12&nbsp;V top, 1&nbsp;Hz) met een lamp. De oscilloscoop over de lamp tekent een sinus.</figcaption>
+  </figure>
+
+  <h2>Een spanning die van richting wisselt</h2>
+  <p>Een batterij geeft altijd dezelfde spanning, met de + altijd aan dezelfde kant: <b>gelijkspanning</b>. Het stopcontact
+  geeft <b>wisselspanning</b>: de spanning stijgt, zakt, wordt negatief en stijgt weer, steeds opnieuw. De
+  <a href="voeding.html#wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">wisselspanningsbron</a> doet dat hier
+  vertraagd, zodat je het kunt volgen.</p>
+  <ol class="steps">
+    <li>Start de simulatie. Kijk naar het display van de bron: de spanning loopt van 0 naar +12&nbsp;V, terug naar 0, naar
+      &minus;12&nbsp;V en weer naar 0.</li>
+    <li>De <a href="voeding.html#scoop"><img src="../img/pal-scoop.png" class="ico" alt="">oscilloscoop</a> tekent die spanning in
+      de tijd: een <b>sinus</b>. De hoogste waarde is de <b>topwaarde</b>, hier 12&nbsp;V.</li>
+    <li>Eén volledige golf duurt 1 seconde: de <b>periode</b>. In 4 seconden (het hele scherm) zie je 4 golven. De
+      <b>frequentie</b> is het aantal golven per seconde: f = 1 / periode = 1&nbsp;Hz.</li>
+  </ol>
+
+  <h2>De lamp</h2>
+  <ol class="steps">
+    <li>Kijk naar de lamp: ze wordt fel als de spanning +12&nbsp;V is, én als ze &minus;12&nbsp;V is. Een lamp brandt in beide
+      richtingen.</li>
+    <li>Ze wordt dus <b>twee keer per periode</b> fel, en dooft even als de spanning door 0 gaat.</li>
+  </ol>
+
+  <h2>Opdracht: een andere frequentie</h2>
+  <p>Klik met de rechtermuisknop op de bron en kies <b>Frequentie</b> &rsaquo; 2&nbsp;Hz. Hoeveel golven zie je nu op het scherm, en
+  hoe vaak per seconde wordt de lamp fel?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Bij 2&nbsp;Hz duurt een periode 0,5&nbsp;s. Op 4 seconden zie je 8 golven. De lamp wordt 2 &times; 2 = 4 keer per seconde fel.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> het lichtnet wisselt 50 keer per seconde (50&nbsp;Hz). Een gloeilamp flikkert dan
+  100 keer per seconde, veel te snel om te zien. De 230&nbsp;V van het stopcontact is een gemiddelde (de effectieve waarde); de
+  topwaarde is ongeveer 325&nbsp;V.</div>
+
+  <div class="pager"><a href="les34.html">&larr; Les 34: De diode</a><a href="les36.html">Les 36: Enkelzijdige gelijkrichting &rarr;</a></div>

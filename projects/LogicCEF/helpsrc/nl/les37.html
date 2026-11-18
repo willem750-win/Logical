@@ -1,0 +1,53 @@
+<!-- titel: Les 37 - De Graetz-brug -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 37 van 37</p>
+  <h1>De Graetz-brug</h1>
+  <div class="goal"><strong>Doel:</strong> met vier diodes beide helften van een wisselspanning gebruiken (dubbelzijdige
+  gelijkrichting), en de spanning met een condensator afvlakken.</div>
+
+  <p><a class="open" href="../../panels/lessen/les37-graetz.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les37.png" alt="Wisselspanningsbron met vier diodes in een brug, een lamp en een tak met schakelaar en condensator; de oscilloscoop over de lamp toont acht bulten in vier seconden">
+    <figcaption>De Graetz-brug: vier diodes, een lamp als belasting en een tak met een schakelaar en een condensator van 4700&nbsp;&micro;F. De oscilloscoop over de lamp toont beide helften, naar boven.</figcaption>
+  </figure>
+  <p>Draden die elkaar kruisen, zijn niet met elkaar verbonden: een draad is alleen aan zijn uiteinden aangesloten.</p>
+
+  <h2>Beide helften naar boven</h2>
+  <ol class="steps">
+    <li>Laat de schakelaar open en start de simulatie. De oscilloscoop toont <b>bulten</b>: elke halve golf, ook de negatieve,
+      komt naar boven. In 4 seconden zie je er 8.</li>
+    <li>Kijk naar de diodes. Is de spanning van de bron positief, dan geleiden de eerste en de derde diode (van boven geteld);
+      is ze negatief, de tweede en de vierde. Telkens gaat de stroom van links naar rechts door de lamp.</li>
+    <li>De lamp wordt weer <b>twee keer per periode</b> fel, zoals in <a href="les35.html">les 35</a>, maar de spanning over de lamp
+      wisselt niet meer van richting.</li>
+  </ol>
+  <p>Dit heet <b>dubbelzijdige gelijkrichting</b>. De top over de lamp is 12 &minus; 2 &times; 0,7 = 10,6&nbsp;V, want de stroom
+  gaat altijd door twee diodes.</p>
+
+  <h2>Afvlakken met een condensator</h2>
+  <figure>
+    <img src="../img/les37b.png" alt="Dezelfde brug met de schakelaar van de condensator aan; de oscilloscoop toont een spanning die tussen ongeveer 6 en 10,6 volt schommelt">
+    <figcaption>Met de condensator: de spanning zakt niet meer tot 0, maar schommelt tussen ongeveer 6 en 10,6&nbsp;V.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Zet de schakelaar aan. De <a href="voeding.html#condensator"><img src="../img/pal-condensator.png" class="ico" alt="">condensator</a>
+      laadt op bij elke bult en geeft zijn lading af als de spanning zakt.</li>
+    <li>De oscilloscoop toont nu een spanning die niet meer tot 0 zakt: ze schommelt tussen ongeveer 6 en 10,6&nbsp;V. Die
+      schommeling heet de <b>rimpel</b>.</li>
+    <li>Kies met rechtsklik een kleinere condensator: met 2200&nbsp;&micro;F zakt de spanning tot ongeveer 4,2&nbsp;V, met
+      1000&nbsp;&micro;F tot 2,1&nbsp;V. Hoe groter de condensator, hoe kleiner de rimpel.</li>
+  </ol>
+
+  <h2>Opdracht: bijna gelijkspanning</h2>
+  <p>De lamp van 120&nbsp;&Omega; trekt veel stroom en ontlaadt de condensator snel. Kies met rechtsklik een lamp van
+  480&nbsp;&Omega; en laat de condensator van 4700&nbsp;&micro;F aan. Hoe ziet de spanning er nu uit?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>De rimpel wordt veel kleiner: de spanning schommelt nog maar tussen ongeveer 8,9 en 10,6&nbsp;V. De lamp neemt minder stroom,
+    dus de condensator ontlaadt trager (&tau; = R &times; C = 480 &times; 0,0047 &asymp; 2,3&nbsp;s). Zo maakt een voeding van een
+    wisselspanning een bijna vlakke gelijkspanning.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> in elke lader voor een gsm of laptop zit zo'n brug met vier diodes en een
+  afvlakcondensator. Bij 50&nbsp;Hz komen er 100 bulten per seconde, zodat een kleinere condensator al volstaat.</div>
+
+  <div class="pager"><a href="les36.html">&larr; Les 36: Enkelzijdige gelijkrichting</a><a href="leerpad.html">Leerpad &rarr;</a></div>

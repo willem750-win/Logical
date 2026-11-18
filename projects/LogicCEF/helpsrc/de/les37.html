@@ -1,0 +1,53 @@
+<!-- titel: Lektion 37 - Die Graetz-Brücke -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 37 von 37</p>
+  <h1>Die Graetz-Brücke</h1>
+  <div class="goal"><strong>Ziel:</strong> mit vier Dioden beide Hälften einer Wechselspannung nutzen (Zweiweggleichrichtung) und
+  die Spannung mit einem Kondensator glätten.</div>
+
+  <p><a class="open" href="../../panels/lessen/les37-graetz.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les37.png" alt="Wechselspannungsquelle mit vier Dioden in einer Brücke, einer Lampe und einem Zweig mit Schalter und Kondensator; das Oszilloskop über der Lampe zeigt acht Buckel in vier Sekunden">
+    <figcaption>Die Graetz-Brücke: vier Dioden, eine Lampe als Last und ein Zweig mit einem Schalter und einem Kondensator von 4700&nbsp;&micro;F. Das Oszilloskop über der Lampe zeigt beide Hälften, nach oben.</figcaption>
+  </figure>
+  <p>Drähte, die sich kreuzen, sind nicht miteinander verbunden: Ein Draht ist nur an seinen Enden angeschlossen.</p>
+
+  <h2>Beide Hälften nach oben</h2>
+  <ol class="steps">
+    <li>Lassen Sie den Schalter offen und starten Sie die Simulation. Das Oszilloskop zeigt <b>Buckel</b>: Jede Halbwelle, auch die
+      negative, zeigt nach oben. In 4 Sekunden sehen Sie 8 davon.</li>
+    <li>Schauen Sie auf die Dioden. Ist die Spannung der Quelle positiv, leiten die erste und die dritte Diode (von oben gezählt);
+      ist sie negativ, die zweite und die vierte. Jedes Mal fließt der Strom von links nach rechts durch die Lampe.</li>
+    <li>Die Lampe wird wieder <b>zweimal pro Periode</b> hell, wie in <a href="les35.html">Lektion 35</a>, aber die Spannung über der
+      Lampe wechselt nicht mehr die Richtung.</li>
+  </ol>
+  <p>Das heißt <b>Zweiweggleichrichtung</b>. Die Spitze über der Lampe beträgt 12 &minus; 2 &times; 0,7 = 10,6&nbsp;V, denn der Strom
+  fließt immer durch zwei Dioden.</p>
+
+  <h2>Glätten mit einem Kondensator</h2>
+  <figure>
+    <img src="../img/les37b.png" alt="Dieselbe Brücke mit eingeschaltetem Schalter des Kondensators; das Oszilloskop zeigt eine Spannung, die zwischen etwa 6 und 10,6 Volt schwankt">
+    <figcaption>Mit dem Kondensator: Die Spannung fällt nicht mehr auf 0, sondern schwankt zwischen etwa 6 und 10,6&nbsp;V.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Schalten Sie ein. Der <a href="voeding.html#condensator"><img src="../img/pal-condensator.png" class="ico" alt="">Kondensator</a>
+      lädt sich bei jedem Buckel auf und gibt seine Ladung ab, wenn die Spannung fällt.</li>
+    <li>Das Oszilloskop zeigt jetzt eine Spannung, die nicht mehr auf 0 fällt: Sie schwankt zwischen etwa 6 und 10,6&nbsp;V. Diese
+      Schwankung heißt <b>Restwelligkeit</b>.</li>
+    <li>Wählen Sie per Rechtsklick einen kleineren Kondensator: Mit 2200&nbsp;&micro;F fällt die Spannung auf etwa 4,2&nbsp;V, mit
+      1000&nbsp;&micro;F auf 2,1&nbsp;V. Je größer der Kondensator, desto kleiner die Restwelligkeit.</li>
+  </ol>
+
+  <h2>Aufgabe: fast Gleichspannung</h2>
+  <p>Die Lampe von 120&nbsp;&Omega; zieht viel Strom und entlädt den Kondensator schnell. Wählen Sie per Rechtsklick eine Lampe von
+  480&nbsp;&Omega; und lassen Sie den Kondensator von 4700&nbsp;&micro;F an. Wie sieht die Spannung jetzt aus?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Die Restwelligkeit wird viel kleiner: Die Spannung schwankt nur noch zwischen etwa 8,9 und 10,6&nbsp;V. Die Lampe zieht weniger
+    Strom, also entlädt sich der Kondensator langsamer (&tau; = R &times; C = 480 &times; 0,0047 &asymp; 2,3&nbsp;s). So macht ein Netzteil
+    aus einer Wechselspannung eine fast glatte Gleichspannung.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> In jedem Ladegerät für Handy oder Laptop steckt so eine Brücke mit vier Dioden
+  und einem Glättungskondensator. Bei 50&nbsp;Hz gibt es 100 Buckel pro Sekunde, sodass schon ein kleinerer Kondensator reicht.</div>
+
+  <div class="pager"><a href="les36.html">&larr; Lektion 36: Einweggleichrichtung</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

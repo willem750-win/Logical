@@ -1,0 +1,46 @@
+<!-- titel: Leçon 35 - La tension alternative -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 35 sur 37</p>
+  <h1>La tension alternative</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir comment une tension alternative change de sens, lire sa forme sur un
+  oscilloscope, et comprendre pourquoi une lampe devient vive deux fois par période.</div>
+
+  <p><a class="open" href="../../panels/lessen/les35-wisselspanning.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les35.png" alt="Source de tension alternative de 12 V crête et 1 hertz avec une lampe de 120 ohms et un oscilloscope aux bornes de la lampe montrant une sinusoïde">
+    <figcaption>Une source de tension alternative (12&nbsp;V crête, 1&nbsp;Hz) avec une lampe. L&rsquo;oscilloscope aux bornes de la lampe trace une sinusoïde.</figcaption>
+  </figure>
+
+  <h2>Une tension qui change de sens</h2>
+  <p>Une pile donne toujours la même tension, avec le + toujours du même côté&nbsp;: une <b>tension continue</b>. La prise de courant
+  donne une <b>tension alternative</b>&nbsp;: elle monte, descend, devient négative et remonte, sans arrêt. La
+  <a href="voeding.html#wisselbron"><img src="../img/pal-wisselbron.png" class="ico" alt="">source alternative</a> le fait ici au
+  ralenti, pour que vous puissiez suivre.</p>
+  <ol class="steps">
+    <li>Lancez la simulation. Regardez l&rsquo;affichage de la source&nbsp;: la tension va de 0 à +12&nbsp;V, revient à 0, va à
+      &minus;12&nbsp;V et revient à 0.</li>
+    <li>L&rsquo;<a href="voeding.html#scoop"><img src="../img/pal-scoop.png" class="ico" alt="">oscilloscope</a> trace cette tension
+      dans le temps&nbsp;: une <b>sinusoïde</b>. La plus grande valeur est la <b>valeur de crête</b>, ici 12&nbsp;V.</li>
+    <li>Une onde complète dure 1 seconde&nbsp;: la <b>période</b>. En 4 secondes (tout l&rsquo;écran), vous voyez 4 ondes. La
+      <b>fréquence</b> est le nombre d&rsquo;ondes par seconde&nbsp;: f = 1 / période = 1&nbsp;Hz.</li>
+  </ol>
+
+  <h2>La lampe</h2>
+  <ol class="steps">
+    <li>Regardez la lampe&nbsp;: elle devient vive quand la tension vaut +12&nbsp;V, et aussi quand elle vaut &minus;12&nbsp;V. Une
+      lampe s&rsquo;allume dans les deux sens.</li>
+    <li>Elle devient donc vive <b>deux fois par période</b>, et faiblit un instant quand la tension passe par 0.</li>
+  </ol>
+
+  <h2>Exercice&nbsp;: une autre fréquence</h2>
+  <p>Clic droit sur la source et choisissez <b>Fréquence</b> &rsaquo; 2&nbsp;Hz. Combien d&rsquo;ondes voyez-vous maintenant à
+  l&rsquo;écran, et combien de fois par seconde la lampe devient-elle vive&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>À 2&nbsp;Hz, une période dure 0,5&nbsp;s. En 4 secondes, vous voyez 8 ondes. La lampe devient vive 2 &times; 2 = 4 fois par seconde.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> le secteur change de sens 50 fois par seconde (50&nbsp;Hz). Une lampe à incandescence
+  scintille alors 100 fois par seconde, bien trop vite pour le voir. Les 230&nbsp;V de la prise sont une moyenne (la valeur
+  efficace)&nbsp;; la valeur de crête est d&rsquo;environ 325&nbsp;V.</div>
+
+  <div class="pager"><a href="les34.html">&larr; Leçon 34 : La diode</a><a href="les36.html">Leçon 36 : Le redressement simple alternance &rarr;</a></div>

@@ -1,0 +1,42 @@
+<!-- titel: Lesson 34 - The diode -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 34 of 37</p>
+  <h1>The diode</h1>
+  <div class="goal"><strong>Goal:</strong> see that a diode lets current through in one direction only, and measure the
+  voltage across the diode in each direction.</div>
+
+  <p><a class="open" href="../../panels/lessen/les34-diode.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les34.png" alt="12 V source with two branches: switch, diode and 120 ohm lamp; the top one in the forward direction, the bottom one turned round; a voltmeter across each diode">
+    <figcaption>Two branches with a switch, a diode and a lamp. At the top the diode is in the forward direction (A to +), at the bottom it is turned round (K to +). A voltmeter measures across each diode.</figcaption>
+  </figure>
+
+  <h2>Forward direction</h2>
+  <p>A <a href="voeding.html#diode"><img src="../img/pal-diode.png" class="ico" alt="">diode</a> has an anode <b>A</b> and a cathode
+  <b>K</b> (at the bar). Current only flows from A to K, and only above 0.7&nbsp;V.</p>
+  <ol class="steps">
+    <li>Switch on the top switch. The lamp lights and the diode turns salmon red: it conducts.</li>
+    <li>The voltmeter across the diode shows 0.7&nbsp;V. The rest, 11.3&nbsp;V, is across the lamp.</li>
+    <li>Point at the lamp: I = (12 &minus; 0.7)&nbsp;V / 120&nbsp;&Omega; &asymp; 94&nbsp;mA flows through it.</li>
+  </ol>
+
+  <h2>Reverse direction</h2>
+  <ol class="steps">
+    <li>Switch on the bottom switch. The lamp stays off and the diode is grey: it <b>blocks</b>.</li>
+    <li>The voltmeter across the diode shows 12.0&nbsp;V: the full voltage is across the diode, and no current flows.</li>
+    <li>Right-click the bottom diode and choose <b>Turn round</b>. Now the bottom lamp lights too.</li>
+  </ol>
+  <p>So a diode is a kind of <b>one-way street</b> for the current.</p>
+
+  <h2>Assignment: protection against wrong connection</h2>
+  <p>A battery device can break if you put the battery in the wrong way round. Where do you put one diode so that no current can
+  flow with a wrongly placed battery? Try it with the top branch: swap the wires at the source.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>In series with the device, with the anode to the + of the battery. With the battery the right way round, the diode conducts
+    (0.7&nbsp;V is lost). The wrong way round, the diode blocks and the device stays safe.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> diodes are in almost every charger and power supply. An LED is a diode too, one
+  that gives light.</div>
+
+  <div class="pager"><a href="les33.html">&larr; Lesson 33: The potentiometer</a><a href="les35.html">Lesson 35: AC voltage &rarr;</a></div>

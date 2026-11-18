@@ -1,0 +1,12 @@
+TjanWisselbron;84;60;60;112;120;0;0;1;
+TjanLamp2;46;330;200;64;3;
+TjanScoop;130;300;250;180;1;1;
+TjanConnector;92;63;133;276;jcmBR;jcpTL;jcsTLBR;0,014492753623188;11;
+TjanConnector;92;161;133;233;jcmBR;jcpTL;jcsTLBR;0,978540772532189;11;
+TjanConnector;157;300;216;39;jcmTR;jcpBL;jcsTRBL;0,102564102564103;11;
+TjanConnector;157;385;216;95;jcmBR;jcpTL;jcsTLBR;0,947368421052632;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Voeding;1;
+Grid;True;
+Statusbalk;False;

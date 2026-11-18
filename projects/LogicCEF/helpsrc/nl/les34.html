@@ -1,0 +1,42 @@
+<!-- titel: Les 34 - De diode -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 34 van 37</p>
+  <h1>De diode</h1>
+  <div class="goal"><strong>Doel:</strong> zien dat een diode stroom maar in één richting doorlaat, en meten hoeveel
+  spanning er in elke richting over de diode staat.</div>
+
+  <p><a class="open" href="../../panels/lessen/les34-diode.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les34.png" alt="Bron van 12 V met twee takken: schakelaar, diode en lamp van 120 ohm; boven in doorlaatrichting, onder omgedraaid; een voltmeter over elke diode">
+    <figcaption>Twee takken met een schakelaar, een diode en een lamp. Boven staat de diode in doorlaatrichting (A aan de +), onder omgedraaid (K aan de +). Een voltmeter meet over elke diode.</figcaption>
+  </figure>
+
+  <h2>Doorlaatrichting</h2>
+  <p>Een <a href="voeding.html#diode"><img src="../img/pal-diode.png" class="ico" alt="">diode</a> heeft een anode <b>A</b> en een
+  kathode <b>K</b> (bij de streep). Stroom gaat alleen van A naar K, en pas boven 0,7&nbsp;V.</p>
+  <ol class="steps">
+    <li>Zet de bovenste schakelaar aan. De lamp brandt en de diode kleurt zalmrood: ze geleidt.</li>
+    <li>De voltmeter over de diode toont 0,7&nbsp;V. De rest, 11,3&nbsp;V, staat over de lamp.</li>
+    <li>Wijs de lamp aan: er gaat I = (12 &minus; 0,7)&nbsp;V / 120&nbsp;&Omega; &asymp; 94&nbsp;mA door.</li>
+  </ol>
+
+  <h2>Sperrichting</h2>
+  <ol class="steps">
+    <li>Zet de onderste schakelaar aan. De lamp blijft uit en de diode is grijs: ze <b>spert</b>.</li>
+    <li>De voltmeter over de diode toont 12,0&nbsp;V: de volle spanning staat over de diode, en er gaat geen stroom.</li>
+    <li>Klik met de rechtermuisknop op de onderste diode en kies <b>Omdraaien</b>. Nu brandt ook de onderste lamp.</li>
+  </ol>
+  <p>Een diode is dus een soort <b>eenrichtingsstraat</b> voor de stroom.</p>
+
+  <h2>Opdracht: beveiliging tegen verkeerd aansluiten</h2>
+  <p>Een toestel op batterijen kan kapotgaan als je de batterij verkeerd om plaatst. Waar zet je één diode, zodat er bij een
+  verkeerd geplaatste batterij geen stroom kan lopen? Probeer het met de bovenste tak: draai de draden aan de bron om.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>In serie met het toestel, met de anode aan de + van de batterij. Staat de batterij goed, dan geleidt de diode (er gaat
+    0,7&nbsp;V verloren). Staat ze verkeerd, dan spert de diode en blijft het toestel veilig.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> diodes zitten in bijna elke lader en elke voeding. Een led is ook een diode,
+  maar dan een die licht geeft.</div>
+
+  <div class="pager"><a href="les33.html">&larr; Les 33: De potentiometer</a><a href="les35.html">Les 35: Wisselspanning &rarr;</a></div>

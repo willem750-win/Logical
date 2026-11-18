@@ -1,0 +1,42 @@
+<!-- titel: Leçon 34 - La diode -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 34 sur 37</p>
+  <h1>La diode</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir qu&rsquo;une diode ne laisse passer le courant que dans un sens, et
+  mesurer la tension à ses bornes dans chaque sens.</div>
+
+  <p><a class="open" href="../../panels/lessen/les34-diode.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les34.png" alt="Source de 12 V avec deux branches : interrupteur, diode et lampe de 120 ohms ; en haut dans le sens passant, en bas retournée ; un voltmètre aux bornes de chaque diode">
+    <figcaption>Deux branches avec un interrupteur, une diode et une lampe. En haut la diode est dans le sens passant (A au +), en bas elle est retournée (K au +). Un voltmètre mesure aux bornes de chaque diode.</figcaption>
+  </figure>
+
+  <h2>Sens passant</h2>
+  <p>Une <a href="voeding.html#diode"><img src="../img/pal-diode.png" class="ico" alt="">diode</a> a une anode <b>A</b> et une
+  cathode <b>K</b> (côté barre). Le courant ne passe que de A vers K, et seulement au-dessus de 0,7&nbsp;V.</p>
+  <ol class="steps">
+    <li>Fermez l&rsquo;interrupteur du haut. La lampe s&rsquo;allume et la diode devient rouge saumon&nbsp;: elle conduit.</li>
+    <li>Le voltmètre aux bornes de la diode affiche 0,7&nbsp;V. Le reste, 11,3&nbsp;V, est aux bornes de la lampe.</li>
+    <li>Pointez la lampe&nbsp;: il passe I = (12 &minus; 0,7)&nbsp;V / 120&nbsp;&Omega; &asymp; 94&nbsp;mA.</li>
+  </ol>
+
+  <h2>Sens bloquant</h2>
+  <ol class="steps">
+    <li>Fermez l&rsquo;interrupteur du bas. La lampe reste éteinte et la diode est grise&nbsp;: elle <b>bloque</b>.</li>
+    <li>Le voltmètre aux bornes de la diode affiche 12,0&nbsp;V&nbsp;: toute la tension est aux bornes de la diode, et aucun courant ne passe.</li>
+    <li>Clic droit sur la diode du bas et choisissez <b>Retourner</b>. La lampe du bas s&rsquo;allume aussi.</li>
+  </ol>
+  <p>Une diode est donc une sorte de <b>rue à sens unique</b> pour le courant.</p>
+
+  <h2>Exercice&nbsp;: protection contre une inversion</h2>
+  <p>Un appareil à piles peut être abîmé si l&rsquo;on met la pile à l&rsquo;envers. Où placez-vous une diode pour qu&rsquo;aucun courant
+  ne passe avec une pile mal placée&nbsp;? Essayez avec la branche du haut&nbsp;: inversez les fils à la source.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>En série avec l&rsquo;appareil, l&rsquo;anode vers le + de la pile. Avec la pile dans le bon sens, la diode conduit (0,7&nbsp;V sont
+    perdus). À l&rsquo;envers, la diode bloque et l&rsquo;appareil est protégé.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> il y a des diodes dans presque tous les chargeurs et toutes les alimentations. Une LED
+  est aussi une diode, mais une qui éclaire.</div>
+
+  <div class="pager"><a href="les33.html">&larr; Leçon 33 : Le potentiomètre</a><a href="les35.html">Leçon 35 : La tension alternative &rarr;</a></div>

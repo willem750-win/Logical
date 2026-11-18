@@ -1,0 +1,38 @@
+<!-- titel: Leçon 36 - Le redressement simple alternance -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 36 sur 37</p>
+  <h1>Le redressement simple alternance</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> avec une seule diode, faire d&rsquo;une tension alternative une tension qui a
+  toujours le même sens, et voir la différence sur deux oscilloscopes.</div>
+
+  <p><a class="open" href="../../panels/lessen/les36-enkelzijdig.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les36.png" alt="Source de tension alternative avec une diode et une lampe en série ; à gauche un oscilloscope aux bornes de la source montrant une sinusoïde, à droite un aux bornes de la lampe montrant seulement les alternances positives">
+    <figcaption>Source &rarr; diode &rarr; lampe. À gauche l&rsquo;oscilloscope aux bornes de la source (toute la sinusoïde), à droite celui aux bornes de la lampe (seulement les moitiés du haut).</figcaption>
+  </figure>
+
+  <h2>La diode laisse passer la moitié</h2>
+  <ol class="steps">
+    <li>Lancez la simulation. L&rsquo;oscilloscope de gauche montre la tension alternative de la source&nbsp;: une sinusoïde de
+      +12 à &minus;12&nbsp;V.</li>
+    <li>L&rsquo;oscilloscope de droite montre la tension aux bornes de la lampe&nbsp;: seulement les <b>alternances positives</b>.
+      Entre elles, c&rsquo;est 0&nbsp;V.</li>
+    <li>Regardez la diode&nbsp;: pendant l&rsquo;alternance positive elle conduit (rouge saumon), pendant la négative elle bloque (grise).</li>
+    <li>La lampe ne devient plus vive qu&rsquo;<b>une fois par période</b>, puis reste éteinte une demi-période.</li>
+  </ol>
+  <p>La tension aux bornes de la lampe ne change plus de sens&nbsp;: elle est <b>redressée</b>. Comme une seule moitié de chaque onde
+  est utilisée, on parle de redressement <b>simple alternance</b>. La crête aux bornes de la lampe vaut 12 &minus; 0,7 = 11,3&nbsp;V&nbsp;:
+  la diode prend 0,7&nbsp;V.</p>
+
+  <h2>Exercice&nbsp;: l&rsquo;autre moitié</h2>
+  <p>Retournez la diode (clic droit &rsaquo; <b>Retourner</b>). Que montre maintenant l&rsquo;oscilloscope de droite&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Seules les alternances négatives passent&nbsp;: la tension aux bornes de la lampe est toujours négative, jusqu&rsquo;à
+    &minus;11,3&nbsp;V. Elle est toujours redressée, mais dans l&rsquo;autre sens.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> le redressement simple alternance perd la moitié de l&rsquo;énergie et donne une tension
+  avec de grands trous. C&rsquo;est pourquoi la plupart des alimentations utilisent quatre diodes&nbsp;: le pont de Graetz de la
+  leçon suivante.</div>
+
+  <div class="pager"><a href="les35.html">&larr; Leçon 35 : La tension alternative</a><a href="les37.html">Leçon 37 : Le pont de Graetz &rarr;</a></div>
