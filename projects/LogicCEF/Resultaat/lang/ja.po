@@ -1714,3 +1714,21 @@ msgstr "電圧は正弦波のように向きを変えます。時間はシミュ
 
 msgid "create AC voltage source"
 msgstr "交流電圧源を作成"
+
+msgid "Range"
+msgstr "レンジ"
+
+msgid "Time base"
+msgstr "時間軸"
+
+msgid "Clear screen"
+msgstr "画面を消去"
+
+msgid "Oscilloscope"
+msgstr "オシロスコープ"
+
+msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
+msgstr "+ と − の間の電圧を時間とともに描きます（書く電圧計）。\nシミュレーション中に測定し、電流は流れません。右クリック: レンジ、時間軸、消去。"
+
+msgid "create Oscilloscope"
+msgstr "オシロスコープを作成"

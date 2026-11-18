@@ -1714,3 +1714,21 @@ msgstr "Напряжение меняет направление по синус
 
 msgid "create AC voltage source"
 msgstr "создать источник переменного напряжения"
+
+msgid "Range"
+msgstr "Диапазон"
+
+msgid "Time base"
+msgstr "Развёртка"
+
+msgid "Clear screen"
+msgstr "Очистить экран"
+
+msgid "Oscilloscope"
+msgstr "Осциллограф"
+
+msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
+msgstr "Рисует напряжение между + и − во времени, как пишущий вольтметр.\nИзмеряет во время моделирования и не потребляет ток. Правый щелчок: диапазон, развёртка, очистить."
+
+msgid "create Oscilloscope"
+msgstr "создать осциллограф"

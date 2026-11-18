@@ -1714,3 +1714,21 @@ msgstr "电压像正弦波一样改变方向；时间在仿真时流逝。\n放�
 
 msgid "create AC voltage source"
 msgstr "创建交流电压源"
+
+msgid "Range"
+msgstr "量程"
+
+msgid "Time base"
+msgstr "时基"
+
+msgid "Clear screen"
+msgstr "清除屏幕"
+
+msgid "Oscilloscope"
+msgstr "示波器"
+
+msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
+msgstr "随时间绘制 + 与 − 之间的电压，就像会画线的电压表。\n仅在仿真时测量，不吸取电流。右键：量程、时基、清除。"
+
+msgid "create Oscilloscope"
+msgstr "创建示波器"

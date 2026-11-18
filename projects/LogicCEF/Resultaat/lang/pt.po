@@ -1714,3 +1714,21 @@ msgstr "A tensão muda de sentido como uma sinusoide; o tempo avança durante a 
 
 msgid "create AC voltage source"
 msgstr "criar fonte de tensão alternada"
+
+msgid "Range"
+msgstr "Escala"
+
+msgid "Time base"
+msgstr "Base de tempo"
+
+msgid "Clear screen"
+msgstr "Limpar ecrã"
+
+msgid "Oscilloscope"
+msgstr "Osciloscópio"
+
+msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
+msgstr "Desenha a tensão entre + e − ao longo do tempo, como um voltímetro que escreve.\nMede durante a simulação e não consome corrente. Clique direito: escala, base de tempo, limpar."
+
+msgid "create Oscilloscope"
+msgstr "criar osciloscópio"

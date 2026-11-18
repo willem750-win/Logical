@@ -24,6 +24,7 @@
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fuse</a></td><td>Blows when too much current flows.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliammeter</a></td><td>Measures the current the circuit uses.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmeter</a></td><td>Measures the power P = U &times; I of everything after it.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="#scoop">Oscilloscope</a></td><td>Draws the voltage over time, as a green trace.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Resistance (contact)</a></td><td>A contact or wire with a small resistance: some voltage is lost.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Resistor with a wiper and three terminals: an adjustable voltage divider.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
@@ -166,6 +167,13 @@
   series, just like the milliammeter: the wire comes in on the left and continues on the right. It measures the current
   through the meter and the voltage from its output to the &minus; of the source, and shows <b>P = U &times; I</b>: the power of
   everything after the meter. Put it between two lamps in series and it measures only the lamp after it. See <a href="les32.html">lesson 32</a>.</p>
+
+  <h2 id="scoop"><img src="../img/pal-scoop.png" class="ico" alt="">The oscilloscope</h2>
+  <p>An oscilloscope is a voltmeter that <b>writes</b>: it draws the voltage between its + terminal (left) and &minus; terminal (right)
+  over time, as a green trace. The newest measurement is on the right; the zero line runs through the middle, above it the voltage
+  is positive, below it negative. It draws no current and only measures during the simulation. Right-click &rsaquo; <b>Range</b>
+  (&plusmn;&nbsp;5 or &plusmn;&nbsp;12&nbsp;V), <b>Time base</b> (2, 4 or 8&nbsp;s across the screen) or <b>Clear screen</b>. That way you see, for example,
+  the sine of an <a href="#wisselbron">AC voltage source</a>, and what is left of it after a <a href="#diode">diode</a>.</p>
 
   <h2 id="weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">The resistance (contact)</h2>
   <p>Every wire and every contact has a small resistance. When current flows through it, a little voltage is lost:

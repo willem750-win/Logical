@@ -179,6 +179,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'diode'; end;
     'wisselbron':
       begin Result := 'voeding'; AAnchor := 'wisselbron'; end;
+    'scoop':
+      begin Result := 'voeding'; AAnchor := 'scoop'; end;
     'statusbalk':
       begin Result := 'paneel'; AAnchor := 'statusbalk'; end;
     'connector':

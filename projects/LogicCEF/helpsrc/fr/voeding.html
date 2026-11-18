@@ -24,6 +24,7 @@
     <tr><td class="btn"><img src="../img/pal-zekering.png" alt=""></td><td class="name"><a href="#zekering">Fusible</a></td><td>Fond quand le courant est trop fort.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="#ampmeter">Milliampèremètre</a></td><td>Mesure le courant consommé par le circuit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="#wattmeter">Wattmètre</a></td><td>Mesure la puissance P = U &times; I de tout ce qui suit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="#scoop">Oscilloscope</a></td><td>Trace la tension dans le temps, en vert.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Résistance (contact)</a></td><td>Un contact ou un fil avec une petite résistance&nbsp;: une partie de la tension est perdue.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiomètre</a></td><td>Résistance avec un curseur et trois bornes&nbsp;: un diviseur de tension réglable.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens ; va avec une résistance série.</td></tr>
@@ -170,6 +171,14 @@
   en série, comme le milliampèremètre&nbsp;: le fil entre à gauche et repart à droite. Il mesure le courant qui le traverse et la
   tension de sa sortie jusqu&rsquo;au &minus; de la source, et affiche <b>P = U &times; I</b>&nbsp;: la puissance de tout ce qui est
   branché après lui. Placé entre deux lampes en série, il ne mesure que la lampe qui suit. Voir la <a href="les32.html">leçon 32</a>.</p>
+
+  <h2 id="scoop"><img src="../img/pal-scoop.png" class="ico" alt="">L&rsquo;oscilloscope</h2>
+  <p>Un oscilloscope est un voltmètre qui <b>écrit</b>&nbsp;: il trace la tension entre sa borne + (à gauche) et sa borne &minus;
+  (à droite) dans le temps, sous forme d&rsquo;une trace verte. La mesure la plus récente est à droite&nbsp;; la ligne zéro passe au
+  milieu, au-dessus la tension est positive, en dessous négative. Il ne consomme pas de courant et ne mesure que pendant la simulation.
+  Clic droit &rsaquo; <b>Calibre</b> (&plusmn;&nbsp;5 ou &plusmn;&nbsp;12&nbsp;V), <b>Base de temps</b> (2, 4 ou 8&nbsp;s sur tout l&rsquo;écran) ou
+  <b>Effacer l&rsquo;écran</b>. Vous voyez ainsi par exemple la sinusoïde d&rsquo;une <a href="#wisselbron">source alternative</a>, et ce
+  qu&rsquo;il en reste après une <a href="#diode">diode</a>.</p>
 
   <h2 id="weerstand"><img src="../img/pal-weerstand.png" class="ico" alt="">La résistance (contact)</h2>
   <p>Chaque fil et chaque contact a une petite résistance. Quand le courant le traverse, un peu de tension est

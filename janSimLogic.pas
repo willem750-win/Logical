@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2109,6 +2109,7 @@ type
     procedure SetKPotmeter(const Value: Boolean);
     procedure SetKDiode(const Value: Boolean);
     procedure SetKWisselbron(const Value: Boolean);
+    procedure SetKScoop(const Value: Boolean);
     procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
       MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
@@ -2336,6 +2337,7 @@ type
     property KPotmeter: Boolean read FPotK write SetKPotmeter default True;
     property KDiode: Boolean read FDiodeK write SetKDiode default True;
     property KWisselbron: Boolean read FWisselK write SetKWisselbron default True;
+    property KScoop: Boolean read FScoopK write SetKScoop default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2360,6 +2362,7 @@ type
     property HPotmeter: string read FHPot write FHPot;
     property HDiode: string read FHDiode write FHDiode;
     property HWisselbron: string read FHWissel write FHWissel;
+    property HScoop: string read FHScoop write FHScoop;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -3415,6 +3418,36 @@ end;
     function Spanning: Double;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
+  end;
+
+  { TjanScoop: oscilloscoop met twee klemmen (+ links, - rechts onderaan),
+    zoals de voltmeter (neemt geen stroom). Tekent de spanning tussen de
+    klemmen in de tijd: bij elke stap van de simulatietijd een meetpunt.
+    Rechtsklik: bereik (+/- 5 of 12 V), tijdbasis (2, 4 of 8 s), wissen. }
+  TjanScoop = class(TjanVoltmeter2)
+  private
+    FT, FU: array of Double;   // ringbuffer: tijd en spanning
+    FN, FKop: Integer;         // aantal punten en de plaats van het volgende
+    FBereikIdx, FTijdIdx: Integer;
+    procedure SetBereikIdx(const Value: Integer);
+    procedure SetTijdIdx(const Value: Integer);
+    procedure BereikClick(Sender: TObject);
+    procedure TijdClick(Sender: TObject);
+    procedure WisClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    procedure Meet(AU: Double);   // meetpunt op de huidige simulatietijd
+    procedure Wis;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Aantal: Integer read FN;
+  published
+    property BereikIdx: Integer read FBereikIdx write SetBereikIdx;
+    property TijdIdx: Integer read FTijdIdx write SetTijdIdx;
   end;
 
   { TjanLed2: led met twee klemmen in de voedingskring. Pin 0 = anode (+,
@@ -7037,6 +7070,11 @@ const
   LedRd = 15;             // ohm boven de drempel
   LedVolA = 0.020;        // vol licht bij 20 mA
   LedMaxA = 0.030;        // kapot boven 30 mA
+  // oscilloscoop
+  ScoopW = 180; ScoopH = 130;
+  ScoopMax = 600;                                        // meetpunten in het geheugen
+  ScoopBereik: array[0..1] of Double = (5, 12);          // V (boven en onder de nullijn)
+  ScoopTijd: array[0..2] of Double = (2, 4, 8);          // s over het hele scherm
   // diode (1N4007): drempel, weerstand boven de drempel, maximale stroom
   DiodeVolt = 0.7;
   DiodeRd = 0.1;
@@ -7698,6 +7736,8 @@ begin
         SetPinV(Parts[k], j, V[PinNode(k, j)]);
     A := PinNode(k, 0); B := PinNode(k, 1);
     U := V[A] - V[B];
+    if Parts[k] is TjanScoop then
+      TjanScoop(Parts[k]).Meet(U);
     if Parts[k] is TjanBron then
     begin
       Gs := 1 / NietNul(TjanBron(Parts[k]).Ri);
@@ -7944,6 +7984,9 @@ begin
   else if C is TjanSchakelaar2 then
     Result := Format('TjanSchakelaar2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       Ord(TjanSchakelaar2(C).Aan)])
+  else if C is TjanScoop then
+    Result := Format('TjanScoop;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanScoop(C).BereikIdx, TjanScoop(C).TijdIdx])
   else if C is TjanVoltmeter2 then
     Result := Format('TjanVoltmeter2;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanDiode then
@@ -8531,6 +8574,7 @@ var
   E: Double;
 begin
   E := Emk;
+  if Abs(E) < 0.05 then E := 0;   // geen "-0,0 V" op het nulpunt
   with Canvas do
   begin
     Brush.Style := bsClear;
@@ -10200,6 +10244,228 @@ procedure TjanVoltmeter2.SendStatusToBar;
 begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Voltmeter', 'Voltmeter', 'Voltmètre', 'Voltmeter') + ' > ', 0);
+  FOnStatus(Self, 'U = ' + VoltText(Spanning), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanScoop }
+
+constructor TjanScoop.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := ScoopW;
+  Height := ScoopH;
+  SetLength(FT, ScoopMax);
+  SetLength(FU, ScoopMax);
+  FBereikIdx := 1;   // +/- 12 V
+  FTijdIdx := 1;     // 4 s
+  HelpKeyword := 'scoop';
+end;
+
+// klemmen onderaan: + links, - rechts
+function TjanScoop.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, ScoopH - 15) else Result := Point(ScoopW - 8, ScoopH - 15);
+end;
+
+procedure TjanScoop.Wis;
+begin
+  FN := 0;
+  FKop := 0;
+  Invalidate;
+end;
+
+procedure TjanScoop.Meet(AU: Double);
+var
+  Laatste: Integer;
+begin
+  if FN > 0 then
+  begin
+    Laatste := (FKop - 1 + ScoopMax) mod ScoopMax;
+    // de tijd sprong terug (nieuw paneel, andere start): opnieuw beginnen
+    if SimTijd < FT[Laatste] - 0.0001 then
+    begin
+      FN := 0;
+      FKop := 0;
+    end
+    // nog dezelfde tijd: alleen de laatste meting bijwerken
+    else if SimTijd - FT[Laatste] < 0.0005 then
+    begin
+      FU[Laatste] := AU;
+      Exit;
+    end;
+  end;
+  FT[FKop] := SimTijd;
+  FU[FKop] := AU;
+  FKop := (FKop + 1) mod ScoopMax;
+  if FN < ScoopMax then Inc(FN);
+  Invalidate;
+end;
+
+procedure TjanScoop.SetBereikIdx(const Value: Integer);
+begin
+  if (Value < Low(ScoopBereik)) or (Value > High(ScoopBereik)) or (Value = FBereikIdx) then Exit;
+  FBereikIdx := Value;
+  Invalidate;
+end;
+
+procedure TjanScoop.SetTijdIdx(const Value: Integer);
+begin
+  if (Value < Low(ScoopTijd)) or (Value > High(ScoopTijd)) or (Value = FTijdIdx) then Exit;
+  FTijdIdx := Value;
+  Invalidate;
+end;
+
+procedure TjanScoop.BereikClick(Sender: TObject);
+begin
+  BereikIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanScoop.TijdClick(Sender: TObject);
+begin
+  TijdIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanScoop.WisClick(Sender: TObject);
+begin
+  Wis;
+end;
+
+procedure TjanScoop.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Bereik', 'Range', 'Calibre', 'Messbereich');
+  APop.Items.Add(Mi);
+  for i := Low(ScoopBereik) to High(ScoopBereik) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := '± ' + FormatFloat('0', ScoopBereik[i]) + ' V';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FBereikIdx;
+    Sub.OnClick := BereikClick;
+    Mi.Add(Sub);
+  end;
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Tijdbasis', 'Time base', 'Base de temps', 'Zeitbasis');
+  APop.Items.Add(Mi);
+  for i := Low(ScoopTijd) to High(ScoopTijd) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := FormatFloat('0', ScoopTijd[i]) + ' s';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FTijdIdx;
+    Sub.OnClick := TijdClick;
+    Mi.Add(Sub);
+  end;
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Scherm wissen', 'Clear screen', 'Effacer l''écran', 'Bildschirm löschen');
+  Mi.OnClick := WisClick;
+  APop.Items.Add(Mi);
+end;
+
+procedure TjanScoop.Paint;
+var
+  R: TRect;
+  S: string;
+  i, j, X, Y, CY, H2, TW: Integer;
+  Venster, T0, TNu, Ber: Double;
+  Eerste: Boolean;
+begin
+  Venster := ScoopTijd[FTijdIdx];
+  Ber := ScoopBereik[FBereikIdx];
+  with Canvas do
+  begin
+    // kast
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(70, 75, 85);
+    R := ClientRect;
+    FillRect(R);
+    Frame3D(R, clBtnHighlight, clBtnShadow, 1);
+    // scherm met raster: 8 vakken breed, 6 hoog
+    R := Rect(8, 6, ScoopW - 8, ScoopH - 30);
+    Brush.Color := RGBToColor(10, 30, 15);
+    FillRect(R);
+    Pen.Width := 1;
+    Pen.Color := RGBToColor(35, 75, 45);
+    for i := 1 to 7 do
+    begin
+      X := R.Left + (R.Right - R.Left) * i div 8;
+      MoveTo(X, R.Top); LineTo(X, R.Bottom);
+    end;
+    for i := 1 to 5 do
+    begin
+      Y := R.Top + (R.Bottom - R.Top) * i div 6;
+      MoveTo(R.Left, Y); LineTo(R.Right, Y);
+    end;
+    CY := (R.Top + R.Bottom) div 2;
+    H2 := (R.Bottom - R.Top) div 2;
+    Pen.Color := RGBToColor(70, 130, 80);
+    MoveTo(R.Left, CY); LineTo(R.Right, CY);   // nullijn
+    // het spoor: van de oudste naar de nieuwste meting, de nieuwste rechts
+    if FN > 0 then
+    begin
+      TNu := FT[(FKop - 1 + ScoopMax) mod ScoopMax];
+      T0 := TNu - Venster;
+      Pen.Color := RGBToColor(80, 255, 110);
+      Pen.Width := 2;
+      Eerste := True;
+      for i := FN - 1 downto 0 do
+      begin
+        j := (FKop - 1 - i + 2 * ScoopMax) mod ScoopMax;
+        if FT[j] < T0 then Continue;
+        X := R.Left + Round((FT[j] - T0) / Venster * (R.Right - R.Left));
+        Y := CY - Round(FU[j] / Ber * H2);
+        if Y < R.Top then Y := R.Top;
+        if Y > R.Bottom then Y := R.Bottom;
+        if Eerste then MoveTo(X, Y) else LineTo(X, Y);
+        Eerste := False;
+      end;
+      Pen.Width := 1;
+    end;
+    // schaal en de spanning van nu
+    Brush.Style := bsClear;
+    Font.Name := 'Arial'; Font.Size := 6; Font.Style := []; Font.Color := RGBToColor(150, 220, 160);
+    TextOut(R.Left + 2, R.Top + 1, '+' + FormatFloat('0', Ber) + ' V');
+    TextOut(R.Left + 2, R.Bottom - 10, '−' + FormatFloat('0', Ber) + ' V');
+    S := FormatFloat('0', Venster) + ' s';
+    TextOut(R.Right - TextWidth(S) - 2, R.Bottom - 10, S);
+    Font.Size := 8; Font.Style := [fsBold]; Font.Color := clWhite;
+    S := 'U = ' + FormatFloat('+0.0;-0.0;0.0', Spanning) + ' V';
+    TW := TextWidth(S);
+    TextOut((ScoopW - TW) div 2, ScoopH - 21, S);
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+    Font.Size := 9;
+    Font.Color := RGBToColor(255, 110, 110); TextOut(11, ScoopH - 22, '+');
+    Font.Color := RGBToColor(140, 170, 255); TextOut(ScoopW - 17, ScoopH - 23, '−');
+  end;
+  PaintSelection;
+end;
+
+procedure TjanScoop.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Oscilloscoop', 'Oscilloscope', 'Oscilloscope', 'Oszilloskop') + ': U = ' +
+    VoltText(Spanning) + '   (± ' + FormatFloat('0', ScoopBereik[FBereikIdx]) + ' V, ' +
+    FormatFloat('0', ScoopTijd[FTijdIdx]) + ' s)' + #13#10 + Tr(FTaal,
+      'Tekent de spanning tussen + en − in de tijd, zoals een voltmeter die schrijft.' + #13#10 +
+        'Hij meet tijdens de simulatie en neemt geen stroom. Rechtsklik: bereik, tijdbasis, wissen.',
+      'Draws the voltage between + and − over time, like a voltmeter that writes.' + #13#10 +
+        'It measures during the simulation and draws no current. Right-click: range, time base, clear.',
+      'Trace la tension entre + et − dans le temps, comme un voltmètre qui écrit.' + #13#10 +
+        'Il mesure pendant la simulation et ne consomme pas de courant. Clic droit : calibre, base de temps, effacer.',
+      'Zeichnet die Spannung zwischen + und − über die Zeit, wie ein Voltmeter, das schreibt.' + #13#10 +
+        'Es misst während der Simulation und nimmt keinen Strom auf. Rechtsklick: Messbereich, Zeitbasis, löschen.');
+end;
+
+procedure TjanScoop.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Oscilloscoop', 'Oscilloscope', 'Oscilloscope', 'Oszilloskop') + ' > ', 0);
   FOnStatus(Self, 'U = ' + VoltText(Spanning), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
@@ -23586,7 +23852,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -23594,6 +23860,7 @@ begin
   FHPot:='maak Potentiometer (drie klemmen)';
   FHDiode:='maak Diode';
   FHWissel:='maak Wisselspanningsbron';
+  FHScoop:='maak Oscilloscoop';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -24683,7 +24950,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') then
     begin
       with TStringList.Create do
       try
@@ -24704,6 +24971,7 @@ begin
           else if obj[1] = 'TjanPotmeter' then VD := TjanPotmeter.Create(Self)
           else if obj[1] = 'TjanDiode' then VD := TjanDiode.Create(Self)
           else if obj[1] = 'TjanWisselbron' then VD := TjanWisselbron.Create(Self)
+          else if obj[1] = 'TjanScoop' then VD := TjanScoop.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -24737,6 +25005,12 @@ begin
           end
           else if (VD is TjanCondensator) and (Count >= 5) then
             TjanCondensator(VD).Soort := StrToIntDef(Trim(Strings[4]), CondStandaard)
+          else if (VD is TjanScoop) and (Count >= 5) then
+          begin
+            TjanScoop(VD).BereikIdx := StrToIntDef(Trim(Strings[4]), 1);
+            if Count >= 6 then
+              TjanScoop(VD).TijdIdx := StrToIntDef(Trim(Strings[5]), 1);
+          end
           else if (VD is TjanPotmeter) and (Count >= 5) then
           begin
             TjanPotmeter(VD).Soort := StrToIntDef(Trim(Strings[4]), PotStandaard);
@@ -25580,6 +25854,7 @@ begin
     10: D := TjanPotmeter.Create(Self);
     11: D := TjanDiode.Create(Self);
     12: D := TjanWisselbron.Create(Self);
+    13: D := TjanScoop.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -25818,6 +26093,17 @@ begin
           Brush.Style := bsSolid; Brush.Color := clBlack;
           FillRect(Rect(CX - 3, CY - 6, CX - 1, CY + 7));
           FillRect(Rect(CX + 2, CY - 6, CX + 4, CY + 7));
+        end;
+      13:
+        begin
+          // oscilloscoop: donker schermpje met een groene sinus
+          Brush.Style := bsSolid; Brush.Color := RGBToColor(10, 30, 15);
+          FillRect(Rect(CX - 9, CY - 7, CX + 10, CY + 8));
+          Pen.Color := RGBToColor(80, 255, 110);
+          MoveTo(CX - 8, CY);
+          for K := 1 to 16 do
+            LineTo(CX - 8 + K, CY - Round(5 * Sin(2 * Pi * K / 16)));
+          Pen.Color := clBlack;
         end;
       12:
         begin
@@ -26336,7 +26622,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -26385,6 +26671,7 @@ begin
   else if PtInRect(RPot, P) then DPot := True
   else if PtInRect(RDiode, P) then DDiode := True
   else if PtInRect(RWissel, P) then DWissel := True
+  else if PtInRect(RScoop, P) then DScoop := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -26446,6 +26733,7 @@ begin
   else if PtInRect(RPot, P) then NewHint := FHPot
   else if PtInRect(RDiode, P) then NewHint := FHDiode
   else if PtInRect(RWissel, P) then NewHint := FHWissel
+  else if PtInRect(RScoop, P) then NewHint := FHScoop
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -26855,7 +27143,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False;
 
     // nieuw
     DSquare := False;
@@ -27125,6 +27413,8 @@ begin
     NewVoedingsDeel(11)
   else if DWissel then
     NewVoedingsDeel(12)
+  else if DScoop then
+    NewVoedingsDeel(13)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -27717,6 +28007,7 @@ if FBoxTaal=stDutch then
   HPotmeter:='maak Potentiometer (drie klemmen)';
   HDiode:='maak Diode';
   HWisselbron:='maak Wisselspanningsbron';
+  HScoop:='maak Oscilloscoop';
  end;
 
 if FBoxTaal=stEnglish then
@@ -27768,6 +28059,7 @@ if FBoxTaal=stEnglish then
   HPotmeter:=LangTr('create Potentiometer (three terminals)');
   HDiode:=LangTr('create Diode');
   HWisselbron:=LangTr('create AC voltage source');
+  HScoop:=LangTr('create Oscilloscope');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -27817,6 +28109,7 @@ if FBoxTaal=stFrench then
   HPotmeter:='faire Potentiomètre (trois bornes)';
   HDiode:='faire Diode';
   HWisselbron:='faire Source de tension alternative';
+  HScoop:='faire Oscilloscope';
  end;
 
  if FBoxTaal=stGerman then
@@ -27867,6 +28160,7 @@ if FBoxTaal=stFrench then
   HPotmeter:='Potentiometer erstellen (drei Klemmen)';
   HDiode:='Diode erstellen';
   HWisselbron:='Wechselspannungsquelle erstellen';
+  HScoop:='Oszilloskop erstellen';
   end;
   invalidate;
  // willy
@@ -27955,6 +28249,9 @@ begin SetVoedingKnop(FDiodeK, Value); end;
 procedure TjanSimLogicBox.SetKWisselbron(const Value: Boolean);
 begin SetVoedingKnop(FWisselK, Value); end;
 
+procedure TjanSimLogicBox.SetKScoop(const Value: Boolean);
+begin SetVoedingKnop(FScoopK, Value); end;
+
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
@@ -28014,6 +28311,7 @@ begin
   RPot := Rect(0, 0, 0, 0);
   RDiode := Rect(0, 0, 0, 0);
   RWissel := Rect(0, 0, 0, 0);
+  RScoop := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -28035,6 +28333,7 @@ begin
   if FCondK then Knop(RCond, 8, DCond);
   if FSchak2K then Knop(RSchak2, 5, DSchak2);
   if FVolt2K then Knop(RVolt2, 6, DVolt2);
+  if FScoopK then Knop(RScoop, 13, DScoop);
 end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);
