@@ -30,6 +30,7 @@
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lets current through in one direction only, above 0.7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>A small base current controls a large collector current: switching and amplifying.</td></tr>
   </table>
   <ol class="steps">
     <li>Click the button of the component you want to place.</li>
@@ -187,7 +188,7 @@
     <tr><td>long thin wire</td><td>1&nbsp;&Omega;</td><td>a cable that is too thin to a distant lamp</td></tr>
     <tr><td>poor contact</td><td>2&nbsp;&Omega;</td><td>a loose or oxidised terminal (default)</td></tr>
     <tr><td>burnt contact</td><td>10&nbsp;&Omega;</td><td>a terminal that has become too hot</td></tr>
-    <tr><td>series resistor</td><td>100, 220, 470 or 1000&nbsp;&Omega;</td><td>a real resistor, e.g. in series with an <a href="#led">LED</a></td></tr>
+    <tr><td>series resistor</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2.2, 4.7, 10, 47 or 100&nbsp;k&Omega;</td><td>a real resistor, e.g. in series with an <a href="#led">LED</a> or before the base of a <a href="#transistor">transistor</a></td></tr>
   </table>
   <p>The block turns orange to red as it gets warmer. Measure the voltage drop with a
   <a href="#voltmeter">voltmeter</a>: + on the terminal on the source side, &minus; on the other terminal.
@@ -246,13 +247,35 @@
   of the switch). Switch on and off again: the LED does not go out at once but slowly gets weaker, because the capacitor
   sends its charge through the resistor and the LED.</div>
 
+  <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">The transistor</h2>
+  <p>A transistor has three terminals: the <b>collector C</b> (top), the <b>base B</b> (left) and the <b>emitter E</b> (bottom).
+  A small current into the base controls a much larger current from the collector to the emitter. How much larger is given by
+  the <b>current gain &beta;</b> (beta):</p>
+  <p class="formula">I<sub>c</sub> = &beta; &times; I<sub>b</sub> &nbsp; (e.g. 100 &times; 0.11&nbsp;mA = 11&nbsp;mA)</p>
+  <p>To the right of the symbol you see the kind, &beta;, the state and the currents I<sub>b</sub> and I<sub>c</sub>. The transistor
+  is always in one of three states:</p>
+  <table>
+    <tr><th>State</th><th>When?</th><th>What happens?</th></tr>
+    <tr><td>off (grey)</td><td>less than 0.7&nbsp;V between B and E</td><td>no base current and therefore no collector current: an open switch</td></tr>
+    <tr><td>amplifying (orange)</td><td>base current flows</td><td>I<sub>c</sub> = &beta; &times; I<sub>b</sub>: a small change at the base gives a large one at the collector</td></tr>
+    <tr><td>saturated (green)</td><td>the rest of the circuit lets less through than &beta; &times; I<sub>b</sub></td><td>the transistor is fully on; only about 0.2&nbsp;V across C and E: a closed switch</td></tr>
+  </table>
+  <p>Right-click &rsaquo; <b>Kind</b>: <b>NPN</b> or <b>PNP</b>. In an NPN the current goes into the base and flows from C to E; the
+  emitter is connected to &minus;. In a PNP everything is reversed: the emitter is connected to +, the current comes out of the base
+  and flows from E to C. The arrow in the emitter shows the direction of the current. Right-click &rsaquo; <b>Gain</b>: &beta; = 50,
+  100 or 200.</p>
+  <p>Always put a <a href="#weerstand">resistor</a> before the base (e.g. 10&nbsp;k&Omega;): between B and E there is a diode with
+  almost no resistance above 0.7&nbsp;V. Without a resistor so much base current flows that the transistor breaks (above 100&nbsp;mA
+  base current or 1&nbsp;A collector current); right-click &rsaquo; <b>Replace transistor</b>. See <a href="les38.html">lesson 38</a>
+  and <a href="les39.html">lesson 39</a>.</p>
+
   <h2 id="draaien">Rotating parts</h2>
   <p>You can turn a resistor, lamp, LED, diode, capacitor, switch or fuse a quarter turn: right-click &rsaquo;
   <b>Rotate</b>. A horizontal part then stands upright (the left terminal at the top, the right terminal at the bottom);
   the fuse lies down. Rotate again to put it back. The wires on the terminals move along, and the current and voltage
   stay the same. This way you can draw a circuit as a rectangle, and parallel branches side by side between two wires,
   as in a textbook. The position is saved with the panel. A locked part cannot be rotated.</p>
-  <p>Meters, sources, the oscilloscope and the potentiometer do not rotate: their display or slider must stay readable.</p>
+  <p>Meters, sources, the oscilloscope, the potentiometer and the transistor do not rotate: their display or slider must stay readable.</p>
 
   <h2 id="regels">What changes when there are rails on the panel?</h2>
   <p>As long as there is no rail on the panel, everything works as before. As soon as there is

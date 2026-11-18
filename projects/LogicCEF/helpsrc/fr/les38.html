@@ -1,0 +1,54 @@
+<!-- titel: Leçon 38 - Le transistor en interrupteur -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 38 sur 39</p>
+  <h1>Le transistor en interrupteur</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir comment un petit courant dans la base d&rsquo;un transistor allume et éteint
+  un courant beaucoup plus grand dans une lampe.</div>
+
+  <p><a class="open" href="../../panels/lessen/les38-transistor-schakelaar.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les38.png" alt="Source de 12 V&nbsp;; en bas un interrupteur, un milliampèremètre et une résistance de 10 kilo-ohms vers la base d'un transistor NPN&nbsp;; en haut un milliampèremètre et une lampe vers le collecteur&nbsp;; un voltmètre entre collecteur et émetteur">
+    <figcaption>En bas le <b>circuit de base</b>&nbsp;: interrupteur, milliampèremètre et 10&nbsp;k&Omega; vers la base B. En haut le
+    <b>circuit de collecteur</b>&nbsp;: milliampèremètre et lampe vers le collecteur C. L&rsquo;émetteur E va au &minus;. Le voltmètre
+    mesure entre C et E.</figcaption>
+  </figure>
+
+  <h2>Deux circuits</h2>
+  <p>Un <a href="voeding.html#transistor"><img src="../img/pal-transistor.png" class="ico" alt="">transistor</a> a trois bornes&nbsp;:
+  la <b>base B</b>, le <b>collecteur C</b> et l&rsquo;<b>émetteur E</b>. Le petit courant dans la base (I<sub>b</sub>) décide quel
+  courant peut passer du collecteur vers l&rsquo;émetteur (I<sub>c</sub>).</p>
+  <ol class="steps">
+    <li>Lancez la simulation avec l&rsquo;interrupteur ouvert. Aucun courant de base&nbsp;: le transistor est <b>bloqué</b> (gris),
+      la lampe est éteinte et le voltmètre affiche 12,0&nbsp;V entre C et E. Le transistor est un interrupteur ouvert.</li>
+    <li>Fermez l&rsquo;interrupteur. Le compteur du bas affiche un courant de base de 1,1&nbsp;mA&nbsp;: I<sub>b</sub> =
+      (12 &minus; 0,7)&nbsp;V / 10&nbsp;k&Omega;. Entre B et E, il y a toujours environ 0,7&nbsp;V, comme pour une
+      <a href="les34.html">diode</a>.</li>
+    <li>La lampe s&rsquo;allume et le compteur du haut affiche 98&nbsp;mA. Un courant de 1,1&nbsp;mA allume un courant presque
+      <b>90 fois plus grand</b>.</li>
+    <li>Le transistor est <b>saturé</b> (vert) et le voltmètre n&rsquo;affiche que 0,2&nbsp;V&nbsp;: le transistor est complètement
+      passant, comme un interrupteur fermé. Presque toute la tension est sur la lampe.</li>
+  </ol>
+
+  <h2>Pourquoi saturé&nbsp;?</h2>
+  <p>Avec &beta; = 100, le transistor laisserait passer 100 &times; 1,1&nbsp;mA = 113&nbsp;mA. Mais la lampe de 120&nbsp;&Omega; ne
+  laisse passer qu&rsquo;au plus (12 &minus; 0,2)&nbsp;V / 120&nbsp;&Omega; &asymp; 98&nbsp;mA. Le transistor est donc grand ouvert et
+  c&rsquo;est la lampe qui limite le courant. C&rsquo;est ainsi qu&rsquo;on utilise un transistor en <b>interrupteur</b>&nbsp;: le
+  courant de base est largement suffisant.</p>
+
+  <h2>Exercice&nbsp;: une résistance de base trop grande</h2>
+  <p>Faites un clic droit sur la résistance et choisissez <b>Type</b> &rsaquo; résistance série (100&nbsp;k&Omega;). Que fait la lampe
+  maintenant, et qu&rsquo;affichent les compteurs&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Le courant de base devient dix fois plus petit&nbsp;: 0,11&nbsp;mA. Le transistor laisse maintenant passer
+    100 &times; 0,11&nbsp;mA = 11&nbsp;mA et il <b>amplifie</b> (orange). C&rsquo;est trop peu pour la lampe&nbsp;: elle rougeoie à
+    peine, et il y a 10,6&nbsp;V entre C et E. En interrupteur, le transistor ne fonctionne bien que si le courant de base est assez
+    grand. Comment il amplifie, vous le verrez dans la <a href="les39.html">leçon suivante</a>.</p>
+  </details>
+
+  <div class="tip"><strong>Attention&nbsp;:</strong> ne reliez jamais la base au + sans résistance. Entre B et E se trouve une
+  diode&nbsp;: sans résistance, le courant de base est si grand que le transistor grille. Essayez sans crainte avec la résistance
+  sur 1&nbsp;&Omega;&nbsp;; clic droit &rsaquo; <b>Remplacer le transistor</b> le répare.</div>
+  <div class="tip"><strong>En vrai&nbsp;:</strong> une sortie de microcontrôleur (comme un Arduino) ne fournit que quelques mA. Avec un
+  transistor, elle commande quand même un relais, un moteur ou une lampe puissante.</div>
+
+  <div class="pager"><a href="les37.html">&larr; Leçon 37 : Le pont de Graetz</a><a href="les39.html">Leçon 39 : Amplifier avec un transistor &rarr;</a></div>

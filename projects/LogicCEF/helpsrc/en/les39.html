@@ -1,0 +1,58 @@
+<!-- titel: Lesson 39 - Amplifying with a transistor -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 39 of 39</p>
+  <h1>Amplifying with a transistor</h1>
+  <div class="goal"><strong>Goal:</strong> control the base current with a potentiometer and see that the collector current is
+  always &beta; times larger, until the transistor is saturated.</div>
+
+  <p><a class="open" href="../../panels/lessen/les39-transistor-versterken.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les39.png" alt="A potentiometer drives the base of an NPN transistor through a milliammeter and 47 kilohm; in the collector a milliammeter, a 470 ohm resistor and a red LED">
+    <figcaption>The wiper of the <a href="les33.html">potentiometer</a> drives the base through 47&nbsp;k&Omega;. The collector circuit
+    has a 470&nbsp;&Omega; resistor and a red LED. At 50&nbsp;%: I<sub>b</sub> = 0.11&nbsp;mA and I<sub>c</sub> = 11&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Controlling the base current</h2>
+  <ol class="steps">
+    <li>Start the simulation. The potentiometer is at 50&nbsp;%: the wiper gives 6&nbsp;V. Point at the transistor: the base current
+      is I<sub>b</sub> = (6 &minus; 0.7)&nbsp;V / 47&nbsp;k&Omega; &asymp; 0.11&nbsp;mA, and the collector current is 11&nbsp;mA. The LED
+      is half bright.</li>
+    <li>The transistor is <b>amplifying</b> (orange). Check: 11&nbsp;mA / 0.11&nbsp;mA = 100. That is the <b>current gain</b> &beta;
+      (beta): I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</li>
+    <li>Drag the wiper to the right, to 75&nbsp;%. The base current drops to 0.05&nbsp;mA and the collector current to 4.9&nbsp;mA:
+      again 100 times as much. The LED gets dimmer.</li>
+    <li>Drag the wiper to the left, to 25&nbsp;%: 0.18&nbsp;mA in the base, 18&nbsp;mA in the collector. The LED gets brighter.</li>
+  </ol>
+  <p>A small change of the base current gives a 100 times larger change of the collector current. That is called
+  <b>amplifying</b>.</p>
+  <p>The milliammeter in the base only shows one decimal (0.1&nbsp;mA). The transistor itself shows I<sub>b</sub> more precisely, to
+  the right of the symbol.</p>
+
+  <h2>The limits: off and saturated</h2>
+  <figure>
+    <img src="../img/les39b.png" alt="The same circuit with the potentiometer at 0 percent; the transistor is saturated and the LED is bright">
+    <figcaption>At 0&nbsp;%: the transistor is saturated. The collector current stays at 21&nbsp;mA, even though &beta; &times; I<sub>b</sub> = 24&nbsp;mA.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Drag the wiper all the way to the left (0&nbsp;%). The base current is 0.24&nbsp;mA, but the collector current stops at
+      21&nbsp;mA instead of 24&nbsp;mA. The transistor is <b>saturated</b> (green): the LED and the 470&nbsp;&Omega; resistor let no
+      more through, (12 &minus; 2.1 &minus; 0.2)&nbsp;V / 470&nbsp;&Omega; &asymp; 21&nbsp;mA.</li>
+    <li>Drag the wiper all the way to the right. Above about 94&nbsp;% the wiper gives less than 0.7&nbsp;V: no base current flows
+      any more, the transistor is <b>off</b> (grey) and the LED goes out.</li>
+  </ol>
+  <p>Between off and saturated lies the range in which the transistor amplifies. In <a href="les38.html">lesson 38</a> we only used
+  the two extremes: then the transistor works as a switch.</p>
+
+  <h2>Task: a different transistor</h2>
+  <p>Set the potentiometer to 50&nbsp;% and right-click the transistor: <b>Gain</b> &rsaquo; &beta; = 50. What does the collector
+  current become? And with &beta; = 200?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>With &beta; = 50: I<sub>c</sub> = 50 &times; 0.11&nbsp;mA &asymp; 5.6&nbsp;mA; the LED gets dimmer. With &beta; = 200 it would
+    be 22&nbsp;mA, but the circuit only lets 21&nbsp;mA through: the transistor is already saturated. Real transistors of the same
+    type differ a lot in &beta;. That is why you design a switch so that the base current is more than large enough.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> in a music amplifier a transistor turns the weak signal of a microphone or a phone
+  into a strong signal that can drive a loudspeaker.</div>
+
+  <div class="pager"><a href="les38.html">&larr; Lesson 38: The transistor as a switch</a><a href="leerpad.html">Learning path &rarr;</a></div>

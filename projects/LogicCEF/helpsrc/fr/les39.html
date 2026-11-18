@@ -1,0 +1,62 @@
+<!-- titel: Leçon 39 - Amplifier avec un transistor -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 39 sur 39</p>
+  <h1>Amplifier avec un transistor</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> régler le courant de base avec un potentiomètre et voir que le courant de
+  collecteur est toujours &beta; fois plus grand, jusqu&rsquo;à ce que le transistor soit saturé.</div>
+
+  <p><a class="open" href="../../panels/lessen/les39-transistor-versterken.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les39.png" alt="Un potentiomètre commande la base d'un transistor NPN à travers un milliampèremètre et 47 kilo-ohms&nbsp;; dans le collecteur un milliampèremètre, une résistance de 470 ohms et une LED rouge">
+    <figcaption>Le curseur du <a href="les33.html">potentiomètre</a> commande la base à travers 47&nbsp;k&Omega;. Le circuit de
+    collecteur contient une résistance de 470&nbsp;&Omega; et une LED rouge. À 50&nbsp;%&nbsp;: I<sub>b</sub> = 0,11&nbsp;mA et
+    I<sub>c</sub> = 11&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Régler le courant de base</h2>
+  <ol class="steps">
+    <li>Lancez la simulation. Le potentiomètre est à 50&nbsp;%&nbsp;: le curseur donne 6&nbsp;V. Pointez le transistor&nbsp;: le
+      courant de base vaut I<sub>b</sub> = (6 &minus; 0,7)&nbsp;V / 47&nbsp;k&Omega; &asymp; 0,11&nbsp;mA et le courant de collecteur
+      11&nbsp;mA. La LED brille à moitié.</li>
+    <li>Le transistor <b>amplifie</b> (orange). Vérifiez&nbsp;: 11&nbsp;mA / 0,11&nbsp;mA = 100. C&rsquo;est le <b>gain en courant</b>
+      &beta; (bêta)&nbsp;: I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</li>
+    <li>Faites glisser le curseur vers la droite, à 75&nbsp;%. Le courant de base descend à 0,05&nbsp;mA et le courant de collecteur à
+      4,9&nbsp;mA&nbsp;: encore 100 fois plus. La LED faiblit.</li>
+    <li>Faites glisser le curseur vers la gauche, à 25&nbsp;%&nbsp;: 0,18&nbsp;mA dans la base, 18&nbsp;mA dans le collecteur. La LED
+      brille plus fort.</li>
+  </ol>
+  <p>Un petit changement du courant de base donne un changement 100 fois plus grand du courant de collecteur. C&rsquo;est
+  <b>amplifier</b>.</p>
+  <p>Le milliampèremètre de la base n&rsquo;affiche qu&rsquo;une décimale (0,1&nbsp;mA). Le transistor lui-même affiche I<sub>b</sub>
+  plus précisément, à droite du symbole.</p>
+
+  <h2>Les limites&nbsp;: bloqué et saturé</h2>
+  <figure>
+    <img src="../img/les39b.png" alt="Le même circuit avec le potentiomètre à 0 pour cent&nbsp;; le transistor est saturé et la LED brille fort">
+    <figcaption>À 0&nbsp;%&nbsp;: le transistor est saturé. Le courant de collecteur reste à 21&nbsp;mA, alors que &beta; &times;
+    I<sub>b</sub> = 24&nbsp;mA.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Faites glisser le curseur tout à gauche (0&nbsp;%). Le courant de base vaut 0,24&nbsp;mA, mais le courant de collecteur
+      s&rsquo;arrête à 21&nbsp;mA au lieu de 24&nbsp;mA. Le transistor est <b>saturé</b> (vert)&nbsp;: la LED et la résistance de
+      470&nbsp;&Omega; ne laissent pas passer plus, (12 &minus; 2,1 &minus; 0,2)&nbsp;V / 470&nbsp;&Omega; &asymp; 21&nbsp;mA.</li>
+    <li>Faites glisser le curseur tout à droite. Au-dessus d&rsquo;environ 94&nbsp;%, le curseur donne moins de 0,7&nbsp;V&nbsp;: plus
+      aucun courant de base, le transistor est <b>bloqué</b> (gris) et la LED s&rsquo;éteint.</li>
+  </ol>
+  <p>Entre bloqué et saturé se trouve la zone où le transistor amplifie. Dans la <a href="les38.html">leçon 38</a>, nous
+  n&rsquo;utilisions que les deux extrêmes&nbsp;: le transistor fonctionne alors en interrupteur.</p>
+
+  <h2>Exercice&nbsp;: un autre transistor</h2>
+  <p>Mettez le potentiomètre à 50&nbsp;% et faites un clic droit sur le transistor&nbsp;: <b>Gain</b> &rsaquo; &beta; = 50. Que devient
+  le courant de collecteur&nbsp;? Et avec &beta; = 200&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Avec &beta; = 50&nbsp;: I<sub>c</sub> = 50 &times; 0,11&nbsp;mA &asymp; 5,6&nbsp;mA&nbsp;; la LED faiblit. Avec &beta; = 200, ce
+    serait 22&nbsp;mA, mais le circuit ne laisse passer que 21&nbsp;mA&nbsp;: le transistor est déjà saturé. Les vrais transistors
+    d&rsquo;un même type diffèrent beaucoup en &beta;. C&rsquo;est pourquoi on conçoit un interrupteur avec un courant de base
+    largement suffisant.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> dans un amplificateur de musique, un transistor transforme le faible signal
+  d&rsquo;un micro ou d&rsquo;un téléphone en un signal fort capable d&rsquo;alimenter un haut-parleur.</div>
+
+  <div class="pager"><a href="les38.html">&larr; Leçon 38 : Le transistor en interrupteur</a><a href="leerpad.html">Parcours &rarr;</a></div>

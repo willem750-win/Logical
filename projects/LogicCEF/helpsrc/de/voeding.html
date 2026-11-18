@@ -30,6 +30,7 @@
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED mit 2 Klemmen</a></td><td>Leitet nur in eine Richtung; gehört mit einem Vorwiderstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch, über 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Ein kleiner Basisstrom steuert einen großen Kollektorstrom: schalten und verstärken.</td></tr>
   </table>
   <ol class="steps">
     <li>Klicken Sie auf die Schaltfläche des Bauteils, das Sie platzieren möchten.</li>
@@ -190,7 +191,7 @@
     <tr><td>langer dünner Draht</td><td>1&nbsp;&Omega;</td><td>ein zu dünnes Kabel zu einer weit entfernten Lampe</td></tr>
     <tr><td>schlechter Kontakt</td><td>2&nbsp;&Omega;</td><td>eine lose oder oxidierte Klemme (Standard)</td></tr>
     <tr><td>verbrannter Kontakt</td><td>10&nbsp;&Omega;</td><td>eine Klemme, die zu heiß geworden ist</td></tr>
-    <tr><td>Vorwiderstand</td><td>100, 220, 470 oder 1000&nbsp;&Omega;</td><td>ein echter Widerstand, z. B. in Reihe mit einer <a href="#led">LED</a></td></tr>
+    <tr><td>Vorwiderstand</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2,2, 4,7, 10, 47 oder 100&nbsp;k&Omega;</td><td>ein echter Widerstand, z. B. in Reihe mit einer <a href="#led">LED</a> oder vor der Basis eines <a href="#transistor">Transistors</a></td></tr>
   </table>
   <p>Der Block färbt sich orange bis rot, je wärmer er wird. Messen Sie den Spannungsabfall mit einem
   <a href="#voltmeter">Voltmeter</a>: + an die Klemme auf der Seite der Quelle, &minus; an die andere Klemme.
@@ -250,6 +251,27 @@
   Widerstand (+ auf der Seite des Schalters). Schalten Sie ein und wieder aus: Die LED geht nicht sofort aus, sondern wird
   langsam schwächer, weil der Kondensator seine Ladung über den Widerstand durch die LED schickt.</div>
 
+  <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">Der Transistor</h2>
+  <p>Ein Transistor hat drei Klemmen: den <b>Kollektor C</b> (oben), die <b>Basis B</b> (links) und den <b>Emitter E</b> (unten).
+  Ein kleiner Strom in die Basis steuert einen viel größeren Strom vom Kollektor zum Emitter. Wie viel größer, sagt die
+  <b>Stromverstärkung &beta;</b> (Beta):</p>
+  <p class="formula">I<sub>c</sub> = &beta; &times; I<sub>b</sub> &nbsp; (z. B. 100 &times; 0,11&nbsp;mA = 11&nbsp;mA)</p>
+  <p>Rechts neben dem Symbol stehen die Art, &beta;, der Zustand und die Ströme I<sub>b</sub> und I<sub>c</sub>. Der Transistor ist
+  immer in einem von drei Zuständen:</p>
+  <table>
+    <tr><th>Zustand</th><th>Wann?</th><th>Was passiert?</th></tr>
+    <tr><td>sperrt (grau)</td><td>weniger als 0,7&nbsp;V zwischen B und E</td><td>kein Basisstrom und darum auch kein Kollektorstrom: ein offener Schalter</td></tr>
+    <tr><td>verstärkt (orange)</td><td>es fließt Basisstrom</td><td>I<sub>c</sub> = &beta; &times; I<sub>b</sub>: eine kleine Änderung an der Basis ergibt eine große am Kollektor</td></tr>
+    <tr><td>gesättigt (grün)</td><td>der Rest des Stromkreises lässt weniger durch als &beta; &times; I<sub>b</sub></td><td>der Transistor ist ganz offen; zwischen C und E liegen nur etwa 0,2&nbsp;V: ein geschlossener Schalter</td></tr>
+  </table>
+  <p>Rechtsklick &rsaquo; <b>Art</b>: <b>NPN</b> oder <b>PNP</b>. Bei einem NPN fließt der Strom in die Basis und von C nach E; der
+  Emitter hängt am &minus;. Bei einem PNP ist alles umgekehrt: Der Emitter hängt am +, der Strom kommt aus der Basis und fließt von
+  E nach C. Der Pfeil im Emitter zeigt die Richtung des Stroms. Rechtsklick &rsaquo; <b>Verstärkung</b>: &beta; = 50, 100 oder 200.</p>
+  <p>Setzen Sie immer einen <a href="#weerstand">Widerstand</a> vor die Basis (z. B. 10&nbsp;k&Omega;): Zwischen B und E sitzt eine
+  Diode, die über 0,7&nbsp;V fast keinen Widerstand hat. Ohne Widerstand fließt so viel Basisstrom, dass der Transistor kaputtgeht
+  (über 100&nbsp;mA Basisstrom oder 1&nbsp;A Kollektorstrom); Rechtsklick &rsaquo; <b>Transistor ersetzen</b>. Siehe
+  <a href="les38.html">Lektion 38</a> und <a href="les39.html">Lektion 39</a>.</p>
+
   <h2 id="draaien">Bauteile drehen</h2>
   <p>Widerstand, Lampe, LED, Diode, Kondensator, Schalter und Sicherung können Sie um eine Vierteldrehung drehen:
   Rechtsklick &rsaquo; <b>Drehen</b>. Ein liegendes Bauteil steht dann aufrecht (die linke Klemme oben, die rechte
@@ -257,7 +279,7 @@
   gehen mit, und Strom und Spannung bleiben gleich. So zeichnen Sie einen Stromkreis als Rechteck und parallele Zweige
   nebeneinander zwischen zwei Drähten, wie im Schulbuch. Die Stellung wird mit dem Panel gespeichert. Ein gesperrtes
   Bauteil lässt sich nicht drehen.</p>
-  <p>Messgeräte, Quellen, das Oszilloskop und das Potentiometer drehen sich nicht: Ihre Anzeige oder ihr Schieberegler
+  <p>Messgeräte, Quellen, das Oszilloskop, das Potentiometer und der Transistor drehen sich nicht: Ihre Anzeige oder ihr Schieberegler
   muss lesbar bleiben.</p>
 
   <h2 id="regels">Was ändert sich, wenn Schienen auf dem Panel stehen?</h2>

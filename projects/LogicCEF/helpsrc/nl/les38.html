@@ -1,0 +1,51 @@
+<!-- titel: Les 38 - De transistor als schakelaar -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 38 van 39</p>
+  <h1>De transistor als schakelaar</h1>
+  <div class="goal"><strong>Doel:</strong> zien hoe een kleine stroom in de basis van een transistor een veel grotere stroom
+  door een lamp aan- en uitzet.</div>
+
+  <p><a class="open" href="../../panels/lessen/les38-transistor-schakelaar.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les38.png" alt="Bron van 12 V; onderaan een schakelaar, een milliampèremeter en een weerstand van 10 kilo-ohm naar de basis van een NPN-transistor; bovenaan een milliampèremeter en een lamp naar de collector; een voltmeter tussen collector en emitter">
+    <figcaption>Onderaan de <b>basiskring</b>: schakelaar, milliampèremeter en 10&nbsp;k&Omega; naar de basis B. Bovenaan de
+    <b>collectorkring</b>: milliampèremeter en lamp naar de collector C. De emitter E gaat naar de &minus;. De voltmeter meet tussen C en E.</figcaption>
+  </figure>
+
+  <h2>Twee kringen</h2>
+  <p>Een <a href="voeding.html#transistor"><img src="../img/pal-transistor.png" class="ico" alt="">transistor</a> heeft drie klemmen:
+  de <b>basis B</b>, de <b>collector C</b> en de <b>emitter E</b>. De kleine stroom door de basis (I<sub>b</sub>) bepaalt hoeveel
+  stroom er van de collector naar de emitter mag (I<sub>c</sub>).</p>
+  <ol class="steps">
+    <li>Start de simulatie met de schakelaar open. Er loopt geen basisstroom: de transistor <b>spert</b> (grijs), de lamp is uit en
+      de voltmeter toont 12,0&nbsp;V tussen C en E. De transistor is een open schakelaar.</li>
+    <li>Zet de schakelaar aan. De onderste meter toont een basisstroom van 1,1&nbsp;mA: I<sub>b</sub> = (12 &minus; 0,7)&nbsp;V /
+      10&nbsp;k&Omega;. Tussen B en E staat altijd ongeveer 0,7&nbsp;V, zoals bij een <a href="les34.html">diode</a>.</li>
+    <li>De lamp brandt, en de bovenste meter toont 98&nbsp;mA. Een stroom van 1,1&nbsp;mA zet een stroom aan die bijna
+      <b>90 keer groter</b> is.</li>
+    <li>De transistor is <b>verzadigd</b> (groen) en de voltmeter toont maar 0,2&nbsp;V: de transistor staat helemaal open, zoals een
+      gesloten schakelaar. Bijna alle spanning staat over de lamp.</li>
+  </ol>
+
+  <h2>Waarom verzadigd?</h2>
+  <p>Met &beta; = 100 zou de transistor 100 &times; 1,1&nbsp;mA = 113&nbsp;mA doorlaten. Maar de lamp van 120&nbsp;&Omega; laat er
+  hoogstens (12 &minus; 0,2)&nbsp;V / 120&nbsp;&Omega; &asymp; 98&nbsp;mA door. De transistor staat dus wijd open en de lamp beperkt
+  de stroom. Zo gebruik je een transistor als <b>schakelaar</b>: de basisstroom is ruim groot genoeg.</p>
+
+  <h2>Opdracht: een te grote basisweerstand</h2>
+  <p>Kies met rechtsklik op de weerstand <b>Soort</b> &rsaquo; voorschakelweerstand (100&nbsp;k&Omega;). Wat doet de lamp nu, en wat
+  tonen de meters?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>De basisstroom wordt tien keer kleiner: 0,11&nbsp;mA. De transistor laat nu 100 &times; 0,11&nbsp;mA = 11&nbsp;mA door en
+    staat op <b>versterkt</b> (oranje). Dat is te weinig voor de lamp: ze gloeit nauwelijks, en tussen C en E staat 10,6&nbsp;V. Als
+    schakelaar werkt de transistor alleen goed als de basisstroom groot genoeg is. Hoe hij versterkt, zie je in de
+    <a href="les39.html">volgende les</a>.</p>
+  </details>
+
+  <div class="tip"><strong>Let op:</strong> zet nooit de basis zonder weerstand aan de +. Tussen B en E zit een diode: zonder
+  weerstand loopt er zoveel basisstroom dat de transistor kapot gaat. Probeer het gerust met de weerstand op 1&nbsp;&Omega;; met
+  rechtsklik &rsaquo; <b>Transistor vervangen</b> maak je hem weer heel.</div>
+  <div class="tip"><strong>In het echt:</strong> een uitgang van een microcontroller (zoals een Arduino) levert maar een paar mA.
+  Met een transistor stuurt hij toch een relais, een motor of een felle lamp.</div>
+
+  <div class="pager"><a href="les37.html">&larr; Les 37: De Graetz-brug</a><a href="les39.html">Les 39: Versterken met een transistor &rarr;</a></div>

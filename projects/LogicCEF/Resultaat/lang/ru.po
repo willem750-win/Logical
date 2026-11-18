@@ -1735,3 +1735,36 @@ msgstr "создать осциллограф"
 
 msgid "Rotate"
 msgstr "Повернуть"
+
+msgid "Gain"
+msgstr "Усиление"
+
+msgid "Replace transistor"
+msgstr "Заменить транзистор"
+
+msgid "saturated"
+msgstr "насыщен"
+
+msgid "amplifying"
+msgstr "усиливает"
+
+msgid "Transistor"
+msgstr "Транзистор"
+
+msgid "Broken: too much current went through the base or the collector. Right-click: replace transistor."
+msgstr "Сгорел: через базу или коллектор прошёл слишком большой ток. Правый щелчок: заменить транзистор."
+
+msgid "Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E."
+msgstr "Насыщен: остальная цепь пропускает меньше, чем β × Ib; между C и E только 0,2 В."
+
+msgid "A small current out of the base (B) controls a large current from the emitter (E) to the collector (C)."
+msgstr "Малый ток из базы (B) управляет большим током от эмиттера (E) к коллектору (C)."
+
+msgid "A small current into the base (B) controls a large current from the collector (C) to the emitter (E)."
+msgstr "Малый ток в базу (B) управляет большим током от коллектора (C) к эмиттеру (E)."
+
+msgid "Always put a resistor before the base. Right-click: choose the kind and the gain."
+msgstr "Всегда ставьте резистор перед базой. Правый щелчок: выбрать тип и усиление."
+
+msgid "create Transistor"
+msgstr "создать Транзистор"

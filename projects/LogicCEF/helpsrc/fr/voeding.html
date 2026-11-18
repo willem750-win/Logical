@@ -30,6 +30,7 @@
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens ; va avec une résistance série.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens, au-dessus de 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Un petit courant de base commande un grand courant de collecteur : commuter et amplifier.</td></tr>
   </table>
   <ol class="steps">
     <li>Cliquez sur le bouton du composant à placer.</li>
@@ -192,7 +193,7 @@
     <tr><td>long fil fin</td><td>1&nbsp;&Omega;</td><td>un câble trop fin vers une lampe éloignée</td></tr>
     <tr><td>mauvais contact</td><td>2&nbsp;&Omega;</td><td>une borne desserrée ou oxydée (par défaut)</td></tr>
     <tr><td>contact brûlé</td><td>10&nbsp;&Omega;</td><td>une borne devenue trop chaude</td></tr>
-    <tr><td>résistance série</td><td>100, 220, 470 ou 1000&nbsp;&Omega;</td><td>une vraie résistance, p. ex. en série avec une <a href="#led">LED</a></td></tr>
+    <tr><td>résistance série</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2,2, 4,7, 10, 47 ou 100&nbsp;k&Omega;</td><td>une vraie résistance, p. ex. en série avec une <a href="#led">LED</a> ou avant la base d&rsquo;un <a href="#transistor">transistor</a></td></tr>
   </table>
   <p>Le bloc devient orange puis rouge à mesure qu&rsquo;il chauffe. Mesurez la chute de tension avec un
   <a href="#voltmeter">voltmètre</a>&nbsp;: + sur la borne du côté de la source, &minus; sur l&rsquo;autre borne.
@@ -254,6 +255,28 @@
   résistance (+ du côté de l&rsquo;interrupteur). Allumez puis éteignez&nbsp;: la LED ne s&rsquo;éteint pas tout de suite mais
   faiblit lentement, car le condensateur envoie sa charge à travers la résistance et la LED.</div>
 
+  <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">Le transistor</h2>
+  <p>Un transistor a trois bornes&nbsp;: le <b>collecteur C</b> (en haut), la <b>base B</b> (à gauche) et l&rsquo;<b>émetteur E</b>
+  (en bas). Un petit courant dans la base commande un courant beaucoup plus grand du collecteur vers l&rsquo;émetteur. Le
+  <b>gain en courant &beta;</b> (bêta) dit combien de fois plus grand&nbsp;:</p>
+  <p class="formula">I<sub>c</sub> = &beta; &times; I<sub>b</sub> &nbsp; (p. ex. 100 &times; 0,11&nbsp;mA = 11&nbsp;mA)</p>
+  <p>À droite du symbole figurent le type, &beta;, l&rsquo;état et les courants I<sub>b</sub> et I<sub>c</sub>. Le transistor est
+  toujours dans l&rsquo;un des trois états&nbsp;:</p>
+  <table>
+    <tr><th>État</th><th>Quand&nbsp;?</th><th>Que se passe-t-il&nbsp;?</th></tr>
+    <tr><td>bloqué (gris)</td><td>moins de 0,7&nbsp;V entre B et E</td><td>pas de courant de base, donc pas de courant de collecteur&nbsp;: un interrupteur ouvert</td></tr>
+    <tr><td>amplifie (orange)</td><td>un courant de base passe</td><td>I<sub>c</sub> = &beta; &times; I<sub>b</sub>&nbsp;: un petit changement à la base en donne un grand au collecteur</td></tr>
+    <tr><td>saturé (vert)</td><td>le reste du circuit laisse passer moins que &beta; &times; I<sub>b</sub></td><td>le transistor est complètement passant&nbsp;; il ne reste qu&rsquo;environ 0,2&nbsp;V entre C et E&nbsp;: un interrupteur fermé</td></tr>
+  </table>
+  <p>Clic droit &rsaquo; <b>Type</b>&nbsp;: <b>NPN</b> ou <b>PNP</b>. Dans un NPN, le courant entre dans la base et va de C vers E&nbsp;;
+  l&rsquo;émetteur est relié au &minus;. Dans un PNP, tout est inversé&nbsp;: l&rsquo;émetteur est relié au +, le courant sort de la
+  base et va de E vers C. La flèche de l&rsquo;émetteur montre le sens du courant. Clic droit &rsaquo; <b>Gain</b>&nbsp;: &beta; = 50,
+  100 ou 200.</p>
+  <p>Mettez toujours une <a href="#weerstand">résistance</a> avant la base (p. ex. 10&nbsp;k&Omega;)&nbsp;: entre B et E se trouve une
+  diode qui n&rsquo;a presque plus de résistance au-dessus de 0,7&nbsp;V. Sans résistance, le courant de base est si grand que le
+  transistor grille (au-dessus de 100&nbsp;mA de courant de base ou de 1&nbsp;A de courant de collecteur)&nbsp;; clic droit &rsaquo;
+  <b>Remplacer le transistor</b>. Voir la <a href="les38.html">leçon 38</a> et la <a href="les39.html">leçon 39</a>.</p>
+
   <h2 id="draaien">Faire pivoter les composants</h2>
   <p>Vous pouvez faire pivoter d&rsquo;un quart de tour une résistance, une lampe, une LED, une diode, un condensateur,
   un interrupteur ou un fusible&nbsp;: clic droit &rsaquo; <b>Pivoter</b>. Un composant horizontal se met alors debout
@@ -261,7 +284,7 @@
   comme avant. Les fils sur les bornes suivent, et le courant et la tension restent les mêmes. Vous pouvez ainsi dessiner
   un circuit en rectangle, et des branches en parallèle côte à côte entre deux fils, comme dans un manuel. La position est
   enregistrée avec le panneau. Un composant verrouillé ne peut pas pivoter.</p>
-  <p>Les appareils de mesure, les sources, l&rsquo;oscilloscope et le potentiomètre ne pivotent pas&nbsp;: leur écran ou
+  <p>Les appareils de mesure, les sources, l&rsquo;oscilloscope, le potentiomètre et le transistor ne pivotent pas&nbsp;: leur écran ou
   leur curseur doit rester lisible.</p>
 
   <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>

@@ -1735,3 +1735,36 @@ msgstr "オシロスコープを作成"
 
 msgid "Rotate"
 msgstr "回転"
+
+msgid "Gain"
+msgstr "増幅率"
+
+msgid "Replace transistor"
+msgstr "トランジスタを交換"
+
+msgid "saturated"
+msgstr "飽和"
+
+msgid "amplifying"
+msgstr "増幅中"
+
+msgid "Transistor"
+msgstr "トランジスタ"
+
+msgid "Broken: too much current went through the base or the collector. Right-click: replace transistor."
+msgstr "故障: ベースまたはコレクタに電流が流れすぎました。右クリック: トランジスタを交換。"
+
+msgid "Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E."
+msgstr "飽和: 回路の残りの部分が β × Ib より少ない電流しか流しません。C と E の間は 0.2 V だけです。"
+
+msgid "A small current out of the base (B) controls a large current from the emitter (E) to the collector (C)."
+msgstr "ベース (B) から出る小さな電流が、エミッタ (E) からコレクタ (C) への大きな電流を制御します。"
+
+msgid "A small current into the base (B) controls a large current from the collector (C) to the emitter (E)."
+msgstr "ベース (B) に入る小さな電流が、コレクタ (C) からエミッタ (E) への大きな電流を制御します。"
+
+msgid "Always put a resistor before the base. Right-click: choose the kind and the gain."
+msgstr "ベースの前には必ず抵抗を入れてください。右クリック: 種類と増幅率を選択。"
+
+msgid "create Transistor"
+msgstr "トランジスタを作成"

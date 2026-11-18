@@ -1,0 +1,58 @@
+<!-- titel: Lektion 39 - Verstärken mit einem Transistor -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 39 von 39</p>
+  <h1>Verstärken mit einem Transistor</h1>
+  <div class="goal"><strong>Ziel:</strong> den Basisstrom mit einem Potentiometer einstellen und sehen, dass der Kollektorstrom
+  immer &beta;-mal größer ist, bis der Transistor gesättigt ist.</div>
+
+  <p><a class="open" href="../../panels/lessen/les39-transistor-versterken.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les39.png" alt="Ein Potentiometer steuert über ein Milliamperemeter und 47 Kiloohm die Basis eines NPN-Transistors; im Kollektor ein Milliamperemeter, ein Widerstand von 470 Ohm und eine rote LED">
+    <figcaption>Der Schleifer des <a href="les33.html">Potentiometers</a> steuert über 47&nbsp;k&Omega; die Basis. Im Kollektorkreis
+    sitzen ein Widerstand von 470&nbsp;&Omega; und eine rote LED. Bei 50&nbsp;%: I<sub>b</sub> = 0,11&nbsp;mA und I<sub>c</sub> = 11&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Den Basisstrom einstellen</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Das Potentiometer steht auf 50&nbsp;%: Der Schleifer liefert 6&nbsp;V. Zeigen Sie auf den
+      Transistor: Der Basisstrom ist I<sub>b</sub> = (6 &minus; 0,7)&nbsp;V / 47&nbsp;k&Omega; &asymp; 0,11&nbsp;mA, und der
+      Kollektorstrom ist 11&nbsp;mA. Die LED leuchtet halb.</li>
+    <li>Der Transistor <b>verstärkt</b> (orange). Rechnen Sie nach: 11&nbsp;mA / 0,11&nbsp;mA = 100. Das ist die
+      <b>Stromverstärkung</b> &beta; (Beta): I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</li>
+    <li>Ziehen Sie den Schleifer nach rechts, auf 75&nbsp;%. Der Basisstrom sinkt auf 0,05&nbsp;mA und der Kollektorstrom auf
+      4,9&nbsp;mA: wieder 100-mal so viel. Die LED wird schwächer.</li>
+    <li>Ziehen Sie den Schleifer nach links, auf 25&nbsp;%: 0,18&nbsp;mA in der Basis, 18&nbsp;mA im Kollektor. Die LED leuchtet heller.</li>
+  </ol>
+  <p>Eine kleine Änderung des Basisstroms ergibt eine 100-mal größere Änderung des Kollektorstroms. Das heißt
+  <b>Verstärken</b>.</p>
+  <p>Das Milliamperemeter in der Basis zeigt nur eine Nachkommastelle (0,1&nbsp;mA). Der Transistor selbst zeigt I<sub>b</sub>
+  genauer, rechts neben dem Symbol.</p>
+
+  <h2>Die Grenzen: Sperren und Sättigung</h2>
+  <figure>
+    <img src="../img/les39b.png" alt="Dieselbe Schaltung mit dem Potentiometer auf 0 Prozent; der Transistor ist gesättigt und die LED leuchtet hell">
+    <figcaption>Bei 0&nbsp;%: Der Transistor ist gesättigt. Der Kollektorstrom bleibt bei 21&nbsp;mA, obwohl &beta; &times; I<sub>b</sub> = 24&nbsp;mA ist.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Ziehen Sie den Schleifer ganz nach links (0&nbsp;%). Der Basisstrom ist 0,24&nbsp;mA, aber der Kollektorstrom bleibt bei
+      21&nbsp;mA statt 24&nbsp;mA stehen. Der Transistor ist <b>gesättigt</b> (grün): Die LED und der Widerstand von 470&nbsp;&Omega;
+      lassen nicht mehr durch, (12 &minus; 2,1 &minus; 0,2)&nbsp;V / 470&nbsp;&Omega; &asymp; 21&nbsp;mA.</li>
+    <li>Ziehen Sie den Schleifer ganz nach rechts. Über etwa 94&nbsp;% liefert der Schleifer weniger als 0,7&nbsp;V: Es fließt kein
+      Basisstrom mehr, der Transistor <b>sperrt</b> (grau), und die LED geht aus.</li>
+  </ol>
+  <p>Zwischen Sperren und Sättigung liegt der Bereich, in dem der Transistor verstärkt. In <a href="les38.html">Lektion 38</a>
+  haben wir nur die beiden Extreme benutzt: Dann arbeitet der Transistor als Schalter.</p>
+
+  <h2>Aufgabe: ein anderer Transistor</h2>
+  <p>Stellen Sie das Potentiometer auf 50&nbsp;% und wählen Sie per Rechtsklick auf den Transistor <b>Verstärkung</b> &rsaquo;
+  &beta; = 50. Wie groß wird der Kollektorstrom? Und mit &beta; = 200?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Mit &beta; = 50: I<sub>c</sub> = 50 &times; 0,11&nbsp;mA &asymp; 5,6&nbsp;mA; die LED wird schwächer. Mit &beta; = 200 wären es
+    22&nbsp;mA, aber der Stromkreis lässt nur 21&nbsp;mA durch: Der Transistor ist schon gesättigt. Echte Transistoren desselben Typs
+    unterscheiden sich stark in &beta;. Darum legt man einen Schalter so aus, dass der Basisstrom mehr als groß genug ist.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> In einem Musikverstärker macht ein Transistor aus dem schwachen Signal eines
+  Mikrofons oder Handys ein starkes Signal, das einen Lautsprecher antreiben kann.</div>
+
+  <div class="pager"><a href="les38.html">&larr; Lektion 38: Der Transistor als Schalter</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

@@ -1,0 +1,51 @@
+<!-- titel: Lektion 38 - Der Transistor als Schalter -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 38 von 39</p>
+  <h1>Der Transistor als Schalter</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, wie ein kleiner Strom in die Basis eines Transistors einen viel größeren Strom
+  durch eine Lampe ein- und ausschaltet.</div>
+
+  <p><a class="open" href="../../panels/lessen/les38-transistor-schakelaar.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les38.png" alt="Quelle von 12 V; unten ein Schalter, ein Milliamperemeter und ein Widerstand von 10 Kiloohm zur Basis eines NPN-Transistors; oben ein Milliamperemeter und eine Lampe zum Kollektor; ein Voltmeter zwischen Kollektor und Emitter">
+    <figcaption>Unten der <b>Basiskreis</b>: Schalter, Milliamperemeter und 10&nbsp;k&Omega; zur Basis B. Oben der
+    <b>Kollektorkreis</b>: Milliamperemeter und Lampe zum Kollektor C. Der Emitter E geht zum &minus;. Das Voltmeter misst zwischen C und E.</figcaption>
+  </figure>
+
+  <h2>Zwei Stromkreise</h2>
+  <p>Ein <a href="voeding.html#transistor"><img src="../img/pal-transistor.png" class="ico" alt="">Transistor</a> hat drei Klemmen:
+  die <b>Basis B</b>, den <b>Kollektor C</b> und den <b>Emitter E</b>. Der kleine Strom durch die Basis (I<sub>b</sub>) bestimmt, wie
+  viel Strom vom Kollektor zum Emitter fließen darf (I<sub>c</sub>).</p>
+  <ol class="steps">
+    <li>Starten Sie die Simulation mit offenem Schalter. Es fließt kein Basisstrom: Der Transistor <b>sperrt</b> (grau), die Lampe
+      ist aus, und das Voltmeter zeigt 12,0&nbsp;V zwischen C und E. Der Transistor ist ein offener Schalter.</li>
+    <li>Schalten Sie ein. Das untere Messgerät zeigt einen Basisstrom von 1,1&nbsp;mA: I<sub>b</sub> = (12 &minus; 0,7)&nbsp;V /
+      10&nbsp;k&Omega;. Zwischen B und E liegen immer etwa 0,7&nbsp;V, wie bei einer <a href="les34.html">Diode</a>.</li>
+    <li>Die Lampe leuchtet, und das obere Messgerät zeigt 98&nbsp;mA. Ein Strom von 1,1&nbsp;mA schaltet einen fast
+      <b>90-mal größeren</b> Strom ein.</li>
+    <li>Der Transistor ist <b>gesättigt</b> (grün), und das Voltmeter zeigt nur 0,2&nbsp;V: Der Transistor ist ganz offen, wie ein
+      geschlossener Schalter. Fast die ganze Spannung liegt über der Lampe.</li>
+  </ol>
+
+  <h2>Warum gesättigt?</h2>
+  <p>Mit &beta; = 100 würde der Transistor 100 &times; 1,1&nbsp;mA = 113&nbsp;mA durchlassen. Die Lampe von 120&nbsp;&Omega; lässt
+  aber höchstens (12 &minus; 0,2)&nbsp;V / 120&nbsp;&Omega; &asymp; 98&nbsp;mA durch. Der Transistor ist also weit offen, und die Lampe
+  begrenzt den Strom. So benutzt man einen Transistor als <b>Schalter</b>: Der Basisstrom ist mehr als groß genug.</p>
+
+  <h2>Aufgabe: ein zu großer Basiswiderstand</h2>
+  <p>Wählen Sie per Rechtsklick auf den Widerstand <b>Art</b> &rsaquo; Vorwiderstand (100&nbsp;k&Omega;). Was macht die Lampe jetzt,
+  und was zeigen die Messgeräte?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Der Basisstrom wird zehnmal kleiner: 0,11&nbsp;mA. Der Transistor lässt jetzt 100 &times; 0,11&nbsp;mA = 11&nbsp;mA durch und
+    <b>verstärkt</b> (orange). Das ist zu wenig für die Lampe: Sie glimmt kaum, und zwischen C und E liegen 10,6&nbsp;V. Als Schalter
+    funktioniert der Transistor nur gut, wenn der Basisstrom groß genug ist. Wie er verstärkt, sehen Sie in der
+    <a href="les39.html">nächsten Lektion</a>.</p>
+  </details>
+
+  <div class="tip"><strong>Achtung:</strong> Verbinden Sie die Basis nie ohne Widerstand mit dem +. Zwischen B und E sitzt eine Diode:
+  Ohne Widerstand fließt so viel Basisstrom, dass der Transistor kaputtgeht. Probieren Sie es ruhig mit dem Widerstand auf
+  1&nbsp;&Omega;; Rechtsklick &rsaquo; <b>Transistor ersetzen</b> repariert ihn.</div>
+  <div class="tip"><strong>In Wirklichkeit:</strong> Ein Ausgang eines Mikrocontrollers (wie eines Arduino) liefert nur ein paar mA.
+  Mit einem Transistor steuert er trotzdem ein Relais, einen Motor oder eine helle Lampe.</div>
+
+  <div class="pager"><a href="les37.html">&larr; Lektion 37: Die Graetz-Brücke</a><a href="les39.html">Lektion 39: Verstärken mit einem Transistor &rarr;</a></div>

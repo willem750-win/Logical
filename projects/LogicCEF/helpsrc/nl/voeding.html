@@ -30,6 +30,7 @@
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">Led met 2 klemmen</a></td><td>Geleidt maar in één richting; hoort met een voorschakelweerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Laat stroom maar in één richting door, boven 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Een kleine basisstroom stuurt een grote collectorstroom: schakelen en versterken.</td></tr>
   </table>
   <ol class="steps">
     <li>Klik op de knop van het onderdeel dat je wil plaatsen.</li>
@@ -187,7 +188,7 @@
     <tr><td>lange dunne draad</td><td>1&nbsp;&Omega;</td><td>een te dunne kabel naar een verre lamp</td></tr>
     <tr><td>slecht contact</td><td>2&nbsp;&Omega;</td><td>een losse of geoxideerde klem (standaard)</td></tr>
     <tr><td>verbrand contact</td><td>10&nbsp;&Omega;</td><td>een klem die te warm geworden is</td></tr>
-    <tr><td>voorschakelweerstand</td><td>100, 220, 470 of 1000&nbsp;&Omega;</td><td>een echte weerstand, bv. in serie met een <a href="#led">led</a></td></tr>
+    <tr><td>voorschakelweerstand</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2,2, 4,7, 10, 47 of 100&nbsp;k&Omega;</td><td>een echte weerstand, bv. in serie met een <a href="#led">led</a> of voor de basis van een <a href="#transistor">transistor</a></td></tr>
   </table>
   <p>Het blokje kleurt oranje tot rood naarmate het warmer wordt. Meet de spanningsval met een
   <a href="#voltmeter">voltmeter</a>: + aan de klem aan de kant van de bron, &minus; aan de andere klem.
@@ -246,13 +247,34 @@
   (+ aan de kant van de schakelaar). Zet de schakelaar aan en weer uit: de led dooft niet meteen, maar wordt langzaam
   zwakker, omdat de condensator zijn lading via de weerstand door de led stuurt.</div>
 
+  <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">De transistor</h2>
+  <p>Een transistor heeft drie klemmen: de <b>collector C</b> (boven), de <b>basis B</b> (links) en de <b>emitter E</b> (onder).
+  Een kleine stroom in de basis stuurt een veel grotere stroom van de collector naar de emitter. Hoeveel groter, zegt de
+  <b>versterkingsfactor &beta;</b> (bèta):</p>
+  <p class="formula">I<sub>c</sub> = &beta; &times; I<sub>b</sub> &nbsp; (bv. 100 &times; 0,11&nbsp;mA = 11&nbsp;mA)</p>
+  <p>Rechts naast het symbool staan de soort, &beta;, de toestand en de stromen I<sub>b</sub> en I<sub>c</sub>. De transistor is
+  altijd in één van drie toestanden:</p>
+  <table>
+    <tr><th>Toestand</th><th>Wanneer?</th><th>Wat gebeurt er?</th></tr>
+    <tr><td>spert (grijs)</td><td>minder dan 0,7&nbsp;V tussen B en E</td><td>geen basisstroom en dus ook geen collectorstroom: een open schakelaar</td></tr>
+    <tr><td>versterkt (oranje)</td><td>er loopt basisstroom</td><td>I<sub>c</sub> = &beta; &times; I<sub>b</sub>: een kleine verandering in de basis geeft een grote in de collector</td></tr>
+    <tr><td>verzadigd (groen)</td><td>de rest van de kring laat minder door dan &beta; &times; I<sub>b</sub></td><td>de transistor staat helemaal open; tussen C en E staat maar ongeveer 0,2&nbsp;V: een gesloten schakelaar</td></tr>
+  </table>
+  <p>Rechtsklik &rsaquo; <b>Soort</b>: <b>NPN</b> of <b>PNP</b>. Bij een NPN gaat de stroom de basis in en loopt hij van C naar E; de
+  emitter hangt aan de &minus;. Bij een PNP is alles omgekeerd: de emitter hangt aan de +, de stroom komt uit de basis en loopt van
+  E naar C. De pijl in de emitter wijst de richting van de stroom aan. Rechtsklik &rsaquo; <b>Versterking</b>: &beta; = 50, 100 of 200.</p>
+  <p>Zet altijd een <a href="#weerstand">weerstand</a> voor de basis (bv. 10&nbsp;k&Omega;): tussen B en E zit een diode die boven
+  0,7&nbsp;V bijna geen weerstand heeft. Zonder weerstand loopt er zoveel basisstroom dat de transistor kapot gaat (boven 100&nbsp;mA
+  basisstroom of 1&nbsp;A collectorstroom); rechtsklik &rsaquo; <b>Transistor vervangen</b>. Zie <a href="les38.html">les 38</a> en
+  <a href="les39.html">les 39</a>.</p>
+
   <h2 id="draaien">Onderdelen draaien</h2>
   <p>Weerstand, lamp, led, diode, condensator, schakelaar en zekering kun je een kwartslag draaien: rechtsklik &rsaquo;
   <b>Draaien</b>. Een liggend onderdeel komt dan rechtop te staan (de linkerklem boven, de rechterklem onder), de zekering
   komt te liggen. Draai je nog eens, dan staat het weer zoals eerst. De draden aan de klemmen gaan mee, en de stroom en
   de spanning blijven gelijk. Zo teken je een kring als een rechthoek, en takken die parallel staan naast elkaar tussen
   twee draden, zoals in een schoolboek. De stand wordt mee opgeslagen. Een vergrendeld onderdeel kun je niet draaien.</p>
-  <p>Meters, bronnen, de oscilloscoop en de potentiometer draaien niet: hun scherm of schuifknop moet leesbaar blijven.</p>
+  <p>Meters, bronnen, de oscilloscoop, de potentiometer en de transistor draaien niet: hun scherm of schuifknop moet leesbaar blijven.</p>
 
   <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
   <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er

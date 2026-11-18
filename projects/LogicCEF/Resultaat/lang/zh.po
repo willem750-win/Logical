@@ -1735,3 +1735,36 @@ msgstr "创建示波器"
 
 msgid "Rotate"
 msgstr "旋转"
+
+msgid "Gain"
+msgstr "放大倍数"
+
+msgid "Replace transistor"
+msgstr "更换晶体管"
+
+msgid "saturated"
+msgstr "饱和"
+
+msgid "amplifying"
+msgstr "放大中"
+
+msgid "Transistor"
+msgstr "晶体管"
+
+msgid "Broken: too much current went through the base or the collector. Right-click: replace transistor."
+msgstr "损坏：流过基极或集电极的电流太大。右键：更换晶体管。"
+
+msgid "Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E."
+msgstr "饱和：电路其余部分允许通过的电流小于 β × Ib；C 和 E 之间只有 0.2 V。"
+
+msgid "A small current out of the base (B) controls a large current from the emitter (E) to the collector (C)."
+msgstr "从基极 (B) 流出的小电流控制从发射极 (E) 到集电极 (C) 的大电流。"
+
+msgid "A small current into the base (B) controls a large current from the collector (C) to the emitter (E)."
+msgstr "流入基极 (B) 的小电流控制从集电极 (C) 到发射极 (E) 的大电流。"
+
+msgid "Always put a resistor before the base. Right-click: choose the kind and the gain."
+msgstr "基极前面一定要串一个电阻。右键：选择类型和放大倍数。"
+
+msgid "create Transistor"
+msgstr "创建晶体管"

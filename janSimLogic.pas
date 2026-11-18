@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2110,6 +2110,7 @@ type
     procedure SetKDiode(const Value: Boolean);
     procedure SetKWisselbron(const Value: Boolean);
     procedure SetKScoop(const Value: Boolean);
+    procedure SetKTransistor(const Value: Boolean);
     procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
       MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
@@ -2338,6 +2339,7 @@ type
     property KDiode: Boolean read FDiodeK write SetKDiode default True;
     property KWisselbron: Boolean read FWisselK write SetKWisselbron default True;
     property KScoop: Boolean read FScoopK write SetKScoop default True;
+    property KTransistor: Boolean read FTransK write SetKTransistor default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2363,6 +2365,7 @@ type
     property HDiode: string read FHDiode write FHDiode;
     property HWisselbron: string read FHWissel write FHWissel;
     property HScoop: string read FHScoop write FHScoop;
+    property HTransistor: string read FHTrans write FHTrans;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -3488,6 +3491,49 @@ end;
     property TijdIdx: Integer read FTijdIdx write SetTijdIdx;
   end;
 
+  { TjanTransistor: bipolaire transistor met drie klemmen. Pin 0 = collector C
+    (boven), pin 1 = basis B (links), pin 2 = emitter E (onder). NPN: een
+    stroom van B naar E (vanaf 0,7 V) laat een stroom van C naar E toe die
+    beta keer groter is; PNP: hetzelfde met alle stromen en spanningen
+    omgekeerd. Toestanden: spert (geen basisstroom), versterkt (Ic = beta x Ib)
+    en verzadigd (Ic wordt door de rest van de kring beperkt, Uce = 0,2 V).
+    Rechtsklik: NPN/PNP, versterking (TrBeta), vervangen als hij kapot is. }
+  TjanTransistor = class(TjanVoedingsDeel)
+  private
+    FPNP: Boolean;
+    FBetaIdx: Integer;     // index in TrBeta
+    FDoorgebrand: Boolean;
+    FBeAan: Boolean;       // toestand in UpdateSupply: basis-emitter geleidt
+    FVerzadigd: Boolean;   // toestand in UpdateSupply: verzadigd
+    FIb, FIc: Double;      // basisstroom en collectorstroom (A, altijd >= 0)
+    procedure SetPNP(const Value: Boolean);
+    procedure SetBetaIdx(const Value: Integer);
+    procedure SetDoorgebrand(const Value: Boolean);
+    procedure SoortClick(Sender: TObject);
+    procedure BetaClick(Sender: TObject);
+    procedure VervangClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Beta: Double;
+    // 'spert', 'versterkt', 'verzadigd' of 'kapot'
+    function ToestandTekst: string;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Ib: Double read FIb;
+    property Ic: Double read FIc;
+    property BeAan: Boolean read FBeAan;
+    property Verzadigd: Boolean read FVerzadigd;
+  published
+    property PNP: Boolean read FPNP write SetPNP;
+    property BetaIdx: Integer read FBetaIdx write SetBetaIdx;
+    property Doorgebrand: Boolean read FDoorgebrand write SetDoorgebrand;
+  end;
+
   { TjanLed2: led met twee klemmen in de voedingskring. Pin 0 = anode (+,
     links), pin 1 = kathode (-, rechts). Geleidt alleen van + naar - en pas
     boven de drempelspanning (rood 1,8 V ... blauw 3,0 V); brandt vol bij
@@ -3689,6 +3735,8 @@ procedure VoedingBijwerken(P: TWinControl);
 // één stap van de simulatieklok: de tijd loopt ADt seconden verder en de
 // condensatoren laden of ontladen mee (zoals de cpu-timer)
 procedure SimulatieStap(P: TWinControl; ADt: Double);
+// spanning op klem APin van een onderdeel van de voedingskring (t.o.v. de massa)
+function VoedingsPinVolt(D: TjanVoedingsDeel; APin: Integer): Double;
 
 var
   // opent het LogicRun-venster voor het blok (Sender); gezet door het
@@ -7103,7 +7151,7 @@ const
   // weerstand/contact: goed contact, lange dunne draad, slecht contact,
   // verbrand contact
   // 4..7: voorschakelweerstanden (bv. voor een led)
-  WeerstandOhm: array[0..7] of Double = (0.05, 1, 2, 10, 100, 220, 470, 1000);
+  WeerstandOhm: array[0..12] of Double = (0.05, 1, 2, 10, 100, 220, 470, 1000, 2200, 4700, 10000, 47000, 100000);
   WeerstandW = 100; WeerstandH = 42;
   // onderdelen met twee klemmen voor serie en parallel
   // lampen voor 12 V: 6 W, 3 W, 2,4 W, 1,2 W, 0,6 W, 0,3 W
@@ -7126,6 +7174,17 @@ const
   DiodeVolt = 0.7;
   DiodeRd = 0.1;
   DiodeMaxA = 1.0;
+  // transistor: versterking, drempel en weerstand basis-emitter, spanning
+  // en weerstand collector-emitter als hij verzadigd is, maximale stromen
+  TrBeta: array[0..2] of Integer = (50, 100, 200);
+  TrBetaStd = 1;          // 100
+  TrVbe = 0.7;
+  TrRbe = 5;
+  TrVceSat = 0.2;
+  TrRce = 0.5;
+  TrMaxIb = 0.1;          // kapot boven 100 mA basisstroom
+  TrMaxIc = 1.0;          // kapot boven 1 A collectorstroom
+  TrW = 120; TrH = 96;
   Led2W = 64; Led2H = 46;
   // condensator: capaciteit in microfarad
   CondUF: array[0..4] of Double = (100, 470, 1000, 2200, 4700);
@@ -7190,7 +7249,14 @@ end;
 function OhmText(R: Double): string;
 begin
   if R = 0 then Result := '0'
-  else if R < 1 then Result := FormatFloat('0.00', R) else Result := FormatFloat('0', R);
+  else if R < 1 then Result := FormatFloat('0.00', R)
+  else if R >= 2000 then
+  begin
+    // 2,2 k, 4,7 k, 10 k ... (1000 blijft 1000, zoals in de lessen)
+    Result := FormatFloat('0.#', R / 1000) + ' kΩ';
+    Exit;
+  end
+  else Result := FormatFloat('0', R);
   Result := Result + ' Ω';
 end;
 
@@ -7380,12 +7446,21 @@ type
     E: Double;            // bronspanning in de tak (bron, led, condensator)
     D: TjanVoedingsDeel;  // onderdeel (nil = verbruikers op de rails)
   end;
+  // gestuurde stroombron (transistor die versterkt): de stroom
+  // I = G x (V[P] - V[M] - Off) loopt in het onderdeel van knooppunt Van naar Naar
+  TGest = record
+    Van, Naar, P, M: Integer;
+    G, Off: Double;
+  end;
 var
   Parts: array of TjanVoedingsDeel;
   Rails: array of TjanRail;
   Ouder: array of Integer;          // union-find over klemmen en rails
   NodeOf: array of Integer;         // klem/rail -> knooppunt
   Tak: array of TTak;
+  Gest: array of TGest;
+  Tr: TjanTransistor;
+  NC, NB, NE: Integer;              // knooppunten van C, B en E
   Gm: array of array of Double;     // geleidingsmatrix
   Iv, V: array of Double;           // bronstromen, knooppuntspanningen
   CompGnd: array of Integer;        // massa per samenhangend deel
@@ -7627,10 +7702,11 @@ begin
 
   SetLength(V, N);
   SetLength(NewVolt, NR);
-  for Ronde := 1 to 20 do
+  for Ronde := 1 to 40 do
   begin
     // takken
     SetLength(Tak, 0);
+    SetLength(Gest, 0);
     for k := 0 to NP - 1 do
     begin
       if Parts[k] is TjanBron then
@@ -7668,6 +7744,41 @@ begin
       begin
         if TjanSchakelaar2(Parts[k]).Aan then
           AddTak(PinNode(k, 0), PinNode(k, 1), 1 / RKlein, Parts[k]);
+      end
+      else if (Parts[k] is TjanTransistor) and not TjanTransistor(Parts[k]).Doorgebrand then
+      begin
+        // NPN: B-E is een diode van B naar E; C-E verzadigd een kleine
+        // spanning van C naar E, versterkend een gestuurde stroom van C naar E.
+        // PNP: alles omgekeerd (E is de + kant).
+        Tr := TjanTransistor(Parts[k]);
+        NC := PinNode(k, 0); NB := PinNode(k, 1); NE := PinNode(k, 2);
+        if Tr.FBeAan then
+        begin
+          if Tr.PNP then AddTakE(NE, NB, 1 / TrRbe, TrVbe, Parts[k])
+          else AddTakE(NB, NE, 1 / TrRbe, TrVbe, Parts[k]);
+          if Tr.FVerzadigd then
+          begin
+            if Tr.PNP then AddTakE(NE, NC, 1 / TrRce, TrVceSat, Parts[k])
+            else AddTakE(NC, NE, 1 / TrRce, TrVceSat, Parts[k]);
+          end
+          else
+          begin
+            SetLength(Gest, Length(Gest) + 1);
+            with Gest[High(Gest)] do
+            begin
+              G := Tr.Beta / TrRbe;
+              Off := TrVbe;
+              if Tr.PNP then
+              begin
+                Van := NE; Naar := NC; P := NE; M := NB;
+              end
+              else
+              begin
+                Van := NC; Naar := NE; P := NB; M := NE;
+              end;
+            end;
+          end;
+        end;
       end;
     end;
 
@@ -7676,6 +7787,7 @@ begin
     SetLength(Ouder, N);
     for i := 0 to N - 1 do Ouder[i] := i;
     for k := 0 to High(Tak) do Union(Tak[k].A, Tak[k].B);
+    for k := 0 to High(Gest) do Union(Gest[k].Van, Gest[k].Naar);
     // verbruikers: tussen de + rail en de - rail; zonder - rail naar de
     // massa van het deel van de + rail
     j := Mass;
@@ -7729,6 +7841,17 @@ begin
         Iv[B] := Iv[B] - F;
       end;
     end;
+    // gestuurde stroombronnen: de stroom verlaat Van en komt in Naar
+    for k := 0 to High(Gest) do
+      with Gest[k] do
+      begin
+        Gm[Van][P] := Gm[Van][P] + G;
+        Gm[Van][M] := Gm[Van][M] - G;
+        Iv[Van] := Iv[Van] + G * Off;
+        Gm[Naar][P] := Gm[Naar][P] - G;
+        Gm[Naar][M] := Gm[Naar][M] + G;
+        Iv[Naar] := Iv[Naar] - G * Off;
+      end;
     Solve;
 
     // te veel stroom door een zekering: ze smelt, opnieuw rekenen
@@ -7772,6 +7895,64 @@ begin
             Smelt := True;
           end;
         end;
+    // transistor: klopt de toestand (spert, versterkt, verzadigd)? Zo niet,
+    // opnieuw rekenen; te veel stroom: kapot
+    for k := 0 to NP - 1 do
+      if (Parts[k] is TjanTransistor) and not TjanTransistor(Parts[k]).Doorgebrand then
+      begin
+        Tr := TjanTransistor(Parts[k]);
+        if Tr.PNP then Hulp := -1 else Hulp := 1;
+        NC := PinNode(k, 0); NB := PinNode(k, 1); NE := PinNode(k, 2);
+        U := Hulp * (V[NB] - V[NE]);      // Ube
+        F := Hulp * (V[NC] - V[NE]);      // Uce
+        if Tr.FBeAan then
+        begin
+          Amp := (U - TrVbe) / TrRbe;     // basisstroom
+          if Amp < 0 then
+          begin
+            Tr.FBeAan := False;
+            Tr.FVerzadigd := False;
+            Smelt := True;
+          end
+          else if Tr.FVerzadigd then
+          begin
+            E := (F - TrVceSat) / TrRce;  // collectorstroom
+            if (Amp > TrMaxIb) or (E > TrMaxIc) then
+            begin
+              Tr.FDoorgebrand := True; Tr.FBeAan := False; Tr.FVerzadigd := False;
+              Smelt := True;
+            end
+            else if E > Tr.Beta * Amp + 0.000001 then
+            begin
+              // de basisstroom is te klein om zoveel door te laten: versterkt
+              Tr.FVerzadigd := False;
+              Smelt := True;
+            end;
+          end
+          else if Amp > TrMaxIb then
+          begin
+            Tr.FDoorgebrand := True; Tr.FBeAan := False;
+            Smelt := True;
+          end
+          else if F < TrVceSat - 0.000001 then
+          begin
+            // de kring laat niet beta x Ib door: verzadigd
+            Tr.FVerzadigd := True;
+            Smelt := True;
+          end
+          else if Tr.Beta * Amp > TrMaxIc then
+          begin
+            // er gaat echt beta x Ib door de collector: te veel
+            Tr.FDoorgebrand := True; Tr.FBeAan := False;
+            Smelt := True;
+          end;
+        end
+        else if U > TrVbe + 0.000001 then
+        begin
+          Tr.FBeAan := True;
+          Smelt := True;
+        end;
+      end;
     if not Smelt then Break;
   end;
 
@@ -7841,6 +8022,28 @@ begin
         if Abs(Hulp - U) > 0.005 then Parts[k].Invalidate;
         TjanCondensator(Parts[k]).FU := U;
       end;
+    end
+    else if Parts[k] is TjanTransistor then
+    begin
+      Tr := TjanTransistor(Parts[k]);
+      Amp := 0; Hulp := 0;
+      if Tr.FBeAan and not Tr.Doorgebrand then
+      begin
+        if Tr.PNP then F := -1 else F := 1;
+        NC := PinNode(k, 0); NB := PinNode(k, 1); NE := PinNode(k, 2);
+        Amp := (F * (V[NB] - V[NE]) - TrVbe) / TrRbe;
+        if Amp < 0 then Amp := 0;
+        if Tr.FVerzadigd then Hulp := (F * (V[NC] - V[NE]) - TrVceSat) / TrRce
+        else Hulp := Tr.Beta * Amp;
+        if Hulp < 0 then Hulp := 0;
+      end;
+      if (Abs(Tr.FIb - Amp) > 0.000005) or (Abs(Tr.FIc - Hulp) > 0.00005) then
+      begin
+        Tr.FIb := Amp;
+        Tr.FIc := Hulp;
+        if AInval then Tr.Invalidate;
+      end;
+      SetStroom(Parts[k], Hulp);
     end
     else
       SetStroom(Parts[k], 0);
@@ -7927,6 +8130,15 @@ begin
         Vraag[PinBase[k]] := FIa;
         Vraag[PinBase[k] + 1] := -FIb;
         Vraag[PinBase[k] + 2] := FIb - FIa;
+      end;
+    if Parts[k] is TjanTransistor then
+      with TjanTransistor(Parts[k]) do
+      begin
+        // NPN: C en B nemen stroom uit de draden, E geeft de som terug
+        if PNP then F := -1 else F := 1;
+        Vraag[PinBase[k]] := F * FIc;
+        Vraag[PinBase[k] + 1] := F * FIb;
+        Vraag[PinBase[k] + 2] := -F * (FIb + FIc);
       end;
   end;
   if (LoadG > 0) and (LoadItA >= 0) and (LoadItB >= 0) then
@@ -8045,6 +8257,9 @@ begin
   else if C is TjanCondensator then
     Result := Format('TjanCondensator;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanCondensator(C).Soort])
+  else if C is TjanTransistor then
+    Result := Format('TjanTransistor;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Ord(TjanTransistor(C).PNP), TjanTransistor(C).BetaIdx, Ord(TjanTransistor(C).Doorgebrand)])
   else if C is TjanWattMeter then
     Result := Format('TjanWattMeter;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanPotmeter then
@@ -10232,6 +10447,275 @@ begin
     FOnStatus(Self, Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt'), 1)
   else
     FOnStatus(Self, 'U = ' + VoltText(Spanning) + '   I = ' + MilliAmpText(Abs(FAmp)), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+// stroom in mA: twee decimalen onder 1 mA, een onder 10 mA (basisstroom van een transistor)
+function MaKort(I: Double): string;
+begin
+  if Abs(I) < 0.001 then Result := FormatFloat('0.00', I * 1000) + ' mA'
+  else if Abs(I) < 0.01 then Result := FormatFloat('0.0', I * 1000) + ' mA'
+  else Result := FormatFloat('0', I * 1000) + ' mA';
+end;
+
+{ TjanTransistor }
+
+constructor TjanTransistor.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := TrW;
+  Height := TrH;
+  FBetaIdx := TrBetaStd;
+  HelpKeyword := 'transistor';
+end;
+
+function TjanTransistor.PinCount: Integer;
+begin
+  Result := 3;
+end;
+
+function TjanTransistor.PinPos(I: Integer): TPoint;
+begin
+  case I of
+    0: Result := Point(45, 1);          // collector, boven
+    1: Result := Point(1, 45);          // basis, links
+  else
+    Result := Point(45, TrH - 8);       // emitter, onder
+  end;
+end;
+
+function TjanTransistor.Beta: Double;
+begin
+  Result := TrBeta[FBetaIdx];
+end;
+
+procedure TjanTransistor.SetPNP(const Value: Boolean);
+begin
+  if Value = FPNP then Exit;
+  FPNP := Value;
+  FBeAan := False;
+  FVerzadigd := False;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanTransistor.SetBetaIdx(const Value: Integer);
+begin
+  if (Value < Low(TrBeta)) or (Value > High(TrBeta)) or (Value = FBetaIdx) then Exit;
+  FBetaIdx := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanTransistor.SetDoorgebrand(const Value: Boolean);
+begin
+  if Value = FDoorgebrand then Exit;
+  FDoorgebrand := Value;
+  FBeAan := False;
+  FVerzadigd := False;
+  Invalidate;
+  SendStatusToBar;
+end;
+
+procedure TjanTransistor.SoortClick(Sender: TObject);
+begin
+  PNP := TMenuItem(Sender).Tag = 1;
+end;
+
+procedure TjanTransistor.BetaClick(Sender: TObject);
+begin
+  BetaIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanTransistor.VervangClick(Sender: TObject);
+begin
+  Doorgebrand := False;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanTransistor.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Soort', 'Kind', 'Type', 'Art');
+  APop.Items.Add(Mi);
+  for i := 0 to 1 do
+  begin
+    Sub := TMenuItem.Create(APop);
+    if i = 0 then Sub.Caption := 'NPN' else Sub.Caption := 'PNP';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := (i = 1) = FPNP;
+    Sub.OnClick := SoortClick;
+    Mi.Add(Sub);
+  end;
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Versterking', 'Gain', 'Gain', 'Verstärkung');
+  APop.Items.Add(Mi);
+  for i := Low(TrBeta) to High(TrBeta) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := 'β = ' + IntToStr(TrBeta[i]);
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FBetaIdx;
+    Sub.OnClick := BetaClick;
+    Mi.Add(Sub);
+  end;
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Transistor vervangen', 'Replace transistor', 'Remplacer le transistor', 'Transistor ersetzen');
+  Mi.Enabled := FDoorgebrand;
+  Mi.OnClick := VervangClick;
+  APop.Items.Add(Mi);
+end;
+
+function TjanTransistor.ToestandTekst: string;
+begin
+  if FDoorgebrand then Result := Tr(FTaal, 'kapot', 'broken', 'grillé', 'kaputt')
+  else if not FBeAan then Result := Tr(FTaal, 'spert', 'off', 'bloqué', 'sperrt')
+  else if FVerzadigd then Result := Tr(FTaal, 'verzadigd', 'saturated', 'saturé', 'gesättigt')
+  else Result := Tr(FTaal, 'versterkt', 'amplifying', 'amplifie', 'verstärkt');
+end;
+
+procedure TjanTransistor.Paint;
+const
+  CX = 40; CY = 48; Rr = 22;   // de cirkel
+  XB = 32;                     // de basisbalk
+  XL = 48;                     // de lijn van C en E
+var
+  Tip, Rug: TPoint;
+  Dx, Dy: Double;
+  S: string;
+  Y: Integer;
+begin
+  with Canvas do
+  begin
+    // cirkel: lichtblauw als er collectorstroom loopt
+    Pen.Color := clBlack; Pen.Width := 1;
+    Brush.Style := bsSolid;
+    if FDoorgebrand then Brush.Color := RGBToColor(90, 80, 70)
+    else if FIc > 0.0005 then Brush.Color := RGBToColor(200, 225, 255)
+    else Brush.Color := clWhite;
+    Ellipse(Rect(CX - Rr, CY - Rr, CX + Rr + 1, CY + Rr + 1));
+    // basis: draad en balk
+    Pen.Width := 2;
+    MoveTo(8, CY); LineTo(XB, CY);
+    Pen.Width := 3;
+    MoveTo(XB, CY - 12); LineTo(XB, CY + 13);
+    // collector en emitter: schuin van de balk, dan recht naar de klem
+    Pen.Width := 2;
+    MoveTo(XB, CY - 6); LineTo(XL, CY - 18); LineTo(XL, 8);
+    MoveTo(XB, CY + 6); LineTo(XL, CY + 18); LineTo(XL, TrH - 8);
+    // pijl in de emitter: NPN naar buiten, PNP naar de balk
+    Pen.Width := 1;
+    Dx := 0.8; Dy := 0.6;
+    if FPNP then
+    begin
+      Tip := Point(XB + 4, CY + 9);
+      Dx := -Dx; Dy := -Dy;
+    end
+    else
+      Tip := Point(XL - 2, CY + 16);
+    Rug := Point(Round(Tip.X - 8 * Dx), Round(Tip.Y - 8 * Dy));
+    Brush.Style := bsSolid; Brush.Color := clBlack;
+    Polygon([Tip, Point(Round(Rug.X - 4 * Dy), Round(Rug.Y + 4 * Dx)),
+      Point(Round(Rug.X + 4 * Dy), Round(Rug.Y - 4 * Dx))]);
+    if FDoorgebrand then
+    begin
+      Pen.Width := 2; Pen.Color := clRed;
+      MoveTo(CX - 12, CY - 12); LineTo(CX + 12, CY + 12);
+      MoveTo(CX + 12, CY - 12); LineTo(CX - 12, CY + 12);
+      Pen.Width := 1; Pen.Color := clBlack;
+    end;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+    PaintPin(PinPos(2).X, PinPos(2).Y, FPinV[2] >= RailMinVolt);
+    // namen van de klemmen
+    Brush.Style := bsClear;
+    Font.Name := 'Arial'; Font.Size := 6; Font.Style := [fsBold]; Font.Color := clNavy;
+    TextOut(XL + 5, 4, 'C');
+    TextOut(10, CY - 14, 'B');
+    TextOut(XL + 5, TrH - 18, 'E');
+    // soort, versterking, toestand en stromen rechts
+    Y := 22;
+    Font.Size := 7;
+    if FPNP then S := 'PNP' else S := 'NPN';
+    TextOut(70, Y, S);
+    Font.Style := [];
+    TextOut(70, Y + 11, 'β = ' + IntToStr(TrBeta[FBetaIdx]));
+    Font.Style := [fsBold];
+    if FDoorgebrand then Font.Color := clRed
+    else if not FBeAan then Font.Color := clGray
+    else if FVerzadigd then Font.Color := RGBToColor(0, 130, 0)
+    else Font.Color := RGBToColor(210, 110, 0);
+    TextOut(70, Y + 24, ToestandTekst);
+    Font.Style := []; Font.Size := 6; Font.Color := clBlack;
+    TextOut(70, Y + 37, 'Ib ' + MaKort(FIb));
+    TextOut(70, Y + 47, 'Ic ' + MaKort(FIc));
+  end;
+  PaintSelection;
+end;
+
+procedure TjanTransistor.UpdateHintText;
+var
+  S: string;
+begin
+  if FPNP then S := 'PNP' else S := 'NPN';
+  Hint := Tr(FTaal, 'Transistor', 'Transistor', 'Transistor', 'Transistor') + ' ' + S +
+    ' (β = ' + IntToStr(TrBeta[FBetaIdx]) + '): ' + ToestandTekst + #13#10;
+  if FDoorgebrand then
+    Hint := Hint + Tr(FTaal,
+      'Kapot: er ging te veel stroom door de basis of de collector. Rechtsklik: transistor vervangen.',
+      'Broken: too much current went through the base or the collector. Right-click: replace transistor.',
+      'Grillé : trop de courant a traversé la base ou le collecteur. Clic droit : remplacer le transistor.',
+      'Kaputt: Durch die Basis oder den Kollektor floss zu viel Strom. Rechtsklick: Transistor ersetzen.') + #13#10
+  else
+  begin
+    Hint := Hint + 'Ib = ' + MaKort(FIb) + '   Ic = ' + MaKort(FIc) + #13#10;
+    if FBeAan and not FVerzadigd then
+      Hint := Hint + 'Ic = β × Ib = ' + IntToStr(TrBeta[FBetaIdx]) + ' × ' + MaKort(FIb) + ' = ' +
+        MaKort(FIc) + #13#10
+    else if FVerzadigd then
+      Hint := Hint + Tr(FTaal,
+        'Verzadigd: de rest van de kring laat minder door dan β × Ib; tussen C en E staat maar 0,2 V.',
+        'Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E.',
+        'Saturé : le reste du circuit laisse passer moins que β × Ib ; seulement 0,2 V entre C et E.',
+        'Gesättigt: Der Rest des Stromkreises lässt weniger als β × Ib durch; zwischen C und E nur 0,2 V.') + #13#10;
+  end;
+  if FPNP then
+    Hint := Hint + Tr(FTaal,
+      'Een kleine stroom uit de basis (B) stuurt een grote stroom van de emitter (E) naar de collector (C).',
+      'A small current out of the base (B) controls a large current from the emitter (E) to the collector (C).',
+      'Un petit courant sortant de la base (B) commande un grand courant de l''émetteur (E) vers le collecteur (C).',
+      'Ein kleiner Strom aus der Basis (B) steuert einen großen Strom vom Emitter (E) zum Kollektor (C).')
+  else
+    Hint := Hint + Tr(FTaal,
+      'Een kleine stroom in de basis (B) stuurt een grote stroom van de collector (C) naar de emitter (E).',
+      'A small current into the base (B) controls a large current from the collector (C) to the emitter (E).',
+      'Un petit courant entrant dans la base (B) commande un grand courant du collecteur (C) vers l''émetteur (E).',
+      'Ein kleiner Strom in die Basis (B) steuert einen großen Strom vom Kollektor (C) zum Emitter (E).');
+  Hint := Hint + #13#10 + Tr(FTaal,
+    'Zet altijd een weerstand voor de basis. Rechtsklik: soort en versterking kiezen.',
+    'Always put a resistor before the base. Right-click: choose the kind and the gain.',
+    'Mettez toujours une résistance avant la base. Clic droit : choisir le type et le gain.',
+    'Setzen Sie immer einen Widerstand vor die Basis. Rechtsklick: Art und Verstärkung wählen.');
+end;
+
+procedure TjanTransistor.SendStatusToBar;
+var
+  S: string;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  if FPNP then S := 'PNP' else S := 'NPN';
+  FOnStatus(Self, Tr(FTaal, 'Transistor', 'Transistor', 'Transistor', 'Transistor') + ' ' + S + ' > ', 0);
+  FOnStatus(Self, ToestandTekst + '   Ib = ' + MaKort(FIb) + '   Ic = ' + MaKort(FIc), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
 
@@ -24257,7 +24741,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -24266,6 +24750,7 @@ begin
   FHDiode:='maak Diode';
   FHWissel:='maak Wisselspanningsbron';
   FHScoop:='maak Oscilloscoop';
+  FHTrans:='maak Transistor';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -25355,7 +25840,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') then
     begin
       with TStringList.Create do
       try
@@ -25377,6 +25862,7 @@ begin
           else if obj[1] = 'TjanDiode' then VD := TjanDiode.Create(Self)
           else if obj[1] = 'TjanWisselbron' then VD := TjanWisselbron.Create(Self)
           else if obj[1] = 'TjanScoop' then VD := TjanScoop.Create(Self)
+          else if obj[1] = 'TjanTransistor' then VD := TjanTransistor.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -25418,6 +25904,15 @@ begin
             TjanScoop(VD).BereikIdx := StrToIntDef(Trim(Strings[4]), 1);
             if Count >= 6 then
               TjanScoop(VD).TijdIdx := StrToIntDef(Trim(Strings[5]), 1);
+          end
+          else if (VD is TjanTransistor) and (Count >= 5) then
+          begin
+            // TjanTransistor;h;l;t;w;pnp;beta;kapot;
+            TjanTransistor(VD).PNP := Trim(Strings[4]) = '1';
+            if Count >= 6 then
+              TjanTransistor(VD).BetaIdx := StrToIntDef(Trim(Strings[5]), TrBetaStd);
+            if Count >= 7 then
+              TjanTransistor(VD).Doorgebrand := Trim(Strings[6]) = '1';
           end
           else if (VD is TjanPotmeter) and (Count >= 5) then
           begin
@@ -26263,6 +26758,7 @@ begin
     11: D := TjanDiode.Create(Self);
     12: D := TjanWisselbron.Create(Self);
     13: D := TjanScoop.Create(Self);
+    14: D := TjanTransistor.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -26544,6 +27040,18 @@ begin
           MoveTo(CX, CY + 7); LineTo(CX, CY + 2);
           Brush.Style := bsSolid; Brush.Color := clBlack;
           Polygon([Point(CX - 2, CY + 4), Point(CX + 3, CY + 4), Point(CX, CY + 1)]);
+        end;
+      14:
+        begin
+          // transistor (NPN): cirkel, basis links, collector en emitter rechts
+          Brush.Style := bsClear;
+          Ellipse(Rect(CX - 7, CY - 7, CX + 8, CY + 8));
+          MoveTo(R.Left + 2, CY); LineTo(CX - 2, CY);
+          MoveTo(CX - 2, CY - 4); LineTo(CX - 2, CY + 5);
+          MoveTo(CX - 2, CY - 2); LineTo(CX + 4, CY - 6); LineTo(CX + 4, R.Top + 2);
+          MoveTo(CX - 2, CY + 2); LineTo(CX + 4, CY + 6); LineTo(CX + 4, R.Bottom - 2);
+          Brush.Style := bsSolid; Brush.Color := clBlack;
+          Polygon([Point(CX + 4, CY + 6), Point(CX + 1, CY + 6), Point(CX + 3, CY + 3)]);
         end;
       6:
         begin
@@ -27030,7 +27538,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -27080,6 +27588,7 @@ begin
   else if PtInRect(RDiode, P) then DDiode := True
   else if PtInRect(RWissel, P) then DWissel := True
   else if PtInRect(RScoop, P) then DScoop := True
+  else if PtInRect(RTrans, P) then DTrans := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -27142,6 +27651,7 @@ begin
   else if PtInRect(RDiode, P) then NewHint := FHDiode
   else if PtInRect(RWissel, P) then NewHint := FHWissel
   else if PtInRect(RScoop, P) then NewHint := FHScoop
+  else if PtInRect(RTrans, P) then NewHint := FHTrans
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -27551,7 +28061,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False;
 
     // nieuw
     DSquare := False;
@@ -27823,6 +28333,8 @@ begin
     NewVoedingsDeel(12)
   else if DScoop then
     NewVoedingsDeel(13)
+  else if DTrans then
+    NewVoedingsDeel(14)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -28416,6 +28928,7 @@ if FBoxTaal=stDutch then
   HDiode:='maak Diode';
   HWisselbron:='maak Wisselspanningsbron';
   HScoop:='maak Oscilloscoop';
+  HTransistor:='maak Transistor';
  end;
 
 if FBoxTaal=stEnglish then
@@ -28468,6 +28981,7 @@ if FBoxTaal=stEnglish then
   HDiode:=LangTr('create Diode');
   HWisselbron:=LangTr('create AC voltage source');
   HScoop:=LangTr('create Oscilloscope');
+  HTransistor:=LangTr('create Transistor');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -28518,6 +29032,7 @@ if FBoxTaal=stFrench then
   HDiode:='faire Diode';
   HWisselbron:='faire Source de tension alternative';
   HScoop:='faire Oscilloscope';
+  HTransistor:='faire Transistor';
  end;
 
  if FBoxTaal=stGerman then
@@ -28569,6 +29084,7 @@ if FBoxTaal=stFrench then
   HDiode:='Diode erstellen';
   HWisselbron:='Wechselspannungsquelle erstellen';
   HScoop:='Oszilloskop erstellen';
+  HTransistor:='Transistor erstellen';
   end;
   invalidate;
  // willy
@@ -28660,6 +29176,9 @@ begin SetVoedingKnop(FWisselK, Value); end;
 procedure TjanSimLogicBox.SetKScoop(const Value: Boolean);
 begin SetVoedingKnop(FScoopK, Value); end;
 
+procedure TjanSimLogicBox.SetKTransistor(const Value: Boolean);
+begin SetVoedingKnop(FTransK, Value); end;
+
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
@@ -28720,6 +29239,7 @@ begin
   RDiode := Rect(0, 0, 0, 0);
   RWissel := Rect(0, 0, 0, 0);
   RScoop := Rect(0, 0, 0, 0);
+  RTrans := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -28742,6 +29262,7 @@ begin
   if FSchak2K then Knop(RSchak2, 5, DSchak2);
   if FVolt2K then Knop(RVolt2, 6, DVolt2);
   if FScoopK then Knop(RScoop, 13, DScoop);
+  if FTransK then Knop(RTrans, 14, DTrans);
 end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);

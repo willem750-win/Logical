@@ -1425,3 +1425,36 @@ msgstr "crea oscilloscopio"
 
 msgid "Rotate"
 msgstr "Ruota"
+
+msgid "Gain"
+msgstr "Guadagno"
+
+msgid "Replace transistor"
+msgstr "Sostituisci transistor"
+
+msgid "saturated"
+msgstr "saturo"
+
+msgid "amplifying"
+msgstr "amplifica"
+
+msgid "Transistor"
+msgstr "Transistor"
+
+msgid "Broken: too much current went through the base or the collector. Right-click: replace transistor."
+msgstr "Guasto: è passata troppa corrente nella base o nel collettore. Clic destro: sostituisci transistor."
+
+msgid "Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E."
+msgstr "Saturo: il resto del circuito lascia passare meno di β × Ib; tra C ed E ci sono solo 0,2 V."
+
+msgid "A small current out of the base (B) controls a large current from the emitter (E) to the collector (C)."
+msgstr "Una piccola corrente che esce dalla base (B) comanda una grande corrente dall'emettitore (E) al collettore (C)."
+
+msgid "A small current into the base (B) controls a large current from the collector (C) to the emitter (E)."
+msgstr "Una piccola corrente che entra nella base (B) comanda una grande corrente dal collettore (C) all'emettitore (E)."
+
+msgid "Always put a resistor before the base. Right-click: choose the kind and the gain."
+msgstr "Metti sempre una resistenza prima della base. Clic destro: scegli il tipo e il guadagno."
+
+msgid "create Transistor"
+msgstr "crea Transistor"

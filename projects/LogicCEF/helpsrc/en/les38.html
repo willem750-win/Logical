@@ -1,0 +1,51 @@
+<!-- titel: Lesson 38 - The transistor as a switch -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 38 of 39</p>
+  <h1>The transistor as a switch</h1>
+  <div class="goal"><strong>Goal:</strong> see how a small current into the base of a transistor switches a much larger current
+  through a lamp on and off.</div>
+
+  <p><a class="open" href="../../panels/lessen/les38-transistor-schakelaar.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les38.png" alt="12 V source; at the bottom a switch, a milliammeter and a 10 kilohm resistor to the base of an NPN transistor; at the top a milliammeter and a lamp to the collector; a voltmeter between collector and emitter">
+    <figcaption>At the bottom the <b>base circuit</b>: switch, milliammeter and 10&nbsp;k&Omega; to the base B. At the top the
+    <b>collector circuit</b>: milliammeter and lamp to the collector C. The emitter E goes to &minus;. The voltmeter measures between C and E.</figcaption>
+  </figure>
+
+  <h2>Two circuits</h2>
+  <p>A <a href="voeding.html#transistor"><img src="../img/pal-transistor.png" class="ico" alt="">transistor</a> has three terminals:
+  the <b>base B</b>, the <b>collector C</b> and the <b>emitter E</b>. The small current through the base (I<sub>b</sub>) decides how
+  much current may flow from the collector to the emitter (I<sub>c</sub>).</p>
+  <ol class="steps">
+    <li>Start the simulation with the switch open. No base current flows: the transistor is <b>off</b> (grey), the lamp is off and
+      the voltmeter shows 12.0&nbsp;V between C and E. The transistor is an open switch.</li>
+    <li>Close the switch. The bottom meter shows a base current of 1.1&nbsp;mA: I<sub>b</sub> = (12 &minus; 0.7)&nbsp;V /
+      10&nbsp;k&Omega;. There are always about 0.7&nbsp;V between B and E, as with a <a href="les34.html">diode</a>.</li>
+    <li>The lamp lights, and the top meter shows 98&nbsp;mA. A current of 1.1&nbsp;mA switches on a current that is almost
+      <b>90 times larger</b>.</li>
+    <li>The transistor is <b>saturated</b> (green) and the voltmeter shows only 0.2&nbsp;V: the transistor is fully on, like a closed
+      switch. Almost all the voltage is across the lamp.</li>
+  </ol>
+
+  <h2>Why saturated?</h2>
+  <p>With &beta; = 100 the transistor would let 100 &times; 1.1&nbsp;mA = 113&nbsp;mA through. But the 120&nbsp;&Omega; lamp lets at
+  most (12 &minus; 0.2)&nbsp;V / 120&nbsp;&Omega; &asymp; 98&nbsp;mA through. So the transistor is wide open and the lamp limits the
+  current. This is how you use a transistor as a <b>switch</b>: the base current is more than large enough.</p>
+
+  <h2>Task: a base resistor that is too large</h2>
+  <p>Right-click the resistor and choose <b>Kind</b> &rsaquo; series resistor (100&nbsp;k&Omega;). What does the lamp do now, and what
+  do the meters show?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>The base current becomes ten times smaller: 0.11&nbsp;mA. The transistor now lets 100 &times; 0.11&nbsp;mA = 11&nbsp;mA through
+    and is <b>amplifying</b> (orange). That is too little for the lamp: it hardly glows, and there are 10.6&nbsp;V between C and E. As a
+    switch the transistor only works well when the base current is large enough. How it amplifies is shown in the
+    <a href="les39.html">next lesson</a>.</p>
+  </details>
+
+  <div class="tip"><strong>Note:</strong> never connect the base to + without a resistor. Between B and E there is a diode: without a
+  resistor so much base current flows that the transistor breaks. Feel free to try it with the resistor set to 1&nbsp;&Omega;;
+  right-click &rsaquo; <b>Replace transistor</b> repairs it.</div>
+  <div class="tip"><strong>In real life:</strong> an output of a microcontroller (such as an Arduino) only supplies a few mA. With a
+  transistor it can still drive a relay, a motor or a bright lamp.</div>
+
+  <div class="pager"><a href="les37.html">&larr; Lesson 37: The Graetz bridge</a><a href="les39.html">Lesson 39: Amplifying with a transistor &rarr;</a></div>

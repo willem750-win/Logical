@@ -916,7 +916,7 @@ Begin
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KLogicNand,KLogicNor,KLogicXor,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KWarm,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KMeter,KSymbolen');
+                                  'KSensor,KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KWarm,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KTransistor,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
@@ -926,7 +926,7 @@ Begin
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
-                                  'HSensor,HTeller,HStappen,HFlipFlop,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,'+
+                                  'HSensor,HTeller,HStappen,HFlipFlop,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HTransistor,'+
                                   'HPersoon,HWagen,HMuziek,HVerkeer,HSlagboom,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];
