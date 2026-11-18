@@ -26,6 +26,7 @@
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Widerstand (Kontakt)</a></td><td>Ein Kontakt oder Draht mit einem kleinen Widerstand: Es geht Spannung verloren.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Widerstand mit einem Schleifer und drei Klemmen: ein einstellbarer Spannungsteiler.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED mit 2 Klemmen</a></td><td>Leitet nur in eine Richtung; gehört mit einem Vorwiderstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch, über 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
   </table>
   <ol class="steps">
@@ -212,6 +213,12 @@
   Spannung auf:</p>
   <p class="formula">R = (U<sub>Quelle</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &rarr; nehmen Sie 470&nbsp;&Omega;</p>
   <p>Drehen Sie die LED um, bleibt sie aus: Es fließt kein Strom, und das Voltmeter zeigt die volle Spannung über der LED.</p>
+
+  <h2 id="diode"><img src="../img/pal-diode.png" class="ico" alt="">Die Diode</h2>
+  <p>Eine Diode lässt Strom nur in <b>eine Richtung</b> durch: von der Anode <b>A</b> (links) zur Kathode <b>K</b> (rechts, beim
+  Strich). In dieser Richtung leitet sie über <b>0,7&nbsp;V</b>, und dann bleiben etwa 0,7&nbsp;V über der Diode. Andersherum
+  <b>sperrt</b> sie: Es fließt kein Strom, auch nicht bei 12&nbsp;V. Leitet sie, wird das Dreieck lachsrot; sperrt sie, ist es grau.
+  Eine Diode verträgt bis zu 1&nbsp;A; darüber geht sie kaputt (Rechtsklick &rsaquo; <b>Diode ersetzen</b>). Rechtsklick &rsaquo; <b>Umdrehen</b> tauscht A und K, ohne die Drähte zu lösen.</p>
 
   <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">Der Kondensator</h2>
   <p>Ein Kondensator speichert Ladung, ein bisschen wie ein kleiner Akku. Liegt Spannung an, <b>lädt er sich auf</b>;

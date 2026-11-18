@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot: Boolean;
+    DLed2, DCond, DPot, DDiode: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2107,6 +2107,7 @@ type
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
     procedure SetKPotmeter(const Value: Boolean);
+    procedure SetKDiode(const Value: Boolean);
     procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
       MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
@@ -2332,6 +2333,7 @@ type
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
     property KPotmeter: Boolean read FPotK write SetKPotmeter default True;
+    property KDiode: Boolean read FDiodeK write SetKDiode default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2354,6 +2356,7 @@ type
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
     property HPotmeter: string read FHPot write FHPot;
+    property HDiode: string read FHDiode write FHDiode;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -3408,13 +3411,39 @@ end;
     procedure Paint; override;
     function PinCount: Integer; override;
     function PinPos(I: Integer): TPoint; override;
-    function Drempel: Double;    // V
+    function Drempel: Double; virtual;    // V
+    function Rd: Double; virtual;         // ohm boven de drempel
+    function MaxA: Double; virtual;       // A: daarboven kapot
     function Spanning: Double;   // V over de led
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
   published
     property Kleur: Integer read FKleur write SetKleur;
     property Doorgebrand: Boolean read FDoorgebrand write SetDoorgebrand;
+  end;
+
+  { TjanDiode: gelijkrichtdiode (zoals een 1N4007). Werkt in de voedingskring
+    als een led zonder licht: geleidt alleen van anode (pin 0, links) naar
+    kathode (pin 1, rechts), boven 0,7 V, met een heel kleine weerstand; kapot
+    boven 1 A (rechtsklik: vervangen). }
+  TjanDiode = class(TjanLed2)
+  private
+    FOmgekeerd: Boolean;   // anode rechts en kathode links (omgedraaid)
+    procedure SetOmgekeerd(const Value: Boolean);
+    procedure VervangDiodeClick(Sender: TObject);
+    procedure OmdraaiClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
+    function Drempel: Double; override;
+    function Rd: Double; override;
+    function MaxA: Double; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
   end;
 
   { TjanCondensator: elektrolytische condensator met twee klemmen. Pin 0 =
@@ -6972,6 +7001,10 @@ const
   LedRd = 15;             // ohm boven de drempel
   LedVolA = 0.020;        // vol licht bij 20 mA
   LedMaxA = 0.030;        // kapot boven 30 mA
+  // diode (1N4007): drempel, weerstand boven de drempel, maximale stroom
+  DiodeVolt = 0.7;
+  DiodeRd = 0.1;
+  DiodeMaxA = 1.0;
   Led2W = 64; Led2H = 46;
   // condensator: capaciteit in microfarad
   CondUF: array[0..4] of Double = (100, 470, 1000, 2200, 4700);
@@ -7484,7 +7517,7 @@ begin
       begin
         // boven de drempel: drempelspanning met een kleine weerstand
         if TjanLed2(Parts[k]).FGeleidt and not TjanLed2(Parts[k]).Doorgebrand then
-          AddTakE(PinNode(k, 0), PinNode(k, 1), 1 / LedRd, TjanLed2(Parts[k]).Drempel, Parts[k]);
+          AddTakE(PinNode(k, 0), PinNode(k, 1), 1 / TjanLed2(Parts[k]).Rd, TjanLed2(Parts[k]).Drempel, Parts[k]);
       end
       else if Parts[k] is TjanCondensator then
         // stap van de tijd (impliciete Euler): geleiding C/dt met als
@@ -7597,13 +7630,13 @@ begin
           U := V[PinNode(k, 0)] - V[PinNode(k, 1)];
           if FGeleidt then
           begin
-            Amp := (U - Drempel) / LedRd;
+            Amp := (U - Drempel) / Rd;
             if Amp < 0 then
             begin
               FGeleidt := False;
               Smelt := True;
             end
-            else if Amp > LedMaxA + 0.000001 then
+            else if Amp > MaxA + 0.000001 then
             begin
               FGeleidt := False;
               Doorgebrand := True;
@@ -7667,7 +7700,7 @@ begin
     else if Parts[k] is TjanLed2 then
     begin
       if TjanLed2(Parts[k]).FGeleidt and not TjanLed2(Parts[k]).Doorgebrand then
-        Amp := (U - TjanLed2(Parts[k]).Drempel) / LedRd
+        Amp := (U - TjanLed2(Parts[k]).Drempel) / TjanLed2(Parts[k]).Rd
       else
         Amp := 0;
       if Amp < 0 then Amp := 0;
@@ -7872,6 +7905,9 @@ begin
       Ord(TjanSchakelaar2(C).Aan)])
   else if C is TjanVoltmeter2 then
     Result := Format('TjanVoltmeter2;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanDiode then
+    Result := Format('TjanDiode;%d;%d;%d;%d;0;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Ord(TjanDiode(C).Doorgebrand), Ord(TjanDiode(C).Omgekeerd)])
   else if C is TjanLed2 then
     Result := Format('TjanLed2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanLed2(C).Kleur, Ord(TjanLed2(C).Doorgebrand)])
@@ -9267,6 +9303,16 @@ begin
   Result := LedVolt[FKleur];
 end;
 
+function TjanLed2.Rd: Double;
+begin
+  Result := LedRd;
+end;
+
+function TjanLed2.MaxA: Double;
+begin
+  Result := LedMaxA;
+end;
+
 function TjanLed2.Spanning: Double;
 begin
   Result := FPinV[0] - FPinV[1];
@@ -9440,6 +9486,171 @@ procedure TjanLed2.SendStatusToBar;
 begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Led', 'LED', 'LED', 'LED') + ' > ', 0);
+  if FDoorgebrand then
+    FOnStatus(Self, Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt'), 1)
+  else
+    FOnStatus(Self, 'U = ' + VoltText(Spanning) + '   I = ' + MilliAmpText(Abs(FAmp)), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanDiode }
+
+constructor TjanDiode.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  HelpKeyword := 'diode';
+end;
+
+function TjanDiode.Drempel: Double;
+begin
+  Result := DiodeVolt;
+end;
+
+function TjanDiode.Rd: Double;
+begin
+  Result := DiodeRd;
+end;
+
+function TjanDiode.MaxA: Double;
+begin
+  Result := DiodeMaxA;
+end;
+
+procedure TjanDiode.VervangDiodeClick(Sender: TObject);
+begin
+  Doorgebrand := False;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+// omgedraaid: de anode (pin 0) rechts en de kathode (pin 1) links. De draden
+// blijven liggen, dus ze zitten nu aan de andere klem.
+function TjanDiode.PinPos(I: Integer): TPoint;
+begin
+  if (I = 0) <> FOmgekeerd then Result := Point(1, 17) else Result := Point(Led2W - 8, 17);
+end;
+
+procedure TjanDiode.SetOmgekeerd(const Value: Boolean);
+begin
+  if Value = FOmgekeerd then Exit;
+  FOmgekeerd := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanDiode.OmdraaiClick(Sender: TObject);
+begin
+  Omgekeerd := not Omgekeerd;
+end;
+
+procedure TjanDiode.AddMenuItems(APop: TPopupMenu);
+var
+  Mi: TMenuItem;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Omdraaien', 'Turn round', 'Retourner', 'Umdrehen');
+  Mi.OnClick := OmdraaiClick;
+  APop.Items.Add(Mi);
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Diode vervangen', 'Replace diode', 'Remplacer la diode', 'Diode ersetzen');
+  Mi.Enabled := FDoorgebrand;
+  Mi.OnClick := VervangDiodeClick;
+  APop.Items.Add(Mi);
+end;
+
+procedure TjanDiode.Paint;
+var
+  CX, CY, TW, R: Integer;
+  S: string;
+  Aan: Boolean;
+begin
+  CX := Led2W div 2;
+  CY := PinPos(0).Y + 3;
+  // R = 1: de driehoek wijst naar rechts (anode links); -1: omgedraaid
+  if FOmgekeerd then R := -1 else R := 1;
+  Aan := (Abs(FAmp) > 0.0005) and not FDoorgebrand;
+  with Canvas do
+  begin
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(8, CY); LineTo(CX - 8, CY);
+    MoveTo(CX + 7, CY); LineTo(Led2W - 8, CY);
+    // schemasymbool: driehoek in de doorlaatrichting met een streep (kathode)
+    Pen.Width := 1;
+    Brush.Style := bsSolid;
+    if FDoorgebrand then Brush.Color := RGBToColor(90, 80, 70)
+    else if Aan then Brush.Color := RGBToColor(255, 150, 120)   // geleidt
+    else Brush.Color := RGBToColor(200, 200, 200);              // spert
+    Polygon([Point(CX - 8 * R, CY - 8), Point(CX + 6 * R, CY), Point(CX - 8 * R, CY + 8)]);
+    Pen.Width := 2;
+    MoveTo(CX + 6 * R, CY - 8); LineTo(CX + 6 * R, CY + 9);
+    Pen.Width := 1;
+    if FDoorgebrand then
+    begin
+      Pen.Width := 2; Pen.Color := clRed;
+      MoveTo(CX - 10, CY - 10); LineTo(CX + 10, CY + 10);
+      MoveTo(CX + 10, CY - 10); LineTo(CX - 10, CY + 10);
+      Pen.Width := 1; Pen.Color := clBlack;
+    end;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+    Brush.Style := bsClear;
+    Font.Name := 'Arial'; Font.Size := 6; Font.Style := [fsBold]; Font.Color := clNavy;
+    if FOmgekeerd then
+    begin
+      TextOut(9, CY - 15, 'K');
+      TextOut(Led2W - 14, CY - 15, 'A');
+    end
+    else
+    begin
+      TextOut(9, CY - 15, 'A');
+      TextOut(Led2W - 14, CY - 15, 'K');
+    end;
+    Font.Style := [];
+    if FDoorgebrand then
+      S := Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt')
+    else
+      S := Tr(FTaal, 'diode', 'diode', 'diode', 'Diode') + ' ' + FormatFloat('0.0', Drempel) + ' V';
+    TW := TextWidth(S);
+    TextOut(CX - TW div 2, CY + 11, S);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanDiode.UpdateHintText;
+var
+  I: Double;
+begin
+  I := Abs(FAmp);
+  Hint := Tr(FTaal, 'Diode', 'Diode', 'Diode', 'Diode') + ' (' + VoltText(Drempel) + ')' + #13#10;
+  if FDoorgebrand then
+    Hint := Hint + Tr(FTaal, 'Kapot: er ging meer dan 1 A door. Rechtsklik: diode vervangen.',
+      'Broken: more than 1 A went through it. Right-click: replace diode.',
+      'Grillée : plus de 1 A l''a traversée. Clic droit : remplacer la diode.',
+      'Kaputt: Es floss mehr als 1 A. Rechtsklick: Diode ersetzen.') + #13#10
+  else if I > 0.00005 then
+    Hint := Hint + 'U = ' + VoltText(Spanning) + '   ' + StroomRegel(I) + #13#10
+  else
+    Hint := Hint + 'U = ' + VoltText(Spanning) + '   ' +
+      Tr(FTaal, 'spert: geen stroom', 'blocking: no current', 'bloque : pas de courant', 'sperrt: kein Strom') + #13#10;
+  Hint := Hint + Tr(FTaal,
+      'Diode: A (anode) links, K (kathode) rechts, bij de streep. Ze laat stroom alleen door' + #13#10 +
+        'van A naar K, en pas boven 0,7 V. Kapot boven 1 A.',
+      'Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through' + #13#10 +
+        'from A to K, and only above 0.7 V. Broken above 1 A.',
+      'Diode : A (anode) à gauche, K (cathode) à droite, côté barre. Elle ne laisse passer le courant' + #13#10 +
+        'que de A vers K, et seulement au-dessus de 0,7 V. Grillée au-dessus de 1 A.',
+      'Diode: A (Anode) links, K (Kathode) rechts, beim Strich. Sie lässt Strom nur' + #13#10 +
+        'von A nach K durch, und erst über 0,7 V. Kaputt über 1 A.') + #13#10 +
+    Tr(FTaal, 'Rechtsklik: omdraaien.', 'Right-click: turn round.', 'Clic droit : retourner.',
+      'Rechtsklick: umdrehen.');
+end;
+
+procedure TjanDiode.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Diode', 'Diode', 'Diode', 'Diode') + ' > ', 0);
   if FDoorgebrand then
     FOnStatus(Self, Tr(FTaal, 'kapot', 'broken', 'grillée', 'kaputt'), 1)
   else
@@ -23164,12 +23375,13 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
   FHWattMeter:='maak Wattmeter';
   FHPot:='maak Potentiometer (drie klemmen)';
+  FHDiode:='maak Diode';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -24259,7 +24471,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') then
     begin
       with TStringList.Create do
       try
@@ -24278,6 +24490,7 @@ begin
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
           else if obj[1] = 'TjanWattMeter' then VD := TjanWattMeter.Create(Self)
           else if obj[1] = 'TjanPotmeter' then VD := TjanPotmeter.Create(Self)
+          else if obj[1] = 'TjanDiode' then VD := TjanDiode.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -24304,6 +24517,8 @@ begin
             TjanLed2(VD).Kleur := StrToIntDef(Trim(Strings[4]), 0);
             if Count >= 6 then
               TjanLed2(VD).Doorgebrand := Trim(Strings[5]) = '1';
+            if (VD is TjanDiode) and (Count >= 7) then
+              TjanDiode(VD).Omgekeerd := Trim(Strings[6]) = '1';
           end
           else if (VD is TjanCondensator) and (Count >= 5) then
             TjanCondensator(VD).Soort := StrToIntDef(Trim(Strings[4]), CondStandaard)
@@ -25148,6 +25363,7 @@ begin
     8: D := TjanCondensator.Create(Self);
     9: D := TjanWattMeter.Create(Self);
     10: D := TjanPotmeter.Create(Self);
+    11: D := TjanDiode.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -25386,6 +25602,15 @@ begin
           Brush.Style := bsSolid; Brush.Color := clBlack;
           FillRect(Rect(CX - 3, CY - 6, CX - 1, CY + 7));
           FillRect(Rect(CX + 2, CY - 6, CX + 4, CY + 7));
+        end;
+      11:
+        begin
+          // diode: grijze driehoek met een streep
+          MoveTo(R.Left + 2, CY); LineTo(CX - 4, CY);
+          MoveTo(CX + 4, CY); LineTo(R.Right - 2, CY);
+          Brush.Style := bsSolid; Brush.Color := RGBToColor(160, 160, 160);
+          Polygon([Point(CX - 4, CY - 5), Point(CX + 3, CY), Point(CX - 4, CY + 5)]);
+          MoveTo(CX + 3, CY - 5); LineTo(CX + 3, CY + 6);
         end;
       10:
         begin
@@ -25886,7 +26111,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -25933,6 +26158,7 @@ begin
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
   else if PtInRect(RPot, P) then DPot := True
+  else if PtInRect(RDiode, P) then DDiode := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -25992,6 +26218,7 @@ begin
   else if PtInRect(RLed2, P) then NewHint := FHLed2
   else if PtInRect(RCond, P) then NewHint := FHCond
   else if PtInRect(RPot, P) then NewHint := FHPot
+  else if PtInRect(RDiode, P) then NewHint := FHDiode
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -26401,7 +26628,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False;
 
     // nieuw
     DSquare := False;
@@ -26667,6 +26894,8 @@ begin
     NewVoedingsDeel(8)
   else if DPot then
     NewVoedingsDeel(10)
+  else if DDiode then
+    NewVoedingsDeel(11)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -27257,6 +27486,7 @@ if FBoxTaal=stDutch then
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
   HPotmeter:='maak Potentiometer (drie klemmen)';
+  HDiode:='maak Diode';
  end;
 
 if FBoxTaal=stEnglish then
@@ -27306,6 +27536,7 @@ if FBoxTaal=stEnglish then
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
   HPotmeter:=LangTr('create Potentiometer (three terminals)');
+  HDiode:=LangTr('create Diode');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -27353,6 +27584,7 @@ if FBoxTaal=stFrench then
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
   HPotmeter:='faire Potentiomètre (trois bornes)';
+  HDiode:='faire Diode';
  end;
 
  if FBoxTaal=stGerman then
@@ -27401,6 +27633,7 @@ if FBoxTaal=stFrench then
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
   HPotmeter:='Potentiometer erstellen (drei Klemmen)';
+  HDiode:='Diode erstellen';
   end;
   invalidate;
  // willy
@@ -27483,6 +27716,9 @@ begin SetVoedingKnop(FCondK, Value); end;
 procedure TjanSimLogicBox.SetKPotmeter(const Value: Boolean);
 begin SetVoedingKnop(FPotK, Value); end;
 
+procedure TjanSimLogicBox.SetKDiode(const Value: Boolean);
+begin SetVoedingKnop(FDiodeK, Value); end;
+
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
@@ -27540,6 +27776,7 @@ begin
   RLed2 := Rect(0, 0, 0, 0);
   RCond := Rect(0, 0, 0, 0);
   RPot := Rect(0, 0, 0, 0);
+  RDiode := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -27556,6 +27793,7 @@ begin
   if FPotK then Knop(RPot, 10, DPot);
   if FLamp2K then Knop(RLamp2, 4, DLamp2);
   if FLed2K then Knop(RLed2, 7, DLed2);
+  if FDiodeK then Knop(RDiode, 11, DDiode);
   if FCondK then Knop(RCond, 8, DCond);
   if FSchak2K then Knop(RSchak2, 5, DSchak2);
   if FVolt2K then Knop(RVolt2, 6, DVolt2);

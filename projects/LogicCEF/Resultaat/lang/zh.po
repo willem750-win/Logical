@@ -1675,3 +1675,30 @@ msgstr "创建电位器（三个端子）"
 
 msgid "Potentiometer (three terminals)"
 msgstr "电位器（三个端子）"
+
+msgid "Replace diode"
+msgstr "更换二极管"
+
+msgid "diode"
+msgstr "二极管"
+
+msgid "Diode"
+msgstr "二极管"
+
+msgid "Broken: more than 1 A went through it. Right-click: replace diode."
+msgstr "损坏：流过的电流超过 1 A。右键：更换二极管。"
+
+msgid "blocking: no current"
+msgstr "截止：无电流"
+
+msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
+msgstr "二极管：A（阳极）在左，K（阴极）在右，靠竖线一侧。电流只能\n从 A 流向 K，且仅在 0.7 V 以上。超过 1 A 损坏。"
+
+msgid "create Diode"
+msgstr "创建二极管"
+
+msgid "Turn round"
+msgstr "翻转"
+
+msgid "Right-click: turn round."
+msgstr "右键：翻转。"

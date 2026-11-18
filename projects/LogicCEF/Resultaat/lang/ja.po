@@ -1675,3 +1675,30 @@ msgstr "ポテンショメータを作成（3 端子）"
 
 msgid "Potentiometer (three terminals)"
 msgstr "ポテンショメータ（3 端子）"
+
+msgid "Replace diode"
+msgstr "ダイオードを交換"
+
+msgid "diode"
+msgstr "ダイオード"
+
+msgid "Diode"
+msgstr "ダイオード"
+
+msgid "Broken: more than 1 A went through it. Right-click: replace diode."
+msgstr "故障: 1 A を超える電流が流れました。右クリック: ダイオードを交換。"
+
+msgid "blocking: no current"
+msgstr "阻止: 電流なし"
+
+msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
+msgstr "ダイオード: A（アノード）が左、K（カソード）が右の線側。電流は\nA から K へ、0.7 V を超えたときだけ流れます。1 A を超えると故障。"
+
+msgid "create Diode"
+msgstr "ダイオードを作成"
+
+msgid "Turn round"
+msgstr "向きを反転"
+
+msgid "Right-click: turn round."
+msgstr "右クリック: 向きを反転。"

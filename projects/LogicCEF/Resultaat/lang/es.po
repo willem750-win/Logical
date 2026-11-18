@@ -1670,3 +1670,30 @@ msgstr "crear potenciómetro (tres bornes)"
 
 msgid "Potentiometer (three terminals)"
 msgstr "Potenciómetro (tres bornes)"
+
+msgid "Replace diode"
+msgstr "Sustituir diodo"
+
+msgid "diode"
+msgstr "diodo"
+
+msgid "Diode"
+msgstr "Diodo"
+
+msgid "Broken: more than 1 A went through it. Right-click: replace diode."
+msgstr "Quemado: pasó más de 1 A. Clic derecho: sustituir diodo."
+
+msgid "blocking: no current"
+msgstr "bloquea: sin corriente"
+
+msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
+msgstr "Diodo: A (ánodo) a la izquierda, K (cátodo) a la derecha, junto a la barra. Solo deja pasar la corriente\nde A a K, y solo por encima de 0,7 V. Se quema por encima de 1 A."
+
+msgid "create Diode"
+msgstr "crear diodo"
+
+msgid "Turn round"
+msgstr "Girar"
+
+msgid "Right-click: turn round."
+msgstr "Clic derecho: girar."

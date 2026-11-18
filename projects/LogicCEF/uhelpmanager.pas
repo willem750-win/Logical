@@ -175,6 +175,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'condensator'; end;
     'potmeter':
       begin Result := 'voeding'; AAnchor := 'potmeter'; end;
+    'diode':
+      begin Result := 'voeding'; AAnchor := 'diode'; end;
     'statusbalk':
       begin Result := 'paneel'; AAnchor := 'statusbalk'; end;
     'connector':

@@ -26,6 +26,7 @@
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Resistance (contact)</a></td><td>A contact or wire with a small resistance: some voltage is lost.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Resistor with a wiper and three terminals: an adjustable voltage divider.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lets current through in one direction only, above 0.7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
   </table>
   <ol class="steps">
@@ -210,6 +211,12 @@
   rest of the voltage:</p>
   <p class="formula">R = (U<sub>source</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1.8&nbsp;V) / 0.020&nbsp;A = 510&nbsp;&Omega; &rarr; take 470&nbsp;&Omega;</p>
   <p>Turn the LED round and it stays off: no current flows, and the voltmeter shows the full voltage across the LED.</p>
+
+  <h2 id="diode"><img src="../img/pal-diode.png" class="ico" alt="">The diode</h2>
+  <p>A diode lets current through in <b>one direction</b> only: from the anode <b>A</b> (left) to the cathode <b>K</b> (right, at
+  the bar). In that direction it conducts above <b>0.7&nbsp;V</b>, and then about 0.7&nbsp;V stays across the diode. The other way round
+  it <b>blocks</b>: no current flows, not even at 12&nbsp;V. When it conducts, the triangle turns salmon red; when it blocks, it is
+  grey. A diode can take up to 1&nbsp;A; above that it breaks (right-click &rsaquo; <b>Replace diode</b>). Right-click &rsaquo; <b>Turn round</b> swaps A and K without undoing the wires.</p>
 
   <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">The capacitor</h2>
   <p>A capacitor stores charge, a bit like a small rechargeable battery. When there is a voltage on it, it

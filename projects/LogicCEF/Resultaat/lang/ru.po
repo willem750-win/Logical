@@ -1675,3 +1675,30 @@ msgstr "создать потенциометр (три вывода)"
 
 msgid "Potentiometer (three terminals)"
 msgstr "Потенциометр (три вывода)"
+
+msgid "Replace diode"
+msgstr "Заменить диод"
+
+msgid "diode"
+msgstr "диод"
+
+msgid "Diode"
+msgstr "Диод"
+
+msgid "Broken: more than 1 A went through it. Right-click: replace diode."
+msgstr "Сгорел: прошло больше 1 А. Правый щелчок: заменить диод."
+
+msgid "blocking: no current"
+msgstr "заперт: тока нет"
+
+msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
+msgstr "Диод: A (анод) слева, K (катод) справа, у черты. Пропускает ток только\nот A к K, и только выше 0,7 В. Сгорает выше 1 А."
+
+msgid "create Diode"
+msgstr "создать диод"
+
+msgid "Turn round"
+msgstr "Развернуть"
+
+msgid "Right-click: turn round."
+msgstr "Правый щелчок: развернуть."

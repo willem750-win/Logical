@@ -26,6 +26,7 @@
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Résistance (contact)</a></td><td>Un contact ou un fil avec une petite résistance&nbsp;: une partie de la tension est perdue.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiomètre</a></td><td>Résistance avec un curseur et trois bornes&nbsp;: un diviseur de tension réglable.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens ; va avec une résistance série.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens, au-dessus de 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
   </table>
   <ol class="steps">
@@ -216,6 +217,13 @@
   type résistance série). Elle prend le reste de la tension&nbsp;:</p>
   <p class="formula">R = (U<sub>source</sub> &minus; U<sub>LED</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &rarr; prenez 470&nbsp;&Omega;</p>
   <p>Retournez la LED et elle reste éteinte&nbsp;: aucun courant ne passe, et le voltmètre montre toute la tension aux bornes de la LED.</p>
+
+  <h2 id="diode"><img src="../img/pal-diode.png" class="ico" alt="">La diode</h2>
+  <p>Une diode ne laisse passer le courant que dans <b>un seul sens</b>&nbsp;: de l&rsquo;anode <b>A</b> (à gauche) vers la cathode
+  <b>K</b> (à droite, côté barre). Dans ce sens, elle conduit au-dessus de <b>0,7&nbsp;V</b>, et il reste alors environ 0,7&nbsp;V à ses
+  bornes. Dans l&rsquo;autre sens, elle <b>bloque</b>&nbsp;: aucun courant ne passe, même à 12&nbsp;V. Quand elle conduit, le triangle
+  devient rouge saumon&nbsp;; quand elle bloque, il est gris. Une diode supporte jusqu&rsquo;à 1&nbsp;A&nbsp;; au-delà, elle grille
+  (clic droit &rsaquo; <b>Remplacer la diode</b>). Clic droit &rsaquo; <b>Retourner</b> échange A et K sans défaire les fils.</p>
 
   <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">Le condensateur</h2>
   <p>Un condensateur stocke de la charge, un peu comme une petite batterie rechargeable. Sous tension, il se

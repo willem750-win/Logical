@@ -1365,3 +1365,30 @@ msgstr "crea potenziometro (tre morsetti)"
 
 msgid "Potentiometer (three terminals)"
 msgstr "Potenziometro (tre morsetti)"
+
+msgid "Replace diode"
+msgstr "Sostituisci diodo"
+
+msgid "diode"
+msgstr "diodo"
+
+msgid "Diode"
+msgstr "Diodo"
+
+msgid "Broken: more than 1 A went through it. Right-click: replace diode."
+msgstr "Bruciato: è passato più di 1 A. Clic destro: sostituisci diodo."
+
+msgid "blocking: no current"
+msgstr "blocca: nessuna corrente"
+
+msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
+msgstr "Diodo: A (anodo) a sinistra, K (catodo) a destra, dalla parte della barra. Lascia passare la corrente solo\nda A a K, e solo sopra 0,7 V. Brucia sopra 1 A."
+
+msgid "create Diode"
+msgstr "crea diodo"
+
+msgid "Turn round"
+msgstr "Gira"
+
+msgid "Right-click: turn round."
+msgstr "Clic destro: gira."

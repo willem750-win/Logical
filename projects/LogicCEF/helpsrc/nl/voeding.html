@@ -26,6 +26,7 @@
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Weerstand (contact)</a></td><td>Een contact of draad met een kleine weerstand: er gaat spanning verloren.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Weerstand met een loper en drie klemmen: een instelbare spanningsdeler.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">Led met 2 klemmen</a></td><td>Geleidt maar in één richting; hoort met een voorschakelweerstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Laat stroom maar in één richting door, boven 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
   </table>
   <ol class="steps">
@@ -210,6 +211,12 @@
   voorschakelweerstand). Die neemt de rest van de spanning op:</p>
   <p class="formula">R = (U<sub>bron</sub> &minus; U<sub>led</sub>) / I = (12&nbsp;V &minus; 1,8&nbsp;V) / 0,020&nbsp;A = 510&nbsp;&Omega; &rarr; neem 470&nbsp;&Omega;</p>
   <p>Draai je de led om, dan blijft ze uit: er loopt geen stroom, en de voltmeter toont de volle spanning over de led.</p>
+
+  <h2 id="diode"><img src="../img/pal-diode.png" class="ico" alt="">De diode</h2>
+  <p>Een diode laat stroom maar in <b>één richting</b> door: van de anode <b>A</b> (links) naar de kathode <b>K</b> (rechts, bij de
+  streep). In die richting geleidt ze boven <b>0,7&nbsp;V</b>, en dan blijft er ongeveer 0,7&nbsp;V over de diode staan. Omgekeerd
+  <b>spert</b> ze: er gaat geen stroom door, ook niet bij 12&nbsp;V. Geleidt ze, dan kleurt de driehoek zalmrood; spert ze, dan is
+  hij grijs. Een diode verdraagt tot 1&nbsp;A; daarboven gaat ze kapot (rechtsklik &rsaquo; <b>Diode vervangen</b>). Met rechtsklik &rsaquo; <b>Omdraaien</b> wisselen A en K van kant, zonder de draden los te maken.</p>
 
   <h2 id="condensator"><img src="../img/pal-condensator.png" class="ico" alt="">De condensator</h2>
   <p>Een condensator slaat lading op, een beetje zoals een kleine oplaadbare batterij. Staat er spanning op, dan
