@@ -1,0 +1,57 @@
+<!-- titel: Lektion 40 - Ein Nachtlicht mit einem LDR -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 40 von 41</p>
+  <h1>Ein Nachtlicht mit einem LDR</h1>
+  <div class="goal"><strong>Ziel:</strong> ein Licht bauen, das von selbst angeht, wenn es dunkel wird, mit einem LDR, einem
+  festen Widerstand und einem Transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les40-nachtlampje-ldr.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les40.png" alt="Quelle von 12 V; ein Widerstand von 47 Kiloohm vom Plus zur Basis eines Transistors, ein LDR von der Basis zum Minus; im Kollektor 470 Ohm und eine rote LED; der LDR steht auf 80 Prozent Licht und die LED ist aus">
+    <figcaption>Vom + zur Basis ein Widerstand von 47&nbsp;k&Omega;, von der Basis zum &minus; der
+    <a href="voeding.html#ldr"><img src="../img/pal-ldr.png" class="ico" alt="">LDR</a>. Im Kollektor 470&nbsp;&Omega; und eine rote
+    LED. Bei 80&nbsp;% Licht bleibt die LED aus.</figcaption>
+  </figure>
+
+  <h2>Der LDR</h2>
+  <p>Ein LDR ist ein Widerstand, der kleiner wird, je mehr Licht auf ihn fällt. Mit dem Schieberegler unter dem LDR stellen Sie das
+  Licht ein; das Display darunter zeigt das Licht, der Block den Widerstand.</p>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Der LDR steht auf 80&nbsp;% Licht: Er hat nur 631&nbsp;&Omega;.</li>
+    <li>Schieben Sie auf 50&nbsp;%: Der Widerstand wird 10&nbsp;k&Omega;. Bei 20&nbsp;% sind es schon 158,5&nbsp;k&Omega;, im Dunkeln
+      (0&nbsp;%) 1&nbsp;M&Omega;.</li>
+  </ol>
+
+  <h2>Ein Spannungsteiler an der Basis</h2>
+  <p>Der Widerstand von 47&nbsp;k&Omega; und der LDR bilden zusammen einen <a href="les29.html">Spannungsteiler</a>. Die Spannung an
+  der Basis ist der Teil der 12&nbsp;V, der über dem LDR liegt:</p>
+  <p class="formula">U<sub>Basis</sub> = 12&nbsp;V &times; R<sub>LDR</sub> / (47&nbsp;k&Omega; + R<sub>LDR</sub>)</p>
+  <ol class="steps">
+    <li>Stellen Sie das Licht wieder auf 80&nbsp;%. Die Basis bekommt 12 &times; 0,63 / 47,6 &asymp; 0,16&nbsp;V: weniger als
+      0,7&nbsp;V. Es fließt kein Basisstrom, der <a href="voeding.html#transistor">Transistor</a> <b>sperrt</b>, und die LED ist aus.</li>
+    <li>Schieben Sie das Licht langsam tiefer. Um 63&nbsp;% beginnt der Transistor zu leiten, und die LED glimmt schwach; bei
+      50&nbsp;% fließen schon 17&nbsp;mA.</li>
+    <li>Unter etwa 45&nbsp;% ist der Transistor <b>gesättigt</b>, und die LED leuchtet voll (21&nbsp;mA). Es ist dunkel, das Licht
+      ist an.</li>
+  </ol>
+  <figure>
+    <img src="../img/les40b.png" alt="Dieselbe Schaltung mit dem LDR auf 20 Prozent Licht; der LDR hat 158,5 Kiloohm, der Transistor ist gesättigt und die LED leuchtet">
+    <figcaption>Bei 20&nbsp;% Licht: Der LDR hat 158,5&nbsp;k&Omega;, der Transistor ist gesättigt, und die LED leuchtet.</figcaption>
+  </figure>
+  <p>Wo liegt der Schaltpunkt? Der Transistor beginnt zu leiten, wenn die Basis 0,7&nbsp;V bekommt. Dann liegen 11,3&nbsp;V über den
+  47&nbsp;k&Omega;, also muss der LDR 0,7 / 11,3 &times; 47&nbsp;k&Omega; &asymp; 2,9&nbsp;k&Omega; haben. Das ist bei etwa
+  63&nbsp;% Licht.</p>
+
+  <h2>Aufgabe: ein anderer Schaltpunkt</h2>
+  <p>Wählen Sie per Rechtsklick auf den Widerstand von 47&nbsp;k&Omega; <b>Art</b> &rsaquo; Vorwiderstand (100&nbsp;k&Omega;). Muss es
+  jetzt dunkler oder weniger dunkel sein, bevor die LED angeht?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Dunkler. Mit 100&nbsp;k&Omega; muss der LDR 0,7 / 11,3 &times; 100&nbsp;k&Omega; &asymp; 6,2&nbsp;k&Omega; haben, bevor die
+    Basis 0,7&nbsp;V bekommt. Das geschieht erst unter etwa 55&nbsp;% Licht. Mit dem festen Widerstand stellen Sie also ein, bei
+    wie viel Licht die Lampe angeht.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Straßenlaternen, Gartenleuchten und Nachtlichter funktionieren so. Oft sitzt
+  statt des festen Widerstands ein <a href="les33.html">Potentiometer</a> darin, damit man den Schaltpunkt nachstellen kann.</div>
+
+  <div class="pager"><a href="les39.html">&larr; Lektion 39: Verstärken mit einem Transistor</a><a href="les41.html">Lektion 41: Ein Temperaturalarm mit einem NTC &rarr;</a></div>

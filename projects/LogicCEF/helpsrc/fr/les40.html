@@ -1,0 +1,57 @@
+<!-- titel: Leçon 40 - Une veilleuse avec une LDR -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 40 sur 41</p>
+  <h1>Une veilleuse avec une LDR</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> construire une lampe qui s&rsquo;allume toute seule quand il fait sombre, avec
+  une LDR, une résistance fixe et un transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les40-nachtlampje-ldr.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les40.png" alt="Source de 12 V&nbsp;; une résistance de 47 kilo-ohms du plus vers la base d'un transistor, une LDR de la base vers le moins&nbsp;; dans le collecteur 470 ohms et une LED rouge&nbsp;; la LDR est à 80 pour cent de lumière et la LED est éteinte">
+    <figcaption>Du + vers la base une résistance de 47&nbsp;k&Omega;, de la base vers le &minus; la
+    <a href="voeding.html#ldr"><img src="../img/pal-ldr.png" class="ico" alt="">LDR</a>. Dans le collecteur 470&nbsp;&Omega; et une LED
+    rouge. À 80&nbsp;% de lumière, la LED reste éteinte.</figcaption>
+  </figure>
+
+  <h2>La LDR</h2>
+  <p>Une LDR est une résistance qui diminue quand elle reçoit plus de lumière. Avec le curseur sous la LDR, vous réglez la
+  lumière&nbsp;; le petit écran du bas affiche la lumière, le bloc la résistance.</p>
+  <ol class="steps">
+    <li>Lancez la simulation. La LDR est à 80&nbsp;% de lumière&nbsp;: elle n&rsquo;a que 631&nbsp;&Omega;.</li>
+    <li>Glissez à 50&nbsp;%&nbsp;: la résistance devient 10&nbsp;k&Omega;. À 20&nbsp;%, elle fait déjà 158,5&nbsp;k&Omega;, dans le noir
+      (0&nbsp;%) 1&nbsp;M&Omega;.</li>
+  </ol>
+
+  <h2>Un diviseur de tension sur la base</h2>
+  <p>La résistance de 47&nbsp;k&Omega; et la LDR forment ensemble un <a href="les29.html">diviseur de tension</a>. La tension sur la
+  base est la part des 12&nbsp;V aux bornes de la LDR&nbsp;:</p>
+  <p class="formula">U<sub>base</sub> = 12&nbsp;V &times; R<sub>LDR</sub> / (47&nbsp;k&Omega; + R<sub>LDR</sub>)</p>
+  <ol class="steps">
+    <li>Remettez la lumière à 80&nbsp;%. La base reçoit 12 &times; 0,63 / 47,6 &asymp; 0,16&nbsp;V&nbsp;: moins de 0,7&nbsp;V. Aucun
+      courant de base, le <a href="voeding.html#transistor">transistor</a> est <b>bloqué</b> et la LED est éteinte.</li>
+    <li>Baissez lentement la lumière. Vers 63&nbsp;%, le transistor commence à conduire et la LED luit faiblement&nbsp;; à 50&nbsp;%,
+      il passe déjà 17&nbsp;mA.</li>
+    <li>En dessous d&rsquo;environ 45&nbsp;%, le transistor est <b>saturé</b> et la LED brille pleinement (21&nbsp;mA). Il fait
+      sombre, la lampe est allumée.</li>
+  </ol>
+  <figure>
+    <img src="../img/les40b.png" alt="Le même circuit avec la LDR à 20 pour cent de lumière&nbsp;; la LDR fait 158,5 kilo-ohms, le transistor est saturé et la LED est allumée">
+    <figcaption>À 20&nbsp;% de lumière&nbsp;: la LDR fait 158,5&nbsp;k&Omega;, le transistor est saturé et la LED est allumée.</figcaption>
+  </figure>
+  <p>Où est le point de basculement&nbsp;? Le transistor commence à conduire quand la base reçoit 0,7&nbsp;V. Il y a alors
+  11,3&nbsp;V aux bornes des 47&nbsp;k&Omega;, donc la LDR doit faire 0,7 / 11,3 &times; 47&nbsp;k&Omega; &asymp; 2,9&nbsp;k&Omega;.
+  C&rsquo;est le cas vers 63&nbsp;% de lumière.</p>
+
+  <h2>Exercice&nbsp;: un autre point de basculement</h2>
+  <p>Faites un clic droit sur la résistance de 47&nbsp;k&Omega; et choisissez <b>Type</b> &rsaquo; résistance série
+  (100&nbsp;k&Omega;). Faut-il maintenant qu&rsquo;il fasse plus ou moins sombre pour que la LED s&rsquo;allume&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Plus sombre. Avec 100&nbsp;k&Omega;, la LDR doit faire 0,7 / 11,3 &times; 100&nbsp;k&Omega; &asymp; 6,2&nbsp;k&Omega; pour que
+    la base reçoive 0,7&nbsp;V. Cela n&rsquo;arrive qu&rsquo;en dessous d&rsquo;environ 55&nbsp;% de lumière. La résistance fixe règle
+    donc la quantité de lumière à laquelle la lampe s&rsquo;allume.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> les lampadaires, les lampes de jardin et les veilleuses fonctionnent ainsi.
+  Souvent, un <a href="les33.html">potentiomètre</a> remplace la résistance fixe pour ajuster le point de basculement.</div>
+
+  <div class="pager"><a href="les39.html">&larr; Leçon 39 : Amplifier avec un transistor</a><a href="les41.html">Leçon 41 : Une alarme de température avec une CTN &rarr;</a></div>

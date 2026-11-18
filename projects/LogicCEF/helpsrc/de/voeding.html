@@ -27,6 +27,8 @@
     <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="#scoop">Oszilloskop</a></td><td>Zeichnet die Spannung über die Zeit als grüne Spur.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Widerstand (Kontakt)</a></td><td>Ein Kontakt oder Draht mit einem kleinen Widerstand: Es geht Spannung verloren.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Widerstand mit einem Schleifer und drei Klemmen: ein einstellbarer Spannungsteiler.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Fotowiderstand: Je mehr Licht, desto kleiner der Widerstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">NTC</a></td><td>Heißleiter: Je wärmer, desto kleiner der Widerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED mit 2 Klemmen</a></td><td>Leitet nur in eine Richtung; gehört mit einem Vorwiderstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch, über 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
@@ -250,6 +252,28 @@
   LED &rarr; zurück zum &minus; der Quelle, und setzen Sie einen Kondensator von 2200&nbsp;&micro;F parallel über LED und
   Widerstand (+ auf der Seite des Schalters). Schalten Sie ein und wieder aus: Die LED geht nicht sofort aus, sondern wird
   langsam schwächer, weil der Kondensator seine Ladung über den Widerstand durch die LED schickt.</div>
+
+  <h2 id="ldr"><img src="../img/pal-ldr.png" class="ico" alt="">Der LDR (Fotowiderstand)</h2>
+  <p>Ein <b>LDR</b> (Light Dependent Resistor) ist ein Widerstand, der kleiner wird, je mehr Licht auf ihn fällt. Mit dem
+  Schieberegler unten stellen Sie das Licht von 0 bis 100&nbsp;% ein; das kleine Display unten zeigt das Licht, der Block den Widerstand.
+  Der Knopf wechselt von Grau (dunkel) zu Gelb (helles Licht).</p>
+  <table>
+    <tr><th>Licht</th><td>0&nbsp;%</td><td>25&nbsp;%</td><td>50&nbsp;%</td><td>75&nbsp;%</td><td>100&nbsp;%</td></tr>
+    <tr><th>Widerstand</th><td>1&nbsp;M&Omega;</td><td>100&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>1&nbsp;k&Omega;</td><td>100&nbsp;&Omega;</td></tr>
+  </table>
+  <p>Je 25&nbsp;% mehr Licht macht den Widerstand zehnmal kleiner. Zusammen mit einem festen Widerstand bauen Sie einen
+  <a href="les29.html">Spannungsteiler</a>, dessen Spannung sich mit dem Licht ändert; mit einem <a href="#transistor">Transistor</a>
+  wird daraus ein Nachtlicht. Siehe <a href="les40.html">Lektion 40</a>.</p>
+
+  <h2 id="ntc"><img src="../img/pal-ntc.png" class="ico" alt="">Der NTC (Heißleiter)</h2>
+  <p>Ein <b>NTC</b> (Negativer Temperaturkoeffizient) ist ein Widerstand, der kleiner wird, je wärmer er wird. Mit dem
+  Schieberegler stellen Sie die Temperatur von 0 bis 100&nbsp;&deg;C ein, abzulesen auf dem kleinen Display; der Knopf wechselt von Blau (kalt) zu Rot (warm).</p>
+  <table>
+    <tr><th>Temperatur</th><td>0&nbsp;&deg;C</td><td>25&nbsp;&deg;C</td><td>50&nbsp;&deg;C</td><td>75&nbsp;&deg;C</td><td>100&nbsp;&deg;C</td></tr>
+    <tr><th>Widerstand</th><td>33,6&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>3,6&nbsp;k&Omega;</td><td>1,5&nbsp;k&Omega;</td><td>0,7&nbsp;k&Omega;</td></tr>
+  </table>
+  <p>Solche NTCs stecken in Thermometern, Akkuladegeräten und Heizkesseln. Mit einem festen Widerstand und einem Transistor bauen
+  Sie damit einen Temperaturalarm: siehe <a href="les41.html">Lektion 41</a>.</p>
 
   <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">Der Transistor</h2>
   <p>Ein Transistor hat drei Klemmen: den <b>Kollektor C</b> (oben), die <b>Basis B</b> (links) und den <b>Emitter E</b> (unten).

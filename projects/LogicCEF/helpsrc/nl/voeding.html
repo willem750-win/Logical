@@ -27,6 +27,8 @@
     <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="#scoop">Oscilloscoop</a></td><td>Tekent de spanning in de tijd, als een groen spoor.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Weerstand (contact)</a></td><td>Een contact of draad met een kleine weerstand: er gaat spanning verloren.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Weerstand met een loper en drie klemmen: een instelbare spanningsdeler.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Lichtgevoelige weerstand: hoe meer licht, hoe kleiner de weerstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">NTC</a></td><td>Temperatuurgevoelige weerstand: hoe warmer, hoe kleiner de weerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">Led met 2 klemmen</a></td><td>Geleidt maar in één richting; hoort met een voorschakelweerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Laat stroom maar in één richting door, boven 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
@@ -246,6 +248,28 @@
   terug naar de &minus; van de bron, en zet een condensator van 2200&nbsp;&micro;F parallel over de led en de weerstand
   (+ aan de kant van de schakelaar). Zet de schakelaar aan en weer uit: de led dooft niet meteen, maar wordt langzaam
   zwakker, omdat de condensator zijn lading via de weerstand door de led stuurt.</div>
+
+  <h2 id="ldr"><img src="../img/pal-ldr.png" class="ico" alt="">De LDR (lichtgevoelige weerstand)</h2>
+  <p>Een <b>LDR</b> (Light Dependent Resistor) is een weerstand die kleiner wordt naarmate er meer licht op valt. Met de schuifknop
+  onderaan regel je het licht van 0 tot 100&nbsp;%; het schermpje onderaan toont het licht, het blokje de weerstand. Het knopje kleurt
+  van grijs (donker) naar geel (fel licht).</p>
+  <table>
+    <tr><th>Licht</th><td>0&nbsp;%</td><td>25&nbsp;%</td><td>50&nbsp;%</td><td>75&nbsp;%</td><td>100&nbsp;%</td></tr>
+    <tr><th>Weerstand</th><td>1&nbsp;M&Omega;</td><td>100&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>1&nbsp;k&Omega;</td><td>100&nbsp;&Omega;</td></tr>
+  </table>
+  <p>Elke 25&nbsp;% meer licht maakt de weerstand tien keer kleiner. Met een vaste weerstand erbij maak je een
+  <a href="les29.html">spanningsdeler</a> waarvan de spanning met het licht verandert; met een <a href="#transistor">transistor</a>
+  wordt dat een nachtlampje. Zie <a href="les40.html">les 40</a>.</p>
+
+  <h2 id="ntc"><img src="../img/pal-ntc.png" class="ico" alt="">De NTC (temperatuurgevoelige weerstand)</h2>
+  <p>Een <b>NTC</b> (Negatieve TemperatuurCoëfficiënt) is een weerstand die kleiner wordt naarmate hij warmer wordt. Met de
+  schuifknop regel je de temperatuur van 0 tot 100&nbsp;&deg;C, af te lezen op het schermpje; het knopje kleurt van blauw (koud) naar rood (warm).</p>
+  <table>
+    <tr><th>Temperatuur</th><td>0&nbsp;&deg;C</td><td>25&nbsp;&deg;C</td><td>50&nbsp;&deg;C</td><td>75&nbsp;&deg;C</td><td>100&nbsp;&deg;C</td></tr>
+    <tr><th>Weerstand</th><td>33,6&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>3,6&nbsp;k&Omega;</td><td>1,5&nbsp;k&Omega;</td><td>0,7&nbsp;k&Omega;</td></tr>
+  </table>
+  <p>Zo&rsquo;n NTC zit in thermometers, in de laadkabel van een batterij en in een verwarmingsketel. Met een vaste weerstand en
+  een transistor maak je er een temperatuuralarm mee: zie <a href="les41.html">les 41</a>.</p>
 
   <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">De transistor</h2>
   <p>Een transistor heeft drie klemmen: de <b>collector C</b> (boven), de <b>basis B</b> (links) en de <b>emitter E</b> (onder).

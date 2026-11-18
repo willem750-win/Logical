@@ -1,0 +1,56 @@
+<!-- titel: Lektion 41 - Ein Temperaturalarm mit einem NTC -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 41 von 41</p>
+  <h1>Ein Temperaturalarm mit einem NTC</h1>
+  <div class="goal"><strong>Ziel:</strong> eine LED einschalten, wenn es zu warm wird, mit einem NTC, einem festen Widerstand und
+  einem Transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les41-temperatuuralarm-ntc.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les41.png" alt="Quelle von 12 V; ein NTC vom Plus zur Basis eines Transistors, ein Widerstand von 220 Ohm von der Basis zum Minus; im Kollektor 470 Ohm und eine rote LED; der NTC steht auf 25 Grad und die LED ist aus">
+    <figcaption>Vom + zur Basis der <a href="voeding.html#ntc"><img src="../img/pal-ntc.png" class="ico" alt="">NTC</a>, von der
+    Basis zum &minus; ein Widerstand von 220&nbsp;&Omega;. Im Kollektor 470&nbsp;&Omega; und eine rote LED. Bei 25&nbsp;&deg;C bleibt
+    die LED aus.</figcaption>
+  </figure>
+
+  <h2>Der NTC</h2>
+  <p>Ein NTC ist ein Widerstand, der kleiner wird, je wärmer er wird. Mit dem Schieberegler stellen Sie die Temperatur ein; im
+  Block steht der Widerstand, im Display darunter die Temperatur.</p>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Bei 25&nbsp;&deg;C hat der NTC 10&nbsp;k&Omega;.</li>
+    <li>Schieben Sie auf 40&nbsp;&deg;C: noch 5,3&nbsp;k&Omega;. Bei 50&nbsp;&deg;C sind es 3,6&nbsp;k&Omega;.</li>
+  </ol>
+
+  <h2>Der Alarm</h2>
+  <p>Auch hier bilden der NTC und der feste Widerstand einen <a href="les29.html">Spannungsteiler</a>, aber jetzt sitzt der Sensor
+  oben, auf der Seite des +. Die Basis bekommt den Teil der 12&nbsp;V, der über den 220&nbsp;&Omega; liegt:</p>
+  <p class="formula">U<sub>Basis</sub> = 12&nbsp;V &times; 220&nbsp;&Omega; / (R<sub>NTC</sub> + 220&nbsp;&Omega;)</p>
+  <ol class="steps">
+    <li>Stellen Sie die Temperatur wieder auf 25&nbsp;&deg;C. Die Basis bekommt 12 &times; 220 / 10&nbsp;220 &asymp; 0,26&nbsp;V: Der
+      Transistor <b>sperrt</b>, und die LED ist aus.</li>
+    <li>Schieben Sie die Temperatur langsam höher. Bei 40&nbsp;&deg;C sind es 0,48&nbsp;V, bei 50&nbsp;&deg;C 0,69&nbsp;V: noch knapp
+      zu wenig.</li>
+    <li>Bei 51&nbsp;&deg;C geht die LED an, und ab 52&nbsp;&deg;C ist der Transistor <b>gesättigt</b>, und die LED leuchtet voll:
+      Alarm!</li>
+  </ol>
+  <figure>
+    <img src="../img/les41b.png" alt="Dieselbe Schaltung mit dem NTC auf 60 Grad; der NTC hat 2,5 Kiloohm, der Transistor ist gesättigt und die LED leuchtet">
+    <figcaption>Bei 60&nbsp;&deg;C: Der NTC hat 2,5&nbsp;k&Omega;, der Transistor ist gesättigt, und die LED leuchtet.</figcaption>
+  </figure>
+  <p>Der Schaltpunkt: Die Basis bekommt 0,7&nbsp;V, wenn der NTC 11,3 / 0,7 &times; 220&nbsp;&Omega; &asymp; 3,55&nbsp;k&Omega; hat. Das
+  ist bei etwa 51&nbsp;&deg;C. Vergleichen Sie mit dem <a href="les40.html">Nachtlicht</a>: Dort saß der Sensor unten, und die LED
+  ging an, wenn sein Widerstand <b>groß</b> wurde. Hier sitzt er oben, und die LED geht an, wenn sein Widerstand <b>klein</b> wird.</p>
+
+  <h2>Aufgabe: eine niedrigere Alarmtemperatur</h2>
+  <p>Wählen Sie per Rechtsklick auf den Widerstand von 220&nbsp;&Omega; <b>Art</b> &rsaquo; Vorwiderstand (470&nbsp;&Omega;). Bei
+  welcher Temperatur geht die LED jetzt an?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Schon bei etwa 32&nbsp;&deg;C. Mit 470&nbsp;&Omega; bekommt die Basis 0,7&nbsp;V, sobald der NTC kleiner ist als
+    11,3 / 0,7 &times; 470&nbsp;&Omega; &asymp; 7,6&nbsp;k&Omega;, und das ist er schon bei einer niedrigeren Temperatur. Je größer der
+    untere Widerstand, desto niedriger die Alarmtemperatur.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> So eine Schaltung kann die Temperatur eines Kühlschranks überwachen, einen
+  Lüfter einschalten, wenn ein Computer zu heiß wird, oder ein Ladegerät abschalten, wenn der Akku heiß wird.</div>
+
+  <div class="pager"><a href="les40.html">&larr; Lektion 40: Ein Nachtlicht mit einem LDR</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

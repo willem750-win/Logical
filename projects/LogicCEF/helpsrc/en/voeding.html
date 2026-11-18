@@ -27,6 +27,8 @@
     <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="#scoop">Oscilloscope</a></td><td>Draws the voltage over time, as a green trace.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Resistance (contact)</a></td><td>A contact or wire with a small resistance: some voltage is lost.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Resistor with a wiper and three terminals: an adjustable voltage divider.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Light-dependent resistor: the more light, the lower the resistance.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">NTC</a></td><td>Temperature-dependent resistor: the warmer, the lower the resistance.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lets current through in one direction only, above 0.7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
@@ -246,6 +248,28 @@
   the &minus; of the source, and put a 2200&nbsp;&micro;F capacitor in parallel across the LED and the resistor (+ on the side
   of the switch). Switch on and off again: the LED does not go out at once but slowly gets weaker, because the capacitor
   sends its charge through the resistor and the LED.</div>
+
+  <h2 id="ldr"><img src="../img/pal-ldr.png" class="ico" alt="">The LDR (light-dependent resistor)</h2>
+  <p>An <b>LDR</b> (Light Dependent Resistor) is a resistor whose resistance drops as more light falls on it. With the slider at
+  the bottom you set the light from 0 to 100&nbsp;%; the small screen at the bottom shows the light, the block the resistance. The knob turns
+  from grey (dark) to yellow (bright light).</p>
+  <table>
+    <tr><th>Light</th><td>0&nbsp;%</td><td>25&nbsp;%</td><td>50&nbsp;%</td><td>75&nbsp;%</td><td>100&nbsp;%</td></tr>
+    <tr><th>Resistance</th><td>1&nbsp;M&Omega;</td><td>100&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>1&nbsp;k&Omega;</td><td>100&nbsp;&Omega;</td></tr>
+  </table>
+  <p>Every 25&nbsp;% more light makes the resistance ten times smaller. Together with a fixed resistor you make a
+  <a href="les29.html">voltage divider</a> whose voltage changes with the light; with a <a href="#transistor">transistor</a> it
+  becomes a night light. See <a href="les40.html">lesson 40</a>.</p>
+
+  <h2 id="ntc"><img src="../img/pal-ntc.png" class="ico" alt="">The NTC (temperature-dependent resistor)</h2>
+  <p>An <b>NTC</b> (Negative Temperature Coefficient) is a resistor whose resistance drops as it gets warmer. With the slider you
+  set the temperature from 0 to 100&nbsp;&deg;C, shown on the small screen; the knob turns from blue (cold) to red (warm).</p>
+  <table>
+    <tr><th>Temperature</th><td>0&nbsp;&deg;C</td><td>25&nbsp;&deg;C</td><td>50&nbsp;&deg;C</td><td>75&nbsp;&deg;C</td><td>100&nbsp;&deg;C</td></tr>
+    <tr><th>Resistance</th><td>33.6&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>3.6&nbsp;k&Omega;</td><td>1.5&nbsp;k&Omega;</td><td>0.7&nbsp;k&Omega;</td></tr>
+  </table>
+  <p>Such an NTC is found in thermometers, in battery chargers and in central heating boilers. With a fixed resistor and a
+  transistor you build a temperature alarm with it: see <a href="les41.html">lesson 41</a>.</p>
 
   <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">The transistor</h2>
   <p>A transistor has three terminals: the <b>collector C</b> (top), the <b>base B</b> (left) and the <b>emitter E</b> (bottom).

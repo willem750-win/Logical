@@ -1,0 +1,53 @@
+<!-- titel: Lesson 41 - A temperature alarm with an NTC -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 41 of 41</p>
+  <h1>A temperature alarm with an NTC</h1>
+  <div class="goal"><strong>Goal:</strong> switch on an LED when it gets too warm, with an NTC, a fixed resistor and a transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les41-temperatuuralarm-ntc.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les41.png" alt="12 V source; an NTC from plus to the base of a transistor, a 220 ohm resistor from the base to minus; in the collector 470 ohm and a red LED; the NTC is at 25 degrees and the LED is off">
+    <figcaption>From + to the base the <a href="voeding.html#ntc"><img src="../img/pal-ntc.png" class="ico" alt="">NTC</a>, from the
+    base to &minus; a 220&nbsp;&Omega; resistor. In the collector 470&nbsp;&Omega; and a red LED. At 25&nbsp;&deg;C the LED stays off.</figcaption>
+  </figure>
+
+  <h2>The NTC</h2>
+  <p>An NTC is a resistor whose resistance drops as it gets warmer. With the slider you set the temperature; the block shows the
+  resistance; the small screen below it shows the temperature.</p>
+  <ol class="steps">
+    <li>Start the simulation. At 25&nbsp;&deg;C the NTC has 10&nbsp;k&Omega;.</li>
+    <li>Slide to 40&nbsp;&deg;C: still 5.3&nbsp;k&Omega;. At 50&nbsp;&deg;C it is 3.6&nbsp;k&Omega;.</li>
+  </ol>
+
+  <h2>The alarm</h2>
+  <p>Here too the NTC and the fixed resistor form a <a href="les29.html">voltage divider</a>, but now the sensor is at the top, on
+  the + side. The base gets the part of the 12&nbsp;V across the 220&nbsp;&Omega;:</p>
+  <p class="formula">U<sub>base</sub> = 12&nbsp;V &times; 220&nbsp;&Omega; / (R<sub>NTC</sub> + 220&nbsp;&Omega;)</p>
+  <ol class="steps">
+    <li>Set the temperature back to 25&nbsp;&deg;C. The base gets 12 &times; 220 / 10&nbsp;220 &asymp; 0.26&nbsp;V: the transistor is
+      <b>off</b> and the LED is off.</li>
+    <li>Slowly slide the temperature higher. At 40&nbsp;&deg;C it is 0.48&nbsp;V, at 50&nbsp;&deg;C 0.69&nbsp;V: still just too little.</li>
+    <li>At 51&nbsp;&deg;C the LED switches on, and from 52&nbsp;&deg;C the transistor is <b>saturated</b> and the LED is fully on: alarm!</li>
+  </ol>
+  <figure>
+    <img src="../img/les41b.png" alt="The same circuit with the NTC at 60 degrees; the NTC has 2.5 kilohm, the transistor is saturated and the LED is on">
+    <figcaption>At 60&nbsp;&deg;C: the NTC has 2.5&nbsp;k&Omega;, the transistor is saturated and the LED is on.</figcaption>
+  </figure>
+  <p>The switching point: the base gets 0.7&nbsp;V when the NTC has 11.3 / 0.7 &times; 220&nbsp;&Omega; &asymp; 3.55&nbsp;k&Omega;. That
+  is at about 51&nbsp;&deg;C. Compare with the <a href="les40.html">night light</a>: there the sensor was at the bottom, and the LED
+  switched on when the sensor's resistance became <b>large</b>. Here it is at the top, and the LED switches on when its resistance
+  becomes <b>small</b>.</p>
+
+  <h2>Task: a lower alarm temperature</h2>
+  <p>Right-click the 220&nbsp;&Omega; resistor and choose <b>Kind</b> &rsaquo; series resistor (470&nbsp;&Omega;). At what temperature
+  does the LED switch on now?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Already at about 32&nbsp;&deg;C. With 470&nbsp;&Omega; the base gets 0.7&nbsp;V as soon as the NTC is below
+    11.3 / 0.7 &times; 470&nbsp;&Omega; &asymp; 7.6&nbsp;k&Omega;, and it gets there at a lower temperature. The larger the bottom
+    resistor, the lower the alarm temperature.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> such a circuit can watch the temperature of a fridge, switch on a fan when a
+  computer gets too hot, or switch off a charger when the battery gets hot.</div>
+
+  <div class="pager"><a href="les40.html">&larr; Lesson 40: A night light with an LDR</a><a href="leerpad.html">Learning path &rarr;</a></div>

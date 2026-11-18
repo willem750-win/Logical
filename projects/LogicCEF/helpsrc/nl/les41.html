@@ -1,0 +1,55 @@
+<!-- titel: Les 41 - Een temperatuuralarm met een NTC -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 41 van 41</p>
+  <h1>Een temperatuuralarm met een NTC</h1>
+  <div class="goal"><strong>Doel:</strong> een led laten aangaan als het te warm wordt, met een NTC, een vaste weerstand en een
+  transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les41-temperatuuralarm-ntc.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les41.png" alt="Bron van 12 V; een NTC van de plus naar de basis van een transistor, een weerstand van 220 ohm van de basis naar de min; in de collector 470 ohm en een rode led; de NTC staat op 25 graden en de led is uit">
+    <figcaption>Van de + naar de basis de <a href="voeding.html#ntc"><img src="../img/pal-ntc.png" class="ico" alt="">NTC</a>, van de
+    basis naar de &minus; een weerstand van 220&nbsp;&Omega;. In de collector 470&nbsp;&Omega; en een rode led. Bij 25&nbsp;&deg;C
+    blijft de led uit.</figcaption>
+  </figure>
+
+  <h2>De NTC</h2>
+  <p>Een NTC is een weerstand die kleiner wordt naarmate hij warmer wordt. Met de schuifknop regel je de temperatuur; in het
+  schermpje eronder staat de temperatuur, in het blokje de weerstand.</p>
+  <ol class="steps">
+    <li>Start de simulatie. Bij 25&nbsp;&deg;C heeft de NTC 10&nbsp;k&Omega;.</li>
+    <li>Schuif naar 40&nbsp;&deg;C: nog 5,3&nbsp;k&Omega;. Bij 50&nbsp;&deg;C is het 3,6&nbsp;k&Omega;.</li>
+  </ol>
+
+  <h2>Het alarm</h2>
+  <p>Ook hier vormen de NTC en de vaste weerstand een <a href="les29.html">spanningsdeler</a>, maar nu staat de sensor bovenaan,
+  aan de kant van de +. De basis krijgt het stuk van de 12&nbsp;V dat over de 220&nbsp;&Omega; staat:</p>
+  <p class="formula">U<sub>basis</sub> = 12&nbsp;V &times; 220&nbsp;&Omega; / (R<sub>NTC</sub> + 220&nbsp;&Omega;)</p>
+  <ol class="steps">
+    <li>Zet de temperatuur terug op 25&nbsp;&deg;C. De basis krijgt 12 &times; 220 / 10&nbsp;220 &asymp; 0,26&nbsp;V: de transistor
+      <b>spert</b> en de led is uit.</li>
+    <li>Schuif de temperatuur langzaam hoger. Bij 40&nbsp;&deg;C is het 0,48&nbsp;V, bij 50&nbsp;&deg;C 0,69&nbsp;V: nog net te weinig.</li>
+    <li>Bij 51&nbsp;&deg;C gaat de led aan, en vanaf 52&nbsp;&deg;C is de transistor <b>verzadigd</b> en brandt de led volop: alarm!</li>
+  </ol>
+  <figure>
+    <img src="../img/les41b.png" alt="Dezelfde schakeling met de NTC op 60 graden; de NTC heeft 2,5 kilo-ohm, de transistor is verzadigd en de led brandt">
+    <figcaption>Bij 60&nbsp;&deg;C: de NTC heeft 2,5&nbsp;k&Omega;, de transistor is verzadigd en de led brandt.</figcaption>
+  </figure>
+  <p>Het omslagpunt: de basis krijgt 0,7&nbsp;V als de NTC 11,3 / 0,7 &times; 220&nbsp;&Omega; &asymp; 3,55&nbsp;k&Omega; heeft. Dat is
+  bij ongeveer 51&nbsp;&deg;C. Vergelijk met het <a href="les40.html">nachtlampje</a>: daar stond de sensor onderaan, en ging de led
+  aan als de weerstand van de sensor <b>groot</b> werd. Hier staat hij bovenaan, en gaat de led aan als zijn weerstand <b>klein</b>
+  wordt.</p>
+
+  <h2>Opdracht: een lagere alarmtemperatuur</h2>
+  <p>Kies met rechtsklik op de weerstand van 220&nbsp;&Omega; <b>Soort</b> &rsaquo; voorschakelweerstand (470&nbsp;&Omega;). Bij welke
+  temperatuur gaat de led nu aan?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Al bij ongeveer 32&nbsp;&deg;C. Met 470&nbsp;&Omega; krijgt de basis 0,7&nbsp;V zodra de NTC kleiner is dan
+    11,3 / 0,7 &times; 470&nbsp;&Omega; &asymp; 7,6&nbsp;k&Omega;, en dat is hij al bij een lagere temperatuur. Hoe groter de onderste
+    weerstand, hoe lager de alarmtemperatuur.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> zo&rsquo;n schakeling bewaakt bijvoorbeeld de temperatuur van een koelkast, zet
+  een ventilator aan als een computer te warm wordt, of schakelt een lader uit als de batterij heet wordt.</div>
+
+  <div class="pager"><a href="les40.html">&larr; Les 40: Een nachtlampje met een LDR</a><a href="leerpad.html">Leerpad &rarr;</a></div>

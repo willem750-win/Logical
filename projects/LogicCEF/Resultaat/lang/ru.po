@@ -1768,3 +1768,24 @@ msgstr "Всегда ставьте резистор перед базой. Пр
 
 msgid "create Transistor"
 msgstr "создать Транзистор"
+
+msgid "light"
+msgstr "свет"
+
+msgid "Light-dependent resistor: the more light, the lower the resistance\n(1 MΩ in the dark, 100 Ω in bright light). Drag the knob to set the light."
+msgstr "Фоторезистор: чем больше света, тем меньше сопротивление\n(1 МОм в темноте, 100 Ом при ярком свете). Перетащите ручку, чтобы задать освещённость."
+
+msgid "Temperature-dependent resistor: the warmer, the lower the resistance\n(10 kΩ at 25 °C). Drag the knob to set the temperature."
+msgstr "Термистор: чем теплее, тем меньше сопротивление\n(10 кОм при 25 °C). Перетащите ручку, чтобы задать температуру."
+
+msgid "create LDR"
+msgstr "создать LDR"
+
+msgid "create NTC"
+msgstr "создать NTC"
+
+msgid "LDR"
+msgstr "LDR"
+
+msgid "NTC"
+msgstr "NTC"

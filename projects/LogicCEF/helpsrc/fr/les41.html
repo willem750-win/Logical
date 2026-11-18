@@ -1,0 +1,57 @@
+<!-- titel: Leçon 41 - Une alarme de température avec une CTN -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 41 sur 41</p>
+  <h1>Une alarme de température avec une CTN</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> allumer une LED quand il fait trop chaud, avec une CTN, une résistance fixe et
+  un transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les41-temperatuuralarm-ntc.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les41.png" alt="Source de 12 V&nbsp;; une CTN du plus vers la base d'un transistor, une résistance de 220 ohms de la base vers le moins&nbsp;; dans le collecteur 470 ohms et une LED rouge&nbsp;; la CTN est à 25 degrés et la LED est éteinte">
+    <figcaption>Du + vers la base la <a href="voeding.html#ntc"><img src="../img/pal-ntc.png" class="ico" alt="">CTN</a> (NTC), de la
+    base vers le &minus; une résistance de 220&nbsp;&Omega;. Dans le collecteur 470&nbsp;&Omega; et une LED rouge. À 25&nbsp;&deg;C, la
+    LED reste éteinte.</figcaption>
+  </figure>
+
+  <h2>La CTN</h2>
+  <p>Une CTN est une résistance qui diminue quand elle chauffe. Avec le curseur, vous réglez la température&nbsp;; le bloc affiche
+  la résistance, et le petit écran du bas la température.</p>
+  <ol class="steps">
+    <li>Lancez la simulation. À 25&nbsp;&deg;C, la CTN fait 10&nbsp;k&Omega;.</li>
+    <li>Glissez à 40&nbsp;&deg;C&nbsp;: encore 5,3&nbsp;k&Omega;. À 50&nbsp;&deg;C, elle fait 3,6&nbsp;k&Omega;.</li>
+  </ol>
+
+  <h2>L&rsquo;alarme</h2>
+  <p>Ici aussi, la CTN et la résistance fixe forment un <a href="les29.html">diviseur de tension</a>, mais le capteur est maintenant
+  en haut, du côté du +. La base reçoit la part des 12&nbsp;V aux bornes des 220&nbsp;&Omega;&nbsp;:</p>
+  <p class="formula">U<sub>base</sub> = 12&nbsp;V &times; 220&nbsp;&Omega; / (R<sub>CTN</sub> + 220&nbsp;&Omega;)</p>
+  <ol class="steps">
+    <li>Remettez la température à 25&nbsp;&deg;C. La base reçoit 12 &times; 220 / 10&nbsp;220 &asymp; 0,26&nbsp;V&nbsp;: le transistor
+      est <b>bloqué</b> et la LED est éteinte.</li>
+    <li>Augmentez lentement la température. À 40&nbsp;&deg;C, c&rsquo;est 0,48&nbsp;V, à 50&nbsp;&deg;C 0,69&nbsp;V&nbsp;: encore
+      juste trop peu.</li>
+    <li>À 51&nbsp;&deg;C, la LED s&rsquo;allume, et à partir de 52&nbsp;&deg;C le transistor est <b>saturé</b> et la LED brille
+      pleinement&nbsp;: alarme&nbsp;!</li>
+  </ol>
+  <figure>
+    <img src="../img/les41b.png" alt="Le même circuit avec la CTN à 60 degrés&nbsp;; la CTN fait 2,5 kilo-ohms, le transistor est saturé et la LED est allumée">
+    <figcaption>À 60&nbsp;&deg;C&nbsp;: la CTN fait 2,5&nbsp;k&Omega;, le transistor est saturé et la LED est allumée.</figcaption>
+  </figure>
+  <p>Le point de basculement&nbsp;: la base reçoit 0,7&nbsp;V quand la CTN fait 11,3 / 0,7 &times; 220&nbsp;&Omega; &asymp;
+  3,55&nbsp;k&Omega;. C&rsquo;est le cas vers 51&nbsp;&deg;C. Comparez avec la <a href="les40.html">veilleuse</a>&nbsp;: là, le capteur
+  était en bas, et la LED s&rsquo;allumait quand sa résistance devenait <b>grande</b>. Ici, il est en haut, et la LED s&rsquo;allume
+  quand sa résistance devient <b>petite</b>.</p>
+
+  <h2>Exercice&nbsp;: une température d&rsquo;alarme plus basse</h2>
+  <p>Faites un clic droit sur la résistance de 220&nbsp;&Omega; et choisissez <b>Type</b> &rsaquo; résistance série (470&nbsp;&Omega;).
+  À quelle température la LED s&rsquo;allume-t-elle maintenant&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Déjà vers 32&nbsp;&deg;C. Avec 470&nbsp;&Omega;, la base reçoit 0,7&nbsp;V dès que la CTN descend sous
+    11,3 / 0,7 &times; 470&nbsp;&Omega; &asymp; 7,6&nbsp;k&Omega;, ce qui arrive à une température plus basse. Plus la résistance du
+    bas est grande, plus la température d&rsquo;alarme est basse.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> un tel circuit peut surveiller la température d&rsquo;un réfrigérateur, allumer
+  un ventilateur quand un ordinateur chauffe trop, ou couper un chargeur quand la batterie devient chaude.</div>
+
+  <div class="pager"><a href="les40.html">&larr; Leçon 40 : Une veilleuse avec une LDR</a><a href="leerpad.html">Parcours &rarr;</a></div>

@@ -1768,3 +1768,24 @@ msgstr "ベースの前には必ず抵抗を入れてください。右クリッ
 
 msgid "create Transistor"
 msgstr "トランジスタを作成"
+
+msgid "light"
+msgstr "明るさ"
+
+msgid "Light-dependent resistor: the more light, the lower the resistance\n(1 MΩ in the dark, 100 Ω in bright light). Drag the knob to set the light."
+msgstr "フォトレジスタ: 明るいほど抵抗が小さくなります\n(暗所で 1 MΩ、明るい光で 100 Ω)。つまみをドラッグして明るさを設定します。"
+
+msgid "Temperature-dependent resistor: the warmer, the lower the resistance\n(10 kΩ at 25 °C). Drag the knob to set the temperature."
+msgstr "サーミスタ: 温度が高いほど抵抗が小さくなります\n(25 °C で 10 kΩ)。つまみをドラッグして温度を設定します。"
+
+msgid "create LDR"
+msgstr "LDR を作成"
+
+msgid "create NTC"
+msgstr "NTC を作成"
+
+msgid "LDR"
+msgstr "LDR"
+
+msgid "NTC"
+msgstr "NTC"

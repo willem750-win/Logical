@@ -1,0 +1,57 @@
+<!-- titel: Les 40 - Een nachtlampje met een LDR -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 40 van 41</p>
+  <h1>Een nachtlampje met een LDR</h1>
+  <div class="goal"><strong>Doel:</strong> een lampje bouwen dat vanzelf aangaat als het donker wordt, met een LDR, een vaste
+  weerstand en een transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les40-nachtlampje-ldr.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les40.png" alt="Bron van 12 V; een weerstand van 47 kilo-ohm van de plus naar de basis van een transistor, een LDR van de basis naar de min; in de collector 470 ohm en een rode led; de LDR staat op 80 procent licht en de led is uit">
+    <figcaption>Van de + naar de basis een weerstand van 47&nbsp;k&Omega;, van de basis naar de &minus; de
+    <a href="voeding.html#ldr"><img src="../img/pal-ldr.png" class="ico" alt="">LDR</a>. In de collector 470&nbsp;&Omega; en een rode
+    led. Bij 80&nbsp;% licht blijft de led uit.</figcaption>
+  </figure>
+
+  <h2>De LDR</h2>
+  <p>Een LDR is een weerstand die kleiner wordt naarmate er meer licht op valt. Met de schuifknop onder de LDR regel je het
+  licht; het schermpje eronder toont het licht, het blokje de weerstand.</p>
+  <ol class="steps">
+    <li>Start de simulatie. De LDR staat op 80&nbsp;% licht: hij heeft maar 631&nbsp;&Omega;.</li>
+    <li>Schuif naar 50&nbsp;%: de weerstand wordt 10&nbsp;k&Omega;. Op 20&nbsp;% is hij al 158,5&nbsp;k&Omega;, in het donker
+      (0&nbsp;%) 1&nbsp;M&Omega;.</li>
+  </ol>
+
+  <h2>Een spanningsdeler op de basis</h2>
+  <p>De weerstand van 47&nbsp;k&Omega; en de LDR vormen samen een <a href="les29.html">spanningsdeler</a>. De spanning op de basis
+  is het stuk van de 12&nbsp;V dat over de LDR staat:</p>
+  <p class="formula">U<sub>basis</sub> = 12&nbsp;V &times; R<sub>LDR</sub> / (47&nbsp;k&Omega; + R<sub>LDR</sub>)</p>
+  <ol class="steps">
+    <li>Zet het licht terug op 80&nbsp;%. De basis krijgt 12 &times; 0,63 / 47,6 &asymp; 0,16&nbsp;V: minder dan 0,7&nbsp;V. Er loopt
+      geen basisstroom, de <a href="voeding.html#transistor">transistor</a> <b>spert</b> en de led is uit.</li>
+    <li>Schuif het licht langzaam lager. Rond 63&nbsp;% begint de transistor te geleiden en gloeit de led zwak; op 50&nbsp;% loopt er
+      al 17&nbsp;mA.</li>
+    <li>Onder ongeveer 45&nbsp;% is de transistor <b>verzadigd</b> en brandt de led volop (21&nbsp;mA). Het is donker, het lampje
+      is aan.</li>
+  </ol>
+  <figure>
+    <img src="../img/les40b.png" alt="Dezelfde schakeling met de LDR op 20 procent licht; de LDR heeft 158,5 kilo-ohm, de transistor is verzadigd en de led brandt">
+    <figcaption>Bij 20&nbsp;% licht: de LDR heeft 158,5&nbsp;k&Omega;, de transistor is verzadigd en de led brandt.</figcaption>
+  </figure>
+  <p>Waar ligt het omslagpunt? De transistor begint te geleiden als de basis 0,7&nbsp;V krijgt. Dan staat er 11,3&nbsp;V over de
+  47&nbsp;k&Omega;, en dus moet de LDR 0,7 / 11,3 &times; 47&nbsp;k&Omega; &asymp; 2,9&nbsp;k&Omega; hebben. Dat is bij ongeveer
+  63&nbsp;% licht.</p>
+
+  <h2>Opdracht: een ander omslagpunt</h2>
+  <p>Kies met rechtsklik op de weerstand van 47&nbsp;k&Omega; <b>Soort</b> &rsaquo; voorschakelweerstand (100&nbsp;k&Omega;). Moet
+  het nu donkerder of minder donker zijn voor de led aangaat?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Donkerder. Met 100&nbsp;k&Omega; moet de LDR 0,7 / 11,3 &times; 100&nbsp;k&Omega; &asymp; 6,2&nbsp;k&Omega; hebben voor de basis
+    0,7&nbsp;V krijgt. Dat gebeurt pas onder ongeveer 55&nbsp;% licht. Met de vaste weerstand stel je dus in bij hoeveel licht het
+    lampje aangaat.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> straatlampen, tuinlampjes en nachtlampjes werken zo. Vaak zit er in plaats van
+  de vaste weerstand een <a href="les33.html">potentiometer</a>, zodat je het omslagpunt kunt bijregelen.</div>
+
+  <div class="pager"><a href="les39.html">&larr; Les 39: Versterken met een transistor</a><a href="les41.html">Les 41: Een temperatuuralarm met een NTC &rarr;</a></div>

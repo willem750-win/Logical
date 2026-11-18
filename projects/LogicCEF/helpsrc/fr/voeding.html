@@ -27,6 +27,8 @@
     <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="#scoop">Oscilloscope</a></td><td>Trace la tension dans le temps, en vert.</td></tr>
     <tr><td class="btn"><img src="../img/pal-weerstand.png" alt=""></td><td class="name"><a href="#weerstand">Résistance (contact)</a></td><td>Un contact ou un fil avec une petite résistance&nbsp;: une partie de la tension est perdue.</td></tr>
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiomètre</a></td><td>Résistance avec un curseur et trois bornes&nbsp;: un diviseur de tension réglable.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Photorésistance&nbsp;: plus il y a de lumière, plus la résistance est faible.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">CTN</a></td><td>Thermistance&nbsp;: plus il fait chaud, plus la résistance est faible.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens ; va avec une résistance série.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens, au-dessus de 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
@@ -254,6 +256,28 @@
   LED &rarr; retour au &minus; de la source, et placez un condensateur de 2200&nbsp;&micro;F en parallèle sur la LED et la
   résistance (+ du côté de l&rsquo;interrupteur). Allumez puis éteignez&nbsp;: la LED ne s&rsquo;éteint pas tout de suite mais
   faiblit lentement, car le condensateur envoie sa charge à travers la résistance et la LED.</div>
+
+  <h2 id="ldr"><img src="../img/pal-ldr.png" class="ico" alt="">La LDR (photorésistance)</h2>
+  <p>Une <b>LDR</b> (Light Dependent Resistor) est une résistance qui diminue quand elle reçoit plus de lumière. Avec le curseur
+  du bas, vous réglez la lumière de 0 à 100&nbsp;%&nbsp;; le petit écran du bas affiche la lumière, le bloc la résistance. Le bouton
+  passe du gris (sombre) au jaune (pleine lumière).</p>
+  <table>
+    <tr><th>Lumière</th><td>0&nbsp;%</td><td>25&nbsp;%</td><td>50&nbsp;%</td><td>75&nbsp;%</td><td>100&nbsp;%</td></tr>
+    <tr><th>Résistance</th><td>1&nbsp;M&Omega;</td><td>100&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>1&nbsp;k&Omega;</td><td>100&nbsp;&Omega;</td></tr>
+  </table>
+  <p>Chaque fois que la lumière augmente de 25&nbsp;%, la résistance devient dix fois plus petite. Avec une résistance fixe, on
+  fait un <a href="les29.html">diviseur de tension</a> dont la tension varie avec la lumière&nbsp;; avec un
+  <a href="#transistor">transistor</a>, cela devient une veilleuse. Voir la <a href="les40.html">leçon 40</a>.</p>
+
+  <h2 id="ntc"><img src="../img/pal-ntc.png" class="ico" alt="">La CTN (thermistance)</h2>
+  <p>Une <b>CTN</b> (thermistance à Coefficient de Température Négatif, NTC en anglais) est une résistance qui diminue quand elle
+  chauffe. Avec le curseur, vous réglez la température de 0 à 100&nbsp;&deg;C, affichée sur le petit écran&nbsp;; le bouton passe du bleu (froid) au rouge (chaud).</p>
+  <table>
+    <tr><th>Température</th><td>0&nbsp;&deg;C</td><td>25&nbsp;&deg;C</td><td>50&nbsp;&deg;C</td><td>75&nbsp;&deg;C</td><td>100&nbsp;&deg;C</td></tr>
+    <tr><th>Résistance</th><td>33,6&nbsp;k&Omega;</td><td>10&nbsp;k&Omega;</td><td>3,6&nbsp;k&Omega;</td><td>1,5&nbsp;k&Omega;</td><td>0,7&nbsp;k&Omega;</td></tr>
+  </table>
+  <p>On trouve une CTN dans les thermomètres, les chargeurs de batterie et les chaudières. Avec une résistance fixe et un
+  transistor, vous en faites une alarme de température&nbsp;: voir la <a href="les41.html">leçon 41</a>.</p>
 
   <h2 id="transistor"><img src="../img/pal-transistor.png" class="ico" alt="">Le transistor</h2>
   <p>Un transistor a trois bornes&nbsp;: le <b>collecteur C</b> (en haut), la <b>base B</b> (à gauche) et l&rsquo;<b>émetteur E</b>

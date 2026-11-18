@@ -1768,3 +1768,24 @@ msgstr "基极前面一定要串一个电阻。右键：选择类型和放大倍
 
 msgid "create Transistor"
 msgstr "创建晶体管"
+
+msgid "light"
+msgstr "光照"
+
+msgid "Light-dependent resistor: the more light, the lower the resistance\n(1 MΩ in the dark, 100 Ω in bright light). Drag the knob to set the light."
+msgstr "光敏电阻：光越强，电阻越小\n（黑暗中 1 MΩ，强光下 100 Ω）。拖动旋钮调节光照。"
+
+msgid "Temperature-dependent resistor: the warmer, the lower the resistance\n(10 kΩ at 25 °C). Drag the knob to set the temperature."
+msgstr "热敏电阻：温度越高，电阻越小\n（25 °C 时 10 kΩ）。拖动旋钮调节温度。"
+
+msgid "create LDR"
+msgstr "创建 LDR"
+
+msgid "create NTC"
+msgstr "创建 NTC"
+
+msgid "LDR"
+msgstr "LDR"
+
+msgid "NTC"
+msgstr "NTC"

@@ -1,0 +1,54 @@
+<!-- titel: Lesson 40 - A night light with an LDR -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 40 of 41</p>
+  <h1>A night light with an LDR</h1>
+  <div class="goal"><strong>Goal:</strong> build a light that switches on by itself when it gets dark, with an LDR, a fixed
+  resistor and a transistor.</div>
+
+  <p><a class="open" href="../../panels/lessen/les40-nachtlampje-ldr.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les40.png" alt="12 V source; a 47 kilohm resistor from plus to the base of a transistor, an LDR from the base to minus; in the collector 470 ohm and a red LED; the LDR is at 80 percent light and the LED is off">
+    <figcaption>From + to the base a 47&nbsp;k&Omega; resistor, from the base to &minus; the
+    <a href="voeding.html#ldr"><img src="../img/pal-ldr.png" class="ico" alt="">LDR</a>. In the collector 470&nbsp;&Omega; and a red
+    LED. At 80&nbsp;% light the LED stays off.</figcaption>
+  </figure>
+
+  <h2>The LDR</h2>
+  <p>An LDR is a resistor whose resistance drops as more light falls on it. With the slider below the LDR you set the light; the
+  small screen below it shows the light, the block the resistance.</p>
+  <ol class="steps">
+    <li>Start the simulation. The LDR is at 80&nbsp;% light: it has only 631&nbsp;&Omega;.</li>
+    <li>Slide to 50&nbsp;%: the resistance becomes 10&nbsp;k&Omega;. At 20&nbsp;% it is already 158.5&nbsp;k&Omega;, in the dark
+      (0&nbsp;%) 1&nbsp;M&Omega;.</li>
+  </ol>
+
+  <h2>A voltage divider on the base</h2>
+  <p>The 47&nbsp;k&Omega; resistor and the LDR together form a <a href="les29.html">voltage divider</a>. The voltage on the base is
+  the part of the 12&nbsp;V across the LDR:</p>
+  <p class="formula">U<sub>base</sub> = 12&nbsp;V &times; R<sub>LDR</sub> / (47&nbsp;k&Omega; + R<sub>LDR</sub>)</p>
+  <ol class="steps">
+    <li>Set the light back to 80&nbsp;%. The base gets 12 &times; 0.63 / 47.6 &asymp; 0.16&nbsp;V: less than 0.7&nbsp;V. No base
+      current flows, the <a href="voeding.html#transistor">transistor</a> is <b>off</b> and the LED is off.</li>
+    <li>Slowly slide the light lower. Around 63&nbsp;% the transistor starts to conduct and the LED glows faintly; at 50&nbsp;% there
+      are already 17&nbsp;mA.</li>
+    <li>Below about 45&nbsp;% the transistor is <b>saturated</b> and the LED is fully on (21&nbsp;mA). It is dark, the light is on.</li>
+  </ol>
+  <figure>
+    <img src="../img/les40b.png" alt="The same circuit with the LDR at 20 percent light; the LDR has 158.5 kilohm, the transistor is saturated and the LED is on">
+    <figcaption>At 20&nbsp;% light: the LDR has 158.5&nbsp;k&Omega;, the transistor is saturated and the LED is on.</figcaption>
+  </figure>
+  <p>Where is the switching point? The transistor starts to conduct when the base gets 0.7&nbsp;V. Then 11.3&nbsp;V are across the
+  47&nbsp;k&Omega;, so the LDR must have 0.7 / 11.3 &times; 47&nbsp;k&Omega; &asymp; 2.9&nbsp;k&Omega;. That is at about 63&nbsp;% light.</p>
+
+  <h2>Task: a different switching point</h2>
+  <p>Right-click the 47&nbsp;k&Omega; resistor and choose <b>Kind</b> &rsaquo; series resistor (100&nbsp;k&Omega;). Does it now have to
+  be darker or less dark before the LED switches on?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Darker. With 100&nbsp;k&Omega; the LDR must have 0.7 / 11.3 &times; 100&nbsp;k&Omega; &asymp; 6.2&nbsp;k&Omega; before the base
+    gets 0.7&nbsp;V. That only happens below about 55&nbsp;% light. So the fixed resistor sets at how much light the lamp switches on.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> street lights, garden lights and night lights work like this. Often a
+  <a href="les33.html">potentiometer</a> replaces the fixed resistor, so that you can adjust the switching point.</div>
+
+  <div class="pager"><a href="les39.html">&larr; Lesson 39: Amplifying with a transistor</a><a href="les41.html">Lesson 41: A temperature alarm with an NTC &rarr;</a></div>

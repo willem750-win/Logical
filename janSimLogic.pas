@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2111,6 +2111,8 @@ type
     procedure SetKWisselbron(const Value: Boolean);
     procedure SetKScoop(const Value: Boolean);
     procedure SetKTransistor(const Value: Boolean);
+    procedure SetKLDR(const Value: Boolean);
+    procedure SetKNTC(const Value: Boolean);
     procedure PlaatsVoeding(LK, TOP, H, SPATIE: Integer; Vertikaal: Boolean;
       MaxX: Integer = 0; StartX: Integer = 0);
     procedure SetSymbolen(const Value: TjanSymbolen);
@@ -2340,6 +2342,8 @@ type
     property KWisselbron: Boolean read FWisselK write SetKWisselbron default True;
     property KScoop: Boolean read FScoopK write SetKScoop default True;
     property KTransistor: Boolean read FTransK write SetKTransistor default True;
+    property KLDR: Boolean read FLdrK write SetKLDR default True;
+    property KNTC: Boolean read FNtcK write SetKNTC default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
     property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
     property PStandaard:Boolean read FStart write SetStart;
@@ -2366,6 +2370,8 @@ type
     property HWisselbron: string read FHWissel write FHWissel;
     property HScoop: string read FHScoop write FHScoop;
     property HTransistor: string read FHTrans write FHTrans;
+    property HLDR: string read FHLdr write FHLdr;
+    property HNTC: string read FHNtc write FHNtc;
     property HPuls:String read FHPuls write SetHPuls;
     property HLamp:String read FHLamp write SetHLamp;
     property HLogicAnd:String read FHLogicAnd write SetHLogicAnd;
@@ -3532,6 +3538,70 @@ end;
     property PNP: Boolean read FPNP write SetPNP;
     property BetaIdx: Integer read FBetaIdx write SetBetaIdx;
     property Doorgebrand: Boolean read FDoorgebrand write SetDoorgebrand;
+  end;
+
+  { TjanSensorR: weerstand met twee klemmen (pin 0 links, pin 1 rechts) die
+    afhangt van een stand 0..100, ingesteld met een schuifregelaar onderaan:
+    het licht (LDR) of de temperatuur (NTC). }
+  TjanSensorR = class(TjanVoedingsDeel)
+  private
+    FStand: Integer;
+    FSliding: Boolean;
+    procedure SetStand(const Value: Integer);
+    function SliderRect: TRect;
+    procedure SlideTo(X: Integer);
+  protected
+    function HandleClick(X, Y: Integer): Boolean; override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    // het symbool in het blokje R (pijlen, schuine streep ...)
+    procedure PaintSymbool(const R: TRect); virtual; abstract;
+    function KnopKleur: TColor; virtual; abstract;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; virtual; abstract;
+    // de stand in woorden: 'licht 50 %', '25 °C'
+    function StandTekst: string; virtual; abstract;
+    // eenheid op het schermpje: '%' (licht) of '°C'
+    function Eenheid: string; virtual; abstract;
+    function Naam: string; virtual; abstract;
+    procedure SendStatusToBar; override;
+  published
+    property Stand: Integer read FStand write SetStand;
+  end;
+
+  { TjanLDR: lichtgevoelige weerstand. Stand = licht in %: 1 Mohm in het
+    donker (0 %) tot 100 ohm in fel licht (100 %), logaritmisch. }
+  TjanLDR = class(TjanSensorR)
+  protected
+    procedure PaintSymbool(const R: TRect); override;
+    function KnopKleur: TColor; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function Ohm: Double; override;
+    function StandTekst: string; override;
+    function Eenheid: string; override;
+    function Naam: string; override;
+    procedure UpdateHintText; override;
+  end;
+
+  { TjanNTC: temperatuurgevoelige weerstand (NTC: Negatieve TemperatuurCoëfficiënt).
+    Stand = temperatuur in °C (0 tot 100); 10 kohm bij 25 °C, B = 3950 K:
+    hoe warmer, hoe kleiner de weerstand. }
+  TjanNTC = class(TjanSensorR)
+  protected
+    procedure PaintSymbool(const R: TRect); override;
+    function KnopKleur: TColor; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function Ohm: Double; override;
+    function StandTekst: string; override;
+    function Eenheid: string; override;
+    function Naam: string; override;
+    procedure UpdateHintText; override;
   end;
 
   { TjanLed2: led met twee klemmen in de voedingskring. Pin 0 = anode (+,
@@ -7185,6 +7255,11 @@ const
   TrMaxIb = 0.1;          // kapot boven 100 mA basisstroom
   TrMaxIc = 1.0;          // kapot boven 1 A collectorstroom
   TrW = 120; TrH = 96;
+  // LDR en NTC: weerstand met een schuifregelaar voor het licht of de temperatuur
+  SensW = 120; SensH = 84;   // onderaan een schermpje met het licht of de temperatuur
+  LdrDonker = 1000000;    // ohm bij 0 % licht (100 ohm bij 100 %)
+  NtcR25 = 10000;         // ohm bij 25 °C
+  NtcB = 3950;            // B-waarde in kelvin
   Led2W = 64; Led2H = 46;
   // condensator: capaciteit in microfarad
   CondUF: array[0..4] of Double = (100, 470, 1000, 2200, 4700);
@@ -7250,6 +7325,11 @@ function OhmText(R: Double): string;
 begin
   if R = 0 then Result := '0'
   else if R < 1 then Result := FormatFloat('0.00', R)
+  else if R >= 999500 then
+  begin
+    Result := FormatFloat('0.##', R / 1000000) + ' MΩ';
+    Exit;
+  end
   else if R >= 2000 then
   begin
     // 2,2 k, 4,7 k, 10 k ... (1000 blijft 1000, zoals in de lessen)
@@ -7738,6 +7818,8 @@ begin
         AddTak(PinNode(k, 0), PinNode(k, 2), 1 / NietNul(TjanPotmeter(Parts[k]).OhmAL), Parts[k]);
         AddTak(PinNode(k, 2), PinNode(k, 1), 1 / NietNul(TjanPotmeter(Parts[k]).OhmLB), Parts[k]);
       end
+      else if Parts[k] is TjanSensorR then
+        AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanSensorR(Parts[k]).Ohm, Parts[k])
       else if Parts[k] is TjanLamp2 then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanLamp2(Parts[k]).Ohm, Parts[k])
       else if Parts[k] is TjanSchakelaar2 then
@@ -7949,7 +8031,10 @@ begin
         end
         else if U > TrVbe + 0.000001 then
         begin
+          // eerst verzadigd proberen: een stroombron in een collector die (nog)
+          // nergens heen kan, geeft onzinnige spanningen (en kapotte leds)
           Tr.FBeAan := True;
+          Tr.FVerzadigd := True;
           Smelt := True;
         end;
       end;
@@ -7999,6 +8084,8 @@ begin
         end;
         SetStroom(Parts[k], Amp);
       end
+    else if Parts[k] is TjanSensorR then
+      SetStroom(Parts[k], U / TjanSensorR(Parts[k]).Ohm)
     else if Parts[k] is TjanLamp2 then
       SetStroom(Parts[k], U / TjanLamp2(Parts[k]).Ohm)
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Aan then
@@ -8257,6 +8344,10 @@ begin
   else if C is TjanCondensator then
     Result := Format('TjanCondensator;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanCondensator(C).Soort])
+  else if C is TjanLDR then
+    Result := Format('TjanLDR;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanSensorR(C).Stand])
+  else if C is TjanNTC then
+    Result := Format('TjanNTC;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanSensorR(C).Stand])
   else if C is TjanTransistor then
     Result := Format('TjanTransistor;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       Ord(TjanTransistor(C).PNP), TjanTransistor(C).BetaIdx, Ord(TjanTransistor(C).Doorgebrand)])
@@ -9854,6 +9945,298 @@ begin
   FOnStatus(Self, OhmText(Ohm) + '   ' + IntToStr(FProcent) + ' %   A-L ' + OhmText(OhmAL) +
     '   L-B ' + OhmText(OhmLB), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanSensorR }
+
+constructor TjanSensorR.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := SensW;
+  Height := SensH;
+  FStand := 50;
+end;
+
+function TjanSensorR.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+function TjanSensorR.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 17) else Result := Point(SensW - 8, 17);
+end;
+
+procedure TjanSensorR.SetStand(const Value: Integer);
+var
+  V: Integer;
+begin
+  V := Value;
+  if V < 0 then V := 0;
+  if V > 100 then V := 100;
+  if V = FStand then Exit;
+  FStand := V;
+  UpdateHintText;
+  Invalidate;
+  SendStatusToBar;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+// de baan van de schuifregelaar (onder het blokje)
+function TjanSensorR.SliderRect: TRect;
+begin
+  Result := Rect(22, 42, SensW - 22, 52);
+end;
+
+procedure TjanSensorR.SlideTo(X: Integer);
+var
+  R: TRect;
+begin
+  R := SliderRect;
+  Stand := Round((X - R.Left) / (R.Right - R.Left) * 100);
+end;
+
+function TjanSensorR.HandleClick(X, Y: Integer): Boolean;
+var
+  R: TRect;
+begin
+  R := SliderRect;
+  InflateRect(R, 4, 3);
+  Result := PtInRect(R, Point(X, Y));
+  if Result then
+  begin
+    FSliding := True;
+    SlideTo(X);
+  end;
+end;
+
+procedure TjanSensorR.MouseMove(Shift: TShiftState; X, Y: Integer);
+begin
+  if FSliding then
+  begin
+    if ssLeft in Shift then SlideTo(X) else FSliding := False;
+    Exit;
+  end;
+  inherited MouseMove(Shift, X, Y);
+end;
+
+procedure TjanSensorR.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  FSliding := False;
+  inherited MouseUp(Button, Shift, X, Y);
+end;
+
+procedure TjanSensorR.Paint;
+var
+  R, Rs: TRect;
+  S: string;
+  CY, TW, XK, YB: Integer;
+begin
+  CY := 17 + 3;
+  Rs := SliderRect;
+  YB := (Rs.Top + Rs.Bottom) div 2;
+  XK := Rs.Left + Round((Rs.Right - Rs.Left) * FStand / 100);
+  with Canvas do
+  begin
+    // aansluitdraadjes en het blokje (zoals een weerstand)
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(8, CY); LineTo(30, CY);
+    MoveTo(SensW - 30, CY); LineTo(SensW - 8, CY);
+    Pen.Width := 1;
+    R := Rect(30, CY - 7, SensW - 30, CY + 8);
+    Brush.Style := bsSolid; Brush.Color := RGBToColor(255, 228, 200);
+    FillRect(R);
+    Brush.Style := bsClear;
+    Rectangle(R);
+    PaintSymbool(R);
+    // de weerstand in het blokje, de naam en de stand erboven
+    Brush.Style := bsClear;
+    Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
+    S := OhmText(Ohm);
+    TW := TextWidth(S);
+    TextOut((SensW - TW) div 2, CY - 6, S);
+    // schermpje onderaan met de stand (het licht of de temperatuur), zoals bij een meter
+    R := Rect(30, SensH - 27, SensW - 30, SensH - 2);
+    Brush.Style := bsSolid; Brush.Color := RGBToColor(255, 250, 220);
+    FillRect(R);
+    Frame3D(R, clBtnShadow, clBtnHighlight, 2);
+    Brush.Style := bsClear;
+    Font.Size := 12; Font.Style := [fsBold]; Font.Color := clRed;
+    S := IntToStr(FStand);
+    Font.Size := 9; Font.Style := [];
+    TW := TextWidth(' ' + Eenheid);
+    Font.Size := 12; Font.Style := [fsBold];
+    XK := (SensW + TextWidth(S) - TW) div 2;          // rechterkant van het getal
+    TextOut(XK - TextWidth(S), R.Top + 3, S);
+    Font.Size := 9; Font.Style := []; Font.Color := clBlack;
+    TextOut(XK, R.Top + 6, ' ' + Eenheid);
+    XK := Rs.Left + Round((Rs.Right - Rs.Left) * FStand / 100);
+    // de naam linksboven
+    Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+    TextOut(2, 0, Naam);
+    // schuifregelaar
+    Brush.Style := bsSolid; Brush.Color := RGBToColor(200, 200, 200);
+    Pen.Color := clGray;
+    RoundRect(Rs.Left - 2, YB - 2, Rs.Right + 3, YB + 3, 4, 4);
+    Brush.Color := KnopKleur;
+    Pen.Color := clBlack;
+    Rectangle(Rect(XK - 5, YB - 5, XK + 6, YB + 6));
+    Brush.Style := bsClear;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanSensorR.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Naam + ' > ', 0);
+  FOnStatus(Self, StandTekst + '   R = ' + OhmText(Ohm) + '   I = ' + MilliAmpText(Abs(FAmp)), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanLDR }
+
+constructor TjanLDR.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  HelpKeyword := 'ldr';
+end;
+
+function TjanLDR.Ohm: Double;
+begin
+  // 1 Mohm bij 0 % licht, 100 ohm bij 100 %: elke 25 % tien keer kleiner
+  Result := LdrDonker * Exp(-4 * FStand / 100 * Ln(10));
+end;
+
+function TjanLDR.StandTekst: string;
+begin
+  Result := Tr(FTaal, 'licht', 'light', 'lumière', 'Licht') + ' ' + IntToStr(FStand) + ' %';
+end;
+
+function TjanLDR.Eenheid: string;
+begin
+  Result := '%';
+end;
+
+function TjanLDR.Naam: string;
+begin
+  Result := 'LDR';
+end;
+
+function TjanLDR.KnopKleur: TColor;
+var
+  K: Integer;
+begin
+  // van donkergrijs (donker) naar geel (fel licht)
+  K := Round(FStand * 2.55);
+  Result := RGBToColor(60 + K * 195 div 255, 60 + K * 160 div 255, 60 - K * 60 div 255);
+end;
+
+procedure TjanLDR.PaintSymbool(const R: TRect);
+var
+  i, X: Integer;
+begin
+  // twee pijlen van linksboven naar het blokje: het licht
+  with Canvas do
+  begin
+    Pen.Width := 1;
+    if FStand > 10 then Pen.Color := RGBToColor(220, 160, 0) else Pen.Color := clGray;
+    Brush.Style := bsSolid; Brush.Color := Pen.Color;
+    for i := 0 to 1 do
+    begin
+      X := R.Left + 4 + i * 9;
+      MoveTo(X, R.Top - 13); LineTo(X + 7, R.Top - 3);
+      Polygon([Point(X + 8, R.Top - 1), Point(X + 3, R.Top - 4), Point(X + 7, R.Top - 7)]);
+    end;
+    Brush.Style := bsClear;
+    Pen.Color := clBlack;
+  end;
+end;
+
+procedure TjanLDR.UpdateHintText;
+begin
+  Hint := 'LDR: ' + StandTekst + '   R = ' + OhmText(Ohm) + #13#10 +
+    'U = ' + VoltText(Abs(FPinV[0] - FPinV[1])) + '   I = ' + MilliAmpText(Abs(FAmp)) + #13#10 +
+    Tr(FTaal,
+      'Lichtgevoelige weerstand: hoe meer licht, hoe kleiner de weerstand' + #13#10 +
+        '(1 MΩ in het donker, 100 Ω in fel licht). Sleep de knop om het licht te regelen.',
+      'Light-dependent resistor: the more light, the lower the resistance' + #13#10 +
+        '(1 MΩ in the dark, 100 Ω in bright light). Drag the knob to set the light.',
+      'Photorésistance : plus il y a de lumière, plus la résistance est faible' + #13#10 +
+        '(1 MΩ dans le noir, 100 Ω en pleine lumière). Faites glisser le bouton pour régler la lumière.',
+      'Fotowiderstand: Je mehr Licht, desto kleiner der Widerstand' + #13#10 +
+        '(1 MΩ im Dunkeln, 100 Ω bei hellem Licht). Ziehen Sie den Knopf, um das Licht einzustellen.');
+end;
+
+{ TjanNTC }
+
+constructor TjanNTC.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FStand := 25;
+  HelpKeyword := 'ntc';
+end;
+
+function TjanNTC.Ohm: Double;
+begin
+  // R = R25 x e^(B x (1/T - 1/T25)), T in kelvin
+  Result := NtcR25 * Exp(NtcB * (1 / (FStand + 273.15) - 1 / 298.15));
+end;
+
+function TjanNTC.StandTekst: string;
+begin
+  Result := IntToStr(FStand) + ' °C';
+end;
+
+function TjanNTC.Eenheid: string;
+begin
+  Result := '°C';
+end;
+
+function TjanNTC.Naam: string;
+begin
+  Result := 'NTC';
+end;
+
+function TjanNTC.KnopKleur: TColor;
+var
+  K: Integer;
+begin
+  // van blauw (koud) naar rood (warm)
+  K := Round(FStand * 2.55);
+  Result := RGBToColor(K, 60, 255 - K);
+end;
+
+procedure TjanNTC.PaintSymbool(const R: TRect);
+begin
+  // schuine streep door het blokje met een korte horizontale voet, en -t°
+  with Canvas do
+  begin
+    Pen.Color := clBlack; Pen.Width := 1;
+    MoveTo(R.Left - 4, R.Bottom + 3); LineTo(R.Left + 4, R.Bottom + 3);
+    LineTo(R.Right - 4, R.Top - 4);
+    Font.Name := 'Arial'; Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+    Brush.Style := bsClear;
+    TextOut(R.Right - 16, R.Bottom + 1, '-t°');
+  end;
+end;
+
+procedure TjanNTC.UpdateHintText;
+begin
+  Hint := 'NTC: ' + StandTekst + '   R = ' + OhmText(Ohm) + #13#10 +
+    'U = ' + VoltText(Abs(FPinV[0] - FPinV[1])) + '   I = ' + MilliAmpText(Abs(FAmp)) + #13#10 +
+    Tr(FTaal,
+      'Temperatuurgevoelige weerstand: hoe warmer, hoe kleiner de weerstand' + #13#10 +
+        '(10 kΩ bij 25 °C). Sleep de knop om de temperatuur te regelen.',
+      'Temperature-dependent resistor: the warmer, the lower the resistance' + #13#10 +
+        '(10 kΩ at 25 °C). Drag the knob to set the temperature.',
+      'Thermistance : plus il fait chaud, plus la résistance est faible' + #13#10 +
+        '(10 kΩ à 25 °C). Faites glisser le bouton pour régler la température.',
+      'Heißleiter: Je wärmer, desto kleiner der Widerstand' + #13#10 +
+        '(10 kΩ bei 25 °C). Ziehen Sie den Knopf, um die Temperatur einzustellen.');
 end;
 
 { TjanLamp2 }
@@ -24741,7 +25124,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -24751,6 +25134,8 @@ begin
   FHWissel:='maak Wisselspanningsbron';
   FHScoop:='maak Oscilloscoop';
   FHTrans:='maak Transistor';
+  FHLdr:='maak LDR';
+  FHNtc:='maak NTC';
   FOutputAantal:=5;
 
   FDraad:=True;FGrid:=true;//FSave:=true;
@@ -25840,7 +26225,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') then
     begin
       with TStringList.Create do
       try
@@ -25863,6 +26248,8 @@ begin
           else if obj[1] = 'TjanWisselbron' then VD := TjanWisselbron.Create(Self)
           else if obj[1] = 'TjanScoop' then VD := TjanScoop.Create(Self)
           else if obj[1] = 'TjanTransistor' then VD := TjanTransistor.Create(Self)
+          else if obj[1] = 'TjanLDR' then VD := TjanLDR.Create(Self)
+          else if obj[1] = 'TjanNTC' then VD := TjanNTC.Create(Self)
           else VD := TjanAmpMeter.Create(Self);
           VD.Parent := wc;
           VD.Tag := wc.ControlCount;
@@ -25905,6 +26292,8 @@ begin
             if Count >= 6 then
               TjanScoop(VD).TijdIdx := StrToIntDef(Trim(Strings[5]), 1);
           end
+          else if (VD is TjanSensorR) and (Count >= 5) then
+            TjanSensorR(VD).Stand := StrToIntDef(Trim(Strings[4]), TjanSensorR(VD).Stand)
           else if (VD is TjanTransistor) and (Count >= 5) then
           begin
             // TjanTransistor;h;l;t;w;pnp;beta;kapot;
@@ -26759,6 +27148,8 @@ begin
     12: D := TjanWisselbron.Create(Self);
     13: D := TjanScoop.Create(Self);
     14: D := TjanTransistor.Create(Self);
+    15: D := TjanLDR.Create(Self);
+    16: D := TjanNTC.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -27040,6 +27431,28 @@ begin
           MoveTo(CX, CY + 7); LineTo(CX, CY + 2);
           Brush.Style := bsSolid; Brush.Color := clBlack;
           Polygon([Point(CX - 2, CY + 4), Point(CX + 3, CY + 4), Point(CX, CY + 1)]);
+        end;
+      15, 16:
+        begin
+          // LDR: weerstand met twee pijlen (licht); NTC: weerstand met een schuine streep
+          MoveTo(R.Left + 2, CY + 2); LineTo(CX - 6, CY + 2);
+          MoveTo(CX + 7, CY + 2); LineTo(R.Right - 2, CY + 2);
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(255, 228, 200);
+          FillRect(Rect(CX - 6, CY - 1, CX + 7, CY + 6));
+          Brush.Style := bsClear;
+          Rectangle(Rect(CX - 6, CY - 1, CX + 7, CY + 6));
+          if AKind = 15 then
+          begin
+            Pen.Color := RGBToColor(200, 140, 0);
+            MoveTo(CX - 6, CY - 8); LineTo(CX - 2, CY - 3);
+            MoveTo(CX - 1, CY - 8); LineTo(CX + 3, CY - 3);
+            Pen.Color := clBlack;
+          end
+          else
+          begin
+            MoveTo(CX - 9, CY + 9); LineTo(CX - 5, CY + 9); LineTo(CX + 8, CY - 6);
+          end;
         end;
       14:
         begin
@@ -27538,7 +27951,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -27589,6 +28002,8 @@ begin
   else if PtInRect(RWissel, P) then DWissel := True
   else if PtInRect(RScoop, P) then DScoop := True
   else if PtInRect(RTrans, P) then DTrans := True
+  else if PtInRect(RLdr, P) then DLdr := True
+  else if PtInRect(RNtc, P) then DNtc := True
   else if ptinrect(RGrid,p) and (KGrid=true) then DGrid:=true;
   invalidate;
 end;
@@ -27652,6 +28067,8 @@ begin
   else if PtInRect(RWissel, P) then NewHint := FHWissel
   else if PtInRect(RScoop, P) then NewHint := FHScoop
   else if PtInRect(RTrans, P) then NewHint := FHTrans
+  else if PtInRect(RLdr, P) then NewHint := FHLdr
+  else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
 
   if FLastHintText <> NewHint then
@@ -28061,7 +28478,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False;
 
     // nieuw
     DSquare := False;
@@ -28335,6 +28752,10 @@ begin
     NewVoedingsDeel(13)
   else if DTrans then
     NewVoedingsDeel(14)
+  else if DLdr then
+    NewVoedingsDeel(15)
+  else if DNtc then
+    NewVoedingsDeel(16)
   else if DMeter then
   with TjanMeter.Create(wc) do
   begin
@@ -28929,6 +29350,8 @@ if FBoxTaal=stDutch then
   HWisselbron:='maak Wisselspanningsbron';
   HScoop:='maak Oscilloscoop';
   HTransistor:='maak Transistor';
+  HLDR:='maak LDR';
+  HNTC:='maak NTC';
  end;
 
 if FBoxTaal=stEnglish then
@@ -28982,6 +29405,8 @@ if FBoxTaal=stEnglish then
   HWisselbron:=LangTr('create AC voltage source');
   HScoop:=LangTr('create Oscilloscope');
   HTransistor:=LangTr('create Transistor');
+  HLDR:=LangTr('create LDR');
+  HNTC:=LangTr('create NTC');
   end ;
 if FBoxTaal=stFrench then
  Begin
@@ -29033,6 +29458,8 @@ if FBoxTaal=stFrench then
   HWisselbron:='faire Source de tension alternative';
   HScoop:='faire Oscilloscope';
   HTransistor:='faire Transistor';
+  HLDR:='faire LDR';
+  HNTC:='faire NTC';
  end;
 
  if FBoxTaal=stGerman then
@@ -29085,6 +29512,8 @@ if FBoxTaal=stFrench then
   HWisselbron:='Wechselspannungsquelle erstellen';
   HScoop:='Oszilloskop erstellen';
   HTransistor:='Transistor erstellen';
+  HLDR:='LDR erstellen';
+  HNTC:='NTC erstellen';
   end;
   invalidate;
  // willy
@@ -29179,6 +29608,12 @@ begin SetVoedingKnop(FScoopK, Value); end;
 procedure TjanSimLogicBox.SetKTransistor(const Value: Boolean);
 begin SetVoedingKnop(FTransK, Value); end;
 
+procedure TjanSimLogicBox.SetKLDR(const Value: Boolean);
+begin SetVoedingKnop(FLdrK, Value); end;
+
+procedure TjanSimLogicBox.SetKNTC(const Value: Boolean);
+begin SetVoedingKnop(FNtcK, Value); end;
+
 // De halve knoppen van de voeding (rails, bron, zekering, weerstand, lamp,
 // schakelaar en voltmeter met 2 klemmen): alleen de aangevinkte, zonder gaten.
 // Vertikaal (balk links): twee per rij vanaf (LK, TOP); anders naast elkaar.
@@ -29240,6 +29675,8 @@ begin
   RWissel := Rect(0, 0, 0, 0);
   RScoop := Rect(0, 0, 0, 0);
   RTrans := Rect(0, 0, 0, 0);
+  RLdr := Rect(0, 0, 0, 0);
+  RNtc := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -29255,6 +29692,8 @@ begin
   if FZekeringK then Knop(RZekering, 1, DZekering);
   if FWeerstandK then Knop(RWeerstand, 3, DWeerstand);
   if FPotK then Knop(RPot, 10, DPot);
+  if FLdrK then Knop(RLdr, 15, DLdr);
+  if FNtcK then Knop(RNtc, 16, DNtc);
   if FLamp2K then Knop(RLamp2, 4, DLamp2);
   if FLed2K then Knop(RLed2, 7, DLed2);
   if FDiodeK then Knop(RDiode, 11, DDiode);
