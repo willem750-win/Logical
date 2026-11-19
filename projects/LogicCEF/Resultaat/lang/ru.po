@@ -1828,3 +1828,21 @@ msgstr "Лупа (F7): увеличивает панель вокруг мыши
 
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr "Лупа (F7): увеличивает панель вокруг мыши. Правый щелчок: 1,5x, 2x или 3x"
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Right-click: frequency."
+msgstr "Выключатель, который сам размыкается и замыкается. Между шиной + и входом он даёт импульсы. Правый щелчок: частота."
+
+msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
+msgstr "Четыре маленьких переключателя: слева общая клемма (к шине +), справа выходы 8, 4, 2 и 1. Щёлкните по движку, чтобы переключить его."
+
+msgid "create Pulse generator"
+msgstr "создать Генератор импульсов"
+
+msgid "create DIP switch"
+msgstr "создать DIP-переключатель"
+
+msgid "Schematic symbols: IEC (European) or ANSI (American)"
+msgstr "Условные обозначения: IEC (европейские) или ANSI (американские)"
+
+msgid "Schematic symbols (IEC/ANSI)"
+msgstr "Условные обозначения (IEC/ANSI)"

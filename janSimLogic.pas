@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2104,6 +2104,8 @@ type
     procedure SetKLamp2(const Value: Boolean);
     procedure SetKSchakelaar2(const Value: Boolean);
     procedure SetKWisselschakelaar(const Value: Boolean);
+    procedure SetKPuls2(const Value: Boolean);
+    procedure SetKDip2(const Value: Boolean);
     procedure SetKVoltmeter2(const Value: Boolean);
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
@@ -2339,6 +2341,8 @@ type
     property KLamp2: Boolean read FLamp2K write SetKLamp2 default True;
     property KSchakelaar2: Boolean read FSchak2K write SetKSchakelaar2 default True;
     property KWisselschakelaar: Boolean read FWschK write SetKWisselschakelaar default True;
+    property KPuls2: Boolean read FPuls2K write SetKPuls2 default True;
+    property KDip2: Boolean read FDip2K write SetKDip2 default True;
     property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
@@ -2350,7 +2354,8 @@ type
     property KLDR: Boolean read FLdrK write SetKLDR default True;
     property KNTC: Boolean read FNtcK write SetKNTC default True;
     // symbolen van de EN-, OF- en NIET-poort (paneel en knoppenbalk)
-    property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default Afbeelding;
+    // Afbeelding (plaatjes) bestaat niet meer: wordt IEC (oude instellingen)
+    property KSymbolen: TjanSymbolen read FSymbolen write SetSymbolen default IEC;
     property PStandaard:Boolean read FStart write SetStart;
     property NewObject:Boolean read FNew write SetNewObject stored False;   // tijdelijke toestand: nooit in een formulier bewaren
     property HDrukknop:String read FHDrukknop write SetHDrukknop;
@@ -2368,6 +2373,8 @@ type
     property HLamp2: string read FHLamp2 write FHLamp2;
     property HSchakelaar2: string read FHSchak2 write FHSchak2;
     property HWisselschakelaar: string read FHWsch write FHWsch;
+    property HPuls2: string read FHPuls2 write FHPuls2;
+    property HDip2: string read FHDip2 write FHDip2;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3158,7 +3165,7 @@ end;
     procedure SetTaal(const Value: string);
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
   protected
-    FPinV: array[0..2] of Double;  // spanning op de klemmen t.o.v. de - klem van de bron (UpdateSupply; hoogstens 3 klemmen)
+    FPinV: array[0..7] of Double;  // spanning op de klemmen t.o.v. de - klem van de bron (UpdateSupply; hoogstens 8 klemmen)
     FAmp: Double;                  // stroom van klem 0 naar klem 1, in A (UpdateSupply)
   private
     procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -3480,6 +3487,58 @@ end;
     constructor Create(AOwner: TComponent); override;
   end;
 
+  { TjanPuls2: impulsgenerator met twee klemmen in de voedingskring. Een
+    schakelaar die vanzelf opent en sluit (zoals een knipperrelais); de
+    frequentie kies je met rechtsklik. Tussen de + rail en een ingang geeft
+    hij pulsen van de volle spanning. }
+  TjanPuls2 = class(TjanVoedingsDeel)
+  private
+    FAan: Boolean;
+    FLoopt: Boolean;       // aangezet met een klik op het kastje
+    FInterval: Integer;    // halve periode in ms
+    FKlok: TTimer;
+    procedure Tik(Sender: TObject);
+    procedure SetInterval(const Value: Integer);
+    procedure SetLoopt(const Value: Boolean);
+    procedure FreqClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function HandleClick(X, Y: Integer): Boolean; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Aan: Boolean read FAan;
+  published
+    property Interval: Integer read FInterval write SetInterval;
+    property Loopt: Boolean read FLoopt write SetLoopt;
+  end;
+
+  { TjanDip2: dipschakelaar met vijf klemmen: links de gemeenschappelijke
+    klem (naar de + rail), rechts de uitgangen 8, 4, 2 en 1. Staat een
+    schuifje aan, dan is die uitgang met de linkse klem verbonden. }
+  TjanDip2 = class(TjanVoedingsDeel)
+  private
+    FWaarde: Integer;      // 0..15; bit 3 = uitgang 8 (klem 1) ... bit 0 = uitgang 1 (klem 4)
+    FIs: array[1..4] of Double;   // stroom van de linkse klem naar elke uitgang
+    procedure SetWaarde(const Value: Integer);
+  protected
+    function HandleClick(X, Y: Integer): Boolean; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function BitAan(APin: Integer): Boolean;   // APin = 1..4
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Waarde: Integer read FWaarde write SetWaarde;
+  end;
+
   { TjanVoltmeter2: voltmeter met twee klemmen (+ links, - rechts) die je
     over een lamp, weerstand of bron zet. Neemt geen stroom. }
   TjanVoltmeter2 = class(TjanVoedingsDeel)
@@ -3790,6 +3849,11 @@ procedure Register;
 const
   RailGap = 12;        // afstand lijn van de rail -> component (stekker + bolletje)
   RailSnapTol = 12;    // binnen zoveel pixels springt een component op de rail
+  // De oude invoer van de logica (schakelaar, drukknop, licht- en
+  // warmtesensor, impulsgenerator en dipschakelaar zonder klemmen) staat niet
+  // meer in de balk: in de plaats komen de onderdelen met klemmen van de
+  // voedingskring. Oude panelen met die onderdelen werken nog.
+  OudeInvoerTonen = False;
   RailMinVolt = 2.0;   // onder deze spanning geeft ingeplugde invoer geen signaal
   RailMaxVolt = 5.0;   // signaal zonder rails
   BronMaxVolt = 12.0;  // hoogste spanning van de bron (accu)
@@ -3814,6 +3878,8 @@ function PowerDot(C: TControl; APlusSide: Boolean): TPoint;
 function WiredRail(C: TControl; APlusSide: Boolean): TjanRail;
 // de rail waarvan de lijn door Pt loopt, anders nil
 function RailAtPoint(P: TWinControl; const Pt: TPoint): TjanRail;
+// ligt Pt op een klem van een onderdeel van de voedingskring?
+function VoedingsKlemOp(P: TWinControl; const Pt: TPoint): Boolean;
 function RailPlugged(C: TControl): Boolean;
 // mag C werken? (geen rails op het paneel, geen rail-component, of
 // ingeplugd; invoer bovendien op een + rail met genoeg spanning)
@@ -6414,6 +6480,18 @@ begin
   Result := PowerDotSym(C, APlusSide, SymOf(C));
 end;
 
+function VoedingsKlemOp(P: TWinControl; const Pt: TPoint): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanVoedingsDeel) and
+       (TjanVoedingsDeel(P.Controls[i]).PinAt(Pt) >= 0) then
+      Exit(True);
+end;
+
 // de rail waarvan de lijn door Pt loopt (binnen RailWireTol), anders nil
 function RailAtPoint(P: TWinControl; const Pt: TPoint): TjanRail;
 var
@@ -7860,6 +7938,18 @@ begin
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanSensorR(Parts[k]).Ohm, Parts[k])
       else if Parts[k] is TjanLamp2 then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanLamp2(Parts[k]).Ohm, Parts[k])
+      else if Parts[k] is TjanPuls2 then
+      begin
+        if TjanPuls2(Parts[k]).Aan then
+          AddTak(PinNode(k, 0), PinNode(k, 1), 1 / RKlein, Parts[k]);
+      end
+      else if Parts[k] is TjanDip2 then
+      begin
+        // dipschakelaar: de linkse klem naar elke uitgang die aan staat
+        for j := 1 to 4 do
+          if TjanDip2(Parts[k]).BitAan(j) then
+            AddTak(PinNode(k, 0), PinNode(k, j), 1 / RKlein, Parts[k]);
+      end
       else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
       begin
         // wisselschakelaar: het midden (klem 2) naar B (klem 1) of A (klem 0)
@@ -8134,6 +8224,21 @@ begin
       SetStroom(Parts[k], U / TjanSensorR(Parts[k]).Ohm)
     else if Parts[k] is TjanLamp2 then
       SetStroom(Parts[k], U / TjanLamp2(Parts[k]).Ohm)
+    else if Parts[k] is TjanPuls2 then
+    begin
+      if TjanPuls2(Parts[k]).Aan then SetStroom(Parts[k], U / RKlein) else SetStroom(Parts[k], 0);
+    end
+    else if Parts[k] is TjanDip2 then
+      with TjanDip2(Parts[k]) do
+      begin
+        Hulp := 0;
+        for j := 1 to 4 do
+        begin
+          if BitAan(j) then FIs[j] := (V[PinNode(k, 0)] - V[PinNode(k, j)]) / RKlein else FIs[j] := 0;
+          Hulp := Hulp + FIs[j];
+        end;
+        SetStroom(Parts[k], Hulp);
+      end
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // stroom van het midden naar het gekozen contact
@@ -8270,6 +8375,13 @@ begin
         Vraag[PinBase[k] + 1] := -FIb;
         Vraag[PinBase[k] + 2] := FIb - FIa;
       end;
+    if Parts[k] is TjanDip2 then
+      with TjanDip2(Parts[k]) do
+      begin
+        // de linkse klem neemt alles, elke uitgang geeft zijn deel terug
+        Vraag[PinBase[k]] := Amp;
+        for j := 1 to 4 do Vraag[PinBase[k] + j] := -FIs[j];
+      end;
     if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // het midden neemt de stroom uit de draden, het gekozen contact geeft
@@ -8391,6 +8503,10 @@ begin
   else if C is TjanLamp2 then
     Result := Format('TjanLamp2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanLamp2(C).Soort])
+  else if C is TjanPuls2 then
+    Result := Format('TjanPuls2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanPuls2(C).Interval, Ord(TjanPuls2(C).Loopt)])
+  else if C is TjanDip2 then
+    Result := Format('TjanDip2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanDip2(C).Waarde])
   else if C is TjanWissel2 then
     Result := Format('TjanWissel2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       Ord(TjanSchakelaar2(C).Aan)])
@@ -11642,6 +11758,300 @@ procedure TjanWissel2.AddMenuItems(APop: TPopupMenu);
 begin
 end;
 
+{ TjanPuls2 }
+
+const
+  Puls2W = 88; Puls2H = 40;
+  Puls2Intervallen: array[0..4] of Integer = (1000, 500, 300, 200, 100);
+  Dip2W = 96; Dip2H = 92;
+  Dip2Rij0 = 12;      // y van de bovenste uitgang (8)
+  Dip2RijAfst = 20;   // afstand tussen de uitgangen
+
+function Puls2FreqText(AInterval: Integer): string;
+begin
+  if AInterval <= 0 then AInterval := 300;
+  Result := FormatFloat('0.#', 1000 / (2 * AInterval)) + ' Hz';
+end;
+
+constructor TjanPuls2.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := Puls2W;
+  Height := Puls2H;
+  HelpKeyword := 'puls2';
+  FInterval := 300;
+  FKlok := TTimer.Create(Self);
+  FKlok.Interval := FInterval;
+  FKlok.OnTimer := Tik;
+  FKlok.Enabled := False;   // pas na een klik op het kastje
+end;
+
+procedure TjanPuls2.SetLoopt(const Value: Boolean);
+begin
+  if Value = FLoopt then Exit;
+  FLoopt := Value;
+  FKlok.Enabled := Value;
+  if not Value then FAan := False;   // gestopt: het contact staat open
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+// klik op het kastje: aan- of uitzetten (ook tijdens de simulatie)
+function TjanPuls2.HandleClick(X, Y: Integer): Boolean;
+begin
+  Result := (X >= 12) and (X <= Puls2W - 12) and (Y >= 6) and (Y <= 38);
+  if Result then Loopt := not FLoopt;
+end;
+
+function TjanPuls2.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+function TjanPuls2.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 21) else Result := Point(Puls2W - 8, 21);
+end;
+
+procedure TjanPuls2.Tik(Sender: TObject);
+begin
+  if Parent = nil then Exit;
+  FAan := not FAan;
+  Invalidate;
+  UpdateSupply(Parent, True);
+end;
+
+procedure TjanPuls2.SetInterval(const Value: Integer);
+begin
+  if (Value <= 0) or (Value = FInterval) then Exit;
+  FInterval := Value;
+  FKlok.Interval := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanPuls2.FreqClick(Sender: TObject);
+begin
+  Interval := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanPuls2.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Frequentie', 'Frequency', 'Fréquence', 'Frequenz');
+  APop.Items.Add(Mi);
+  for i := Low(Puls2Intervallen) to High(Puls2Intervallen) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := Puls2FreqText(Puls2Intervallen[i]);
+    Sub.Tag := Puls2Intervallen[i];
+    Sub.RadioItem := True;
+    Sub.Checked := Puls2Intervallen[i] = FInterval;
+    Sub.OnClick := FreqClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+procedure TjanPuls2.Paint;
+var
+  CY, X0, Y0, Y1, S: Integer;
+begin
+  CY := 24;
+  with Canvas do
+  begin
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(8, CY); LineTo(12, CY);
+    MoveTo(Puls2W - 12, CY); LineTo(Puls2W - 8, CY);
+    // kastje met een blokgolf en een contact dat open en dicht gaat
+    Pen.Width := 1;
+    Brush.Style := bsSolid; Brush.Color := clWhite;
+    Rectangle(12, 6, Puls2W - 12, 38);
+    if FLoopt then Pen.Color := clNavy else Pen.Color := clSilver;
+    Pen.Width := 2;
+    X0 := 18; Y0 := 14; Y1 := 24; S := 6;
+    MoveTo(X0, Y1); LineTo(X0 + S, Y1); LineTo(X0 + S, Y0); LineTo(X0 + 2 * S, Y0);
+    LineTo(X0 + 2 * S, Y1); LineTo(X0 + 3 * S, Y1); LineTo(X0 + 3 * S, Y0); LineTo(X0 + 4 * S, Y0);
+    // het contact rechts in het kastje: dicht = rood
+    if FAan then Pen.Color := clRed else Pen.Color := clBlack;
+    Pen.Width := 3;
+    if FAan then
+    begin
+      MoveTo(48, CY); LineTo(Puls2W - 18, CY);
+    end
+    else
+    begin
+      MoveTo(48, CY); LineTo(Puls2W - 20, CY - 9);
+    end;
+    Pen.Width := 1; Pen.Color := clBlack;
+    MoveTo(Puls2W - 18, CY); LineTo(Puls2W - 12, CY);
+    MoveTo(12, CY); LineTo(48, CY);
+    Brush.Style := bsClear;
+    Font.Name := 'Arial'; Font.Size := 7; Font.Style := []; Font.Color := clNavy;
+    TextOut(16, 27, Puls2FreqText(FInterval));
+    if FLoopt then
+    begin
+      Font.Color := clGreen; Font.Style := [fsBold];
+      TextOut(52, 27, Tr(FTaal, 'aan', 'on', 'on', 'an'));
+    end
+    else
+    begin
+      Font.Color := clGray; Font.Style := [fsBold];
+      TextOut(52, 27, Tr(FTaal, 'uit', 'off', 'off', 'aus'));
+    end;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanPuls2.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Impulsgenerator', 'Pulse generator', 'Générateur d''impulsions', 'Impulsgenerator') +
+    ' ' + Puls2FreqText(FInterval) + #13#10 + Tr(FTaal,
+    'Een schakelaar die vanzelf opent en sluit. Tussen de + rail en een ingang geeft hij pulsen. Klik op het kastje: aan of uit. Rechtsklik: frequentie.',
+    'A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency.',
+    'Un interrupteur qui s''ouvre et se ferme tout seul. Entre le rail + et une entrée, il donne des impulsions. Clic sur le boîtier : marche ou arrêt. Clic droit : fréquence.',
+    'Ein Schalter, der sich von selbst öffnet und schließt. Zwischen der + Schiene und einem Eingang gibt er Impulse. Klick auf das Kästchen: an oder aus. Rechtsklick: Frequenz.');
+end;
+
+procedure TjanPuls2.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Impulsgenerator', 'Pulse generator', 'Générateur d''impulsions', 'Impulsgenerator') + ' > ', 0);
+  FOnStatus(Self, Puls2FreqText(FInterval), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanDip2 }
+
+constructor TjanDip2.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := Dip2W;
+  Height := Dip2H;
+  HelpKeyword := 'dip2';
+end;
+
+function TjanDip2.PinCount: Integer;
+begin
+  Result := 5;
+end;
+
+// klem 0 links in het midden, klemmen 1..4 rechts (8, 4, 2, 1)
+function TjanDip2.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then
+    Result := Point(1, Dip2Rij0 + Dip2RijAfst * 3 div 2 - 3)
+  else
+    Result := Point(Dip2W - 8, Dip2Rij0 + Dip2RijAfst * (I - 1) - 3);
+end;
+
+function TjanDip2.BitAan(APin: Integer): Boolean;
+begin
+  Result := (FWaarde and (1 shl (4 - APin))) <> 0;
+end;
+
+procedure TjanDip2.SetWaarde(const Value: Integer);
+begin
+  if (Value < 0) or (Value > 15) or (Value = FWaarde) then Exit;
+  FWaarde := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+function TjanDip2.HandleClick(X, Y: Integer): Boolean;
+var
+  i, Ry: Integer;
+begin
+  Result := False;
+  if (X < 26) or (X > 66) then Exit;
+  for i := 1 to 4 do
+  begin
+    Ry := Dip2Rij0 + Dip2RijAfst * (i - 1);
+    if Abs(Y - Ry) <= Dip2RijAfst div 2 then
+    begin
+      Waarde := FWaarde xor (1 shl (4 - i));
+      Exit(True);
+    end;
+  end;
+end;
+
+procedure TjanDip2.Paint;
+const
+  Gewicht: array[1..4] of string = ('8', '4', '2', '1');
+var
+  i, Ry, CY0, XB: Integer;
+begin
+  CY0 := PinPos(0).Y + 3;
+  XB := 18;     // de gemeenschappelijke lijn
+  with Canvas do
+  begin
+    Brush.Style := bsSolid; Brush.Color := RGBToColor(235, 240, 250);
+    Pen.Color := clGray; Pen.Width := 1;
+    Rectangle(12, 2, Dip2W - 12, Dip2H - 14);
+    Pen.Color := clBlack; Pen.Width := 2;
+    MoveTo(8, CY0); LineTo(XB, CY0);
+    MoveTo(XB, Dip2Rij0); LineTo(XB, Dip2Rij0 + Dip2RijAfst * 3);
+    Font.Name := 'Arial'; Font.Size := 7;
+    for i := 1 to 4 do
+    begin
+      Ry := Dip2Rij0 + Dip2RijAfst * (i - 1);
+      Pen.Color := clBlack; Pen.Width := 2;
+      MoveTo(XB, Ry); LineTo(30, Ry);
+      MoveTo(56, Ry); LineTo(Dip2W - 8, Ry);
+      // het schuifje: dicht = rood en recht, open = schuin
+      Pen.Width := 3;
+      if BitAan(i) then
+      begin
+        Pen.Color := clRed; MoveTo(30, Ry); LineTo(55, Ry);
+      end
+      else
+      begin
+        Pen.Color := clBlack; MoveTo(30, Ry); LineTo(52, Ry - 8);
+      end;
+      Pen.Width := 1; Pen.Color := clBlack;
+      Brush.Style := bsSolid; Brush.Color := clBlack;
+      Ellipse(27, Ry - 3, 34, Ry + 4);
+      Brush.Color := clWhite;
+      Ellipse(53, Ry - 3, 60, Ry + 4);
+      Brush.Style := bsClear;
+      Font.Style := [fsBold]; Font.Color := clNavy;
+      TextOut(Dip2W - 24, Ry - 13, Gewicht[i]);
+      PaintPin(PinPos(i).X, PinPos(i).Y, FPinV[i] >= RailMinVolt);
+    end;
+    PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+    Brush.Style := bsClear;
+    Font.Style := [fsBold]; Font.Color := clRed; Font.Size := 8;
+    TextOut((Dip2W - TextWidth('= ' + IntToStr(FWaarde))) div 2, Dip2H - 13, '= ' + IntToStr(FWaarde));
+  end;
+  PaintSelection;
+end;
+
+procedure TjanDip2.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Dipschakelaar', 'DIP switch', 'Interrupteur DIP', 'DIP-Schalter') + ' = ' + IntToStr(FWaarde) +
+    #13#10 + Tr(FTaal,
+    'Vier schakelaartjes: links de gemeenschappelijke klem (naar de + rail), rechts de uitgangen 8, 4, 2 en 1. Klik op een schuifje om het om te zetten.',
+    'Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it.',
+    'Quatre petits interrupteurs : à gauche la borne commune (vers le rail +), à droite les sorties 8, 4, 2 et 1. Cliquez sur un curseur pour le changer.',
+    'Vier kleine Schalter: links die gemeinsame Klemme (zur + Schiene), rechts die Ausgänge 8, 4, 2 und 1. Klicken Sie auf einen Schieber, um ihn umzuschalten.');
+end;
+
+procedure TjanDip2.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Dipschakelaar', 'DIP switch', 'Interrupteur DIP', 'DIP-Schalter') + ' > ', 0);
+  FOnStatus(Self, '= ' + IntToStr(FWaarde), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
 { TjanVoltmeter2 }
 
 constructor TjanVoltmeter2.Create(AOwner: TComponent);
@@ -13235,6 +13645,12 @@ begin
     if RailSrc<>nil then
     begin
       pl:=Pi; Pi:=Po; Po:=pl;
+    end
+    // draad van een klem in de voedingskring (schakelaar, sensor, ...) naar
+    // een ingang, maar achterstevoren getekend: de klem is de bron
+    else if (not VoedingsKlemOp(wc,Pi)) and VoedingsKlemOp(wc,Po) then
+    begin
+      pl:=Pi; Pi:=Po; Po:=pl;
     end;
   end;
   // voedingsdraad (rail -> voedingsbolletje): geen signaal, RailOf regelt
@@ -14129,7 +14545,7 @@ end;
 // gekozen tekenwijze voor een onderdeel dat door de Box gemaakt is
 function SymOf(C: TComponent): TjanSymbolen;
 begin
-  Result := Afbeelding;
+  Result := IEC;
   if (C <> nil) and (C.Owner is TjanSimLogicBox) then
     Result := TjanSimLogicBox(C.Owner).KSymbolen;
 end;
@@ -15333,7 +15749,7 @@ var i:integer;
     s:string;
     Sym:TjanSymbolen;
 begin
-   Sym:=Afbeelding;
+   Sym:=IEC;
    if Owner is TjanSimLogicBox then
      Sym:=TjanSimLogicBox(Owner).KSymbolen;
    with canvas do
@@ -25354,6 +25770,7 @@ begin
   bmDisplay.Transparent := True;
   bmDisplay.TransParentColor := bmDisplay.canvas.pixels[0,0];
   // opzetten van knoppen (imputobjecten)
+  FSymbolen:=IEC;
   FDrukknop:=True;FSchakelaar:=True;FPuls:=True;FSensor:=True;FWarm:=True;FTeller:=true;
   // aantal imputobjecten
   FImputAantal:=6;
@@ -25364,7 +25781,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -25375,6 +25792,8 @@ begin
   FHScoop:='maak Oscilloscoop';
   FHTrans:='maak Transistor';
   FHWsch:='maak Wisselschakelaar';
+  FHPuls2:='maak Impulsgenerator';
+  FHDip2:='maak Dipschakelaar';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -26466,7 +26885,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') then
     begin
       with TStringList.Create do
       try
@@ -26481,6 +26900,8 @@ begin
           else if obj[1] = 'TjanLamp2' then VD := TjanLamp2.Create(Self)
           else if obj[1] = 'TjanSchakelaar2' then VD := TjanSchakelaar2.Create(Self)
           else if obj[1] = 'TjanWissel2' then VD := TjanWissel2.Create(Self)
+          else if obj[1] = 'TjanPuls2' then VD := TjanPuls2.Create(Self)
+          else if obj[1] = 'TjanDip2' then VD := TjanDip2.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -26516,6 +26937,14 @@ begin
             TjanWeerstand(VD).Soort := StrToIntDef(Trim(Strings[4]), 2)
           else if (VD is TjanLamp2) and (Count >= 5) then
             TjanLamp2(VD).Soort := StrToIntDef(Trim(Strings[4]), Lamp2Standaard)
+          else if (VD is TjanPuls2) and (Count >= 5) then
+          begin
+            TjanPuls2(VD).Interval := StrToIntDef(Trim(Strings[4]), 300);
+            if Count >= 6 then
+              TjanPuls2(VD).Loopt := Trim(Strings[5]) = '1';
+          end
+          else if (VD is TjanDip2) and (Count >= 5) then
+            TjanDip2(VD).Waarde := StrToIntDef(Trim(Strings[4]), 0)
           else if (VD is TjanSchakelaar2) and (Count >= 5) then
           begin
             TjanSchakelaar2(VD).Aan := Trim(Strings[4]) = '1';
@@ -27397,6 +27826,8 @@ begin
     15: D := TjanLDR.Create(Self);
     16: D := TjanNTC.Create(Self);
     17: D := TjanWissel2.Create(Self);
+    18: D := TjanPuls2.Create(Self);
+    19: D := TjanDip2.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -27606,6 +28037,27 @@ begin
           Ellipse(Rect(CX - 5, CY - 5, CX + 6, CY + 6));
           MoveTo(CX - 3, CY - 3); LineTo(CX + 4, CY + 4);
           MoveTo(CX + 3, CY - 3); LineTo(CX - 4, CY + 4);
+        end;
+      18:
+        begin
+          // impulsgenerator: blokgolf
+          MoveTo(R.Left + 3, CY + 4); LineTo(CX - 5, CY + 4); LineTo(CX - 5, CY - 4);
+          LineTo(CX, CY - 4); LineTo(CX, CY + 4); LineTo(CX + 5, CY + 4);
+          LineTo(CX + 5, CY - 4); LineTo(R.Right - 3, CY - 4);
+        end;
+      19:
+        begin
+          // dipschakelaar: vier schuifjes in een kastje
+          Brush.Style := bsSolid; Brush.Color := clWhite;
+          Rectangle(Rect(CX - 9, CY - 7, CX + 10, CY + 8));
+          for K := 0 to 3 do
+          begin
+            Brush.Color := clGray;
+            FillRect(Rect(CX - 7 + K * 4, CY - 5, CX - 5 + K * 4, CY + 6));
+            Brush.Color := clRed;
+            if K in [1, 3] then FillRect(Rect(CX - 7 + K * 4, CY - 5, CX - 5 + K * 4, CY - 1))
+            else FillRect(Rect(CX - 7 + K * 4, CY + 2, CX - 5 + K * 4, CY + 6));
+          end;
         end;
       17:
         begin
@@ -28219,7 +28671,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -28263,6 +28715,8 @@ begin
   else if PtInRect(RLamp2, P) then DLamp2 := True
   else if PtInRect(RSchak2, P) then DSchak2 := True
   else if PtInRect(RWsch, P) then DWsch := True
+  else if PtInRect(RPuls2, P) then DPuls2 := True
+  else if PtInRect(RDip2, P) then DDip2 := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -28337,6 +28791,8 @@ begin
   else if PtInRect(RScoop, P) then NewHint := FHScoop
   else if PtInRect(RTrans, P) then NewHint := FHTrans
   else if PtInRect(RWsch, P) then NewHint := FHWsch
+  else if PtInRect(RPuls2, P) then NewHint := FHPuls2
+  else if PtInRect(RDip2, P) then NewHint := FHDip2
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -28748,7 +29204,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False;
 
     // nieuw
     DSquare := False;
@@ -29008,6 +29464,10 @@ begin
     NewVoedingsDeel(5)
   else if DWsch then
     NewVoedingsDeel(17)
+  else if DPuls2 then
+    NewVoedingsDeel(18)
+  else if DDip2 then
+    NewVoedingsDeel(19)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -29615,6 +30075,8 @@ if FBoxTaal=stDutch then
   HLamp2:='maak Lamp met 2 klemmen (serie en parallel)';
   HSchakelaar2:='maak Schakelaar met 2 klemmen';
   HWisselschakelaar:='maak Wisselschakelaar';
+  HPuls2:='maak Impulsgenerator';
+  HDip2:='maak Dipschakelaar';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -29671,6 +30133,8 @@ if FBoxTaal=stEnglish then
   HLamp2:=LangTr('create Lamp with 2 terminals (series and parallel)');
   HSchakelaar2:=LangTr('create Switch with 2 terminals');
   HWisselschakelaar:=LangTr('create Changeover switch');
+  HPuls2:=LangTr('create Pulse generator');
+  HDip2:=LangTr('create DIP switch');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -29725,6 +30189,8 @@ if FBoxTaal=stFrench then
   HLamp2:='faire Lampe à 2 bornes (série et parallèle)';
   HSchakelaar2:='faire Interrupteur à 2 bornes';
   HWisselschakelaar:='faire Commutateur va-et-vient';
+  HPuls2:='faire Générateur d''impulsions';
+  HDip2:='faire Interrupteur DIP';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -29780,6 +30246,8 @@ if FBoxTaal=stFrench then
   HLamp2:='Lampe mit 2 Klemmen erstellen (Reihe und parallel)';
   HSchakelaar2:='Schalter mit 2 Klemmen erstellen';
   HWisselschakelaar:='Wechselschalter erstellen';
+  HPuls2:='Impulsgenerator erstellen';
+  HDip2:='DIP-Schalter erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -29862,6 +30330,12 @@ begin SetVoedingKnop(FSchak2K, Value); end;
 
 procedure TjanSimLogicBox.SetKWisselschakelaar(const Value: Boolean);
 begin SetVoedingKnop(FWschK, Value); end;
+
+procedure TjanSimLogicBox.SetKPuls2(const Value: Boolean);
+begin SetVoedingKnop(FPuls2K, Value); end;
+
+procedure TjanSimLogicBox.SetKDip2(const Value: Boolean);
+begin SetVoedingKnop(FDip2K, Value); end;
 
 procedure TjanSimLogicBox.SetKVoltmeter2(const Value: Boolean);
 begin SetVoedingKnop(FVolt2K, Value); end;
@@ -29957,6 +30431,8 @@ begin
   RLdr := Rect(0, 0, 0, 0);
   RNtc := Rect(0, 0, 0, 0);
   RWsch := Rect(0, 0, 0, 0);
+  RPuls2 := Rect(0, 0, 0, 0);
+  RDip2 := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -29980,6 +30456,8 @@ begin
   if FCondK then Knop(RCond, 8, DCond);
   if FSchak2K then Knop(RSchak2, 5, DSchak2);
   if FWschK then Knop(RWsch, 17, DWsch);
+  if FPuls2K then Knop(RPuls2, 18, DPuls2);
+  if FDip2K then Knop(RDip2, 19, DDip2);
   if FVolt2K then Knop(RVolt2, 6, DVolt2);
   if FScoopK then Knop(RScoop, 13, DScoop);
   if FTransK then Knop(RTrans, 14, DTrans);
@@ -29987,9 +30465,13 @@ end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);
 var i: Integer;
+    V: TjanSymbolen;
 begin
-  if Value = FSymbolen then Exit;
-  FSymbolen := Value;
+  // de plaatjes (Afbeelding) zijn weg: alleen nog schemasymbolen IEC of ANSI
+  V := Value;
+  if V = Afbeelding then V := IEC;
+  if V = FSymbolen then Exit;
+  FSymbolen := V;
   // het voedingsbolletje verhuist mee met de tekenwijze
   RealignPowerWires(FParent);
   invalidate;
@@ -31002,7 +31484,7 @@ begin
       // ===========================================================
       // GROEP: INPUT achtergrond (horizontale balk)
       // ===========================================================
-      if A_Imput > 0 then
+      if OudeInvoerTonen and (A_Imput > 0) then
       begin
         bmp := TBitmap.Create;
         bmp.Canvas.Brush.Style := bsSolid;
@@ -31021,7 +31503,7 @@ begin
       end;
 
       // Begin invoer (nu horizontaal)
-      if FDrukknop = True then
+      if OudeInvoerTonen and (FDrukknop = True) then
       begin
         RButton := Rect(LK, TOP, BK, HK);
         Rb := RButton;
@@ -31039,7 +31521,7 @@ begin
         HK := TOP + H;
       end;
 
-      if FSchakelaar = True then
+      if OudeInvoerTonen and (FSchakelaar = True) then
       begin
         RKnop := Rect(LK, TOP, BK, HK);
         Rb := RKnop;
@@ -31056,7 +31538,7 @@ begin
         HK := TOP + H;
       end;
 
-      if FSensor = True then
+      if OudeInvoerTonen and (FSensor = True) then
       begin
         RSensor := Rect(LK, TOP, BK, HK);
         Rb := RSensor;
@@ -31073,7 +31555,7 @@ begin
         HK := TOP + H;
       end;
 
-      if FWarm = True then
+      if OudeInvoerTonen and (FWarm = True) then
       begin
         RWarm := Rect(LK, TOP, BK, HK);
         Rb := RWarm;
@@ -31090,7 +31572,7 @@ begin
         HK := TOP + H;
       end;
 
-      if FPuls = True then
+      if OudeInvoerTonen and (FPuls = True) then
       begin
         RPuls := Rect(LK, TOP, BK, HK);
         Rb := RPuls;
@@ -31107,7 +31589,7 @@ begin
         HK := TOP + H;
       end;
 
-      if FDipSwitsh = True then
+      if OudeInvoerTonen and (FDipSwitsh = True) then
       begin
         RDipSwitsh := Rect(LK, TOP, BK, HK);
         Rb := RDipSwitsh;
@@ -31125,7 +31607,7 @@ begin
       end;
 
       // was: TOP := TOP + 20;
-      Gap(20);
+      if OudeInvoerTonen then Gap(20);
 
       // ===========================================================
       // GROEP: VERWERKING achtergrond (horizontale balk)

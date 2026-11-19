@@ -1828,3 +1828,21 @@ msgstr "Lupa (F7): amplia o painel à volta do rato. Clique direito: 2x, 3x ou 4
 
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr "Lupa (F7): amplia o painel à volta do rato. Clique direito: 1,5x, 2x ou 3x"
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Right-click: frequency."
+msgstr "Um interruptor que abre e fecha sozinho. Entre o carril + e uma entrada dá impulsos. Clique direito: frequência."
+
+msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
+msgstr "Quatro pequenos interruptores: à esquerda o terminal comum (para o carril +), à direita as saídas 8, 4, 2 e 1. Clica num cursor para o mudar."
+
+msgid "create Pulse generator"
+msgstr "criar Gerador de impulsos"
+
+msgid "create DIP switch"
+msgstr "criar Interruptor DIP"
+
+msgid "Schematic symbols: IEC (European) or ANSI (American)"
+msgstr "Símbolos elétricos: IEC (europeus) ou ANSI (americanos)"
+
+msgid "Schematic symbols (IEC/ANSI)"
+msgstr "Símbolos elétricos (IEC/ANSI)"

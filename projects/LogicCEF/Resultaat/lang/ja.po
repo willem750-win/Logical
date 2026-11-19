@@ -1828,3 +1828,21 @@ msgstr "拡大鏡 (F7): マウスの周りのパネルを拡大します。右�
 
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr "拡大鏡 (F7): マウスの周りのパネルを拡大します。右クリック: 1.5x、2x、3x"
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Right-click: frequency."
+msgstr "ひとりでに開閉するスイッチ。+ レールと入力の間でパルスを出します。右クリック: 周波数。"
+
+msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
+msgstr "4 個の小さなスイッチ: 左が共通端子 (+ レールへ)、右が出力 8、4、2、1。スライダーをクリックして切り替えます。"
+
+msgid "create Pulse generator"
+msgstr "パルス発生器を作成"
+
+msgid "create DIP switch"
+msgstr "DIP スイッチを作成"
+
+msgid "Schematic symbols: IEC (European) or ANSI (American)"
+msgstr "回路記号: IEC (ヨーロッパ) または ANSI (アメリカ)"
+
+msgid "Schematic symbols (IEC/ANSI)"
+msgstr "回路記号 (IEC/ANSI)"

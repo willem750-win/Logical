@@ -1518,3 +1518,21 @@ msgstr "Lente (F7): ingrandisce il pannello intorno al mouse. Clic destro: 2x, 3
 
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr "Lente (F7): ingrandisce il pannello intorno al mouse. Clic destro: 1,5x, 2x o 3x"
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Right-click: frequency."
+msgstr "Un interruttore che si apre e si chiude da solo. Tra la barra + e un ingresso dà impulsi. Clic destro: frequenza."
+
+msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
+msgstr "Quattro piccoli interruttori: a sinistra il morsetto comune (verso la barra +), a destra le uscite 8, 4, 2 e 1. Clicca su un cursore per cambiarlo."
+
+msgid "create Pulse generator"
+msgstr "crea Generatore di impulsi"
+
+msgid "create DIP switch"
+msgstr "crea Interruttore DIP"
+
+msgid "Schematic symbols: IEC (European) or ANSI (American)"
+msgstr "Simboli elettrici: IEC (europei) o ANSI (americani)"
+
+msgid "Schematic symbols (IEC/ANSI)"
+msgstr "Simboli elettrici (IEC/ANSI)"

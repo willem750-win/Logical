@@ -1828,3 +1828,21 @@ msgstr "放大镜 (F7)：放大鼠标周围的面板。右键：2x、3x 或 4x"
 
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr "放大镜 (F7)：放大鼠标周围的面板。右键：1.5x、2x 或 3x"
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Right-click: frequency."
+msgstr "一个会自己断开和闭合的开关。接在 + 导轨和输入之间时产生脉冲。右键：频率。"
+
+msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
+msgstr "四个小开关：左边是公共端子（接 + 导轨），右边是输出 8、4、2 和 1。点击滑块进行切换。"
+
+msgid "create Pulse generator"
+msgstr "创建 脉冲发生器"
+
+msgid "create DIP switch"
+msgstr "创建 DIP 开关"
+
+msgid "Schematic symbols: IEC (European) or ANSI (American)"
+msgstr "电路符号：IEC（欧洲）或 ANSI（美国）"
+
+msgid "Schematic symbols (IEC/ANSI)"
+msgstr "电路符号（IEC/ANSI）"

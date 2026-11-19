@@ -187,6 +187,10 @@ begin
       begin Result := 'voeding'; AAnchor := 'transistor'; end;
     'wisselschakelaar':
       begin Result := 'voeding'; AAnchor := 'wisselschakelaar'; end;
+    'puls2':
+      begin Result := 'voeding'; AAnchor := 'puls2'; end;
+    'dip2':
+      begin Result := 'voeding'; AAnchor := 'dip2'; end;
     'scoop':
       begin Result := 'voeding'; AAnchor := 'scoop'; end;
     'statusbalk':

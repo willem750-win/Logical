@@ -157,7 +157,7 @@ type
      FPanelTitleBase: string;
      FCurrentFile: string;      // '' = ingebouwd of nog niet bewaard paneel
      FDirtyTimer: TTimer;
-     FcbSymbolen: TComboBox;      // keuze Afbeelding / IEC / ANSI in TitelBar2
+     FcbSymbolen: TComboBox;      // keuze IEC / ANSI in TitelBar2
      // Ongedaan maken / opnieuw: momentopnamen van het paneel (tekst zoals
      // in een .lpl-bestand). FUndoCur is de huidige toestand; FUndoKill
      // onthoudt Box.KillCount, zodat laden of een nieuw paneel de lijsten leegt.
@@ -218,7 +218,7 @@ type
      function ConfirmDiscardPanel: Boolean;
      procedure MainFormCloseQuery(Sender: TObject; var CanClose: Boolean);
      procedure OpenPanelFromHelp(const AFileName: string);
-     // keuze Afbeelding / IEC / ANSI bovenaan in TitelBar2
+     // keuze IEC / ANSI bovenaan in TitelBar2
      procedure cbSymbolenChange(Sender: TObject);
      procedure SyncSymbolenCombo;
      procedure SaveSymbolenSetting;
@@ -687,13 +687,13 @@ end;
 procedure TmainForm.SyncSymbolenCombo;
 begin
   if Assigned(FcbSymbolen) then
-    FcbSymbolen.ItemIndex := Ord(Box.KSymbolen);
+    FcbSymbolen.ItemIndex := Ord(Box.KSymbolen) - Ord(IEC);   // 0 = IEC, 1 = ANSI
 end;
 
 procedure TmainForm.cbSymbolenChange(Sender: TObject);
 begin
   if FcbSymbolen.ItemIndex < 0 then Exit;
-  Box.KSymbolen := TjanSymbolen(FcbSymbolen.ItemIndex);
+  Box.KSymbolen := TjanSymbolen(FcbSymbolen.ItemIndex + Ord(IEC));
   SaveSymbolenSetting;
   FocusPanel;
 end;
@@ -921,9 +921,9 @@ Begin
     SettingsFrame.PropB22.Note:= SettingsFrame.Note;  // Belangrijk om een capture te doen van PropB22
     SettingsFrame.PropB22.DefaultPropHolder:=SettingsFrame.iniBox_schakellelementen;
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
-    SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
-                                  'KLogicAnd,KLogicNot,KLogicOr,KLogicNand,KLogicNor,KLogicXor,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KWarm,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KWisselschakelaar,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KLDR,KNTC,KTransistor,KMeter,KSymbolen');
+    SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDisplay,KDraad,KLamp,'+
+                                  'KLogicAnd,KLogicNot,KLogicOr,KLogicNand,KLogicNor,KLogicXor,KMemory,KRelais,KSchakelRelais,'+
+                                  'KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KWisselschakelaar,KPuls2,KDip2,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KLDR,KNTC,KTransistor,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
@@ -931,9 +931,9 @@ Begin
     SettingsFrame.PropB222.Note:= SettingsFrame.Note;  // Belangrijk om een capture te doen van PropB222
     SettingsFrame.PropB222.DefaultPropHolder:=SettingsFrame.iniBox_Hints;
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
-    SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
-                                  'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
-                                  'HSensor,HTeller,HStappen,HFlipFlop,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HWisselschakelaar,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,'+
+    SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDisplay,HDraad,HLamp,'+
+                                  'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HRelais,HSchakelRelais,'+
+                                  'HTeller,HStappen,HFlipFlop,HStopwatch,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HWisselschakelaar,HPuls2,HDip2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,'+
                                   'HPersoon,HWagen,HMuziek,HVerkeer,HSlagboom,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];
@@ -1376,7 +1376,7 @@ end;
     btGridkaders.hint := 'Teken kader op raster...';
     btGridPanelTitel.hint:= 'Titel van paneel wijzigen...';
     btStatusBalk.Hint := 'Balk Invoer / Verwerken / Uitvoer Ja/Nee';
-    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schemasymbolen: Afbeelding, IEC (Europees) of ANSI (Amerikaans)';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schemasymbolen: IEC (Europees) of ANSI (Amerikaans)';
     BSettings2.Hint := 'Instellingen openen';
     btClose1.Hint   := 'Programma afsluiten';
     btInfo2.Hint    := 'Over Logic...';
@@ -1401,7 +1401,7 @@ end;
     btGridkaders.hint := 'Draw frame on grid...';
     btGridPanelTitel.hint:= 'Change panel title...';
     btStatusBalk.Hint := 'Bar Input / Processing / Output on/off';
-    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schematic symbols: Afbeelding (picture), IEC (European) or ANSI (American)';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schematic symbols: IEC (European) or ANSI (American)';
 
     BSettings2.Hint := 'Open settings';
     btClose1.Hint   := 'Close application';
@@ -1426,7 +1426,7 @@ end;
     btGridkaders.hint := 'Tracer un cadre sur la grille...';
     btGridPanelTitel.hint:= 'Changer le titre du panneau...';
     btStatusBalk.Hint := 'Barre Entrée / Traitement / Sortie oui/non';
-    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Symboles de schéma : Afbeelding (image), IEC (européen) ou ANSI (américain)';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Symboles de schéma : IEC (européen) ou ANSI (américain)';
 
     BSettings2.Hint := 'Ouvrir les paramètres';
     btClose1.Hint   := 'Fermer l''application';
@@ -1451,7 +1451,7 @@ end;
     btGridkaders.hint := 'Zeichne einen Rahmen auf das Raster...';
     btGridPanelTitel.hint:= 'Paneltitel ändern...';
     btStatusBalk.Hint := 'Leiste Eingabe / Verarbeitung / Ausgabe ein/aus';
-    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schaltzeichen: Afbeelding (Bild), IEC (europäisch) oder ANSI (amerikanisch)';
+    if Assigned(FcbSymbolen) then FcbSymbolen.Hint := 'Schaltzeichen: IEC (europäisch) oder ANSI (amerikanisch)';
 
     BSettings2.Hint := 'Einstellungen öffnen...';
     btClose1.Hint   := 'Anwendung schließen...';
@@ -2882,12 +2882,11 @@ begin
   FcbSymbolen.BorderSpacing.Right := 6;
   FcbSymbolen.ParentFont := False;
   FcbSymbolen.Font.Color := clWindowText;
-  FcbSymbolen.Items.Add('Afbeelding');
   FcbSymbolen.Items.Add('IEC');
   FcbSymbolen.Items.Add('ANSI');
   FcbSymbolen.ItemIndex := 0;
   FcbSymbolen.ShowHint := True;
-  FcbSymbolen.Hint := 'Schemasymbolen: Afbeelding, IEC of ANSI';
+  FcbSymbolen.Hint := 'Schemasymbolen: IEC (Europees) of ANSI (Amerikaans)';
   FcbSymbolen.OnChange := @cbSymbolenChange;
 
   AssignHelpRecursive(Self);
