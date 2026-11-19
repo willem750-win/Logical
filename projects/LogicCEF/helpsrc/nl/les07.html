@@ -5,14 +5,15 @@
 
   <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les07-alarm.png" alt="Warmtesensor, paniekknop, OF-poort, zoemer en relais">
-    <figcaption>De warmtesensor meldt &ldquo;warm&rdquo;: de zoemer gaat af en het relais schakelt om.</figcaption>
+    <img src="../img/les07-alarm.png" alt="NTC met een weerstand, paniekknop, OF-poort, zoemer en relais tussen een + rail en een &minus; rail">
+    <figcaption>De NTC meet 60&nbsp;&deg;C: de spanning naar de OF-poort is hoog, de zoemer gaat af en het relais schakelt om.</figcaption>
   </figure>
 
   <h2>Zo werkt het</h2>
   <ul>
-    <li>Een <a href="invoer.html#warm">warmtesensor</a> meldt brand, een <a href="invoer.html#drukknop">drukknop</a>
-      is de paniekknop.</li>
+    <li>Een <a href="voeding.html#ntc">NTC</a> met een weerstand van 1&nbsp;k&Omega; is de warmtemelder: hoe warmer, hoe kleiner
+      de NTC en hoe meer spanning naar de poort. Boven ongeveer 42&nbsp;&deg;C is dat een 1. Een
+      <a href="voeding.html#serie">drukknop</a> is de paniekknop.</li>
     <li>Een <b>OF-poort</b>: het alarm gaat af als de sensor <b>of</b> de paniekknop iets meldt.</li>
     <li>Uit de uitgang van de OF-poort vertrekken <b>twee draden</b>: naar de <a href="uitvoer.html#zoemer">zoemer</a>
       (het geluid) en naar een <a href="uitvoer.html#relais">relais</a>. Met een relais kan een klein stuursignaal een
@@ -20,16 +21,16 @@
   </ul>
 
   <h2>Probeer het</h2>
-  <p>Start de simulatie. Klik op de warmtesensor (warm/koud) en druk op de paniekknop. Let op het relais:
+  <p>Start de simulatie. Sleep de schuifregelaar van de NTC naar koud en warm, en druk op de paniekknop. Let op het relais:
   de led wordt groen en het contact schakelt om.</p>
 
   <h2>Opdracht</h2>
-  <p>Voeg een <b>lichtsensor</b> toe als inbraakmelder: het alarm moet ook afgaan als er &rsquo;s nachts licht
-  aangaat in het magazijn. De OF-poort heeft maar twee ingangen.</p>
+  <p>Voeg een <b>LDR</b> met een weerstand toe als inbraakmelder (zoals in <a href="les06.html">les 6</a>): het alarm moet ook
+  afgaan als er &rsquo;s nachts licht aangaat in het magazijn. De OF-poort heeft maar twee ingangen.</p>
   <details>
     <summary>Oplossing</summary>
     <p>Zet een tweede OF-poort tussen de eerste OF-poort en de uitvoer. De eerste OF-poort combineert warmte en
-    paniekknop, de tweede voegt de lichtsensor toe. Zoemer en relais hangen aan de uitgang van de tweede poort.</p>
+    paniekknop, de tweede voegt de LDR toe. Zoemer en relais hangen aan de uitgang van de tweede poort.</p>
   </details>
 
   <div class="pager"><a href="les06.html">&larr; Les 6: Poorten combineren</a><a href="les08.html">Les 8: Tellen &rarr;</a></div>

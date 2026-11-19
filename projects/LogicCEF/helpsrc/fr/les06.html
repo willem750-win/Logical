@@ -6,16 +6,18 @@
 
   <p><a class="open" href="../../panels/lessen/les06-tuinlamp.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les06-tuinlamp.png" alt="Capteur de lumière, porte NON, interrupteur, porte OU et lampe">
-    <figcaption>Il fait sombre (le capteur de lumière donne 0) : la lampe de jardin est allumée.</figcaption>
+    <img src="../img/les06-tuinlamp.png" alt="LDR avec une résistance, porte PAS, interrupteur, porte OU et lampe entre un rail + et un rail &minus;">
+    <figcaption>Il fait sombre (la LDR est à 15&nbsp;% de lumière, la tension vers la porte PAS est basse)&nbsp;: la lampe de jardin est allumée.</figcaption>
   </figure>
 
   <h2>Le problème</h2>
   <p>Une lampe de jardin doit s&rsquo;allumer <b>toute seule</b> quand il fait sombre. Vous voulez aussi pouvoir
   l&rsquo;allumer <b>à la main</b>, par exemple pour une fête en journée.</p>
   <ol class="steps">
-    <li>&laquo;&nbsp;Quand il fait sombre&nbsp;&raquo; : le <a href="invoer.html#sensor">capteur de lumière</a> donne 1 quand il y a
-      de la lumière. Sombre, c&rsquo;est donc <b>NON</b> lumière.</li>
+    <li>&laquo;&nbsp;Quand il fait sombre&nbsp;&raquo;&nbsp;: une <a href="voeding.html#ldr">LDR</a> et une résistance de 10&nbsp;k&Omega; forment
+      un <a href="les29.html">diviseur de tension</a> entre le rail + et le rail &minus;. À la lumière, la LDR est petite et il y a
+      beaucoup de tension au point entre les deux&nbsp;: c&rsquo;est un 1 (à partir de 2&nbsp;V, environ 33&nbsp;% de lumière). Sombre,
+      c&rsquo;est donc <b>PAS</b> lumière.</li>
     <li>&laquo;&nbsp;&hellip; <b>ou</b> à la main&nbsp;&raquo; : la sortie de la porte NON et un interrupteur vont vers une <b>porte OU</b>.</li>
     <li>La porte OU commande la lampe.</li>
   </ol>
@@ -28,12 +30,12 @@
   </table>
 
   <h2>Essayez</h2>
-  <p>Démarrez la simulation. Cliquez sur le capteur de lumière pour passer de la lumière à l&rsquo;obscurité,
-  et actionnez l&rsquo;interrupteur. Comparez avec la table.</p>
+  <p>Démarrez la simulation. Faites glisser le curseur de la LDR pour faire la lumière ou l&rsquo;obscurité, et allumez et
+  éteignez l&rsquo;interrupteur. Comparez avec le tableau.</p>
 
   <h2>Exercice</h2>
   <p>Les voisins se plaignent : la lampe reste allumée toute la nuit. Elle ne doit s&rsquo;allumer que s&rsquo;il fait
-  sombre <b>et</b> que quelqu&rsquo;un est dans le jardin (un <a href="invoer.html#drukknop">bouton-poussoir</a> représente
+  sombre <b>et</b> que quelqu&rsquo;un est dans le jardin (un <a href="voeding.html#serie">bouton-poussoir</a> représente
   le détecteur de mouvement). Modifiez le circuit.</p>
   <details>
     <summary>Solution</summary>

@@ -5,14 +5,15 @@
 
   <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les07-alarm.png" alt="Wärmesensor, Paniktaster, ODER-Gatter, Summer und Relais">
-    <figcaption>Der Wärmesensor meldet &bdquo;warm&ldquo;: Der Summer ertönt und das Relais schaltet um.</figcaption>
+    <img src="../img/les07-alarm.png" alt="NTC mit einem Widerstand, Paniktaster, ODER-Gatter, Summer und Relais zwischen einer + Schiene und einer &minus; Schiene">
+    <figcaption>Der NTC misst 60&nbsp;&deg;C: Die Spannung zum ODER-Gatter ist hoch, der Summer ertönt und das Relais schaltet um.</figcaption>
   </figure>
 
   <h2>So funktioniert es</h2>
   <ul>
-    <li>Ein <a href="invoer.html#warm">Wärmesensor</a> meldet einen Brand, ein <a href="invoer.html#drukknop">Taster</a>
-      ist der Paniktaster.</li>
+    <li>Ein <a href="voeding.html#ntc">NTC</a> mit einem Widerstand von 1&nbsp;k&Omega; ist der Wärmemelder: Je wärmer, desto kleiner
+      der NTC und desto mehr Spannung zum Gatter. Über etwa 42&nbsp;&deg;C ist das eine 1. Ein
+      <a href="voeding.html#serie">Taster</a> ist der Paniktaster.</li>
     <li>Ein <b>ODER-Gatter</b>: Der Alarm geht los, wenn der Sensor <b>oder</b> der Paniktaster etwas meldet.</li>
     <li>Vom Ausgang des ODER-Gatters gehen <b>zwei Drähte</b> aus: zum <a href="uitvoer.html#zoemer">Summer</a> (der Ton)
       und zu einem <a href="uitvoer.html#relais">Relais</a>. Mit einem Relais kann ein kleines Steuersignal ein großes Gerät
@@ -20,16 +21,16 @@
   </ul>
 
   <h2>Ausprobieren</h2>
-  <p>Starten Sie die Simulation. Klicken Sie auf den Wärmesensor (warm/kalt) und drücken Sie den Paniktaster. Achten Sie
-  auf das Relais: Die LED wird grün und der Kontakt schaltet um.</p>
+  <p>Starten Sie die Simulation. Ziehen Sie den Schieberegler des NTC auf kalt und warm und drücken Sie den Paniktaster.
+  Achten Sie auf das Relais: Die LED wird grün und der Kontakt schaltet um.</p>
 
   <h2>Übung</h2>
-  <p>Fügen Sie einen <b>Lichtsensor</b> als Einbruchmelder hinzu: Der Alarm soll auch losgehen, wenn nachts im Lager
-  Licht angeht. Das ODER-Gatter hat nur zwei Eingänge.</p>
+  <p>Fügen Sie einen <b>LDR</b> mit einem Widerstand als Einbruchmelder hinzu (wie in <a href="les06.html">Lektion 6</a>): Der
+  Alarm soll auch losgehen, wenn nachts im Lager Licht angeht. Das ODER-Gatter hat nur zwei Eingänge.</p>
   <details>
     <summary>Lösung</summary>
     <p>Setzen Sie ein zweites ODER-Gatter zwischen das erste ODER-Gatter und die Ausgänge. Das erste ODER-Gatter verknüpft
-    Wärme und Paniktaster, das zweite fügt den Lichtsensor hinzu. Summer und Relais hängen am Ausgang des zweiten Gatters.</p>
+    Wärme und Paniktaster, das zweite fügt den LDR hinzu. Summer und Relais hängen am Ausgang des zweiten Gatters.</p>
   </details>
 
   <div class="pager"><a href="les06.html">&larr; Lektion 6: Gatter kombinieren</a><a href="les08.html">Lektion 8: Zählen &rarr;</a></div>

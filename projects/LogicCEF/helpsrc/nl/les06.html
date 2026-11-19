@@ -6,16 +6,17 @@
 
   <p><a class="open" href="../../panels/lessen/les06-tuinlamp.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les06-tuinlamp.png" alt="Lichtsensor, NIET-poort, schakelaar, OF-poort en lamp">
-    <figcaption>Het is donker (de lichtsensor geeft 0): de tuinlamp brandt.</figcaption>
+    <img src="../img/les06-tuinlamp.png" alt="LDR met een weerstand, NIET-poort, schakelaar, OF-poort en lamp tussen een + rail en een &minus; rail">
+    <figcaption>Het is donker (de LDR staat op 15&nbsp;% licht, de spanning naar de NIET-poort is laag): de tuinlamp brandt.</figcaption>
   </figure>
 
   <h2>Het probleem</h2>
   <p>Een tuinlamp moet <b>vanzelf</b> aangaan als het donker wordt. Daarnaast wil je ze ook <b>met de hand</b>
   kunnen aanzetten, bijvoorbeeld voor een feestje overdag.</p>
   <ol class="steps">
-    <li>&ldquo;Als het donker is&rdquo;: de <a href="invoer.html#sensor">lichtsensor</a> geeft 1 bij licht. Donker is dus
-      <b>NIET</b> licht.</li>
+    <li>&ldquo;Als het donker is&rdquo;: een <a href="voeding.html#ldr">LDR</a> en een weerstand van 10&nbsp;k&Omega; vormen een
+      <a href="les29.html">spanningsdeler</a> tussen de + rail en de &minus; rail. Bij licht is de LDR klein en staat er veel spanning
+      op het punt ertussen: dat is een 1 (vanaf 2&nbsp;V, ongeveer 33&nbsp;% licht). Donker is dus <b>NIET</b> licht.</li>
     <li>&ldquo;&hellip; <b>of</b> met de hand&rdquo;: de uitgang van de NIET-poort en een schakelaar gaan naar een <b>OF-poort</b>.</li>
     <li>De OF-poort stuurt de lamp.</li>
   </ol>
@@ -28,12 +29,12 @@
   </table>
 
   <h2>Probeer het</h2>
-  <p>Start de simulatie. Klik op de lichtsensor om licht en donker te wisselen, en zet de schakelaar aan en uit.
+  <p>Start de simulatie. Sleep de schuifregelaar van de LDR om het licht en donker te maken, en zet de schakelaar aan en uit.
   Vergelijk met de tabel.</p>
 
   <h2>Opdracht</h2>
   <p>De buren klagen: de lamp brandt de hele nacht. Ze mag alleen aangaan als het donker is <b>en</b> er iemand
-  in de tuin is (een <a href="invoer.html#drukknop">drukknop</a> stelt de bewegingsmelder voor). Pas de schakeling aan.</p>
+  in de tuin is (een <a href="voeding.html#serie">drukknop</a> stelt de bewegingsmelder voor). Pas de schakeling aan.</p>
   <details>
     <summary>Oplossing</summary>
     <p>Vervang de OF-poort door een <b>EN-poort</b> en de schakelaar door een drukknop. De lamp brandt nu alleen

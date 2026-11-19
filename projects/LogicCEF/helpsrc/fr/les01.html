@@ -6,27 +6,31 @@
 
   <p><a class="open" href="../../panels/lessen/les01-schakelaar-en-lamp.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les01-schakelaar-en-lamp.png" alt="Interrupteur relié à une lampe">
-    <figcaption>L&rsquo;interrupteur est fermé : le fil est rouge (il y a un signal) et la lampe est allumée.</figcaption>
+    <img src="../img/les01-schakelaar-en-lamp.png" alt="Source avec un rail + et un rail &minus;&nbsp;; un interrupteur entre le rail + et une lampe sur le rail &minus;">
+    <figcaption>L&rsquo;interrupteur est fermé&nbsp;: l&rsquo;énergie vient de la source par le rail +, passe par l&rsquo;interrupteur et le fil jusqu&rsquo;à la lampe, et revient par le rail &minus;. Le fil est rouge et la lampe est allumée.</figcaption>
   </figure>
 
   <h2>À construire vous-même</h2>
   <ol class="steps">
     <li>Choisissez <b>Choix du panneau &rsaquo; Nouveau panneau standard</b> et supprimez ce dont vous n&rsquo;avez pas besoin, ou commencez avec un panneau vide.</li>
-    <li>Dans la <a href="onderdelenbalk.html">barre des composants</a>, cliquez sur l&rsquo;<img src="../img/pal-schakelaar.png" class="ico" alt=""><b>interrupteur</b> puis à gauche sur le panneau.</li>
-    <li>Cliquez sur la <img src="../img/pal-lamp.png" class="ico" alt=""><b>lampe</b> et placez-la à droite sur le panneau.</li>
-    <li>Cliquez sur <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>. Tirez un fil de la
-      <span class="pin out">sortie</span> de l&rsquo;interrupteur vers l&rsquo;<span class="pin in">entrée</span> de la lampe.
+    <li>Préparez l&rsquo;alimentation&nbsp;: un <b>rail +</b> à gauche, un <b>rail &minus;</b> à droite et une <b>source</b> en haut, avec
+      un fil de chaque borne de la source vers son rail (voir <a href="voeding.html#rails">Alimentation&nbsp;: les rails</a>).</li>
+    <li>Dans le groupe Alimentation de la <a href="onderdelenbalk.html">barre des composants</a>, cliquez sur
+      l&rsquo;<img src="../img/pal-schakelaar2.png" class="ico" alt=""><b>interrupteur</b> et placez-le à côté du rail +.</li>
+    <li>Cliquez sur la <img src="../img/pal-lamp.png" class="ico" alt=""><b>lampe</b> et branchez-la à droite sur le rail &minus;&nbsp;:
+      elle se fixe contre le rail.</li>
+    <li>Cliquez sur <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>. Tirez un fil du rail + vers la borne
+      gauche de l&rsquo;interrupteur, et un fil de la borne droite vers l&rsquo;<span class="pin in">entrée</span> de la lampe.
       Voir <a href="verbindingen.html">Connexions</a>.</li>
   </ol>
+
 
   <h2>Essayez</h2>
   <ol class="steps">
     <li>Cliquez sur <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Démarrer la simulation</b>.</li>
     <li>Cliquez sur l&rsquo;interrupteur : la lampe s&rsquo;allume. Cliquez encore : elle s&rsquo;éteint.</li>
   </ol>
-  <p>Un fil transporte un <b>signal</b> : <b>activé</b> (1) ou <b>désactivé</b> (0). Un fil rouge signifie &laquo;&nbsp;activé&nbsp;&raquo;.
-  Où se trouvent le plus et le moins ? Voir <a href="simulatie.html#voeding">Où sont le plus et le moins ?</a></p>
+  <p>Un fil transporte un <b>signal</b>&nbsp;: <b>allumé</b> (1) ou <b>éteint</b> (0). Un signal, c&rsquo;est de l&rsquo;énergie&nbsp;: avec 2&nbsp;V ou plus sur le fil, c&rsquo;est un 1. Un fil rouge signifie &laquo;&nbsp;allumé&nbsp;&raquo;. L&rsquo;énergie vient de la source par le rail +, traverse la lampe et revient par le rail &minus;&nbsp;: le circuit est fermé (voir <a href="voeding.html#kring">Le circuit d&rsquo;alimentation</a>).</p>
 
   <h2>Exercice</h2>
   <p>Faites en sorte que le même interrupteur allume et éteigne <b>deux lampes</b> en même temps.</p>

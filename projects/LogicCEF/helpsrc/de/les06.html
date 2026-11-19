@@ -6,16 +6,17 @@
 
   <p><a class="open" href="../../panels/lessen/les06-tuinlamp.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les06-tuinlamp.png" alt="Lichtsensor, NICHT-Gatter, Schalter, ODER-Gatter und Lampe">
-    <figcaption>Es ist dunkel (der Lichtsensor gibt 0): Die Gartenlampe leuchtet.</figcaption>
+    <img src="../img/les06-tuinlamp.png" alt="LDR mit einem Widerstand, NICHT-Gatter, Schalter, ODER-Gatter und Lampe zwischen einer + Schiene und einer &minus; Schiene">
+    <figcaption>Es ist dunkel (der LDR steht auf 15&nbsp;% Licht, die Spannung zum NICHT-Gatter ist niedrig): Die Gartenlampe leuchtet.</figcaption>
   </figure>
 
   <h2>Das Problem</h2>
   <p>Eine Gartenlampe soll <b>von selbst</b> angehen, wenn es dunkel wird. Außerdem möchten Sie sie auch
   <b>von Hand</b> einschalten können, zum Beispiel für ein Fest am Tag.</p>
   <ol class="steps">
-    <li>&bdquo;Wenn es dunkel ist&ldquo;: Der <a href="invoer.html#sensor">Lichtsensor</a> gibt 1 bei Licht. Dunkel ist also
-      <b>NICHT</b> Licht.</li>
+    <li>&bdquo;Wenn es dunkel ist&ldquo;: Ein <a href="voeding.html#ldr">LDR</a> und ein Widerstand von 10&nbsp;k&Omega; bilden einen
+      <a href="les29.html">Spannungsteiler</a> zwischen der + Schiene und der &minus; Schiene. Bei Licht ist der LDR klein und am
+      Punkt dazwischen liegt viel Spannung: Das ist eine 1 (ab 2&nbsp;V, etwa 33&nbsp;% Licht). Dunkel ist also <b>NICHT</b> Licht.</li>
     <li>&bdquo;&hellip; <b>oder</b> von Hand&ldquo;: Der Ausgang des NICHT-Gatters und ein Schalter gehen zu einem <b>ODER-Gatter</b>.</li>
     <li>Das ODER-Gatter steuert die Lampe.</li>
   </ol>
@@ -28,12 +29,12 @@
   </table>
 
   <h2>Ausprobieren</h2>
-  <p>Starten Sie die Simulation. Klicken Sie auf den Lichtsensor, um zwischen hell und dunkel zu wechseln, und schalten
-  Sie den Schalter ein und aus. Vergleichen Sie mit der Tabelle.</p>
+  <p>Starten Sie die Simulation. Ziehen Sie den Schieberegler des LDR, um es hell und dunkel zu machen, und schalten Sie den
+  Schalter ein und aus. Vergleichen Sie mit der Tabelle.</p>
 
   <h2>Übung</h2>
   <p>Die Nachbarn beschweren sich: Die Lampe brennt die ganze Nacht. Sie darf nur angehen, wenn es dunkel ist <b>und</b>
-  jemand im Garten ist (ein <a href="invoer.html#drukknop">Taster</a> stellt den Bewegungsmelder dar). Ändern Sie die Schaltung.</p>
+  jemand im Garten ist (ein <a href="voeding.html#serie">Taster</a> stellt den Bewegungsmelder dar). Ändern Sie die Schaltung.</p>
   <details>
     <summary>Lösung</summary>
     <p>Ersetzen Sie das ODER-Gatter durch ein <b>UND-Gatter</b> und den Schalter durch einen Taster. Die Lampe leuchtet

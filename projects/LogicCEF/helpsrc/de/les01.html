@@ -6,27 +6,31 @@
 
   <p><a class="open" href="../../panels/lessen/les01-schakelaar-en-lamp.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les01-schakelaar-en-lamp.png" alt="Schalter mit einer Lampe verbunden">
-    <figcaption>Der Schalter ist ein: Der Draht ist rot (es liegt ein Signal an) und die Lampe leuchtet.</figcaption>
+    <img src="../img/les01-schakelaar-en-lamp.png" alt="Quelle mit einer + Schiene und einer &minus; Schiene; ein Schalter zwischen der + Schiene und einer Lampe an der &minus; Schiene">
+    <figcaption>Der Schalter ist geschlossen: Die Energie kommt von der Quelle über die + Schiene, durch den Schalter und den Draht zur Lampe und über die &minus; Schiene zurück. Der Draht ist rot und die Lampe leuchtet.</figcaption>
   </figure>
 
   <h2>Selbst bauen</h2>
   <ol class="steps">
     <li>Wählen Sie <b>Panelwahl &rsaquo; Neues Standardpanel</b> und löschen Sie, was Sie nicht brauchen, oder beginnen Sie mit einem leeren Panel.</li>
-    <li>Klicken Sie in der <a href="onderdelenbalk.html">Bauteilleiste</a> auf den <img src="../img/pal-schakelaar.png" class="ico" alt=""><b>Schalter</b> und dann links auf das Panel.</li>
-    <li>Klicken Sie auf die <img src="../img/pal-lamp.png" class="ico" alt=""><b>Lampe</b> und setzen Sie sie rechts auf das Panel.</li>
-    <li>Klicken Sie auf <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>. Ziehen Sie einen Draht vom
-      <span class="pin out">Ausgang</span> des Schalters zum <span class="pin in">Eingang</span> der Lampe.
-      Siehe <a href="verbindingen.html">Verbindungen</a>.</li>
+    <li>Bereiten Sie die Versorgung vor: eine <b>+ Schiene</b> links, eine <b>&minus; Schiene</b> rechts und eine <b>Quelle</b> oben,
+      mit einem Draht von jeder Klemme der Quelle zu ihrer Schiene (siehe <a href="voeding.html#rails">Versorgung: die Schienen</a>).</li>
+    <li>Klicken Sie in der Gruppe Versorgung der <a href="onderdelenbalk.html">Bauteilleiste</a> auf den
+      <img src="../img/pal-schakelaar2.png" class="ico" alt=""><b>Schalter</b> und setzen Sie ihn neben die + Schiene.</li>
+    <li>Klicken Sie auf die <img src="../img/pal-lamp.png" class="ico" alt=""><b>Lampe</b> und stecken Sie sie rechts an die
+      &minus; Schiene: Sie rastet an der Schiene ein.</li>
+    <li>Klicken Sie auf <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>. Ziehen Sie einen Draht von der
+      + Schiene zur linken Klemme des Schalters und einen Draht von der rechten Klemme zum <span class="pin in">Eingang</span>
+      der Lampe. Siehe <a href="verbindingen.html">Verbindungen</a>.</li>
   </ol>
+
 
   <h2>Ausprobieren</h2>
   <ol class="steps">
     <li>Klicken Sie auf <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Simulation starten</b>.</li>
     <li>Klicken Sie auf den Schalter: Die Lampe geht an. Noch einmal klicken: Die Lampe geht aus.</li>
   </ol>
-  <p>Ein Draht überträgt ein <b>Signal</b>: <b>ein</b> (1) oder <b>aus</b> (0). Ein roter Draht bedeutet &bdquo;ein&ldquo;.
-  Wo Plus und Minus sind, lesen Sie unter <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a></p>
+  <p>Ein Draht trägt ein <b>Signal</b>: <b>an</b> (1) oder <b>aus</b> (0). Ein Signal ist Energie: Liegen 2&nbsp;V oder mehr am Draht, ist es eine 1. Ein roter Draht bedeutet &bdquo;an&ldquo;. Die Energie kommt von der Quelle über die + Schiene, fließt durch die Lampe und über die &minus; Schiene zurück: Der Stromkreis ist geschlossen (siehe <a href="voeding.html#kring">Der Versorgungskreis</a>).</p>
 
   <h2>Übung</h2>
   <p>Lassen Sie denselben Schalter <b>zwei Lampen</b> gleichzeitig ein- und ausschalten.</p>

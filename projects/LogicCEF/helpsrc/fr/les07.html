@@ -6,14 +6,15 @@
 
   <p><a class="open" href="../../panels/lessen/les07-alarm.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les07-alarm.png" alt="Capteur de chaleur, bouton panique, porte OU, buzzer et relais">
-    <figcaption>Le capteur de chaleur signale &laquo;&nbsp;chaud&nbsp;&raquo; : le buzzer retentit et le relais bascule.</figcaption>
+    <img src="../img/les07-alarm.png" alt="CTN avec une résistance, bouton panique, porte OU, buzzer et relais entre un rail + et un rail &minus;">
+    <figcaption>La CTN mesure 60&nbsp;&deg;C&nbsp;: la tension vers la porte OU est haute, le buzzer sonne et le relais bascule.</figcaption>
   </figure>
 
   <h2>Fonctionnement</h2>
   <ul>
-    <li>Un <a href="invoer.html#warm">capteur de chaleur</a> signale un incendie, un <a href="invoer.html#drukknop">bouton-poussoir</a>
-      sert de bouton panique.</li>
+    <li>Une <a href="voeding.html#ntc">CTN</a> avec une résistance de 1&nbsp;k&Omega; est le détecteur de chaleur&nbsp;: plus il fait
+      chaud, plus la CTN est petite et plus il y a de tension vers la porte. Au-dessus d&rsquo;environ 42&nbsp;&deg;C, c&rsquo;est un 1. Un
+      <a href="voeding.html#serie">bouton-poussoir</a> est le bouton panique.</li>
     <li>Une <b>porte OU</b> : l&rsquo;alarme se déclenche si le capteur <b>ou</b> le bouton panique signale quelque chose.</li>
     <li><b>Deux fils</b> partent de la sortie de la porte OU : vers le <a href="uitvoer.html#zoemer">buzzer</a> (le son)
       et vers un <a href="uitvoer.html#relais">relais</a>. Avec un relais, un petit signal de commande peut commuter un
@@ -21,16 +22,16 @@
   </ul>
 
   <h2>Essayez</h2>
-  <p>Démarrez la simulation. Cliquez sur le capteur de chaleur (chaud/froid) et appuyez sur le bouton panique.
-  Observez le relais : la LED devient verte et le contact bascule.</p>
+  <p>Démarrez la simulation. Faites glisser le curseur de la CTN vers le froid et le chaud, et appuyez sur le bouton
+  panique. Observez le relais&nbsp;: la LED devient verte et le contact bascule.</p>
 
   <h2>Exercice</h2>
-  <p>Ajoutez un <b>capteur de lumière</b> comme détecteur d&rsquo;intrusion : l&rsquo;alarme doit aussi se déclencher si
-  une lumière s&rsquo;allume la nuit dans l&rsquo;entrepôt. La porte OU n&rsquo;a que deux entrées.</p>
+  <p>Ajoutez une <b>LDR</b> avec une résistance comme détecteur d&rsquo;intrusion (comme dans la <a href="les06.html">leçon 6</a>)&nbsp;:
+  l&rsquo;alarme doit aussi se déclencher si une lumière s&rsquo;allume la nuit dans l&rsquo;entrepôt. La porte OU n&rsquo;a que deux entrées.</p>
   <details>
     <summary>Solution</summary>
     <p>Placez une deuxième porte OU entre la première porte OU et les sorties. La première combine la chaleur et le
-    bouton panique, la deuxième ajoute le capteur de lumière. Buzzer et relais sont reliés à la sortie de la deuxième porte.</p>
+    bouton panique, la deuxième ajoute la LDR. Buzzer et relais sont reliés à la sortie de la deuxième porte.</p>
   </details>
 
   <div class="pager"><a href="les06.html">&larr; Leçon 6 : Combiner des portes</a><a href="les08.html">Leçon 8 : Compter &rarr;</a></div>

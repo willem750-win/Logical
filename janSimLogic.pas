@@ -3854,6 +3854,7 @@ const
   // meer in de balk: in de plaats komen de onderdelen met klemmen van de
   // voedingskring. Oude panelen met die onderdelen werken nog.
   OudeInvoerTonen = False;
+  LogicPoortH = 82;    // hoogte van een poort: symbool (68) plus de naam eronder
   RailMinVolt = 2.0;   // onder deze spanning geeft ingeplugde invoer geen signaal
   RailMaxVolt = 5.0;   // signaal zonder rails
   BronMaxVolt = 12.0;  // hoogste spanning van de bron (accu)
@@ -14003,7 +14004,7 @@ begin
   FStatPoort := stPoortStop;
   FType:='EN';
   width:=100;
-  height:=68;
+  height:=LogicPoortH;
   // initialize Gates
   FGates[0].pos:=point(1,10);
   FGates[1].pos:=point(1,28);
@@ -15791,6 +15792,14 @@ begin
      R:=rect(0,0,85,65);//ClientRect;
      brush.style:=bsclear;
      drawtext(canvas.handle,pchar(s),-1,R,DT_SINGLELINE or DT_CENTER or DT_VCENTER);
+     if Sym<>Afbeelding then
+     begin
+       // de naam van de poort onder het symbool (EN, OF, NIET, ...)
+       s:=LogicFuncWoord(FLogicAndFunc, BTaal);
+       Font.Name:='Arial'; Font.Size:=8; Font.Style:=[fsBold]; Font.Color:=clNavy;
+       TextOut(47 - TextWidth(s) div 2, 66, s);
+       s:='';
+     end;
 
      brush.style:=bsclear;
      Font.Name:='Arial';
@@ -15857,7 +15866,7 @@ end;
 procedure TjanLogic.Resize;
 begin
   width:=100;
-  height:=68;
+  height:=LogicPoortH;
 end;
 
 
@@ -27191,7 +27200,9 @@ begin
 
         Left   := StrToInt(Trim(obj[3]));
         Top    := StrToInt(Trim(obj[5]));
+        // oude panelen: 68 hoog; nu met de naam onder het symbool
         Height := StrToInt(Trim(obj[2]));
+        if Height < LogicPoortH then Height := LogicPoortH;
         Width  := StrToInt(Trim(obj[6]));
 
         FObjectID := wc.ControlCount;
