@@ -1,0 +1,54 @@
+<!-- titel: Leçon 9b - Un spectacle de lumière -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; Leçon 9b sur 41</p>
+  <h1>Un spectacle de lumière</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> utiliser une mémoire comme <b>programme</b>&nbsp;: un compteur parcourt les
+  tiroirs et chaque tiroir est une image du spectacle. Avec l&rsquo;entrée d&rsquo;adresse <b>A16</b>, vous choisissez entre deux
+  programmes.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09b-lichtshow.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les09b-lichtshow.png" alt="Générateur d&rsquo;impulsions et compteur choisissent l&rsquo;adresse d&rsquo;une mémoire&nbsp;; la mémoire commande quatre lampes&nbsp;; un interrupteur sur A16">
+    <figcaption>Le générateur d&rsquo;impulsions tourne&nbsp;: le compteur est au tiroir 4, qui contient 4, donc la lampe 4 est allumée.</figcaption>
+  </figure>
+
+  <h2>Fonctionnement</h2>
+  <ul>
+    <li>Le <a href="voeding.html#puls2">générateur d&rsquo;impulsions</a> donne des impulsions sur <b>Te</b>&nbsp;: le compteur
+      compte 0, 1, 2 &hellip; 15 puis recommence (comme dans la <a href="les08.html">leçon 8</a>). Le bouton-poussoir du haut
+      (<b>Re</b>) le remet à 0.</li>
+    <li>Les sorties <b>T8</b> à <b>T1</b> vont vers les entrées d&rsquo;adresse <b>A8</b> à <b>A1</b>&nbsp;: le compteur choisit le
+      tiroir (comme dans la <a href="les09.html">leçon 9</a>).</li>
+    <li>Les sorties <b>G8</b>, <b>G4</b>, <b>G2</b> et <b>G1</b> de la mémoire commandent quatre lampes. Chaque tiroir est une
+      <b>image</b>&nbsp;: une lampe s&rsquo;allume quand son bit vaut 1. Le tiroir 0 contient 1, donc seule la lampe 1 est allumée.</li>
+    <li>L&rsquo;interrupteur sur <b>A16</b> choisit le <b>programme</b>&nbsp;: ouvert = tiroirs 0 à 15, fermé = tiroirs 16 à 31.</li>
+  </ul>
+  <table>
+    <tr><th>Programme</th><th>Tiroirs</th><th>Ce que vous voyez</th></tr>
+    <tr><td>1 (A16 ouvert)</td><td>0 &ndash; 15</td><td>un chenillard&nbsp;: 1, 2, 4, 8, 4, 2, 1, &hellip;</td></tr>
+    <tr><td>2 (A16 fermé)</td><td>16 &ndash; 31</td><td>clignotements&nbsp;: extérieur/intérieur (9, 6), tout allumé/éteint (15, 0),
+      haut/bas (3, 12) et en alternance (5, 10)</td></tr>
+  </table>
+  <div class="tip"><strong>C&rsquo;est ainsi que fonctionne un ordinateur&nbsp;:</strong> le compteur est le <b>compteur ordinal</b>,
+  qui parcourt la mémoire pas à pas&nbsp;; la mémoire contient le <b>programme</b>. Avec une ligne d&rsquo;adresse de plus (A16), un
+  tout autre programme est prêt. Une telle moitié de mémoire s&rsquo;appelle une <b>banque</b>.</div>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et cliquez sur le boîtier du générateur d&rsquo;impulsions&nbsp;: le chenillard démarre.</li>
+    <li>Fermez l&rsquo;interrupteur sur A16&nbsp;: le compteur continue, mais maintenant dans le deuxième programme.</li>
+    <li>Clic droit sur le générateur d&rsquo;impulsions et choisissez une autre fréquence&nbsp;: le spectacle va plus vite ou plus lentement.</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Créez votre propre spectacle dans les tiroirs 16 à 31. Arrêtez le générateur d&rsquo;impulsions, fermez l&rsquo;interrupteur sur
+  A16 et appuyez sur Re. Préparez une image avec l&rsquo;interrupteur DIP, appuyez sur le bouton d&rsquo;écriture (S) et avancez d&rsquo;un
+  tiroir avec le générateur d&rsquo;impulsions ou avec un bouton-poussoir supplémentaire sur Te. Enregistrez ensuite le panneau&nbsp;:
+  le contenu de la mémoire est enregistré aussi.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Un exemple qui allume les lampes une à une puis les éteint&nbsp;: 1, 3, 7, 15, 7, 3, 1, 0 (deux fois). Chaque nombre est
+    une somme&nbsp;: 3 = 2 + 1, 7 = 4 + 2 + 1, 15 = 8 + 4 + 2 + 1. Pour écrire plus vite, laissez le générateur arrêté et faites
+    compter le compteur à la main.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Leçon 9 : La mémoire</a><a href="les10.html">Leçon 10 : Alimentation et tension &rarr;</a></div>

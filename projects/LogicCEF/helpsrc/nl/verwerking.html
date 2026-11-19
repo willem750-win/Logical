@@ -185,10 +185,13 @@
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Geheugenblok</h2>
   <p>Een geheugen met 32 geheugenplaatsen (adres 0 tot 31). Elke plaats bewaart een getal van 0 tot 15.
   Bij het plaatsen staat overal 0.</p>
+  <p>Links heeft het geheugen de data-ingangen <b>D8</b>, <b>D4</b>, <b>D2</b> en <b>D1</b> en de schrijfingang <b>S</b>.
+  Zet het getal op de data-ingangen (bijvoorbeeld met een <a href="voeding.html#dip2">dipschakelaar</a>) en geef een puls op S
+  (een drukknop): op het moment dat S aan gaat, komt het getal in het gekozen adres.</p>
   <table>
     <tr><th>Aansluiting</th><th>Betekenis</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Adresingangen bovenaan: kiezen binair de geheugenplaats.</td></tr>
-    <tr><td>Knop A16</td><td>De knop linksboven telt 16 bij het adres op, voor de plaatsen 16 tot 31. Het gekozen adres staat in het blok (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td>Ingang A16</td><td>De vijfde adresingang (linksboven, naast A8) telt 16 bij het adres op, voor de plaatsen 16 tot 31. Het gekozen adres staat in het blok (<i>ADRES = &hellip;</i>).</td></tr>
     <tr><td><span class="pin in">schrijf</span></td><td>Schrijfingang links: verbind hier een <a href="invoer.html#dipswitch">dipschakelaar</a>. Druk je op de knop van de dipschakelaar, dan wordt zijn getal op het gekozen adres bewaard.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>De inhoud van de gekozen geheugenplaats als binair getal, onderaan.</td></tr>
   </table>

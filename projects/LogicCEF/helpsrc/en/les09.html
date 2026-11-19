@@ -7,7 +7,7 @@
   <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Open this example</a></p>
   <figure>
     <img src="../img/les09-geheugen.png" alt="Push buttons, counter, DIP switch, memory block and two displays">
-    <figcaption>A counter chooses the address, the DIP switch supplies the number, two displays show address and content.</figcaption>
+    <figcaption>A counter chooses the address. The DIP switch puts the number on four wires; the write button S puts it into the memory. Two displays show address and content, each over four wires.</figcaption>
   </figure>
 
   <h2>Address and content</h2>
@@ -15,17 +15,43 @@
   the <b>address</b>, what is in it is the <b>content</b>. This memory block has 32 drawers
   (address 0 to 31) and each drawer holds a number from 0 to 15.</p>
   <ul>
-    <li>The <b>counter</b> at the top chooses the address. The bottom push button counts one address further, the
-      top one resets to 0 (see <a href="les08.html">lesson 8</a>). The top display shows the address.</li>
-    <li>With the <a href="invoer.html#dipswitch">DIP switch</a> you set a number (8, 4, 2, 1).
-      With its button you write the number into the chosen drawer. This older DIP switch is plugged in on the + rail: that is where it gets its energy, and it sends the number over one wire to the memory.</li>
+    <li>The <b>counter</b> at the top chooses the address. The top push button (<b>Re</b>) resets to 0, the second (<b>Te</b>)
+      counts one address further (see <a href="les08.html">lesson 8</a>). The top display shows the address.</li>
+    <li>With the <a href="voeding.html#dip2">DIP switch</a> you set a number (8, 4, 2, 1). Each output goes with its own
+      wire to a data input <b>D8</b>, <b>D4</b>, <b>D2</b> or <b>D1</b> of the memory. Press the bottom push button (on <b>S</b>,
+      write) to store the number in the chosen drawer.</li>
     <li>The bottom display shows the content of the chosen address.</li>
   </ul>
+
+  <h2 id="samen">Counter and memory together</h2>
+  <p>The counter and the memory each have their own job. Think of a cabinet with drawers:</p>
+  <ul>
+    <li>The <b>counter</b> is the hand that pulls a drawer open. Its four outputs <b>T8</b>, <b>T4</b>, <b>T2</b> and
+      <b>T1</b> go to the address inputs <b>A8</b>, <b>A4</b>, <b>A2</b> and <b>A1</b> of the memory: the number in the counter
+      is the number of the open drawer. <b>Te</b> opens the next drawer, <b>Re</b> goes back to drawer 0. The fifth address input
+      <b>A16</b> adds 16: with the switch on it (the third from the top) you reach drawers 16 to 31.</li>
+    <li>The <b>memory</b> is the cabinet itself. It always shows what is in the open drawer: on the outputs <b>G8</b>,
+      <b>G4</b>, <b>G2</b> and <b>G1</b>, on the four lamps in the block and on the bottom display.</li>
+    <li>The <b>DIP switch</b> is what you hold in your hand: a number ready on <b>D8</b> to <b>D1</b>. Only when you press
+      <b>S</b> do you put it into the open drawer. What was in it before is then gone.</li>
+  </ul>
+  <table>
+    <tr><th>What you do</th><th>Top display (address)</th><th>Bottom display (content)</th></tr>
+    <tr><td>start: all drawers are empty</td><td>0</td><td>0</td></tr>
+    <tr><td>DIP switch on 5, press <b>S</b></td><td>0</td><td>5</td></tr>
+    <tr><td><b>Te</b>: one drawer further</td><td>1</td><td>0 &ndash; drawer 1 is still empty</td></tr>
+    <tr><td>DIP switch on 9, press <b>S</b></td><td>1</td><td>9</td></tr>
+    <tr><td><b>Re</b>: back to drawer 0</td><td>0</td><td>5 &ndash; the memory has remembered it</td></tr>
+  </table>
+  <div class="tip"><strong>Address or content?</strong> The top display shows <b>which</b> drawer is open, the bottom one
+  <b>what is in it</b>. If the top shows 1 and the bottom 0, that is not an error: nothing has been written in drawer 1 yet.</div>
+  <p>A computer works the same way: a counter, the <b>program counter</b>, points to the next address in the memory each
+  time, and the memory returns what is stored there. That is how a computer reads its program step by step.</p>
 
   <h2>Try it</h2>
   <ol class="steps">
     <li>Start the simulation. The address is 0.</li>
-    <li>Turn on 4 and 1 on the DIP switch (= 5) and press the button of the DIP switch. The bottom display shows 5.</li>
+    <li>The DIP switch is set to 5 (4 + 1). Press the write button S: the bottom display shows 5.</li>
     <li>Count one address further: the content of address 1 is still 0.</li>
     <li>Write another number there, for example 9 (8 + 1).</li>
     <li>Reset the counter to 0: the display shows 5 again. The memory has remembered it.</li>
@@ -36,9 +62,8 @@
   addresses. Do you read the numbers back in the right order?</p>
   <details>
     <summary>Solution</summary>
-    <p>At each address: set the number on the DIP switch (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), press the button of
-    the DIP switch, and then go one address further with the counter. After a reset the display shows the stored
-    number at each step: 3, 1, 4, 1, 5.</p>
+    <p>At each address: set the number on the DIP switch (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), press the write button
+    S, and count one address further. After a reset the display shows the stored number at each step: 3, 1, 4, 1, 5.</p>
   </details>
 
-  <div class="pager"><a href="les08.html">&larr; Lesson 8: Counting</a><a href="les10.html">Lesson 10: Power and voltage &rarr;</a></div>
+  <div class="pager"><a href="les08.html">&larr; Lesson 8: Counting</a><a href="les09b.html">Lesson 9b: A light show &rarr;</a></div>

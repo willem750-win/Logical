@@ -7,7 +7,7 @@
   <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
     <img src="../img/les09-geheugen.png" alt="Boutons-poussoirs, compteur, commutateur DIP, bloc mémoire et deux afficheurs">
-    <figcaption>Un compteur choisit l&rsquo;adresse, le commutateur DIP fournit le nombre, deux afficheurs montrent l&rsquo;adresse et le contenu.</figcaption>
+    <figcaption>Un compteur choisit l&rsquo;adresse. L&rsquo;interrupteur DIP met le nombre sur quatre fils&nbsp;; le bouton d&rsquo;écriture S le met en mémoire. Deux afficheurs montrent l&rsquo;adresse et le contenu, chacun par quatre fils.</figcaption>
   </figure>
 
   <h2>Adresse et contenu</h2>
@@ -15,17 +15,45 @@
   est l&rsquo;<b>adresse</b>, ce qu&rsquo;il contient est le <b>contenu</b>. Ce bloc mémoire a 32 tiroirs
   (adresses 0 à 31) et chaque tiroir contient un nombre de 0 à 15.</p>
   <ul>
-    <li>Le <b>compteur</b> en haut choisit l&rsquo;adresse. Le bouton-poussoir du bas avance d&rsquo;une adresse, celui du
-      haut remet à 0 (voir la <a href="les08.html">leçon 8</a>). L&rsquo;afficheur du haut montre l&rsquo;adresse.</li>
-    <li>Avec le <a href="invoer.html#dipswitch">commutateur DIP</a>, vous préparez un nombre (8, 4, 2, 1).
-      Son bouton écrit le nombre dans le tiroir choisi. Cet ancien interrupteur DIP est branché sur le rail +&nbsp;: c&rsquo;est là qu&rsquo;il reçoit son énergie, et il envoie le nombre par un seul fil à la mémoire.</li>
+    <li>Le <b>compteur</b> en haut choisit l&rsquo;adresse. Le bouton-poussoir du haut (<b>Re</b>) remet à 0, le deuxième
+      (<b>Te</b>) avance d&rsquo;une adresse (voir la <a href="les08.html">leçon 8</a>). L&rsquo;afficheur du haut montre l&rsquo;adresse.</li>
+    <li>Avec l&rsquo;<a href="voeding.html#dip2">interrupteur DIP</a>, vous préparez un nombre (8, 4, 2, 1). Chaque sortie va
+      par son propre fil vers une entrée de données <b>D8</b>, <b>D4</b>, <b>D2</b> ou <b>D1</b> de la mémoire. Appuyez sur le
+      bouton-poussoir du bas (sur <b>S</b>, écrire) pour ranger le nombre dans le tiroir choisi.</li>
     <li>L&rsquo;afficheur du bas montre le contenu de l&rsquo;adresse choisie.</li>
   </ul>
+
+  <h2 id="samen">Le compteur et la mémoire ensemble</h2>
+  <p>Le compteur et la mémoire ont chacun leur rôle. Pensez à une armoire à tiroirs&nbsp;:</p>
+  <ul>
+    <li>Le <b>compteur</b> est la main qui ouvre un tiroir. Ses quatre sorties <b>T8</b>, <b>T4</b>, <b>T2</b> et <b>T1</b>
+      vont vers les entrées d&rsquo;adresse <b>A8</b>, <b>A4</b>, <b>A2</b> et <b>A1</b> de la mémoire&nbsp;: le nombre du compteur est
+      le numéro du tiroir ouvert. <b>Te</b> ouvre le tiroir suivant, <b>Re</b> revient au tiroir 0. La cinquième entrée d&rsquo;adresse
+      <b>A16</b> ajoute 16&nbsp;: avec l&rsquo;interrupteur qui y est relié (le troisième depuis le haut), vous atteignez les tiroirs 16 à 31.</li>
+    <li>La <b>mémoire</b> est l&rsquo;armoire elle-même. Elle montre toujours ce qu&rsquo;il y a dans le tiroir ouvert&nbsp;: sur les
+      sorties <b>G8</b>, <b>G4</b>, <b>G2</b> et <b>G1</b>, sur les quatre lampes du bloc et sur l&rsquo;afficheur du bas.</li>
+    <li>L&rsquo;<b>interrupteur DIP</b>, c&rsquo;est ce que vous tenez en main&nbsp;: un nombre prêt sur <b>D8</b> à <b>D1</b>. C&rsquo;est
+      seulement en appuyant sur <b>S</b> que vous le rangez dans le tiroir ouvert. Ce qui s&rsquo;y trouvait avant disparaît.</li>
+  </ul>
+  <table>
+    <tr><th>Ce que vous faites</th><th>Afficheur du haut (adresse)</th><th>Afficheur du bas (contenu)</th></tr>
+    <tr><td>départ&nbsp;: tous les tiroirs sont vides</td><td>0</td><td>0</td></tr>
+    <tr><td>interrupteur DIP sur 5, appuyer sur <b>S</b></td><td>0</td><td>5</td></tr>
+    <tr><td><b>Te</b>&nbsp;: un tiroir plus loin</td><td>1</td><td>0 &ndash; le tiroir 1 est encore vide</td></tr>
+    <tr><td>interrupteur DIP sur 9, appuyer sur <b>S</b></td><td>1</td><td>9</td></tr>
+    <tr><td><b>Re</b>&nbsp;: retour au tiroir 0</td><td>0</td><td>5 &ndash; la mémoire s&rsquo;en est souvenue</td></tr>
+  </table>
+  <div class="tip"><strong>Adresse ou contenu&nbsp;?</strong> L&rsquo;afficheur du haut montre <b>quel</b> tiroir est ouvert, celui du
+  bas <b>ce qu&rsquo;il contient</b>. Si celui du haut montre 1 et celui du bas 0, ce n&rsquo;est pas une erreur&nbsp;: rien n&rsquo;a encore
+  été écrit dans le tiroir 1.</div>
+  <p>Un ordinateur fonctionne de la même façon&nbsp;: un compteur, le <b>compteur ordinal</b>, désigne chaque fois l&rsquo;adresse
+  suivante dans la mémoire, et la mémoire rend ce qui s&rsquo;y trouve. C&rsquo;est ainsi qu&rsquo;un ordinateur lit son programme pas à
+  pas.</p>
 
   <h2>Essayez</h2>
   <ol class="steps">
     <li>Démarrez la simulation. L&rsquo;adresse est 0.</li>
-    <li>Activez 4 et 1 sur le commutateur DIP (= 5) et appuyez sur son bouton. L&rsquo;afficheur du bas montre 5.</li>
+    <li>L&rsquo;interrupteur DIP est sur 5 (4 + 1). Appuyez sur le bouton d&rsquo;écriture S&nbsp;: l&rsquo;afficheur du bas montre 5.</li>
     <li>Avancez d&rsquo;une adresse : le contenu de l&rsquo;adresse 1 est encore 0.</li>
     <li>Écrivez-y un autre nombre, par exemple 9 (8 + 1).</li>
     <li>Remettez le compteur à 0 : l&rsquo;afficheur montre de nouveau 5. La mémoire s&rsquo;en est souvenue.</li>
@@ -36,9 +64,9 @@
   adresses. Relisez-vous les nombres dans le bon ordre ?</p>
   <details>
     <summary>Solution</summary>
-    <p>À chaque adresse : préparez le nombre sur le commutateur DIP (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), appuyez sur
-    son bouton, puis avancez d&rsquo;une adresse avec le compteur. Après une remise à 0, l&rsquo;afficheur montre à chaque
-    pas le nombre enregistré : 3, 1, 4, 1, 5.</p>
+    <p>À chaque adresse&nbsp;: préparez le nombre sur l&rsquo;interrupteur DIP (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), appuyez sur
+    le bouton d&rsquo;écriture S, puis avancez d&rsquo;une adresse avec le compteur. Après une remise à zéro, l&rsquo;afficheur montre à
+    chaque pas le nombre rangé&nbsp;: 3, 1, 4, 1, 5.</p>
   </details>
 
-  <div class="pager"><a href="les08.html">&larr; Leçon 8 : Compter</a><a href="les10.html">Leçon 10 : Alimentation et tension &rarr;</a></div>
+  <div class="pager"><a href="les08.html">&larr; Leçon 8 : Compter</a><a href="les09b.html">Leçon 9b : Un spectacle de lumière &rarr;</a></div>

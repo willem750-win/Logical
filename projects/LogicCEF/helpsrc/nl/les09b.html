@@ -1,0 +1,51 @@
+<!-- titel: Les 9b - Een lichtshow -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; Les 9b van 41</p>
+  <h1>Een lichtshow</h1>
+  <div class="goal"><strong>Doel:</strong> een geheugen gebruiken als <b>programma</b>: een teller loopt door de laatjes en
+  elk laatje is één beeld van de lichtshow. Met de adresingang <b>A16</b> kies je tussen twee programma&rsquo;s.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09b-lichtshow.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les09b-lichtshow.png" alt="Impulsgenerator en teller kiezen het adres van een geheugen; het geheugen stuurt vier lampen; een schakelaar op A16">
+    <figcaption>De impulsgenerator loopt: de teller staat op laatje 4, daar staat 4, dus de lamp 4 brandt.</figcaption>
+  </figure>
+
+  <h2>Zo werkt het</h2>
+  <ul>
+    <li>De <a href="voeding.html#puls2">impulsgenerator</a> geeft pulsen op <b>Te</b>: de teller telt 0, 1, 2 &hellip; 15 en
+      begint dan opnieuw (zoals in <a href="les08.html">les 8</a>). De bovenste drukknop (<b>Re</b>) zet hem terug op 0.</li>
+    <li>De uitgangen <b>T8</b> tot <b>T1</b> gaan naar de adresingangen <b>A8</b> tot <b>A1</b>: de teller kiest het laatje
+      (zoals in <a href="les09.html">les 9</a>).</li>
+    <li>De uitgangen <b>G8</b>, <b>G4</b>, <b>G2</b> en <b>G1</b> van het geheugen sturen vier lampen. Elk laatje is een
+      <b>beeld</b>: een lamp brandt als haar bit 1 is. In laatje 0 staat 1, dus alleen de lamp 1 brandt.</li>
+    <li>De schakelaar op <b>A16</b> kiest het <b>programma</b>: open = de laatjes 0 tot 15, dicht = de laatjes 16 tot 31.</li>
+  </ul>
+  <table>
+    <tr><th>Programma</th><th>Laatjes</th><th>Wat je ziet</th></tr>
+    <tr><td>1 (A16 open)</td><td>0 &ndash; 15</td><td>een looplicht: 1, 2, 4, 8, 4, 2, 1, &hellip;</td></tr>
+    <tr><td>2 (A16 dicht)</td><td>16 &ndash; 31</td><td>knipperen: buiten/binnen (9, 6), alles aan/uit (15, 0),
+      boven/onder (3, 12) en om en om (5, 10)</td></tr>
+  </table>
+  <div class="tip"><strong>Zo werkt een computer:</strong> de teller is de <b>programmateller</b>, die stap voor stap door het
+  geheugen loopt; het geheugen bevat het <b>programma</b>. Met één adreslijn meer (A16) staat er een heel ander programma
+  klaar. Zo&rsquo;n helft van een geheugen heet een <b>bank</b>.</div>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en klik op het kastje van de impulsgenerator: het looplicht begint.</li>
+    <li>Sluit de schakelaar op A16: de teller loopt verder, maar nu door het tweede programma.</li>
+    <li>Klik met de rechtermuisknop op de impulsgenerator en kies een andere frequentie: de show gaat sneller of trager.</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Maak je eigen lichtshow in de laatjes 16 tot 31. Stop de impulsgenerator, sluit de schakelaar op A16 en druk op Re.
+  Zet met de dipschakelaar een beeld klaar, druk op de schrijfknop (S) en tel met de impulsgenerator of met een extra
+  drukknop op Te één laatje verder. Bewaar daarna het paneel: de inhoud van het geheugen wordt mee bewaard.</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Een voorbeeld dat de lampen één voor één aan laat gaan en weer uit: 1, 3, 7, 15, 7, 3, 1, 0 (en dat twee keer).
+    Elk getal is een som: 3 = 2 + 1, 7 = 4 + 2 + 1, 15 = 8 + 4 + 2 + 1. Om sneller te schrijven kun je de impulsgenerator
+    uit laten en de teller met de hand laten tellen.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Les 9: Geheugen</a><a href="les10.html">Les 10: Voeding en spanning &rarr;</a></div>

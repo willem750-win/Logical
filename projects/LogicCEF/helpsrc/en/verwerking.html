@@ -186,10 +186,13 @@
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Memory block</h2>
   <p>A memory with 32 locations (address 0 to 31). Each location holds a number from 0 to 15.
   When placed, every location contains 0.</p>
+  <p>On the left the memory has the data inputs <b>D8</b>, <b>D4</b>, <b>D2</b> and <b>D1</b> and the write input <b>S</b>.
+  Put the number on the data inputs (for example with a <a href="voeding.html#dip2">DIP switch</a>) and give a pulse on S (a push
+  button): at the moment S goes on, the number goes into the chosen address.</p>
   <table>
     <tr><th>Connection</th><th>Meaning</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Address inputs at the top: choose the memory location in binary.</td></tr>
-    <tr><td>Button A16</td><td>The button at the top left adds 16 to the address, for locations 16 to 31. The chosen address is shown in the block (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td>Input A16</td><td>The fifth address input (top left, next to A8) adds 16 to the address, for locations 16 to 31. The chosen address is shown in the block (<i>ADRES = &hellip;</i>).</td></tr>
     <tr><td><span class="pin in">write</span></td><td>Write input on the left: connect a <a href="invoer.html#dipswitch">DIP switch</a> here. When you press the DIP switch's button, its number is stored at the chosen address.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>The content of the chosen location as a binary number, at the bottom.</td></tr>
   </table>

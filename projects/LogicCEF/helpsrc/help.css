@@ -278,6 +278,9 @@ details[open] summary { margin-bottom: 8px; }
 ol.lessons { padding-left: 22px; }
 ol.lessons li { margin-bottom: 10px; }
 ol.lessons li span { display: block; color: var(--muted); font-size: 14px; }
+/* tussenles (bv. 9b): eigen nummer in plaats van de telling */
+ol.lessons li.b { list-style: none; position: relative; }
+ol.lessons li.b::before { content: attr(data-nr) "."; position: absolute; left: -22px; }
 
 /* onderscheidingen van SourceForge op de startpagina */
 .awards { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 14px 0; }

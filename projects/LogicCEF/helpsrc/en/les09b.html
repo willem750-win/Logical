@@ -1,0 +1,51 @@
+<!-- titel: Lesson 9b - A light show -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; Lesson 9b of 41</p>
+  <h1>A light show</h1>
+  <div class="goal"><strong>Goal:</strong> use a memory as a <b>program</b>: a counter runs through the drawers and each
+  drawer is one picture of the light show. With the address input <b>A16</b> you choose between two programs.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09b-lichtshow.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les09b-lichtshow.png" alt="Pulse generator and counter choose the address of a memory; the memory drives four lamps; a switch on A16">
+    <figcaption>The pulse generator is running: the counter is at drawer 4, which holds 4, so lamp 4 is lit.</figcaption>
+  </figure>
+
+  <h2>How it works</h2>
+  <ul>
+    <li>The <a href="voeding.html#puls2">pulse generator</a> gives pulses on <b>Te</b>: the counter counts 0, 1, 2 &hellip; 15
+      and then starts again (as in <a href="les08.html">lesson 8</a>). The top push button (<b>Re</b>) resets it to 0.</li>
+    <li>The outputs <b>T8</b> to <b>T1</b> go to the address inputs <b>A8</b> to <b>A1</b>: the counter chooses the drawer
+      (as in <a href="les09.html">lesson 9</a>).</li>
+    <li>The outputs <b>G8</b>, <b>G4</b>, <b>G2</b> and <b>G1</b> of the memory drive four lamps. Each drawer is a
+      <b>picture</b>: a lamp is lit when its bit is 1. Drawer 0 holds 1, so only lamp 1 is lit.</li>
+    <li>The switch on <b>A16</b> chooses the <b>program</b>: open = drawers 0 to 15, closed = drawers 16 to 31.</li>
+  </ul>
+  <table>
+    <tr><th>Program</th><th>Drawers</th><th>What you see</th></tr>
+    <tr><td>1 (A16 open)</td><td>0 &ndash; 15</td><td>a running light: 1, 2, 4, 8, 4, 2, 1, &hellip;</td></tr>
+    <tr><td>2 (A16 closed)</td><td>16 &ndash; 31</td><td>flashing: outside/inside (9, 6), all on/off (15, 0),
+      top/bottom (3, 12) and alternating (5, 10)</td></tr>
+  </table>
+  <div class="tip"><strong>This is how a computer works:</strong> the counter is the <b>program counter</b>, which runs through
+  the memory step by step; the memory holds the <b>program</b>. With one more address line (A16) a completely different program
+  is ready. Such a half of a memory is called a <b>bank</b>.</div>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and click the box of the pulse generator: the running light starts.</li>
+    <li>Close the switch on A16: the counter keeps running, but now through the second program.</li>
+    <li>Right-click the pulse generator and choose another frequency: the show goes faster or slower.</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Make your own light show in drawers 16 to 31. Stop the pulse generator, close the switch on A16 and press Re. Set a
+  picture with the DIP switch, press the write button (S) and count one drawer further with the pulse generator or with an
+  extra push button on Te. Then save the panel: the contents of the memory are saved too.</p>
+  <details>
+    <summary>Solution</summary>
+    <p>An example that turns the lamps on one by one and off again: 1, 3, 7, 15, 7, 3, 1, 0 (twice). Each number is a sum:
+    3 = 2 + 1, 7 = 4 + 2 + 1, 15 = 8 + 4 + 2 + 1. To write faster, leave the pulse generator off and let the counter count by
+    hand.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Lesson 9: Memory</a><a href="les10.html">Lesson 10: Power and voltage &rarr;</a></div>

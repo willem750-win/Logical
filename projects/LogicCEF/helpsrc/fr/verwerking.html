@@ -191,10 +191,13 @@
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Bloc mémoire</h2>
   <p>Une mémoire de 32 emplacements (adresse 0 à 31). Chaque emplacement contient un nombre de 0 à 15.
   Au placement, tous les emplacements valent 0.</p>
+  <p>À gauche, la mémoire a les entrées de données <b>D8</b>, <b>D4</b>, <b>D2</b> et <b>D1</b> et l&rsquo;entrée d&rsquo;écriture
+  <b>S</b>. Mettez le nombre sur les entrées de données (par exemple avec un <a href="voeding.html#dip2">interrupteur DIP</a>) et
+  donnez une impulsion sur S (un bouton-poussoir)&nbsp;: au moment où S s&rsquo;active, le nombre entre dans l&rsquo;adresse choisie.</p>
   <table>
     <tr><th>Connexion</th><th>Signification</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Entrées d&rsquo;adresse en haut&nbsp;: choisissent l&rsquo;emplacement en binaire.</td></tr>
-    <tr><td>Bouton A16</td><td>Le bouton en haut à gauche ajoute 16 à l&rsquo;adresse, pour les emplacements 16 à 31. L&rsquo;adresse choisie est affichée dans le bloc (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td>Entrée A16</td><td>La cinquième entrée d&rsquo;adresse (en haut à gauche, à côté de A8) ajoute 16 à l&rsquo;adresse, pour les emplacements 16 à 31. L&rsquo;adresse choisie est affichée dans le bloc (<i>ADRES = &hellip;</i>).</td></tr>
     <tr><td><span class="pin in">écriture</span></td><td>Entrée d&rsquo;écriture à gauche&nbsp;: reliez-y un <a href="invoer.html#dipswitch">commutateur DIP</a>. Quand vous appuyez sur le bouton du commutateur DIP, son nombre est enregistré à l&rsquo;adresse choisie.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Le contenu de l&rsquo;emplacement choisi en binaire, en bas.</td></tr>
   </table>

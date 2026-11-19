@@ -1,0 +1,53 @@
+<!-- titel: Lektion 9b - Eine Lichtshow -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; Lektion 9b von 41</p>
+  <h1>Eine Lichtshow</h1>
+  <div class="goal"><strong>Ziel:</strong> einen Speicher als <b>Programm</b> verwenden: Ein Zähler läuft durch die
+  Schubladen, und jede Schublade ist ein Bild der Lichtshow. Mit dem Adresseingang <b>A16</b> wählen Sie zwischen zwei
+  Programmen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les09b-lichtshow.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les09b-lichtshow.png" alt="Impulsgenerator und Zähler wählen die Adresse eines Speichers; der Speicher steuert vier Lampen; ein Schalter an A16">
+    <figcaption>Der Impulsgenerator läuft: Der Zähler steht auf Schublade 4, darin steht 4, also leuchtet die Lampe 4.</figcaption>
+  </figure>
+
+  <h2>So funktioniert es</h2>
+  <ul>
+    <li>Der <a href="voeding.html#puls2">Impulsgenerator</a> gibt Impulse auf <b>Te</b>: Der Zähler zählt 0, 1, 2 &hellip; 15
+      und beginnt dann von vorn (wie in <a href="les08.html">Lektion 8</a>). Der obere Taster (<b>Re</b>) setzt ihn auf 0.</li>
+    <li>Die Ausgänge <b>T8</b> bis <b>T1</b> gehen zu den Adresseingängen <b>A8</b> bis <b>A1</b>: Der Zähler wählt die
+      Schublade (wie in <a href="les09.html">Lektion 9</a>).</li>
+    <li>Die Ausgänge <b>G8</b>, <b>G4</b>, <b>G2</b> und <b>G1</b> des Speichers steuern vier Lampen. Jede Schublade ist ein
+      <b>Bild</b>: Eine Lampe leuchtet, wenn ihr Bit 1 ist. In Schublade 0 steht 1, also leuchtet nur die Lampe 1.</li>
+    <li>Der Schalter an <b>A16</b> wählt das <b>Programm</b>: offen = Schubladen 0 bis 15, geschlossen = Schubladen 16 bis 31.</li>
+  </ul>
+  <table>
+    <tr><th>Programm</th><th>Schubladen</th><th>Was Sie sehen</th></tr>
+    <tr><td>1 (A16 offen)</td><td>0 &ndash; 15</td><td>ein Lauflicht: 1, 2, 4, 8, 4, 2, 1, &hellip;</td></tr>
+    <tr><td>2 (A16 geschlossen)</td><td>16 &ndash; 31</td><td>Blinken: außen/innen (9, 6), alle an/aus (15, 0),
+      oben/unten (3, 12) und abwechselnd (5, 10)</td></tr>
+  </table>
+  <div class="tip"><strong>So arbeitet ein Computer:</strong> Der Zähler ist der <b>Befehlszähler</b>, der Schritt für Schritt
+  durch den Speicher läuft; der Speicher enthält das <b>Programm</b>. Mit einer Adressleitung mehr (A16) steht ein ganz anderes
+  Programm bereit. So eine Hälfte eines Speichers heißt <b>Bank</b>.</div>
+
+  <h2>Ausprobieren</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und klicken Sie auf das Kästchen des Impulsgenerators: Das Lauflicht beginnt.</li>
+    <li>Schließen Sie den Schalter an A16: Der Zähler läuft weiter, aber jetzt durch das zweite Programm.</li>
+    <li>Rechtsklick auf den Impulsgenerator und eine andere Frequenz wählen: Die Show wird schneller oder langsamer.</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Erstellen Sie Ihre eigene Lichtshow in den Schubladen 16 bis 31. Halten Sie den Impulsgenerator an, schließen Sie den
+  Schalter an A16 und drücken Sie Re. Stellen Sie mit dem DIP-Schalter ein Bild ein, drücken Sie den Schreibtaster (S) und
+  zählen Sie mit dem Impulsgenerator oder einem zusätzlichen Taster an Te eine Schublade weiter. Speichern Sie danach das
+  Panel: Der Inhalt des Speichers wird mitgespeichert.</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Ein Beispiel, das die Lampen nacheinander ein- und wieder ausschaltet: 1, 3, 7, 15, 7, 3, 1, 0 (zweimal). Jede Zahl
+    ist eine Summe: 3 = 2 + 1, 7 = 4 + 2 + 1, 15 = 8 + 4 + 2 + 1. Um schneller zu schreiben, lassen Sie den Impulsgenerator
+    aus und lassen den Zähler von Hand zählen.</p>
+  </details>
+
+  <div class="pager"><a href="les09.html">&larr; Lektion 9: Speicher</a><a href="les10.html">Lektion 10: Versorgung und Spannung &rarr;</a></div>

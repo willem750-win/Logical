@@ -7,7 +7,7 @@
   <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
     <img src="../img/les09-geheugen.png" alt="Taster, Zähler, DIP-Schalter, Speicherbaustein und zwei Anzeigen">
-    <figcaption>Ein Zähler wählt die Adresse, der DIP-Schalter liefert die Zahl, zwei Anzeigen zeigen Adresse und Inhalt.</figcaption>
+    <figcaption>Ein Zähler wählt die Adresse. Der DIP-Schalter legt die Zahl auf vier Drähte; mit dem Schreibtaster S kommt sie in den Speicher. Zwei Anzeigen zeigen Adresse und Inhalt, jede über vier Drähte.</figcaption>
   </figure>
 
   <h2>Adresse und Inhalt</h2>
@@ -15,17 +15,44 @@
   Schublade ist die <b>Adresse</b>, was darin liegt, ist der <b>Inhalt</b>. Dieser Speicherbaustein hat 32 Schubladen
   (Adresse 0 bis 31), und jede Schublade enthält eine Zahl von 0 bis 15.</p>
   <ul>
-    <li>Der <b>Zähler</b> oben wählt die Adresse. Der untere Taster zählt eine Adresse weiter, der obere setzt auf 0 zurück
-      (siehe <a href="les08.html">Lektion 8</a>). Die obere Anzeige zeigt die Adresse.</li>
-    <li>Mit dem <a href="invoer.html#dipswitch">DIP-Schalter</a> stellen Sie eine Zahl ein (8, 4, 2, 1).
-      Mit seinem Knopf schreiben Sie die Zahl in die gewählte Schublade. Dieser ältere DIP-Schalter steckt an der + Schiene: Dort bekommt er seine Energie, und er schickt die Zahl über einen einzigen Draht an den Speicher.</li>
+    <li>Der <b>Zähler</b> oben wählt die Adresse. Der obere Taster (<b>Re</b>) setzt auf 0 zurück, der zweite (<b>Te</b>)
+      zählt eine Adresse weiter (siehe <a href="les08.html">Lektion 8</a>). Die obere Anzeige zeigt die Adresse.</li>
+    <li>Mit dem <a href="voeding.html#dip2">DIP-Schalter</a> stellen Sie eine Zahl ein (8, 4, 2, 1). Jeder Ausgang geht mit
+      einem eigenen Draht zu einem Dateneingang <b>D8</b>, <b>D4</b>, <b>D2</b> oder <b>D1</b> des Speichers. Drücken Sie den
+      unteren Taster (an <b>S</b>, schreiben), um die Zahl in der gewählten Schublade zu speichern.</li>
     <li>Die untere Anzeige zeigt den Inhalt der gewählten Adresse.</li>
   </ul>
+
+  <h2 id="samen">Zähler und Speicher zusammen</h2>
+  <p>Zähler und Speicher haben jeweils eine eigene Aufgabe. Denken Sie an einen Schrank mit Schubladen:</p>
+  <ul>
+    <li>Der <b>Zähler</b> ist die Hand, die eine Schublade aufzieht. Seine vier Ausgänge <b>T8</b>, <b>T4</b>, <b>T2</b> und
+      <b>T1</b> gehen zu den Adresseingängen <b>A8</b>, <b>A4</b>, <b>A2</b> und <b>A1</b> des Speichers: Die Zahl im Zähler ist
+      die Nummer der offenen Schublade. <b>Te</b> öffnet die nächste Schublade, <b>Re</b> geht zurück zu Schublade 0. Der fünfte
+      Adresseingang <b>A16</b> zählt 16 dazu: Mit dem Schalter daran (dem dritten von oben) erreichen Sie die Schubladen 16 bis 31.</li>
+    <li>Der <b>Speicher</b> ist der Schrank selbst. Er zeigt immer, was in der offenen Schublade liegt: an den Ausgängen
+      <b>G8</b>, <b>G4</b>, <b>G2</b> und <b>G1</b>, an den vier Lampen im Baustein und auf der unteren Anzeige.</li>
+    <li>Der <b>DIP-Schalter</b> ist das, was Sie in der Hand halten: eine Zahl, die an <b>D8</b> bis <b>D1</b> bereitliegt.
+      Erst wenn Sie <b>S</b> drücken, legen Sie sie in die offene Schublade. Was vorher darin lag, ist dann weg.</li>
+  </ul>
+  <table>
+    <tr><th>Was Sie tun</th><th>Obere Anzeige (Adresse)</th><th>Untere Anzeige (Inhalt)</th></tr>
+    <tr><td>Start: alle Schubladen sind leer</td><td>0</td><td>0</td></tr>
+    <tr><td>DIP-Schalter auf 5, <b>S</b> drücken</td><td>0</td><td>5</td></tr>
+    <tr><td><b>Te</b>: eine Schublade weiter</td><td>1</td><td>0 &ndash; Schublade 1 ist noch leer</td></tr>
+    <tr><td>DIP-Schalter auf 9, <b>S</b> drücken</td><td>1</td><td>9</td></tr>
+    <tr><td><b>Re</b>: zurück zu Schublade 0</td><td>0</td><td>5 &ndash; der Speicher hat es sich gemerkt</td></tr>
+  </table>
+  <div class="tip"><strong>Adresse oder Inhalt?</strong> Die obere Anzeige zeigt, <b>welche</b> Schublade offen ist, die
+  untere, <b>was darin liegt</b>. Zeigt die obere 1 und die untere 0, ist das kein Fehler: In Schublade 1 wurde noch nichts
+  geschrieben.</div>
+  <p>Ein Computer arbeitet genauso: Ein Zähler, der <b>Befehlszähler</b>, zeigt jedes Mal auf die nächste Adresse im Speicher,
+  und der Speicher gibt zurück, was dort steht. So liest ein Computer sein Programm Schritt für Schritt.</p>
 
   <h2>Ausprobieren</h2>
   <ol class="steps">
     <li>Starten Sie die Simulation. Die Adresse ist 0.</li>
-    <li>Schalten Sie am DIP-Schalter 4 und 1 ein (= 5) und drücken Sie seinen Knopf. Die untere Anzeige zeigt 5.</li>
+    <li>Der DIP-Schalter steht auf 5 (4 + 1). Drücken Sie den Schreibtaster S: Die untere Anzeige zeigt 5.</li>
     <li>Zählen Sie eine Adresse weiter: Der Inhalt von Adresse 1 ist noch 0.</li>
     <li>Schreiben Sie dort eine andere Zahl hinein, zum Beispiel 9 (8 + 1).</li>
     <li>Setzen Sie den Zähler auf 0 zurück: Die Anzeige zeigt wieder 5. Der Speicher hat es sich gemerkt.</li>
@@ -36,9 +63,8 @@
   gehen Sie die Adressen durch. Lesen Sie die Zahlen in der richtigen Reihenfolge zurück?</p>
   <details>
     <summary>Lösung</summary>
-    <p>An jeder Adresse: Zahl am DIP-Schalter einstellen (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), seinen Knopf drücken und
-    dann mit dem Zähler eine Adresse weiter. Nach dem Zurücksetzen zeigt die Anzeige bei jedem Schritt die gespeicherte
-    Zahl: 3, 1, 4, 1, 5.</p>
+    <p>An jeder Adresse: Zahl am DIP-Schalter einstellen (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), den Schreibtaster S
+    drücken und mit dem Zähler eine Adresse weiter. Nach einem Reset zeigt die Anzeige bei jedem Schritt die gespeicherte Zahl: 3, 1, 4, 1, 5.</p>
   </details>
 
-  <div class="pager"><a href="les08.html">&larr; Lektion 8: Zählen</a><a href="les10.html">Lektion 10: Versorgung und Spannung &rarr;</a></div>
+  <div class="pager"><a href="les08.html">&larr; Lektion 8: Zählen</a><a href="les09b.html">Lektion 9b: Eine Lichtshow &rarr;</a></div>

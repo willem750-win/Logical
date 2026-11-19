@@ -7,7 +7,7 @@
   <p><a class="open" href="../../panels/lessen/les09-geheugen.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
     <img src="../img/les09-geheugen.png" alt="Drukknoppen, teller, dipschakelaar, geheugenblok en twee displays">
-    <figcaption>Een teller kiest het adres, de dipschakelaar levert het getal, twee displays tonen adres en inhoud.</figcaption>
+    <figcaption>Een teller kiest het adres. De dipschakelaar zet het getal op vier draden; met de schrijfknop S komt het in het geheugen. Twee displays tonen adres en inhoud, elk over vier draden.</figcaption>
   </figure>
 
   <h2>Adres en inhoud</h2>
@@ -15,17 +15,44 @@
   een laatje is het <b>adres</b>, wat erin ligt is de <b>inhoud</b>. Dit geheugenblok heeft 32 laatjes
   (adres 0 tot 31) en elk laatje bewaart een getal van 0 tot 15.</p>
   <ul>
-    <li>De <b>teller</b> bovenaan kiest het adres. De onderste drukknop telt één adres verder, de bovenste zet terug op 0
-      (zie <a href="les08.html">les 8</a>). Het bovenste display toont het adres.</li>
-    <li>Met de <a href="invoer.html#dipswitch">dipschakelaar</a> zet je een getal klaar (8, 4, 2, 1).
-      Met zijn knop schrijf je het getal in het gekozen laatje. Deze oudere dipschakelaar zit ingeplugd op de + rail: daar krijgt hij zijn energie, en hij stuurt het getal over één draad naar het geheugen.</li>
+    <li>De <b>teller</b> bovenaan kiest het adres. De bovenste drukknop (<b>Re</b>) zet terug op 0, de tweede (<b>Te</b>) telt
+      één adres verder (zie <a href="les08.html">les 8</a>). Het bovenste display toont het adres.</li>
+    <li>Met de <a href="voeding.html#dip2">dipschakelaar</a> zet je een getal klaar (8, 4, 2, 1). Elke uitgang gaat met een
+      eigen draad naar een data-ingang <b>D8</b>, <b>D4</b>, <b>D2</b> of <b>D1</b> van het geheugen. Druk op de onderste drukknop
+      (op <b>S</b>, schrijven) om het getal in het gekozen laatje te bewaren.</li>
     <li>Het onderste display toont de inhoud van het gekozen adres.</li>
   </ul>
+
+  <h2 id="samen">Teller en geheugen samen</h2>
+  <p>De teller en het geheugen hebben elk een eigen taak. Denk aan een kast met laatjes:</p>
+  <ul>
+    <li>De <b>teller</b> is de hand die een laatje opentrekt. Zijn vier uitgangen <b>T8</b>, <b>T4</b>, <b>T2</b> en
+      <b>T1</b> gaan naar de adresingangen <b>A8</b>, <b>A4</b>, <b>A2</b> en <b>A1</b> van het geheugen: het getal in de
+      teller is het nummer van het open laatje. <b>Te</b> trekt het volgende laatje open, <b>Re</b> gaat terug naar laatje 0.
+      De vijfde adresingang <b>A16</b> telt er 16 bij: met de schakelaar daarop (de derde van boven) kom je bij de laatjes 16 tot 31.</li>
+    <li>Het <b>geheugen</b> is de kast zelf. Het toont altijd wat er in het open laatje ligt: op de uitgangen <b>G8</b>,
+      <b>G4</b>, <b>G2</b> en <b>G1</b>, aan de vier lampjes in het blok en op het onderste display.</li>
+    <li>De <b>dipschakelaar</b> is wat je in je hand hebt: een getal dat klaarligt op <b>D8</b> tot <b>D1</b>. Pas als je op
+      <b>S</b> drukt, leg je het in het open laatje. Wat er eerst in lag, is dan weg.</li>
+  </ul>
+  <table>
+    <tr><th>Wat je doet</th><th>Bovenste display (adres)</th><th>Onderste display (inhoud)</th></tr>
+    <tr><td>start: alle laatjes zijn leeg</td><td>0</td><td>0</td></tr>
+    <tr><td>dipschakelaar op 5, op <b>S</b> drukken</td><td>0</td><td>5</td></tr>
+    <tr><td><b>Te</b>: één laatje verder</td><td>1</td><td>0 &ndash; laatje 1 is nog leeg</td></tr>
+    <tr><td>dipschakelaar op 9, op <b>S</b> drukken</td><td>1</td><td>9</td></tr>
+    <tr><td><b>Re</b>: terug naar laatje 0</td><td>0</td><td>5 &ndash; het geheugen heeft het onthouden</td></tr>
+  </table>
+  <div class="tip"><strong>Adres of inhoud?</strong> Het bovenste display toont <b>welk</b> laatje open is, het onderste
+  <b>wat erin ligt</b>. Staat het bovenste op 1 en het onderste op 0, dan is dat geen fout: in laatje 1 is nog niets
+  geschreven.</div>
+  <p>Zo werkt het ook in een computer: een teller, de <b>programmateller</b>, wijst telkens het volgende adres in het
+  geheugen aan, en het geheugen geeft terug wat daar staat. Zo leest een computer zijn programma stap voor stap.</p>
 
   <h2>Probeer het</h2>
   <ol class="steps">
     <li>Start de simulatie. Het adres is 0.</li>
-    <li>Zet op de dipschakelaar 4 en 1 aan (= 5) en druk op de knop van de dipschakelaar. Het onderste display toont 5.</li>
+    <li>De dipschakelaar staat op 5 (4 + 1). Druk op de schrijfknop S: het onderste display toont 5.</li>
     <li>Tel één adres verder: de inhoud van adres 1 is nog 0.</li>
     <li>Schrijf daar een ander getal, bijvoorbeeld 9 (8 + 1).</li>
     <li>Zet de teller terug op 0: het display toont weer 5. Het geheugen heeft het onthouden.</li>
@@ -36,9 +63,8 @@
   af. Lees je de getallen terug in de juiste volgorde?</p>
   <details>
     <summary>Oplossing</summary>
-    <p>Op elk adres: getal klaarzetten op de dipschakelaar (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), op de knop van de
-    dipschakelaar drukken, en dan met de teller één adres verder. Na een reset toont het display bij elke stap
-    het bewaarde getal: 3, 1, 4, 1, 5.</p>
+    <p>Op elk adres: getal klaarzetten op de dipschakelaar (3 = 2 + 1, 1 = 1, 4 = 4, 5 = 4 + 1), op de schrijfknop S
+    drukken, en dan met de teller één adres verder. Na een reset toont het display bij elke stap het bewaarde getal: 3, 1, 4, 1, 5.</p>
   </details>
 
-  <div class="pager"><a href="les08.html">&larr; Les 8: Tellen</a><a href="les10.html">Les 10: Voeding en spanning &rarr;</a></div>
+  <div class="pager"><a href="les08.html">&larr; Les 8: Tellen</a><a href="les09b.html">Les 9b: Een lichtshow &rarr;</a></div>

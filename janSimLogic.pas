@@ -135,6 +135,8 @@ type
     oldp:TPoint;
     Connectors:TList;
     FBits       : Integer;
+    FBcd        : array[0..3] of Boolean;   // ingangen 1, 2, 4, 8 (van boven naar onder)
+    FBcdGebruikt: Boolean;                   // er hangt iets aan een van die ingangen
     FDigit      : char;
     FOnColor    : TColor;
     FOffColor   : TColor;
@@ -220,6 +222,9 @@ type
     procedure Paint; override;
     constructor Create(AOwner: TComponent); override;
     destructor  Destroy; override;
+    // ingangen 1-2-4-8 links (0..3, van boven naar onder), anders -1
+    function BcdIndexAt(const P: TPoint): Integer;
+    procedure ZetBcd(AIndex: Integer; AAan: Boolean);
   published
     property Bits:Integer read FBits write SetBits;
     property Digit: char read FDigit write SetDigit;
@@ -664,6 +669,8 @@ type
   private
     Select:Boolean;
     schrijf:boolean;
+    FDin: array[0..3] of Boolean;   // data-ingangen 8, 4, 2, 1
+    FSchrijfIn: Boolean;            // schrijfingang S (schrijft bij de stijgende flank)
     Lijst:TStringList;
     FStatMem1  : TStatMem1;
     FOnStatMem1Change            : TBitMem1ChangeEvent;
@@ -809,7 +816,7 @@ type
     property OnMemButtonChange : TMemBChangeEvent read FOnStatMemBChange write FOnStatMemBChange;
     property Reset:boolean read FInputMem1 write SetInputMem1;
     property Input:boolean read FInputMem3 write SetInputMem3;
-    property Connector:boolean read FConnector write SetConnector default true;
+    property Connector:boolean read FConnector write SetConnector default false;
     property OutPutDisplay:boolean read FOutPutDisplay write SetOutPutMemDisplay;
     property OutPutBitMem1:boolean read FOutPutBitMem1 write SetOutPutMemBit1;
     property OutPutBitMem2:boolean read FOutPutBitMem2 write SetOutPutMemBit2;
@@ -825,6 +832,12 @@ type
     property PColor:TColor read FPcolor write SetPcolor;
     property LedkleurUit:TColor read FLedColUit write SetLedColUit;
     property LedkleurAan:TColor read FLedColAan write SetLedColAan;
+    // data-ingangen 8-4-2-1 en schrijfingang S links (0..3 = data, 4 = S, -1 = geen)
+    function DataIndexAt(const P: TPoint): Integer;
+    procedure ZetData(AIndex: Integer; AAan: Boolean);
+    // inhoud van de 32 laatjes als 32 hexadecimale tekens (voor het paneelbestand)
+    function InhoudTekst: string;
+    procedure ZetInhoudUitRest(const ARest: string);
     property Adress:Integer read FAdress write SetAdress;
     property Bits:Integer read FBits write SetBits;
     property BitsChar:Char read FBitsChar write SetBitsChar default '0';
@@ -5059,6 +5072,123 @@ begin
         end;
 end;
 
+const
+  // display: ingangen 1, 2, 4, 8 van boven naar onder (zoals bij een decoder);
+  // zo kruisen de draden niet vanaf de uitgangen 8-4-2-1 onderaan een teller
+  DispBcdY: array[0..3] of Integer = (12, 28, 62, 78);
+  DispBcdW: array[0..3] of Integer = (1, 2, 4, 8);
+  MemDataW: array[0..3] of Integer = (8, 4, 2, 1);   // geheugen: D8, D4, D2, D1
+  MemDataY: array[0..4] of Integer = (96, 110, 124, 138, 150);  // 8, 4, 2, 1 en S
+
+function HexTeken(AWaarde: Integer): Char;
+begin
+  if AWaarde < 10 then Result := Chr(Ord('0') + AWaarde)
+  else Result := Chr(Ord('A') + AWaarde - 10);
+end;
+
+function TjanDisplay.BcdIndexAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 6) or (P.X > Left + 9) then Exit;
+  for i := 0 to 3 do
+    if Abs(P.Y - (Top + DispBcdY[i])) <= 6 then Exit(i);
+end;
+
+// een van de ingangen 8-4-2-1 verandert: het cijfer is de som van wat aan staat
+procedure TjanDisplay.ZetBcd(AIndex: Integer; AAan: Boolean);
+var
+  i, S: Integer;
+begin
+  if (AIndex < 0) or (AIndex > 3) then Exit;
+  if (FBcd[AIndex] = AAan) and FBcdGebruikt then Exit;
+  FBcd[AIndex] := AAan;
+  FBcdGebruikt := True;
+  S := 0;
+  for i := 0 to 3 do
+    if FBcd[i] then S := S + DispBcdW[i];
+  Digit := HexTeken(S);
+  Invalidate;
+end;
+
+function TjanMemory.DataIndexAt(const P: TPoint): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  if (P.X < Left - 6) or (P.X > Left + 9) then Exit;
+  for i := 0 to 4 do
+    if Abs(P.Y - (Top + MemDataY[i])) <= 5 then Exit(i);
+end;
+
+function TjanMemory.InhoudTekst: string;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 0 to 31 do
+    Result := Result + HexTeken(StrToIntDef(Lijst.Strings[i], 0) and 15);
+end;
+
+// ARest = 'breedte;inhoud;...' uit het paneelbestand; zonder inhoud blijft alles 0
+procedure TjanMemory.ZetInhoudUitRest(const ARest: string);
+var
+  S: string;
+  p, i, V: Integer;
+begin
+  S := ARest;
+  p := Pos(';', S);
+  if p = 0 then Exit;
+  Delete(S, 1, p);
+  p := Pos(';', S);
+  if p > 0 then S := Copy(S, 1, p - 1);
+  S := Trim(S);
+  if Length(S) <> 32 then Exit;
+  for i := 0 to 31 do
+  begin
+    V := StrToIntDef('$' + S[i + 1], 0);
+    Lijst.Strings[i] := IntToStr(V);
+  end;
+  schrijf := False;
+  FBits := -1;   // zeker opnieuw tonen
+  Bits := StrToInt(Lijst.Strings[FAdress]);
+end;
+
+// data-ingang 8-4-2-1 of schrijfingang S: bij de stijgende flank van S komt
+// het getal van de data-ingangen in het gekozen adres
+procedure TjanMemory.ZetData(AIndex: Integer; AAan: Boolean);
+var
+  i, S: Integer;
+begin
+  if (AIndex >= 0) and (AIndex <= 3) then
+  begin
+    if FDin[AIndex] <> AAan then
+    begin
+      FDin[AIndex] := AAan;
+      Invalidate;
+    end;
+    Exit;
+  end;
+  if AIndex <> 4 then Exit;
+  if AAan and not FSchrijfIn then
+  begin
+    S := 0;
+    for i := 0 to 3 do
+      if FDin[i] then S := S + MemDataW[i];
+    if S <> FBits then
+    begin
+      schrijf := True;
+      Bits := S;        // SetBits bewaart het in het gekozen adres
+    end;
+  end;
+  if FSchrijfIn <> AAan then
+  begin
+    FSchrijfIn := AAan;
+    Invalidate;
+  end;
+end;
+
 procedure TjanDisplay.Paint;
 var
   R: TRect;
@@ -5132,6 +5262,20 @@ begin
       Canvas.Draw(0, (Height div 2) - (lIn.Height div 2), lIn);
     finally
       lIn.Free;
+    end;
+
+    // de ingangen 8, 4, 2 en 1 links (groen = 1)
+    Canvas.Pen.Style := psSolid; Canvas.Pen.Color := clBlack; Canvas.Pen.Width := 1;
+    Canvas.Font.Name := 'Arial'; Canvas.Font.Size := 6; Canvas.Font.Style := [fsBold];
+    for XX := 0 to 3 do
+    begin
+      YY := DispBcdY[XX];
+      Canvas.MoveTo(7, YY); Canvas.LineTo(22, YY);
+      Canvas.Brush.Style := bsSolid;
+      if FBcd[XX] then Canvas.Brush.Color := clLime else Canvas.Brush.Color := clSilver;
+      Canvas.Rectangle(1, YY - 3, 8, YY + 4);
+      Canvas.Brush.Style := bsClear; Canvas.Font.Color := clNavy;
+      Canvas.TextOut(10, YY - 11, IntToStr(DispBcdW[XX]));
     end;
 
     // Selectiekader ALS LAATSTE tekenen
@@ -13042,6 +13186,7 @@ procedure TjanConnector.Connect;
 var Pi,Po:TPoint;
     R:Trect;
     i,g,d,d2,xw,yh,puls,puls1,getal:integer;
+    kb:integer;        // ingang 8-4-2-1 van display of geheugen
     wc:TWinControl;
     Vi,aktief:boolean;
     SrcVolt:Double;   // spanning van de bron in volt (-1 = nog niet bepaald)
@@ -13452,6 +13597,13 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sDisplay:=TjanDisplay(wc.controls[ii]);
+          // een van de vier ingangen 8-4-2-1
+          kb:=sDisplay.BcdIndexAt(Po);
+          if kb>=0 then
+          begin
+            sDisplay.ZetBcd(kb, vi and RailOK(sDisplay));
+            exit;
+          end;
           if LedW=#0 then // gewone aan/uit-bron (drukknop, schakelaar, poort...)
             if vi then LedW:='1' else LedW:='0';
           if not RailOK(SDisplay) then LedW:=' ';  // zonder voeding: donker
@@ -13551,15 +13703,27 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sMemory:=TjanMemory(wc.controls[ii]);
+          // data-ingang 8-4-2-1 of schrijfingang S
+          kb:=sMemory.DataIndexAt(Po);
+          if kb>=0 then
+          begin
+            sMemory.ZetData(kb, vi);
+            exit;
+          end;
             R:=rect(sMemory.left + 17 ,sMemory.top + 120,sMemory.left + 30,sMemory.Top + 130);
           if ptinrect(R,Po) and sMemory.Gates[0].Active then
             begin  // input is op schrijfingang vanuit DipSwitsh
+              if not sMemory.Connector then sMemory.Connector:=true;
               sMemory.schrijf:=TSchrijf;
               If TSchrijf=true then sMemory.Bits:=Ledd;
               TSchrijf:=false;
               //sMemory.telop:=vi;
               exit;
             end;
+          R:=rect(sMemory.left + 55 ,sMemory.top + 33,sMemory.left + 65,sMemory.Top + 42);
+          // input is op adresingang A16 (bovenste helft van het geheugen)
+          if ptinrect(R,Po) then
+          begin if sMemory.ButtonDown <> vi then sMemory.ButtonDown:=vi; end;
           R:=rect(sMemory.left + 80 ,sMemory.top + 33,sMemory.left + 90,sMemory.Top + 42);
           // input is op adressingang A8
           if ptinrect(R,Po) and sMemory.Gates[1].Active then
@@ -13784,7 +13948,10 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sDisplay:=TjanDisplay(wc.controls[ii]);
-          SDisplay.digit:='0';
+          if sDisplay.BcdIndexAt(Po)>=0 then
+            sDisplay.ZetBcd(sDisplay.BcdIndexAt(Po), False)
+          else
+            SDisplay.digit:='0';
           DisCon:=sDisplay;
           exit;
         end;
@@ -13901,6 +14068,18 @@ var Pi,Po:TPoint;
         if ptinrect(R,Po) then
         begin
           sMemory:=TjanMemory(wc.controls[ii]);
+          // draad van een data- of schrijfingang los: die ingang wordt 0
+          if sMemory.DataIndexAt(Po)>=0 then
+          begin
+            sMemory.ZetData(sMemory.DataIndexAt(Po), False);
+            exit;
+          end;
+          // draad van A16 los: terug naar de onderste helft
+          if ptinrect(rect(sMemory.left + 55, sMemory.top + 33, sMemory.left + 65, sMemory.top + 42), Po) then
+          begin
+            sMemory.ButtonDown:=False;
+            exit;
+          end;
           // now check if p is in one of the 3 input area's
           R:=rect(sMemory.left-d,sMemory.top+64,sMemory.left+120,sMemory.Top+72);
           if ptinrect(R,Po) and sMemory.Gates[0].Active then
@@ -17317,7 +17496,9 @@ begin
   lBitUit1.Transparent := True;
   lBitUit1.TransParentColor := lBitUit1.canvas.pixels[0,3];
 
-  FConnector:=true;
+  // de oude data-aansluiting (getal over een draad) alleen tonen als er een
+  // draad op zit; nieuw zijn de ingangen D8..D1 en S links
+  FConnector:=false;
   FLock:=false;
   FPcolor:=rgb(250,250,150);
   FBits:=0;FBitsChar:='0';
@@ -17359,9 +17540,9 @@ begin
   doMove := False;
   mdp := Point(X, Y);
 
-  Rb := Rect(17,12,30,37);
-  doMove := not PtInRect(Rb, mdp);
-  FDepressed := not doMove;
+  // A16 is een gewone ingang (draad), geen ingebouwd schakelaartje meer
+  doMove := True;
+  FDepressed := False;
   oldp := Point(X, Y);
 
   if doMove then
@@ -17508,10 +17689,6 @@ begin
   FDepressed := False;
   SendStatusToBar;
 
-  p := Point(X, Y);
-  R := Rect(17,12,30,37);
-  if PtInRect(R, p) then
-    ButtonDown := not FDown;
 end;
 
 
@@ -17904,41 +18081,26 @@ begin
 
      Font.Size:=7;
      TextOut(10,80,'ADRES = '+inttoStr(adress));
+     // data-ingangen 8, 4, 2, 1 en schrijfingang S links (groen = 1)
+     pen.Style:=psSolid; pen.Color:=clBlack;
+     Font.Size:=6; Font.Style:=[fsBold];
+     for i:=0 to 4 do
+     begin
+       brush.style:=bsSolid;
+       if ((i<4) and FDin[i]) or ((i=4) and FSchrijfIn) then brush.color:=clLime else brush.color:=clSilver;
+       Rectangle(1, MemDataY[i]-3, 8, MemDataY[i]+4);
+       brush.style:=bsclear;
+       if i<4 then TextOut(10, MemDataY[i]-5, 'D'+IntToStr(MemDataW[i]))
+       else TextOut(10, MemDataY[i]-5, 'S');
+     end;
+     Font.Style:=[]; Font.Size:=7;
      pen.Color:=clBlack;pen.Style:=psdot;
 
      lAcoo.Transparent:=true;
      draw(6+x,50,lAcoo); //
 
-     if FDepressed or FDown then
-     begin
-     BinAan.Transparent:=true;
-     if SymOf(Self) = Afbeelding then
-     begin
-       draw(17,0,BinAan);
-       DrawDipPicture(Canvas, Rect(17, 11, 30, 38), True);
-     end
-     else begin
-       // A16-schakelaar als schakelcontact (gesloten)
-       DrawBitmapPartAt(Canvas, BinAan, 17, 0, Rect(30, 0, 70, 48));
-       DrawContactSymbol(Canvas, 27, 24, 41, 17, 30, 27, True, False);
-     end;
+     // A16 is een gewone ingang, net als A8..A1 (ADRES toont het resultaat)
      pen.Style:=psSolid;
-     end
-     else
-     begin
-     Bin.Transparent:=true;
-     if SymOf(Self) = Afbeelding then
-     begin
-       draw(17,0,Bin);
-       DrawDipPicture(Canvas, Rect(17, 11, 30, 38), False);
-     end
-     else begin
-       // A16-schakelaar als schakelcontact (open)
-       DrawBitmapPartAt(Canvas, Bin, 17, 0, Rect(30, 0, 70, 48));
-       DrawContactSymbol(Canvas, 27, 24, 41, 17, 30, 27, False, False);
-     end;
-     pen.Style:=psSolid
-     end;
      If FConnector=true then
        begin
        MoveTo(27, 76+y);LineTo(30+x, 76+y)
@@ -26240,7 +26402,7 @@ begin
       else if c is TjanMemory then
       begin
         with TjanMemory(c) do
-          lijn := Format('TjanMemory;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+          lijn := Format('TjanMemory;%d;%d;%d;%d;%s;', [Height, Left, Top, Width, InhoudTekst]);
         SFile.Add(lijn);
       end
       else if c is TjanSimLight then
@@ -26690,7 +26852,7 @@ begin
     else if c is TjanMemory then
     begin
       with TjanMemory(c) do
-        lijn := Format('TjanMemory;%d;%d;%d;%d;', [Height, Left, Top, Width]);
+        lijn := Format('TjanMemory;%d;%d;%d;%d;%s;', [Height, Left, Top, Width, InhoudTekst]);
       TempFile.Add(lijn);
     end
     else if c is TjanSimLight then
@@ -27459,6 +27621,8 @@ begin
 
           OnStatus := StatusFromChild;
           AddCommonSimProps('TjanMemory');
+          // inhoud van de laatjes (nieuwere panelen)
+          ZetInhoudUitRest(S);
         end;
         Continue;
       end;

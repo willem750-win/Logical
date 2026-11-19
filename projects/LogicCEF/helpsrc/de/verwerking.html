@@ -188,10 +188,13 @@
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Speicherbaustein</h2>
   <p>Ein Speicher mit 32 Speicherplätzen (Adresse 0 bis 31). Jeder Platz speichert eine Zahl von 0 bis 15.
   Beim Platzieren steht überall 0.</p>
+  <p>Links hat der Speicher die Dateneingänge <b>D8</b>, <b>D4</b>, <b>D2</b> und <b>D1</b> und den Schreibeingang <b>S</b>.
+  Legen Sie die Zahl an die Dateneingänge (zum Beispiel mit einem <a href="voeding.html#dip2">DIP-Schalter</a>) und geben Sie
+  einen Impuls auf S (einen Taster): In dem Moment, in dem S an geht, kommt die Zahl in die gewählte Adresse.</p>
   <table>
     <tr><th>Anschluss</th><th>Bedeutung</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Adresseingänge oben: wählen den Speicherplatz binär.</td></tr>
-    <tr><td>Knopf A16</td><td>Der Knopf oben links addiert 16 zur Adresse, für die Plätze 16 bis 31. Die gewählte Adresse steht im Baustein (<i>ADRES = &hellip;</i>).</td></tr>
+    <tr><td>Eingang A16</td><td>Der fünfte Adresseingang (oben links, neben A8) addiert 16 zur Adresse, für die Plätze 16 bis 31. Die gewählte Adresse steht im Baustein (<i>ADRES = &hellip;</i>).</td></tr>
     <tr><td><span class="pin in">Schreiben</span></td><td>Schreibeingang links: Verbinden Sie hier einen <a href="invoer.html#dipswitch">DIP-Schalter</a>. Drücken Sie den Knopf des DIP-Schalters, wird seine Zahl an der gewählten Adresse gespeichert.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Der Inhalt des gewählten Speicherplatzes als Binärzahl, unten.</td></tr>
   </table>
