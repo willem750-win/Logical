@@ -1789,3 +1789,42 @@ msgstr "LDR"
 
 msgid "NTC"
 msgstr "NTC"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Switch (stays put)"
+msgstr "Interruptor (fica na posição)"
+
+msgid "Push button (only while pressed)"
+msgstr "Botão de pressão (só enquanto premes)"
+
+msgid "pressed"
+msgstr "premido"
+
+msgid "released"
+msgstr "solto"
+
+msgid "Changeover switch"
+msgstr "Comutador de escada"
+
+msgid "the middle is connected to "
+msgstr "o centro está ligado a "
+
+msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
+msgstr "Comutador com três terminais: o centro (em baixo) está ligado a A ou a B. Clica para comutar. Dois comutadores formam o circuito de uma escada: acendes e apagas a luz em dois lugares."
+
+msgid "released: no current flows"
+msgstr "solto: não passa corrente"
+
+msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
+msgstr "Botão de pressão com dois terminais no circuito. Só está fechado enquanto o premes (mantém o botão do rato premido)."
+
+msgid "create Changeover switch"
+msgstr "criar Comutador de escada"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 2x, 3x or 4x"
+msgstr "Lupa (F7): amplia o painel à volta do rato. Clique direito: 2x, 3x ou 4x"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
+msgstr "Lupa (F7): amplia o painel à volta do rato. Clique direito: 1,5x, 2x ou 3x"

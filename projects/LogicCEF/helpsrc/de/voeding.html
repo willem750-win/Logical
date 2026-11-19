@@ -207,12 +207,28 @@
     <li><b>Lampe</b>: eine Glühlampe von 120&nbsp;&Omega; (100&nbsp;mA und 1,2&nbsp;W bei 12&nbsp;V). Rechtsklick &rsaquo;
       <b>Widerstand</b>, um eine andere Lampe zu wählen: 24, 48, 60, 120, 240 oder 480&nbsp;&Omega;. Sie leuchtet umso heller,
       je mehr Leistung durch sie geht; der Hinweis zeigt U, I und P.</li>
-    <li><b>Schalter</b>: Klicken Sie auf den Hebel, um ihn zu öffnen oder zu schließen, auch während der Simulation.</li>
+    <li><b>Schalter</b>: Klicken Sie auf den Hebel, um ihn zu öffnen oder zu schließen, auch während der Simulation. Mit Rechtsklick &rsaquo; <b>Art</b> &rsaquo; <b>Taster</b> wird er zum Taster: Er ist nur geschlossen, solange Sie die Maustaste gedrückt halten. Ein Schalter mit drei Klemmen ist der <a href="#wisselschakelaar">Wechselschalter</a>.</li>
     <li><b>Voltmeter</b>: Legen Sie + und &minus; über ein Bauteil. Es misst den Spannungsunterschied zwischen seinen beiden
       Klemmen und nimmt selbst keinen Strom.</li>
   </ul>
   <p>Sie möchten zwei Drähte an derselben Klemme? Klicken Sie auf <b>Verbindung</b> und dann auf die Klemme, auch wenn
   schon ein Draht daran ist: Ein neuer Draht beginnt. Siehe <a href="les25.html">Lektion 25</a>.</p>
+
+  <h2 id="wisselschakelaar"><img src="../img/pal-wisselschakelaar.png" class="ico" alt="">Der Wechselschalter</h2>
+  <p>Ein Wechselschalter hat drei Klemmen: die <b>Mitte</b> (unten) und die Kontakte <b>A</b> (links) und <b>B</b>
+  (rechts). Der Hebel dreht sich in der Mitte und berührt immer A oder B; jeder Klick schaltet um. Er ist also nie
+  ganz offen: Der Strom nimmt nur einen anderen Weg. Sie können ihn drehen wie die anderen Bauteile.</p>
+  <p>Zwei Wechselschalter ergeben die Schaltung eines <b>Treppenhauses</b> oder eines langen Flurs: Sie schalten das
+  Licht von zwei Stellen ein und aus. Die Mitte des einen kommt von der + Schiene, die Mitte des anderen geht zur
+  Lampe, und dazwischen verbinden Sie A mit A und B mit B. Die Lampe leuchtet, wenn beide Schalter auf demselben
+  Buchstaben stehen; schalten Sie einen um, ändert sich die Lampe immer, egal wo der andere steht.</p>
+  <figure>
+    <img src="../img/wisselschakelaar.png" alt="Treppenhausschaltung: zwei Wechselschalter zwischen der + Schiene und einer Lampe zur - Schiene">
+    <figcaption>Beide Wechselschalter stehen auf A: Die Lampe leuchtet. Schalten Sie einen um, geht sie aus.</figcaption>
+  </figure>
+  <div class="tip"><strong>Gut zu wissen:</strong> Mit A an A und B an B leuchtet die Lampe, wenn die Schalter
+  <b>gleich</b> stehen. Kreuzen Sie die Drähte (A an B und B an A), leuchtet sie, wenn sie <b>verschieden</b> stehen:
+  genau das macht ein <a href="verwerking.html#exof">XOR-Gatter</a>.</div>
 
   <h2 id="potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">Das Potentiometer</h2>
   <p>Ein Potentiometer ist ein Widerstand mit einem <b>Schleifer</b>: einem Kontakt, den man über den Widerstand schiebt. Es

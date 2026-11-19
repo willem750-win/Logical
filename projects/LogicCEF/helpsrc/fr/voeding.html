@@ -209,12 +209,29 @@
     <li><b>Lampe</b>&nbsp;: une ampoule de 120&nbsp;&Omega; (100&nbsp;mA et 1,2&nbsp;W sous 12&nbsp;V). Clic droit &rsaquo;
       <b>Résistance</b> pour choisir une autre lampe&nbsp;: 24, 48, 60, 120, 240 ou 480&nbsp;&Omega;. Elle brille d&rsquo;autant
       plus que la puissance est grande&nbsp;; l&rsquo;info-bulle montre U, I et P.</li>
-    <li><b>Interrupteur</b>&nbsp;: cliquez sur le levier pour l&rsquo;ouvrir ou le fermer, aussi pendant la simulation.</li>
+    <li><b>Interrupteur</b>&nbsp;: cliquez sur le levier pour l&rsquo;ouvrir ou le fermer, aussi pendant la simulation. Clic droit &rsaquo; <b>Type</b> &rsaquo; <b>Bouton-poussoir</b> en fait un bouton-poussoir&nbsp;: il n&rsquo;est fermé que tant que vous gardez le bouton de la souris enfoncé. Un interrupteur à trois bornes, c&rsquo;est le <a href="#wisselschakelaar">commutateur va-et-vient</a>.</li>
     <li><b>Voltmètre</b>&nbsp;: placez le + et le &minus; aux bornes d&rsquo;un composant. Il mesure la différence de tension
       entre ses deux bornes et ne prend lui-même aucun courant.</li>
   </ul>
   <p>Vous voulez deux fils sur la même borne&nbsp;? Cliquez sur <b>Connexion</b> puis sur la borne, même s&rsquo;il y a
   déjà un fil&nbsp;: un nouveau fil commence. Voir la <a href="les25.html">leçon 25</a>.</p>
+
+  <h2 id="wisselschakelaar"><img src="../img/pal-wisselschakelaar.png" class="ico" alt="">Le commutateur va-et-vient</h2>
+  <p>Un commutateur va-et-vient a trois bornes&nbsp;: le <b>milieu</b> (en bas) et les contacts <b>A</b> (à gauche) et
+  <b>B</b> (à droite). Le levier pivote au milieu et touche toujours A ou B&nbsp;; chaque clic bascule. Il n&rsquo;est
+  donc jamais complètement ouvert&nbsp;: le courant prend simplement un autre chemin. Vous pouvez le faire pivoter
+  comme les autres composants.</p>
+  <p>Deux commutateurs font le circuit d&rsquo;un <b>escalier</b> ou d&rsquo;un long couloir&nbsp;: vous allumez et
+  éteignez depuis deux endroits. Le milieu de l&rsquo;un vient du rail +, le milieu de l&rsquo;autre va à la lampe, et
+  entre les deux vous reliez A à A et B à B. La lampe est allumée quand les deux commutateurs sont sur la même
+  lettre&nbsp;; basculez-en un et la lampe change toujours, quelle que soit la position de l&rsquo;autre.</p>
+  <figure>
+    <img src="../img/wisselschakelaar.png" alt="Va-et-vient : deux commutateurs entre le rail + et une lampe vers le rail -">
+    <figcaption>Les deux commutateurs sont sur A&nbsp;: la lampe est allumée. Basculez-en un et elle s&rsquo;éteint.</figcaption>
+  </figure>
+  <div class="tip"><strong>Bon à savoir&nbsp;:</strong> avec A à A et B à B, la lampe est allumée quand les
+  commutateurs sont <b>identiques</b>. Croisez les fils (A à B et B à A) et elle est allumée quand ils sont
+  <b>différents</b>&nbsp;: c&rsquo;est exactement ce que fait une <a href="verwerking.html#exof">porte OU exclusif</a>.</div>
 
   <h2 id="potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">Le potentiomètre</h2>
   <p>Un potentiomètre est une résistance avec un <b>curseur</b>&nbsp;: un contact que l&rsquo;on fait glisser le long de la

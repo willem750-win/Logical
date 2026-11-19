@@ -1789,3 +1789,42 @@ msgstr "LDR"
 
 msgid "NTC"
 msgstr "NTC"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Switch (stays put)"
+msgstr "Выключатель (остаётся в положении)"
+
+msgid "Push button (only while pressed)"
+msgstr "Кнопка (только пока нажата)"
+
+msgid "pressed"
+msgstr "нажата"
+
+msgid "released"
+msgstr "отпущена"
+
+msgid "Changeover switch"
+msgstr "Переключатель"
+
+msgid "the middle is connected to "
+msgstr "середина соединена с "
+
+msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
+msgstr "Переключатель с тремя клеммами: середина (внизу) соединена с A или с B. Щёлкните, чтобы переключить. Два переключателя образуют схему лестницы: свет включается и выключается из двух мест."
+
+msgid "released: no current flows"
+msgstr "отпущена: ток не течёт"
+
+msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
+msgstr "Кнопка с двумя клеммами в цепи. Она замкнута, только пока вы её нажимаете (удерживайте кнопку мыши)."
+
+msgid "create Changeover switch"
+msgstr "создать Переключатель"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 2x, 3x or 4x"
+msgstr "Лупа (F7): увеличивает панель вокруг мыши. Правый щелчок: 2x, 3x или 4x"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
+msgstr "Лупа (F7): увеличивает панель вокруг мыши. Правый щелчок: 1,5x, 2x или 3x"

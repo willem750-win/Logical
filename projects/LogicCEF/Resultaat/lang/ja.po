@@ -1789,3 +1789,42 @@ msgstr "LDR"
 
 msgid "NTC"
 msgstr "NTC"
+
+msgid "Type"
+msgstr "種類"
+
+msgid "Switch (stays put)"
+msgstr "スイッチ (そのまま保持)"
+
+msgid "Push button (only while pressed)"
+msgstr "押しボタン (押している間だけ)"
+
+msgid "pressed"
+msgstr "押されている"
+
+msgid "released"
+msgstr "離されている"
+
+msgid "Changeover switch"
+msgstr "切替スイッチ"
+
+msgid "the middle is connected to "
+msgstr "中央の接続先: "
+
+msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
+msgstr "3 端子の切替スイッチ: 中央 (下) が A または B につながります。クリックで切り替えます。切替スイッチ 2 個で階段の回路になり、2 か所から明かりをつけたり消したりできます。"
+
+msgid "released: no current flows"
+msgstr "離されている: 電流は流れません"
+
+msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
+msgstr "回路内の 2 端子の押しボタン。押している間だけ閉じます (マウスボタンを押し続けます)。"
+
+msgid "create Changeover switch"
+msgstr "切替スイッチを作成"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 2x, 3x or 4x"
+msgstr "拡大鏡 (F7): マウスの周りのパネルを拡大します。右クリック: 2x、3x、4x"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
+msgstr "拡大鏡 (F7): マウスの周りのパネルを拡大します。右クリック: 1.5x、2x、3x"

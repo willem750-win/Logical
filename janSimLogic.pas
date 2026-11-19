@@ -1859,7 +1859,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -1982,10 +1982,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2029,7 +2029,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2103,6 +2103,7 @@ type
     procedure SetKWeerstand(const Value: Boolean);
     procedure SetKLamp2(const Value: Boolean);
     procedure SetKSchakelaar2(const Value: Boolean);
+    procedure SetKWisselschakelaar(const Value: Boolean);
     procedure SetKVoltmeter2(const Value: Boolean);
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
@@ -2337,6 +2338,7 @@ type
     property KWeerstand: Boolean read FWeerstandK write SetKWeerstand default True;
     property KLamp2: Boolean read FLamp2K write SetKLamp2 default True;
     property KSchakelaar2: Boolean read FSchak2K write SetKSchakelaar2 default True;
+    property KWisselschakelaar: Boolean read FWschK write SetKWisselschakelaar default True;
     property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
@@ -2365,6 +2367,7 @@ type
     property HWeerstand: string read FHWeerstand write FHWeerstand;
     property HLamp2: string read FHLamp2 write FHLamp2;
     property HSchakelaar2: string read FHSchak2 write FHSchak2;
+    property HWisselschakelaar: string read FHWsch write FHWsch;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3434,13 +3437,18 @@ end;
 
   { TjanSchakelaar2: schakelaar met twee klemmen in de voedingskring.
     Klik op de hendel: open of dicht (ook tijdens de simulatie).
-    Met rechtsklik Soort > Drukknop: dicht zolang je de muisknop indrukt. }
+    Met rechtsklik Soort > Drukknop: dicht zolang je de muisknop indrukt.
+    Soort > Wisselschakelaar: drie klemmen; het midden (klem 2, onderaan) is
+    verbonden met A (klem 0, Aan = False) of B (klem 1, Aan = True). }
   TjanSchakelaar2 = class(TjanVoedingsDeel)
   private
     FAan: Boolean;
-    FDruk: Boolean;        // drukknop: alleen dicht zolang je drukt
+    FSoort: Integer;       // 0 = schakelaar, 1 = drukknop, 2 = wisselschakelaar
     procedure SetAan(const Value: Boolean);
+    procedure SetSoort(const Value: Integer);
+    function GetDruk: Boolean;
     procedure SetDruk(const Value: Boolean);
+    function GetWissel: Boolean;
     procedure SoortClick(Sender: TObject);
   protected
     function KanDraaien: Boolean; override;
@@ -3458,7 +3466,18 @@ end;
     procedure SendStatusToBar; override;
   published
     property Aan: Boolean read FAan write SetAan;
-    property Druk: Boolean read FDruk write SetDruk;
+    property Soort: Integer read FSoort write SetSoort;
+    property Druk: Boolean read GetDruk write SetDruk;
+    property Wissel: Boolean read GetWissel;
+  end;
+
+  { TjanWissel2: wisselschakelaar (eigen knop in de balk). Drie klemmen: het
+    midden (onderaan) is verbonden met A of met B; zie TjanSchakelaar2 met Soort 2. }
+  TjanWissel2 = class(TjanSchakelaar2)
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
   end;
 
   { TjanVoltmeter2: voltmeter met twee klemmen (+ links, - rechts) die je
@@ -5940,7 +5959,13 @@ begin
   if value<>FLock then
   begin
     FLock := Value;
- end;
+    // vergrendeld (simulatie): geen achtergebleven markering van de muis
+    if FLock and Select then
+    begin
+      Select := False;
+      Invalidate;
+    end;
+  end;
 end;
 
 procedure TjanConnector.SetS_mode(Value: string);
@@ -6176,7 +6201,8 @@ procedure TjanConnector.CMMouseLeave(var Msg: TMessage);
 begin
   inherited;
    if Assigned (FonExit) then FonExit(Self);
-   if not FLock then
+   // de markering altijd wegnemen, ook als de draad intussen vergrendeld is
+   if Select then
    begin
     select:=false;
     invalidate;
@@ -6205,7 +6231,9 @@ begin
   inherited;
 
   if Assigned (FOnEnter) then FOnEnter(Self);
-  if not FLock then
+  // alleen bij het bouwen dikker tekenen; tijdens de simulatie (de balk met
+  // onderdelen is dan verborgen) blijft de draad zoals hij is
+  if not FLock and not ((DraadBox <> nil) and not DraadBox.Visible) then
   begin
     Select := True;
     Invalidate;
@@ -7832,6 +7860,14 @@ begin
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanSensorR(Parts[k]).Ohm, Parts[k])
       else if Parts[k] is TjanLamp2 then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanLamp2(Parts[k]).Ohm, Parts[k])
+      else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
+      begin
+        // wisselschakelaar: het midden (klem 2) naar B (klem 1) of A (klem 0)
+        if TjanSchakelaar2(Parts[k]).Aan then
+          AddTak(PinNode(k, 2), PinNode(k, 1), 1 / RKlein, Parts[k])
+        else
+          AddTak(PinNode(k, 2), PinNode(k, 0), 1 / RKlein, Parts[k]);
+      end
       else if Parts[k] is TjanSchakelaar2 then
       begin
         if TjanSchakelaar2(Parts[k]).Aan then
@@ -8098,6 +8134,12 @@ begin
       SetStroom(Parts[k], U / TjanSensorR(Parts[k]).Ohm)
     else if Parts[k] is TjanLamp2 then
       SetStroom(Parts[k], U / TjanLamp2(Parts[k]).Ohm)
+    else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
+    begin
+      // stroom van het midden naar het gekozen contact
+      if TjanSchakelaar2(Parts[k]).Aan then j := 1 else j := 0;
+      SetStroom(Parts[k], (V[PinNode(k, 2)] - V[PinNode(k, j)]) / RKlein);
+    end
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Aan then
       SetStroom(Parts[k], U / RKlein)
     else if Parts[k] is TjanLed2 then
@@ -8228,6 +8270,18 @@ begin
         Vraag[PinBase[k] + 1] := -FIb;
         Vraag[PinBase[k] + 2] := FIb - FIa;
       end;
+    if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
+    begin
+      // het midden neemt de stroom uit de draden, het gekozen contact geeft
+      // hem terug, het andere contact doet niets
+      Vraag[PinBase[k]] := 0;
+      Vraag[PinBase[k] + 1] := 0;
+      Vraag[PinBase[k] + 2] := Amp;
+      if TjanSchakelaar2(Parts[k]).Aan then
+        Vraag[PinBase[k] + 1] := -Amp
+      else
+        Vraag[PinBase[k]] := -Amp;
+    end;
     if Parts[k] is TjanTransistor then
       with TjanTransistor(Parts[k]) do
       begin
@@ -8337,9 +8391,12 @@ begin
   else if C is TjanLamp2 then
     Result := Format('TjanLamp2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanLamp2(C).Soort])
+  else if C is TjanWissel2 then
+    Result := Format('TjanWissel2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Ord(TjanSchakelaar2(C).Aan)])
   else if C is TjanSchakelaar2 then
     Result := Format('TjanSchakelaar2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
-      Ord(TjanSchakelaar2(C).Aan), Ord(TjanSchakelaar2(C).Druk)])
+      Ord(TjanSchakelaar2(C).Aan), TjanSchakelaar2(C).Soort])
   else if C is TjanScoop then
     Result := Format('TjanScoop;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanScoop(C).BereikIdx, TjanScoop(C).TijdIdx])
@@ -11306,12 +11363,19 @@ end;
 
 function TjanSchakelaar2.PinCount: Integer;
 begin
-  Result := 2;
+  if FSoort = 2 then Result := 3 else Result := 2;
 end;
 
+// klem 0 links, klem 1 rechts; wisselschakelaar: klem 0 = A, klem 1 = B en
+// klem 2 = het midden (onderaan), waar de hendel draait
 function TjanSchakelaar2.PinPos(I: Integer): TPoint;
 begin
-  if I = 0 then Result := TP(1, 21) else Result := TP(Schakelaar2W - 8, 21);
+  case I of
+    0: Result := TP(1, 21);
+    1: Result := TP(Schakelaar2W - 8, 21);
+  else
+    Result := TP(Schakelaar2W div 2 - 4, Schakelaar2H - 8);
+  end;
 end;
 
 function TjanSchakelaar2.KanDraaien: Boolean;
@@ -11327,6 +11391,21 @@ end;
 function TjanSchakelaar2.ExtraBreedte: Integer;
 begin
   Result := 24;   // dicht/open rechts naast de hendel
+end;
+
+function TjanSchakelaar2.GetDruk: Boolean;
+begin
+  Result := FSoort = 1;
+end;
+
+function TjanSchakelaar2.GetWissel: Boolean;
+begin
+  Result := FSoort = 2;
+end;
+
+procedure TjanSchakelaar2.SetDruk(const Value: Boolean);
+begin
+  if Value then Soort := 1 else if FSoort = 1 then Soort := 0;
 end;
 
 procedure TjanSchakelaar2.SetAan(const Value: Boolean);
@@ -11345,21 +11424,22 @@ begin
   with TP(X, Y) do
     Result := (X >= 12) and (X <= Schakelaar2W - 12) and (Y >= 4) and (Y <= 30);
   if not Result then Exit;
-  if FDruk then Aan := True else Aan := not Aan;
+  if FSoort = 1 then Aan := True else Aan := not Aan;
 end;
 
 // drukknop: muisknop los = weer open
 procedure TjanSchakelaar2.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   inherited MouseUp(Button, Shift, X, Y);
-  if FDruk and FAan then Aan := False;
+  if (FSoort = 1) and FAan then Aan := False;
 end;
 
-procedure TjanSchakelaar2.SetDruk(const Value: Boolean);
+procedure TjanSchakelaar2.SetSoort(const Value: Integer);
 begin
-  if Value = FDruk then Exit;
-  FDruk := Value;
-  if FDruk then FAan := False;
+  // de wisselschakelaar is een eigen onderdeel (TjanWissel2): niet omzetten
+  if (Self is TjanWissel2) or (Value < 0) or (Value > 1) or (Value = FSoort) then Exit;
+  FSoort := Value;
+  if FSoort = 1 then FAan := False;
   UpdateHintText;
   Invalidate;
   if Parent <> nil then
@@ -11368,7 +11448,7 @@ end;
 
 procedure TjanSchakelaar2.SoortClick(Sender: TObject);
 begin
-  Druk := TMenuItem(Sender).Tag = 1;
+  Soort := TMenuItem(Sender).Tag;
 end;
 
 procedure TjanSchakelaar2.AddMenuItems(APop: TPopupMenu);
@@ -11390,7 +11470,7 @@ begin
         'Bouton-poussoir (seulement en appuyant)', 'Taster (nur solange gedrückt)');
     Sub.Tag := i;
     Sub.RadioItem := True;
-    Sub.Checked := (i = 1) = FDruk;
+    Sub.Checked := i = FSoort;
     Sub.Enabled := not FLock;
     Sub.OnClick := SoortClick;
     Mi.Add(Sub);
@@ -11399,7 +11479,7 @@ end;
 
 procedure TjanSchakelaar2.Paint;
 var
-  CY, XL, XR, TW: Integer;
+  CY, XL, XR, TW, MX, MY: Integer;
   S: string;
 begin
   // tekening in de gewone stand; TP/TRc spiegelen ze als hij gedraaid is
@@ -11411,9 +11491,37 @@ begin
     Pen.Color := clBlack; Pen.Width := 2;
     TLijn(8, CY, XL, CY);
     TLijn(XR, CY, Schakelaar2W - 8, CY);
+    if FSoort = 2 then
+    begin
+      // wisselschakelaar: de hendel draait in het midden onderaan en wijst
+      // naar contact A (links) of B (rechts); hij maakt altijd contact
+      MX := Schakelaar2W div 2;
+      MY := Schakelaar2H - 9;
+      TW := 12;            // hoogte van de contacten A en B
+      TLijn(XL, CY, XL, TW);
+      TLijn(XR, CY, XR, TW);
+      Pen.Color := clRed; Pen.Width := 3;
+      if FAan then TLijn(MX, MY, XR - 1, TW + 1) else TLijn(MX, MY, XL + 1, TW + 1);
+      Pen.Width := 1; Pen.Color := clBlack;
+      Brush.Style := bsSolid; Brush.Color := clWhite;
+      Ellipse(TRc(XL - 3, TW - 3, XL + 4, TW + 4));
+      Ellipse(TRc(XR - 3, TW - 3, XR + 4, TW + 4));
+      Brush.Color := clBlack;
+      Ellipse(TRc(MX - 3, MY - 3, MX + 4, MY + 4));
+      PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+      PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+      PaintPin(PinPos(2).X, PinPos(2).Y, FPinV[2] >= RailMinVolt);
+      Brush.Style := bsClear;
+      Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clNavy;
+      // de letters binnen naast de contacten (de draden komen van buiten)
+      with TP(XL + 5, 1) do TextOut(X, Y, 'A');
+      with TP(XR - 11, 1) do TextOut(X, Y, 'B');
+      PaintSelection;
+      Exit;
+    end;
     if FAan then Pen.Color := clRed else Pen.Color := clBlack;
     Pen.Width := 3;
-    if FDruk then
+    if FSoort = 1 then
     begin
       // drukknop: een brug boven de contacten met een steeltje erop;
       // ingedrukt ligt de brug op de contacten
@@ -11435,7 +11543,7 @@ begin
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := []; Font.Color := clNavy;
-    if FDruk then
+    if FSoort = 1 then
     begin
       if FAan then S := Tr(FTaal, 'ingedrukt', 'pressed', 'appuyé', 'gedrückt')
       else S := Tr(FTaal, 'los', 'released', 'relâché', 'los');
@@ -11452,8 +11560,27 @@ begin
 end;
 
 procedure TjanSchakelaar2.UpdateHintText;
+var
+  S2: string;
 begin
-  if FDruk then
+  if FSoort = 2 then
+  begin
+    Hint := Tr(FTaal, 'Wisselschakelaar', 'Changeover switch', 'Commutateur va-et-vient', 'Wechselschalter') + ': ';
+    if FAan then S2 := 'B' else S2 := 'A';
+    Hint := Hint + Tr(FTaal, 'het midden is verbonden met ', 'the middle is connected to ',
+      'le milieu est relié à ', 'die Mitte ist verbunden mit ') + S2 + '   ' + StroomRegel(Abs(FAmp));
+    Hint := Hint + #13#10 + Tr(FTaal,
+      'Wisselschakelaar met drie klemmen: het midden (onderaan) is verbonden met A of met B. Klik om om te wisselen. ' +
+      'Twee wisselschakelaars maken de schakeling van een trap: je zet het licht aan en uit vanaf twee plaatsen.',
+      'Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. ' +
+      'Two changeover switches make a staircase circuit: you switch the light on and off from two places.',
+      'Commutateur à trois bornes : le milieu (en bas) est relié à A ou à B. Cliquez pour basculer. ' +
+      'Deux commutateurs font un va-et-vient d''escalier : vous allumez et éteignez depuis deux endroits.',
+      'Wechselschalter mit drei Klemmen: die Mitte (unten) ist mit A oder B verbunden. Klicken zum Umschalten. ' +
+      'Zwei Wechselschalter ergeben eine Treppenhausschaltung: Licht ein und aus von zwei Stellen.');
+    Exit;
+  end;
+  if FSoort = 1 then
   begin
     Hint := Tr(FTaal, 'Drukknop', 'Push button', 'Bouton-poussoir', 'Taster') + ': ';
     if FAan then
@@ -11484,15 +11611,35 @@ end;
 procedure TjanSchakelaar2.SendStatusToBar;
 begin
   if not Assigned(FOnStatus) then Exit;
-  if FDruk then
-    FOnStatus(Self, Tr(FTaal, 'Drukknop', 'Push button', 'Bouton-poussoir', 'Taster') + ' > ', 0)
+  case FSoort of
+    1: FOnStatus(Self, Tr(FTaal, 'Drukknop', 'Push button', 'Bouton-poussoir', 'Taster') + ' > ', 0);
+    2: FOnStatus(Self, Tr(FTaal, 'Wisselschakelaar', 'Changeover switch', 'Commutateur va-et-vient', 'Wechselschalter') + ' > ', 0);
   else
     FOnStatus(Self, Tr(FTaal, 'Schakelaar', 'Switch', 'Interrupteur', 'Schalter') + ' > ', 0);
-  if FAan then
+  end;
+  if FSoort = 2 then
+  begin
+    if FAan then FOnStatus(Self, 'B', 1) else FOnStatus(Self, 'A', 1);
+  end
+  else if FAan then
     FOnStatus(Self, Tr(FTaal, 'dicht', 'closed', 'fermé', 'geschlossen'), 1)
   else
     FOnStatus(Self, Tr(FTaal, 'open', 'open', 'ouvert', 'offen'), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanWissel2 }
+
+constructor TjanWissel2.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FSoort := 2;
+  HelpKeyword := 'wisselschakelaar';
+end;
+
+// geen keuze van de soort: drie klemmen blijven drie klemmen
+procedure TjanWissel2.AddMenuItems(APop: TPopupMenu);
+begin
 end;
 
 { TjanVoltmeter2 }
@@ -25217,7 +25364,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -25227,6 +25374,7 @@ begin
   FHWissel:='maak Wisselspanningsbron';
   FHScoop:='maak Oscilloscoop';
   FHTrans:='maak Transistor';
+  FHWsch:='maak Wisselschakelaar';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -26318,7 +26466,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') then
     begin
       with TStringList.Create do
       try
@@ -26332,6 +26480,7 @@ begin
           else if obj[1] = 'TjanWeerstand' then VD := TjanWeerstand.Create(Self)
           else if obj[1] = 'TjanLamp2' then VD := TjanLamp2.Create(Self)
           else if obj[1] = 'TjanSchakelaar2' then VD := TjanSchakelaar2.Create(Self)
+          else if obj[1] = 'TjanWissel2' then VD := TjanWissel2.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -26371,7 +26520,7 @@ begin
           begin
             TjanSchakelaar2(VD).Aan := Trim(Strings[4]) = '1';
             if Count >= 6 then
-              TjanSchakelaar2(VD).Druk := Trim(Strings[5]) = '1';
+              TjanSchakelaar2(VD).Soort := StrToIntDef(Trim(Strings[5]), 0);
           end
           else if (VD is TjanLed2) and (Count >= 5) then
           begin
@@ -27247,6 +27396,7 @@ begin
     14: D := TjanTransistor.Create(Self);
     15: D := TjanLDR.Create(Self);
     16: D := TjanNTC.Create(Self);
+    17: D := TjanWissel2.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -27456,6 +27606,22 @@ begin
           Ellipse(Rect(CX - 5, CY - 5, CX + 6, CY + 6));
           MoveTo(CX - 3, CY - 3); LineTo(CX + 4, CY + 4);
           MoveTo(CX + 3, CY - 3); LineTo(CX - 4, CY + 4);
+        end;
+      17:
+        begin
+          // wisselschakelaar: het midden onderaan, contacten A en B bovenaan,
+          // de hendel wijst naar A
+          MoveTo(CX, R.Bottom - 2); LineTo(CX, CY + 4);
+          MoveTo(R.Left + 2, CY - 4); LineTo(CX - 8, CY - 4);
+          MoveTo(CX + 8, CY - 4); LineTo(R.Right - 2, CY - 4);
+          Pen.Width := 2;
+          MoveTo(CX, CY + 4); LineTo(CX - 5, CY - 2);
+          Pen.Width := 1;
+          Brush.Style := bsSolid; Brush.Color := clWhite;
+          Ellipse(Rect(CX - 9, CY - 6, CX - 3, CY));
+          Ellipse(Rect(CX + 3, CY - 6, CX + 9, CY));
+          Brush.Color := clBlack;
+          Ellipse(Rect(CX - 1, CY + 3, CX + 3, CY + 7));
         end;
       5:
         begin
@@ -28053,7 +28219,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -28096,6 +28262,7 @@ begin
   else if PtInRect(RWeerstand, P) then DWeerstand := True
   else if PtInRect(RLamp2, P) then DLamp2 := True
   else if PtInRect(RSchak2, P) then DSchak2 := True
+  else if PtInRect(RWsch, P) then DWsch := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -28169,6 +28336,7 @@ begin
   else if PtInRect(RWissel, P) then NewHint := FHWissel
   else if PtInRect(RScoop, P) then NewHint := FHScoop
   else if PtInRect(RTrans, P) then NewHint := FHTrans
+  else if PtInRect(RWsch, P) then NewHint := FHWsch
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -28580,7 +28748,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False;
 
     // nieuw
     DSquare := False;
@@ -28838,6 +29006,8 @@ begin
     NewVoedingsDeel(4)
   else if DSchak2 then
     NewVoedingsDeel(5)
+  else if DWsch then
+    NewVoedingsDeel(17)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -29444,6 +29614,7 @@ if FBoxTaal=stDutch then
   HWeerstand:='maak Weerstand (contact, lange draad)';
   HLamp2:='maak Lamp met 2 klemmen (serie en parallel)';
   HSchakelaar2:='maak Schakelaar met 2 klemmen';
+  HWisselschakelaar:='maak Wisselschakelaar';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -29499,6 +29670,7 @@ if FBoxTaal=stEnglish then
   HWeerstand:=LangTr('create Resistance (contact, long wire)');
   HLamp2:=LangTr('create Lamp with 2 terminals (series and parallel)');
   HSchakelaar2:=LangTr('create Switch with 2 terminals');
+  HWisselschakelaar:=LangTr('create Changeover switch');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -29552,6 +29724,7 @@ if FBoxTaal=stFrench then
   HWeerstand:='faire Résistance (contact, long fil)';
   HLamp2:='faire Lampe à 2 bornes (série et parallèle)';
   HSchakelaar2:='faire Interrupteur à 2 bornes';
+  HWisselschakelaar:='faire Commutateur va-et-vient';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -29606,6 +29779,7 @@ if FBoxTaal=stFrench then
   HWeerstand:='Widerstand erstellen (Kontakt, langer Draht)';
   HLamp2:='Lampe mit 2 Klemmen erstellen (Reihe und parallel)';
   HSchakelaar2:='Schalter mit 2 Klemmen erstellen';
+  HWisselschakelaar:='Wechselschalter erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -29685,6 +29859,9 @@ begin SetVoedingKnop(FLamp2K, Value); end;
 
 procedure TjanSimLogicBox.SetKSchakelaar2(const Value: Boolean);
 begin SetVoedingKnop(FSchak2K, Value); end;
+
+procedure TjanSimLogicBox.SetKWisselschakelaar(const Value: Boolean);
+begin SetVoedingKnop(FWschK, Value); end;
 
 procedure TjanSimLogicBox.SetKVoltmeter2(const Value: Boolean);
 begin SetVoedingKnop(FVolt2K, Value); end;
@@ -29779,6 +29956,7 @@ begin
   RTrans := Rect(0, 0, 0, 0);
   RLdr := Rect(0, 0, 0, 0);
   RNtc := Rect(0, 0, 0, 0);
+  RWsch := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -29801,6 +29979,7 @@ begin
   if FDiodeK then Knop(RDiode, 11, DDiode);
   if FCondK then Knop(RCond, 8, DCond);
   if FSchak2K then Knop(RSchak2, 5, DSchak2);
+  if FWschK then Knop(RWsch, 17, DWsch);
   if FVolt2K then Knop(RVolt2, 6, DVolt2);
   if FScoopK then Knop(RScoop, 13, DScoop);
   if FTransK then Knop(RTrans, 14, DTrans);

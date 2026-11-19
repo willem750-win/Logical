@@ -1479,3 +1479,42 @@ msgstr "LDR"
 
 msgid "NTC"
 msgstr "NTC"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Switch (stays put)"
+msgstr "Interruttore (resta in posizione)"
+
+msgid "Push button (only while pressed)"
+msgstr "Pulsante (solo finché premi)"
+
+msgid "pressed"
+msgstr "premuto"
+
+msgid "released"
+msgstr "rilasciato"
+
+msgid "Changeover switch"
+msgstr "Deviatore"
+
+msgid "the middle is connected to "
+msgstr "il centro è collegato a "
+
+msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
+msgstr "Deviatore con tre morsetti: il centro (in basso) è collegato ad A o a B. Clicca per commutare. Due deviatori formano il circuito di una scala: accendi e spegni la luce da due punti."
+
+msgid "released: no current flows"
+msgstr "rilasciato: non passa corrente"
+
+msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
+msgstr "Pulsante con due morsetti nel circuito. È chiuso solo finché lo premi (tieni premuto il tasto del mouse)."
+
+msgid "create Changeover switch"
+msgstr "crea Deviatore"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 2x, 3x or 4x"
+msgstr "Lente (F7): ingrandisce il pannello intorno al mouse. Clic destro: 2x, 3x o 4x"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
+msgstr "Lente (F7): ingrandisce il pannello intorno al mouse. Clic destro: 1,5x, 2x o 3x"

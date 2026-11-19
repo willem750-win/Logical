@@ -185,6 +185,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'ntc'; end;
     'transistor':
       begin Result := 'voeding'; AAnchor := 'transistor'; end;
+    'wisselschakelaar':
+      begin Result := 'voeding'; AAnchor := 'wisselschakelaar'; end;
     'scoop':
       begin Result := 'voeding'; AAnchor := 'scoop'; end;
     'statusbalk':
@@ -205,6 +207,8 @@ begin
       begin Result := 'tijddiagram'; AAnchor := ''; end;
     'oefeningen':
       begin Result := 'oefeningen'; AAnchor := ''; end;
+    'loep':
+      begin Result := 'knoppen'; AAnchor := 'loep'; end;
   else
     begin Result := 'index'; AAnchor := ''; end;
   end;

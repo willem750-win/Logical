@@ -1789,3 +1789,42 @@ msgstr "LDR"
 
 msgid "NTC"
 msgstr "NTC"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Switch (stays put)"
+msgstr "开关（保持位置）"
+
+msgid "Push button (only while pressed)"
+msgstr "按钮（仅在按下时）"
+
+msgid "pressed"
+msgstr "已按下"
+
+msgid "released"
+msgstr "已松开"
+
+msgid "Changeover switch"
+msgstr "双控开关"
+
+msgid "the middle is connected to "
+msgstr "中间连接到 "
+
+msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
+msgstr "三端子双控开关：中间（下方）连接到 A 或 B。点击切换。两个双控开关组成楼梯电路：在两个地方开灯和关灯。"
+
+msgid "released: no current flows"
+msgstr "已松开：没有电流"
+
+msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
+msgstr "电路中有两个端子的按钮。只有按住时才闭合（按住鼠标键）。"
+
+msgid "create Changeover switch"
+msgstr "创建 双控开关"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 2x, 3x or 4x"
+msgstr "放大镜 (F7)：放大鼠标周围的面板。右键：2x、3x 或 4x"
+
+msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
+msgstr "放大镜 (F7)：放大鼠标周围的面板。右键：1.5x、2x 或 3x"

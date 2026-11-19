@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Buttons, Graphics, Dialogs, ComCtrls,
   Menus,StrHolder, ScreenCapture, chatgridpcodeSmall,
   janSimLogic,AdvancedPropertyGridComponent, IniFiles,LCLIntf,LCLType,
-  TypInfo, LCLProc, ExtCtrls, StdCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd,
+  TypInfo, LCLProc, ExtCtrls, StdCtrls, UTF8Process,  uHelpManager, uAbout, Clipbrd, uloep,
   // De help opent in een ingebouwde CEF-browser (MiniBrowser): onder Windows
   // uMiniBrowser, onder Linux (GTK2) uMiniBrowserLinux als de map ceflib er
   // is; anders in de standaardbrowser van het systeem.
@@ -173,6 +173,9 @@ type
      FTijdForm: TTijdForm;
      btOefening: TSpeedButton;          // opdracht van een oefening + controle
      FOefForm: TOefForm;
+     btLoep: TSpeedButton;              // loep aan/uit (F7); rechtsklik: 2x, 3x, 4x
+     FLoep: TLoep;
+     FpmLoep: TPopupMenu;
      // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
      // vaste talen: FPoCodes[i] hoort bij Taal.Items[4 + i]
      FPoCodes: TStringList;
@@ -184,6 +187,10 @@ type
      procedure btWaarheidClick(Sender: TObject);
      procedure btTijdClick(Sender: TObject);
      procedure btOefeningClick(Sender: TObject);
+     procedure btLoepClick(Sender: TObject);
+     procedure LoepZoomClick(Sender: TObject);
+     procedure LoepMenuPopup(Sender: TObject);
+     procedure ZetLoep(AAan: Boolean);
      // na het openen van een paneel: oefening? dan het venster tonen
      procedure ToonOefening;
      procedure GridKLogicRunChange(Sender: TObject);
@@ -916,7 +923,7 @@ Begin
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDipSwitsh,KDisplay,KDraad,KDrukknop,KLamp,'+
                                   'KLogicAnd,KLogicNot,KLogicOr,KLogicNand,KLogicNor,KLogicXor,KMemory,KPuls,KRelais,KSchakelRelais,KSchakelaar,'+
-                                  'KSensor,KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KWarm,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KLDR,KNTC,KTransistor,KMeter,KSymbolen');
+                                  'KSensor,KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KWarm,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KWisselschakelaar,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KLDR,KNTC,KTransistor,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
     //__________________________________
@@ -926,7 +933,7 @@ Begin
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDipSwitsh,HDisplay,HDraad,HDrukknop,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HPuls,HRelais,HSchakelRelais,HSchakelaar,'+
-                                  'HSensor,HTeller,HStappen,HFlipFlop,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,'+
+                                  'HSensor,HTeller,HStappen,HFlipFlop,HStopwatch,HWarm,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HWisselschakelaar,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,'+
                                   'HPersoon,HWagen,HMuziek,HVerkeer,HSlagboom,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];
@@ -1630,6 +1637,25 @@ begin
   Result.Canvas.LineTo(11, 9); Result.Canvas.LineTo(11, 13); Result.Canvas.LineTo(14, 13);
 end;
 
+// vergrootglas: een ronde lens met een handvat
+function MakeLoepGlyph: TBitmap;
+begin
+  Result := TBitmap.Create;
+  Result.SetSize(16, 16);
+  Result.Canvas.Brush.Color := clFuchsia;
+  Result.Canvas.FillRect(0, 0, 16, 16);
+  Result.Canvas.Brush.Color := RGBToColor(220, 238, 255);
+  Result.Canvas.Pen.Color := clNavy;
+  Result.Canvas.Pen.Width := 2;
+  Result.Canvas.Ellipse(1, 1, 11, 11);
+  Result.Canvas.Pen.Width := 3;
+  Result.Canvas.MoveTo(10, 10); Result.Canvas.LineTo(15, 15);
+  // de roze achtergrond doorzichtig, ook in de bovenste balk
+  Result.TransparentColor := clFuchsia;
+  Result.TransparentMode := tmFixed;
+  Result.Transparent := True;
+end;
+
 // blad met een groen vinkje
 function MakeOefGlyph: TBitmap;
 begin
@@ -1678,6 +1704,7 @@ procedure TmainForm.CreateUndoButtons;
 var
   i, OldRight: Integer;
   G: TBitmap;
+  Mi: TMenuItem;
 
   function MakeButton(ALeft: Integer; ARedo: Boolean; AClick: TNotifyEvent): TSpeedButton;
   var
@@ -1785,6 +1812,45 @@ begin
   btOefening.OnClick := @btOefeningClick;
   btOefening.OnMouseEnter := @btSimulateMouseEnter;
   btOefening.HelpKeyword := 'oefeningen';
+  // loep in de bovenste balk, links van Help: die balk blijft ook tijdens
+  // de simulatie zichtbaar (de werkbalk Panel2 niet)
+  btLoep := TSpeedButton.Create(Self);
+  btLoep.Parent := TitelBar2;
+  btLoep.SetBounds(0, 1, 26, 22);
+  btLoep.Anchors := [akTop, akRight];
+  btLoep.AnchorSideRight.Control := brInfo1;
+  btLoep.AnchorSideRight.Side := asrLeft;
+  btLoep.BorderSpacing.Right := 4;
+  btLoep.Flat := True;
+  btLoep.ShowHint := True;
+  btLoep.ParentShowHint := False;
+  btLoep.GroupIndex := 77;
+  btLoep.AllowAllUp := True;
+  G := MakeLoepGlyph;
+  try
+    btLoep.Glyph := G;
+  finally
+    G.Free;
+  end;
+  btLoep.OnClick := @btLoepClick;
+  btLoep.OnMouseEnter := @btSimulateMouseEnter;
+  btLoep.HelpKeyword := 'loep';
+  FpmLoep := TPopupMenu.Create(Self);
+  FpmLoep.OnPopup := @LoepMenuPopup;
+  for i := 0 to 2 do
+  begin
+    Mi := TMenuItem.Create(FpmLoep);
+    case i of
+      0: begin Mi.Caption := '1,5 x'; Mi.Tag := 150; end;
+      1: begin Mi.Caption := '2 x'; Mi.Tag := 200; end;
+    else
+      begin Mi.Caption := '3 x'; Mi.Tag := 300; end;
+    end;
+    Mi.RadioItem := True;
+    Mi.OnClick := @LoepZoomClick;
+    FpmLoep.Items.Add(Mi);
+  end;
+  btLoep.PopupMenu := FpmLoep;
   // Instellingen > Algemeen: knop LogicRun en balkknoppen Persoon en Wagentje aan/uit
   btLogicRun.Visible := Grid.KLogicRun;
   Box.KPersoon := Grid.KLogicRun;
@@ -1855,6 +1921,14 @@ begin
       chatgridpcodeSmall.lgGerman:  btTijd.Hint := 'Zeitdiagramm des Panels';
     else
       btTijd.Hint := 'Tijddiagram van het paneel';
+    end;
+  if Assigned(btLoep) then
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: btLoep.Hint := PoTr('Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x');
+      chatgridpcodeSmall.lgFrench:  btLoep.Hint := 'Loupe (F7) : agrandit le panneau autour de la souris. Clic droit : 1,5x, 2x ou 3x';
+      chatgridpcodeSmall.lgGerman:  btLoep.Hint := 'Lupe (F7): vergrößert das Panel um die Maus. Rechtsklick: 1,5x, 2x oder 3x';
+    else
+      btLoep.Hint := 'Loep (F7): vergroot het paneel rond de muis. Rechtsklik: 1,5x, 2x of 3x';
     end;
   if Assigned(FWaarheidForm) then
     FWaarheidForm.SetTaal(LogicRunTaal);
@@ -1962,6 +2036,43 @@ begin
 end;
 
 // Tijddiagram: venster onder de waarheidstabel, rechts naast het hoofdvenster
+// Loep: een venster naast de muis dat het paneel vergroot toont (uloep)
+procedure TmainForm.ZetLoep(AAan: Boolean);
+begin
+  if AAan then
+  begin
+    if FLoep = nil then
+      FLoep := TLoep.Create(Self, Grid);
+    FLoep.Start;
+  end
+  else if Assigned(FLoep) then
+    FLoep.Stop;
+  if Assigned(btLoep) then
+    btLoep.Down := AAan;
+end;
+
+procedure TmainForm.btLoepClick(Sender: TObject);
+begin
+  ZetLoep(btLoep.Down);
+end;
+
+procedure TmainForm.LoepZoomClick(Sender: TObject);
+begin
+  if FLoep = nil then
+    FLoep := TLoep.Create(Self, Grid);
+  FLoep.Zoom := TMenuItem(Sender).Tag;
+  ZetLoep(True);
+end;
+
+procedure TmainForm.LoepMenuPopup(Sender: TObject);
+var
+  i, Z: Integer;
+begin
+  if Assigned(FLoep) then Z := FLoep.Zoom else Z := 150;
+  for i := 0 to FpmLoep.Items.Count - 1 do
+    FpmLoep.Items[i].Checked := FpmLoep.Items[i].Tag = Z;
+end;
+
 procedure TmainForm.btTijdClick(Sender: TObject);
 var
   L, Tp: Integer;
@@ -2763,7 +2874,10 @@ begin
   FcbSymbolen.Width := 96;
   FcbSymbolen.Top := 1;
   FcbSymbolen.Anchors := [akTop, akRight];   // blijft links van Help bij een breder venster
-  FcbSymbolen.AnchorSideRight.Control := brInfo1;
+  if Assigned(btLoep) then
+    FcbSymbolen.AnchorSideRight.Control := btLoep
+  else
+    FcbSymbolen.AnchorSideRight.Control := brInfo1;
   FcbSymbolen.AnchorSideRight.Side := asrLeft;
   FcbSymbolen.BorderSpacing.Right := 6;
   FcbSymbolen.ParentFont := False;
@@ -2903,6 +3017,13 @@ begin
       VK_DOWN:  FGroup.Nudge(0, Stap);
     end;
     Key := 0;
+    Exit;
+  end;
+
+  if Key = VK_F7 then
+  begin
+    Key := 0;
+    ZetLoep(not (Assigned(btLoep) and btLoep.Down));
     Exit;
   end;
 

@@ -204,12 +204,28 @@
     <li><b>Lamp</b>: a light bulb of 120&nbsp;&Omega; (100&nbsp;mA and 1.2&nbsp;W at 12&nbsp;V). Right-click &rsaquo;
       <b>Resistance</b> to choose another lamp: 24, 48, 60, 120, 240 or 480&nbsp;&Omega;. It shines more brightly as more
       power goes through it; the hint shows U, I and P.</li>
-    <li><b>Switch</b>: click the lever to open or close it, also during the simulation.</li>
+    <li><b>Switch</b>: click the lever to open or close it, also during the simulation. Right-click &rsaquo; <b>Type</b> &rsaquo; <b>Push button</b> makes it a push button: it is only closed while you hold the mouse button down. A switch with three terminals is the <a href="#wisselschakelaar">changeover switch</a>.</li>
     <li><b>Voltmeter</b>: put the + and the &minus; across a part. It measures the voltage difference between its two
       terminals and takes no current itself.</li>
   </ul>
   <p>Want two wires on the same terminal? Click <b>Connection</b> and then the terminal, even if a wire is already on
   it: a new wire starts. See <a href="les25.html">lesson 25</a>.</p>
+
+  <h2 id="wisselschakelaar"><img src="../img/pal-wisselschakelaar.png" class="ico" alt="">The changeover switch</h2>
+  <p>A changeover switch has three terminals: the <b>middle</b> (at the bottom) and the contacts <b>A</b> (left) and
+  <b>B</b> (right). The lever pivots in the middle and always touches A or B; every click changes over. So it is never
+  fully open: the current just takes another path. You can rotate it like the other parts.</p>
+  <p>Two changeover switches make the circuit of a <b>staircase</b> or a long corridor: you switch the light on and
+  off from two places. The middle of one comes from the + rail, the middle of the other goes to the lamp, and in
+  between you connect A to A and B to B. The lamp is on when both switches point to the same letter; change one over
+  and the lamp always changes, wherever the other one is.</p>
+  <figure>
+    <img src="../img/wisselschakelaar.png" alt="Staircase circuit: two changeover switches between the + rail and a lamp to the - rail">
+    <figcaption>Both changeover switches are on A: the lamp is on. Change one over and it goes out.</figcaption>
+  </figure>
+  <div class="tip"><strong>Good to know:</strong> with A to A and B to B the lamp is on when the switches are
+  <b>equal</b>. Cross the wires (A to B and B to A) and it is on when they are <b>different</b>: exactly what an
+  <a href="verwerking.html#exof">XOR gate</a> does.</div>
 
   <h2 id="potmeter"><img src="../img/pal-potmeter.png" class="ico" alt="">The potentiometer</h2>
   <p>A potentiometer is a resistor with a <b>wiper</b>: a contact you slide along the resistor. It has three terminals: the
