@@ -2174,6 +2174,9 @@ type
     PROCEDURE maakpanel;
     PROCEDURE Zettaal;
     PROCEDURE BlokkeerObjecten(blokkeer:Boolean);
+    // de simulatieklok starten (gebeurt anders alleen bij het laden uit een .lfm,
+    // zie Loaded); voor programma's die de box zelf aanmaken, zoals de viewer
+    procedure StartKlok;
     PROCEDURE Killpanel;
     PROCEDURE KillConnectors;
     PROCEDURE SavePanelTemp(Paneel:TjanGridS);
@@ -3430,16 +3433,22 @@ end;
   end;
 
   { TjanSchakelaar2: schakelaar met twee klemmen in de voedingskring.
-    Klik op de hendel: open of dicht (ook tijdens de simulatie). }
+    Klik op de hendel: open of dicht (ook tijdens de simulatie).
+    Met rechtsklik Soort > Drukknop: dicht zolang je de muisknop indrukt. }
   TjanSchakelaar2 = class(TjanVoedingsDeel)
   private
     FAan: Boolean;
+    FDruk: Boolean;        // drukknop: alleen dicht zolang je drukt
     procedure SetAan(const Value: Boolean);
+    procedure SetDruk(const Value: Boolean);
+    procedure SoortClick(Sender: TObject);
   protected
     function KanDraaien: Boolean; override;
     function StdMaat: TPoint; override;
     function ExtraBreedte: Integer; override;
     function HandleClick(X, Y: Integer): Boolean; override;
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
   public
     constructor Create(AOwner: TComponent); override;
     procedure Paint; override;
@@ -3449,6 +3458,7 @@ end;
     procedure SendStatusToBar; override;
   published
     property Aan: Boolean read FAan write SetAan;
+    property Druk: Boolean read FDruk write SetDruk;
   end;
 
   { TjanVoltmeter2: voltmeter met twee klemmen (+ links, - rechts) die je
@@ -8328,8 +8338,8 @@ begin
     Result := Format('TjanLamp2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanLamp2(C).Soort])
   else if C is TjanSchakelaar2 then
-    Result := Format('TjanSchakelaar2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
-      Ord(TjanSchakelaar2(C).Aan)])
+    Result := Format('TjanSchakelaar2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Ord(TjanSchakelaar2(C).Aan), Ord(TjanSchakelaar2(C).Druk)])
   else if C is TjanScoop then
     Result := Format('TjanScoop;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanScoop(C).BereikIdx, TjanScoop(C).TijdIdx])
@@ -11334,7 +11344,57 @@ begin
   // de hendel (tussen de twee contacten); gedraaid: x en y gespiegeld
   with TP(X, Y) do
     Result := (X >= 12) and (X <= Schakelaar2W - 12) and (Y >= 4) and (Y <= 30);
-  if Result then Aan := not Aan;
+  if not Result then Exit;
+  if FDruk then Aan := True else Aan := not Aan;
+end;
+
+// drukknop: muisknop los = weer open
+procedure TjanSchakelaar2.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited MouseUp(Button, Shift, X, Y);
+  if FDruk and FAan then Aan := False;
+end;
+
+procedure TjanSchakelaar2.SetDruk(const Value: Boolean);
+begin
+  if Value = FDruk then Exit;
+  FDruk := Value;
+  if FDruk then FAan := False;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then
+    UpdateSupply(Parent, True);
+end;
+
+procedure TjanSchakelaar2.SoortClick(Sender: TObject);
+begin
+  Druk := TMenuItem(Sender).Tag = 1;
+end;
+
+procedure TjanSchakelaar2.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Soort', 'Type', 'Type', 'Art');
+  APop.Items.Add(Mi);
+  for i := 0 to 1 do
+  begin
+    Sub := TMenuItem.Create(APop);
+    if i = 0 then
+      Sub.Caption := Tr(FTaal, 'Schakelaar (blijft staan)', 'Switch (stays put)',
+        'Interrupteur (reste en place)', 'Schalter (bleibt stehen)')
+    else
+      Sub.Caption := Tr(FTaal, 'Drukknop (alleen zolang je drukt)', 'Push button (only while pressed)',
+        'Bouton-poussoir (seulement en appuyant)', 'Taster (nur solange gedrückt)');
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := (i = 1) = FDruk;
+    Sub.Enabled := not FLock;
+    Sub.OnClick := SoortClick;
+    Mi.Add(Sub);
+  end;
 end;
 
 procedure TjanSchakelaar2.Paint;
@@ -11351,11 +11411,21 @@ begin
     Pen.Color := clBlack; Pen.Width := 2;
     TLijn(8, CY, XL, CY);
     TLijn(XR, CY, Schakelaar2W - 8, CY);
-    // hendel: dicht = recht naar het andere contact, open = schuin omhoog
-    // (gedraaid: schuin naar links)
     if FAan then Pen.Color := clRed else Pen.Color := clBlack;
     Pen.Width := 3;
-    if FAan then TLijn(XL, CY, XR - 1, CY) else TLijn(XL, CY, XR - 4, CY - 13);
+    if FDruk then
+    begin
+      // drukknop: een brug boven de contacten met een steeltje erop;
+      // ingedrukt ligt de brug op de contacten
+      if FAan then TW := CY - 2 else TW := CY - 9;
+      TLijn(XL - 2, TW, XR + 2, TW);
+      Pen.Width := 2;
+      TLijn((XL + XR) div 2, TW, (XL + XR) div 2, TW - 10);
+      TLijn((XL + XR) div 2 - 5, TW - 10, (XL + XR) div 2 + 6, TW - 10);
+    end
+    // hendel: dicht = recht naar het andere contact, open = schuin omhoog
+    // (gedraaid: schuin naar links)
+    else if FAan then TLijn(XL, CY, XR - 1, CY) else TLijn(XL, CY, XR - 4, CY - 13);
     Pen.Width := 1; Pen.Color := clBlack;
     Brush.Style := bsSolid; Brush.Color := clBlack;
     Ellipse(TRc(XL - 3, CY - 3, XL + 4, CY + 4));
@@ -11365,7 +11435,12 @@ begin
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := []; Font.Color := clNavy;
-    if FAan then S := Tr(FTaal, 'dicht', 'closed', 'fermé', 'zu')
+    if FDruk then
+    begin
+      if FAan then S := Tr(FTaal, 'ingedrukt', 'pressed', 'appuyé', 'gedrückt')
+      else S := Tr(FTaal, 'los', 'released', 'relâché', 'los');
+    end
+    else if FAan then S := Tr(FTaal, 'dicht', 'closed', 'fermé', 'zu')
     else S := Tr(FTaal, 'open', 'open', 'ouvert', 'offen');
     TW := TextWidth(S);
     if FGedraaid then
@@ -11378,6 +11453,21 @@ end;
 
 procedure TjanSchakelaar2.UpdateHintText;
 begin
+  if FDruk then
+  begin
+    Hint := Tr(FTaal, 'Drukknop', 'Push button', 'Bouton-poussoir', 'Taster') + ': ';
+    if FAan then
+      Hint := Hint + Tr(FTaal, 'ingedrukt', 'pressed', 'appuyé', 'gedrückt') + '   ' + StroomRegel(Abs(FAmp))
+    else
+      Hint := Hint + Tr(FTaal, 'los: er loopt geen stroom', 'released: no current flows',
+        'relâché : aucun courant ne passe', 'los: es fließt kein Strom');
+    Hint := Hint + #13#10 + Tr(FTaal,
+      'Drukknop met twee klemmen in de kring. Hij is alleen dicht zolang je erop drukt (muisknop ingedrukt houden).',
+      'Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button).',
+      'Bouton-poussoir à deux bornes dans le circuit. Il n''est fermé que tant que vous appuyez (gardez le bouton de la souris enfoncé).',
+      'Taster mit zwei Klemmen im Stromkreis. Er ist nur geschlossen, solange Sie drücken (Maustaste gedrückt halten).');
+    Exit;
+  end;
   Hint := Tr(FTaal, 'Schakelaar', 'Switch', 'Interrupteur', 'Schalter') + ': ';
   if FAan then
     Hint := Hint + Tr(FTaal, 'dicht', 'closed', 'fermé', 'geschlossen') + '   ' + StroomRegel(Abs(FAmp))
@@ -11394,7 +11484,10 @@ end;
 procedure TjanSchakelaar2.SendStatusToBar;
 begin
   if not Assigned(FOnStatus) then Exit;
-  FOnStatus(Self, Tr(FTaal, 'Schakelaar', 'Switch', 'Interrupteur', 'Schalter') + ' > ', 0);
+  if FDruk then
+    FOnStatus(Self, Tr(FTaal, 'Drukknop', 'Push button', 'Bouton-poussoir', 'Taster') + ' > ', 0)
+  else
+    FOnStatus(Self, Tr(FTaal, 'Schakelaar', 'Switch', 'Interrupteur', 'Schalter') + ' > ', 0);
   if FAan then
     FOnStatus(Self, Tr(FTaal, 'dicht', 'closed', 'fermé', 'geschlossen'), 1)
   else
@@ -26275,7 +26368,11 @@ begin
           else if (VD is TjanLamp2) and (Count >= 5) then
             TjanLamp2(VD).Soort := StrToIntDef(Trim(Strings[4]), Lamp2Standaard)
           else if (VD is TjanSchakelaar2) and (Count >= 5) then
-            TjanSchakelaar2(VD).Aan := Trim(Strings[4]) = '1'
+          begin
+            TjanSchakelaar2(VD).Aan := Trim(Strings[4]) = '1';
+            if Count >= 6 then
+              TjanSchakelaar2(VD).Druk := Trim(Strings[5]) = '1';
+          end
           else if (VD is TjanLed2) and (Count >= 5) then
           begin
             TjanLed2(VD).Kleur := StrToIntDef(Trim(Strings[4]), 0);
@@ -27932,6 +28029,11 @@ begin
   inherited;
   if Assigned (FOnLeave) then FOnLeave(Self);
   DoStatusText('',0);
+end;
+
+procedure TjanSimLogicBox.StartKlok;
+begin
+  cpu.Enabled := True;
 end;
 
 procedure TjanSimLogicBox.Loaded;

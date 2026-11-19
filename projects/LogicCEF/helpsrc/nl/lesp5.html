@@ -1,0 +1,62 @@
+<!-- titel: Energie 5 - De transistor op rails -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#energie">Vertrekken van energie</a> &rsaquo; Les 5 van 5</p>
+  <h1>De transistor op rails</h1>
+  <div class="goal"><strong>Doel:</strong> met een <b>kleine</b> stroom een <b>grote</b> stroom schakelen, en zien dat
+  ook een elektronische schakeling gewoon tussen de rails hangt.</div>
+
+  <h2>Een kraan die je met een klein kraantje bedient</h2>
+  <p>Stel je een grote kraan voor met een klein stuurkraantje ernaast. Draai je het kleine kraantje open, dan duwt dat
+  beetje water de grote kraan open, en stroomt er veel water. Een <a href="voeding.html#transistor">transistor</a> doet
+  dat met stroom:</p>
+  <ul>
+    <li>de kleine stroom gaat van de + rail, door de schakelaar en de weerstand, in de <b>basis</b> (B);</li>
+    <li>de grote stroom gaat van de + rail, door de lamp, in de <b>collector</b> (C);</li>
+    <li>beide komen samen uit de <b>emitter</b> (E) en gaan langs de &minus; rail terug naar de bron.</li>
+  </ul>
+
+  <p><a class="open" href="../../panels/lessen/proef5-transistor-op-rails.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/lesp5.png" alt="Bron bovenaan, + rail links, - rail rechts; boven de lamp naar de collector, onder de schakelaar en 10 kilo-ohm naar de basis">
+    <figcaption>Met 1,1&nbsp;mA in de basis schakelt de transistor 98&nbsp;mA door de lamp. Over de transistor blijft
+    maar 0,2&nbsp;V staan.</figcaption>
+  </figure>
+  <p>Vergelijk met <a href="les38.html">les 38</a>: het is dezelfde schakeling, maar daar lopen er lange draden terug naar
+  de bron. Hier zie je in één oogopslag: de energie komt links van de + rail, gaat door de lamp en de transistor, en
+  rechts terug via de &minus; rail.</p>
+
+  <h2>De voltmeter: hoeveel spanning blijft er in de transistor?</h2>
+  <p>De <a href="voeding.html#serie">voltmeter</a> rechts hangt over de transistor, tussen de collector (C) en de
+  emitter (E). Hij meet de spanning <b>U<sub>ce</sub></b>: hoeveel van de 12&nbsp;V er in de transistor
+  &ldquo;blijft hangen&rdquo; in plaats van in de lamp. De lamp en de transistor staan na elkaar (in serie), dus samen
+  krijgen ze altijd de volle 12&nbsp;V van de bron.</p>
+  <table>
+    <tr><th>Schakelaar</th><th>Transistor</th><th>Voltmeter (U<sub>ce</sub>)</th><th>Lamp</th></tr>
+    <tr><td>open</td><td>spert: een <b>open</b> schakelaar</td><td>12&nbsp;V</td><td>0&nbsp;V, uit</td></tr>
+    <tr><td>dicht</td><td>verzadigd: een <b>gesloten</b> schakelaar</td><td>ongeveer 0,2&nbsp;V</td><td>ongeveer 11,8&nbsp;V, brandt</td></tr>
+  </table>
+  <p>Met water: is de grote kraan dicht, dan staat de volle druk van de pomp op de kraan, en het waterrad krijgt niets.
+  Staat de kraan helemaal open, dan kost ze bijna geen druk meer, en bijna alle druk gaat naar het waterrad.
+  Maar een beetje weerstand blijft er altijd in de kraan.</p>
+  <p>Die 0,2&nbsp;V is de <b>spanningsval</b> van een verzadigde transistor: hij is een goede, maar geen perfecte
+  schakelaar. Een gewone schakelaar of een relaiscontact heeft bijna 0&nbsp;V. De transistor neemt daardoor een
+  klein beetje vermogen op en wordt een beetje warm: P = U &times; I = 0,2&nbsp;V &times; 0,098&nbsp;A &asymp;
+  0,02&nbsp;W. Dat is weinig, tegenover 1,15&nbsp;W in de lamp.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie: de schakelaar is open, de transistor <b>spert</b>, de lamp is uit. De voltmeter toont 12&nbsp;V.</li>
+    <li>Sluit de schakelaar. Lees beide milliampèremeters en de voltmeter.</li>
+    <li>Kijk naar de elektronen: in welke rail lopen er meer, en waar komen de twee stromen samen?</li>
+  </ol>
+
+  <h2>Opdracht</h2>
+  <p>Hoeveel keer groter is de stroom door de lamp dan de stroom in de basis? Waarom is dit handig, bijvoorbeeld als
+  een klein lichtsensortje een grote lamp moet aanzetten?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Ongeveer 98&nbsp;mA tegenover 1,1&nbsp;mA: bijna 90 keer zoveel. Een zwak signaal (een sensor, een uitgang van
+    een poort) kan zo een grote verbruiker schakelen, net zoals met een <a href="les11.html">relais</a>, maar zonder
+    bewegende delen. In <a href="les40.html">les 40</a> doet een LDR precies dat.</p>
+  </details>
+
+  <div class="pager"><a href="lesp4.html">&larr; Energie 4: De verdeelleiding</a><a href="leerpad.html">Leerpad &rarr;</a></div>

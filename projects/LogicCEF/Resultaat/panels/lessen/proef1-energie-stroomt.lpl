@@ -1,0 +1,14 @@
+TjanBron;84;60;60;112;120;0;1;
+TjanAmpMeter;51;240;200;100;
+TjanLamp2;46;420;218;64;3;
+TjanVoltmeter2;51;400;300;100;
+TjanConnector;110;63;133;186;jcmBR;jcpTL;jcsTLBR;0,021505376344086;11;
+TjanConnector;9;331;234;98;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;110;161;133;323;jcmBR;jcpTL;jcsTLBR;0,984520123839009;11;
+TjanConnector;109;400;234;29;jcmTR;jcpBL;jcsTRBL;0,5;11;
+TjanConnector;109;475;234;25;jcmBR;jcpTL;jcsTLBR;0,5;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Voeding;1;
+Grid;True;
+Statusbalk;False;
