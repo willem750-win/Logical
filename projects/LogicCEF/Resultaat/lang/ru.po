@@ -1846,3 +1846,9 @@ msgstr "Условные обозначения: IEC (европейские) и
 
 msgid "Schematic symbols (IEC/ANSI)"
 msgstr "Условные обозначения (IEC/ANSI)"
+
+msgid "Click beside the knob for a step of 1."
+msgstr "Щёлкните рядом с ручкой, чтобы сделать шаг на 1."
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
+msgstr "Выключатель, который сам размыкается и замыкается. Между шиной + и входом он даёт импульсы. Щелчок по коробке: вкл. или выкл. Правый щелчок: частота."

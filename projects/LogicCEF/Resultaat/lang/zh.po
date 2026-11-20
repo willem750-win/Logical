@@ -1846,3 +1846,9 @@ msgstr "电路符号：IEC（欧洲）或 ANSI（美国）"
 
 msgid "Schematic symbols (IEC/ANSI)"
 msgstr "电路符号（IEC/ANSI）"
+
+msgid "Click beside the knob for a step of 1."
+msgstr "在旋钮旁边点击，每次移动 1。"
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
+msgstr "一个会自己断开和闭合的开关。接在 + 导轨和输入之间时产生脉冲。点击方框：开或关。右键：频率。"

@@ -1536,3 +1536,9 @@ msgstr "Simboli elettrici: IEC (europei) o ANSI (americani)"
 
 msgid "Schematic symbols (IEC/ANSI)"
 msgstr "Simboli elettrici (IEC/ANSI)"
+
+msgid "Click beside the knob for a step of 1."
+msgstr "Clicca accanto alla manopola per un passo di 1."
+
+msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
+msgstr "Un interruttore che si apre e si chiude da solo. Tra la barra + e un ingresso dà impulsi. Clic sulla scatola: acceso o spento. Clic destro: frequenza."

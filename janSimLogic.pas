@@ -3648,6 +3648,7 @@ end;
   private
     FStand: Integer;
     FSliding: Boolean;
+    FDragX, FDragStand: Integer;   // muis en stand bij het begin van het slepen
     procedure SetStand(const Value: Integer);
     function SliderRect: TRect;
     procedure SlideTo(X: Integer);
@@ -10317,26 +10318,38 @@ begin
   Result := Rect(22, 42, SensW - 22, 52);
 end;
 
+// slepen aan de knop: de stand verschuift evenveel als de muis, zonder te springen
 procedure TjanSensorR.SlideTo(X: Integer);
 var
   R: TRect;
 begin
   R := SliderRect;
-  Stand := Round((X - R.Left) / (R.Right - R.Left) * 100);
+  Stand := FDragStand + Round((X - FDragX) / (R.Right - R.Left) * 100);
 end;
 
 function TjanSensorR.HandleClick(X, Y: Integer): Boolean;
 var
   R: TRect;
+  XK: Integer;
 begin
   R := SliderRect;
   InflateRect(R, 4, 3);
   Result := PtInRect(R, Point(X, Y));
-  if Result then
+  if not Result then Exit;
+  R := SliderRect;
+  XK := R.Left + Round((R.Right - R.Left) * FStand / 100);
+  if Abs(X - XK) <= 6 then
   begin
+    // op de knop: verslepen
     FSliding := True;
-    SlideTo(X);
-  end;
+    FDragX := X;
+    FDragStand := FStand;
+  end
+  // naast de knop: een stap van 1 in die richting (fijn instellen)
+  else if X < XK then
+    Stand := FStand - 1
+  else
+    Stand := FStand + 1;
 end;
 
 procedure TjanSensorR.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -10496,7 +10509,9 @@ begin
       'Photorésistance : plus il y a de lumière, plus la résistance est faible' + #13#10 +
         '(1 MΩ dans le noir, 100 Ω en pleine lumière). Faites glisser le bouton pour régler la lumière.',
       'Fotowiderstand: Je mehr Licht, desto kleiner der Widerstand' + #13#10 +
-        '(1 MΩ im Dunkeln, 100 Ω bei hellem Licht). Ziehen Sie den Knopf, um das Licht einzustellen.');
+        '(1 MΩ im Dunkeln, 100 Ω bei hellem Licht). Ziehen Sie den Knopf, um das Licht einzustellen.') + #13#10 +
+    Tr(FTaal, 'Klik naast de knop voor een stap van 1.', 'Click beside the knob for a step of 1.',
+      'Cliquez à côté du bouton pour un pas de 1.', 'Neben den Knopf klicken für einen Schritt von 1.');
 end;
 
 { TjanNTC }
@@ -10564,7 +10579,9 @@ begin
       'Thermistance : plus il fait chaud, plus la résistance est faible' + #13#10 +
         '(10 kΩ à 25 °C). Faites glisser le bouton pour régler la température.',
       'Heißleiter: Je wärmer, desto kleiner der Widerstand' + #13#10 +
-        '(10 kΩ bei 25 °C). Ziehen Sie den Knopf, um die Temperatur einzustellen.');
+        '(10 kΩ bei 25 °C). Ziehen Sie den Knopf, um die Temperatur einzustellen.') + #13#10 +
+    Tr(FTaal, 'Klik naast de knop voor een stap van 1.', 'Click beside the knob for a step of 1.',
+      'Cliquez à côté du bouton pour un pas de 1.', 'Neben den Knopf klicken für einen Schritt von 1.');
 end;
 
 { TjanLamp2 }
