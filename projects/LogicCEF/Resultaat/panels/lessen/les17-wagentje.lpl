@@ -16,6 +16,7 @@ TjanConnector;10;398;195;197;jcmBR;jcpTL;jcsTLBR;0,2716;11;
 TjanConnector;9;76;205;47;jcmBR;jcpTL;jcsTLBR;0,5;11;
 TjanConnector;20;76;85;383;jcmTR;jcpBL;jcsTRBL;0,97389;11;
 TjanConnector;20;548;85;384;jcmBR;jcpTL;jcsTLBR;0,020833;11;
+TjanConnector;9;887;254;45;jcmBR;jcpTL;jcsTLBR;0,222222;11;
 Paneelkleur;-2147483626;
 Dotkleur;8421504;
 Grid;True;

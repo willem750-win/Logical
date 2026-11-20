@@ -346,6 +346,8 @@ type
     constructor Create(AOwner:TComponent); override;
     destructor Destroy; override;
     procedure paint; override;
+    // stroom door de draad (A, van begin naar einde) zoals de elektronen hem tonen
+    property StroomA: Double read FStroomA;
     // de ingang aan het einde van de draad uitzetten, vlak voor de draad
     // verwijderd wordt
     procedure Losmaken;
@@ -12664,11 +12666,21 @@ var
   Con: TjanConnector;
   Pa, Pb, Pin, Q: TPoint;
   Pins: TPinArray;
-  IC, T: Double;
+  IC, T, IPin: Double;
+  NAan: Integer;
   R: TjanRail;
   Ys: array of Integer;
   Is_: array of Double;
   Cum: Double;
+
+  // krijgt ingang J van uitvoer AC stroom? (persoon, wagentje, muziekdoos,
+  // verkeerslicht, slagboom en motor: alleen de ingangen die aan staan)
+  function PinAan(AC: TControl; J: Integer): Boolean;
+  begin
+    if AC is TjanSimPersoon then Result := TjanSimPersoon(AC).Inputs[J]
+    else if AC is TjanSimMotor then Result := TjanSimMotor(AC).Inputs[J]
+    else Result := True;
+  end;
 
   procedure Tap(AR: TjanRail; AY: Integer; AI: Double);
   var
@@ -12721,11 +12733,39 @@ begin
       if IC <= ElektronMinA then Continue;
       // via de stekker naar de - rail
       R := RailOf(C);
-      if R <> nil then Tap(R, PowerDot(C, False).Y, IC);
+      if R <> nil then
+      begin
+        Tap(R, PowerDot(C, False).Y, IC);
+        // met een min-draad (niet ingeplugd): de stroom loopt door die draad
+        // van het voedingsbolletje naar de - rail
+        if not RailFits(R, C, C.Left, C.Top) then
+          for k := 0 to P.ControlCount - 1 do
+            if (P.Controls[k] is TjanConnector) and P.Controls[k].Visible then
+            begin
+              Con := TjanConnector(P.Controls[k]);
+              Con.EndCenters(Pa, Pb);
+              if OnPowerDot(C, False, Pa) and (RailAtPoint(P, Pb) = R) then
+              begin
+                Con.FStroomNieuw := IC;
+                Break;
+              end
+              else if OnPowerDot(C, False, Pb) and (RailAtPoint(P, Pa) = R) then
+              begin
+                Con.FStroomNieuw := -IC;
+                Break;
+              end;
+            end;
+      end;
       // door de draad naar de ingang
       Pins := InputPins(C);
+      NAan := 0;
+      for j := 0 to High(Pins) do
+        if PinAan(C, j) then Inc(NAan);
+      if NAan = 0 then NAan := 1;
+      IPin := IC / NAan;
       for j := 0 to High(Pins) do
       begin
+        if not PinAan(C, j) then Continue;
         Pin := Point(C.Left + Pins[j].X + 3, C.Top + Pins[j].Y + 3);
         for k := 0 to P.ControlCount - 1 do
           if (P.Controls[k] is TjanConnector) and P.Controls[k].Visible then
@@ -12734,12 +12774,12 @@ begin
             Con.EndCenters(Pa, Pb);
             if Bij(Pb, Pin) then
             begin
-              Con.FStroomNieuw := IC;
+              Con.FStroomNieuw := IPin;
               Q := Pa;
             end
             else if Bij(Pa, Pin) then
             begin
-              Con.FStroomNieuw := -IC;
+              Con.FStroomNieuw := -IPin;
               Q := Pb;
             end
             else
@@ -12747,7 +12787,7 @@ begin
             // waar komt de draad vandaan: een rail, of een ingeplugde invoer
             R := RailAtPoint(P, Q);
             if R <> nil then
-              Tap(R, Q.Y, -IC)
+              Tap(R, Q.Y, -IPin)
             else
               for qi := 0 to P.ControlCount - 1 do
               begin
@@ -12757,7 +12797,7 @@ begin
                    (Q.Y >= Src.Top - 4) and (Q.Y <= Src.Top + Src.Height + 4) then
                 begin
                   R := RailOf(Src);
-                  if R <> nil then Tap(R, PowerDot(Src, True).Y, -IC);
+                  if R <> nil then Tap(R, PowerDot(Src, True).Y, -IPin);
                   Break;
                 end;
               end;
