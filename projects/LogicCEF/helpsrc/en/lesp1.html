@@ -1,0 +1,78 @@
+<!-- titel: Energy 1 - Energy flows like water -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#energie">Starting from energy</a> &rsaquo; Lesson 1 of 5</p>
+  <h1>Energy flows like water</h1>
+  <div class="goal"><strong>Goal:</strong> understand what a source, a wire and a lamp do, by comparing them with
+  water. You learn the words <b>voltage</b> and <b>current</b>.</div>
+
+  <h2>First: water</h2>
+  <p>Think of a fountain in a pond. A <b>pump</b> pushes the water up through a <b>pipe</b>. The water flows through a
+  <b>water wheel</b> and makes it turn: that is where the energy is used. Then the water flows back to the pump, and it
+  starts again. The water does not run out: it goes round.</p>
+  <figure>
+    <svg viewBox="0 0 560 210" role="img" aria-label="A pump pushes water through a pipe to a water wheel and back" style="max-width:560px;background:#fff;border:1px solid #ccc;border-radius:6px">
+      <path d="M90 150 V50 H420 V150 H90" fill="none" stroke="#7fb8e6" stroke-width="12" stroke-linejoin="round"/>
+      <g fill="#1f6fb2">
+        <path d="M84 110 l6 -12 l6 12 z"/><path d="M200 44 l12 6 l-12 6 z"/><path d="M320 44 l12 6 l-12 6 z"/>
+        <path d="M414 90 l6 12 l6 -12 z"/><path d="M330 144 l-12 6 l12 6 z"/><path d="M200 144 l-12 6 l12 6 z"/>
+      </g>
+      <circle cx="90" cy="150" r="26" fill="#e9f3fb" stroke="#1f6fb2" stroke-width="3"/>
+      <path d="M78 160 L90 136 L102 160" fill="none" stroke="#1f6fb2" stroke-width="3"/>
+      <text x="90" y="198" text-anchor="middle" font-size="14" fill="#222">pump = source</text>
+      <g transform="translate(420 100)">
+        <circle r="30" fill="#fff8d0" stroke="#b08a00" stroke-width="3"/>
+        <path d="M0 -30 V30 M-30 0 H30 M-21 -21 L21 21 M-21 21 L21 -21" stroke="#b08a00" stroke-width="3"/>
+      </g>
+      <text x="470" y="104" font-size="14" fill="#222">water wheel</text>
+      <text x="470" y="122" font-size="14" fill="#222">= lamp</text>
+      <text x="255" y="30" text-anchor="middle" font-size="14" fill="#222">pipe = wire (out)</text>
+      <text x="255" y="182" text-anchor="middle" font-size="14" fill="#222">pipe = wire (back)</text>
+    </svg>
+    <figcaption>The water goes round: from the pump through the water wheel and back to the pump.</figcaption>
+  </figure>
+
+  <h2>Then: electricity</h2>
+  <p>An electric circuit works the same way. The source pushes, the wires carry the current, and the lamp uses the
+  energy to make light and heat.</p>
+  <table>
+    <tr><th>Water</th><th>Electricity</th><th>Unit</th></tr>
+    <tr><td>the pump</td><td>the <b>source</b> (a battery)</td><td></td></tr>
+    <tr><td>how hard the pump pushes (the pressure)</td><td>the <b>voltage</b> U</td><td>volt (V)</td></tr>
+    <tr><td>how much water passes per second</td><td>the <b>current</b> I</td><td>ampere (A), or milliampere (mA)</td></tr>
+    <tr><td>the pipe</td><td>the <b>wire</b></td><td></td></tr>
+    <tr><td>the water wheel</td><td>the <b>lamp</b> (the load)</td><td></td></tr>
+  </table>
+
+  <p><a class="open" href="../../panels/lessen/proef1-energie-stroomt.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/lesp1.png" alt="A 12 V source, a milliammeter and a lamp in a circuit, with a voltmeter across the lamp">
+    <figcaption>The source is set to 12&nbsp;V: 100&nbsp;mA flows through the circuit and the lamp is on.</figcaption>
+  </figure>
+  <p>In the example the <b>electrons</b> are switched on: the blue dots in the wires. That way you see the current move,
+  like the water in the pipe. They run from the &minus; terminal of the source, through the lamp, to the + terminal.
+  The <a href="voeding.html#ampmeter">milliammeter</a> counts how much current passes, the
+  <a href="voeding.html#serie">voltmeter</a> measures the voltage across the lamp.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Click <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Start simulation</b>.</li>
+    <li>Drag the slider of the source to 6&nbsp;V. Look at the lamp, the meters and the electrons.</li>
+    <li>Drag it to 0&nbsp;V. What happens?</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>Fill in: the higher the voltage, the ... the current and the ... the lamp. Why do the electrons stand still at
+  0&nbsp;V? What would that be at the fountain?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>The higher the voltage, the <b>larger</b> the current and the <b>brighter</b> the lamp: at 12&nbsp;V, 100&nbsp;mA
+    flows, at 6&nbsp;V only 50&nbsp;mA. At 0&nbsp;V the source no longer pushes: no current flows and the lamp is off.
+    At the fountain that is a pump that has stopped: the water stands still and the water wheel does not turn.</p>
+  </details>
+
+  <h2>Look inside the wire</h2>
+  <p>Slide the voltage below and look through the magnifying glass into the copper wire.</p>
+  <div class="stroomdemo" data-dec="." data-label="Voltage of the source:"
+    data-stil="U = 0 V: there is no voltage pushing the electrons, so no current flows (I = 0 A)."></div>
+  <script src="../stroom.js"></script>
+
+  <div class="pager"><a href="leerpad.html">&larr; Learning path</a><a href="lesp2.html">Energy 2: The circuit must be closed &rarr;</a></div>

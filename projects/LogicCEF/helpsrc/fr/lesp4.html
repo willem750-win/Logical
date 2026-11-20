@@ -1,0 +1,49 @@
+<!-- titel: Énergie 4 - La distribution : les rails -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#energie">Partir de l&rsquo;énergie</a> &rsaquo; Leçon 4 sur 5</p>
+  <h1>La distribution&nbsp;: les rails</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> brancher beaucoup de récepteurs sur une seule source avec un
+  <b>rail +</b> (alimentation) et un <b>rail &minus;</b> (retour), et voir que les courants s&rsquo;additionnent.</div>
+
+  <h2>L&rsquo;eau dans une maison</h2>
+  <p>Dans une maison, chaque robinet n&rsquo;a pas son propre tuyau jusqu&rsquo;à la conduite d&rsquo;eau de la rue. Il y a
+  une <b>conduite principale</b> qui amène l&rsquo;eau, et chaque robinet en prend une dérivation. L&rsquo;eau usée part
+  par une seule <b>évacuation</b>.</p>
+  <p>Dans la <a href="lesp3.html">leçon 3</a>, chaque circuit retournait à la source avec ses propres fils. Avec dix
+  lampes, cela devient un enchevêtrement de fils. C&rsquo;est pourquoi nous utilisons désormais des <b>rails</b>&nbsp;:</p>
+  <ul>
+    <li>le <b>rail +</b> rouge est la conduite d&rsquo;alimentation&nbsp;: il reçoit la tension de la borne + de la source&nbsp;;</li>
+    <li>le <b>rail &minus;</b> bleu est le retour, vers la borne &minus; de la source (0&nbsp;V, la masse)&nbsp;;</li>
+    <li>chaque récepteur se trouve <b>entre</b> les deux rails&nbsp;: l&rsquo;alimentation à gauche, le retour à droite.</li>
+  </ul>
+  <p>Ainsi chaque circuit a le même aspect&nbsp;: l&rsquo;énergie entre à gauche et repart à droite.</p>
+
+  <p><a class="open" href="../../panels/lessen/proef4-verdeelleiding-rails.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/lesp4.png" alt="Une source en haut alimente un rail + et un rail - ; trois interrupteurs avec une lampe sont placés entre eux">
+    <figcaption>Trois lampes allumées, 100&nbsp;mA chacune&nbsp;: le milliampèremètre dans l&rsquo;alimentation mesure 300&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation et fermez un interrupteur. Lisez le milliampèremètre.</li>
+    <li>Fermez un deuxième et un troisième interrupteur. Que fait l&rsquo;appareil&nbsp;? Et les lampes qui brillaient déjà&nbsp;?</li>
+    <li>Regardez les électrons dans les rails&nbsp;: où vont-ils le plus vite&nbsp;?</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Combien de courant l&rsquo;appareil mesure-t-il avec 1, 2 et 3 lampes&nbsp;? Pourquoi une lampe ne faiblit-elle pas
+  quand on en ajoute une&nbsp;? Qu&rsquo;est-ce que cela signifie pour l&rsquo;épaisseur de la conduite principale
+  d&rsquo;une maison&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>100, 200 et 300&nbsp;mA&nbsp;: les courants des lampes <b>s&rsquo;additionnent</b> dans l&rsquo;alimentation. Chaque
+    lampe est directement entre les rails et reçoit donc les 12&nbsp;V complets&nbsp;; c&rsquo;est pourquoi elle reste
+    aussi vive. Les lampes sont en <b>parallèle</b>. La conduite principale doit pouvoir porter le courant de tous les
+    récepteurs ensemble&nbsp;: elle est plus épaisse que le fil vers une seule lampe. C&rsquo;est aussi pourquoi elle
+    contient un <a href="les23.html">fusible</a>.</p>
+  </details>
+  <div class="tip"><strong>Bon à savoir&nbsp;:</strong> dans les leçons avec des portes (comme la
+  <a href="les10.html">leçon 10</a>), les rails sont aussi l&rsquo;alimentation des boutons-poussoirs et des
+  lampes&nbsp;: on les branche alors directement sur le rail. Voir <a href="voeding.html#inpluggen">Brancher</a>.</div>
+
+  <div class="pager"><a href="lesp3.html">&larr; Énergie 3&nbsp;: Interrupteur ou bouton-poussoir</a><a href="lesp5.html">Énergie 5&nbsp;: Le transistor sur rails &rarr;</a></div>

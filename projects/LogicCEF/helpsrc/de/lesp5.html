@@ -1,0 +1,62 @@
+<!-- titel: Energie 5 - Der Transistor auf Schienen -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#energie">Von der Energie aus</a> &rsaquo; Lektion 5 von 5</p>
+  <h1>Der Transistor auf Schienen</h1>
+  <div class="goal"><strong>Ziel:</strong> mit einem <b>kleinen</b> Strom einen <b>großen</b> Strom schalten, und sehen,
+  dass auch eine elektronische Schaltung einfach zwischen den Schienen hängt.</div>
+
+  <h2>Ein Hahn, den man mit einem kleinen Hahn bedient</h2>
+  <p>Stellen Sie sich einen großen Hahn mit einem kleinen Steuerhahn daneben vor. Öffnen Sie den kleinen Hahn, dann
+  drückt das bisschen Wasser den großen Hahn auf, und es fließt viel Wasser. Ein
+  <a href="voeding.html#transistor">Transistor</a> macht das mit Strom:</p>
+  <ul>
+    <li>der kleine Strom geht von der + Schiene durch den Schalter und den Widerstand in die <b>Basis</b> (B);</li>
+    <li>der große Strom geht von der + Schiene durch die Lampe in den <b>Kollektor</b> (C);</li>
+    <li>beide kommen zusammen aus dem <b>Emitter</b> (E) und gehen über die &minus; Schiene zur Quelle zurück.</li>
+  </ul>
+
+  <p><a class="open" href="../../panels/lessen/proef5-transistor-op-rails.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/lesp5.png" alt="Quelle oben, + Schiene links, - Schiene rechts; oben die Lampe zum Kollektor, unten der Schalter und 10 Kiloohm zur Basis">
+    <figcaption>Mit 1,1&nbsp;mA in der Basis schaltet der Transistor 98&nbsp;mA durch die Lampe. Über dem Transistor
+    bleiben nur 0,2&nbsp;V.</figcaption>
+  </figure>
+  <p>Vergleichen Sie mit <a href="les38.html">Lektion 38</a>: Es ist dieselbe Schaltung, aber dort laufen lange Drähte zur
+  Quelle zurück. Hier sehen Sie auf einen Blick: Die Energie kommt links von der + Schiene, geht durch die Lampe und den
+  Transistor und rechts über die &minus; Schiene zurück.</p>
+
+  <h2>Das Voltmeter: Wie viel Spannung bleibt im Transistor?</h2>
+  <p>Das <a href="voeding.html#serie">Voltmeter</a> rechts hängt über dem Transistor, zwischen Kollektor (C) und Emitter
+  (E). Es misst die Spannung <b>U<sub>ce</sub></b>: wie viel der 12&nbsp;V im Transistor &bdquo;hängen bleibt&ldquo;
+  statt in der Lampe. Lampe und Transistor liegen hintereinander (in Reihe), also bekommen sie zusammen immer die vollen
+  12&nbsp;V der Quelle.</p>
+  <table>
+    <tr><th>Schalter</th><th>Transistor</th><th>Voltmeter (U<sub>ce</sub>)</th><th>Lampe</th></tr>
+    <tr><td>offen</td><td>sperrt: ein <b>offener</b> Schalter</td><td>12&nbsp;V</td><td>0&nbsp;V, aus</td></tr>
+    <tr><td>geschlossen</td><td>gesättigt: ein <b>geschlossener</b> Schalter</td><td>etwa 0,2&nbsp;V</td><td>etwa 11,8&nbsp;V, leuchtet</td></tr>
+  </table>
+  <p>Mit Wasser: Ist der große Hahn zu, liegt der volle Druck der Pumpe am Hahn, und das Wasserrad bekommt nichts. Ist
+  der Hahn ganz offen, kostet er fast keinen Druck mehr, und fast der ganze Druck geht zum Wasserrad. Aber ein wenig
+  Widerstand bleibt immer im Hahn.</p>
+  <p>Diese 0,2&nbsp;V sind der <b>Spannungsabfall</b> eines gesättigten Transistors: Er ist ein guter, aber kein perfekter
+  Schalter. Ein gewöhnlicher Schalter oder ein Relaiskontakt hat fast 0&nbsp;V. Der Transistor nimmt dadurch ein wenig
+  Leistung auf und wird etwas warm: P = U &times; I = 0,2&nbsp;V &times; 0,098&nbsp;A &asymp; 0,02&nbsp;W. Das ist wenig
+  gegenüber 1,15&nbsp;W in der Lampe.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation: Der Schalter ist offen, der Transistor <b>sperrt</b>, die Lampe ist aus. Das Voltmeter zeigt 12&nbsp;V.</li>
+    <li>Schließen Sie den Schalter. Lesen Sie beide Milliamperemeter und das Voltmeter ab.</li>
+    <li>Achten Sie auf die Elektronen: In welcher Schiene laufen mehr, und wo kommen die zwei Ströme zusammen?</li>
+  </ol>
+
+  <h2>Übung</h2>
+  <p>Wie viel Mal größer ist der Strom durch die Lampe als der Strom in der Basis? Warum ist das praktisch, zum Beispiel
+  wenn ein kleiner Lichtsensor eine große Lampe einschalten soll?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Etwa 98&nbsp;mA gegenüber 1,1&nbsp;mA: fast 90-mal so viel. Ein schwaches Signal (ein Sensor, ein Ausgang eines
+    Gatters) kann so einen großen Verbraucher schalten, wie mit einem <a href="les11.html">Relais</a>, aber ohne bewegliche
+    Teile. In <a href="les40.html">Lektion 40</a> macht ein LDR genau das.</p>
+  </details>
+
+  <div class="pager"><a href="lesp4.html">&larr; Energie 4: Die Verteilung</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

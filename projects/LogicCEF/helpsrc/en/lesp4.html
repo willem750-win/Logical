@@ -1,0 +1,46 @@
+<!-- titel: Energy 4 - The distribution line: rails -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#energie">Starting from energy</a> &rsaquo; Lesson 4 of 5</p>
+  <h1>The distribution line: rails</h1>
+  <div class="goal"><strong>Goal:</strong> connect many loads to one source with a <b>+ rail</b> (supply) and a
+  <b>&minus; rail</b> (return), and see that the currents add up.</div>
+
+  <h2>Water in a house</h2>
+  <p>In a house, not every tap has its own pipe to the water main in the street. There is one <b>main pipe</b> that
+  brings in the water, and every tap takes a branch from it. The waste water leaves through one <b>drain</b>.</p>
+  <p>In <a href="lesp3.html">lesson 3</a> every circuit went back to the source with its own wires. With ten lamps that
+  becomes a tangle of wires. That is why from now on we use <b>rails</b>:</p>
+  <ul>
+    <li>the red <b>+ rail</b> is the supply line: it gets the voltage of the + terminal of the source;</li>
+    <li>the blue <b>&minus; rail</b> is the return, back to the &minus; terminal of the source (0&nbsp;V, ground);</li>
+    <li>every load sits <b>between</b> the two rails: supply on the left, return on the right.</li>
+  </ul>
+  <p>That way every circuit looks the same: the energy comes in on the left and goes back on the right.</p>
+
+  <p><a class="open" href="../../panels/lessen/proef4-verdeelleiding-rails.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/lesp4.png" alt="A source at the top feeds a + rail and a - rail; three switches with a lamp sit between them">
+    <figcaption>Three lamps on, 100&nbsp;mA each: the milliammeter in the supply measures 300&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and close one switch. Read the milliammeter.</li>
+    <li>Close a second and a third switch. What does the meter do? And the lamps that were already on?</li>
+    <li>Look at the electrons in the rails: where do they go fastest?</li>
+  </ol>
+
+  <h2>Exercise</h2>
+  <p>How much current does the meter measure with 1, 2 and 3 lamps? Why does a lamp not get dimmer when you add one?
+  What does that mean for the thickness of the main pipe in a house?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>100, 200 and 300&nbsp;mA: the currents of the lamps <b>add up</b> in the supply. Each lamp sits directly between
+    the rails and so gets the full 12&nbsp;V; that is why it stays just as bright. The lamps are in <b>parallel</b>.
+    The main line must be able to carry the current of all loads together: it is thicker than the wire to one lamp.
+    That is also why there is a <a href="les23.html">fuse</a> in it.</p>
+  </details>
+  <div class="tip"><strong>Good to know:</strong> in the lessons with gates (such as <a href="les10.html">lesson 10</a>)
+  the rails are also the power supply of push buttons and lamps: you then plug those straight onto the rail. See
+  <a href="voeding.html#inpluggen">Plugging in</a>.</div>
+
+  <div class="pager"><a href="lesp3.html">&larr; Energy 3: Switch or push button</a><a href="lesp5.html">Energy 5: The transistor on rails &rarr;</a></div>

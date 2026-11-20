@@ -1,0 +1,52 @@
+<!-- titel: Énergie 2 - Le circuit doit être fermé -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#energie">Partir de l&rsquo;énergie</a> &rsaquo; Leçon 2 sur 5</p>
+  <h1>Le circuit doit être fermé</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> découvrir que le courant ne passe que dans un <b>circuit fermé</b>&nbsp;:
+  de la source, à travers la lampe et retour à la source. Un interrupteur est un robinet qui ouvre ou ferme le circuit.</div>
+
+  <h2>Un robinet dans le tuyau</h2>
+  <p>Si vous fermez un robinet dans la fontaine de la <a href="lesp1.html">leçon 1</a>, l&rsquo;eau s&rsquo;arrête
+  <b>partout</b>&nbsp;: pas seulement derrière le robinet, mais dans tout le tuyau. L&rsquo;eau ne peut plus faire le tour.
+  Peu importe que le robinet soit dans le tuyau vers la roue à aubes ou dans le tuyau de retour vers la pompe.</p>
+  <p>Un <b>interrupteur</b> fait la même chose avec le courant. Attention aux mots&nbsp;:</p>
+  <ul>
+    <li>interrupteur <b>fermé</b> (allumé)&nbsp;: le circuit est <b>fermé</b>, le courant passe&nbsp;;</li>
+    <li>interrupteur <b>ouvert</b> (éteint)&nbsp;: le circuit est <b>ouvert</b>, le courant ne passe pas.</li>
+  </ul>
+  <p>Un robinet, c&rsquo;est justement l&rsquo;inverse&nbsp;: un robinet ouvert laisse passer l&rsquo;eau. C&rsquo;est
+  pourquoi, pour un interrupteur, on dit plutôt <b>fermé</b> et <b>ouvert</b> comme pour un pont-levis&nbsp;: un pont
+  fermé, on peut le traverser.</p>
+
+  <p><a class="open" href="../../panels/lessen/proef2-gesloten-kring.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/lesp2-open.png" alt="Un circuit avec un interrupteur dans le fil aller (fermé) et un dans le fil retour (ouvert)">
+    <figcaption>L&rsquo;interrupteur du bas est fermé, celui du haut ouvert&nbsp;: le circuit n&rsquo;est pas fermé, l&rsquo;appareil indique 0&nbsp;mA.</figcaption>
+  </figure>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation. Les deux interrupteurs sont ouverts&nbsp;: pas d&rsquo;électrons, pas de lumière.</li>
+    <li>Fermez seulement l&rsquo;interrupteur du bas (l&rsquo;aller). Le courant passe-t-il maintenant&nbsp;? Regardez les
+      électrons <b>avant</b> la lampe et <b>après</b> la lampe.</li>
+    <li>Fermez maintenant aussi l&rsquo;interrupteur du haut (le retour).</li>
+  </ol>
+  <figure>
+    <img src="../img/lesp2.png" alt="Les deux interrupteurs fermés : la lampe brille et l'appareil indique 100 mA">
+    <figcaption>Les deux interrupteurs fermés&nbsp;: le circuit est fermé, la lampe brille.</figcaption>
+  </figure>
+
+  <h2>Exercice</h2>
+  <p>Expliquez avec vos mots pourquoi la lampe reste éteinte quand seul l&rsquo;interrupteur du bas est fermé. Il y a
+  pourtant de la tension sur la lampe&nbsp;? Pensez ensuite&nbsp;: ici la lampe doit briller quand l&rsquo;interrupteur 1
+  <b>et</b> l&rsquo;interrupteur 2 sont fermés. Où avez-vous déjà vu cela&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Le courant ne peut pas revenir à la source&nbsp;: le circuit est ouvert. Sans chemin de retour, rien ne circule
+    nulle part, même pas dans le morceau de fil qui est relié à la source, tout comme l&rsquo;eau ne fait pas le tour
+    avec un robinet fermé dans le tuyau de retour.</p>
+    <p>Deux interrupteurs l&rsquo;un après l&rsquo;autre (en <b>série</b>) fonctionnent comme un <b>ET</b>&nbsp;: la lampe
+    ne brille que si l&rsquo;un <b>et</b> l&rsquo;autre sont fermés. C&rsquo;est exactement ce que fait une
+    <a href="les04.html">porte ET</a>. Une porte est donc un circuit qui laisse passer ou retient le courant.</p>
+  </details>
+
+  <div class="pager"><a href="lesp1.html">&larr; Énergie 1&nbsp;: L&rsquo;énergie coule comme l&rsquo;eau</a><a href="lesp3.html">Énergie 3&nbsp;: Interrupteur ou bouton-poussoir &rarr;</a></div>

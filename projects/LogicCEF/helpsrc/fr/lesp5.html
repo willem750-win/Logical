@@ -1,0 +1,63 @@
+<!-- titel: Énergie 5 - Le transistor sur rails -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#energie">Partir de l&rsquo;énergie</a> &rsaquo; Leçon 5 sur 5</p>
+  <h1>Le transistor sur rails</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> commuter un <b>grand</b> courant avec un <b>petit</b> courant, et voir
+  qu&rsquo;un circuit électronique se place lui aussi simplement entre les rails.</div>
+
+  <h2>Un robinet commandé par un petit robinet</h2>
+  <p>Imaginez un grand robinet avec un petit robinet de commande à côté. Si vous ouvrez le petit robinet, ce peu
+  d&rsquo;eau pousse le grand robinet à s&rsquo;ouvrir, et beaucoup d&rsquo;eau coule. Un
+  <a href="voeding.html#transistor">transistor</a> fait cela avec le courant&nbsp;:</p>
+  <ul>
+    <li>le petit courant va du rail +, à travers l&rsquo;interrupteur et la résistance, dans la <b>base</b> (B)&nbsp;;</li>
+    <li>le grand courant va du rail +, à travers la lampe, dans le <b>collecteur</b> (C)&nbsp;;</li>
+    <li>les deux sortent ensemble par l&rsquo;<b>émetteur</b> (E) et retournent à la source par le rail &minus;.</li>
+  </ul>
+
+  <p><a class="open" href="../../panels/lessen/proef5-transistor-op-rails.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/lesp5.png" alt="Source en haut, rail + à gauche, rail - à droite ; en haut la lampe vers le collecteur, en bas l'interrupteur et 10 kilo-ohms vers la base">
+    <figcaption>Avec 1,1&nbsp;mA dans la base, le transistor commute 98&nbsp;mA à travers la lampe. Il ne reste que
+    0,2&nbsp;V aux bornes du transistor.</figcaption>
+  </figure>
+  <p>Comparez avec la <a href="les38.html">leçon 38</a>&nbsp;: c&rsquo;est le même circuit, mais de longs fils y retournent à
+  la source. Ici vous voyez d&rsquo;un coup d&rsquo;œil&nbsp;: l&rsquo;énergie vient du rail + à gauche, passe par la lampe
+  et le transistor, et repart à droite par le rail &minus;.</p>
+
+  <h2>Le voltmètre&nbsp;: combien de tension reste dans le transistor&nbsp;?</h2>
+  <p>Le <a href="voeding.html#serie">voltmètre</a> de droite est aux bornes du transistor, entre le collecteur (C) et
+  l&rsquo;émetteur (E). Il mesure la tension <b>U<sub>ce</sub></b>&nbsp;: combien des 12&nbsp;V &laquo;&nbsp;restent&nbsp;&raquo;
+  dans le transistor au lieu de la lampe. La lampe et le transistor sont l&rsquo;un après l&rsquo;autre (en série), ils
+  reçoivent donc toujours ensemble les 12&nbsp;V complets de la source.</p>
+  <table>
+    <tr><th>Interrupteur</th><th>Transistor</th><th>Voltmètre (U<sub>ce</sub>)</th><th>Lampe</th></tr>
+    <tr><td>ouvert</td><td>bloqué&nbsp;: un interrupteur <b>ouvert</b></td><td>12&nbsp;V</td><td>0&nbsp;V, éteinte</td></tr>
+    <tr><td>fermé</td><td>saturé&nbsp;: un interrupteur <b>fermé</b></td><td>environ 0,2&nbsp;V</td><td>environ 11,8&nbsp;V, allumée</td></tr>
+  </table>
+  <p>Avec l&rsquo;eau&nbsp;: si le grand robinet est fermé, toute la pression de la pompe est sur le robinet, et la roue
+  à aubes ne reçoit rien. Si le robinet est grand ouvert, il ne coûte presque plus de pression, et presque toute la
+  pression va à la roue. Mais il reste toujours un peu de résistance dans le robinet.</p>
+  <p>Ces 0,2&nbsp;V sont la <b>chute de tension</b> d&rsquo;un transistor saturé&nbsp;: c&rsquo;est un bon interrupteur, mais
+  pas parfait. Un interrupteur ordinaire ou un contact de relais a presque 0&nbsp;V. Le transistor consomme donc un peu
+  de puissance et chauffe un peu&nbsp;: P = U &times; I = 0,2&nbsp;V &times; 0,098&nbsp;A &asymp; 0,02&nbsp;W.
+  C&rsquo;est peu, comparé à 1,15&nbsp;W dans la lampe.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation&nbsp;: l&rsquo;interrupteur est ouvert, le transistor est <b>bloqué</b>, la lampe est
+      éteinte. Le voltmètre indique 12&nbsp;V.</li>
+    <li>Fermez l&rsquo;interrupteur. Lisez les deux milliampèremètres et le voltmètre.</li>
+    <li>Regardez les électrons&nbsp;: dans quel rail y en a-t-il le plus, et où les deux courants se rejoignent-ils&nbsp;?</li>
+  </ol>
+
+  <h2>Exercice</h2>
+  <p>Combien de fois le courant dans la lampe est-il plus grand que le courant dans la base&nbsp;? Pourquoi est-ce
+  pratique, par exemple quand un petit capteur de lumière doit allumer une grande lampe&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Environ 98&nbsp;mA contre 1,1&nbsp;mA&nbsp;: presque 90 fois plus. Un signal faible (un capteur, une sortie de
+    porte) peut ainsi commuter un grand récepteur, comme avec un <a href="les11.html">relais</a>, mais sans pièces
+    mobiles. Dans la <a href="les40.html">leçon 40</a>, une LDR fait exactement cela.</p>
+  </details>
+
+  <div class="pager"><a href="lesp4.html">&larr; Énergie 4&nbsp;: La distribution</a><a href="leerpad.html">Parcours &rarr;</a></div>
