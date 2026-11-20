@@ -7,7 +7,7 @@
   <p><a class="open" href="../../panels/lessen/les36-enkelzijdig.lpl">&#9654; Open this example</a></p>
   <figure>
     <img src="../img/les36.png" alt="AC voltage source with a diode and a lamp in series; on the left an oscilloscope across the source showing a sine, on the right one across the lamp showing only the positive half waves">
-    <figcaption>Source &rarr; diode &rarr; lamp. On the left the oscilloscope across the source (the whole sine), on the right the one across the lamp (only the upper halves).</figcaption>
+    <figcaption>Source &rarr; diode &rarr; + rail, with the lamp between the rails. On the left the oscilloscope across the source (the whole sine), on the right the one across the lamp (only the upper halves).</figcaption>
   </figure>
 
   <h2>The diode lets half through</h2>
@@ -19,6 +19,11 @@
   </ol>
   <p>The voltage across the lamp no longer changes direction: it is <b>rectified</b>. Because only one half of each wave is used,
   this is called <b>half-wave</b> rectification. The peak across the lamp is 12 &minus; 0.7 = 11.3&nbsp;V: the diode takes 0.7&nbsp;V.</p>
+
+  <h2>Rails after the diode</h2>
+  <p>After the diode the voltage no longer changes direction. That is why the diode feeds a <b>+ rail</b>; the other terminal
+  of the source goes to the <b>&minus; rail</b>. The lamp and the right oscilloscope sit between the rails, as in the previous
+  lessons. Watch the number above the + rail: it rises to 11.3&nbsp;V and drops back to 0&nbsp;V, but never goes negative.</p>
 
   <h2>Assignment: the other half</h2>
   <p>Turn the diode round (right-click &rsaquo; <b>Turn round</b>). What does the right oscilloscope show now?</p>

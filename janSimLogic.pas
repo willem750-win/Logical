@@ -25769,7 +25769,7 @@ end;
 class function TjanSimLogicBox.IsInvoer(C: TControl): Boolean;
 begin
   Result := (C is TjanSimKnop) or (C is TjanSimButton) or (C is TjanDipSwitsh) or
-    (C is TjanSimSensor) or (C is TjanSimWarm);
+    (C is TjanSimSensor) or (C is TjanSimWarm) or (C is TjanSchakelaar2);
 end;
 
 class function TjanSimLogicBox.IsUitvoer(C: TControl): Boolean;
@@ -25785,6 +25785,7 @@ begin
   else if C is TjanDipSwitsh then Result := TjanDipSwitsh(C).Down
   else if C is TjanSimSensor then Result := TjanSimSensor(C).Down
   else if C is TjanSimWarm then Result := TjanSimWarm(C).Down
+  else if C is TjanSchakelaar2 then Result := TjanSchakelaar2(C).Aan
   else Result := False;
 end;
 
@@ -25794,7 +25795,8 @@ begin
   else if C is TjanSimButton then TjanSimButton(C).Down := V
   else if C is TjanDipSwitsh then TjanDipSwitsh(C).Down := V
   else if C is TjanSimSensor then TjanSimSensor(C).Down := V
-  else if C is TjanSimWarm then TjanSimWarm(C).Down := V;
+  else if C is TjanSimWarm then TjanSimWarm(C).Down := V
+  else if C is TjanSchakelaar2 then TjanSchakelaar2(C).Aan := V;
 end;
 
 class function TjanSimLogicBox.UitvoerTeken(C: TControl): Char;
