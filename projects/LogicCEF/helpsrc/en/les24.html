@@ -13,14 +13,19 @@
   <h2>The circuit</h2>
   <ul>
     <li>The <a href="voeding.html#bron">source</a> is set to <b>12&nbsp;V</b>, without internal resistance (Ri = 0&nbsp;&Omega;).</li>
-    <li>The + terminal goes through a 500&nbsp;mA <a href="voeding.html#zekering">fuse</a>, the
-      <a href="voeding.html#ampmeter">milliammeter</a> and a <a href="voeding.html#weerstand">contact</a> to the + rail.
+    <li>The + terminal goes through a 500&nbsp;mA <a href="voeding.html#zekering">fuse</a>, a
+      <a href="voeding.html#weerstand">contact</a> and the <a href="voeding.html#ampmeter">milliammeter</a> to the + rail.
       The contact starts as a <b>poor contact</b>.</li>
     <li>The top <a href="voeding.html#voltmeter">voltmeter</a> sits <b>across the contact</b>: + on the terminal on the
       source side, &minus; on the terminal on the rail side. It measures the difference: the <b>voltage drop</b>.</li>
     <li>Between the + rail and the &minus; rail there are three branches, each with a <a href="voeding.html#serie">switch and a lamp</a> of 120&nbsp;&Omega;.</li>
     <li>The bottom voltmeter measures the voltage on the + rail: what is left for the lamps.</li>
   </ul>
+  <div class="tip"><strong>Why a resistor?</strong> A contact is the place where two conductors touch: a terminal, a plug
+  or the contacts of a switch. When it is loose, dirty or burnt, it lets the current through less easily. It then behaves
+  like a small <b>resistor</b>. That is why Logic represents a contact with a <a href="voeding.html#weerstand">resistor</a>;
+  below the symbol it says what the contact is like. Right-click &rsaquo; <b>Kind</b> to choose: <b>good contact</b>
+  (0.05&nbsp;&Omega;), <b>poor contact</b> (2&nbsp;&Omega;) or <b>burnt contact</b> (10&nbsp;&Omega;).</div>
 
   <h2>Voltage drop and heat</h2>
   <p>The current of all the lamps flows through the contact. There is then a voltage across the contact:</p>

@@ -9992,7 +9992,9 @@ begin
       // rechtop: waarde en soort rechts naast het blokje, de soort op twee regels
       X := CY + 13;
       TextOut(X, WeerstandW div 2 - 16, S);
-      Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+      Font.Size := 7; Font.Style := []; Font.Color := clBlack;
+      if FSoort <= 3 then Font.Style := [fsBold];
+      if FSoort = 3 then Font.Color := RGBToColor(150, 0, 0);
       S := WeerstandNaam(FTaal, FSoort);
       K := Pos(' ', S);
       if (TextWidth(S) > Width - X) and (K > 0) then
@@ -10015,10 +10017,19 @@ begin
     end;
     TW := TextWidth(S);
     TextOut((WeerstandW - TW) div 2, CY - 6, S);
-    Font.Size := 6; Font.Style := []; Font.Color := clBlack;
+    // de soort eronder, goed leesbaar: een contact vet (verbrand in donkerrood)
+    if FSoort <= 3 then
+    begin
+      Font.Size := 8; Font.Style := [];
+      if FSoort = 3 then Font.Color := RGBToColor(150, 0, 0) else Font.Color := clBlack;
+    end
+    else
+    begin
+      Font.Size := 7; Font.Style := []; Font.Color := clBlack;
+    end;
     S := WeerstandNaam(FTaal, FSoort);
     TW := TextWidth(S);
-    TextOut((WeerstandW - TW) div 2, CY + 11, S);
+    TextOut((WeerstandW - TW) div 2, CY + 10, S);
   end;
   PaintSelection;
 end;
