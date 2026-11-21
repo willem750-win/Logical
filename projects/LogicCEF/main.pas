@@ -2814,11 +2814,9 @@ begin
 
    SaveLanguageSetting;
 
-  {$IFDEF WINDOWS}
-  if Assigned(MiniBrowserFrm) then
-    MiniBrowserFrm.Hide;
-  {$ENDIF}
-  {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}
+  // de ingebouwde browser echt sluiten: anders blijft het afsluiten van CEF
+  // (DestroyGlobalCEFApp in logic.lpr) erop wachten
+  {$IF DEFINED(WINDOWS) OR (DEFINED(LINUX) AND DEFINED(LCLGTK2))}
   CloseMiniBrowser;
   {$ENDIF}
 end;

@@ -364,6 +364,9 @@ var
   OnHelpOpenPanel : TOpenPanelEvent = nil;
 
 procedure CreateGlobalCEFApp;
+// Bij het afsluiten van Logic: de browser echt sluiten (niet alleen het
+// venster verbergen), anders blijft DestroyGlobalCEFApp erop wachten.
+procedure CloseMiniBrowser;
 
 implementation
 
@@ -1762,6 +1765,29 @@ end;
 procedure TMiniBrowserFrm.BrowserDestroyMsg(var aMessage : TMessage);
 begin
   FreeAndNil(CEFWindowParent1);
+end;
+
+procedure CloseMiniBrowser;
+var
+  Tot: QWord;
+begin
+  if MiniBrowserFrm = nil then Exit;
+  with MiniBrowserFrm do
+  begin
+    FClosing := True;
+    Hide;
+    if Chromium1.Initialized then
+    begin
+      Chromium1.CloseAllBrowsers;
+      // wachten op OnBeforeClose (zet FCanClose), hoogstens 3 seconden
+      Tot := GetTickCount64 + 3000;
+      while not FCanClose and (GetTickCount64 < Tot) do
+      begin
+        Application.ProcessMessages;
+        Sleep(10);
+      end;
+    end;
+  end;
 end;
 
 procedure TMiniBrowserFrm.AddURL(const aURL : string);
