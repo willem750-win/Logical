@@ -26107,7 +26107,7 @@ begin
   bmBuzzer.Free;bmSensor.Free;bmWarm.Free;bmGrid.Free;bmCon.free;
   bmLogicAnd.free;bmLogicOr.free;bmLogicNot.free;
   bmButton.free;bmKnop.Free;bmPuls.Free;bmLight.free;bmRelais.Free;
-  bmTeller.Free;bmMemory.Free;bmDisplay.Free;bmDipSwitsh.Free;
+  bmTeller.Free;bmMemory.Free;bmDisplay.Free;bmDipSwitsh.Free;bmMeter.Free;
   FFilterLijst.Free;templijst.Free;tempFile.Free;
   FOefening.Free;
 

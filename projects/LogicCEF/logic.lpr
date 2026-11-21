@@ -30,16 +30,23 @@ begin
   {$IFDEF WINDOWS}
   CreateGlobalCEFApp;
 
-  // HEEL BELANGRIJK: dit scheidt main-process van subprocess
-  if not GlobalCEFApp.StartMainProcess then
-    Exit;
+  // HEEL BELANGRIJK: dit scheidt main-process van subprocess. Een subprocess
+  // slaat het programma over, maar ruimt GlobalCEFApp wel op (hieronder).
+  if GlobalCEFApp.StartMainProcess then
   {$ENDIF}
+  begin
+    RequireDerivedFormResource:=True;
 
-  RequireDerivedFormResource:=True;
+    Application.Scaled:=True;
+    Application.Initialize;
+    Application.CreateForm(TmainForm, mainForm);
+    Application.Run;
+  end;
 
-  Application.Scaled:=True;
-  Application.Initialize;
-  Application.CreateForm(TmainForm, mainForm);
-  Application.Run;
+  {$IFDEF WINDOWS}
+  // GlobalCEFApp vrijgeven, zoals in de voorbeelden van CEF4Delphi (onder
+  // Linux doet uCefGtk2Widgetset dit)
+  DestroyGlobalCEFApp;
+  {$ENDIF}
 end.
 

@@ -245,6 +245,7 @@ type
     function GetSoortFromObj(AObj: TObject): string;//newtest
     function IsSimObj(AObj: TObject): Boolean;
   public
+     destructor Destroy; override;
      procedure LaadGridsettings;
      procedure LaadBoxsettings;
      procedure BewaarInstellingen;
@@ -2789,6 +2790,23 @@ procedure TmainForm.FormActivate(Sender: TObject);
 begin
    LoadLanguageSetting;
    TitelBar2.Caption:='';
+end;
+
+// Wat het hoofdvenster zelf aanmaakt (geen componenten) hier vrijgeven: de
+// vlaggen en codes van de extra talen en de lijsten van ongedaan maken.
+// Pas na inherited: tijdens het opruimen van de componenten kunnen die
+// lijsten nog gebruikt worden.
+destructor TmainForm.Destroy;
+var
+  I: Integer;
+begin
+  inherited Destroy;
+  for I := 0 to High(FPoFlags) do
+    FreeAndNil(FPoFlags[I]);
+  FreeAndNil(FPoCodes);
+  FreeAndNil(FUndoList);
+  FreeAndNil(FKlembord);
+  FreeAndNil(FRedoList);
 end;
 
 procedure TmainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
