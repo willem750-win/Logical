@@ -267,6 +267,8 @@ type
     FKlikSelect: Boolean; // linkse klik heeft de draad (de)geselecteerd
     FStroomA: Double;   // stroom van het begin naar het einde van de draad (A), voor de elektronen
     FStroomNieuw: Double; // nieuwe stroom tijdens UpdateSupply, pas op het einde toegepast
+    FLogicBron: Boolean;  // van een logische uitgang naar een klem van de voedingskring:
+                          // de uitgang is dan een bron van 5 V (hoog) of 0 V (laag)
     mdp:TPoint;
     oldp:TPoint;
     ConAnchor:TPoint;
@@ -348,6 +350,8 @@ type
     procedure paint; override;
     // stroom door de draad (A, van begin naar einde) zoals de elektronen hem tonen
     property StroomA: Double read FStroomA;
+    // logische uitgang die een klem van de voedingskring voedt
+    property LogicBron: Boolean read FLogicBron;
     // de ingang aan het einde van de draad uitzetten, vlak voor de draad
     // verwijderd wordt
     procedure Losmaken;
@@ -7783,6 +7787,28 @@ end;
 // onderdelen opnieuw tekenen.
 procedure ElektronenRails(P: TWinControl; AU: Double; AToon: Boolean); forward;
 
+const
+  PoortUitOhm = 50;   // inwendige weerstand van een logische uitgang als bron van 5 V
+
+// het schakelrelais waarvan Pt het contact R2 is, anders nil (dat contact geeft
+// de spanning van de rail van R1 door; al de andere logische uitgangen zijn een
+// bron van 5 V)
+function RelaisContactOp(P: TWinControl; const Pt: TPoint): TControl;
+var
+  i: Integer;
+  R: TRect;
+begin
+  Result := nil;
+  if P = nil then Exit;
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanSchakelRelais) and P.Controls[i].Visible then
+    begin
+      R := P.Controls[i].BoundsRect;
+      InflateRect(R, 8, 0);
+      if PtInRect(R, Pt) then Exit(P.Controls[i]);
+    end;
+end;
+
 procedure UpdateSupply(P: TWinControl; AInval: Boolean);
 const
   RKlein = 0.001;   // ohm: zekering, meter, gesloten schakelaar, bron zonder Ri
@@ -7830,6 +7856,17 @@ var
   BuurStart: array of Integer;
   Gezien: array of Boolean;
   NI, ND, Kop, Staart, m: Integer;
+  // logische uitgangen die met een draad een klem van de voedingskring voeden
+  // (TjanConnector.FLogicBron), elk een eigen knooppunt vanaf NK + NR:
+  // hoog = bron van 5 V t.o.v. de - rail, laag = 0 V; het contact R2 van een
+  // schakelrelais geeft (dicht) de rail van R1 door
+  NL: Integer;
+  LogPt: array of TPoint;
+  LogHoog: array of Boolean;
+  LogRail: array of Integer;   // relaiscontact: de rail van R1 (index in Ouder), anders -1
+  LogRelais: array of Boolean;
+  RlC: TControl;
+  RlR: TjanRail;
 
   // weerstand, minstens RKlein (een ideale bron of draad: bijna 0 ohm)
   function NietNul(R: Double): Double;
@@ -7868,6 +7905,8 @@ var
     if R <> nil then
       for q := 0 to NR - 1 do
         if Rails[q] = R then Exit(NK + q);
+    for q := 0 to NL - 1 do
+      if NearPoint(Pt, LogPt[q]) then Exit(NK + NR + q);
     Result := -1;
   end;
 
@@ -8005,7 +8044,42 @@ begin
     NK := NK + Parts[k].PinCount;
   end;
   PinBase[NP] := NK;
-  SetLength(Ouder, NK + NR);
+  // logische uitgangen die een klem voeden: het eind van de draad dat geen
+  // klem of rail is (draden van dezelfde uitgang delen één knooppunt)
+  NL := 0;
+  SetLength(LogPt, 0); SetLength(LogHoog, 0); SetLength(LogRail, 0); SetLength(LogRelais, 0);
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible and
+       TjanConnector(P.Controls[i]).FLogicBron then
+    begin
+      Con := TjanConnector(P.Controls[i]);
+      Con.EndCenters(Pa, Pb);
+      A := ItemAt(Pa);
+      B := ItemAt(Pb);
+      if (A >= 0) = (B >= 0) then Continue;
+      if A >= 0 then Pa := Pb;
+      j := ItemAt(Pa);   // al een knooppunt van een andere draad?
+      if j >= NK + NR then
+      begin
+        if Con.Power then LogHoog[j - NK - NR] := True;
+        Continue;
+      end;
+      SetLength(LogPt, NL + 1); SetLength(LogHoog, NL + 1);
+      SetLength(LogRail, NL + 1); SetLength(LogRelais, NL + 1);
+      LogPt[NL] := Pa;
+      LogHoog[NL] := Con.Power;
+      LogRail[NL] := -1;
+      RlC := RelaisContactOp(P, Pa);
+      LogRelais[NL] := RlC <> nil;
+      if RlC <> nil then
+      begin
+        RlR := SchakelPlusRail(RlC);
+        for k := 0 to NR - 1 do
+          if Rails[k] = RlR then LogRail[NL] := NK + k;
+      end;
+      Inc(NL);
+    end;
+  SetLength(Ouder, NK + NR + NL);
   for i := 0 to High(Ouder) do Ouder[i] := i;
   for i := 0 to P.ControlCount - 1 do
     if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
@@ -8151,6 +8225,23 @@ begin
         end;
       end;
     end;
+
+    // logische uitgangen: een bron van 5 V (hoog) of 0 V (laag) t.o.v. de
+    // - rail, met een kleine inwendige weerstand; een relaiscontact (dicht)
+    // verbindt met de rail van R1
+    for i := 0 to NL - 1 do
+      if LogRelais[i] then
+      begin
+        if LogHoog[i] and (LogRail[i] >= 0) then
+          AddTak(NodeOf[NK + NR + i], NodeOf[LogRail[i]], 1 / RKlein, nil);
+      end
+      else if Mass >= 0 then
+      begin
+        if LogHoog[i] then
+          AddTakE(NodeOf[NK + NR + i], Mass, 1 / PoortUitOhm, LogicLampVolt, nil)
+        else
+          AddTak(NodeOf[NK + NR + i], Mass, 1 / PoortUitOhm, nil);
+      end;
 
     // samenhangende delen (alle takken, ook de belasting); per deel is de
     // - klem van de eerste bron de massa (0 V)
@@ -8480,7 +8571,7 @@ begin
   Toon := False;
   for k := 0 to NP - 1 do
     if (Parts[k] is TjanBron) and TjanBron(Parts[k]).Elektronen then Toon := True;
-  NI := NK + NR;
+  NI := NK + NR + NL;
   SetLength(Draad, 0); SetLength(DrA, 0); SetLength(DrB, 0);
   ND := 0;
   for i := 0 to P.ControlCount - 1 do
@@ -8562,6 +8653,26 @@ begin
     Vraag[LoadItA] := Vraag[LoadItA] + Amp;
     Vraag[LoadItB] := Vraag[LoadItB] - Amp;
   end;
+  // logische uitgangen: de stroom die de uitgang de draad in stuurt, komt van
+  // de - rail (de niet getekende voeding van de poort) of, bij een relais-
+  // contact, van de rail van R1
+  for i := 0 to NL - 1 do
+    if LogRelais[i] then
+    begin
+      if LogHoog[i] and (LogRail[i] >= 0) then
+      begin
+        Amp := (V[NodeOf[LogRail[i]]] - V[NodeOf[NK + NR + i]]) / RKlein;
+        Vraag[NK + NR + i] := Vraag[NK + NR + i] - Amp;
+        Vraag[LogRail[i]] := Vraag[LogRail[i]] + Amp;
+      end;
+    end
+    else if (Mass >= 0) and (LoadItB >= 0) then
+    begin
+      if LogHoog[i] then E := LogicLampVolt else E := 0;
+      Amp := (E - (V[NodeOf[NK + NR + i]] - V[Mass])) / PoortUitOhm;
+      Vraag[NK + NR + i] := Vraag[NK + NR + i] - Amp;
+      Vraag[LoadItB] := Vraag[LoadItB] + Amp;
+    end;
   // buren per klem/rail (lijst met beginpunten)
   SetLength(BuurStart, NI + 1);
   for i := 0 to NI do BuurStart[i] := 0;
@@ -12727,6 +12838,27 @@ begin
         if R <> nil then Tap(R, Pb.Y, Con.FStroomNieuw);
         R := RailAtPoint(P, Pa);
         if R <> nil then Tap(R, Pa.Y, -Con.FStroomNieuw);
+        // logische uitgang die een klem voedt: haar (niet getekende) voeding
+        // hangt aan de - rail, ter hoogte van de uitgang; een relaiscontact
+        // neemt zijn stroom uit de rail van R1
+        if Con.FLogicBron then
+        begin
+          if VoedingsKlemOp(P, Pa) then Pa := Pb;
+          Src := RelaisContactOp(P, Pa);
+          if Src <> nil then
+          begin
+            R := SchakelPlusRail(Src);
+            if R <> nil then Tap(R, Pa.Y, -Abs(Con.FStroomNieuw));
+          end
+          else
+            for k := 0 to High(Rails) do
+              if not Rails[k].Plus then
+              begin
+                if Con.Power then Tap(Rails[k], Pa.Y, -Abs(Con.FStroomNieuw))
+                else Tap(Rails[k], Pa.Y, Abs(Con.FStroomNieuw));
+                Break;
+              end;
+        end;
       end;
     // verbruikers op de rails
     for i := 0 to P.ControlCount - 1 do
@@ -13845,6 +13977,29 @@ var Pi,Po:TPoint;
       end;
     end;
   end;
+
+  // mag het eind APt als logische uitgang een klem van de voedingskring
+  // voeden? getvi herkent het schakelrelais aan heel zijn vlak: alleen het
+  // contact R2 (rechtsboven) is een uitgang, R+ (de spoel) is een ingang;
+  // een voltmeter meet alleen
+  function LogicUitgangOp(const APt: TPoint): Boolean;
+  var
+    q: Integer;
+    Rr: TRect;
+  begin
+    Result := True;
+    for q := 0 to wc.ControlCount - 1 do
+      if (wc.Controls[q] is TjanMeter) or (wc.Controls[q] is TjanSchakelRelais) then
+      begin
+        Rr := wc.Controls[q].BoundsRect;
+        InflateRect(Rr, ConSize, 0);
+        if not PtInRect(Rr, APt) then Continue;
+        if wc.Controls[q] is TjanMeter then Exit(False);
+        Exit((APt.X >= wc.Controls[q].Left + wc.Controls[q].Width div 2) and
+             (APt.Y <= wc.Controls[q].Top + 25));
+      end;
+  end;
+
 begin
   // connect input and output using the conPos
   d2:=conSize div 2;
@@ -13875,6 +14030,7 @@ begin
       end;
   end;
   // draad vanaf een voedingsrail (eventueel achterstevoren gelegd)
+  FLogicBron:=False;
   RailSrc:=RailAtPoint(wc,Pi);
   if RailSrc=nil then
   begin
@@ -13883,11 +14039,21 @@ begin
     begin
       pl:=Pi; Pi:=Po; Po:=pl;
     end
-    // draad van een klem in de voedingskring (schakelaar, sensor, ...) naar
-    // een ingang, maar achterstevoren getekend: de klem is de bron
-    else if (not VoedingsKlemOp(wc,Pi)) and VoedingsKlemOp(wc,Po) then
+    // draad tussen een klem in de voedingskring en iets anders: is dat andere
+    // eind een logische uitgang (poort, flipflop, teller, LogicRun ...), dan
+    // is die de bron en voedt ze de klem met 5 V; anders is de klem de bron
+    // (een schakelaar, sensor ... naar een ingang), ook achterstevoren getekend
+    else if VoedingsKlemOp(wc,Pi) <> VoedingsKlemOp(wc,Po) then
     begin
-      pl:=Pi; Pi:=Po; Po:=pl;
+      if VoedingsKlemOp(wc,Pi) then
+      begin
+        pl:=Pi; Pi:=Po; Po:=pl;     // het andere eind eerst als bron proberen
+      end;
+      FLogicBron:=LogicUitgangOp(Pi) and getvi;
+      if not FLogicBron then
+      begin
+        pl:=Pi; Pi:=Po; Po:=pl;     // geen logische uitgang: de klem is de bron
+      end;
     end;
   end;
   // voedingsdraad (rail -> voedingsbolletje): geen signaal, RailOf regelt
