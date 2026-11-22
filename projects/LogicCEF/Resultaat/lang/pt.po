@@ -246,8 +246,8 @@ msgid "create Push button"
 msgstr "criar botão de pressão"
 
 #: janSimLogic.pas:21626 janSimLogic.pas:21626
-msgid "create Lamp"
-msgstr "criar lâmpada"
+msgid "create logic lamp (5 V)"
+msgstr "criar lâmpada lógica (5 V)"
 
 #: janSimLogic.pas:21627 janSimLogic.pas:21627
 msgid "create AND-Logic gate"

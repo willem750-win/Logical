@@ -907,8 +907,8 @@ msgstr "crea collegamento"
 msgid "create Push button"
 msgstr "crea pulsante"
 
-msgid "create Lamp"
-msgstr "crea lampada"
+msgid "create logic lamp (5 V)"
+msgstr "crea lampada logica (5 V)"
 
 msgid "create AND-Logic gate"
 msgstr "crea porta logica AND"

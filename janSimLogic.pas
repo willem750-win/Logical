@@ -1555,6 +1555,7 @@ type
     FKleur: TLampKleur;      // lamp of led (rood, groen, oranje)
     FDimBmp: TBitmap;        // gedimde lamp, één keer gemengd (pixel per pixel is traag onder Linux)
     FDimKey: string;
+    FDimPos: TPoint;         // waar FDimBmp (alleen het stuk dat aan en uit verschilt) komt
 
     procedure SendStatusToBar;//xxx
     procedure SetNaam(const Value: String);//xxx
@@ -3872,6 +3873,7 @@ const
   OudeInvoerTonen = False;
   LogicPoortH = 82;    // hoogte van een poort: symbool (68) plus de naam eronder
   RailMinVolt = 2.0;   // onder deze spanning geeft ingeplugde invoer geen signaal
+  LogicLampVolt = 5.0; // de logische lamp (en een poort) werkt op 5 V
   RailMaxVolt = 5.0;   // signaal zonder rails
   BronMaxVolt = 12.0;  // hoogste spanning van de bron (accu)
   RailLineOfs = 11;    // X van de lijn binnen TjanRail
@@ -7720,7 +7722,9 @@ begin
     if (C.Parent.Controls[i] is TjanRail) and C.Parent.Controls[i].Visible and
        (TjanRail(C.Parent.Controls[i]).Volt > U) then
       U := TjanRail(C.Parent.Controls[i]).Volt;
-  Result := U / BronMaxVolt;
+  // de logische lamp werkt op 5 V (zoals de uitgang van een poort): vanaf
+  // 5 V brandt ze vol, daaronder zwakker
+  Result := U / LogicLampVolt;
   if Result > 1 then Result := 1;
   if Result < 0.15 then Result := 0.15;
 end;
@@ -16287,7 +16291,11 @@ end;
 
 procedure TjanLogic.UpdateHintText;
 begin
-  Hint := BuildSimHint(FNaam, BTaal);
+  Hint := BuildSimHint(FNaam, BTaal) + #13#10 +
+    Tr(BTaal, 'Een poort werkt op 5 V: haar uitgang geeft hoogstens 5 V.',
+              'A gate works on 5 V: its output gives at most 5 V.',
+              'Une porte fonctionne sur 5 V : sa sortie donne au plus 5 V.',
+              'Ein Gatter arbeitet mit 5 V: Sein Ausgang liefert höchstens 5 V.');
 end;
 
 procedure TjanLogic.SetNaam(const Value: String);
@@ -24033,14 +24041,19 @@ procedure TjanSimLight.UpdateHintText;
 var
   U, R, I: Double;
 begin
-   Hint := BuildSimHint(FNaam, BTaal);
-   // met een voeding: de berekening met de wet van Ohm (lamp 100 mA en led
-   // 20 mA bij 12 V, zie LoadAmps12)
+   Hint := BuildSimHint(FNaam, BTaal) + #13#10 +
+     Tr(BTaal, 'Logische lamp: werkt op 5 V, zoals de uitgang van een poort.',
+               'Logic lamp: works on 5 V, like the output of a gate.',
+               'Lampe logique : fonctionne sur 5 V, comme la sortie d''une porte.',
+               'Logische Lampe: arbeitet mit 5 V, wie der Ausgang eines Gatters.');
+   // met een voeding: de berekening met de wet van Ohm bij hoogstens 5 V
+   // (lamp 100 mA en led 20 mA, zie LoadAmps12)
    if (Parent <> nil) and PanelHasRails(Parent) and (LoadAmps12(Self) > 0) then
    begin
      U := MaxRailVolt(Parent);
      if U <= 0 then Exit;
-     R := BronMaxVolt / LoadAmps12(Self);
+     if U > LogicLampVolt then U := LogicLampVolt;
+     R := LogicLampVolt / LoadAmps12(Self);
      I := U / R;
      Hint := Hint + #13#10 + 'U = ' + VoltText(U) + '    R = ' + OhmText(R) + #13#10 +
        'I = U / R = ' + VoltText(U) + ' / ' + OhmText(R) + ' = ' + AmpText(I) +
@@ -24123,9 +24136,6 @@ begin
      if (FDimBmp=nil) or (FDimKey<>Key) then
      begin
      if FDimBmp=nil then FDimBmp:=TBitmap.Create;
-     FDimBmp.SetSize(Self.Width,Self.Height);
-     FDimBmp.Canvas.Brush.Color:=clFuchsia; FDimBmp.Canvas.FillRect(Rect(0,0,Self.Width,Self.Height));
-     DrawLamp(FDimBmp.Canvas,False);
      BOn:=TBitmap.Create; BOff:=TBitmap.Create;
      try
        BOn.SetSize(Self.Width,Self.Height); BOff.SetSize(Self.Width,Self.Height);
@@ -24133,23 +24143,41 @@ begin
        BOff.Canvas.Brush.Color:=clFuchsia; BOff.Canvas.FillRect(Rect(0,0,Self.Width,Self.Height));
        DrawLamp(BOn.Canvas,True);
        DrawLamp(BOff.Canvas,False);
+       // alleen het stuk waar aan en uit verschillen (de lamp zelf) mengen,
+       // zonder doorzichtige kleur: die werkt niet overal (fuchsia rand)
+       R:=Rect(Self.Width,Self.Height,-1,-1);
        for y:=0 to Self.Height-1 do
          for x:=0 to Self.Width-1 do
          begin
            COn:=BOn.Canvas.Pixels[x,y];
+           if (COn<>BOff.Canvas.Pixels[x,y]) and (COn<>clFuchsia) then
+           begin
+             if x<R.Left then R.Left:=x; if x>R.Right then R.Right:=x;
+             if y<R.Top then R.Top:=y; if y>R.Bottom then R.Bottom:=y;
+           end;
+         end;
+       if R.Right<R.Left then R:=Rect(0,0,0,0);
+       FDimPos:=Point(R.Left,R.Top);
+       FDimBmp.SetSize(R.Right-R.Left+1,R.Bottom-R.Top+1);
+       for y:=R.Top to R.Bottom do
+         for x:=R.Left to R.Right do
+         begin
+           COn:=BOn.Canvas.Pixels[x,y];
            COff:=BOff.Canvas.Pixels[x,y];
-           if (COn=COff) or (COn=clFuchsia) then continue;
            if COff=clFuchsia then COff:=Bg;
-           FDimBmp.Canvas.Pixels[x,y]:=Mix(COn,COff,Dim);
+           if COn=clFuchsia then COn:=Bg;
+           if COn<>COff then
+             FDimBmp.Canvas.Pixels[x-R.Left,y-R.Top]:=Mix(COn,COff,Dim)
+           else
+             FDimBmp.Canvas.Pixels[x-R.Left,y-R.Top]:=COff;
          end;
      finally
        BOn.Free; BOff.Free;
      end;
-     FDimBmp.Transparent:=True;
-     FDimBmp.TransparentColor:=clFuchsia;
      FDimKey:=Key;
      end;
-     Canvas.Draw(0,0,FDimBmp);
+     DrawLamp(Canvas,False);
+     Canvas.Draw(FDimPos.X,FDimPos.Y,FDimBmp);
    end
    else
      DrawLamp(Canvas,FLit);
@@ -30286,7 +30314,7 @@ if FBoxTaal=stDutch then
   HDisplay:='maak 7 segmentdisplay';
   HDraad:='maak Verbinding';
   HDrukknop:='maak Drukknop';
-  HLamp:='maak Lamp';
+  HLamp:='maak logische lamp (5 V)';
   HLogicAnd:='maak EN-poort';
   HLogicNot:='maak Niet-poort';
   HLogicOr:='maak OF-poort';
@@ -30344,7 +30372,7 @@ if FBoxTaal=stEnglish then
   HDisplay:=LangTr('create 7 segment display');
   HDraad:=LangTr('create Connection');
   HDrukknop:=LangTr('create Push button');
-  HLamp:=LangTr('create Lamp');
+  HLamp:=LangTr('create logic lamp (5 V)');
   HLogicAnd:=LangTr('create AND-Logic gate');
   HLogicNot:=LangTr('create NOT-Logic gate');
   HLogicOr:=LangTr('create OR-Logic gate');
@@ -30400,7 +30428,7 @@ if FBoxTaal=stFrench then
   HDisplay:='faire Affichage à 7 segments';
   HDraad:='faire Connexion';
   HDrukknop:='faire Bouton poussoir';
-  HLamp:='faire Lampe';
+  HLamp:='faire lampe logique (5 V)';
   HLogicAnd:='faire ET-La porte logique';
   HLogicNot:='faire Pas-La porte logique';
   HLogicOr:='faire OU-La porte logique';
@@ -30457,7 +30485,7 @@ if FBoxTaal=stFrench then
   HDisplay:='Erstellen Sie eine 7-Segment-Anzeige';
   HDraad:='Verbindung herstellen';
   HDrukknop:='Erstellen Sie einen Druckknopf';
-  HLamp:='Lampe herstellen';
+  HLamp:='logische Lampe herstellen (5 V)';
   HLogicAnd:='UND-Gatter erstellen';
   HLogicNot:='Erstellen Sie keinen Port';
   HLogicOr:='ODER-Gatter erstellen';
@@ -32025,6 +32053,14 @@ begin
         else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
         FillRect(Rb);
         DrawOutputIcon(0, bmLight, LK+1, TOP+2);
+        // de logische lamp werkt op 5 V: zo verschilt ze van de lamp met twee
+        // klemmen uit de voedingskring
+        Brush.Style := bsClear;
+        Font.Name := 'Arial'; Font.Size := 6; Font.Style := [fsBold];
+        Font.Color := clNavy;
+        TextOut(BK - TextWidth('5V') - 1, HK - TextHeight('5V'), '5V');
+        Brush.Style := bsSolid;
+        Brush.Color := clSilver;
         NextX(B + SPATIE);
       end;
 
