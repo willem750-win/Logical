@@ -1,0 +1,53 @@
+<!-- titel: Leçon 42 - Une porte commande un transistor -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#elektronica">Électronique</a> &rsaquo; Leçon 42 sur 42</p>
+  <h1>Une porte commande un transistor</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> une porte logique, qui ne donne que 5&nbsp;V et quelques milliampères,
+  allume une lampe de 12&nbsp;V grâce à un transistor. C&rsquo;est ici que la logique et la puissance se rejoignent.</div>
+
+  <p><a class="open" href="../../panels/lessen/les42-poort-stuurt-transistor.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les42.png" alt="Deux interrupteurs A et B vers une porte ET ; la sortie passe par une résistance de 1000 ohms vers la base d'un transistor NPN ; une lampe entre le rail + et le collecteur ; l'émetteur sur le rail -">
+    <figcaption>A et B sont allumés&nbsp;: la porte ET donne 5&nbsp;V, 4&nbsp;mA passent dans la base et le transistor allume la
+    lampe sous 12&nbsp;V (98&nbsp;mA).</figcaption>
+  </figure>
+
+  <h2>Une porte ne donne que peu</h2>
+  <p>Une <a href="les04.html">porte ET</a> fonctionne sur 5&nbsp;V&nbsp;: sa sortie donne au plus 5&nbsp;V, et seulement quelques
+  milliampères. C&rsquo;est assez pour une lampe logique ou une LED, mais pas pour une lampe de 12&nbsp;V qui demande
+  100&nbsp;mA. La porte laisse donc un <a href="les38.html">transistor</a> faire le gros travail&nbsp;: la porte commande la
+  <b>base</b>, le transistor commute la lampe.</p>
+  <ul>
+    <li>Le <b>circuit de commande</b>&nbsp;: sortie de la porte &rarr; résistance de 1000&nbsp;&Omega; &rarr; base B &rarr; émetteur E &rarr; rail &minus;.</li>
+    <li>Le <b>circuit de puissance</b>&nbsp;: rail + (12&nbsp;V) &rarr; lampe &rarr; collecteur C &rarr; émetteur E &rarr; rail &minus;.</li>
+  </ul>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Démarrez la simulation. N&rsquo;allumez que A&nbsp;: la sortie de la porte ET reste à 0, le transistor est <b>bloqué</b>
+      et la lampe est éteinte.</li>
+    <li>Allumez aussi B. La sortie passe à 5&nbsp;V. Il y a environ 5 &minus; 0,7 = 4,3&nbsp;V aux bornes de la résistance, donc
+      environ 4&nbsp;mA passent dans la base.</li>
+    <li>Le transistor est <b>saturé</b> et laisse passer 98&nbsp;mA&nbsp;: la lampe brille sous presque 12&nbsp;V. Un petit courant
+      de 4&nbsp;mA venant de la porte commute un courant 25 fois plus grand.</li>
+    <li>Activez <b>Montrer les électrons</b> sur la source&nbsp;: vous voyez le grand courant dans la lampe et le transistor, et
+      le petit courant de la porte dans la base.</li>
+  </ol>
+  <p>C&rsquo;est la <b>commande à deux mains</b> de la <a href="les04.html">leçon 4</a>, mais maintenant avec une vraie
+  lampe&nbsp;: la lampe ne s&rsquo;allume que si A <b>et</b> B sont allumés.</p>
+
+  <h2>Exercice&nbsp;: la lampe directement sur la porte</h2>
+  <p>Enlevez le transistor et la résistance et branchez la lampe directement entre la sortie de la porte et le rail &minus;.
+  Allumez A et B. Quelle tension la lampe reçoit-elle maintenant&nbsp;?</p>
+  <p><a class="open" href="../../panels/lessen/les42-opdracht-lamp-aan-poort.lpl">&#9654; Ouvrir l&rsquo;exercice</a></p>
+  <details>
+    <summary>Solution</summary>
+    <p>La lampe ne reçoit que 3,5&nbsp;V et rougeoie à peine (0,1&nbsp;W au lieu de 1,2&nbsp;W). La porte donne au plus
+    5&nbsp;V et ne peut pas fournir beaucoup de courant&nbsp;: une partie de la tension reste dans la porte elle-même. Avec un
+    transistor, la lampe reçoit les 12&nbsp;V complets du rail, et la porte ne fournit que 4&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>En réalité&nbsp;:</strong> une puce avec des portes ou un microcontrôleur (comme un Arduino) fournit
+  au plus environ 20&nbsp;mA par sortie. Une lampe, un moteur ou un relais se commande donc toujours par un transistor.
+  N&rsquo;oubliez pas la résistance de base&nbsp;: sans elle, le transistor ou la porte est détruit.</div>
+
+  <div class="pager"><a href="les41.html">&larr; Leçon 41 : Une alarme de température avec une CTN</a><a href="leerpad.html">Parcours &rarr;</a></div>

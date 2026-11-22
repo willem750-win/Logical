@@ -1,0 +1,53 @@
+<!-- titel: Lektion 42 - Ein Gatter steuert einen Transistor -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronik</a> &rsaquo; Lektion 42 von 42</p>
+  <h1>Ein Gatter steuert einen Transistor</h1>
+  <div class="goal"><strong>Ziel:</strong> Ein Logikgatter, das nur 5&nbsp;V und ein paar Milliampere liefert, lässt über einen
+  Transistor eine Lampe mit 12&nbsp;V leuchten. Hier kommen Logik und Leistung zusammen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les42-poort-stuurt-transistor.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les42.png" alt="Zwei Schalter A und B zu einem UND-Gatter; der Ausgang geht über einen Widerstand von 1000 Ohm zur Basis eines NPN-Transistors; eine Lampe zwischen der + Schiene und dem Kollektor; der Emitter an der - Schiene">
+    <figcaption>A und B sind an: Das UND-Gatter liefert 5&nbsp;V, 4&nbsp;mA fließen in die Basis, und der Transistor lässt die
+    Lampe mit 12&nbsp;V leuchten (98&nbsp;mA).</figcaption>
+  </figure>
+
+  <h2>Ein Gatter liefert nur wenig</h2>
+  <p>Ein <a href="les04.html">UND-Gatter</a> arbeitet mit 5&nbsp;V: Sein Ausgang liefert höchstens 5&nbsp;V und nur ein paar
+  Milliampere. Das reicht für eine logische Lampe oder eine LED, aber nicht für eine 12&nbsp;V-Lampe, die 100&nbsp;mA braucht.
+  Deshalb lässt das Gatter einen <a href="les38.html">Transistor</a> die schwere Arbeit machen: Das Gatter steuert die
+  <b>Basis</b>, der Transistor schaltet die Lampe.</p>
+  <ul>
+    <li>Der <b>Steuerkreis</b>: Ausgang des Gatters &rarr; Widerstand 1000&nbsp;&Omega; &rarr; Basis B &rarr; Emitter E &rarr; &minus; Schiene.</li>
+    <li>Der <b>Laststromkreis</b>: + Schiene (12&nbsp;V) &rarr; Lampe &rarr; Kollektor C &rarr; Emitter E &rarr; &minus; Schiene.</li>
+  </ul>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Schalten Sie nur A ein: Der Ausgang des UND-Gatters bleibt 0, der Transistor <b>sperrt</b>
+      und die Lampe ist aus.</li>
+    <li>Schalten Sie auch B ein. Der Ausgang wird 5&nbsp;V. Am Widerstand liegen etwa 5 &minus; 0,7 = 4,3&nbsp;V, also fließen
+      etwa 4&nbsp;mA in die Basis.</li>
+    <li>Der Transistor ist <b>gesättigt</b> und lässt 98&nbsp;mA durch: Die Lampe leuchtet mit fast 12&nbsp;V. Ein kleiner Strom
+      von 4&nbsp;mA aus dem Gatter schaltet einen 25-mal größeren Strom.</li>
+    <li>Schalten Sie an der Quelle <b>Elektronen zeigen</b> ein: Sie sehen den großen Strom durch Lampe und Transistor und den
+      kleinen Strom aus dem Gatter in die Basis.</li>
+  </ol>
+  <p>Das ist die <b>Zweihandbedienung</b> aus <a href="les04.html">Lektion 4</a>, jetzt aber mit einer echten Lampe: Die Lampe
+  leuchtet nur, wenn A <b>und</b> B an sind.</p>
+
+  <h2>Übung: die Lampe direkt am Gatter</h2>
+  <p>Entfernen Sie Transistor und Widerstand und schließen Sie die Lampe direkt zwischen dem Ausgang des Gatters und der
+  &minus; Schiene an. Schalten Sie A und B ein. Wie viel Spannung bekommt die Lampe jetzt?</p>
+  <p><a class="open" href="../../panels/lessen/les42-opdracht-lamp-aan-poort.lpl">&#9654; Die Übung öffnen</a></p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Die Lampe bekommt nur 3,5&nbsp;V und glimmt kaum (0,1&nbsp;W statt 1,2&nbsp;W). Das Gatter liefert höchstens 5&nbsp;V und
+    kann nicht viel Strom abgeben: Ein Teil der Spannung bleibt im Gatter selbst. Mit einem Transistor bekommt die Lampe die
+    vollen 12&nbsp;V der Schiene, und das Gatter liefert nur 4&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Ein Chip mit Gattern oder ein Mikrocontroller (wie ein Arduino) liefert pro
+  Ausgang höchstens etwa 20&nbsp;mA. Eine Lampe, einen Motor oder ein Relais steuert man deshalb immer über einen Transistor.
+  Vergessen Sie den Basiswiderstand nicht: Ohne ihn geht der Transistor oder das Gatter kaputt.</div>
+
+  <div class="pager"><a href="les41.html">&larr; Lektion 41: Ein Temperaturalarm mit einem NTC</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

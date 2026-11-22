@@ -1,0 +1,52 @@
+<!-- titel: Les 42 - Een poort stuurt een transistor -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#elektronica">Elektronica</a> &rsaquo; Les 42 van 42</p>
+  <h1>Een poort stuurt een transistor</h1>
+  <div class="goal"><strong>Doel:</strong> een logische poort, die maar 5&nbsp;V en een paar milliampère levert, laat via een
+  transistor een lamp op 12&nbsp;V branden. Zo komen logica en vermogen samen.</div>
+
+  <p><a class="open" href="../../panels/lessen/les42-poort-stuurt-transistor.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les42.png" alt="Twee schakelaars A en B naar een EN-poort; de uitgang gaat via een weerstand van 1000 ohm naar de basis van een NPN-transistor; een lamp tussen de + rail en de collector; de emitter aan de - rail">
+    <figcaption>A en B staan aan: de EN-poort geeft 5&nbsp;V, er loopt 4&nbsp;mA in de basis en de transistor laat de lamp op
+    12&nbsp;V branden (98&nbsp;mA).</figcaption>
+  </figure>
+
+  <h2>Een poort levert maar een beetje</h2>
+  <p>Een <a href="les04.html">EN-poort</a> werkt op 5&nbsp;V: haar uitgang geeft hoogstens 5&nbsp;V, en maar een paar
+  milliampère. Dat is genoeg voor een logische lamp of een led, maar niet voor een lamp van 12&nbsp;V die 100&nbsp;mA vraagt.
+  Daarom laat de poort een <a href="les38.html">transistor</a> het zware werk doen: de poort stuurt de <b>basis</b>, de transistor
+  schakelt de lamp.</p>
+  <ul>
+    <li>De <b>stuurkring</b>: uitgang van de poort &rarr; weerstand van 1000&nbsp;&Omega; &rarr; basis B &rarr; emitter E &rarr; &minus; rail.</li>
+    <li>De <b>werkkring</b>: + rail (12&nbsp;V) &rarr; lamp &rarr; collector C &rarr; emitter E &rarr; &minus; rail.</li>
+  </ul>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie. Zet alleen A aan: de uitgang van de EN-poort blijft 0, de transistor <b>spert</b> en de lamp is uit.</li>
+    <li>Zet ook B aan. De uitgang wordt 5&nbsp;V. Over de weerstand staat ongeveer 5 &minus; 0,7 = 4,3&nbsp;V, dus er loopt
+      ongeveer 4&nbsp;mA in de basis.</li>
+    <li>De transistor is <b>verzadigd</b> en laat 98&nbsp;mA door: de lamp brandt op bijna 12&nbsp;V. Een stroompje van 4&nbsp;mA
+      uit de poort schakelt een stroom die 25 keer groter is.</li>
+    <li>Zet bij de bron <b>Elektronen tonen</b> aan: je ziet de grote stroom door de lamp en de transistor, en het kleine stroompje
+      uit de poort in de basis.</li>
+  </ol>
+  <p>Dit is de <b>tweehandsbediening</b> van <a href="les04.html">les 4</a>, maar nu met een echte lamp: de lamp brandt alleen als
+  A <b>en</b> B aan staan.</p>
+
+  <h2>Opdracht: de lamp rechtstreeks aan de poort</h2>
+  <p>Haal de transistor en de weerstand weg en hang de lamp rechtstreeks tussen de uitgang van de poort en de &minus; rail.
+  Zet A en B aan. Hoeveel spanning krijgt de lamp nu?</p>
+  <p><a class="open" href="../../panels/lessen/les42-opdracht-lamp-aan-poort.lpl">&#9654; Open de opdracht</a></p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>De lamp krijgt maar 3,5&nbsp;V en gloeit nauwelijks (0,1&nbsp;W in plaats van 1,2&nbsp;W). De poort geeft hoogstens 5&nbsp;V,
+    en ze kan niet veel stroom leveren: een deel van de spanning blijft in de poort zelf hangen. Met een transistor krijgt de lamp
+    de volle 12&nbsp;V van de rail, en levert de poort maar 4&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> een chip met poorten of een microcontroller (zoals een Arduino) levert per uitgang
+  hoogstens zo'n 20&nbsp;mA. Een lamp, een motor of een relais stuur je daarom altijd via een transistor. Vergeet de
+  basisweerstand niet: zonder weerstand gaat de transistor of de poort kapot.</div>
+
+  <div class="pager"><a href="les41.html">&larr; Les 41: Een temperatuuralarm met een NTC</a><a href="leerpad.html">Leerpad &rarr;</a></div>

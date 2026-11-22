@@ -1,0 +1,51 @@
+<!-- titel: Lesson 42 - A gate drives a transistor -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#elektronica">Electronics</a> &rsaquo; Lesson 42 of 42</p>
+  <h1>A gate drives a transistor</h1>
+  <div class="goal"><strong>Goal:</strong> a logic gate, which gives only 5&nbsp;V and a few milliamperes, lights a 12&nbsp;V lamp
+  through a transistor. This is where logic and power meet.</div>
+
+  <p><a class="open" href="../../panels/lessen/les42-poort-stuurt-transistor.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les42.png" alt="Two switches A and B to an AND gate; the output goes through a 1000 ohm resistor to the base of an NPN transistor; a lamp between the + rail and the collector; the emitter on the - rail">
+    <figcaption>A and B are on: the AND gate gives 5&nbsp;V, 4&nbsp;mA flows into the base and the transistor lights the lamp at
+    12&nbsp;V (98&nbsp;mA).</figcaption>
+  </figure>
+
+  <h2>A gate only gives a little</h2>
+  <p>An <a href="les04.html">AND gate</a> works on 5&nbsp;V: its output gives at most 5&nbsp;V, and only a few milliamperes. That
+  is enough for a logic lamp or an LED, but not for a 12&nbsp;V lamp that needs 100&nbsp;mA. So the gate lets a
+  <a href="les38.html">transistor</a> do the heavy work: the gate drives the <b>base</b>, the transistor switches the lamp.</p>
+  <ul>
+    <li>The <b>control circuit</b>: output of the gate &rarr; 1000&nbsp;&Omega; resistor &rarr; base B &rarr; emitter E &rarr; &minus; rail.</li>
+    <li>The <b>load circuit</b>: + rail (12&nbsp;V) &rarr; lamp &rarr; collector C &rarr; emitter E &rarr; &minus; rail.</li>
+  </ul>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation. Switch on only A: the output of the AND gate stays 0, the transistor is <b>cut off</b> and the lamp is off.</li>
+    <li>Also switch on B. The output becomes 5&nbsp;V. About 5 &minus; 0.7 = 4.3&nbsp;V stands across the resistor, so about
+      4&nbsp;mA flows into the base.</li>
+    <li>The transistor is <b>saturated</b> and passes 98&nbsp;mA: the lamp burns at almost 12&nbsp;V. A small current of 4&nbsp;mA
+      from the gate switches a current 25 times larger.</li>
+    <li>Switch on <b>Show electrons</b> at the source: you see the large current through the lamp and the transistor, and the
+      small current from the gate into the base.</li>
+  </ol>
+  <p>This is the <b>two-hand control</b> of <a href="les04.html">lesson 4</a>, but now with a real lamp: the lamp only lights when
+  A <b>and</b> B are on.</p>
+
+  <h2>Exercise: the lamp straight on the gate</h2>
+  <p>Remove the transistor and the resistor and connect the lamp straight between the output of the gate and the &minus; rail.
+  Switch on A and B. How much voltage does the lamp get now?</p>
+  <p><a class="open" href="../../panels/lessen/les42-opdracht-lamp-aan-poort.lpl">&#9654; Open the exercise</a></p>
+  <details>
+    <summary>Solution</summary>
+    <p>The lamp gets only 3.5&nbsp;V and barely glows (0.1&nbsp;W instead of 1.2&nbsp;W). The gate gives at most 5&nbsp;V, and it
+    cannot deliver much current: part of the voltage stays inside the gate itself. With a transistor the lamp gets the full
+    12&nbsp;V of the rail, and the gate only delivers 4&nbsp;mA.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> a chip with gates or a microcontroller (such as an Arduino) gives at most about
+  20&nbsp;mA per output. A lamp, a motor or a relay is therefore always driven through a transistor. Do not forget the base
+  resistor: without it the transistor or the gate breaks.</div>
+
+  <div class="pager"><a href="les41.html">&larr; Lesson 41: A temperature alarm with an NTC</a><a href="leerpad.html">Learning path &rarr;</a></div>
