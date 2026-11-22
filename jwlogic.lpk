@@ -33,6 +33,66 @@
         <UnitName Value="janSimLogic"/>
       </Item>
       <Item>
+        <Filename Value="jsl_basis.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_display_geheugen.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_draad.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_rails_kring.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_voedingsdelen.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_draadlogica.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_poorten_teller.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_oude_invoer.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_uitvoer.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_box.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_box_bediening.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_balk.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_groep_logicrun.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_bewegend.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="jsl_stappen_flipflop.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
         <Filename Value="janSimPID.pas"/>
         <UnitName Value="janSimPID"/>
       </Item>
