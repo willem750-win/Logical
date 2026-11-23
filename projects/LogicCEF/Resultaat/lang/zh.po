@@ -1852,3 +1852,90 @@ msgstr "在旋钮旁边点击，每次移动 1。"
 
 msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
 msgstr "一个会自己断开和闭合的开关。接在 + 导轨和输入之间时产生脉冲。点击方框：开或关。右键：频率。"
+
+msgid "create bar magnet"
+msgstr "创建条形磁铁"
+
+msgid "create compass"
+msgstr "创建指南针"
+
+msgid "create field line sheet"
+msgstr "创建磁感线板"
+
+msgid "Turn round (swap N and S)"
+msgstr "翻转 (交换 N 和 S)"
+
+msgid "S"
+msgstr "S"
+
+msgid "The magnets attract each other: a north pole and a south pole (unlike poles)."
+msgstr "磁铁相互吸引：一个 N 极和一个 S 极 (异名磁极)。"
+
+msgid "The magnets repel each other: two of the same poles (like poles)."
+msgstr "磁铁相互排斥：两个相同的磁极 (同名磁极)。"
+
+msgid "Bring a second magnet close: the yellow arrow shows the force."
+msgstr "把第二块磁铁靠近：黄色箭头表示力。"
+
+msgid "Bar magnet"
+msgstr "条形磁铁"
+
+msgid "North pole N (red) and south pole S (blue). Outside the magnet the field lines run from N to S."
+msgstr "N 极 (红色) 和 S 极 (蓝色)。在磁铁外部，磁感线从 N 指向 S。"
+
+msgid "Right-click: turn round or rotate."
+msgstr "右键：翻转或旋转。"
+
+msgid "attracts"
+msgstr "吸引"
+
+msgid "repels"
+msgstr "排斥"
+
+msgid "E"
+msgstr "E"
+
+msgid "W"
+msgstr "W"
+
+msgid "There is no magnet nearby: the needle points to the Earth's north (up)."
+msgstr "附近没有磁铁：指针指向地球的北方 (上方)。"
+
+msgid "Here the field of the magnets is %s times as strong as that of the Earth."
+msgstr "这里磁铁的磁场是地球磁场的 %s 倍。"
+
+msgid "Compass"
+msgstr "指南针"
+
+msgid "The red tip is the north pole of the needle. It points along the field:\naway from a north pole and towards a south pole."
+msgstr "红色尖端是指针的 N 极。它沿磁场方向：\n离开 N 极，指向 S 极。"
+
+msgid "Size"
+msgstr "大小"
+
+msgid "Small"
+msgstr "小"
+
+msgid "Medium"
+msgstr "中"
+
+msgid "Large"
+msgstr "大"
+
+msgid "field lines"
+msgstr "磁感线"
+
+msgid "Field line sheet"
+msgstr "磁感线板"
+
+msgid "Like iron filings on paper: the lines show the magnetic field.\nOutside the magnet they run from N to S. Where they are close together, the field is strong.\nPut magnets on it. Right-click: size."
+msgstr "就像纸上的铁屑：这些线显示磁场。\n在磁铁外部它们从 N 指向 S。线越密，磁场越强。\n把磁铁放上去。右键：大小。"
+
+msgid "A gate works on 5 V: its output gives at most 5 V."
+msgstr "门电路工作在 5 V：其输出最高为 5 V。"
+
+msgid "Logic lamp: works on 5 V, like the output of a gate."
+msgstr "逻辑灯：工作在 5 V，与门电路的输出相同。"
+
+msgid "Magnetism (magnet, compass, field lines)"
+msgstr "磁 (磁铁、指南针、磁感线)"

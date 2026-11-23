@@ -33,6 +33,9 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens, au-dessus de 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Un petit courant de base commande un grand courant de collecteur : commuter et amplifier.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Aimant droit</a></td><td>Aimant avec un pôle nord (rouge) et un pôle sud (bleu), sans bornes.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Boussole</a></td><td>Une aiguille qui s&rsquo;oriente le long du champ magnétique.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Plaque de lignes de champ</a></td><td>Montre les lignes de champ des aimants posés dessus, comme de la limaille de fer.</td></tr>
   </table>
   <ol class="steps">
     <li>Cliquez sur le bouton du composant à placer.</li>
@@ -371,6 +374,15 @@
       en dessous. Allongez le rail si nécessaire.</li>
     <li>Les touches fléchées déplacent d&rsquo;un pixel ; vous pouvez ainsi aussi débrancher un composant.</li>
   </ul>
+
+  <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnétisme&nbsp;: aimant droit, boussole et plaque de lignes de champ</h2>
+  <p>Ces trois éléments n&rsquo;ont pas de bornes&nbsp;: ils ne font pas partie du circuit. On les place librement sur le panneau et on les fait glisser. Voir <a href="lesm1.html">Qu&rsquo;est-ce que le magnétisme&nbsp;?</a></p>
+  <ul>
+    <li><img src="../img/pal-magneet.png" class="ico" alt=""><b>Aimant droit</b>&nbsp;: le pôle nord N est rouge, le pôle sud S bleu. Clic droit&nbsp;: <b>Retourner</b> (échanger N et S) ou <b>Pivoter</b> (couché ou debout). Quand un deuxième aimant est proche, une flèche jaune montre la force&nbsp;: des pôles contraires s&rsquo;attirent, des pôles semblables se repoussent.</li>
+    <li><img src="../img/pal-kompas.png" class="ico" alt=""><b>Boussole</b>&nbsp;: la pointe rouge est le pôle nord de l&rsquo;aiguille. Elle suit le champ à l&rsquo;endroit où elle se trouve, s&rsquo;éloigne d&rsquo;un pôle nord et va vers un pôle sud. Sans aimant à proximité, elle indique le nord de la Terre&nbsp;: le haut du panneau. L&rsquo;info-bulle indique combien de fois le champ des aimants y est plus fort que celui de la Terre.</li>
+    <li><img src="../img/pal-veldplaat.png" class="ico" alt=""><b>Plaque de lignes de champ</b>&nbsp;: une feuille toujours placée sous les aimants. Elle dessine les lignes de champ de tous les aimants, comme de la limaille de fer sur du papier&nbsp;: à l&rsquo;extérieur de l&rsquo;aimant de N à S, serrées là où le champ est fort. Clic droit&nbsp;: <b>Taille</b> (petite, moyenne ou grande).</li>
+  </ul>
+  <p>Logic calcule le champ avec deux pôles par aimant&nbsp;: chaque pôle donne un champ qui diminue avec le carré de la distance. Ce n&rsquo;est pas tout à fait exact, mais la forme des lignes de champ et la direction de la boussole sont correctes.</p>
 
   <h2 id="draad">Relier par un fil d&rsquo;alimentation</h2>
   <p>Au lieu de brancher un composant, vous pouvez aussi le relier à un rail par un fil, comme dans un vrai

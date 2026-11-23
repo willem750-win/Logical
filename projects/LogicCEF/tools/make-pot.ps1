@@ -31,6 +31,8 @@ $Utf8    = New-Object System.Text.UTF8Encoding($false)
 
 $Files = @()
 $Files += Get-ChildItem $Logic -Filter *.pas | Where-Object { $_.Name -notmatch '_new|backup|kopie' }
+# janSimLogic.pas is opgesplitst: de delen staan in jsl_*.inc
+$Files += Get-ChildItem $Logic -Filter jsl_*.inc
 $Files += Get-ChildItem $Project -Filter *.pas
 $G = Join-Path $Grid 'AdvancedPropertyGridComponent.pas'
 if (Test-Path $G) { $Files += Get-Item $G }

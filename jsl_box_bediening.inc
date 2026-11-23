@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -57,6 +57,9 @@ begin
   else if PtInRect(RWsch, P) then DWsch := True
   else if PtInRect(RPuls2, P) then DPuls2 := True
   else if PtInRect(RDip2, P) then DDip2 := True
+  else if PtInRect(RMagneet, P) then DMagneet := True
+  else if PtInRect(RKompas, P) then DKompas := True
+  else if PtInRect(RVeldplaat, P) then DVeldplaat := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -133,6 +136,9 @@ begin
   else if PtInRect(RWsch, P) then NewHint := FHWsch
   else if PtInRect(RPuls2, P) then NewHint := FHPuls2
   else if PtInRect(RDip2, P) then NewHint := FHDip2
+  else if PtInRect(RMagneet, P) then NewHint := FHMagneet
+  else if PtInRect(RKompas, P) then NewHint := FHKompas
+  else if PtInRect(RVeldplaat, P) then NewHint := FHVeldplaat
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -544,7 +550,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False;
 
     // nieuw
     DSquare := False;
@@ -808,6 +814,12 @@ begin
     NewVoedingsDeel(18)
   else if DDip2 then
     NewVoedingsDeel(19)
+  else if DMagneet then
+    NewVoedingsDeel(20)
+  else if DKompas then
+    NewVoedingsDeel(21)
+  else if DVeldplaat then
+    NewVoedingsDeel(22)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1417,6 +1429,9 @@ if FBoxTaal=stDutch then
   HWisselschakelaar:='maak Wisselschakelaar';
   HPuls2:='maak Impulsgenerator';
   HDip2:='maak Dipschakelaar';
+  HMagneet:='maak Staafmagneet';
+  HKompas:='maak Kompas';
+  HVeldplaat:='maak Veldlijnenplaat';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -1475,6 +1490,9 @@ if FBoxTaal=stEnglish then
   HWisselschakelaar:=LangTr('create Changeover switch');
   HPuls2:=LangTr('create Pulse generator');
   HDip2:=LangTr('create DIP switch');
+  HMagneet:=LangTr('create bar magnet');
+  HKompas:=LangTr('create compass');
+  HVeldplaat:=LangTr('create field line sheet');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -1531,6 +1549,9 @@ if FBoxTaal=stFrench then
   HWisselschakelaar:='faire Commutateur va-et-vient';
   HPuls2:='faire Générateur d''impulsions';
   HDip2:='faire Interrupteur DIP';
+  HMagneet:='faire Aimant droit';
+  HKompas:='faire Boussole';
+  HVeldplaat:='faire Plaque de lignes de champ';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -1588,6 +1609,9 @@ if FBoxTaal=stFrench then
   HWisselschakelaar:='Wechselschalter erstellen';
   HPuls2:='Impulsgenerator erstellen';
   HDip2:='DIP-Schalter erstellen';
+  HMagneet:='Stabmagnet erstellen';
+  HKompas:='Kompass erstellen';
+  HVeldplaat:='Feldlinienplatte erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -1676,6 +1700,9 @@ begin SetVoedingKnop(FPuls2K, Value); end;
 
 procedure TjanSimLogicBox.SetKDip2(const Value: Boolean);
 begin SetVoedingKnop(FDip2K, Value); end;
+
+procedure TjanSimLogicBox.SetKMagnetisme(const Value: Boolean);
+begin SetVoedingKnop(FMagK, Value); end;
 
 procedure TjanSimLogicBox.SetKVoltmeter2(const Value: Boolean);
 begin SetVoedingKnop(FVolt2K, Value); end;
@@ -1773,6 +1800,9 @@ begin
   RWsch := Rect(0, 0, 0, 0);
   RPuls2 := Rect(0, 0, 0, 0);
   RDip2 := Rect(0, 0, 0, 0);
+  RMagneet := Rect(0, 0, 0, 0);
+  RKompas := Rect(0, 0, 0, 0);
+  RVeldplaat := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1801,6 +1831,12 @@ begin
   if FVolt2K then Knop(RVolt2, 6, DVolt2);
   if FScoopK then Knop(RScoop, 13, DScoop);
   if FTransK then Knop(RTrans, 14, DTrans);
+  if FMagK then
+  begin
+    Knop(RMagneet, 20, DMagneet);
+    Knop(RKompas, 21, DKompas);
+    Knop(RVeldplaat, 22, DVeldplaat);
+  end;
 end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);

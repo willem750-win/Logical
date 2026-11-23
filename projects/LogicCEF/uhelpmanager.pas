@@ -183,6 +183,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'ldr'; end;
     'ntc':
       begin Result := 'voeding'; AAnchor := 'ntc'; end;
+    'magnetisme':
+      begin Result := 'voeding'; AAnchor := 'magnetisme'; end;
     'transistor':
       begin Result := 'voeding'; AAnchor := 'transistor'; end;
     'wisselschakelaar':

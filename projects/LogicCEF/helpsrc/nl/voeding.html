@@ -33,6 +33,9 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Laat stroom maar in één richting door, boven 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Een kleine basisstroom stuurt een grote collectorstroom: schakelen en versterken.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Staafmagneet</a></td><td>Magneet met een noordpool (rood) en een zuidpool (blauw), zonder klemmen.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Kompas</a></td><td>Een naald die langs het magnetisch veld wijst.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Veldlijnenplaat</a></td><td>Toont de veldlijnen van de magneten die erop liggen, zoals ijzervijlsel.</td></tr>
   </table>
   <ol class="steps">
     <li>Klik op de knop van het onderdeel dat je wil plaatsen.</li>
@@ -358,6 +361,15 @@
       Maak de rail zo nodig langer.</li>
     <li>Met de pijltjestoetsen verschuif je per pixel; zo kan je een onderdeel ook weer lostrekken.</li>
   </ul>
+
+  <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetisme: staafmagneet, kompas en veldlijnenplaat</h2>
+  <p>Deze drie onderdelen hebben geen klemmen: ze horen niet bij de stroomkring. Je zet ze los op het paneel en sleept ze rond. Zie <a href="lesm1.html">Wat is magnetisme?</a></p>
+  <ul>
+    <li><img src="../img/pal-magneet.png" class="ico" alt=""><b>Staafmagneet</b>: de noordpool N is rood, de zuidpool Z blauw. Rechtsklik: <b>Omdraaien</b> (N en Z wisselen) of <b>Draaien</b> (liggend of rechtop). Komt een tweede magneet dichtbij, dan toont een gele pijl de kracht: ongelijke polen trekken aan, gelijke polen stoten af.</li>
+    <li><img src="../img/pal-kompas.png" class="ico" alt=""><b>Kompas</b>: de rode punt is de noordpool van de naald. Ze wijst langs het veld op haar plaats, weg van een noordpool en naar een zuidpool. Zonder magneet in de buurt wijst ze naar het noorden van de aarde: boven op het paneel. De hint zegt hoeveel sterker het veld van de magneten er is dan dat van de aarde.</li>
+    <li><img src="../img/pal-veldplaat.png" class="ico" alt=""><b>Veldlijnenplaat</b>: een blad dat altijd onder de magneten ligt. Het tekent de veldlijnen van alle magneten, zoals ijzervijlsel op papier: buiten de magneet van N naar Z, dicht bij elkaar waar het veld sterk is. Rechtsklik: <b>Maat</b> (klein, middel of groot).</li>
+  </ul>
+  <p>Logic rekent het veld uit met twee polen per magneet: elke pool geeft een veld dat afneemt met het kwadraat van de afstand. Dat is niet helemaal exact, maar de vorm van de veldlijnen en de richting van het kompas kloppen.</p>
 
   <h2 id="draad">Aansluiten met een voedingsdraad</h2>
   <p>In plaats van een onderdeel in te pluggen, kan je het ook met een draad op een rail aansluiten, zoals in een

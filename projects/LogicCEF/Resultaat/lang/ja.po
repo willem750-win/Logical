@@ -1852,3 +1852,90 @@ msgstr "つまみの横をクリックすると 1 ずつ動きます。"
 
 msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
 msgstr "ひとりでに開閉するスイッチ。+ レールと入力の間でパルスを出します。箱をクリック: オン/オフ。右クリック: 周波数。"
+
+msgid "create bar magnet"
+msgstr "棒磁石を作成"
+
+msgid "create compass"
+msgstr "方位磁針を作成"
+
+msgid "create field line sheet"
+msgstr "磁力線シートを作成"
+
+msgid "Turn round (swap N and S)"
+msgstr "裏返す (N と S を入れ替え)"
+
+msgid "S"
+msgstr "S"
+
+msgid "The magnets attract each other: a north pole and a south pole (unlike poles)."
+msgstr "磁石は引き合います：N 極と S 極 (異なる極)。"
+
+msgid "The magnets repel each other: two of the same poles (like poles)."
+msgstr "磁石は反発し合います：同じ極どうし。"
+
+msgid "Bring a second magnet close: the yellow arrow shows the force."
+msgstr "2 つ目の磁石を近づけてください：黄色の矢印が力を示します。"
+
+msgid "Bar magnet"
+msgstr "棒磁石"
+
+msgid "North pole N (red) and south pole S (blue). Outside the magnet the field lines run from N to S."
+msgstr "N 極 (赤) と S 極 (青)。磁石の外では磁力線は N から S へ向かいます。"
+
+msgid "Right-click: turn round or rotate."
+msgstr "右クリック：裏返す、または回転。"
+
+msgid "attracts"
+msgstr "引き合う"
+
+msgid "repels"
+msgstr "反発する"
+
+msgid "E"
+msgstr "E"
+
+msgid "W"
+msgstr "W"
+
+msgid "There is no magnet nearby: the needle points to the Earth's north (up)."
+msgstr "近くに磁石がありません：針は地球の北 (上) を指します。"
+
+msgid "Here the field of the magnets is %s times as strong as that of the Earth."
+msgstr "ここでは磁石の磁界は地球の磁界の %s 倍の強さです。"
+
+msgid "Compass"
+msgstr "方位磁針"
+
+msgid "The red tip is the north pole of the needle. It points along the field:\naway from a north pole and towards a south pole."
+msgstr "赤い先端は針の N 極です。磁界の向きを指します：\nN 極から離れ、S 極へ向かいます。"
+
+msgid "Size"
+msgstr "サイズ"
+
+msgid "Small"
+msgstr "小"
+
+msgid "Medium"
+msgstr "中"
+
+msgid "Large"
+msgstr "大"
+
+msgid "field lines"
+msgstr "磁力線"
+
+msgid "Field line sheet"
+msgstr "磁力線シート"
+
+msgid "Like iron filings on paper: the lines show the magnetic field.\nOutside the magnet they run from N to S. Where they are close together, the field is strong.\nPut magnets on it. Right-click: size."
+msgstr "紙の上の砂鉄のように、線が磁界を示します。\n磁石の外では N から S へ向かいます。線が密な所ほど磁界は強いです。\n上に磁石を置いてください。右クリック：サイズ。"
+
+msgid "A gate works on 5 V: its output gives at most 5 V."
+msgstr "ゲートは 5 V で動作します：出力は最大 5 V です。"
+
+msgid "Logic lamp: works on 5 V, like the output of a gate."
+msgstr "ロジックランプ：ゲートの出力と同じく 5 V で動作します。"
+
+msgid "Magnetism (magnet, compass, field lines)"
+msgstr "磁気 (磁石、方位磁針、磁力線)"

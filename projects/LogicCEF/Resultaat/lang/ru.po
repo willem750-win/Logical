@@ -1852,3 +1852,90 @@ msgstr "Щёлкните рядом с ручкой, чтобы сделать �
 
 msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
 msgstr "Выключатель, который сам размыкается и замыкается. Между шиной + и входом он даёт импульсы. Щелчок по коробке: вкл. или выкл. Правый щелчок: частота."
+
+msgid "create bar magnet"
+msgstr "создать полосовой магнит"
+
+msgid "create compass"
+msgstr "создать компас"
+
+msgid "create field line sheet"
+msgstr "создать пластину силовых линий"
+
+msgid "Turn round (swap N and S)"
+msgstr "Перевернуть (поменять N и S)"
+
+msgid "S"
+msgstr "S"
+
+msgid "The magnets attract each other: a north pole and a south pole (unlike poles)."
+msgstr "Магниты притягиваются: северный и южный полюс (разноимённые полюсы)."
+
+msgid "The magnets repel each other: two of the same poles (like poles)."
+msgstr "Магниты отталкиваются: два одинаковых полюса (одноимённые полюсы)."
+
+msgid "Bring a second magnet close: the yellow arrow shows the force."
+msgstr "Поднесите второй магнит: жёлтая стрелка показывает силу."
+
+msgid "Bar magnet"
+msgstr "Полосовой магнит"
+
+msgid "North pole N (red) and south pole S (blue). Outside the magnet the field lines run from N to S."
+msgstr "Северный полюс N (красный) и южный полюс S (синий). Вне магнита силовые линии идут от N к S."
+
+msgid "Right-click: turn round or rotate."
+msgstr "Правый щелчок: перевернуть или повернуть."
+
+msgid "attracts"
+msgstr "притягивает"
+
+msgid "repels"
+msgstr "отталкивает"
+
+msgid "E"
+msgstr "E"
+
+msgid "W"
+msgstr "W"
+
+msgid "There is no magnet nearby: the needle points to the Earth's north (up)."
+msgstr "Рядом нет магнита: стрелка указывает на север Земли (вверх)."
+
+msgid "Here the field of the magnets is %s times as strong as that of the Earth."
+msgstr "Здесь поле магнитов в %s раз сильнее поля Земли."
+
+msgid "Compass"
+msgstr "Компас"
+
+msgid "The red tip is the north pole of the needle. It points along the field:\naway from a north pole and towards a south pole."
+msgstr "Красный конец — северный полюс стрелки. Она направлена вдоль поля:\nот северного полюса к южному."
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Small"
+msgstr "Маленькая"
+
+msgid "Medium"
+msgstr "Средняя"
+
+msgid "Large"
+msgstr "Большая"
+
+msgid "field lines"
+msgstr "силовые линии"
+
+msgid "Field line sheet"
+msgstr "Пластина силовых линий"
+
+msgid "Like iron filings on paper: the lines show the magnetic field.\nOutside the magnet they run from N to S. Where they are close together, the field is strong.\nPut magnets on it. Right-click: size."
+msgstr "Как железные опилки на бумаге: линии показывают магнитное поле.\nВне магнита они идут от N к S. Где они густые, поле сильное.\nПоложите на неё магниты. Правый щелчок: размер."
+
+msgid "A gate works on 5 V: its output gives at most 5 V."
+msgstr "Логический элемент работает от 5 В: его выход даёт не более 5 В."
+
+msgid "Logic lamp: works on 5 V, like the output of a gate."
+msgstr "Логическая лампа: работает от 5 В, как выход логического элемента."
+
+msgid "Magnetism (magnet, compass, field lines)"
+msgstr "Магнетизм (магнит, компас, силовые линии)"

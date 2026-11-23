@@ -1852,3 +1852,90 @@ msgstr "Clica ao lado do botão para um passo de 1."
 
 msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
 msgstr "Um interruptor que abre e fecha sozinho. Entre o carril + e uma entrada dá impulsos. Clique na caixa: ligado ou desligado. Clique direito: frequência."
+
+msgid "create bar magnet"
+msgstr "criar íman em barra"
+
+msgid "create compass"
+msgstr "criar bússola"
+
+msgid "create field line sheet"
+msgstr "criar placa de linhas de campo"
+
+msgid "Turn round (swap N and S)"
+msgstr "Virar (trocar N e S)"
+
+msgid "S"
+msgstr "S"
+
+msgid "The magnets attract each other: a north pole and a south pole (unlike poles)."
+msgstr "Os ímanes atraem-se: um polo norte e um polo sul (polos opostos)."
+
+msgid "The magnets repel each other: two of the same poles (like poles)."
+msgstr "Os ímanes repelem-se: dois polos iguais."
+
+msgid "Bring a second magnet close: the yellow arrow shows the force."
+msgstr "Aproxime um segundo íman: a seta amarela mostra a força."
+
+msgid "Bar magnet"
+msgstr "Íman em barra"
+
+msgid "North pole N (red) and south pole S (blue). Outside the magnet the field lines run from N to S."
+msgstr "Polo norte N (vermelho) e polo sul S (azul). Fora do íman, as linhas de campo vão de N para S."
+
+msgid "Right-click: turn round or rotate."
+msgstr "Clique direito: virar ou rodar."
+
+msgid "attracts"
+msgstr "atrai"
+
+msgid "repels"
+msgstr "repele"
+
+msgid "E"
+msgstr "L"
+
+msgid "W"
+msgstr "O"
+
+msgid "There is no magnet nearby: the needle points to the Earth's north (up)."
+msgstr "Não há nenhum íman perto: a agulha aponta para o norte da Terra (para cima)."
+
+msgid "Here the field of the magnets is %s times as strong as that of the Earth."
+msgstr "Aqui o campo dos ímanes é %s vezes mais forte do que o da Terra."
+
+msgid "Compass"
+msgstr "Bússola"
+
+msgid "The red tip is the north pole of the needle. It points along the field:\naway from a north pole and towards a south pole."
+msgstr "A ponta vermelha é o polo norte da agulha. Segue o campo:\nafasta-se de um polo norte e vai para um polo sul."
+
+msgid "Size"
+msgstr "Tamanho"
+
+msgid "Small"
+msgstr "Pequena"
+
+msgid "Medium"
+msgstr "Média"
+
+msgid "Large"
+msgstr "Grande"
+
+msgid "field lines"
+msgstr "linhas de campo"
+
+msgid "Field line sheet"
+msgstr "Placa de linhas de campo"
+
+msgid "Like iron filings on paper: the lines show the magnetic field.\nOutside the magnet they run from N to S. Where they are close together, the field is strong.\nPut magnets on it. Right-click: size."
+msgstr "Como limalha de ferro sobre papel: as linhas mostram o campo magnético.\nFora do íman vão de N para S. Onde estão juntas, o campo é forte.\nColoque ímanes por cima. Clique direito: tamanho."
+
+msgid "A gate works on 5 V: its output gives at most 5 V."
+msgstr "Uma porta funciona com 5 V: a sua saída dá no máximo 5 V."
+
+msgid "Logic lamp: works on 5 V, like the output of a gate."
+msgstr "Lâmpada lógica: funciona com 5 V, como a saída de uma porta."
+
+msgid "Magnetism (magnet, compass, field lines)"
+msgstr "Magnetismo (íman, bússola, linhas de campo)"

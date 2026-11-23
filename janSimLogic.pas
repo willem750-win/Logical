@@ -1879,7 +1879,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K, FMagK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2126,6 +2126,7 @@ type
     procedure SetKWisselschakelaar(const Value: Boolean);
     procedure SetKPuls2(const Value: Boolean);
     procedure SetKDip2(const Value: Boolean);
+    procedure SetKMagnetisme(const Value: Boolean);
     procedure SetKVoltmeter2(const Value: Boolean);
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
@@ -2363,6 +2364,7 @@ type
     property KWisselschakelaar: Boolean read FWschK write SetKWisselschakelaar default True;
     property KPuls2: Boolean read FPuls2K write SetKPuls2 default True;
     property KDip2: Boolean read FDip2K write SetKDip2 default True;
+    property KMagnetisme: Boolean read FMagK write SetKMagnetisme default True;
     property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
@@ -2395,6 +2397,9 @@ type
     property HWisselschakelaar: string read FHWsch write FHWsch;
     property HPuls2: string read FHPuls2 write FHPuls2;
     property HDip2: string read FHDip2 write FHDip2;
+    property HMagneet: string read FHMagneet write FHMagneet;
+    property HKompas: string read FHKompas write FHKompas;
+    property HVeldplaat: string read FHVeldplaat write FHVeldplaat;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3801,6 +3806,78 @@ end;
     property Soort: Integer read FSoort write SetSoort;
   end;
 
+  { Magnetisme (zonder klemmen). Het veld rekent met twee polen per magneet:
+    B = som van q x (r - r_pool) / |r - r_pool|^3, met q = +1 in de
+    noordpool en -1 in de zuidpool. De veldlijnen lopen buiten de magneet
+    van N naar Z, en de noordpool van een kompasnaald wijst langs het veld. }
+  TMagVec = record
+    X, Y: Double;
+  end;
+
+  { TjanMagneet: staafmagneet met een rode noordpool en een blauwe zuidpool.
+    Liggend staat de noordpool rechts (omgedraaid links), rechtop onderaan
+    (omgedraaid boven). Komt een andere magneet dichtbij, dan toont een gele
+    pijl de kracht: ongelijke polen trekken aan, gelijke polen stoten af. }
+  TjanMagneet = class(TjanVoedingsDeel)
+  private
+    FOmgekeerd: Boolean;
+    procedure CMVisibleChanged(var Msg: TLMessage); message CM_VISIBLECHANGED;
+    procedure SetOmgekeerd(const Value: Boolean);
+    procedure OmdraaiClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    // noordpool en zuidpool in paneelcoördinaten
+    procedure Polen(out PN, PZ: TMagVec);
+    // kracht van de andere magneten op deze magneet
+    function Kracht: TMagVec;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
+  end;
+
+  { TjanKompas: een naald die draait naar het veld op haar plaats. Zonder
+    magneet in de buurt wijst ze naar het noorden (boven op het paneel). }
+  TjanKompas = class(TjanVoedingsDeel)
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  end;
+
+  { TjanVeldplaat: een blad onder de magneten waarop de veldlijnen getekend
+    worden, zoals ijzervijlsel op papier. Ligt altijd achteraan. }
+  TjanVeldplaat = class(TjanVoedingsDeel)
+  private
+    FMaat: Integer;        // 0 klein, 1 middel, 2 groot
+    procedure SetMaat(const Value: Integer);
+    procedure MaatClick(Sender: TObject);
+    procedure CMVisibleChanged(var Msg: TLMessage); message CM_VISIBLECHANGED;
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Maat: Integer read FMaat write SetMaat;
+  end;
+
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.
     Wordt als onzichtbaar besturingselement op het paneel gezet. Tijdens het
     slepen van een selectierechthoek toont het die rechthoek; daarna ligt het
@@ -3958,4 +4035,5 @@ uses Process;
 {$I jsl_groep_logicrun.inc}
 {$I jsl_bewegend.inc}
 {$I jsl_stappen_flipflop.inc}
+{$I jsl_magnetisme.inc}
 end.

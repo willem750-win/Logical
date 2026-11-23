@@ -33,6 +33,9 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch, über 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Ein kleiner Basisstrom steuert einen großen Kollektorstrom: schalten und verstärken.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Stabmagnet</a></td><td>Magnet mit einem Nordpol (rot) und einem Südpol (blau), ohne Klemmen.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Kompass</a></td><td>Eine Nadel, die entlang des Magnetfelds zeigt.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Feldlinienplatte</a></td><td>Zeigt die Feldlinien der Magnete, die darauf liegen, wie Eisenfeilspäne.</td></tr>
   </table>
   <ol class="steps">
     <li>Klicken Sie auf die Schaltfläche des Bauteils, das Sie platzieren möchten.</li>
@@ -365,6 +368,15 @@
       darunter. Verlängern Sie die Schiene bei Bedarf.</li>
     <li>Mit den Pfeiltasten verschieben Sie pixelweise; so können Sie ein Bauteil auch wieder abziehen.</li>
   </ul>
+
+  <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetismus: Stabmagnet, Kompass und Feldlinienplatte</h2>
+  <p>Diese drei Teile haben keine Klemmen: Sie gehören nicht zum Stromkreis. Man legt sie frei auf das Panel und zieht sie herum. Siehe <a href="lesm1.html">Was ist Magnetismus?</a></p>
+  <ul>
+    <li><img src="../img/pal-magneet.png" class="ico" alt=""><b>Stabmagnet</b>: Der Nordpol N ist rot, der Südpol S blau. Rechtsklick: <b>Umdrehen</b> (N und S tauschen) oder <b>Drehen</b> (liegend oder aufrecht). Kommt ein zweiter Magnet in die Nähe, zeigt ein gelber Pfeil die Kraft: Ungleichnamige Pole ziehen sich an, gleichnamige stoßen sich ab.</li>
+    <li><img src="../img/pal-kompas.png" class="ico" alt=""><b>Kompass</b>: Die rote Spitze ist der Nordpol der Nadel. Sie zeigt entlang des Feldes an ihrem Ort, weg von einem Nordpol und hin zu einem Südpol. Ohne Magnet in der Nähe zeigt sie nach Norden: oben auf dem Panel. Der Hinweis sagt, wie viel stärker das Feld der Magnete dort ist als das der Erde.</li>
+    <li><img src="../img/pal-veldplaat.png" class="ico" alt=""><b>Feldlinienplatte</b>: ein Blatt, das immer unter den Magneten liegt. Es zeichnet die Feldlinien aller Magnete, wie Eisenfeilspäne auf Papier: außerhalb des Magneten von N nach S, dicht beieinander, wo das Feld stark ist. Rechtsklick: <b>Größe</b> (klein, mittel oder groß).</li>
+  </ul>
+  <p>Logic berechnet das Feld mit zwei Polen pro Magnet: Jeder Pol gibt ein Feld, das mit dem Quadrat des Abstands abnimmt. Das ist nicht ganz exakt, aber die Form der Feldlinien und die Richtung des Kompasses stimmen.</p>
 
   <h2 id="draad">Mit einem Versorgungsdraht anschließen</h2>
   <p>Statt ein Bauteil anzustecken, können Sie es auch mit einem Draht an eine Schiene anschließen, wie in einer

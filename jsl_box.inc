@@ -373,7 +373,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;FMagK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -386,6 +386,9 @@ begin
   FHWsch:='maak Wisselschakelaar';
   FHPuls2:='maak Impulsgenerator';
   FHDip2:='maak Dipschakelaar';
+  FHMagneet:='maak Staafmagneet';
+  FHKompas:='maak Kompas';
+  FHVeldplaat:='maak Veldlijnenplaat';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1477,7 +1480,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') then
     begin
       with TStringList.Create do
       try
@@ -1494,6 +1497,9 @@ begin
           else if obj[1] = 'TjanWissel2' then VD := TjanWissel2.Create(Self)
           else if obj[1] = 'TjanPuls2' then VD := TjanPuls2.Create(Self)
           else if obj[1] = 'TjanDip2' then VD := TjanDip2.Create(Self)
+          else if obj[1] = 'TjanMagneet' then VD := TjanMagneet.Create(Self)
+          else if obj[1] = 'TjanKompas' then VD := TjanKompas.Create(Self)
+          else if obj[1] = 'TjanVeldplaat' then VD := TjanVeldplaat.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -1537,6 +1543,14 @@ begin
           end
           else if (VD is TjanDip2) and (Count >= 5) then
             TjanDip2(VD).Waarde := StrToIntDef(Trim(Strings[4]), 0)
+          else if (VD is TjanMagneet) and (Count >= 5) then
+            TjanMagneet(VD).Omgekeerd := Trim(Strings[4]) = '1'
+          else if (VD is TjanVeldplaat) then
+          begin
+            if Count >= 5 then
+              TjanVeldplaat(VD).Maat := StrToIntDef(Trim(Strings[4]), 1);
+            VD.SendToBack;   // de plaat ligt onder de magneten
+          end
           else if (VD is TjanSchakelaar2) and (Count >= 5) then
           begin
             TjanSchakelaar2(VD).Aan := Trim(Strings[4]) = '1';
@@ -2424,6 +2438,9 @@ begin
     17: D := TjanWissel2.Create(Self);
     18: D := TjanPuls2.Create(Self);
     19: D := TjanDip2.Create(Self);
+    20: D := TjanMagneet.Create(Self);
+    21: D := TjanKompas.Create(Self);
+    22: D := TjanVeldplaat.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2776,6 +2793,47 @@ begin
           MoveTo(CX - 2, CY + 2); LineTo(CX + 4, CY + 6); LineTo(CX + 4, R.Bottom - 2);
           Brush.Style := bsSolid; Brush.Color := clBlack;
           Polygon([Point(CX + 4, CY + 6), Point(CX + 1, CY + 6), Point(CX + 3, CY + 3)]);
+        end;
+      20:
+        begin
+          // staafmagneet: blauwe zuidpool links, rode noordpool rechts
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(40, 90, 200);
+          FillRect(Rect(CX - 10, CY - 4, CX, CY + 5));
+          Brush.Color := RGBToColor(215, 40, 40);
+          FillRect(Rect(CX, CY - 4, CX + 10, CY + 5));
+          Brush.Style := bsClear;
+          Rectangle(Rect(CX - 10, CY - 4, CX + 10, CY + 5));
+        end;
+      21:
+        begin
+          // kompas: cirkel met een naald, rood naar boven
+          Brush.Style := bsSolid;
+          Brush.Color := clWhite;
+          Ellipse(Rect(CX - 8, CY - 8, CX + 9, CY + 9));
+          Brush.Color := RGBToColor(215, 30, 30);
+          Polygon([Point(CX, CY - 6), Point(CX - 2, CY), Point(CX + 2, CY)]);
+          Brush.Color := RGBToColor(160, 160, 160);
+          Polygon([Point(CX, CY + 6), Point(CX - 2, CY), Point(CX + 2, CY)]);
+        end;
+      22:
+        begin
+          // veldlijnenplaat: blad met veldlijnen rond een magneetje
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(250, 247, 232);
+          FillRect(Rect(R.Left + 3, R.Top + 3, R.Right - 3, R.Bottom - 3));
+          Brush.Style := bsClear;
+          Pen.Color := RGBToColor(120, 110, 90);
+          Rectangle(Rect(R.Left + 3, R.Top + 3, R.Right - 3, R.Bottom - 3));
+          Pen.Color := RGBToColor(90, 90, 90);
+          Ellipse(Rect(CX - 8, CY - 6, CX + 9, CY + 7));
+          Ellipse(Rect(CX - 6, CY - 3, CX + 7, CY + 4));
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(40, 90, 200);
+          FillRect(Rect(CX - 4, CY - 1, CX, CY + 2));
+          Brush.Color := RGBToColor(215, 40, 40);
+          FillRect(Rect(CX, CY - 1, CX + 4, CY + 2));
+          Pen.Color := clBlack;
         end;
       6:
         begin

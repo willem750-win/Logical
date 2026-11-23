@@ -1031,6 +1031,8 @@ begin
       Rails[NR] := TjanRail(C);
       Inc(NR);
     end
+    else if (C is TjanVoedingsDeel) and (TjanVoedingsDeel(C).PinCount = 0) then
+      Continue   // magneet, kompas, veldplaat: niet in de kring
     else if C is TjanVoedingsDeel then
     begin
       SetLength(Parts, NP + 1);
@@ -1774,6 +1776,12 @@ begin
       TjanLamp2(C).Soort])
   else if C is TjanPuls2 then
     Result := Format('TjanPuls2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanPuls2(C).Interval, Ord(TjanPuls2(C).Loopt)])
+  else if C is TjanMagneet then
+    Result := Format('TjanMagneet;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, Ord(TjanMagneet(C).Omgekeerd)])
+  else if C is TjanKompas then
+    Result := Format('TjanKompas;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanVeldplaat then
+    Result := Format('TjanVeldplaat;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanVeldplaat(C).Maat])
   else if C is TjanDip2 then
     Result := Format('TjanDip2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanDip2(C).Waarde])
   else if C is TjanWissel2 then
