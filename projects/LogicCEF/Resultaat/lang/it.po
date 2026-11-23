@@ -1830,3 +1830,30 @@ msgstr "Clic destro: portata."
 
 msgid "Centre-zero meter"
 msgstr "Galvanometro"
+
+msgid "create rotating magnet (dynamo)"
+msgstr "crea magnete rotante (dinamo)"
+
+msgid "Speed"
+msgstr "Velocità"
+
+msgid "still (click)"
+msgstr "fermo (clic)"
+
+msgid "It turns at %d rpm: %s turns per second."
+msgstr "Gira a %d giri/min: %s giri al secondo."
+
+msgid "It is standing still. Click it to make it turn."
+msgstr "È fermo. Fai clic per farlo girare."
+
+msgid "Rotating magnet (dynamo)"
+msgstr "Magnete rotante (dinamo)"
+
+msgid "A strong bar magnet turning round its middle. Put a coil next to it:\nthe field through the coil keeps changing direction, and the coil produces an alternating voltage."
+msgstr "Un magnete a barra potente che gira intorno al suo centro. Metti una bobina accanto:\nil campo nella bobina cambia continuamente verso e la bobina produce una tensione alternata."
+
+msgid "Click: turn or stop. Right-click: speed."
+msgstr "Clic: girare o fermare. Clic destro: velocità."
+
+msgid "Rotating magnet"
+msgstr "Magnete rotante"

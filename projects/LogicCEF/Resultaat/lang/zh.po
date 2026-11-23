@@ -2140,3 +2140,30 @@ msgstr "右键：量程。"
 
 msgid "Centre-zero meter"
 msgstr "检流计"
+
+msgid "create rotating magnet (dynamo)"
+msgstr "创建旋转磁铁 (发电机)"
+
+msgid "Speed"
+msgstr "转速"
+
+msgid "still (click)"
+msgstr "静止 (点击)"
+
+msgid "It turns at %d rpm: %s turns per second."
+msgstr "以 %d 转/分转动：每秒 %s 转。"
+
+msgid "It is standing still. Click it to make it turn."
+msgstr "它静止不动。点击它使其转动。"
+
+msgid "Rotating magnet (dynamo)"
+msgstr "旋转磁铁 (发电机)"
+
+msgid "A strong bar magnet turning round its middle. Put a coil next to it:\nthe field through the coil keeps changing direction, and the coil produces an alternating voltage."
+msgstr "一块绕中心转动的强条形磁铁。在旁边放一个线圈：\n穿过线圈的磁场不断改变方向，线圈产生交流电压。"
+
+msgid "Click: turn or stop. Right-click: speed."
+msgstr "点击：转动或停止。右键：转速。"
+
+msgid "Rotating magnet"
+msgstr "旋转磁铁"

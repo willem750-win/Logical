@@ -51,6 +51,15 @@ begin
       Result[n + 1].P := PZ; Result[n + 1].Q := -1; Result[n + 1].Bron := C;
       Inc(n, 2);
     end
+    else if (C is TjanDraaimagneet) and C.Visible then
+    begin
+      // de dynamomagneet is veel sterker dan een staafmagneet
+      TjanDraaimagneet(C).Polen(PN, PZ);
+      SetLength(Result, n + 2);
+      Result[n].P := PN;     Result[n].Q := 15;  Result[n].Bron := C;
+      Result[n + 1].P := PZ; Result[n + 1].Q := -15; Result[n + 1].Bron := C;
+      Inc(n, 2);
+    end
     else if (C is TjanSpoel) and C.Visible and (Abs(TjanSpoel(C).Sterkte) > 0.005) then
     begin
       // een spoel met stroom: de pool met + sterkte is PN
@@ -103,7 +112,7 @@ begin
   for i := 0 to AParent.ControlCount - 1 do
   begin
     C := AParent.Controls[i];
-    if (C is TjanKompas) or (C is TjanVeldplaat) or (C is TjanMagneet) or (C is TjanSpoel) then
+    if (C is TjanKompas) or (C is TjanVeldplaat) or (C is TjanMagneet) or (C is TjanSpoel) or (C is TjanDraaimagneet) then
       C.Invalidate;
   end;
 end;
@@ -2840,5 +2849,242 @@ begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Nulpuntmeter', 'Centre-zero meter', 'Galvanomètre', 'Nullpunktmessgerät') + ' > ', 0);
   FOnStatus(Self, FormatFloat('+0.0;-0.0;0', FAmp * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanDraaimagneet }
+
+const
+  DraaiW = 84;
+  DraaiH = 100;
+  DraaiA = 26;               // afstand van een pool tot het midden
+  DraaiToeren: array[0..3] of Integer = (30, 60, 120, 240);
+
+constructor TjanDraaimagneet.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FToerIdx := 2;
+  Width := DraaiW;
+  Height := DraaiH;
+  HelpKeyword := 'magnetisme';
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
+end;
+
+destructor TjanDraaimagneet.Destroy;
+var
+  P: TWinControl;
+begin
+  P := Parent;
+  inherited Destroy;
+  MagneetVeranderd(P);
+end;
+
+procedure TjanDraaimagneet.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
+begin
+  inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+  MagneetVeranderd(Parent);
+end;
+
+function TjanDraaimagneet.PinCount: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanDraaimagneet.PinPos(I: Integer): TPoint;
+begin
+  Result := Point(0, 0);
+end;
+
+function TjanDraaimagneet.Toeren: Double;
+begin
+  if FDraait then Result := DraaiToeren[FToerIdx] else Result := 0;
+end;
+
+procedure TjanDraaimagneet.Polen(out PN, PZ: TMagVec);
+var
+  CX, CY: Double;
+begin
+  CX := Left + DraaiW / 2;
+  CY := Top + DraaiW / 2;
+  PN := MagV(CX + DraaiA * Cos(FHoek), CY - DraaiA * Sin(FHoek));
+  PZ := MagV(CX - DraaiA * Cos(FHoek), CY + DraaiA * Sin(FHoek));
+end;
+
+procedure TjanDraaimagneet.Tik(Sender: TObject);
+var
+  Nu: QWord;
+  Dt: Double;
+begin
+  if (Parent = nil) or not Visible then Exit;
+  Nu := GetTickCount64;
+  if FTijdOud = 0 then FTijdOud := Nu;
+  Dt := (Nu - FTijdOud) / 1000;
+  FTijdOud := Nu;
+  if not FDraait then Exit;
+  if Dt > 0.2 then Dt := 0.2;
+  FHoek := FHoek + 2 * Pi * Toeren / 60 * Dt;
+  if FHoek > 2 * Pi then FHoek := FHoek - 2 * Pi;
+  Invalidate;
+  MagneetVeranderd(Parent);
+end;
+
+procedure TjanDraaimagneet.SetToerIdx(const Value: Integer);
+begin
+  if (Value < Low(DraaiToeren)) or (Value > High(DraaiToeren)) or (Value = FToerIdx) then Exit;
+  FToerIdx := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanDraaimagneet.SetDraait(const Value: Boolean);
+begin
+  if Value = FDraait then Exit;
+  FDraait := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanDraaimagneet.ToerClick(Sender: TObject);
+begin
+  if not FLock then ToerIdx := TMenuItem(Sender).Tag;
+end;
+
+function TjanDraaimagneet.HandleClick(X, Y: Integer): Boolean;
+begin
+  // klik in het ronde huisje: draaien of stilstaan
+  Result := Sqr(X - DraaiW / 2) + Sqr(Y - DraaiW / 2) < Sqr(DraaiW / 2 - 4);
+  if Result then
+  begin
+    Draait := not Draait;
+    SendStatusToBar;
+  end;
+end;
+
+procedure TjanDraaimagneet.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Toerental', 'Speed', 'Vitesse', 'Drehzahl');
+  Mi.Enabled := not FLock;
+  APop.Items.Add(Mi);
+  for i := Low(DraaiToeren) to High(DraaiToeren) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := IntToStr(DraaiToeren[i]) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min');
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FToerIdx;
+    Sub.OnClick := ToerClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+procedure TjanDraaimagneet.Paint;
+var
+  C, UX, UY, PX, PY: Double;
+  S: string;
+
+  function Pt(X, Y: Double): TPoint;
+  begin
+    Result := Point(Round(X), Round(Y));
+  end;
+
+begin
+  C := DraaiW / 2;
+  UX := Cos(FHoek);
+  UY := -Sin(FHoek);
+  // dwars op de magneet, voor de breedte
+  PX := -UY * 7;
+  PY := UX * 7;
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // huisje
+    Pen.Color := RGBToColor(110, 110, 110);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(235, 235, 235);
+    Ellipse(2, 2, DraaiW - 2, DraaiW - 2);
+    // de magneet: noordhelft rood, zuidhelft blauw
+    Pen.Color := clBlack;
+    Brush.Color := RGBToColor(215, 40, 40);
+    Polygon([Pt(C + PX, C + PY), Pt(C + 34 * UX + PX, C + 34 * UY + PY),
+      Pt(C + 34 * UX - PX, C + 34 * UY - PY), Pt(C - PX, C - PY)]);
+    Brush.Color := RGBToColor(40, 90, 200);
+    Polygon([Pt(C + PX, C + PY), Pt(C - 34 * UX + PX, C - 34 * UY + PY),
+      Pt(C - 34 * UX - PX, C - 34 * UY - PY), Pt(C - PX, C - PY)]);
+    // letters op de polen
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    Font.Color := clWhite;
+    S := 'N';
+    TextOut(Round(C + 24 * UX) - TextWidth(S) div 2, Round(C + 24 * UY) - TextHeight(S) div 2, S);
+    S := Tr(FTaal, 'Z', 'S', 'S', 'S');
+    TextOut(Round(C - 24 * UX) - TextWidth(S) div 2, Round(C - 24 * UY) - TextHeight(S) div 2, S);
+    // as
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(60, 60, 60);
+    Ellipse(Round(C) - 3, Round(C) - 3, Round(C) + 4, Round(C) + 4);
+    // toerental
+    Brush.Style := bsClear;
+    Font.Style := [];
+    Font.Size := 7;
+    if FDraait then
+    begin
+      Font.Color := clNavy;
+      S := IntToStr(DraaiToeren[FToerIdx]) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min');
+    end
+    else
+    begin
+      Font.Color := RGBToColor(120, 120, 120);
+      S := Tr(FTaal, 'stil (klik)', 'still (click)', 'arrêt (clic)', 'steht (Klick)');
+    end;
+    TextOut((DraaiW - TextWidth(S)) div 2, DraaiW + 2, S);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanDraaimagneet.UpdateHintText;
+var
+  S: string;
+begin
+  if FDraait then
+    S := Format(Tr(FTaal, 'Hij draait met %d omw/min: %s omwentelingen per seconde.',
+      'It turns at %d rpm: %s turns per second.',
+      'Il tourne à %d tr/min : %s tours par seconde.',
+      'Er dreht sich mit %d U/min: %s Umdrehungen pro Sekunde.'),
+      [DraaiToeren[FToerIdx], FormatFloat('0.##', DraaiToeren[FToerIdx] / 60)])
+  else
+    S := Tr(FTaal, 'Hij staat stil. Klik erop om hem te laten draaien.',
+      'It is standing still. Click it to make it turn.',
+      'Il est à l''arrêt. Cliquez dessus pour le faire tourner.',
+      'Er steht still. Klicken Sie darauf, damit er sich dreht.');
+  Hint := Tr(FTaal, 'Draaiende magneet (dynamo)', 'Rotating magnet (dynamo)', 'Aimant tournant (dynamo)', 'Drehender Magnet (Dynamo)') + #13#10 +
+    Tr(FTaal,
+      'Een sterke staafmagneet die rond zijn midden draait. Leg er een spoel naast:' + #13#10 +
+        'het veld door de spoel verandert steeds van richting, en de spoel wekt een wisselspanning op.',
+      'A strong bar magnet turning round its middle. Put a coil next to it:' + #13#10 +
+        'the field through the coil keeps changing direction, and the coil produces an alternating voltage.',
+      'Un aimant droit puissant qui tourne autour de son milieu. Placez une bobine à côté :' + #13#10 +
+        'le champ dans la bobine change sans cesse de sens, et la bobine produit une tension alternative.',
+      'Ein starker Stabmagnet, der sich um seine Mitte dreht. Legen Sie eine Spule daneben:' + #13#10 +
+        'Das Feld in der Spule ändert ständig seine Richtung, und die Spule erzeugt eine Wechselspannung.') + #13#10 +
+    S + #13#10 +
+    Tr(FTaal, 'Klik: draaien of stilstaan. Rechtsklik: toerental.', 'Click: turn or stop. Right-click: speed.',
+      'Clic : tourner ou arrêter. Clic droit : vitesse.', 'Klick: drehen oder anhalten. Rechtsklick: Drehzahl.');
+end;
+
+procedure TjanDraaimagneet.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Draaiende magneet', 'Rotating magnet', 'Aimant tournant', 'Drehender Magnet') + ' > ', 0);
+  FOnStatus(Self, FormatFloat('0', Toeren) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min'), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;

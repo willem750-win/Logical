@@ -2135,3 +2135,30 @@ msgstr "Clic derecho: rango."
 
 msgid "Centre-zero meter"
 msgstr "Galvanómetro"
+
+msgid "create rotating magnet (dynamo)"
+msgstr "crear imán giratorio (dinamo)"
+
+msgid "Speed"
+msgstr "Velocidad"
+
+msgid "still (click)"
+msgstr "parado (clic)"
+
+msgid "It turns at %d rpm: %s turns per second."
+msgstr "Gira a %d rpm: %s vueltas por segundo."
+
+msgid "It is standing still. Click it to make it turn."
+msgstr "Está parado. Haz clic para que gire."
+
+msgid "Rotating magnet (dynamo)"
+msgstr "Imán giratorio (dinamo)"
+
+msgid "A strong bar magnet turning round its middle. Put a coil next to it:\nthe field through the coil keeps changing direction, and the coil produces an alternating voltage."
+msgstr "Un imán de barra potente que gira alrededor de su centro. Pon una bobina al lado:\nel campo en la bobina cambia de sentido sin parar y la bobina produce una tensión alterna."
+
+msgid "Click: turn or stop. Right-click: speed."
+msgstr "Clic: girar o parar. Clic derecho: velocidad."
+
+msgid "Rotating magnet"
+msgstr "Imán giratorio"

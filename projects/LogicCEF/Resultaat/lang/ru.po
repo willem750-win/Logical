@@ -2140,3 +2140,30 @@ msgstr "Правый щелчок: диапазон."
 
 msgid "Centre-zero meter"
 msgstr "Гальванометр"
+
+msgid "create rotating magnet (dynamo)"
+msgstr "создать вращающийся магнит (динамо)"
+
+msgid "Speed"
+msgstr "Скорость"
+
+msgid "still (click)"
+msgstr "стоит (щелчок)"
+
+msgid "It turns at %d rpm: %s turns per second."
+msgstr "Вращается со скоростью %d об/мин: %s оборотов в секунду."
+
+msgid "It is standing still. Click it to make it turn."
+msgstr "Он стоит на месте. Щёлкните, чтобы он вращался."
+
+msgid "Rotating magnet (dynamo)"
+msgstr "Вращающийся магнит (динамо)"
+
+msgid "A strong bar magnet turning round its middle. Put a coil next to it:\nthe field through the coil keeps changing direction, and the coil produces an alternating voltage."
+msgstr "Сильный полосовой магнит, вращающийся вокруг своей середины. Поставьте рядом катушку:\nполе в катушке всё время меняет направление, и катушка даёт переменное напряжение."
+
+msgid "Click: turn or stop. Right-click: speed."
+msgstr "Щелчок: вращать или остановить. Правый щелчок: скорость."
+
+msgid "Rotating magnet"
+msgstr "Вращающийся магнит"

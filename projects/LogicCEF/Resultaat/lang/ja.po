@@ -2140,3 +2140,30 @@ msgstr "右クリック：レンジ。"
 
 msgid "Centre-zero meter"
 msgstr "検流計"
+
+msgid "create rotating magnet (dynamo)"
+msgstr "回転磁石 (発電機) を作成"
+
+msgid "Speed"
+msgstr "回転数"
+
+msgid "still (click)"
+msgstr "停止 (クリック)"
+
+msgid "It turns at %d rpm: %s turns per second."
+msgstr "%d rpm で回っています：毎秒 %s 回転。"
+
+msgid "It is standing still. Click it to make it turn."
+msgstr "止まっています。クリックすると回ります。"
+
+msgid "Rotating magnet (dynamo)"
+msgstr "回転磁石 (発電機)"
+
+msgid "A strong bar magnet turning round its middle. Put a coil next to it:\nthe field through the coil keeps changing direction, and the coil produces an alternating voltage."
+msgstr "中心のまわりに回る強い棒磁石です。そばにコイルを置くと、\nコイルを通る磁界の向きが絶えず変わり、コイルは交流電圧を生じます。"
+
+msgid "Click: turn or stop. Right-click: speed."
+msgstr "クリック：回転または停止。右クリック：回転数。"
+
+msgid "Rotating magnet"
+msgstr "回転磁石"

@@ -1806,6 +1806,9 @@ begin
     Result := Format('TjanRelaisModel;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanDraaimagneet then
+    Result := Format('TjanDraaimagneet;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanDraaimagneet(C).ToerIdx, Ord(TjanDraaimagneet(C).Draait)])
   else if C is TjanNulmeter then
     Result := Format('TjanNulmeter;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanNulmeter(C).BereikIdx])
   else if C is TjanElektromotor then
