@@ -2038,3 +2038,48 @@ msgstr "コイル：%s、電流 %s (接極子は %s から動きます)。"
 
 msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
 msgstr "端子：下にコイル、右に共通接点 C、左に NO 接点と NC 接点。\nコイルを自分の NC 接点と直列につなぐと接極子が振動します：電気ベルです。"
+
+msgid "create current swing"
+msgstr "電流ブランコを作成"
+
+msgid "Turn the magnet round (swap N and S)"
+msgstr "磁石を裏返す (N と S を入れ替え)"
+
+msgid "Strong magnet"
+msgstr "強い磁石"
+
+msgid "No current flows: no force, the rod hangs straight."
+msgstr "電流が流れていません：力はなく、棒はまっすぐ垂れています。"
+
+msgid "The current goes into the screen (cross)."
+msgstr "電流は画面の奥へ流れています (×)。"
+
+msgid "The current comes out of the screen (dot)."
+msgstr "電流は画面の手前へ流れています (・)。"
+
+msgid "The force pushes the rod to the right."
+msgstr "力が棒を右へ押します。"
+
+msgid "The force pushes the rod to the left."
+msgstr "力が棒を左へ押します。"
+
+msgid "Current swing"
+msgstr "電流ブランコ"
+
+msgid "A copper rod hangs between the poles of a U-magnet; you look at it from the side."
+msgstr "U 字形磁石の極の間に銅の棒がつり下がっています。横から見ています。"
+
+msgid "Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force."
+msgstr "左手の法則 (フレミング)：磁力線 (N から S) を手のひらに受け、指を電流の向きに向けると、親指が力の向きを示します。"
+
+msgid "Right-click: turn the magnet round or strong magnet."
+msgstr "右クリック：磁石を裏返す、または強い磁石。"
+
+msgid "seen at an angle"
+msgstr "斜めから見た図"
+
+msgid "left: from the side"
+msgstr "左：横から見た図"
+
+msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
+msgstr "銅の棒 (太い銅線の一部) が 2 本の細い線で U 字形磁石の極の間につり下がっています。\n電流は一方の線を下り、棒を通って、もう一方の線を戻ります。\n左は横から見た図 (棒は円)、右は斜めから見た図です。"

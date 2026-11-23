@@ -2033,3 +2033,48 @@ msgstr "Bobina: %s; corriente %s (la armadura se mueve a partir de %s)."
 
 msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
 msgstr "Bornes: la bobina abajo, el contacto común C a la derecha, los contactos NA y NC a la izquierda.\nConecta la bobina en serie con su propio contacto NC y la armadura vibra: un timbre eléctrico."
+
+msgid "create current swing"
+msgstr "crear columpio de corriente"
+
+msgid "Turn the magnet round (swap N and S)"
+msgstr "Dar la vuelta al imán (cambiar N y S)"
+
+msgid "Strong magnet"
+msgstr "Imán potente"
+
+msgid "No current flows: no force, the rod hangs straight."
+msgstr "No pasa corriente: no hay fuerza, la varilla cuelga recta."
+
+msgid "The current goes into the screen (cross)."
+msgstr "La corriente entra en la pantalla (cruz)."
+
+msgid "The current comes out of the screen (dot)."
+msgstr "La corriente sale de la pantalla (punto)."
+
+msgid "The force pushes the rod to the right."
+msgstr "La fuerza empuja la varilla hacia la derecha."
+
+msgid "The force pushes the rod to the left."
+msgstr "La fuerza empuja la varilla hacia la izquierda."
+
+msgid "Current swing"
+msgstr "Columpio de corriente"
+
+msgid "A copper rod hangs between the poles of a U-magnet; you look at it from the side."
+msgstr "Una varilla de cobre cuelga entre los polos de un imán en U; la ves de lado."
+
+msgid "Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force."
+msgstr "Regla de la mano izquierda: las líneas de campo (de N a S) entran en la palma, los dedos siguen la corriente; el pulgar indica la fuerza."
+
+msgid "Right-click: turn the magnet round or strong magnet."
+msgstr "Clic derecho: dar la vuelta al imán o imán potente."
+
+msgid "seen at an angle"
+msgstr "visto en perspectiva"
+
+msgid "left: from the side"
+msgstr "izquierda: de lado"
+
+msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
+msgstr "Una varilla de cobre (un trozo de hilo de cobre grueso) cuelga de dos hilos finos entre los polos de un imán en U.\nLa corriente baja por un hilo, atraviesa la varilla y vuelve por el otro.\nA la izquierda la ves de lado (la varilla es el círculo), a la derecha en perspectiva."

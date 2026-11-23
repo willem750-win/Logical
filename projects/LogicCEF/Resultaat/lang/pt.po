@@ -2038,3 +2038,48 @@ msgstr "Bobina: %s; corrente %s (a armadura move-se a partir de %s)."
 
 msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
 msgstr "Terminais: a bobina em baixo, o contacto comum C à direita, os contactos NA e NF à esquerda.\nLigue a bobina em série com o seu próprio contacto NF e a armadura vibra: uma campainha elétrica."
+
+msgid "create current swing"
+msgstr "criar baloiço de corrente"
+
+msgid "Turn the magnet round (swap N and S)"
+msgstr "Virar o íman (trocar N e S)"
+
+msgid "Strong magnet"
+msgstr "Íman forte"
+
+msgid "No current flows: no force, the rod hangs straight."
+msgstr "Não passa corrente: não há força, a barra fica pendurada direita."
+
+msgid "The current goes into the screen (cross)."
+msgstr "A corrente entra no ecrã (cruz)."
+
+msgid "The current comes out of the screen (dot)."
+msgstr "A corrente sai do ecrã (ponto)."
+
+msgid "The force pushes the rod to the right."
+msgstr "A força empurra a barra para a direita."
+
+msgid "The force pushes the rod to the left."
+msgstr "A força empurra a barra para a esquerda."
+
+msgid "Current swing"
+msgstr "Baloiço de corrente"
+
+msgid "A copper rod hangs between the poles of a U-magnet; you look at it from the side."
+msgstr "Uma barra de cobre está pendurada entre os polos de um íman em U; vê-a de lado."
+
+msgid "Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force."
+msgstr "Regra da mão esquerda: as linhas de campo (de N para S) entram na palma, os dedos seguem a corrente; o polegar indica a força."
+
+msgid "Right-click: turn the magnet round or strong magnet."
+msgstr "Clique direito: virar o íman ou íman forte."
+
+msgid "seen at an angle"
+msgstr "visto em perspetiva"
+
+msgid "left: from the side"
+msgstr "à esquerda: de lado"
+
+msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
+msgstr "Uma barra de cobre (um pedaço de fio de cobre grosso) está pendurada em dois fios finos entre os polos de um íman em U.\nA corrente desce por um fio, atravessa a barra e volta pelo outro.\nÀ esquerda vê-a de lado (a barra é o círculo), à direita em perspetiva."

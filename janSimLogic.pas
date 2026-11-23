@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2403,6 +2403,7 @@ type
     property HSpoel: string read FHSpoel write FHSpoel;
     property HIJzer: string read FHIJzer write FHIJzer;
     property HRelaisModel: string read FHRelaisM write FHRelaisM;
+    property HSchommel: string read FHSchommel write FHSchommel;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3986,6 +3987,46 @@ end;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Ankerstand: Double read FPos;
+  end;
+
+  { TjanSchommel: stroomschommel om de Lorentzkracht te zien. Van opzij
+    gezien hangt een koperen staafje tussen de polen van een U-magneet
+    (noordpool boven, zuidpool onder; omgedraaid andersom). De stroom van
+    klem 0 naar klem 1 loopt het scherm in (kruisje); dan duwt de kracht
+    het staafje naar links (linkerhandregel). Het zwaait verder uit naarmate
+    de stroom groter is, en met een sterke magneet twee keer zo ver. }
+  TjanSchommel = class(TjanWeerstand)
+  private
+    FTimer: TTimer;
+    FOmgekeerd: Boolean;   // zuidpool boven
+    FSterk: Boolean;       // sterke magneet
+    FHoek, FHoekV: Double; // uitslag (radialen, + = naar rechts) en hoeksnelheid
+    procedure Tik(Sender: TObject);
+    procedure SetOmgekeerd(const Value: Boolean);
+    procedure SetSterk(const Value: Boolean);
+    procedure OmdraaiClick(Sender: TObject);
+    procedure SterkClick(Sender: TObject);
+    procedure TekenSchuin;
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; override;
+    // kracht naar rechts (+) of links (-), in willekeurige eenheden: B x I
+    function Kracht: Double;
+    // de uitslag waar het staafje naartoe zwaait
+    function DoelHoek: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Hoek: Double read FHoek;
+  published
+    property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
+    property Sterk: Boolean read FSterk write SetSterk;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

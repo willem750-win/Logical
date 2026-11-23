@@ -1728,3 +1728,48 @@ msgstr "Bobina: %s; corrente %s (l'ancora si muove a partire da %s)."
 
 msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
 msgstr "Morsetti: la bobina in basso, il contatto comune C a destra, i contatti NA e NC a sinistra.\nMetti la bobina in serie con il proprio contatto NC e l'ancora vibra: un campanello elettrico."
+
+msgid "create current swing"
+msgstr "crea altalena di corrente"
+
+msgid "Turn the magnet round (swap N and S)"
+msgstr "Girare il magnete (scambiare N e S)"
+
+msgid "Strong magnet"
+msgstr "Magnete potente"
+
+msgid "No current flows: no force, the rod hangs straight."
+msgstr "Non passa corrente: nessuna forza, l'asta pende diritta."
+
+msgid "The current goes into the screen (cross)."
+msgstr "La corrente entra nello schermo (croce)."
+
+msgid "The current comes out of the screen (dot)."
+msgstr "La corrente esce dallo schermo (punto)."
+
+msgid "The force pushes the rod to the right."
+msgstr "La forza spinge l'asta verso destra."
+
+msgid "The force pushes the rod to the left."
+msgstr "La forza spinge l'asta verso sinistra."
+
+msgid "Current swing"
+msgstr "Altalena di corrente"
+
+msgid "A copper rod hangs between the poles of a U-magnet; you look at it from the side."
+msgstr "Un'asta di rame pende tra i poli di un magnete a U; la vedi di lato."
+
+msgid "Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force."
+msgstr "Regola della mano sinistra: le linee di campo (da N a S) entrano nel palmo, le dita seguono la corrente; il pollice indica la forza."
+
+msgid "Right-click: turn the magnet round or strong magnet."
+msgstr "Clic destro: girare il magnete o magnete potente."
+
+msgid "seen at an angle"
+msgstr "vista di sbieco"
+
+msgid "left: from the side"
+msgstr "a sinistra: di lato"
+
+msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
+msgstr "Un'asta di rame (un pezzo di filo di rame spesso) pende da due fili sottili tra i poli di un magnete a U.\nLa corrente scende per un filo, attraversa l'asta e risale per l'altro.\nA sinistra la vedi di lato (l'asta è il cerchio), a destra di sbieco."

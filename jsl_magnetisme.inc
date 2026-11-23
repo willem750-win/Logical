@@ -1654,3 +1654,421 @@ begin
   FOnStatus(Self, 'I = ' + FormatFloat('0', Abs(FAmp) * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
+
+{ TjanSchommel }
+
+const
+  SchommelW = 240;
+  SchommelH = 150;
+  SchommelL = 82;            // lengte van de ophangdraadjes
+  SchommelK = 2.7;           // tan(uitslag) per eenheid kracht
+  SchommelMax = 0.55;        // grootste uitslag (radialen): het staafje blijft tussen de polen
+
+constructor TjanSchommel.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := SchommelW;
+  Height := SchommelH;
+  HelpKeyword := 'magnetisme';
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
+end;
+
+function TjanSchommel.KanDraaien: Boolean;
+begin
+  Result := False;
+end;
+
+function TjanSchommel.StdMaat: TPoint;
+begin
+  Result := Point(SchommelW, SchommelH);
+end;
+
+function TjanSchommel.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanSchommel.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 1) else Result := Point(132, 1);
+end;
+
+function TjanSchommel.Ohm: Double;
+begin
+  Result := 2;
+end;
+
+// de stroom van klem 0 naar klem 1 gaat het scherm in; met de noordpool
+// boven loopt het veld omlaag, en dan duwt de kracht het staafje naar links
+function TjanSchommel.Kracht: Double;
+var
+  B: Double;
+begin
+  if FSterk then B := 2 else B := 1;
+  if FOmgekeerd then B := -B;
+  Result := -B * FAmp;
+end;
+
+function TjanSchommel.DoelHoek: Double;
+begin
+  Result := ArcTan(SchommelK * Kracht);
+  if Result > SchommelMax then Result := SchommelMax;
+  if Result < -SchommelMax then Result := -SchommelMax;
+end;
+
+// het staafje zwaait als een slinger naar zijn nieuwe stand
+procedure TjanSchommel.Tik(Sender: TObject);
+var
+  Doel: Double;
+begin
+  if (Parent = nil) or not Visible then Exit;
+  Doel := DoelHoek;
+  if (Abs(Doel - FHoek) < 0.002) and (Abs(FHoekV) < 0.002) then
+  begin
+    if (FHoek <> Doel) or (FHoekV <> 0) then
+    begin
+      FHoek := Doel;
+      FHoekV := 0;
+      Invalidate;
+    end;
+    Exit;
+  end;
+  FHoekV := (FHoekV + (Doel - FHoek) * 0.15) * 0.8;
+  FHoek := FHoek + FHoekV;
+  if FHoek > SchommelMax then begin FHoek := SchommelMax; FHoekV := 0; end;
+  if FHoek < -SchommelMax then begin FHoek := -SchommelMax; FHoekV := 0; end;
+  Invalidate;
+end;
+
+procedure TjanSchommel.SetOmgekeerd(const Value: Boolean);
+begin
+  if Value = FOmgekeerd then Exit;
+  FOmgekeerd := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanSchommel.SetSterk(const Value: Boolean);
+begin
+  if Value = FSterk then Exit;
+  FSterk := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanSchommel.OmdraaiClick(Sender: TObject);
+begin
+  if not FLock then Omgekeerd := not Omgekeerd;
+end;
+
+procedure TjanSchommel.SterkClick(Sender: TObject);
+begin
+  if not FLock then Sterk := not Sterk;
+end;
+
+procedure TjanSchommel.AddMenuItems(APop: TPopupMenu);
+var
+  Mi: TMenuItem;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Magneet omdraaien (N en Z wisselen)', 'Turn the magnet round (swap N and S)',
+    'Retourner l''aimant (échanger N et S)', 'Magnet umdrehen (N und S tauschen)');
+  Mi.Enabled := not FLock;
+  Mi.OnClick := OmdraaiClick;
+  APop.Items.Add(Mi);
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Sterke magneet', 'Strong magnet', 'Aimant puissant', 'Starker Magnet');
+  Mi.Checked := FSterk;
+  Mi.Enabled := not FLock;
+  Mi.OnClick := SterkClick;
+  APop.Items.Add(Mi);
+end;
+
+procedure TjanSchommel.Paint;
+var
+  i, X, RX, RY: Integer;
+  F, L: Double;
+  BovenKl, OnderKl: TColor;
+  BovenT, OnderT: string;
+  Omlaag: Boolean;
+
+  procedure Pijlkop(AX, AY, DX, DY: Integer);
+  begin
+    Canvas.Polygon([Point(AX, AY), Point(AX - 4 * DX - 3 * DY, AY - 4 * DY - 3 * DX),
+      Point(AX - 4 * DX + 3 * DY, AY - 4 * DY + 3 * DX)]);
+  end;
+
+begin
+  if FOmgekeerd then
+  begin
+    BovenKl := RGBToColor(40, 90, 200); OnderKl := RGBToColor(215, 40, 40);
+    BovenT := Tr(FTaal, 'Z', 'S', 'S', 'S'); OnderT := 'N';
+  end
+  else
+  begin
+    BovenKl := RGBToColor(215, 40, 40); OnderKl := RGBToColor(40, 90, 200);
+    BovenT := 'N'; OnderT := Tr(FTaal, 'Z', 'S', 'S', 'S');
+  end;
+  Omlaag := not FOmgekeerd;   // veldlijnen van N naar Z
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // U-magneet, van opzij: twee poolstukken en de rug rechts
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(150, 150, 150);
+    FillRect(Rect(122, 36, 134, 144));
+    Brush.Color := BovenKl;
+    FillRect(Rect(14, 36, 134, 56));
+    Brush.Color := OnderKl;
+    FillRect(Rect(14, 124, 134, 144));
+    if FSterk then
+    begin
+      Pen.Color := clBlack;
+      Pen.Width := 2;
+      Brush.Style := bsClear;
+      Rectangle(Rect(14, 36, 134, 144));
+      Pen.Width := 1;
+    end;
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 9;
+    Font.Style := [fsBold];
+    Font.Color := clWhite;
+    TextOut(20, 39, BovenT);
+    TextOut(20, 127, OnderT);
+    // veldlijnen tussen de polen
+    Pen.Color := RGBToColor(110, 110, 110);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(110, 110, 110);
+    for i := 0 to 3 do
+    begin
+      case i of
+        0: X := 26;
+        1: X := 44;
+        2: X := 96;
+      else
+        X := 112;
+      end;
+      Pen.Style := psDot;
+      MoveTo(X, 58); LineTo(X, 122);
+      Pen.Style := psSolid;
+      if Omlaag then Pijlkop(X, 94, 0, 1) else Pijlkop(X, 86, 0, -1);
+    end;
+    // ophanging: de klemmen bovenaan en een staafje als as
+    Pen.Color := clBlack;
+    Pen.Width := 2;
+    MoveTo(PinPos(0).X + 6, PinPos(0).Y + 3); LineTo(PinPos(1).X, PinPos(1).Y + 3);
+    MoveTo(70, 4); LineTo(70, 9);
+    Pen.Width := 1;
+    // het staafje (van opzij gezien: een rondje) aan zijn draadjes
+    RX := 70 + Round(SchommelL * Sin(FHoek));
+    RY := 8 + Round(SchommelL * Cos(FHoek));
+    MoveTo(70, 8); LineTo(RX, RY);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(200, 120, 50);
+    Pen.Color := RGBToColor(120, 60, 20);
+    Ellipse(RX - 8, RY - 8, RX + 9, RY + 9);
+    // stroomrichting: kruisje = het scherm in, stip = het scherm uit
+    Pen.Color := clBlack;
+    if FAmp > 0.0005 then
+    begin
+      Pen.Width := 2;
+      MoveTo(RX - 4, RY - 4); LineTo(RX + 5, RY + 5);
+      MoveTo(RX + 4, RY - 4); LineTo(RX - 5, RY + 5);
+      Pen.Width := 1;
+    end
+    else if FAmp < -0.0005 then
+    begin
+      Brush.Color := clBlack;
+      Ellipse(RX - 2, RY - 2, RX + 3, RY + 3);
+    end;
+    // krachtpijl
+    F := Kracht;
+    if Abs(F) > 0.002 then
+    begin
+      L := 10 + 200 * Abs(F);
+      if L > 34 then L := 34;
+      if F > 0 then X := 1 else X := -1;
+      Pen.Color := clYellow;
+      Pen.Width := 3;
+      MoveTo(RX + X * 10, RY);
+      LineTo(RX + X * Round(L), RY);
+      Pen.Width := 1;
+      Pen.Color := clBlack;
+      Brush.Color := clYellow;
+      Pijlkop(RX + X * (Round(L) + 5), RY, X, 0);
+    end;
+  end;
+  TekenSchuin;
+  PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+  PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+  PaintSelection;
+end;
+
+// rechts een klein schuin tekeningetje: het staafje (een stuk dik koperdraad)
+// hangt aan twee draadjes in de opening van de U-magneet; de stroom loopt via
+// het ene draadje door het staafje en via het andere terug
+procedure TjanSchommel.TekenSchuin;
+const
+  OX = 150; OY = 40; DX = 24; DY = -14;
+var
+  S, MX, MY: Double;
+  E1, E2, H1, H2: TPoint;
+  BovenKl, OnderKl, BovenL, OnderL: TColor;
+  BovenT, OnderT: string;
+  UX, UY: Double;
+
+  function Pt(AX, AY: Double): TPoint;
+  begin
+    Result := Point(Round(AX), Round(AY));
+  end;
+
+begin
+  if FOmgekeerd then
+  begin
+    BovenKl := RGBToColor(40, 90, 200); OnderKl := RGBToColor(215, 40, 40);
+    BovenL := RGBToColor(150, 175, 230); OnderL := RGBToColor(240, 160, 160);
+    BovenT := Tr(FTaal, 'Z', 'S', 'S', 'S'); OnderT := 'N';
+  end
+  else
+  begin
+    BovenKl := RGBToColor(215, 40, 40); OnderKl := RGBToColor(40, 90, 200);
+    BovenL := RGBToColor(240, 160, 160); OnderL := RGBToColor(150, 175, 230);
+    BovenT := 'N'; OnderT := Tr(FTaal, 'Z', 'S', 'S', 'S');
+  end;
+  // het staafje: midden in de opening, iets opzij als het uitzwaait
+  S := 22 * Sin(FHoek);
+  MX := OX + 30 + DX / 2;
+  MY := OY + 50 + DY / 2;
+  H1 := Pt(MX - 0.85 * DX, MY - 0.85 * DY - 58);
+  H2 := Pt(MX + 0.85 * DX, MY + 0.85 * DY - 58);
+  E1 := Pt(MX + S - 0.85 * DX, MY - 0.85 * DY);
+  E2 := Pt(MX + S + 0.85 * DX, MY + 0.85 * DY);
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    Pen.Color := RGBToColor(90, 90, 90);
+    Brush.Style := bsSolid;
+    // rug van de U (zijvlak) en de bovenkant van het onderste poolstuk
+    Brush.Color := RGBToColor(120, 120, 120);
+    Polygon([Point(OX + 64, OY + 14), Point(OX + 64 + DX, OY + 14 + DY),
+      Point(OX + 64 + DX, OY + 86 + DY), Point(OX + 64, OY + 86)]);
+    Brush.Color := OnderL;
+    Polygon([Point(OX, OY + 74), Point(OX + 64, OY + 74),
+      Point(OX + 64 + DX, OY + 74 + DY), Point(OX + DX, OY + 74 + DY)]);
+    // ophanging en het achterste draadje
+    Pen.Color := clBlack;
+    Pen.Width := 2;
+    MoveTo(H1.X, H1.Y); LineTo(H2.X, H2.Y);
+    Pen.Width := 1;
+    MoveTo(H2.X, H2.Y); LineTo(E2.X, E2.Y);
+    // het staafje van koper
+    Pen.Color := RGBToColor(150, 80, 25);
+    Pen.Width := 5;
+    MoveTo(E1.X, E1.Y); LineTo(E2.X, E2.Y);
+    Pen.Width := 1;
+    // stroomrichting langs het staafje
+    if Abs(FAmp) > 0.0005 then
+    begin
+      if FAmp > 0 then begin UX := DX; UY := DY; end else begin UX := -DX; UY := -DY; end;
+      UX := UX / Sqrt(DX * DX + DY * DY);
+      UY := UY / Sqrt(DX * DX + DY * DY);
+      Pen.Color := clBlack;
+      Brush.Color := RGBToColor(220, 0, 0);
+      Polygon([Pt(MX + S + 7 * UX, MY + 7 * UY - 6), Pt(MX + S - 4 * UX - 4 * UY, MY - 4 * UY + 4 * UX - 6),
+        Pt(MX + S - 4 * UX + 4 * UY, MY - 4 * UY - 4 * UX - 6)]);
+    end;
+    // het bovenste poolstuk, de voorkant van de rug en van het onderste poolstuk
+    Pen.Color := RGBToColor(90, 90, 90);
+    Brush.Color := BovenL;
+    Polygon([Point(OX, OY + 14), Point(OX + 64, OY + 14),
+      Point(OX + 64 + DX, OY + 14 + DY), Point(OX + DX, OY + 14 + DY)]);
+    Brush.Color := BovenKl;
+    FillRect(Rect(OX, OY + 14, OX + 56, OY + 27));
+    Brush.Color := RGBToColor(150, 150, 150);
+    FillRect(Rect(OX + 56, OY + 14, OX + 64, OY + 87));
+    Brush.Color := OnderKl;
+    FillRect(Rect(OX, OY + 74, OX + 56, OY + 87));
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    Font.Color := clWhite;
+    TextOut(OX + 3, OY + 14, BovenT);
+    TextOut(OX + 3, OY + 74, OnderT);
+    // het voorste draadje
+    Pen.Color := clBlack;
+    MoveTo(H1.X, H1.Y); LineTo(E1.X, E1.Y);
+    // uitleg onder het tekeningetje
+    Font.Size := 6;
+    Font.Style := [];
+    Font.Color := RGBToColor(90, 90, 90);
+    TextOut(OX - 4, OY + 92, Tr(FTaal, 'schuin gezien', 'seen at an angle', 'vue en biais', 'schräg gesehen'));
+    TextOut(OX - 4, OY + 101, Tr(FTaal, 'links: van opzij', 'left: from the side', 'à gauche : de côté', 'links: von der Seite'));
+  end;
+end;
+
+procedure TjanSchommel.UpdateHintText;
+var
+  S: string;
+  F: Double;
+begin
+  F := Kracht;
+  if Abs(FAmp) <= 0.0005 then
+    S := Tr(FTaal, 'Er loopt geen stroom: geen kracht, het staafje hangt recht.',
+      'No current flows: no force, the rod hangs straight.',
+      'Aucun courant : pas de force, la tige pend droite.',
+      'Es fließt kein Strom: keine Kraft, der Stab hängt gerade.')
+  else
+  begin
+    if FAmp > 0 then
+      S := Tr(FTaal, 'De stroom gaat het scherm in (kruisje).', 'The current goes into the screen (cross).',
+        'Le courant entre dans l''écran (croix).', 'Der Strom fließt in den Bildschirm hinein (Kreuz).')
+    else
+      S := Tr(FTaal, 'De stroom komt het scherm uit (stip).', 'The current comes out of the screen (dot).',
+        'Le courant sort de l''écran (point).', 'Der Strom kommt aus dem Bildschirm heraus (Punkt).');
+    if F > 0 then
+      S := S + ' ' + Tr(FTaal, 'De kracht duwt het staafje naar rechts.', 'The force pushes the rod to the right.',
+        'La force pousse la tige vers la droite.', 'Die Kraft schiebt den Stab nach rechts.')
+    else
+      S := S + ' ' + Tr(FTaal, 'De kracht duwt het staafje naar links.', 'The force pushes the rod to the left.',
+        'La force pousse la tige vers la gauche.', 'Die Kraft schiebt den Stab nach links.');
+  end;
+  Hint := Tr(FTaal, 'Stroomschommel', 'Current swing', 'Balançoire électrique', 'Leiterschaukel') + #13#10 +
+    Tr(FTaal,
+      'Een koperen staafje (een stuk dik koperdraad) hangt aan twee draadjes tussen de polen van een U-magneet.' + #13#10 +
+        'De stroom loopt via het ene draadje door het staafje en via het andere terug.' + #13#10 +
+        'Links zie je het van opzij (het staafje is het rondje), rechts schuin.',
+      'A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.' + #13#10 +
+        'The current flows down one thin wire, through the rod and back up the other.' + #13#10 +
+        'On the left you see it from the side (the rod is the circle), on the right at an angle.',
+      'Une tige de cuivre (un morceau de gros fil de cuivre) pend à deux fils fins entre les pôles d''un aimant en U.' + #13#10 +
+        'Le courant descend par un fil, traverse la tige et remonte par l''autre.' + #13#10 +
+        'À gauche on la voit de côté (la tige est le cercle), à droite en biais.',
+      'Ein Kupferstab (ein Stück dicker Kupferdraht) hängt an zwei dünnen Drähten zwischen den Polen eines U-Magneten.' + #13#10 +
+        'Der Strom fließt über den einen Draht durch den Stab und über den anderen zurück.' + #13#10 +
+        'Links sieht man ihn von der Seite (der Stab ist der Kreis), rechts schräg.') + #13#10 +
+    StroomRegel(FStroom) + #13#10 + S + #13#10 +
+    Tr(FTaal,
+      'Linkerhandregel: de veldlijnen (van N naar Z) komen in je handpalm, je vingers wijzen met de stroom mee; je duim wijst de kracht aan.',
+      'Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force.',
+      'Règle de la main gauche : les lignes de champ (de N à S) entrent dans la paume, les doigts suivent le courant ; le pouce indique la force.',
+      'Linke-Hand-Regel: Die Feldlinien (von N nach S) treten in die Handfläche, die Finger zeigen in Stromrichtung; der Daumen zeigt die Kraft.') + #13#10 +
+    Tr(FTaal, 'Rechtsklik: magneet omdraaien of sterke magneet.',
+      'Right-click: turn the magnet round or strong magnet.',
+      'Clic droit : retourner l''aimant ou aimant puissant.',
+      'Rechtsklick: Magnet umdrehen oder starker Magnet.');
+end;
+
+procedure TjanSchommel.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Stroomschommel', 'Current swing', 'Balançoire électrique', 'Leiterschaukel') + ' > ', 0);
+  FOnStatus(Self, 'I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;

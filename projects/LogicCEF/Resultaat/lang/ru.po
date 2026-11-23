@@ -2038,3 +2038,48 @@ msgstr "Катушка: %s; ток %s (якорь движется начина�
 
 msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
 msgstr "Клеммы: катушка внизу, общий контакт C справа, контакты НО и НЗ слева.\nВключите катушку последовательно с её собственным контактом НЗ, и якорь задрожит: электрический звонок."
+
+msgid "create current swing"
+msgstr "создать качели с током"
+
+msgid "Turn the magnet round (swap N and S)"
+msgstr "Перевернуть магнит (поменять N и S)"
+
+msgid "Strong magnet"
+msgstr "Сильный магнит"
+
+msgid "No current flows: no force, the rod hangs straight."
+msgstr "Ток не течёт: силы нет, стержень висит прямо."
+
+msgid "The current goes into the screen (cross)."
+msgstr "Ток идёт в экран (крестик)."
+
+msgid "The current comes out of the screen (dot)."
+msgstr "Ток выходит из экрана (точка)."
+
+msgid "The force pushes the rod to the right."
+msgstr "Сила толкает стержень вправо."
+
+msgid "The force pushes the rod to the left."
+msgstr "Сила толкает стержень влево."
+
+msgid "Current swing"
+msgstr "Качели с током"
+
+msgid "A copper rod hangs between the poles of a U-magnet; you look at it from the side."
+msgstr "Медный стержень висит между полюсами подковообразного магнита; вы смотрите сбоку."
+
+msgid "Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force."
+msgstr "Правило левой руки: силовые линии (от N к S) входят в ладонь, пальцы направлены по току; большой палец показывает силу."
+
+msgid "Right-click: turn the magnet round or strong magnet."
+msgstr "Правый щелчок: перевернуть магнит или сильный магнит."
+
+msgid "seen at an angle"
+msgstr "вид наискось"
+
+msgid "left: from the side"
+msgstr "слева: вид сбоку"
+
+msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
+msgstr "Медный стержень (кусок толстой медной проволоки) висит на двух тонких проводах между полюсами подковообразного магнита.\nТок спускается по одному проводу, проходит через стержень и возвращается по другому.\nСлева вы видите его сбоку (стержень — это кружок), справа наискось."

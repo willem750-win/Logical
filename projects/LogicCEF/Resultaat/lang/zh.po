@@ -2038,3 +2038,48 @@ msgstr "线圈：%s；电流 %s (衔铁从 %s 开始动作)。"
 
 msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
 msgstr "端子：下方是线圈，右侧是公共触点 C，左侧是常开和常闭触点。\n把线圈与它自己的常闭触点串联，衔铁就会振动：这就是电铃。"
+
+msgid "create current swing"
+msgstr "创建通电秋千"
+
+msgid "Turn the magnet round (swap N and S)"
+msgstr "翻转磁铁 (交换 N 和 S)"
+
+msgid "Strong magnet"
+msgstr "强磁铁"
+
+msgid "No current flows: no force, the rod hangs straight."
+msgstr "没有电流：没有力，铜棒竖直下垂。"
+
+msgid "The current goes into the screen (cross)."
+msgstr "电流流入屏幕 (叉)。"
+
+msgid "The current comes out of the screen (dot)."
+msgstr "电流流出屏幕 (点)。"
+
+msgid "The force pushes the rod to the right."
+msgstr "力把铜棒推向右边。"
+
+msgid "The force pushes the rod to the left."
+msgstr "力把铜棒推向左边。"
+
+msgid "Current swing"
+msgstr "通电秋千"
+
+msgid "A copper rod hangs between the poles of a U-magnet; you look at it from the side."
+msgstr "一根铜棒悬挂在 U 形磁铁的两极之间；你从侧面看它。"
+
+msgid "Left-hand rule: the field lines (from N to S) enter your palm, your fingers point along the current; your thumb shows the force."
+msgstr "左手定则：让磁感线 (从 N 到 S) 穿入手心，四指指向电流方向，大拇指所指就是力的方向。"
+
+msgid "Right-click: turn the magnet round or strong magnet."
+msgstr "右键：翻转磁铁或强磁铁。"
+
+msgid "seen at an angle"
+msgstr "斜视图"
+
+msgid "left: from the side"
+msgstr "左：侧视图"
+
+msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
+msgstr "一根铜棒 (一段粗铜线) 用两根细线悬挂在 U 形磁铁的两极之间。\n电流沿一根细线流下，穿过铜棒，再沿另一根细线流回。\n左边是侧视图 (铜棒是那个圆)，右边是斜视图。"

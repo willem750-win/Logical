@@ -1801,6 +1801,9 @@ begin
     Result := Format('TjanRelaisModel;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanSchommel then
+    Result := Format('TjanSchommel;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      Ord(TjanSchommel(C).Omgekeerd), Ord(TjanSchommel(C).Sterk)])
   else if C is TjanSpoel then
     Result := Format('TjanSpoel;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanSpoel(C).WindIdx, Ord(TjanSpoel(C).Kern), Ord(TjanSpoel(C).Omgekeerd)])
