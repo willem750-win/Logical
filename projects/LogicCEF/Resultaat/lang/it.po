@@ -1683,3 +1683,21 @@ msgstr "Regola della mano destra: piega le dita della mano destra nel verso dell
 
 msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr "Clic destro: spire, nucleo, avvolta al contrario o ruotare."
+
+msgid "create nail (iron)"
+msgstr "crea chiodo (ferro)"
+
+msgid "Put back"
+msgstr "Rimetti a posto"
+
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr "È attaccato al magnete. Clic destro: rimetti a posto."
+
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr "Forza di attrazione qui: %s %% di quella necessaria per spostarlo."
+
+msgid "Nail (iron)"
+msgstr "Chiodo (ferro)"
+
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
+msgstr "Un magnete o una bobina percorsa da corrente lo attira appena il campo è abbastanza forte.\nPiù è vicino a un polo, più grande è la forza."

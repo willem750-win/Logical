@@ -1073,3 +1073,292 @@ begin
     '   I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
+
+{ TjanIJzer }
+
+const
+  IJzerL = 44;              // lengte van de spijker
+  IJzerB = 12;
+  IJzerDrempel = 3.2e-9;    // kracht (helling van B²) die nodig is om hem te verschuiven
+  IJzerContact = 9;         // zo dicht bij een pool raakt hij de magneet
+
+function IJzerVeld2(const Pl: TMagPolen; X, Y: Double): Double;
+var
+  B: TMagVec;
+begin
+  B := MagVeldIn(Pl, X, Y, nil);
+  Result := Sqr(B.X) + Sqr(B.Y);
+end;
+
+constructor TjanIJzer.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := IJzerL;
+  Height := IJzerB;
+  HelpKeyword := 'magnetisme';
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
+end;
+
+procedure TjanIJzer.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
+begin
+  inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+  // verschoven door de gebruiker (of geladen): dat is zijn nieuwe plaats
+  if not FTrekt then
+  begin
+    FThuis := Point(ALeft, ATop);
+    FVast := False;
+  end;
+end;
+
+function TjanIJzer.PinCount: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanIJzer.PinPos(I: Integer): TPoint;
+begin
+  Result := Point(0, 0);
+end;
+
+function TjanIJzer.KanDraaien: Boolean;
+begin
+  Result := True;
+end;
+
+function TjanIJzer.StdMaat: TPoint;
+begin
+  Result := Point(IJzerL, IJzerB);
+end;
+
+// de helling van B² aan het uiteinde waar ze het grootst is
+function TjanIJzer.Krachtvector: TMagVec;
+const
+  H = 1.5;
+var
+  Pl: TMagPolen;
+  e: Integer;
+  CX, CY, A, EX, EY, GX, GY, Best: Double;
+begin
+  Result := MagV(0, 0);
+  Pl := MagAllePolen(Parent);
+  if Length(Pl) = 0 then Exit;
+  CX := Left + Width / 2;
+  CY := Top + Height / 2;
+  A := IJzerL / 2 - 3;
+  Best := -1;
+  for e := -1 to 1 do
+  begin
+    if FGedraaid then
+    begin
+      EX := CX; EY := CY + e * A;
+    end
+    else
+    begin
+      EX := CX + e * A; EY := CY;
+    end;
+    GX := (IJzerVeld2(Pl, EX + H, EY) - IJzerVeld2(Pl, EX - H, EY)) / (2 * H);
+    GY := (IJzerVeld2(Pl, EX, EY + H) - IJzerVeld2(Pl, EX, EY - H)) / (2 * H);
+    if Sqr(GX) + Sqr(GY) > Best then
+    begin
+      Best := Sqr(GX) + Sqr(GY);
+      Result := MagV(GX, GY);
+    end;
+  end;
+end;
+
+function TjanIJzer.Trekkracht: Double;
+begin
+  if Parent = nil then Result := 0
+  else Result := MagLen(Krachtvector) / IJzerDrempel;
+end;
+
+procedure TjanIJzer.Tik(Sender: TObject);
+var
+  F: TMagVec;
+  L: Double;
+  Pl: TMagPolen;
+  i: Integer;
+  R: TRect;
+  CX, CY, A, EX, EY: Double;
+  Raakt: Boolean;
+
+  function OverlaptIets: Boolean;
+  var
+    j: Integer;
+    D: TControl;
+  begin
+    Result := False;
+    for j := 0 to Parent.ControlCount - 1 do
+    begin
+      D := Parent.Controls[j];
+      if (D <> Self) and D.Visible and
+         ((D is TjanMagneet) or ((D is TjanIJzer) and TjanIJzer(D).Vast)) and
+         IntersectRect(R, BoundsRect, D.BoundsRect) then
+        Exit(True);
+    end;
+  end;
+
+begin
+  if (Parent = nil) or not Visible or FDoMove or FLock or FVast then Exit;
+  if not FTrekt then
+  begin
+    if Trekkracht < 1 then Exit;
+    FTrekt := True;
+    FV := 0.5;
+    FX := Left;
+    FY := Top;
+  end;
+  F := Krachtvector;
+  L := MagLen(F);
+  if L / IJzerDrempel < 0.3 then
+  begin
+    // het veld is weg (de stroom is uitgezet): hij blijft liggen
+    FTrekt := False;
+    Exit;
+  end;
+  // versnellen naar de magneet toe
+  FV := FV * 1.35 + 0.5;
+  if FV > 12 then FV := 12;
+  FX := FX + FV * F.X / L;
+  FY := FY + FV * F.Y / L;
+  SetBounds(Round(FX), Round(FY), Width, Height);
+  // raakt hij een pool, een magneet of een spijker die al vastzit?
+  Raakt := False;
+  Pl := MagAllePolen(Parent);
+  CX := Left + Width / 2;
+  CY := Top + Height / 2;
+  A := IJzerL / 2 - 3;
+  // afstand van elke pool tot de spijker (een lijnstuk van punt tot kop)
+  for i := 0 to High(Pl) do
+  begin
+    if FGedraaid then
+    begin
+      EX := CX;
+      EY := Pl[i].P.Y;
+      if EY < CY - A then EY := CY - A;
+      if EY > CY + A then EY := CY + A;
+    end
+    else
+    begin
+      EY := CY;
+      EX := Pl[i].P.X;
+      if EX < CX - A then EX := CX - A;
+      if EX > CX + A then EX := CX + A;
+    end;
+    if Sqr(EX - Pl[i].P.X) + Sqr(EY - Pl[i].P.Y) < Sqr(IJzerContact) then
+      Raakt := True;
+  end;
+  // tegen een magneet of een spijker die al vastzit: terug tot hij hem net raakt
+  if OverlaptIets then
+  begin
+    Raakt := True;
+    i := 0;
+    while OverlaptIets and (i < 16) do
+    begin
+      FX := FX - F.X / L;
+      FY := FY - F.Y / L;
+      SetBounds(Round(FX), Round(FY), Width, Height);
+      Inc(i);
+    end;
+  end;
+  if Raakt then
+  begin
+    FVast := True;
+    FTrekt := False;
+    FV := 0;
+    UpdateHintText;
+  end;
+  Invalidate;
+end;
+
+procedure TjanIJzer.Terugleggen;
+begin
+  FTrekt := False;
+  FVast := False;
+  SetBounds(FThuis.X, FThuis.Y, Width, Height);
+  Invalidate;
+end;
+
+procedure TjanIJzer.TerugClick(Sender: TObject);
+begin
+  if not FLock then Terugleggen;
+end;
+
+procedure TjanIJzer.AddMenuItems(APop: TPopupMenu);
+var
+  Mi: TMenuItem;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Terugleggen', 'Put back', 'Remettre en place', 'Zurücklegen');
+  Mi.Enabled := not FLock;
+  Mi.OnClick := TerugClick;
+  APop.Items.Add(Mi);
+end;
+
+procedure TjanIJzer.Paint;
+var
+  P: array[0..2] of TPoint;
+begin
+  with Canvas do
+  begin
+    Pen.Color := RGBToColor(60, 60, 70);
+    Pen.Width := 1;
+    Pen.Style := psSolid;
+    Brush.Style := bsSolid;
+    // kop
+    Brush.Color := RGBToColor(100, 100, 110);
+    FillRect(TRc(0, 0, 5, IJzerB));
+    // schacht
+    Brush.Color := RGBToColor(150, 150, 160);
+    FillRect(TRc(5, 4, IJzerL - 9, IJzerB - 4));
+    Brush.Style := bsClear;
+    Rectangle(TRc(0, 0, 5, IJzerB));
+    Rectangle(TRc(5, 4, IJzerL - 9, IJzerB - 4));
+    // punt
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(150, 150, 160);
+    P[0] := TP(IJzerL - 9, 4);
+    P[1] := TP(IJzerL - 1, IJzerB div 2);
+    P[2] := TP(IJzerL - 9, IJzerB - 4);
+    Polygon(P);
+  end;
+  PaintSelection;
+end;
+
+procedure TjanIJzer.UpdateHintText;
+var
+  S: string;
+begin
+  if FVast then
+    S := Tr(FTaal, 'Hij hangt vast aan de magneet. Rechtsklik: terugleggen.',
+      'It is stuck to the magnet. Right-click: put back.',
+      'Il est collé à l''aimant. Clic droit : remettre en place.',
+      'Er hängt am Magneten. Rechtsklick: zurücklegen.')
+  else
+    S := Format(Tr(FTaal, 'Trekkracht hier: %s %% van wat nodig is om hem te verschuiven.',
+      'Pulling force here: %s %% of what is needed to move it.',
+      'Force d''attraction ici : %s %% de ce qu''il faut pour le déplacer.',
+      'Zugkraft hier: %s %% dessen, was nötig ist, um ihn zu verschieben.'),
+      [FormatFloat('0', Trekkracht * 100)]);
+  Hint := Tr(FTaal, 'Spijker (ijzer)', 'Nail (iron)', 'Clou (fer)', 'Nagel (Eisen)') + #13#10 +
+    Tr(FTaal,
+      'Een magneet of een spoel met stroom trekt hem aan zodra het veld sterk genoeg is.' + #13#10 +
+        'Hoe dichter bij een pool, hoe groter de kracht.',
+      'A magnet or a coil with a current pulls it as soon as the field is strong enough.' + #13#10 +
+        'The closer to a pole, the larger the force.',
+      'Un aimant ou une bobine parcourue par un courant l''attire dès que le champ est assez fort.' + #13#10 +
+        'Plus il est près d''un pôle, plus la force est grande.',
+      'Ein Magnet oder eine Spule mit Strom zieht ihn an, sobald das Feld stark genug ist.' + #13#10 +
+        'Je näher an einem Pol, desto größer die Kraft.') + #13#10 + S;
+end;
+
+procedure TjanIJzer.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Spijker (ijzer)', 'Nail (iron)', 'Clou (fer)', 'Nagel (Eisen)') + ' > ', 0);
+  FOnStatus(Self, FormatFloat('0', Trekkracht * 100) + ' %', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;

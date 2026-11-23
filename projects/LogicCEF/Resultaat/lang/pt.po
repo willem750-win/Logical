@@ -1993,3 +1993,21 @@ msgstr "Regra da mão direita: dobre os dedos da mão direita no sentido da corr
 
 msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr "Clique direito: espiras, núcleo, enrolada ao contrário ou rodar."
+
+msgid "create nail (iron)"
+msgstr "criar prego (ferro)"
+
+msgid "Put back"
+msgstr "Repor no lugar"
+
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr "Está preso ao íman. Clique direito: repor no lugar."
+
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr "Força de atração aqui: %s %% do necessário para o deslocar."
+
+msgid "Nail (iron)"
+msgstr "Prego (ferro)"
+
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
+msgstr "Um íman ou uma bobina com corrente atrai-o assim que o campo é forte o suficiente.\nQuanto mais perto de um polo, maior a força."

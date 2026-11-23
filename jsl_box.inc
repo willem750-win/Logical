@@ -390,6 +390,7 @@ begin
   FHKompas:='maak Kompas';
   FHVeldplaat:='maak Veldlijnenplaat';
   FHSpoel:='maak Spoel';
+  FHIJzer:='maak Spijker (ijzer)';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1481,7 +1482,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') then
     begin
       with TStringList.Create do
       try
@@ -1502,6 +1503,7 @@ begin
           else if obj[1] = 'TjanKompas' then VD := TjanKompas.Create(Self)
           else if obj[1] = 'TjanVeldplaat' then VD := TjanVeldplaat.Create(Self)
           else if obj[1] = 'TjanSpoel' then VD := TjanSpoel.Create(Self)
+          else if obj[1] = 'TjanIJzer' then VD := TjanIJzer.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -2451,6 +2453,7 @@ begin
     21: D := TjanKompas.Create(Self);
     22: D := TjanVeldplaat.Create(Self);
     23: D := TjanSpoel.Create(Self);
+    24: D := TjanIJzer.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2854,6 +2857,18 @@ begin
           Pen.Color := RGBToColor(184, 100, 30);
           for K := 0 to 4 do
             Ellipse(Rect(CX - 9 + K * 4, CY - 6, CX - 5 + K * 4, CY + 7));
+          Pen.Color := clBlack;
+        end;
+      24:
+        begin
+          // spijker: kop, schacht en punt
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(100, 100, 110);
+          FillRect(Rect(CX - 10, CY - 4, CX - 7, CY + 5));
+          Brush.Color := RGBToColor(150, 150, 160);
+          FillRect(Rect(CX - 7, CY - 1, CX + 6, CY + 2));
+          Pen.Color := RGBToColor(150, 150, 160);
+          Polygon([Point(CX + 6, CY - 2), Point(CX + 10, CY), Point(CX + 6, CY + 2)]);
           Pen.Color := clBlack;
         end;
       6:

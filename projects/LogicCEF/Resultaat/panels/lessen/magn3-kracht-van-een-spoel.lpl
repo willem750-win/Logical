@@ -1,0 +1,17 @@
+TjanVeldplaat;320;220;160;480;1;
+TjanBron;84;40;40;112;120;0;1;
+TjanSchakelaar2;40;100;292;64;0;0;
+TjanSpoel;48;300;296;120;0;0;0;
+TjanIJzer;12;433;298;44;V;
+TjanIJzer;12;468;298;44;V;
+TjanIJzer;12;488;298;44;V;
+TjanLamp2;46;740;430;64;3;
+TjanConnector;208;43;113;66;jcmBR;jcpTL;jcsTLBR;0,060606060606061;11;
+TjanConnector;9;155;312;154;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;143;411;312;338;jcmBR;jcpTL;jcsTLBR;0,011834319526627;11;
+TjanConnector;342;141;113;663;jcmBR;jcpTL;jcsTLBR;0,992458521870287;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Voeding;1;
+Grid;True;
+Statusbalk;False;

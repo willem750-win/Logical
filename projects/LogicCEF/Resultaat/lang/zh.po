@@ -1993,3 +1993,21 @@ msgstr "右手定则：用右手四指顺着电流方向绕线圈弯曲，大拇
 
 msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr "右键：匝数、铁芯、反向绕制或旋转。"
+
+msgid "create nail (iron)"
+msgstr "创建钉子 (铁)"
+
+msgid "Put back"
+msgstr "放回原处"
+
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr "它被磁铁吸住了。右键：放回原处。"
+
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr "此处的吸引力：移动它所需力的 %s %%。"
+
+msgid "Nail (iron)"
+msgstr "钉子 (铁)"
+
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
+msgstr "一旦磁场足够强，磁铁或通电线圈就会吸引它。\n离磁极越近，力越大。"

@@ -1993,3 +1993,21 @@ msgstr "右ねじの法則：右手の指を電流の向きにコイルに沿っ
 
 msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr "右クリック：巻数、鉄心、逆巻き、または回転。"
+
+msgid "create nail (iron)"
+msgstr "釘 (鉄) を作成"
+
+msgid "Put back"
+msgstr "元に戻す"
+
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr "磁石にくっついています。右クリック：元に戻す。"
+
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr "ここでの引く力：動かすのに必要な力の %s %%。"
+
+msgid "Nail (iron)"
+msgstr "釘 (鉄)"
+
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
+msgstr "磁界が十分に強くなると、磁石や電流の流れるコイルがこれを引き寄せます。\n極に近いほど力は大きくなります。"

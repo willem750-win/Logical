@@ -1993,3 +1993,21 @@ msgstr "Правило правой руки: согните пальцы пра
 
 msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr "Правый щелчок: витки, сердечник, намотка в другую сторону или поворот."
+
+msgid "create nail (iron)"
+msgstr "создать гвоздь (железо)"
+
+msgid "Put back"
+msgstr "Положить обратно"
+
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr "Он прилип к магниту. Правый щелчок: положить обратно."
+
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr "Сила притяжения здесь: %s %% от нужной, чтобы его сдвинуть."
+
+msgid "Nail (iron)"
+msgstr "Гвоздь (железо)"
+
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
+msgstr "Магнит или катушка с током притягивает его, как только поле становится достаточно сильным.\nЧем ближе к полюсу, тем больше сила."

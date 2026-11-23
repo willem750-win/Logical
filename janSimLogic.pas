@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2401,6 +2401,7 @@ type
     property HKompas: string read FHKompas write FHKompas;
     property HVeldplaat: string read FHVeldplaat write FHVeldplaat;
     property HSpoel: string read FHSpoel write FHSpoel;
+    property HIJzer: string read FHIJzer write FHIJzer;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3917,6 +3918,40 @@ end;
     property WindIdx: Integer read FWindIdx write SetWindIdx;
     property Kern: Boolean read FKern write SetKern;
     property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
+  end;
+
+  { TjanIJzer: een ijzeren spijker zonder klemmen. Ijzer wordt aangetrokken
+    waar het veld sterker wordt: de kracht volgt de helling van B². Is ze
+    groot genoeg (Trekkracht >= 1), dan schuift de spijker naar de magneet of
+    de spoel tot hij een pool of een andere spijker raakt, en blijft daar.
+    Rechtsklik: terugleggen op de plaats waar je hem neerlegde. }
+  TjanIJzer = class(TjanVoedingsDeel)
+  private
+    FTimer: TTimer;
+    FThuis: TPoint;        // waar de gebruiker hem neerlegde
+    FTrekt: Boolean;       // schuift nu naar de magneet
+    FVast: Boolean;        // raakt een pool of een andere spijker
+    FV: Double;            // snelheid (pixels per tik)
+    FX, FY: Double;        // plaats tijdens het schuiven (paneel)
+    procedure Tik(Sender: TObject);
+    procedure TerugClick(Sender: TObject);
+    function Krachtvector: TMagVec;
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    // kracht op de spijker gedeeld door wat nodig is om hem te verschuiven
+    function Trekkracht: Double;
+    procedure Terugleggen;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Vast: Boolean read FVast;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

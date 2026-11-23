@@ -1988,3 +1988,21 @@ msgstr "Regla de la mano derecha: curva los dedos de la mano derecha en el senti
 
 msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr "Clic derecho: espiras, núcleo, enrollada al revés o girar."
+
+msgid "create nail (iron)"
+msgstr "crear clavo (hierro)"
+
+msgid "Put back"
+msgstr "Devolver a su sitio"
+
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr "Está pegado al imán. Clic derecho: devolver a su sitio."
+
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr "Fuerza de atracción aquí: %s %% de lo necesario para moverlo."
+
+msgid "Nail (iron)"
+msgstr "Clavo (hierro)"
+
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
+msgstr "Un imán o una bobina con corriente lo atrae en cuanto el campo es lo bastante fuerte.\nCuanto más cerca de un polo, mayor es la fuerza."

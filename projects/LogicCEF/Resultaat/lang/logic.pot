@@ -270,231 +270,235 @@ msgstr ""
 msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
 msgstr ""
 
-#: jsl_box_bediening.inc:490 jsl_box_bediening.inc:490
+#: jsl_box_bediening.inc:492 jsl_box_bediening.inc:492
 msgid "create Switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1456 jsl_box_bediening.inc:1456
+#: jsl_box_bediening.inc:1461 jsl_box_bediening.inc:1461
 msgid "create Buzzer"
 msgstr ""
 
-#: jsl_box_bediening.inc:1457 jsl_box_bediening.inc:1457
+#: jsl_box_bediening.inc:1462 jsl_box_bediening.inc:1462
 msgid "create Motor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1458 jsl_box_bediening.inc:1458
+#: jsl_box_bediening.inc:1463 jsl_box_bediening.inc:1463
 msgid "create DipSwitsh"
 msgstr ""
 
-#: jsl_box_bediening.inc:1459 jsl_box_bediening.inc:1459
+#: jsl_box_bediening.inc:1464 jsl_box_bediening.inc:1464
 msgid "create 7 segment display"
 msgstr ""
 
-#: jsl_box_bediening.inc:1460 jsl_box_bediening.inc:1460
+#: jsl_box_bediening.inc:1465 jsl_box_bediening.inc:1465
 msgid "create Connection"
 msgstr ""
 
-#: jsl_box_bediening.inc:1461 jsl_box_bediening.inc:1461
+#: jsl_box_bediening.inc:1466 jsl_box_bediening.inc:1466
 msgid "create Push button"
 msgstr ""
 
-#: jsl_box_bediening.inc:1462 jsl_box_bediening.inc:1462
+#: jsl_box_bediening.inc:1467 jsl_box_bediening.inc:1467
 msgid "create logic lamp (5 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1463 jsl_box_bediening.inc:1463
+#: jsl_box_bediening.inc:1468 jsl_box_bediening.inc:1468
 msgid "create AND-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1464 jsl_box_bediening.inc:1464
+#: jsl_box_bediening.inc:1469 jsl_box_bediening.inc:1469
 msgid "create NOT-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1465 jsl_box_bediening.inc:1465
+#: jsl_box_bediening.inc:1470 jsl_box_bediening.inc:1470
 msgid "create OR-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1466 jsl_box_bediening.inc:1466
+#: jsl_box_bediening.inc:1471 jsl_box_bediening.inc:1471
 msgid "create NAND-Logic gate (not-and)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1467 jsl_box_bediening.inc:1467
+#: jsl_box_bediening.inc:1472 jsl_box_bediening.inc:1472
 msgid "create NOR-Logic gate (not-or)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1468 jsl_box_bediening.inc:1468
+#: jsl_box_bediening.inc:1473 jsl_box_bediening.inc:1473
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1469 jsl_box_bediening.inc:1469
+#: jsl_box_bediening.inc:1474 jsl_box_bediening.inc:1474
 msgid "create Memory block"
 msgstr ""
 
-#: jsl_box_bediening.inc:1470 jsl_box_bediening.inc:1470
+#: jsl_box_bediening.inc:1475 jsl_box_bediening.inc:1475
 msgid "create Impuls generator"
 msgstr ""
 
-#: jsl_box_bediening.inc:1471 jsl_box_bediening.inc:1471
+#: jsl_box_bediening.inc:1476 jsl_box_bediening.inc:1476
 msgid "create Relay"
 msgstr ""
 
-#: jsl_box_bediening.inc:1472 jsl_box_bediening.inc:1472
+#: jsl_box_bediening.inc:1477 jsl_box_bediening.inc:1477
 msgid "create Switching relay (relay with contact)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1473 jsl_box_bediening.inc:1473
+#: jsl_box_bediening.inc:1478 jsl_box_bediening.inc:1478
 msgid "create Switsh"
 msgstr ""
 
-#: jsl_box_bediening.inc:1474 jsl_box_bediening.inc:1474
+#: jsl_box_bediening.inc:1479 jsl_box_bediening.inc:1479
 msgid "create Light sensor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1475 jsl_box_bediening.inc:1475
+#: jsl_box_bediening.inc:1480 jsl_box_bediening.inc:1480
 msgid "create Counter block"
 msgstr ""
 
-#: jsl_box_bediening.inc:1476 jsl_box_bediening.inc:1476
+#: jsl_box_bediening.inc:1481 jsl_box_bediening.inc:1481
 msgid "create Step counter (counts up to 9999)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1477 jsl_box_bediening.inc:1477
+#: jsl_box_bediening.inc:1482 jsl_box_bediening.inc:1482
 msgid "create Flip-flop (SR, D, JK or T)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1478 jsl_box_bediening.inc:1478
+#: jsl_box_bediening.inc:1483 jsl_box_bediening.inc:1483
 msgid "create Stopwatch (time with end time)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1479 jsl_box_bediening.inc:1479
+#: jsl_box_bediening.inc:1484 jsl_box_bediening.inc:1484
 msgid "create HeatSensor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1480 jsl_box_bediening.inc:1480
+#: jsl_box_bediening.inc:1485 jsl_box_bediening.inc:1485
 msgid "create Voltmeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1481 jsl_box_bediening.inc:1481
+#: jsl_box_bediening.inc:1486 jsl_box_bediening.inc:1486
 msgid "create Person (with limit switches)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1482 jsl_box_bediening.inc:1482
+#: jsl_box_bediening.inc:1487 jsl_box_bediening.inc:1487
 msgid "create Cart (road with posts)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1483 jsl_box_bediening.inc:1483
+#: jsl_box_bediening.inc:1488 jsl_box_bediening.inc:1488
 msgid "create Music box (8 piano keys)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1484 jsl_box_bediening.inc:1484
+#: jsl_box_bediening.inc:1489 jsl_box_bediening.inc:1489
 msgid "create Traffic light (with pedestrian light)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1485 jsl_box_bediening.inc:1485
+#: jsl_box_bediening.inc:1490 jsl_box_bediening.inc:1490
 msgid "create Barrier gate (car park)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1486 jsl_box_bediening.inc:1486
+#: jsl_box_bediening.inc:1491 jsl_box_bediening.inc:1491
 msgid "create + rail (supply)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1487 jsl_box_bediening.inc:1487
+#: jsl_box_bediening.inc:1492 jsl_box_bediening.inc:1492
 msgid "create - rail (ground)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1488 jsl_box_bediening.inc:1488
+#: jsl_box_bediening.inc:1493 jsl_box_bediening.inc:1493
 msgid "create Source (battery, 0 to 12 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1489 jsl_box_bediening.inc:1489
+#: jsl_box_bediening.inc:1494 jsl_box_bediening.inc:1494
 msgid "create Fuse"
 msgstr ""
 
-#: jsl_box_bediening.inc:1490 jsl_box_bediening.inc:1490
+#: jsl_box_bediening.inc:1495 jsl_box_bediening.inc:1495
 msgid "create Milliammeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1491 jsl_box_bediening.inc:1491
+#: jsl_box_bediening.inc:1496 jsl_box_bediening.inc:1496
 msgid "create Wattmeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1492 jsl_box_bediening.inc:1492
+#: jsl_box_bediening.inc:1497 jsl_box_bediening.inc:1497
 msgid "create Resistance (contact, long wire)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1493 jsl_box_bediening.inc:1493
+#: jsl_box_bediening.inc:1498 jsl_box_bediening.inc:1498
 msgid "create Lamp with 2 terminals (series and parallel)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1494 jsl_box_bediening.inc:1494
+#: jsl_box_bediening.inc:1499 jsl_box_bediening.inc:1499
 msgid "create Switch with 2 terminals"
 msgstr ""
 
-#: jsl_box_bediening.inc:1495 jsl_box_bediening.inc:1495
+#: jsl_box_bediening.inc:1500 jsl_box_bediening.inc:1500
 msgid "create Changeover switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1496 jsl_box_bediening.inc:1496
+#: jsl_box_bediening.inc:1501 jsl_box_bediening.inc:1501
 msgid "create Pulse generator"
 msgstr ""
 
-#: jsl_box_bediening.inc:1497 jsl_box_bediening.inc:1497
+#: jsl_box_bediening.inc:1502 jsl_box_bediening.inc:1502
 msgid "create DIP switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1498 jsl_box_bediening.inc:1498
+#: jsl_box_bediening.inc:1503 jsl_box_bediening.inc:1503
 msgid "create bar magnet"
 msgstr ""
 
-#: jsl_box_bediening.inc:1499 jsl_box_bediening.inc:1499
+#: jsl_box_bediening.inc:1504 jsl_box_bediening.inc:1504
 msgid "create compass"
 msgstr ""
 
-#: jsl_box_bediening.inc:1500 jsl_box_bediening.inc:1500
+#: jsl_box_bediening.inc:1505 jsl_box_bediening.inc:1505
 msgid "create field line sheet"
 msgstr ""
 
-#: jsl_box_bediening.inc:1501 jsl_box_bediening.inc:1501
+#: jsl_box_bediening.inc:1506 jsl_box_bediening.inc:1506
 msgid "create coil"
 msgstr ""
 
-#: jsl_box_bediening.inc:1502 jsl_box_bediening.inc:1502
-msgid "create Voltmeter with 2 terminals"
-msgstr ""
-
-#: jsl_box_bediening.inc:1503 jsl_box_bediening.inc:1503
-msgid "create LED with 2 terminals (with series resistor)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1504 jsl_box_bediening.inc:1504
-msgid "create Capacitor (charging and discharging)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1505 jsl_box_bediening.inc:1505
-msgid "create Potentiometer (three terminals)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1506 jsl_box_bediening.inc:1506
-msgid "create Diode"
-msgstr ""
-
 #: jsl_box_bediening.inc:1507 jsl_box_bediening.inc:1507
-msgid "create AC voltage source"
+msgid "create nail (iron)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1508 jsl_box_bediening.inc:1508
-msgid "create Oscilloscope"
+msgid "create Voltmeter with 2 terminals"
 msgstr ""
 
 #: jsl_box_bediening.inc:1509 jsl_box_bediening.inc:1509
-msgid "create Transistor"
+msgid "create LED with 2 terminals (with series resistor)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1510 jsl_box_bediening.inc:1510
-msgid "create LDR"
+msgid "create Capacitor (charging and discharging)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1511 jsl_box_bediening.inc:1511
+msgid "create Potentiometer (three terminals)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1512 jsl_box_bediening.inc:1512
+msgid "create Diode"
+msgstr ""
+
+#: jsl_box_bediening.inc:1513 jsl_box_bediening.inc:1513
+msgid "create AC voltage source"
+msgstr ""
+
+#: jsl_box_bediening.inc:1514 jsl_box_bediening.inc:1514
+msgid "create Oscilloscope"
+msgstr ""
+
+#: jsl_box_bediening.inc:1515 jsl_box_bediening.inc:1515
+msgid "create Transistor"
+msgstr ""
+
+#: jsl_box_bediening.inc:1516 jsl_box_bediening.inc:1516
+msgid "create LDR"
+msgstr ""
+
+#: jsl_box_bediening.inc:1517 jsl_box_bediening.inc:1517
 msgid "create NTC"
 msgstr ""
 
@@ -732,6 +736,26 @@ msgstr ""
 
 #: jsl_magnetisme.inc:1063
 msgid "Right-click: turns, core, wound the other way or rotate."
+msgstr ""
+
+#: jsl_magnetisme.inc:1295
+msgid "Put back"
+msgstr ""
+
+#: jsl_magnetisme.inc:1337
+msgid "It is stuck to the magnet. Right-click: put back."
+msgstr ""
+
+#: jsl_magnetisme.inc:1342
+msgid "Pulling force here: %s %% of what is needed to move it."
+msgstr ""
+
+#: jsl_magnetisme.inc:1346 jsl_magnetisme.inc:1361 fsettings.lfm
+msgid "Nail (iron)"
+msgstr ""
+
+#: jsl_magnetisme.inc:1350
+msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr ""
 
 #: jsl_oude_invoer.inc:302

@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -61,6 +61,7 @@ begin
   else if PtInRect(RKompas, P) then DKompas := True
   else if PtInRect(RVeldplaat, P) then DVeldplaat := True
   else if PtInRect(RSpoel, P) then DSpoel := True
+  else if PtInRect(RIJzer, P) then DIJzer := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -141,6 +142,7 @@ begin
   else if PtInRect(RKompas, P) then NewHint := FHKompas
   else if PtInRect(RVeldplaat, P) then NewHint := FHVeldplaat
   else if PtInRect(RSpoel, P) then NewHint := FHSpoel
+  else if PtInRect(RIJzer, P) then NewHint := FHIJzer
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -552,7 +554,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False;
 
     // nieuw
     DSquare := False;
@@ -824,6 +826,8 @@ begin
     NewVoedingsDeel(22)
   else if DSpoel then
     NewVoedingsDeel(23)
+  else if DIJzer then
+    NewVoedingsDeel(24)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1437,6 +1441,7 @@ if FBoxTaal=stDutch then
   HKompas:='maak Kompas';
   HVeldplaat:='maak Veldlijnenplaat';
   HSpoel:='maak Spoel';
+  HIJzer:='maak Spijker (ijzer)';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -1499,6 +1504,7 @@ if FBoxTaal=stEnglish then
   HKompas:=LangTr('create compass');
   HVeldplaat:=LangTr('create field line sheet');
   HSpoel:=LangTr('create coil');
+  HIJzer:=LangTr('create nail (iron)');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -1559,6 +1565,7 @@ if FBoxTaal=stFrench then
   HKompas:='faire Boussole';
   HVeldplaat:='faire Plaque de lignes de champ';
   HSpoel:='faire Bobine';
+  HIJzer:='faire Clou (fer)';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -1620,6 +1627,7 @@ if FBoxTaal=stFrench then
   HKompas:='Kompass erstellen';
   HVeldplaat:='Feldlinienplatte erstellen';
   HSpoel:='Spule erstellen';
+  HIJzer:='Nagel (Eisen) erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -1812,6 +1820,7 @@ begin
   RKompas := Rect(0, 0, 0, 0);
   RVeldplaat := Rect(0, 0, 0, 0);
   RSpoel := Rect(0, 0, 0, 0);
+  RIJzer := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1846,6 +1855,7 @@ begin
     Knop(RKompas, 21, DKompas);
     Knop(RVeldplaat, 22, DVeldplaat);
     Knop(RSpoel, 23, DSpoel);
+    Knop(RIJzer, 24, DIJzer);
   end;
 end;
 
