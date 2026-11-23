@@ -2006,3 +2006,30 @@ msgstr "Clavo (hierro)"
 
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr "Un imán o una bobina con corriente lo atrae en cuanto el campo es lo bastante fuerte.\nCuanto más cerca de un polo, mayor es la fuerza."
+
+msgid "create relay (open model)"
+msgstr "crear relé (modelo abierto)"
+
+msgid "NC"
+msgstr "NC"
+
+msgid "NO"
+msgstr "NA"
+
+msgid "The armature is pulled in: the NO contact is closed, the NC contact open."
+msgstr "La armadura está atraída: el contacto NA está cerrado, el contacto NC abierto."
+
+msgid "The armature is at rest: the NC contact is closed, the NO contact open."
+msgstr "La armadura está en reposo: el contacto NC está cerrado, el contacto NA abierto."
+
+msgid "The armature is moving: both contacts are open."
+msgstr "La armadura se mueve: los dos contactos están abiertos."
+
+msgid "Relay (open model)"
+msgstr "Relé (modelo abierto)"
+
+msgid "Coil: %s; current %s (the armature moves from %s)."
+msgstr "Bobina: %s; corriente %s (la armadura se mueve a partir de %s)."
+
+msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
+msgstr "Bornes: la bobina abajo, el contacto común C a la derecha, los contactos NA y NC a la izquierda.\nConecta la bobina en serie con su propio contacto NC y la armadura vibra: un timbre eléctrico."

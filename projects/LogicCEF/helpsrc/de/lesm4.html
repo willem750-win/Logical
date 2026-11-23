@@ -1,0 +1,85 @@
+<!-- titel: Magnetismus 4 - Der Elektromagnet bei der Arbeit -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetismus</a> &rsaquo; Lektion 4 von 4</p>
+  <h1>Der Elektromagnet bei der Arbeit</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, wie ein Elektromagnet in einem <b>Relais</b> und in einer
+  <b>elektrischen Klingel</b> arbeitet, und wissen, wo man Elektromagneten sonst noch begegnet.</div>
+
+  <h2>Elektromagnete um uns herum</h2>
+  <p>Ein Elektromagnet hat zwei große Vorteile gegenüber einem gewöhnlichen Magneten: Man kann ihn <b>ein- und
+  ausschalten</b>, und man kann seine <b>Stärke</b> mit dem Strom <b>regeln</b>. Deshalb gibt es sie überall:</p>
+  <ul>
+    <li>ein <b>Lasthebemagnet</b> auf einem Schrottplatz hebt Autos an und lässt sie wieder los;</li>
+    <li>ein <b>elektrisches Türschloss</b> oder ein Türöffner;</li>
+    <li>das <b>Relais</b> und die <b>elektrische Klingel</b> aus dieser Lektion;</li>
+    <li>ein <b>Lautsprecher</b> und ein <b>Elektromotor</b>, in denen sich eine Spule und ein Magnet anziehen und
+    abstoßen.</li>
+  </ul>
+
+  <h2>Das Relais</h2>
+  <p>Ein Relais ist ein Schalter, der von einem Elektromagneten betätigt wird. Im <b>offenen Modell</b> in Logic sieht man
+  alles, was in einem echten Relais versteckt ist:</p>
+  <ul>
+    <li>eine <b>Spule</b> auf einem <b>Eisenkern</b>, mit den Klemmen unten;</li>
+    <li>einen <b>Anker</b>: eine Eisenplatte an einem Scharnier, die eine <b>Feder</b> nach oben zieht;</li>
+    <li>drei Kontakte: den <b>gemeinsamen Kontakt C</b> (rechts, über den Anker), den <b>Schließer</b> (geschlossen, wenn
+    der Anker angezogen ist) und den <b>Öffner</b> (geschlossen, wenn der Anker ruht).</li>
+  </ul>
+  <p>Fließt genug Strom durch die Spule (in Logic ab 35&nbsp;mA), wird der Kern zu einem Magneten und zieht den Anker an.
+  Zuerst öffnet der Öffner, danach schließt der Schließer. Fällt der Strom weg, zieht die Feder den Anker zurück.</p>
+  <p>So schaltet ein <b>kleiner Strom</b> durch die Spule (der <b>Steuerstromkreis</b>) einen <b>großen Strom</b> durch die
+  Kontakte (den <b>Laststromkreis</b>). In einem echten Relais sind die beiden Kreise elektrisch getrennt: Ein kleines
+  5-V-Signal kann so gefahrlos eine Lampe oder einen Motor an 230&nbsp;V schalten.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-relais.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/lesm4.png" alt="Ein offenes Relais zwischen den Schienen: Ein Taster steuert die Spule, eine Lampe hängt am Öffner und eine am Schließer">
+    <figcaption>Der Taster ist gedrückt: Der Anker ist angezogen, die Lampe am Schließer leuchtet.</figcaption>
+  </figure>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Der Anker ruht: Die obere Lampe (am Öffner) leuchtet.</li>
+    <li>Drücken Sie den Taster. 100&nbsp;mA fließen durch die Spule, der Anker klappt nach unten, die obere Lampe geht aus
+    und die untere (am Schließer) leuchtet. Sehen Sie auch auf den Kompass: Solange Strom fließt, ist der Kern ein
+    Magnet.</li>
+    <li>Lassen Sie den Taster los: Die Feder zieht den Anker zurück.</li>
+    <li>Zeigen Sie mit der Maus auf das Relais: Der Hinweis zeigt den Strom durch die Spule und welcher Kontakt
+    geschlossen ist.</li>
+  </ol>
+
+  <h2>Die elektrische Klingel</h2>
+  <p>Was passiert, wenn man die Spule mit ihrem <b>eigenen Öffner</b> in Reihe schaltet?</p>
+  <ol>
+    <li>In Ruhe ist der Öffner geschlossen: Es fließt Strom durch die Spule.</li>
+    <li>Der Kern zieht den Anker an, und dadurch <b>öffnet</b> sich der Öffner.</li>
+    <li>Jetzt fließt kein Strom mehr: Die Feder zieht den Anker zurück.</li>
+    <li>Der Öffner schließt wieder, und alles beginnt von vorn.</li>
+  </ol>
+  <p>Der Anker schwingt also von selbst hin und her, solange der Schalter geschlossen ist. In einer echten Klingel schlägt
+  ein kleiner Hammer am Anker gegen eine Glocke; in einem Summer schwingt ein dünnes Plättchen. Das nennt man den
+  <b>Wagnerschen Hammer</b>.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-bel.lpl">&#9654; Die elektrische Klingel öffnen</a></p>
+  <figure>
+    <img src="../img/lesm4b.png" alt="Ein Schalter, der Öffner und die Spule des offenen Relais in Reihe; der Anker schwingt">
+    <figcaption>Der Strom fließt durch den Öffner zu C und durch die Spule zur &minus;-Schiene. Der Anker schwingt: Die Klingel läutet.</figcaption>
+  </figure>
+
+  <p>In <a href="les11.html">Lektion 11</a> verwenden Sie das Schaltrelais aus der Bauteilleiste, gezeichnet mit seinem
+  Schaltzeichen. Innen funktioniert es genau wie dieses offene Modell.</p>
+
+  <h2>Aufgabe</h2>
+  <p>1. Die Spule hat einen Widerstand von 120&nbsp;&Omega;, und der Anker bewegt sich ab 35&nbsp;mA. Bei welcher Spannung
+  der Quelle zieht das Relais gerade an? Prüfen Sie es: Stellen Sie die Quelle auf 4&nbsp;V und drücken Sie den Taster,
+  danach auf 5&nbsp;V.</p>
+  <p>2. Angenommen, Sie verlegen in der Klingel den Draht vom Öffner zum Schließer. Was passiert, wenn Sie den Schalter
+  schließen?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>1. U = I &times; R = 0,035&nbsp;A &times; 120&nbsp;&Omega; = 4,2&nbsp;V. Bei 4&nbsp;V fließen 33&nbsp;mA: zu wenig,
+    der Anker bleibt liegen. Bei 5&nbsp;V fließen 42&nbsp;mA: Das Relais zieht an.</p>
+    <p>2. Nichts. In Ruhe ist der Schließer offen, also fließt kein Strom durch die Spule, und der Anker wird nie
+    angezogen. Eine Klingel funktioniert nur mit dem Öffner.</p>
+  </details>
+
+  <div class="pager"><a href="lesm3.html">&larr; Magnetismus 3: Die Kraft einer Spule</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

@@ -2011,3 +2011,30 @@ msgstr "釘 (鉄)"
 
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr "磁界が十分に強くなると、磁石や電流の流れるコイルがこれを引き寄せます。\n極に近いほど力は大きくなります。"
+
+msgid "create relay (open model)"
+msgstr "リレー (オープンモデル) を作成"
+
+msgid "NC"
+msgstr "NC"
+
+msgid "NO"
+msgstr "NO"
+
+msgid "The armature is pulled in: the NO contact is closed, the NC contact open."
+msgstr "接極子が引き付けられています：NO 接点は閉、NC 接点は開。"
+
+msgid "The armature is at rest: the NC contact is closed, the NO contact open."
+msgstr "接極子は休止しています：NC 接点は閉、NO 接点は開。"
+
+msgid "The armature is moving: both contacts are open."
+msgstr "接極子が動いています：両方の接点が開いています。"
+
+msgid "Relay (open model)"
+msgstr "リレー (オープンモデル)"
+
+msgid "Coil: %s; current %s (the armature moves from %s)."
+msgstr "コイル：%s、電流 %s (接極子は %s から動きます)。"
+
+msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
+msgstr "端子：下にコイル、右に共通接点 C、左に NO 接点と NC 接点。\nコイルを自分の NC 接点と直列につなぐと接極子が振動します：電気ベルです。"

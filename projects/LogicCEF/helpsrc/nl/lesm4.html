@@ -1,0 +1,81 @@
+<!-- titel: Magnetisme 4 - De elektromagneet aan het werk -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetisme</a> &rsaquo; Les 4 van 4</p>
+  <h1>De elektromagneet aan het werk</h1>
+  <div class="goal"><strong>Doel:</strong> zien hoe een elektromagneet werk doet in een <b>relais</b> en in een
+  <b>elektrische bel</b>, en weten waar je elektromagneten nog tegenkomt.</div>
+
+  <h2>Elektromagneten om je heen</h2>
+  <p>Een elektromagneet heeft twee grote voordelen boven een gewone magneet: je kunt hem <b>aan- en uitzetten</b>, en je
+  kunt zijn <b>sterkte regelen</b> met de stroom. Daarom zitten ze overal:</p>
+  <ul>
+    <li>een <b>hijsmagneet</b> op een schroothoop tilt auto&rsquo;s op en laat ze weer los;</li>
+    <li>een <b>elektrisch deurslot</b> of een deuropener;</li>
+    <li>het <b>relais</b> en de <b>elektrische bel</b> uit deze les;</li>
+    <li>een <b>luidspreker</b> en een <b>elektrische motor</b>, waar een spoel en een magneet elkaar aantrekken en afstoten.</li>
+  </ul>
+
+  <h2>Het relais</h2>
+  <p>Een relais is een schakelaar die je met een elektromagneet bedient. In het <b>open model</b> in Logic zie je alles
+  wat in een echt relais verstopt zit:</p>
+  <ul>
+    <li>een <b>spoel</b> op een <b>ijzeren kern</b>, met de klemmen onderaan;</li>
+    <li>een <b>anker</b>: een ijzeren plaatje op een scharnier, dat een <b>veer</b> omhoog trekt;</li>
+    <li>drie contacten: het <b>gemeenschappelijke contact C</b> (rechts, via het anker), het <b>maakcontact</b> (dicht als
+    het anker aangetrokken is) en het <b>verbreekcontact</b> (dicht als het anker rust).</li>
+  </ul>
+  <p>Loopt er genoeg stroom door de spoel (in Logic vanaf 35&nbsp;mA), dan wordt de kern een magneet en trekt ze het anker
+  aan. Eerst gaat het verbreekcontact open, daarna gaat het maakcontact dicht. Valt de stroom weg, dan trekt de veer het
+  anker terug.</p>
+  <p>Zo schakelt een <b>kleine stroom</b> door de spoel (de <b>stuurkring</b>) een <b>grote stroom</b> door de contacten
+  (de <b>werkkring</b>). In een echt relais zijn de twee kringen elektrisch gescheiden: een klein 5&nbsp;V-signaal kan
+  zo veilig een lamp of een motor op 230&nbsp;V schakelen.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-relais.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/lesm4.png" alt="Een open relais tussen de rails: een drukknop stuurt de spoel, een lamp hangt aan het verbreekcontact en een lamp aan het maakcontact">
+    <figcaption>De drukknop is ingedrukt: het anker is aangetrokken, de lamp aan het maakcontact brandt.</figcaption>
+  </figure>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie. Het anker rust: de bovenste lamp (aan het verbreekcontact) brandt.</li>
+    <li>Druk op de drukknop. Er loopt 100&nbsp;mA door de spoel, het anker klapt omlaag, de bovenste lamp gaat uit en de
+    onderste (aan het maakcontact) gaat aan. Kijk ook naar het kompas: zolang er stroom loopt, is de kern een magneet.</li>
+    <li>Laat de knop los: de veer trekt het anker terug.</li>
+    <li>Wijs het relais aan met de muis: de hint toont de stroom door de spoel en welk contact dicht is.</li>
+  </ol>
+
+  <h2>De elektrische bel</h2>
+  <p>Wat gebeurt er als je de spoel in serie zet met haar <b>eigen verbreekcontact</b>?</p>
+  <ol>
+    <li>In rust is het verbreekcontact dicht: er loopt stroom door de spoel.</li>
+    <li>De kern trekt het anker aan, en daardoor gaat het verbreekcontact <b>open</b>.</li>
+    <li>Nu loopt er geen stroom meer: de veer trekt het anker terug.</li>
+    <li>Het verbreekcontact gaat weer dicht, en alles begint opnieuw.</li>
+  </ol>
+  <p>Het anker trilt dus vanzelf heen en weer, zolang de schakelaar dicht is. In een echte bel zit er een hamertje aan
+  het anker dat tegen een belletje slaat; in een zoemer trilt een dun plaatje. Dit heet de <b>hamer van Wagner</b>.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-bel.lpl">&#9654; Open de elektrische bel</a></p>
+  <figure>
+    <img src="../img/lesm4b.png" alt="Een schakelaar, het verbreekcontact en de spoel van het open relais in serie; het anker trilt">
+    <figcaption>De stroom loopt door het verbreekcontact naar C en door de spoel naar de &minus; rail. Het anker trilt: de bel rinkelt.</figcaption>
+  </figure>
+
+  <p>In <a href="les11.html">les 11</a> gebruik je het schakelrelais uit de onderdelenbalk, getekend met zijn schemasymbool.
+  Vanbinnen werkt het precies zoals dit open model.</p>
+
+  <h2>Opdracht</h2>
+  <p>1. De spoel heeft een weerstand van 120&nbsp;&Omega; en het anker komt vanaf 35&nbsp;mA. Bij welke spanning van de
+  bron trekt het relais net aan? Controleer: zet de bron op 4&nbsp;V en druk op de knop, en daarna op 5&nbsp;V.</p>
+  <p>2. Stel dat je in de bel de draad van het verbreekcontact naar het maakcontact verplaatst. Wat gebeurt er dan als je
+  de schakelaar sluit?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>1. U = I &times; R = 0,035&nbsp;A &times; 120&nbsp;&Omega; = 4,2&nbsp;V. Bij 4&nbsp;V loopt er 33&nbsp;mA: te weinig,
+    het anker blijft liggen. Bij 5&nbsp;V loopt er 42&nbsp;mA: het relais trekt aan.</p>
+    <p>2. Niets. In rust is het maakcontact open, dus er loopt geen stroom door de spoel, en het anker wordt nooit
+    aangetrokken. Een bel werkt alleen met het verbreekcontact.</p>
+  </details>
+
+  <div class="pager"><a href="lesm3.html">&larr; Magnetisme 3: De kracht van een spoel</a><a href="leerpad.html">Leerpad &rarr;</a></div>

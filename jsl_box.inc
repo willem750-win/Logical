@@ -391,6 +391,7 @@ begin
   FHVeldplaat:='maak Veldlijnenplaat';
   FHSpoel:='maak Spoel';
   FHIJzer:='maak Spijker (ijzer)';
+  FHRelaisM:='maak Relais (open model)';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1482,7 +1483,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') then
     begin
       with TStringList.Create do
       try
@@ -1504,6 +1505,7 @@ begin
           else if obj[1] = 'TjanVeldplaat' then VD := TjanVeldplaat.Create(Self)
           else if obj[1] = 'TjanSpoel' then VD := TjanSpoel.Create(Self)
           else if obj[1] = 'TjanIJzer' then VD := TjanIJzer.Create(Self)
+          else if obj[1] = 'TjanRelaisModel' then VD := TjanRelaisModel.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -2454,6 +2456,7 @@ begin
     22: D := TjanVeldplaat.Create(Self);
     23: D := TjanSpoel.Create(Self);
     24: D := TjanIJzer.Create(Self);
+    25: D := TjanRelaisModel.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2869,6 +2872,25 @@ begin
           FillRect(Rect(CX - 7, CY - 1, CX + 6, CY + 2));
           Pen.Color := RGBToColor(150, 150, 160);
           Polygon([Point(CX + 6, CY - 2), Point(CX + 10, CY), Point(CX + 6, CY + 2)]);
+          Pen.Color := clBlack;
+        end;
+      25:
+        begin
+          // open relais: spoel op een kern en een schuin anker erboven
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(140, 140, 150);
+          FillRect(Rect(CX - 5, CY - 2, CX - 1, CY + 9));
+          FillRect(Rect(CX - 5, CY + 8, CX + 9, CY + 10));
+          FillRect(Rect(CX + 7, CY - 4, CX + 9, CY + 10));
+          Pen.Color := RGBToColor(184, 100, 30);
+          for K := 0 to 3 do
+          begin
+            MoveTo(CX - 7, CY + K * 3); LineTo(CX + 2, CY + K * 3);
+          end;
+          Pen.Color := RGBToColor(70, 70, 80);
+          Pen.Width := 2;
+          MoveTo(CX + 8, CY - 4); LineTo(CX - 10, CY - 9);
+          Pen.Width := 1;
           Pen.Color := clBlack;
         end;
       6:

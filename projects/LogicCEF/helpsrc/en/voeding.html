@@ -38,6 +38,7 @@
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Field line sheet</a></td><td>Shows the field lines of the magnets lying on it, like iron filings.</td></tr>
     <tr><td class="btn"><img src="../img/pal-spoel.png" alt=""></td><td class="name"><a href="#magnetisme">Coil</a></td><td>Coil with turns in the circuit: with a current it becomes a magnet.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ijzer.png" alt=""></td><td class="name"><a href="#magnetisme">Nail</a></td><td>A piece of iron: a magnet or a coil with a current pulls it.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relaismodel.png" alt=""></td><td class="name"><a href="#magnetisme">Relay (open model)</a></td><td>A coil on a core, an armature with a spring and three contacts: how a relay works inside.</td></tr>
   </table>
   <ol class="steps">
     <li>Click the button of the component you want to place.</li>
@@ -365,8 +366,8 @@
     <li>The arrow keys move one pixel at a time; that way you can also pull a component off again.</li>
   </ul>
 
-  <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetism: bar magnet, compass, field line sheet, coil and nail</h2>
-  <p>These three parts have no terminals: they are not part of the circuit. You put them anywhere on the panel and drag them around. See <a href="lesm1.html">What is magnetism?</a></p>
+  <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetism: bar magnet, compass, field line sheet, coil, nail and relay</h2>
+  <p>The bar magnet, the compass and the field line sheet have no terminals: they are not part of the circuit. You put them anywhere on the panel and drag them around. See <a href="lesm1.html">What is magnetism?</a></p>
   <ul>
     <li><img src="../img/pal-magneet.png" class="ico" alt=""><b>Bar magnet</b>: the north pole N is red, the south pole S blue. Right-click: <b>Turn round</b> (swap N and S) or <b>Rotate</b> (lying or upright). When a second magnet comes close, a yellow arrow shows the force: unlike poles attract, like poles repel.</li>
     <li><img src="../img/pal-kompas.png" class="ico" alt=""><b>Compass</b>: the red tip is the north pole of the needle. It points along the field where it stands, away from a north pole and towards a south pole. With no magnet nearby it points to the Earth&rsquo;s north: up on the panel. The hint says how much stronger the field of the magnets is there than that of the Earth.</li>
@@ -374,6 +375,7 @@
   </ul>
   <p><img src="../img/pal-spoel.png" class="ico" alt=""><b>Coil</b> (solenoid): this one does have two terminals and belongs in the circuit, like a small resistor (2, 4 or 8&nbsp;&Omega;). When a current flows through it, it becomes a magnet with a field like that of a bar magnet; N and S appear below the coil. A current entering on the left makes a north pole on the right. Right-click: <b>Turns</b> (100, 200 or 400), <b>Iron core</b> (five times stronger), <b>Wound the other way</b> (swap N and S) or <b>Rotate</b>. The strength is proportional to the current and the number of turns; the hint shows it. See <a href="lesm2.html">Magnetism in a coil</a>.</p>
   <p><img src="../img/pal-ijzer.png" class="ico" alt=""><b>Nail</b> (iron, no terminals): a magnet or a coil with a current pulls it as soon as the field is strong enough. It then slides to the pole until it touches the magnet, the coil or another nail, and stays there, even when the current goes off. The hint says what percentage of the necessary force there is at its spot. Right-click: <b>Put back</b> (to where you put it down) or <b>Rotate</b>. See <a href="lesm3.html">The strength of a coil</a>.</p>
+  <p><img src="../img/pal-relaismodel.png" class="ico" alt=""><b>Relay (open model)</b>: a 120&nbsp;&Omega; coil on an iron core (terminals at the bottom), an armature on a hinge with a spring, and three contacts: the common contact C on the right, the NO contact (bottom) and the NC contact (top) on the left. From 35&nbsp;mA through the coil the core pulls the armature: first the NC contact opens, then the NO contact closes. Put the coil in series with its own NC contact and the armature vibrates: an electric bell. See <a href="lesm4.html">The electromagnet at work</a>.</p>
   <p>Logic calculates the field with two poles per magnet: each pole gives a field that decreases with the square of the distance. That is not exactly right, but the shape of the field lines and the direction of the compass are correct.</p>
 
   <h2 id="draad">Connecting with a power wire</h2>

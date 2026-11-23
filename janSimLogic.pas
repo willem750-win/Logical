@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2402,6 +2402,7 @@ type
     property HVeldplaat: string read FHVeldplaat write FHVeldplaat;
     property HSpoel: string read FHSpoel write FHSpoel;
     property HIJzer: string read FHIJzer write FHIJzer;
+    property HRelaisModel: string read FHRelaisM write FHRelaisM;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3952,6 +3953,39 @@ end;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Vast: Boolean read FVast;
+  end;
+
+  { TjanRelaisModel: een open relais om te zien hoe het werkt. Een spoel op
+    een ijzeren kern (klemmen 0 en 1, onderaan), een anker op een scharnier
+    met een veer, en drie contacten: het gemeenschappelijke contact C (klem 2,
+    rechts, via het anker), het maakcontact (klem 3, links onder) en het
+    verbreekcontact (klem 4, links boven). Loopt er genoeg stroom door de
+    spoel, dan trekt de kern het anker aan: het verbreekcontact gaat open en
+    daarna het maakcontact dicht. In serie met het eigen verbreekcontact
+    trilt het anker: een elektrische bel. }
+  TjanRelaisModel = class(TjanVoedingsDeel)
+  private
+    FTimer: TTimer;
+    FPos: Double;          // 0 = anker rust (tegen het verbreekcontact), 1 = aangetrokken
+    FV: Double;            // snelheid van het anker
+    FIc: Double;           // stroom door het gesloten contact (van C naar het contact)
+    FTrilt: Integer;       // tikken sinds het anker nog heen en weer ging
+    procedure Tik(Sender: TObject);
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function MaakDicht: Boolean;
+    function VerbreekDicht: Boolean;
+    function SpoelOhm: Double;
+    // magnetische sterkte (+ = noordpool boven) en de polen van de kern
+    function Sterkte: Double;
+    procedure Polen(out PN, PZ: TMagVec);
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Ankerstand: Double read FPos;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

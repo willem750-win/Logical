@@ -2011,3 +2011,30 @@ msgstr "Prego (ferro)"
 
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr "Um íman ou uma bobina com corrente atrai-o assim que o campo é forte o suficiente.\nQuanto mais perto de um polo, maior a força."
+
+msgid "create relay (open model)"
+msgstr "criar relé (modelo aberto)"
+
+msgid "NC"
+msgstr "NF"
+
+msgid "NO"
+msgstr "NA"
+
+msgid "The armature is pulled in: the NO contact is closed, the NC contact open."
+msgstr "A armadura está atraída: o contacto NA está fechado, o contacto NF aberto."
+
+msgid "The armature is at rest: the NC contact is closed, the NO contact open."
+msgstr "A armadura está em repouso: o contacto NF está fechado, o contacto NA aberto."
+
+msgid "The armature is moving: both contacts are open."
+msgstr "A armadura está a mover-se: os dois contactos estão abertos."
+
+msgid "Relay (open model)"
+msgstr "Relé (modelo aberto)"
+
+msgid "Coil: %s; current %s (the armature moves from %s)."
+msgstr "Bobina: %s; corrente %s (a armadura move-se a partir de %s)."
+
+msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
+msgstr "Terminais: a bobina em baixo, o contacto comum C à direita, os contactos NA e NF à esquerda.\nLigue a bobina em série com o seu próprio contacto NF e a armadura vibra: uma campainha elétrica."

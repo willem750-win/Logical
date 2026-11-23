@@ -1701,3 +1701,30 @@ msgstr "Chiodo (ferro)"
 
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr "Un magnete o una bobina percorsa da corrente lo attira appena il campo è abbastanza forte.\nPiù è vicino a un polo, più grande è la forza."
+
+msgid "create relay (open model)"
+msgstr "crea relè (modello aperto)"
+
+msgid "NC"
+msgstr "NC"
+
+msgid "NO"
+msgstr "NA"
+
+msgid "The armature is pulled in: the NO contact is closed, the NC contact open."
+msgstr "L'ancora è attratta: il contatto NA è chiuso, il contatto NC aperto."
+
+msgid "The armature is at rest: the NC contact is closed, the NO contact open."
+msgstr "L'ancora è a riposo: il contatto NC è chiuso, il contatto NA aperto."
+
+msgid "The armature is moving: both contacts are open."
+msgstr "L'ancora si muove: entrambi i contatti sono aperti."
+
+msgid "Relay (open model)"
+msgstr "Relè (modello aperto)"
+
+msgid "Coil: %s; current %s (the armature moves from %s)."
+msgstr "Bobina: %s; corrente %s (l'ancora si muove a partire da %s)."
+
+msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
+msgstr "Morsetti: la bobina in basso, il contatto comune C a destra, i contatti NA e NC a sinistra.\nMetti la bobina in serie con il proprio contatto NC e l'ancora vibra: un campanello elettrico."

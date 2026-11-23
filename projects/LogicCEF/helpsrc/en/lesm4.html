@@ -1,0 +1,82 @@
+<!-- titel: Magnetism 4 - The electromagnet at work -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetism</a> &rsaquo; Lesson 4 of 4</p>
+  <h1>The electromagnet at work</h1>
+  <div class="goal"><strong>Goal:</strong> see how an electromagnet does work in a <b>relay</b> and in an
+  <b>electric bell</b>, and know where else you meet electromagnets.</div>
+
+  <h2>Electromagnets around you</h2>
+  <p>An electromagnet has two big advantages over an ordinary magnet: you can <b>switch it on and off</b>, and you can
+  <b>control its strength</b> with the current. That is why they are everywhere:</p>
+  <ul>
+    <li>a <b>lifting magnet</b> in a scrapyard lifts cars and lets them go again;</li>
+    <li>an <b>electric door lock</b> or a door opener;</li>
+    <li>the <b>relay</b> and the <b>electric bell</b> of this lesson;</li>
+    <li>a <b>loudspeaker</b> and an <b>electric motor</b>, where a coil and a magnet attract and repel each other.</li>
+  </ul>
+
+  <h2>The relay</h2>
+  <p>A relay is a switch operated by an electromagnet. In the <b>open model</b> in Logic you see everything that is
+  hidden inside a real relay:</p>
+  <ul>
+    <li>a <b>coil</b> on an <b>iron core</b>, with its terminals at the bottom;</li>
+    <li>an <b>armature</b>: an iron plate on a hinge, pulled up by a <b>spring</b>;</li>
+    <li>three contacts: the <b>common contact C</b> (on the right, through the armature), the <b>NO contact</b> (normally
+    open: closed when the armature is pulled in) and the <b>NC contact</b> (normally closed: closed when the armature is
+    at rest).</li>
+  </ul>
+  <p>When enough current flows through the coil (in Logic from 35&nbsp;mA), the core becomes a magnet and pulls the
+  armature. First the NC contact opens, then the NO contact closes. When the current stops, the spring pulls the
+  armature back.</p>
+  <p>So a <b>small current</b> through the coil (the <b>control circuit</b>) switches a <b>large current</b> through the
+  contacts (the <b>load circuit</b>). In a real relay the two circuits are electrically separate: a small 5&nbsp;V signal
+  can safely switch a lamp or a motor on 230&nbsp;V.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-relais.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/lesm4.png" alt="An open relay between the rails: a push button controls the coil, one lamp hangs on the NC contact and one on the NO contact">
+    <figcaption>The push button is pressed: the armature is pulled in, the lamp on the NO contact is lit.</figcaption>
+  </figure>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation. The armature is at rest: the upper lamp (on the NC contact) is lit.</li>
+    <li>Press the push button. 100&nbsp;mA flows through the coil, the armature snaps down, the upper lamp goes out and the
+    lower one (on the NO contact) lights. Look at the compass too: as long as current flows, the core is a magnet.</li>
+    <li>Release the button: the spring pulls the armature back.</li>
+    <li>Point at the relay with the mouse: the hint shows the current through the coil and which contact is closed.</li>
+  </ol>
+
+  <h2>The electric bell</h2>
+  <p>What happens if you put the coil in series with its <b>own NC contact</b>?</p>
+  <ol>
+    <li>At rest the NC contact is closed: current flows through the coil.</li>
+    <li>The core pulls the armature, and that <b>opens</b> the NC contact.</li>
+    <li>Now no current flows: the spring pulls the armature back.</li>
+    <li>The NC contact closes again, and everything starts again.</li>
+  </ol>
+  <p>So the armature vibrates back and forth by itself as long as the switch is closed. In a real bell a small hammer on
+  the armature strikes a bell; in a buzzer a thin plate vibrates. This is called a <b>Wagner hammer</b>.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-bel.lpl">&#9654; Open the electric bell</a></p>
+  <figure>
+    <img src="../img/lesm4b.png" alt="A switch, the NC contact and the coil of the open relay in series; the armature vibrates">
+    <figcaption>The current flows through the NC contact to C and through the coil to the &minus; rail. The armature vibrates: the bell rings.</figcaption>
+  </figure>
+
+  <p>In <a href="les11.html">lesson 11</a> you use the switching relay from the component toolbar, drawn with its circuit
+  symbol. Inside it works exactly like this open model.</p>
+
+  <h2>Exercise</h2>
+  <p>1. The coil has a resistance of 120&nbsp;&Omega; and the armature moves from 35&nbsp;mA. At which voltage of the
+  source does the relay just pull in? Check it: set the source to 4&nbsp;V and press the button, then to 5&nbsp;V.</p>
+  <p>2. Suppose that in the bell you move the wire from the NC contact to the NO contact. What happens when you close the
+  switch?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>1. U = I &times; R = 0.035&nbsp;A &times; 120&nbsp;&Omega; = 4.2&nbsp;V. At 4&nbsp;V, 33&nbsp;mA flows: too little,
+    the armature stays put. At 5&nbsp;V, 42&nbsp;mA flows: the relay pulls in.</p>
+    <p>2. Nothing. At rest the NO contact is open, so no current flows through the coil and the armature is never
+    pulled. A bell only works with the NC contact.</p>
+  </details>
+
+  <div class="pager"><a href="lesm3.html">&larr; Magnetism 3: The strength of a coil</a><a href="leerpad.html">Learning path &rarr;</a></div>

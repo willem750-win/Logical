@@ -983,7 +983,7 @@ var
     begin
       D.FAmp := AI;
       if AInval then D.Invalidate;
-      if D is TjanSpoel then MagneetVeranderd(P);   // de spoel is een (andere) magneet
+      if D is TjanSpoel or (D is TjanRelaisModel) then MagneetVeranderd(P);   // de spoel is een (andere) magneet
     end;
     if (D is TjanAmpMeter) and (Abs(TjanAmpMeter(D).FStroom - Abs(AI)) > 0.00005) then
     begin
@@ -1187,6 +1187,15 @@ begin
         for j := 1 to 4 do
           if TjanDip2(Parts[k]).BitAan(j) then
             AddTak(PinNode(k, 0), PinNode(k, j), 1 / RKlein, Parts[k]);
+      end
+      else if Parts[k] is TjanRelaisModel then
+      begin
+        // open relais: de spoel is een weerstand, C naar het gesloten contact
+        AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanRelaisModel(Parts[k]).SpoelOhm, Parts[k]);
+        if TjanRelaisModel(Parts[k]).MaakDicht then
+          AddTak(PinNode(k, 2), PinNode(k, 3), 1 / RKlein, Parts[k])
+        else if TjanRelaisModel(Parts[k]).VerbreekDicht then
+          AddTak(PinNode(k, 2), PinNode(k, 4), 1 / RKlein, Parts[k]);
       end
       else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
       begin
@@ -1494,6 +1503,14 @@ begin
         end;
         SetStroom(Parts[k], Hulp);
       end
+    else if Parts[k] is TjanRelaisModel then
+      with TjanRelaisModel(Parts[k]) do
+      begin
+        SetStroom(Parts[k], (V[PinNode(k, 0)] - V[PinNode(k, 1)]) / SpoelOhm);
+        if MaakDicht then FIc := (V[PinNode(k, 2)] - V[PinNode(k, 3)]) / RKlein
+        else if VerbreekDicht then FIc := (V[PinNode(k, 2)] - V[PinNode(k, 4)]) / RKlein
+        else FIc := 0;
+      end
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // stroom van het midden naar het gekozen contact
@@ -1637,6 +1654,14 @@ begin
         Vraag[PinBase[k]] := Amp;
         for j := 1 to 4 do Vraag[PinBase[k] + j] := -FIs[j];
       end;
+    if Parts[k] is TjanRelaisModel then
+      with TjanRelaisModel(Parts[k]) do
+      begin
+        // C neemt de contactstroom uit de draden, het gesloten contact geeft hem terug
+        Vraag[PinBase[k] + 2] := FIc;
+        if MaakDicht then Vraag[PinBase[k] + 3] := -FIc
+        else if VerbreekDicht then Vraag[PinBase[k] + 4] := -FIc;
+      end;
     if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // het midden neemt de stroom uit de draden, het gekozen contact geeft
@@ -1772,6 +1797,8 @@ begin
   else if C is TjanZekering then
     Result := Format('TjanZekering;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanZekering(C).NomIdx])
+  else if C is TjanRelaisModel then
+    Result := Format('TjanRelaisModel;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanSpoel then

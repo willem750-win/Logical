@@ -59,6 +59,15 @@ begin
       Result[n].P := PN;     Result[n].Q := TjanSpoel(C).Sterkte;  Result[n].Bron := C;
       Result[n + 1].P := PZ; Result[n + 1].Q := -TjanSpoel(C).Sterkte; Result[n + 1].Bron := C;
       Inc(n, 2);
+    end
+    else if (C is TjanRelaisModel) and C.Visible and (Abs(TjanRelaisModel(C).Sterkte) > 0.005) then
+    begin
+      // de kern van het open relais: noordpool boven bij + sterkte
+      TjanRelaisModel(C).Polen(PN, PZ);
+      SetLength(Result, n + 2);
+      Result[n].P := PN;     Result[n].Q := TjanRelaisModel(C).Sterkte;  Result[n].Bron := C;
+      Result[n + 1].P := PZ; Result[n + 1].Q := -TjanRelaisModel(C).Sterkte; Result[n + 1].Bron := C;
+      Inc(n, 2);
     end;
   end;
 end;
@@ -1360,5 +1369,288 @@ begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Spijker (ijzer)', 'Nail (iron)', 'Clou (fer)', 'Nagel (Eisen)') + ' > ', 0);
   FOnStatus(Self, FormatFloat('0', Trekkracht * 100) + ' %', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanRelaisModel }
+
+const
+  RelaisW = 170;
+  RelaisH = 140;
+  RelaisSpoelR = 120;        // ohm: 100 mA bij 12 V
+  RelaisAantrek = 0.035;     // A: vanaf hier trekt de kern het anker aan
+  RelaisHoud = 0.020;        // A: een aangetrokken anker blijft tot hier
+  RelaisSterkteK = 40;       // magnetische sterkte per ampère (met de kern)
+
+constructor TjanRelaisModel.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := RelaisW;
+  Height := RelaisH;
+  HelpKeyword := 'magnetisme';
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
+end;
+
+procedure TjanRelaisModel.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
+begin
+  inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+  MagneetVeranderd(Parent);
+end;
+
+function TjanRelaisModel.PinCount: Integer;
+begin
+  Result := 5;
+end;
+
+function TjanRelaisModel.PinPos(I: Integer): TPoint;
+begin
+  case I of
+    0: Result := Point(20, RelaisH - 8);
+    1: Result := Point(150, RelaisH - 8);
+    2: Result := Point(RelaisW - 8, 50);
+    3: Result := Point(1, 59);
+  else
+    Result := Point(1, 13);
+  end;
+end;
+
+function TjanRelaisModel.MaakDicht: Boolean;
+begin
+  Result := FPos >= 0.9;
+end;
+
+function TjanRelaisModel.VerbreekDicht: Boolean;
+begin
+  Result := FPos <= 0.15;
+end;
+
+function TjanRelaisModel.SpoelOhm: Double;
+begin
+  Result := RelaisSpoelR;
+end;
+
+function TjanRelaisModel.Sterkte: Double;
+begin
+  Result := RelaisSterkteK * FAmp;
+end;
+
+procedure TjanRelaisModel.Polen(out PN, PZ: TMagVec);
+begin
+  // de kern staat rechtop: x = 83, van y = 64 tot 112
+  PN := MagV(Left + 83, Top + 68);
+  PZ := MagV(Left + 83, Top + 108);
+end;
+
+// het anker beweegt met een veer en een beetje traagheid: zo trilt het in
+// een bel echt heen en weer
+procedure TjanRelaisModel.Tik(Sender: TObject);
+var
+  Trek: Boolean;
+  OudM, OudV: Boolean;
+  OudPos: Double;
+begin
+  if (Parent = nil) or not Visible then Exit;
+  if FPos >= 0.9 then Trek := Abs(FAmp) >= RelaisHoud
+  else Trek := Abs(FAmp) >= RelaisAantrek;
+  if (FPos <= 0) and (FV = 0) and not Trek then
+  begin
+    if FTrilt > 0 then begin Dec(FTrilt); Invalidate; end;
+    Exit;
+  end;
+  if (FPos >= 1) and (FV = 0) and Trek then
+  begin
+    if FTrilt > 0 then begin Dec(FTrilt); Invalidate; end;
+    Exit;
+  end;
+  OudM := MaakDicht;
+  OudV := VerbreekDicht;
+  OudPos := FPos;
+  if Trek then FV := FV + 0.06 else FV := FV - 0.04;
+  FV := FV * 0.85;
+  FPos := FPos + FV;
+  if FPos >= 1 then begin FPos := 1; FV := 0; end;
+  if FPos <= 0 then begin FPos := 0; FV := 0; end;
+  // heen en weer zonder aan te komen: een bel
+  if (FPos > 0.05) and (FPos < 0.95) and (Abs(FPos - OudPos) > 0.001) then FTrilt := 12
+  else if FTrilt > 0 then Dec(FTrilt);
+  Invalidate;
+  if (OudM <> MaakDicht) or (OudV <> VerbreekDicht) then
+  begin
+    UpdateHintText;
+    UpdateSupply(Parent, True);
+  end;
+end;
+
+procedure TjanRelaisModel.Paint;
+var
+  i, TipY, HX, HY, VX, VY: Integer;
+  S: Double;
+
+  function LeverY(X: Integer): Integer;
+  begin
+    Result := HY + Round((HX - X) * (TipY - HY) / (HX - 12));
+  end;
+
+  procedure Pool(const APlek: TRect; AKleur: TColor; const AT: string);
+  begin
+    with Canvas do
+    begin
+      Brush.Style := bsSolid;
+      Brush.Color := AKleur;
+      FillRect(APlek);
+      Font.Name := 'Arial';
+      Font.Size := 7;
+      Font.Style := [fsBold];
+      Font.Color := clWhite;
+      Brush.Style := bsClear;
+      TextOut((APlek.Left + APlek.Right - TextWidth(AT)) div 2, (APlek.Top + APlek.Bottom - TextHeight(AT)) div 2, AT);
+    end;
+  end;
+
+begin
+  HX := 148;
+  HY := 53;
+  TipY := 22 + Round(FPos * 36);
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // juk: onder en rechts, met het scharnier bovenaan
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(140, 140, 150);
+    FillRect(Rect(74, 112, 152, 120));
+    FillRect(Rect(144, 58, 152, 120));
+    // kern
+    FillRect(Rect(74, 64, 92, 112));
+    Pen.Color := RGBToColor(80, 80, 90);
+    Brush.Style := bsClear;
+    Rectangle(Rect(74, 64, 92, 112));
+    // windingen
+    Pen.Color := RGBToColor(184, 100, 30);
+    Pen.Width := 2;
+    i := 68;
+    while i <= 104 do
+    begin
+      Ellipse(Rect(66, i, 101, i + 7));
+      Inc(i, 5);
+    end;
+    // aansluitdraadjes van de spoel naar de klemmen onderaan
+    Pen.Color := clBlack;
+    MoveTo(PinPos(0).X + 3, PinPos(0).Y); LineTo(PinPos(0).X + 3, 106); LineTo(67, 106);
+    MoveTo(PinPos(1).X + 3, PinPos(1).Y); LineTo(PinPos(1).X + 3, 127); LineTo(104, 127); LineTo(104, 72); LineTo(100, 72);
+    // vaste contacten links: verbreekcontact boven, maakcontact onder
+    MoveTo(PinPos(4).X + 6, PinPos(4).Y + 3); LineTo(22, PinPos(4).Y + 3);
+    MoveTo(PinPos(3).X + 6, PinPos(3).Y + 3); LineTo(22, PinPos(3).Y + 3);
+    // gemeenschappelijk contact rechts naar het scharnier
+    MoveTo(PinPos(2).X, PinPos(2).Y + 3); LineTo(HX, HY);
+    Pen.Width := 1;
+    Brush.Style := bsSolid;
+    if VerbreekDicht then Brush.Color := RGBToColor(230, 60, 60) else Brush.Color := RGBToColor(200, 200, 200);
+    Ellipse(Rect(14, PinPos(4).Y + 4, 22, PinPos(4).Y + 9));
+    if MaakDicht then Brush.Color := RGBToColor(230, 60, 60) else Brush.Color := RGBToColor(200, 200, 200);
+    Ellipse(Rect(14, PinPos(3).Y - 3, 22, PinPos(3).Y + 2));
+    // veer van het anker naar boven
+    Pen.Color := RGBToColor(90, 90, 90);
+    VX := 122;
+    VY := LeverY(VX);
+    MoveTo(VX, VY);
+    for i := 1 to 8 do
+      LineTo(VX + 4 * (2 * (i mod 2) - 1), VY - Round(i * (VY - 6) / 9));
+    LineTo(VX, 6);
+    Brush.Color := RGBToColor(120, 120, 120);
+    FillRect(Rect(VX - 8, 2, VX + 9, 6));
+    // het anker (ijzer) op het scharnier
+    Pen.Color := RGBToColor(70, 70, 80);
+    Pen.Width := 6;
+    MoveTo(HX, HY);
+    LineTo(14, TipY);
+    Pen.Width := 1;
+    Brush.Color := clBlack;
+    Ellipse(Rect(HX - 3, HY - 3, HX + 4, HY + 4));
+    // trilt het anker: de bel rinkelt
+    if FTrilt > 0 then
+    begin
+      Pen.Color := RGBToColor(200, 120, 0);
+      Pen.Width := 2;
+      Brush.Style := bsClear;
+      Arc(30, 22, 50, 46, 50, 22, 50, 46);
+      Arc(38, 16, 62, 52, 62, 16, 62, 52);
+      Pen.Width := 1;
+    end;
+    // namen van de contacten
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 6;
+    Font.Style := [];
+    Font.Color := RGBToColor(60, 60, 60);
+    TextOut(10, PinPos(4).Y - 10, Tr(FTaal, 'verbreek', 'NC', 'repos', 'Öffner'));
+    TextOut(10, PinPos(3).Y + 10, Tr(FTaal, 'maak', 'NO', 'travail', 'Schließer'));
+    TextOut(PinPos(2).X - 4, PinPos(2).Y - 10, 'C');
+    // polen van de kern als er stroom loopt
+    S := Sterkte;
+    if Abs(S) > 0.05 then
+    begin
+      if S > 0 then
+      begin
+        Pool(Rect(52, 64, 64, 74), RGBToColor(215, 40, 40), 'N');
+        Pool(Rect(52, 100, 64, 110), RGBToColor(40, 90, 200), Tr(FTaal, 'Z', 'S', 'S', 'S'));
+      end
+      else
+      begin
+        Pool(Rect(52, 64, 64, 74), RGBToColor(40, 90, 200), Tr(FTaal, 'Z', 'S', 'S', 'S'));
+        Pool(Rect(52, 100, 64, 110), RGBToColor(215, 40, 40), 'N');
+      end;
+    end;
+  end;
+  for i := 0 to 4 do
+    PaintPin(PinPos(i).X, PinPos(i).Y, FPinV[i] >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanRelaisModel.UpdateHintText;
+var
+  S: string;
+begin
+  if MaakDicht then
+    S := Tr(FTaal, 'Het anker is aangetrokken: het maakcontact is dicht, het verbreekcontact open.',
+      'The armature is pulled in: the NO contact is closed, the NC contact open.',
+      'L''armature est attirée : le contact travail est fermé, le contact repos ouvert.',
+      'Der Anker ist angezogen: Der Schließer ist geschlossen, der Öffner offen.')
+  else if VerbreekDicht then
+    S := Tr(FTaal, 'Het anker rust: het verbreekcontact is dicht, het maakcontact open.',
+      'The armature is at rest: the NC contact is closed, the NO contact open.',
+      'L''armature est au repos : le contact repos est fermé, le contact travail ouvert.',
+      'Der Anker ruht: Der Öffner ist geschlossen, der Schließer offen.')
+  else
+    S := Tr(FTaal, 'Het anker beweegt: beide contacten zijn open.',
+      'The armature is moving: both contacts are open.',
+      'L''armature bouge : les deux contacts sont ouverts.',
+      'Der Anker bewegt sich: Beide Kontakte sind offen.');
+  Hint := Tr(FTaal, 'Relais (open model)', 'Relay (open model)', 'Relais (modèle ouvert)', 'Relais (offenes Modell)') + #13#10 +
+    Format(Tr(FTaal, 'Spoel: %s; stroom %s (het anker komt vanaf %s).',
+      'Coil: %s; current %s (the armature moves from %s).',
+      'Bobine : %s ; courant %s (l''armature bouge à partir de %s).',
+      'Spule: %s; Strom %s (der Anker bewegt sich ab %s).'),
+      [OhmText(RelaisSpoelR), AmpText(Abs(FAmp)), AmpText(RelaisAantrek)]) + #13#10 +
+    S + #13#10 +
+    Tr(FTaal,
+      'Klemmen: onderaan de spoel, rechts het gemeenschappelijke contact C, links het maakcontact en het verbreekcontact.' + #13#10 +
+        'Zet je de spoel in serie met het eigen verbreekcontact, dan trilt het anker: een elektrische bel.',
+      'Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.' + #13#10 +
+        'Put the coil in series with its own NC contact and the armature vibrates: an electric bell.',
+      'Bornes : la bobine en bas, le contact commun C à droite, les contacts travail et repos à gauche.' + #13#10 +
+        'Mettez la bobine en série avec son propre contact repos : l''armature vibre, c''est une sonnette électrique.',
+      'Klemmen: unten die Spule, rechts der gemeinsame Kontakt C, links Schließer und Öffner.' + #13#10 +
+        'Schaltet man die Spule in Reihe mit ihrem eigenen Öffner, vibriert der Anker: eine elektrische Klingel.');
+end;
+
+procedure TjanRelaisModel.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Relais (open model)', 'Relay (open model)', 'Relais (modèle ouvert)', 'Relais (offenes Modell)') + ' > ', 0);
+  FOnStatus(Self, 'I = ' + FormatFloat('0', Abs(FAmp) * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;

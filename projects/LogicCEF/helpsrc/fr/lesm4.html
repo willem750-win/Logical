@@ -1,0 +1,87 @@
+<!-- titel: Magnétisme 4 - L'électroaimant au travail -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnétisme</a> &rsaquo; Leçon 4 sur 4</p>
+  <h1>L&rsquo;électroaimant au travail</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir comment un électroaimant travaille dans un <b>relais</b> et dans
+  une <b>sonnette électrique</b>, et savoir où l&rsquo;on rencontre encore des électroaimants.</div>
+
+  <h2>Les électroaimants autour de vous</h2>
+  <p>Un électroaimant a deux grands avantages sur un aimant ordinaire&nbsp;: on peut l&rsquo;<b>allumer et
+  l&rsquo;éteindre</b>, et on peut <b>régler sa force</b> avec le courant. C&rsquo;est pourquoi on en trouve
+  partout&nbsp;:</p>
+  <ul>
+    <li>un <b>électroaimant de levage</b> dans une casse soulève des voitures et les relâche&nbsp;;</li>
+    <li>une <b>serrure électrique</b> ou une gâche de porte&nbsp;;</li>
+    <li>le <b>relais</b> et la <b>sonnette électrique</b> de cette leçon&nbsp;;</li>
+    <li>un <b>haut-parleur</b> et un <b>moteur électrique</b>, où une bobine et un aimant s&rsquo;attirent et se
+    repoussent.</li>
+  </ul>
+
+  <h2>Le relais</h2>
+  <p>Un relais est un interrupteur commandé par un électroaimant. Dans le <b>modèle ouvert</b> de Logic, on voit tout ce
+  qui est caché dans un vrai relais&nbsp;:</p>
+  <ul>
+    <li>une <b>bobine</b> sur un <b>noyau de fer</b>, avec ses bornes en bas&nbsp;;</li>
+    <li>une <b>armature</b>&nbsp;: une plaque de fer sur une charnière, tirée vers le haut par un <b>ressort</b>&nbsp;;</li>
+    <li>trois contacts&nbsp;: le <b>contact commun C</b> (à droite, par l&rsquo;armature), le <b>contact travail</b> (fermé
+    quand l&rsquo;armature est attirée) et le <b>contact repos</b> (fermé quand l&rsquo;armature est au repos).</li>
+  </ul>
+  <p>Quand un courant suffisant traverse la bobine (dans Logic à partir de 35&nbsp;mA), le noyau devient un aimant et
+  attire l&rsquo;armature. D&rsquo;abord le contact repos s&rsquo;ouvre, puis le contact travail se ferme. Quand le
+  courant disparaît, le ressort ramène l&rsquo;armature.</p>
+  <p>Ainsi, un <b>petit courant</b> dans la bobine (le <b>circuit de commande</b>) commute un <b>grand courant</b> dans
+  les contacts (le <b>circuit de puissance</b>). Dans un vrai relais, les deux circuits sont séparés électriquement&nbsp;:
+  un petit signal de 5&nbsp;V peut commuter sans danger une lampe ou un moteur sur 230&nbsp;V.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-relais.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/lesm4.png" alt="Un relais ouvert entre les rails : un bouton-poussoir commande la bobine, une lampe est sur le contact repos et une sur le contact travail">
+    <figcaption>Le bouton-poussoir est enfoncé&nbsp;: l&rsquo;armature est attirée, la lampe du contact travail est allumée.</figcaption>
+  </figure>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation. L&rsquo;armature est au repos&nbsp;: la lampe du haut (sur le contact repos) est allumée.</li>
+    <li>Appuyez sur le bouton-poussoir. 100&nbsp;mA traversent la bobine, l&rsquo;armature bascule vers le bas, la lampe
+    du haut s&rsquo;éteint et celle du bas (sur le contact travail) s&rsquo;allume. Regardez aussi la boussole&nbsp;: tant
+    que le courant passe, le noyau est un aimant.</li>
+    <li>Relâchez le bouton&nbsp;: le ressort ramène l&rsquo;armature.</li>
+    <li>Pointez le relais avec la souris&nbsp;: l&rsquo;info-bulle indique le courant dans la bobine et le contact
+    fermé.</li>
+  </ol>
+
+  <h2>La sonnette électrique</h2>
+  <p>Que se passe-t-il si l&rsquo;on met la bobine en série avec son <b>propre contact repos</b>&nbsp;?</p>
+  <ol>
+    <li>Au repos, le contact repos est fermé&nbsp;: le courant traverse la bobine.</li>
+    <li>Le noyau attire l&rsquo;armature, ce qui <b>ouvre</b> le contact repos.</li>
+    <li>Plus de courant&nbsp;: le ressort ramène l&rsquo;armature.</li>
+    <li>Le contact repos se referme, et tout recommence.</li>
+  </ol>
+  <p>L&rsquo;armature vibre donc d&rsquo;elle-même tant que l&rsquo;interrupteur est fermé. Dans une vraie sonnette, un
+  petit marteau fixé à l&rsquo;armature frappe un timbre&nbsp;; dans un buzzer, c&rsquo;est une fine lame qui vibre. On
+  appelle cela un <b>marteau de Wagner</b>.</p>
+
+  <p><a class="open" href="../../panels/lessen/magn4-bel.lpl">&#9654; Ouvrir la sonnette électrique</a></p>
+  <figure>
+    <img src="../img/lesm4b.png" alt="Un interrupteur, le contact repos et la bobine du relais ouvert en série ; l'armature vibre">
+    <figcaption>Le courant passe par le contact repos vers C, puis par la bobine vers le rail &minus;. L&rsquo;armature vibre&nbsp;: la sonnette sonne.</figcaption>
+  </figure>
+
+  <p>Dans la <a href="les11.html">leçon 11</a>, vous utilisez le relais de commutation de la barre de composants, dessiné
+  avec son symbole. À l&rsquo;intérieur, il fonctionne exactement comme ce modèle ouvert.</p>
+
+  <h2>Exercice</h2>
+  <p>1. La bobine a une résistance de 120&nbsp;&Omega; et l&rsquo;armature bouge à partir de 35&nbsp;mA. À quelle tension
+  de la source le relais colle-t-il tout juste&nbsp;? Vérifiez&nbsp;: réglez la source sur 4&nbsp;V et appuyez sur le
+  bouton, puis sur 5&nbsp;V.</p>
+  <p>2. Supposons que, dans la sonnette, vous déplaciez le fil du contact repos vers le contact travail. Que se passe-t-il
+  quand vous fermez l&rsquo;interrupteur&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>1. U = I &times; R = 0,035&nbsp;A &times; 120&nbsp;&Omega; = 4,2&nbsp;V. Sous 4&nbsp;V, il passe 33&nbsp;mA&nbsp;:
+    trop peu, l&rsquo;armature reste en place. Sous 5&nbsp;V, il passe 42&nbsp;mA&nbsp;: le relais colle.</p>
+    <p>2. Rien. Au repos, le contact travail est ouvert, donc aucun courant ne traverse la bobine et l&rsquo;armature
+    n&rsquo;est jamais attirée. Une sonnette ne fonctionne qu&rsquo;avec le contact repos.</p>
+  </details>
+
+  <div class="pager"><a href="lesm3.html">&larr; Magnétisme 3&nbsp;: La force d&rsquo;une bobine</a><a href="leerpad.html">Parcours &rarr;</a></div>

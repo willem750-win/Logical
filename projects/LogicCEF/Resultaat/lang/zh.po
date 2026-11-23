@@ -2011,3 +2011,30 @@ msgstr "钉子 (铁)"
 
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr "一旦磁场足够强，磁铁或通电线圈就会吸引它。\n离磁极越近，力越大。"
+
+msgid "create relay (open model)"
+msgstr "创建继电器 (开放模型)"
+
+msgid "NC"
+msgstr "常闭"
+
+msgid "NO"
+msgstr "常开"
+
+msgid "The armature is pulled in: the NO contact is closed, the NC contact open."
+msgstr "衔铁被吸合：常开触点闭合，常闭触点断开。"
+
+msgid "The armature is at rest: the NC contact is closed, the NO contact open."
+msgstr "衔铁处于静止：常闭触点闭合，常开触点断开。"
+
+msgid "The armature is moving: both contacts are open."
+msgstr "衔铁正在移动：两个触点都断开。"
+
+msgid "Relay (open model)"
+msgstr "继电器 (开放模型)"
+
+msgid "Coil: %s; current %s (the armature moves from %s)."
+msgstr "线圈：%s；电流 %s (衔铁从 %s 开始动作)。"
+
+msgid "Terminals: the coil at the bottom, the common contact C on the right, the NO and NC contacts on the left.\nPut the coil in series with its own NC contact and the armature vibrates: an electric bell."
+msgstr "端子：下方是线圈，右侧是公共触点 C，左侧是常开和常闭触点。\n把线圈与它自己的常闭触点串联，衔铁就会振动：这就是电铃。"
