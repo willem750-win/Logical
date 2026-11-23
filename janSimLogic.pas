@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2400,6 +2400,7 @@ type
     property HMagneet: string read FHMagneet write FHMagneet;
     property HKompas: string read FHKompas write FHKompas;
     property HVeldplaat: string read FHVeldplaat write FHVeldplaat;
+    property HSpoel: string read FHSpoel write FHSpoel;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3430,7 +3431,7 @@ end;
     procedure Paint; override;
     function PinCount: Integer; override;
     function PinPos(I: Integer): TPoint; override;
-    function Ohm: Double;
+    function Ohm: Double; virtual;
     function Vermogen: Double;   // W
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
@@ -3876,6 +3877,46 @@ end;
     procedure SendStatusToBar; override;
   published
     property Maat: Integer read FMaat write SetMaat;
+  end;
+
+  { TjanSpoel: een spoel (solenoïde) met twee klemmen in de stroomkring.
+    Elektrisch een kleine weerstand; loopt er stroom door, dan wordt ze een
+    magneet: de stroom van klem 0 (links) naar klem 1 (rechts) maakt rechts
+    een noordpool. Sterker met meer stroom, meer windingen en een ijzeren
+    kern. Omgekeerd = andersom gewikkeld: dan wisselen N en Z. }
+  TjanSpoel = class(TjanWeerstand)
+  private
+    FWindIdx: Integer;     // index in SpoelWindingen
+    FKern: Boolean;        // ijzeren kern
+    FOmgekeerd: Boolean;
+    procedure SetWindIdx(const Value: Integer);
+    procedure SetKern(const Value: Boolean);
+    procedure SetOmgekeerd(const Value: Boolean);
+    procedure WindClick(Sender: TObject);
+    procedure KernClick(Sender: TObject);
+    procedure OmdraaiClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; override;
+    function Windingen: Integer;
+    // magnetische sterkte (+ = noordpool rechts/onder), zoals q van een magneet
+    function Sterkte: Double;
+    // noordkant en zuidkant in paneelcoördinaten (de pool met + sterkte is PN)
+    procedure Polen(out PN, PZ: TMagVec);
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property WindIdx: Integer read FWindIdx write SetWindIdx;
+    property Kern: Boolean read FKern write SetKern;
+    property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

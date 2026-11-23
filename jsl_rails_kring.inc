@@ -1,5 +1,8 @@
 // janSimLogic.pas, deel: rails en de berekening van de voedingskring (ingevoegd met {$I jsl_rails_kring.inc})
 
+// staat in jsl_magnetisme.inc: kompassen en veldplaten opnieuw tekenen
+procedure MagneetVeranderd(AParent: TWinControl); forward;
+
 { TjanRail }
 
 const
@@ -980,6 +983,7 @@ var
     begin
       D.FAmp := AI;
       if AInval then D.Invalidate;
+      if D is TjanSpoel then MagneetVeranderd(P);   // de spoel is een (andere) magneet
     end;
     if (D is TjanAmpMeter) and (Abs(TjanAmpMeter(D).FStroom - Abs(AI)) > 0.00005) then
     begin
@@ -1768,6 +1772,9 @@ begin
   else if C is TjanZekering then
     Result := Format('TjanZekering;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanZekering(C).NomIdx])
+  else if C is TjanSpoel then
+    Result := Format('TjanSpoel;%d;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanSpoel(C).WindIdx, Ord(TjanSpoel(C).Kern), Ord(TjanSpoel(C).Omgekeerd)])
   else if C is TjanWeerstand then
     Result := Format('TjanWeerstand;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanWeerstand(C).Soort])

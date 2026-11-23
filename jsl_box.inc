@@ -389,6 +389,7 @@ begin
   FHMagneet:='maak Staafmagneet';
   FHKompas:='maak Kompas';
   FHVeldplaat:='maak Veldlijnenplaat';
+  FHSpoel:='maak Spoel';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1480,7 +1481,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') then
     begin
       with TStringList.Create do
       try
@@ -1500,6 +1501,7 @@ begin
           else if obj[1] = 'TjanMagneet' then VD := TjanMagneet.Create(Self)
           else if obj[1] = 'TjanKompas' then VD := TjanKompas.Create(Self)
           else if obj[1] = 'TjanVeldplaat' then VD := TjanVeldplaat.Create(Self)
+          else if obj[1] = 'TjanSpoel' then VD := TjanSpoel.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -1531,6 +1533,13 @@ begin
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanSpoel then
+          begin
+            // TjanSpoel;h;l;t;w;windingen;kern;omgekeerd;
+            if Count >= 5 then TjanSpoel(VD).WindIdx := StrToIntDef(Trim(Strings[4]), 1);
+            if Count >= 6 then TjanSpoel(VD).Kern := Trim(Strings[5]) = '1';
+            if Count >= 7 then TjanSpoel(VD).Omgekeerd := Trim(Strings[6]) = '1';
+          end
           else if (VD is TjanWeerstand) and (Count >= 5) then
             TjanWeerstand(VD).Soort := StrToIntDef(Trim(Strings[4]), 2)
           else if (VD is TjanLamp2) and (Count >= 5) then
@@ -2441,6 +2450,7 @@ begin
     20: D := TjanMagneet.Create(Self);
     21: D := TjanKompas.Create(Self);
     22: D := TjanVeldplaat.Create(Self);
+    23: D := TjanSpoel.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2833,6 +2843,17 @@ begin
           FillRect(Rect(CX - 4, CY - 1, CX, CY + 2));
           Brush.Color := RGBToColor(215, 40, 40);
           FillRect(Rect(CX, CY - 1, CX + 4, CY + 2));
+          Pen.Color := clBlack;
+        end;
+      23:
+        begin
+          // spoel: koperen windingen met aansluitdraadjes
+          MoveTo(R.Left + 2, CY); LineTo(CX - 8, CY);
+          MoveTo(CX + 8, CY); LineTo(R.Right - 2, CY);
+          Brush.Style := bsClear;
+          Pen.Color := RGBToColor(184, 100, 30);
+          for K := 0 to 4 do
+            Ellipse(Rect(CX - 9 + K * 4, CY - 6, CX - 5 + K * 4, CY + 7));
           Pen.Color := clBlack;
         end;
       6:

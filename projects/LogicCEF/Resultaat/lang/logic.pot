@@ -206,7 +206,7 @@ msgstr ""
 msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
 msgstr ""
 
-#: jsl_bewegend.inc:1780 jsl_bewegend.inc:1786 jsl_rails_kring.inc:575
+#: jsl_bewegend.inc:1780 jsl_bewegend.inc:1786 jsl_rails_kring.inc:578
 msgid "red"
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "amber"
 msgstr ""
 
-#: jsl_bewegend.inc:1782 jsl_bewegend.inc:1787 jsl_rails_kring.inc:577
+#: jsl_bewegend.inc:1782 jsl_bewegend.inc:1787 jsl_rails_kring.inc:580
 msgid "green"
 msgstr ""
 
@@ -270,227 +270,231 @@ msgstr ""
 msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
 msgstr ""
 
-#: jsl_box_bediening.inc:488 jsl_box_bediening.inc:488
+#: jsl_box_bediening.inc:490 jsl_box_bediening.inc:490
 msgid "create Switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1451 jsl_box_bediening.inc:1451
+#: jsl_box_bediening.inc:1456 jsl_box_bediening.inc:1456
 msgid "create Buzzer"
 msgstr ""
 
-#: jsl_box_bediening.inc:1452 jsl_box_bediening.inc:1452
+#: jsl_box_bediening.inc:1457 jsl_box_bediening.inc:1457
 msgid "create Motor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1453 jsl_box_bediening.inc:1453
+#: jsl_box_bediening.inc:1458 jsl_box_bediening.inc:1458
 msgid "create DipSwitsh"
 msgstr ""
 
-#: jsl_box_bediening.inc:1454 jsl_box_bediening.inc:1454
+#: jsl_box_bediening.inc:1459 jsl_box_bediening.inc:1459
 msgid "create 7 segment display"
 msgstr ""
 
-#: jsl_box_bediening.inc:1455 jsl_box_bediening.inc:1455
+#: jsl_box_bediening.inc:1460 jsl_box_bediening.inc:1460
 msgid "create Connection"
 msgstr ""
 
-#: jsl_box_bediening.inc:1456 jsl_box_bediening.inc:1456
+#: jsl_box_bediening.inc:1461 jsl_box_bediening.inc:1461
 msgid "create Push button"
 msgstr ""
 
-#: jsl_box_bediening.inc:1457 jsl_box_bediening.inc:1457
+#: jsl_box_bediening.inc:1462 jsl_box_bediening.inc:1462
 msgid "create logic lamp (5 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1458 jsl_box_bediening.inc:1458
+#: jsl_box_bediening.inc:1463 jsl_box_bediening.inc:1463
 msgid "create AND-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1459 jsl_box_bediening.inc:1459
+#: jsl_box_bediening.inc:1464 jsl_box_bediening.inc:1464
 msgid "create NOT-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1460 jsl_box_bediening.inc:1460
+#: jsl_box_bediening.inc:1465 jsl_box_bediening.inc:1465
 msgid "create OR-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1461 jsl_box_bediening.inc:1461
+#: jsl_box_bediening.inc:1466 jsl_box_bediening.inc:1466
 msgid "create NAND-Logic gate (not-and)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1462 jsl_box_bediening.inc:1462
+#: jsl_box_bediening.inc:1467 jsl_box_bediening.inc:1467
 msgid "create NOR-Logic gate (not-or)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1463 jsl_box_bediening.inc:1463
+#: jsl_box_bediening.inc:1468 jsl_box_bediening.inc:1468
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1464 jsl_box_bediening.inc:1464
+#: jsl_box_bediening.inc:1469 jsl_box_bediening.inc:1469
 msgid "create Memory block"
 msgstr ""
 
-#: jsl_box_bediening.inc:1465 jsl_box_bediening.inc:1465
+#: jsl_box_bediening.inc:1470 jsl_box_bediening.inc:1470
 msgid "create Impuls generator"
 msgstr ""
 
-#: jsl_box_bediening.inc:1466 jsl_box_bediening.inc:1466
+#: jsl_box_bediening.inc:1471 jsl_box_bediening.inc:1471
 msgid "create Relay"
 msgstr ""
 
-#: jsl_box_bediening.inc:1467 jsl_box_bediening.inc:1467
+#: jsl_box_bediening.inc:1472 jsl_box_bediening.inc:1472
 msgid "create Switching relay (relay with contact)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1468 jsl_box_bediening.inc:1468
+#: jsl_box_bediening.inc:1473 jsl_box_bediening.inc:1473
 msgid "create Switsh"
 msgstr ""
 
-#: jsl_box_bediening.inc:1469 jsl_box_bediening.inc:1469
+#: jsl_box_bediening.inc:1474 jsl_box_bediening.inc:1474
 msgid "create Light sensor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1470 jsl_box_bediening.inc:1470
+#: jsl_box_bediening.inc:1475 jsl_box_bediening.inc:1475
 msgid "create Counter block"
 msgstr ""
 
-#: jsl_box_bediening.inc:1471 jsl_box_bediening.inc:1471
+#: jsl_box_bediening.inc:1476 jsl_box_bediening.inc:1476
 msgid "create Step counter (counts up to 9999)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1472 jsl_box_bediening.inc:1472
+#: jsl_box_bediening.inc:1477 jsl_box_bediening.inc:1477
 msgid "create Flip-flop (SR, D, JK or T)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1473 jsl_box_bediening.inc:1473
+#: jsl_box_bediening.inc:1478 jsl_box_bediening.inc:1478
 msgid "create Stopwatch (time with end time)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1474 jsl_box_bediening.inc:1474
+#: jsl_box_bediening.inc:1479 jsl_box_bediening.inc:1479
 msgid "create HeatSensor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1475 jsl_box_bediening.inc:1475
+#: jsl_box_bediening.inc:1480 jsl_box_bediening.inc:1480
 msgid "create Voltmeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1476 jsl_box_bediening.inc:1476
+#: jsl_box_bediening.inc:1481 jsl_box_bediening.inc:1481
 msgid "create Person (with limit switches)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1477 jsl_box_bediening.inc:1477
+#: jsl_box_bediening.inc:1482 jsl_box_bediening.inc:1482
 msgid "create Cart (road with posts)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1478 jsl_box_bediening.inc:1478
+#: jsl_box_bediening.inc:1483 jsl_box_bediening.inc:1483
 msgid "create Music box (8 piano keys)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1479 jsl_box_bediening.inc:1479
+#: jsl_box_bediening.inc:1484 jsl_box_bediening.inc:1484
 msgid "create Traffic light (with pedestrian light)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1480 jsl_box_bediening.inc:1480
+#: jsl_box_bediening.inc:1485 jsl_box_bediening.inc:1485
 msgid "create Barrier gate (car park)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1481 jsl_box_bediening.inc:1481
+#: jsl_box_bediening.inc:1486 jsl_box_bediening.inc:1486
 msgid "create + rail (supply)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1482 jsl_box_bediening.inc:1482
+#: jsl_box_bediening.inc:1487 jsl_box_bediening.inc:1487
 msgid "create - rail (ground)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1483 jsl_box_bediening.inc:1483
+#: jsl_box_bediening.inc:1488 jsl_box_bediening.inc:1488
 msgid "create Source (battery, 0 to 12 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1484 jsl_box_bediening.inc:1484
+#: jsl_box_bediening.inc:1489 jsl_box_bediening.inc:1489
 msgid "create Fuse"
 msgstr ""
 
-#: jsl_box_bediening.inc:1485 jsl_box_bediening.inc:1485
+#: jsl_box_bediening.inc:1490 jsl_box_bediening.inc:1490
 msgid "create Milliammeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1486 jsl_box_bediening.inc:1486
+#: jsl_box_bediening.inc:1491 jsl_box_bediening.inc:1491
 msgid "create Wattmeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1487 jsl_box_bediening.inc:1487
+#: jsl_box_bediening.inc:1492 jsl_box_bediening.inc:1492
 msgid "create Resistance (contact, long wire)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1488 jsl_box_bediening.inc:1488
+#: jsl_box_bediening.inc:1493 jsl_box_bediening.inc:1493
 msgid "create Lamp with 2 terminals (series and parallel)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1489 jsl_box_bediening.inc:1489
+#: jsl_box_bediening.inc:1494 jsl_box_bediening.inc:1494
 msgid "create Switch with 2 terminals"
 msgstr ""
 
-#: jsl_box_bediening.inc:1490 jsl_box_bediening.inc:1490
+#: jsl_box_bediening.inc:1495 jsl_box_bediening.inc:1495
 msgid "create Changeover switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1491 jsl_box_bediening.inc:1491
+#: jsl_box_bediening.inc:1496 jsl_box_bediening.inc:1496
 msgid "create Pulse generator"
 msgstr ""
 
-#: jsl_box_bediening.inc:1492 jsl_box_bediening.inc:1492
+#: jsl_box_bediening.inc:1497 jsl_box_bediening.inc:1497
 msgid "create DIP switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1493 jsl_box_bediening.inc:1493
+#: jsl_box_bediening.inc:1498 jsl_box_bediening.inc:1498
 msgid "create bar magnet"
 msgstr ""
 
-#: jsl_box_bediening.inc:1494 jsl_box_bediening.inc:1494
+#: jsl_box_bediening.inc:1499 jsl_box_bediening.inc:1499
 msgid "create compass"
 msgstr ""
 
-#: jsl_box_bediening.inc:1495 jsl_box_bediening.inc:1495
+#: jsl_box_bediening.inc:1500 jsl_box_bediening.inc:1500
 msgid "create field line sheet"
 msgstr ""
 
-#: jsl_box_bediening.inc:1496 jsl_box_bediening.inc:1496
-msgid "create Voltmeter with 2 terminals"
-msgstr ""
-
-#: jsl_box_bediening.inc:1497 jsl_box_bediening.inc:1497
-msgid "create LED with 2 terminals (with series resistor)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1498 jsl_box_bediening.inc:1498
-msgid "create Capacitor (charging and discharging)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1499 jsl_box_bediening.inc:1499
-msgid "create Potentiometer (three terminals)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1500 jsl_box_bediening.inc:1500
-msgid "create Diode"
-msgstr ""
-
 #: jsl_box_bediening.inc:1501 jsl_box_bediening.inc:1501
-msgid "create AC voltage source"
+msgid "create coil"
 msgstr ""
 
 #: jsl_box_bediening.inc:1502 jsl_box_bediening.inc:1502
-msgid "create Oscilloscope"
+msgid "create Voltmeter with 2 terminals"
 msgstr ""
 
 #: jsl_box_bediening.inc:1503 jsl_box_bediening.inc:1503
-msgid "create Transistor"
+msgid "create LED with 2 terminals (with series resistor)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1504 jsl_box_bediening.inc:1504
-msgid "create LDR"
+msgid "create Capacitor (charging and discharging)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1505 jsl_box_bediening.inc:1505
+msgid "create Potentiometer (three terminals)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1506 jsl_box_bediening.inc:1506
+msgid "create Diode"
+msgstr ""
+
+#: jsl_box_bediening.inc:1507 jsl_box_bediening.inc:1507
+msgid "create AC voltage source"
+msgstr ""
+
+#: jsl_box_bediening.inc:1508 jsl_box_bediening.inc:1508
+msgid "create Oscilloscope"
+msgstr ""
+
+#: jsl_box_bediening.inc:1509 jsl_box_bediening.inc:1509
+msgid "create Transistor"
+msgstr ""
+
+#: jsl_box_bediening.inc:1510 jsl_box_bediening.inc:1510
+msgid "create LDR"
+msgstr ""
+
+#: jsl_box_bediening.inc:1511 jsl_box_bediening.inc:1511
 msgid "create NTC"
 msgstr ""
 
@@ -570,96 +574,164 @@ msgstr ""
 msgid "Edit program..."
 msgstr ""
 
-#: jsl_magnetisme.inc:175
+#: jsl_magnetisme.inc:184
 msgid "Turn round (swap N and S)"
 msgstr ""
 
-#: jsl_magnetisme.inc:282 jsl_magnetisme.inc:435
+#: jsl_magnetisme.inc:291 jsl_magnetisme.inc:444 jsl_magnetisme.inc:994
 msgid "S"
 msgstr ""
 
-#: jsl_magnetisme.inc:321
+#: jsl_magnetisme.inc:330
 msgid "The magnets attract each other: a north pole and a south pole (unlike poles)."
 msgstr ""
 
-#: jsl_magnetisme.inc:326
+#: jsl_magnetisme.inc:335
 msgid "The magnets repel each other: two of the same poles (like poles)."
 msgstr ""
 
-#: jsl_magnetisme.inc:332
+#: jsl_magnetisme.inc:341
 msgid "Bring a second magnet close: the yellow arrow shows the force."
 msgstr ""
 
-#: jsl_magnetisme.inc:336 jsl_magnetisme.inc:352 fsettings.lfm
+#: jsl_magnetisme.inc:345 jsl_magnetisme.inc:361 fsettings.lfm
 msgid "Bar magnet"
 msgstr ""
 
-#: jsl_magnetisme.inc:339
+#: jsl_magnetisme.inc:348
 msgid "North pole N (red) and south pole S (blue). Outside the magnet the field lines run from N to S."
 msgstr ""
 
-#: jsl_magnetisme.inc:343
+#: jsl_magnetisme.inc:352
 msgid "Right-click: turn round or rotate."
 msgstr ""
 
-#: jsl_magnetisme.inc:354
+#: jsl_magnetisme.inc:363
 msgid "attracts"
 msgstr ""
 
-#: jsl_magnetisme.inc:355
+#: jsl_magnetisme.inc:364
 msgid "repels"
 msgstr ""
 
-#: jsl_magnetisme.inc:436
+#: jsl_magnetisme.inc:445
 msgid "E"
 msgstr ""
 
-#: jsl_magnetisme.inc:437
+#: jsl_magnetisme.inc:446
 msgid "W"
 msgstr ""
 
-#: jsl_magnetisme.inc:477
+#: jsl_magnetisme.inc:486
 msgid "There is no magnet nearby: the needle points to the Earth's north (up)."
 msgstr ""
 
-#: jsl_magnetisme.inc:483
+#: jsl_magnetisme.inc:492
 msgid "Here the field of the magnets is %s times as strong as that of the Earth."
 msgstr ""
 
-#: jsl_magnetisme.inc:487 jsl_magnetisme.inc:502 fsettings.lfm
+#: jsl_magnetisme.inc:496 jsl_magnetisme.inc:511 fsettings.lfm
 msgid "Compass"
 msgstr ""
 
-#: jsl_magnetisme.inc:491
+#: jsl_magnetisme.inc:500
 msgid "The red tip is the north pole of the needle. It points along the field:\naway from a north pole and towards a south pole."
 msgstr ""
 
-#: jsl_magnetisme.inc:556
+#: jsl_magnetisme.inc:565
 msgid "Size"
 msgstr ""
 
-#: jsl_magnetisme.inc:563
+#: jsl_magnetisme.inc:572
 msgid "Small"
 msgstr ""
 
-#: jsl_magnetisme.inc:564
+#: jsl_magnetisme.inc:573
 msgid "Medium"
 msgstr ""
 
-#: jsl_magnetisme.inc:566
+#: jsl_magnetisme.inc:575
 msgid "Large"
 msgstr ""
 
-#: jsl_magnetisme.inc:616
+#: jsl_magnetisme.inc:626
 msgid "field lines"
 msgstr ""
 
-#: jsl_magnetisme.inc:686 jsl_magnetisme.inc:705 fsettings.lfm
+#: jsl_magnetisme.inc:734 jsl_magnetisme.inc:753 fsettings.lfm
 msgid "Field line sheet"
 msgstr ""
 
-#: jsl_magnetisme.inc:691
+#: jsl_magnetisme.inc:739
 msgid "Like iron filings on paper: the lines show the magnetic field.\nOutside the magnet they run from N to S. Where they are close together, the field is strong.\nPut magnets on it. Right-click: size."
+msgstr ""
+
+#: jsl_magnetisme.inc:894
+msgid "Turns"
+msgstr ""
+
+#: jsl_magnetisme.inc:908
+msgid "Iron core"
+msgstr ""
+
+#: jsl_magnetisme.inc:914
+msgid "Wound the other way (swap N and S)"
+msgstr ""
+
+#: jsl_magnetisme.inc:1022
+msgid "with iron core"
+msgstr ""
+
+#: jsl_magnetisme.inc:1023
+msgid " × 5 by the core)"
+msgstr ""
+
+#: jsl_magnetisme.inc:1027
+msgid "without core (air)"
+msgstr ""
+
+#: jsl_magnetisme.inc:1032
+msgid "No current flows: the coil is not a magnet."
+msgstr ""
+
+#: jsl_magnetisme.inc:1039
+msgid "at the bottom"
+msgstr ""
+
+#: jsl_magnetisme.inc:1040
+msgid "at the top"
+msgstr ""
+
+#: jsl_magnetisme.inc:1042
+msgid "on the right"
+msgstr ""
+
+#: jsl_magnetisme.inc:1043
+msgid "on the left"
+msgstr ""
+
+#: jsl_magnetisme.inc:1045
+msgid "The current turns the coil into a magnet: the north pole is %s."
+msgstr ""
+
+#: jsl_magnetisme.inc:1049
+msgid "Strength: %s times a bar magnet (%d turns × %s"
+msgstr ""
+
+#: jsl_magnetisme.inc:1054 jsl_magnetisme.inc:1071 fsettings.lfm
+msgid "Coil"
+msgstr ""
+
+#: jsl_magnetisme.inc:1055 jsl_magnetisme.inc:1072
+msgid "turns"
+msgstr ""
+
+#: jsl_magnetisme.inc:1059
+msgid "Right-hand rule: curl the fingers of your right hand along the current round the coil; your thumb points to the north pole."
+msgstr ""
+
+#: jsl_magnetisme.inc:1063
+msgid "Right-click: turns, core, wound the other way or rotate."
 msgstr ""
 
 #: jsl_oude_invoer.inc:302
@@ -726,55 +798,55 @@ msgstr ""
 msgid "Memory block"
 msgstr ""
 
-#: jsl_rails_kring.inc:163
+#: jsl_rails_kring.inc:166
 msgid "+ rail (supply):"
 msgstr ""
 
-#: jsl_rails_kring.inc:168
+#: jsl_rails_kring.inc:171
 msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
 msgstr ""
 
-#: jsl_rails_kring.inc:178
+#: jsl_rails_kring.inc:181
 msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
 msgstr ""
 
-#: jsl_rails_kring.inc:191
+#: jsl_rails_kring.inc:194
 msgid "+ rail"
 msgstr ""
 
-#: jsl_rails_kring.inc:196
+#: jsl_rails_kring.inc:199
 msgid "- rail"
 msgstr ""
 
-#: jsl_rails_kring.inc:197
+#: jsl_rails_kring.inc:200
 msgid "Ground"
 msgstr ""
 
-#: jsl_rails_kring.inc:562
+#: jsl_rails_kring.inc:565
 msgid "good contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:563
+#: jsl_rails_kring.inc:566
 msgid "long thin wire"
 msgstr ""
 
-#: jsl_rails_kring.inc:564
+#: jsl_rails_kring.inc:567
 msgid "poor contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:565
+#: jsl_rails_kring.inc:568
 msgid "burnt contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:567
+#: jsl_rails_kring.inc:570
 msgid "series resistor"
 msgstr ""
 
-#: jsl_rails_kring.inc:576
+#: jsl_rails_kring.inc:579
 msgid "yellow"
 msgstr ""
 
-#: jsl_rails_kring.inc:579
+#: jsl_rails_kring.inc:582
 msgid "blue"
 msgstr ""
 

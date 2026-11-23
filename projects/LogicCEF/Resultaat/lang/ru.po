@@ -1939,3 +1939,57 @@ msgstr "Логическая лампа: работает от 5 В, как вы
 
 msgid "Magnetism (magnet, compass, field lines)"
 msgstr "Магнетизм (магнит, компас, силовые линии)"
+
+msgid "create coil"
+msgstr "создать катушку"
+
+msgid "Turns"
+msgstr "Витки"
+
+msgid "Iron core"
+msgstr "Железный сердечник"
+
+msgid "Wound the other way (swap N and S)"
+msgstr "Намотана в другую сторону (поменять N и S)"
+
+msgid "with iron core"
+msgstr "с железным сердечником"
+
+msgid " × 5 by the core)"
+msgstr " × 5 благодаря сердечнику)"
+
+msgid "without core (air)"
+msgstr "без сердечника (воздух)"
+
+msgid "No current flows: the coil is not a magnet."
+msgstr "Ток не течёт: катушка не является магнитом."
+
+msgid "at the bottom"
+msgstr "внизу"
+
+msgid "at the top"
+msgstr "вверху"
+
+msgid "on the right"
+msgstr "справа"
+
+msgid "on the left"
+msgstr "слева"
+
+msgid "The current turns the coil into a magnet: the north pole is %s."
+msgstr "Ток превращает катушку в магнит: северный полюс %s."
+
+msgid "Strength: %s times a bar magnet (%d turns × %s"
+msgstr "Сила: %s полосовых магнита (%d витков × %s"
+
+msgid "Coil"
+msgstr "Катушка"
+
+msgid "turns"
+msgstr "витков"
+
+msgid "Right-hand rule: curl the fingers of your right hand along the current round the coil; your thumb points to the north pole."
+msgstr "Правило правой руки: согните пальцы правой руки по направлению тока вокруг катушки; большой палец укажет на северный полюс."
+
+msgid "Right-click: turns, core, wound the other way or rotate."
+msgstr "Правый щелчок: витки, сердечник, намотка в другую сторону или поворот."

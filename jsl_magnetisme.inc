@@ -50,6 +50,15 @@ begin
       Result[n].P := PN;     Result[n].Q := 1;  Result[n].Bron := C;
       Result[n + 1].P := PZ; Result[n + 1].Q := -1; Result[n + 1].Bron := C;
       Inc(n, 2);
+    end
+    else if (C is TjanSpoel) and C.Visible and (Abs(TjanSpoel(C).Sterkte) > 0.005) then
+    begin
+      // een spoel met stroom: de pool met + sterkte is PN
+      TjanSpoel(C).Polen(PN, PZ);
+      SetLength(Result, n + 2);
+      Result[n].P := PN;     Result[n].Q := TjanSpoel(C).Sterkte;  Result[n].Bron := C;
+      Result[n + 1].P := PZ; Result[n + 1].Q := -TjanSpoel(C).Sterkte; Result[n + 1].Bron := C;
+      Inc(n, 2);
     end;
   end;
 end;
@@ -85,7 +94,7 @@ begin
   for i := 0 to AParent.ControlCount - 1 do
   begin
     C := AParent.Controls[i];
-    if (C is TjanKompas) or (C is TjanVeldplaat) or (C is TjanMagneet) then
+    if (C is TjanKompas) or (C is TjanVeldplaat) or (C is TjanMagneet) or (C is TjanSpoel) then
       C.Invalidate;
   end;
 end;
@@ -577,8 +586,9 @@ end;
 procedure TjanVeldplaat.Paint;
 var
   Pl: TMagPolen;
-  i, k, Stap, Richting, Einde: Integer;
-  X, Y, XM, YM, L, Ang, X0, Y0, PijlX, PijlY, PijlUX, PijlUY: Double;
+  i, j, k, Stap, Richting, Einde, NL: Integer;
+  X, Y, XM, YM, L, Ang, X0, Y0, PijlX, PijlY, PijlUX, PijlUY, DX, DY: Double;
+  PN, PZ: TMagVec;
   B: TMagVec;
   Pts: array of TPoint;
 
@@ -627,10 +637,21 @@ begin
     // veld in, maar die lijn alleen als ze de plaat verlaat (de andere komen
     // al uit een noordpool)
     for i := 0 to High(Pl) do
-      for k := 0 to VeldLijnenPerPool - 1 do
+    begin
+      // meer lijnen naarmate de pool sterker is (een staafmagneet: VeldLijnenPerPool)
+      NL := Round(VeldLijnenPerPool * Sqrt(Abs(Pl[i].Q)));
+      if NL > 2 * VeldLijnenPerPool then NL := 2 * VeldLijnenPerPool;
+      j := i xor 1;
+      DX := Pl[j].P.X - Pl[i].P.X;
+      DY := Pl[j].P.Y - Pl[i].P.Y;
+      L := Sqrt(DX * DX + DY * DY);
+      if L > 0 then begin DX := DX / L; DY := DY / L; end;
+      for k := 0 to NL - 1 do
       begin
         if Pl[i].Q > 0 then Richting := 1 else Richting := -1;
-        Ang := 2 * Pi * (k + 0.5) / VeldLijnenPerPool;
+        Ang := 2 * Pi * (k + 0.5) / NL;
+        // niet naar binnen, naar de andere pool van dezelfde magneet of spoel
+        if (Cos(Ang) * DX + Sin(Ang) * DY > 0.6) then Continue;
         X := Pl[i].P.X + 7 * Cos(Ang);
         Y := Pl[i].P.Y + 7 * Sin(Ang);
         if Buiten(X, Y) then Continue;
@@ -677,6 +698,33 @@ begin
           Brush.Style := bsClear;
         end;
       end;
+    end;
+    // binnen een spoel lopen de veldlijnen recht, van Z naar N
+    i := 0;
+    while i < High(Pl) do
+    begin
+      if (Pl[i].Bron is TjanSpoel) and (Abs(Pl[i].Q) > 0.05) then
+      begin
+        if Pl[i].Q > 0 then begin PN := Pl[i].P; PZ := Pl[i + 1].P; end
+        else begin PN := Pl[i + 1].P; PZ := Pl[i].P; end;
+        DX := PN.X - PZ.X; DY := PN.Y - PZ.Y;
+        L := Sqrt(DX * DX + DY * DY);
+        if L > 0 then
+        begin
+          DX := DX / L; DY := DY / L;
+          for k := -1 to 1 do
+          begin
+            MoveTo(Round(PZ.X - X0 - DY * k * 6), Round(PZ.Y - Y0 + DX * k * 6));
+            LineTo(Round(PN.X - X0 - DY * k * 6), Round(PN.Y - Y0 + DX * k * 6));
+            Brush.Style := bsSolid;
+            Brush.Color := RGBToColor(80, 80, 80);
+            MagPijlKop(Canvas, (PZ.X + PN.X) / 2 + DX * 3 - X0 - DY * k * 6, (PZ.Y + PN.Y) / 2 + DY * 3 - Y0 + DX * k * 6, DX, DY, 6);
+            Brush.Style := bsClear;
+          end;
+        end;
+      end;
+      Inc(i, 2);
+    end;
   end;
   PaintSelection;
 end;
@@ -704,5 +752,324 @@ begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Veldlijnenplaat', 'Field line sheet', 'Plaque de lignes de champ', 'Feldlinienplatte') + ' > ', 0);
   FOnStatus(Self, '', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanSpoel }
+
+const
+  SpoelW = 120;
+  SpoelH = 48;
+  SpoelWindingen: array[0..2] of Integer = (100, 200, 400);
+  SpoelOhmW: array[0..2] of Double = (2, 4, 8);
+  SpoelK = 0.025;            // sterkte per ampère-winding (een magneet heeft 1)
+  SpoelKernFactor = 5;       // een ijzeren kern maakt het veld zoveel sterker
+
+constructor TjanSpoel.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FWindIdx := 1;
+  Width := SpoelW;
+  Height := SpoelH;
+  HelpKeyword := 'magnetisme';
+end;
+
+destructor TjanSpoel.Destroy;
+var
+  P: TWinControl;
+begin
+  P := Parent;
+  inherited Destroy;
+  MagneetVeranderd(P);
+end;
+
+procedure TjanSpoel.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
+begin
+  inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+  MagneetVeranderd(Parent);
+end;
+
+function TjanSpoel.StdMaat: TPoint;
+begin
+  Result := Point(SpoelW, SpoelH);
+end;
+
+function TjanSpoel.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+// klem 0 links, klem 1 rechts (ook als ze andersom gewikkeld is)
+function TjanSpoel.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := TP(1, 17) else Result := TP(SpoelW - 8, 17);
+end;
+
+function TjanSpoel.Ohm: Double;
+begin
+  Result := SpoelOhmW[FWindIdx];
+end;
+
+function TjanSpoel.Windingen: Integer;
+begin
+  Result := SpoelWindingen[FWindIdx];
+end;
+
+function TjanSpoel.Sterkte: Double;
+begin
+  Result := SpoelK * Windingen * FAmp;
+  if FKern then Result := Result * SpoelKernFactor;
+  if FOmgekeerd then Result := -Result;
+end;
+
+procedure TjanSpoel.Polen(out PN, PZ: TMagVec);
+var
+  CX, CY, A: Double;
+begin
+  CX := Left + Width / 2;
+  CY := Top + Height / 2;
+  A := (SpoelW - 40) / 2 - 6;
+  if FGedraaid then
+  begin
+    PN := MagV(CX, CY + A);
+    PZ := MagV(CX, CY - A);
+  end
+  else
+  begin
+    PN := MagV(CX + A, CY);
+    PZ := MagV(CX - A, CY);
+  end;
+end;
+
+procedure TjanSpoel.SetWindIdx(const Value: Integer);
+begin
+  if (Value < Low(SpoelWindingen)) or (Value > High(SpoelWindingen)) or (Value = FWindIdx) then Exit;
+  FWindIdx := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then UpdateSupply(Parent, True);
+  MagneetVeranderd(Parent);
+end;
+
+procedure TjanSpoel.SetKern(const Value: Boolean);
+begin
+  if Value = FKern then Exit;
+  FKern := Value;
+  UpdateHintText;
+  Invalidate;
+  MagneetVeranderd(Parent);
+end;
+
+procedure TjanSpoel.SetOmgekeerd(const Value: Boolean);
+begin
+  if Value = FOmgekeerd then Exit;
+  FOmgekeerd := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then UpdateSupply(Parent, True);
+  MagneetVeranderd(Parent);
+end;
+
+procedure TjanSpoel.WindClick(Sender: TObject);
+begin
+  if not FLock then WindIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanSpoel.KernClick(Sender: TObject);
+begin
+  if not FLock then Kern := not Kern;
+end;
+
+procedure TjanSpoel.OmdraaiClick(Sender: TObject);
+begin
+  if not FLock then Omgekeerd := not Omgekeerd;
+end;
+
+procedure TjanSpoel.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Windingen', 'Turns', 'Spires', 'Windungen');
+  Mi.Enabled := not FLock;
+  APop.Items.Add(Mi);
+  for i := Low(SpoelWindingen) to High(SpoelWindingen) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := IntToStr(SpoelWindingen[i]) + ' (' + OhmText(SpoelOhmW[i]) + ')';
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FWindIdx;
+    Sub.OnClick := WindClick;
+    Mi.Add(Sub);
+  end;
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'IJzeren kern', 'Iron core', 'Noyau de fer', 'Eisenkern');
+  Mi.Checked := FKern;
+  Mi.Enabled := not FLock;
+  Mi.OnClick := KernClick;
+  APop.Items.Add(Mi);
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Andersom gewikkeld (N en Z wisselen)', 'Wound the other way (swap N and S)',
+    'Enroulée dans l''autre sens (échanger N et S)', 'Andersherum gewickelt (N und S tauschen)');
+  Mi.Enabled := not FLock;
+  Mi.OnClick := OmdraaiClick;
+  APop.Items.Add(Mi);
+end;
+
+procedure TjanSpoel.Paint;
+var
+  i, N, X, L, R: Integer;
+  S: Double;
+  SN, SZ: string;
+  RL, RR: TRect;
+
+  procedure Pool(const APlek: TRect; AKleur: TColor; const AT: string);
+  begin
+    with Canvas do
+    begin
+      Brush.Style := bsSolid;
+      Brush.Color := AKleur;
+      FillRect(APlek);
+      Font.Name := 'Arial';
+      Font.Size := 7;
+      Font.Style := [fsBold];
+      Font.Color := clWhite;
+      Brush.Style := bsClear;
+      TextOut((APlek.Left + APlek.Right - TextWidth(AT)) div 2, (APlek.Top + APlek.Bottom - TextHeight(AT)) div 2, AT);
+    end;
+  end;
+
+begin
+  L := 20;
+  R := SpoelW - 20;
+  with Canvas do
+  begin
+    // aansluitdraadjes
+    Pen.Color := clBlack;
+    Pen.Width := 2;
+    Pen.Style := psSolid;
+    TLijn(6, 20, L + 2, 20);
+    TLijn(R - 2, 20, SpoelW - 6, 20);
+    // ijzeren kern, of een buisje van karton
+    Pen.Width := 1;
+    if FKern then
+    begin
+      Brush.Style := bsSolid;
+      Brush.Color := RGBToColor(140, 140, 150);
+      FillRect(TRc(L - 6, 13, R + 6, 28));
+      Pen.Color := RGBToColor(80, 80, 90);
+      Brush.Style := bsClear;
+      Rectangle(TRc(L - 6, 13, R + 6, 28));
+    end
+    else
+    begin
+      Pen.Color := RGBToColor(190, 170, 130);
+      Brush.Style := bsClear;
+      Rectangle(TRc(L - 2, 13, R + 2, 28));
+    end;
+    // windingen van koperdraad
+    case FWindIdx of
+      0: N := 6;
+      1: N := 9;
+    else
+      N := 13;
+    end;
+    Pen.Color := RGBToColor(184, 100, 30);
+    Pen.Width := 2;
+    Brush.Style := bsClear;
+    for i := 0 to N - 1 do
+    begin
+      X := L + Round(i * (R - L - 6) / (N - 1));
+      Ellipse(TRc(X, 6, X + 6, 35));
+    end;
+    Pen.Width := 1;
+    Pen.Color := clBlack;
+    // polen zodra er stroom loopt
+    S := Sterkte;
+    if Abs(S) > 0.01 then
+    begin
+      SN := 'N';
+      SZ := Tr(FTaal, 'Z', 'S', 'S', 'S');
+      RL := TRc(L - 2, 37, L + 12, 47);
+      RR := TRc(R - 12, 37, R + 2, 47);
+      if S > 0 then
+      begin
+        Pool(RR, RGBToColor(215, 40, 40), SN);
+        Pool(RL, RGBToColor(40, 90, 200), SZ);
+      end
+      else
+      begin
+        Pool(RL, RGBToColor(215, 40, 40), SN);
+        Pool(RR, RGBToColor(40, 90, 200), SZ);
+      end;
+    end;
+  end;
+  PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+  PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanSpoel.UpdateHintText;
+var
+  S, Kant, KernT, KernX: string;
+  St: Double;
+begin
+  St := Sterkte;
+  if FKern then
+  begin
+    KernT := Tr(FTaal, 'met ijzeren kern', 'with iron core', 'avec noyau de fer', 'mit Eisenkern');
+    KernX := Tr(FTaal, ' × 5 door de kern)', ' × 5 by the core)', ' × 5 par le noyau)', ' × 5 durch den Kern)');
+  end
+  else
+  begin
+    KernT := Tr(FTaal, 'zonder kern (lucht)', 'without core (air)', 'sans noyau (air)', 'ohne Kern (Luft)');
+    KernX := ')';
+  end;
+  if Abs(St) <= 0.01 then
+    S := Tr(FTaal, 'Er loopt geen stroom: de spoel is geen magneet.',
+      'No current flows: the coil is not a magnet.',
+      'Aucun courant ne passe : la bobine n''est pas un aimant.',
+      'Es fließt kein Strom: Die Spule ist kein Magnet.')
+  else
+  begin
+    if FGedraaid then
+    begin
+      if St > 0 then Kant := Tr(FTaal, 'onderaan', 'at the bottom', 'en bas', 'unten')
+      else Kant := Tr(FTaal, 'bovenaan', 'at the top', 'en haut', 'oben');
+    end
+    else if St > 0 then Kant := Tr(FTaal, 'rechts', 'on the right', 'à droite', 'rechts')
+    else Kant := Tr(FTaal, 'links', 'on the left', 'à gauche', 'links');
+    S := Format(Tr(FTaal, 'De stroom maakt van de spoel een magneet: de noordpool zit %s.',
+      'The current turns the coil into a magnet: the north pole is %s.',
+      'Le courant fait de la bobine un aimant : le pôle nord est %s.',
+      'Der Strom macht die Spule zu einem Magneten: Der Nordpol ist %s.'), [Kant]) + #13#10 +
+      Format(Tr(FTaal, 'Sterkte: %s keer een staafmagneet (%d windingen × %s',
+        'Strength: %s times a bar magnet (%d turns × %s',
+        'Force : %s fois un aimant droit (%d spires × %s',
+        'Stärke: %s-mal ein Stabmagnet (%d Windungen × %s'),
+        [FormatFloat('0.##', Abs(St)), Windingen, AmpText(Abs(FAmp))]) + KernX;
+  end;
+  Hint := Tr(FTaal, 'Spoel', 'Coil', 'Bobine', 'Spule') + ': ' + IntToStr(Windingen) + ' ' +
+    Tr(FTaal, 'windingen', 'turns', 'spires', 'Windungen') + ', ' + KernT + ', R = ' + OhmText(Ohm) + #13#10 +
+    StroomRegel(FStroom) + #13#10 + S + #13#10 +
+    Tr(FTaal,
+      'Rechterhandregel: krom de vingers van je rechterhand met de stroom mee rond de spoel; je duim wijst naar de noordpool.',
+      'Right-hand rule: curl the fingers of your right hand along the current round the coil; your thumb points to the north pole.',
+      'Règle de la main droite : enroulez les doigts de la main droite dans le sens du courant ; le pouce indique le pôle nord.',
+      'Rechte-Hand-Regel: Krümmen Sie die Finger der rechten Hand in Stromrichtung um die Spule; der Daumen zeigt zum Nordpol.') + #13#10 +
+    Tr(FTaal, 'Rechtsklik: windingen, kern, andersom gewikkeld of draaien.',
+      'Right-click: turns, core, wound the other way or rotate.',
+      'Clic droit : spires, noyau, enroulée dans l''autre sens ou pivoter.',
+      'Rechtsklick: Windungen, Kern, andersherum gewickelt oder drehen.');
+end;
+
+procedure TjanSpoel.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Spoel', 'Coil', 'Bobine', 'Spule') + ' > ', 0);
+  FOnStatus(Self, IntToStr(Windingen) + ' ' + Tr(FTaal, 'windingen', 'turns', 'spires', 'Windungen') +
+    '   I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;

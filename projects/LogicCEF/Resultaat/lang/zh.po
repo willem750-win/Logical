@@ -1939,3 +1939,57 @@ msgstr "逻辑灯：工作在 5 V，与门电路的输出相同。"
 
 msgid "Magnetism (magnet, compass, field lines)"
 msgstr "磁 (磁铁、指南针、磁感线)"
+
+msgid "create coil"
+msgstr "创建线圈"
+
+msgid "Turns"
+msgstr "匝数"
+
+msgid "Iron core"
+msgstr "铁芯"
+
+msgid "Wound the other way (swap N and S)"
+msgstr "反向绕制 (交换 N 和 S)"
+
+msgid "with iron core"
+msgstr "有铁芯"
+
+msgid " × 5 by the core)"
+msgstr " × 5 由铁芯)"
+
+msgid "without core (air)"
+msgstr "无铁芯 (空气)"
+
+msgid "No current flows: the coil is not a magnet."
+msgstr "没有电流：线圈不是磁铁。"
+
+msgid "at the bottom"
+msgstr "下方"
+
+msgid "at the top"
+msgstr "上方"
+
+msgid "on the right"
+msgstr "右侧"
+
+msgid "on the left"
+msgstr "左侧"
+
+msgid "The current turns the coil into a magnet: the north pole is %s."
+msgstr "电流使线圈成为磁铁：N 极在%s。"
+
+msgid "Strength: %s times a bar magnet (%d turns × %s"
+msgstr "强度：条形磁铁的 %s 倍 (%d 匝 × %s"
+
+msgid "Coil"
+msgstr "线圈"
+
+msgid "turns"
+msgstr "匝"
+
+msgid "Right-hand rule: curl the fingers of your right hand along the current round the coil; your thumb points to the north pole."
+msgstr "右手定则：用右手四指顺着电流方向绕线圈弯曲，大拇指指向 N 极。"
+
+msgid "Right-click: turns, core, wound the other way or rotate."
+msgstr "右键：匝数、铁芯、反向绕制或旋转。"

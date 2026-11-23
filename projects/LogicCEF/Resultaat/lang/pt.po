@@ -1939,3 +1939,57 @@ msgstr "Lâmpada lógica: funciona com 5 V, como a saída de uma porta."
 
 msgid "Magnetism (magnet, compass, field lines)"
 msgstr "Magnetismo (íman, bússola, linhas de campo)"
+
+msgid "create coil"
+msgstr "criar bobina"
+
+msgid "Turns"
+msgstr "Espiras"
+
+msgid "Iron core"
+msgstr "Núcleo de ferro"
+
+msgid "Wound the other way (swap N and S)"
+msgstr "Enrolada ao contrário (trocar N e S)"
+
+msgid "with iron core"
+msgstr "com núcleo de ferro"
+
+msgid " × 5 by the core)"
+msgstr " × 5 pelo núcleo)"
+
+msgid "without core (air)"
+msgstr "sem núcleo (ar)"
+
+msgid "No current flows: the coil is not a magnet."
+msgstr "Não passa corrente: a bobina não é um íman."
+
+msgid "at the bottom"
+msgstr "em baixo"
+
+msgid "at the top"
+msgstr "em cima"
+
+msgid "on the right"
+msgstr "à direita"
+
+msgid "on the left"
+msgstr "à esquerda"
+
+msgid "The current turns the coil into a magnet: the north pole is %s."
+msgstr "A corrente transforma a bobina num íman: o polo norte está %s."
+
+msgid "Strength: %s times a bar magnet (%d turns × %s"
+msgstr "Intensidade: %s vezes um íman em barra (%d espiras × %s"
+
+msgid "Coil"
+msgstr "Bobina"
+
+msgid "turns"
+msgstr "espiras"
+
+msgid "Right-hand rule: curl the fingers of your right hand along the current round the coil; your thumb points to the north pole."
+msgstr "Regra da mão direita: dobre os dedos da mão direita no sentido da corrente à volta da bobina; o polegar aponta para o polo norte."
+
+msgid "Right-click: turns, core, wound the other way or rotate."
+msgstr "Clique direito: espiras, núcleo, enrolada ao contrário ou rodar."

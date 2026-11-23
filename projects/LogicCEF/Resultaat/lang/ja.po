@@ -1939,3 +1939,57 @@ msgstr "ロジックランプ：ゲートの出力と同じく 5 V で動作し�
 
 msgid "Magnetism (magnet, compass, field lines)"
 msgstr "磁気 (磁石、方位磁針、磁力線)"
+
+msgid "create coil"
+msgstr "コイルを作成"
+
+msgid "Turns"
+msgstr "巻数"
+
+msgid "Iron core"
+msgstr "鉄心"
+
+msgid "Wound the other way (swap N and S)"
+msgstr "逆巻き (N と S を入れ替え)"
+
+msgid "with iron core"
+msgstr "鉄心あり"
+
+msgid " × 5 by the core)"
+msgstr " × 5 鉄心による)"
+
+msgid "without core (air)"
+msgstr "鉄心なし (空気)"
+
+msgid "No current flows: the coil is not a magnet."
+msgstr "電流が流れていません：コイルは磁石ではありません。"
+
+msgid "at the bottom"
+msgstr "下"
+
+msgid "at the top"
+msgstr "上"
+
+msgid "on the right"
+msgstr "右"
+
+msgid "on the left"
+msgstr "左"
+
+msgid "The current turns the coil into a magnet: the north pole is %s."
+msgstr "電流によってコイルは磁石になります：N 極は%sです。"
+
+msgid "Strength: %s times a bar magnet (%d turns × %s"
+msgstr "強さ：棒磁石の %s 倍 (%d 回巻き × %s"
+
+msgid "Coil"
+msgstr "コイル"
+
+msgid "turns"
+msgstr "回巻き"
+
+msgid "Right-hand rule: curl the fingers of your right hand along the current round the coil; your thumb points to the north pole."
+msgstr "右ねじの法則：右手の指を電流の向きにコイルに沿って曲げると、親指が N 極を指します。"
+
+msgid "Right-click: turns, core, wound the other way or rotate."
+msgstr "右クリック：巻数、鉄心、逆巻き、または回転。"
