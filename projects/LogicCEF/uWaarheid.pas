@@ -219,12 +219,12 @@ begin
     for j := 0 to Outs.Count - 1 do
     begin
       O := TObject(Outs[j]);
-      if O is TjanSimBuzzer then
+      if (O is TjanSimBuzzer) or (O is TjanZoemer2) then
       begin
         Inc(NZ);
         S := T('Z', 'B', 'B', 'S') + IntToStr(NZ);
       end
-      else if O is TjanSimRelais then
+      else if (O is TjanSimRelais) or (O is TjanRelais2) then
       begin
         Inc(NR);
         S := 'R' + IntToStr(NR);

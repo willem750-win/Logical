@@ -69,7 +69,7 @@ begin
       Result[n + 1].P := PZ; Result[n + 1].Q := -TjanSpoel(C).Sterkte; Result[n + 1].Bron := C;
       Inc(n, 2);
     end
-    else if (C is TjanRelaisModel) and C.Visible and (Abs(TjanRelaisModel(C).Sterkte) > 0.005) then
+    else if (C is TjanRelaisModel) and not (C is TjanRelais2) and C.Visible and (Abs(TjanRelaisModel(C).Sterkte) > 0.005) then
     begin
       // de kern van het open relais: noordpool boven bij + sterkte
       TjanRelaisModel(C).Polen(PN, PZ);
@@ -3359,5 +3359,228 @@ begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Transformator', 'Transformer', 'Transformateur', 'Transformator') + ' > ', 0);
   FOnStatus(Self, Format('N1 = %d  N2 = %d   U1 = %s  U2 = %s', [N1, N2, VoltText(Abs(FU1)), VoltText(Abs(FU2))]), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanZoemer2 }
+
+const
+  Zoemer2W = 80;
+  Zoemer2H = 46;
+  Zoemer2Drempel = 0.010;   // A: vanaf hier zoemt hij
+
+constructor TjanZoemer2.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := Zoemer2W;
+  Height := Zoemer2H;
+  HelpKeyword := 'zoemer2';
+end;
+
+function TjanZoemer2.KanDraaien: Boolean;
+begin
+  Result := False;
+end;
+
+function TjanZoemer2.StdMaat: TPoint;
+begin
+  Result := Point(Zoemer2W, Zoemer2H);
+end;
+
+function TjanZoemer2.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+procedure TjanZoemer2.AddMenuItems(APop: TPopupMenu);
+begin
+  // geen soorten zoals bij de weerstand
+end;
+
+// links in op de hoogte van de ingang van het symbool, rechts uit op de
+// hoogte van het rechterpootje
+function TjanZoemer2.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 17)
+  else Result := Point(Zoemer2W - 8, BuzzerLegY(20, 10) - 3);
+end;
+
+function TjanZoemer2.Ohm: Double;
+begin
+  Result := 200;
+end;
+
+function TjanZoemer2.Aan: Boolean;
+begin
+  Result := Abs(FAmp) >= Zoemer2Drempel;
+end;
+
+procedure TjanZoemer2.Paint;
+begin
+  DrawBuzzerSymbol(Canvas, 7, Zoemer2W - 8, 20, 10, Aan);
+  PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+  PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanZoemer2.UpdateHintText;
+var
+  S: string;
+begin
+  if Aan then
+    S := Tr(FTaal, 'De zoemer zoemt.', 'The buzzer is sounding.', 'Le buzzer sonne.', 'Der Summer summt.')
+  else
+    S := Tr(FTaal, 'De zoemer is stil: er loopt minder dan 10 mA.', 'The buzzer is silent: less than 10 mA flows.',
+      'Le buzzer est silencieux : il passe moins de 10 mA.', 'Der Summer ist still: Es fließen weniger als 10 mA.');
+  Hint := Tr(FTaal, 'Zoemer', 'Buzzer', 'Buzzer', 'Summer') + ': ' + OhmText(Ohm) + #13#10 +
+    StroomRegel(FStroom) + #13#10 + S + #13#10 +
+    Tr(FTaal,
+      'Twee klemmen: links in, rechts uit (naar de - rail). Hij zoemt vanaf 10 mA, ook aan de uitgang van een poort.',
+      'Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate.',
+      'Deux bornes : entrée à gauche, sortie à droite (vers le rail -). Il sonne à partir de 10 mA, aussi à la sortie d''une porte.',
+      'Zwei Klemmen: links hinein, rechts hinaus (zur - Schiene). Er summt ab 10 mA, auch am Ausgang eines Gatters.');
+end;
+
+procedure TjanZoemer2.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Zoemer', 'Buzzer', 'Buzzer', 'Summer') + ' > ', 0);
+  FOnStatus(Self, 'I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanRelais2 }
+
+const
+  Relais2W = 120;
+  Relais2H = 84;
+
+constructor TjanRelais2.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := Relais2W;
+  Height := Relais2H;
+  HelpKeyword := 'relais2';
+end;
+
+function TjanRelais2.PinPos(I: Integer): TPoint;
+begin
+  case I of
+    0: Result := Point(1, 62);
+    1: Result := Point(Relais2W - 8, 62);
+    2: Result := Point(1, 12);
+    3: Result := Point(Relais2W - 8, 4);
+  else
+    Result := Point(Relais2W - 8, 28);
+  end;
+end;
+
+function TjanRelais2.MaakDicht: Boolean;
+begin
+  Result := FAan;
+end;
+
+function TjanRelais2.VerbreekDicht: Boolean;
+begin
+  Result := not FAan;
+end;
+
+function TjanRelais2.SpoelOhm: Double;
+begin
+  Result := 60;
+end;
+
+procedure TjanRelais2.Paint;
+const
+  PX = 52; PY = 15;          // scharnier van het mesje
+  KX = 84;                   // vaste contacten
+var
+  TipY, MY, i: Integer;
+  Kl: TColor;
+begin
+  // het mesje volgt het anker: rust tegen het verbreekcontact (onder), aangetrokken tegen het maakcontact (boven)
+  TipY := 27 + Round((9 - 27) * Ankerstand);
+  if FAan then Kl := RGBToColor(220, 0, 0) else Kl := clBlack;
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    Pen.Color := clBlack;
+    // spoel onderaan
+    MoveTo(PinPos(0).X + 6, PinPos(0).Y + 3); LineTo(44, PinPos(0).Y + 3);
+    MoveTo(76, PinPos(1).Y + 3); LineTo(PinPos(1).X, PinPos(1).Y + 3);
+    Brush.Style := bsSolid;
+    if Abs(FAmp) >= 0.020 then Brush.Color := $80FF80 else Brush.Color := clWhite;
+    Rectangle(44, 58, 77, 73);
+    // gemeenschappelijk contact C naar het scharnier
+    MoveTo(PinPos(2).X + 6, PinPos(2).Y + 3); LineTo(PX, PY);
+    // vaste contacten: maak boven, verbreek onder
+    MoveTo(KX, 7); LineTo(PinPos(3).X, PinPos(3).Y + 3);
+    MoveTo(KX, 7); LineTo(KX, 9);
+    MoveTo(KX, 31); LineTo(PinPos(4).X, PinPos(4).Y + 3);
+    MoveTo(KX, 31); LineTo(KX, 27);
+    // het mesje
+    Pen.Color := Kl;
+    Pen.Width := 2;
+    MoveTo(PX, PY); LineTo(KX, TipY);
+    Pen.Width := 1;
+    Brush.Color := clBlack;
+    Ellipse(PX - 2, PY - 2, PX + 3, PY + 3);
+    // mechanische koppeling: stippellijn van de spoel naar het mesje
+    MY := PY + Round((TipY - PY) * (60 - PX) / (KX - PX));
+    for i := MY + 3 to 57 do
+      if (i mod 3) <> 0 then Pixels[60, i] := clBlack;
+    // namen van de klemmen
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 6;
+    Font.Style := [];
+    Font.Color := RGBToColor(60, 60, 60);
+    TextOut(10, 2, 'C');
+    TextOut(KX + 3, 9, Tr(FTaal, 'maak', 'NO', 'travail', 'Schließer'));
+    TextOut(KX + 3, 33, Tr(FTaal, 'verbreek', 'NC', 'repos', 'Öffner'));
+    TextOut(10, 75, Tr(FTaal, 'spoel', 'coil', 'bobine', 'Spule'));
+  end;
+  for i := 0 to 4 do
+    PaintPin(PinPos(i).X, PinPos(i).Y, Abs(FPinV[i]) >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanRelais2.UpdateHintText;
+var
+  S: string;
+begin
+  if FAan then
+    S := Tr(FTaal, 'Het relais is aangetrokken: het maakcontact is dicht, het verbreekcontact open.',
+      'The relay is energised: the NO contact is closed, the NC contact open.',
+      'Le relais est enclenché : le contact travail est fermé, le contact repos ouvert.',
+      'Das Relais ist angezogen: Der Schließer ist geschlossen, der Öffner offen.')
+  else
+    S := Tr(FTaal, 'Het relais is afgevallen: het verbreekcontact is dicht, het maakcontact open.',
+      'The relay is released: the NC contact is closed, the NO contact open.',
+      'Le relais est au repos : le contact repos est fermé, le contact travail ouvert.',
+      'Das Relais ist abgefallen: Der Öffner ist geschlossen, der Schließer offen.');
+  Hint := Tr(FTaal, 'Relais', 'Relay', 'Relais', 'Relais') + #13#10 +
+    Format(Tr(FTaal, 'Spoel: 60 ohm, stroom %s. Trekt aan vanaf 35 mA, valt af onder 20 mA.',
+      'Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA.',
+      'Bobine : 60 ohms, courant %s. S''enclenche à partir de 35 mA, retombe sous 20 mA.',
+      'Spule: 60 Ohm, Strom %s. Zieht ab 35 mA an, fällt unter 20 mA ab.'), [AmpText(Abs(FAmp))]) + #13#10 +
+    S + #13#10 +
+    Tr(FTaal,
+      'Klemmen: onderaan de spoel (links in, rechts uit); links boven het gemeenschappelijke contact C,' + #13#10 +
+        'rechts boven het maakcontact en rechts in het midden het verbreekcontact. Een poort (5 V) kan de spoel sturen.',
+      'Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,' + #13#10 +
+        'top right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil.',
+      'Bornes : la bobine en bas (entrée à gauche, sortie à droite) ; en haut à gauche le contact commun C,' + #13#10 +
+        'en haut à droite le contact travail et à droite au milieu le contact repos. Une porte (5 V) peut commander la bobine.',
+      'Klemmen: unten die Spule (links hinein, rechts hinaus); links oben der gemeinsame Kontakt C,' + #13#10 +
+        'rechts oben der Schließer und rechts in der Mitte der Öffner. Ein Gatter (5 V) kann die Spule steuern.');
+end;
+
+procedure TjanRelais2.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Relais', 'Relay', 'Relais', 'Relais') + ' > ', 0);
+  FOnStatus(Self, 'I = ' + FormatFloat('0', Abs(FAmp) * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;

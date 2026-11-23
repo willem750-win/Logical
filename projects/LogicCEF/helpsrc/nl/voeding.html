@@ -33,6 +33,8 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Laat stroom maar in één richting door, boven 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Een kleine basisstroom stuurt een grote collectorstroom: schakelen en versterken.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Zoemer</a></td><td>Zoemer met twee klemmen: zoemt vanaf 10&nbsp;mA, ook aan een poort.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relais</a></td><td>Spoel met twee klemmen en een wisselcontact (C, maak, verbreek).</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Staafmagneet</a></td><td>Magneet met een noordpool (rood) en een zuidpool (blauw), zonder klemmen.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Kompas</a></td><td>Een naald die langs het magnetisch veld wijst.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Veldlijnenplaat</a></td><td>Toont de veldlijnen van de magneten die erop liggen, zoals ijzervijlsel.</td></tr>
@@ -203,6 +205,7 @@
     <tr><td>verbrand contact</td><td>10&nbsp;&Omega;</td><td>een klem die te warm geworden is</td></tr>
     <tr><td>voorschakelweerstand</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2,2, 4,7, 10, 47 of 100&nbsp;k&Omega;</td><td>een echte weerstand, bv. in serie met een <a href="#led">led</a> of voor de basis van een <a href="#transistor">transistor</a></td></tr>
   </table>
+  <p>Vormt de weerstand samen met een <a href="#ldr">LDR of NTC</a> een <b>spanningsdeler</b> (ze delen een klem waar geen rail of bron op zit), dan staat er <b>spanningsdeler</b> onder in plaats van voorschakelweerstand. De spanning tussen de twee verandert dan met het licht of de temperatuur, en die stuurt een poort of transistor. Zie <a href="les06.html">les 6</a> en <a href="les40.html">les 40</a>.</p>
   <p>Het blokje kleurt oranje tot rood naarmate het warmer wordt. Meet de spanningsval met een
   <a href="#voltmeter">voltmeter</a>: + aan de klem aan de kant van de bron, &minus; aan de andere klem.
   Zie <a href="les24.html">les 24</a>.</p>
@@ -213,8 +216,11 @@
   Kirchhoff: de spanning op elke klem en de stroom door elk onderdeel.</p>
   <ul>
     <li><b>Lamp</b>: een gloeilamp van 120&nbsp;&Omega; (100&nbsp;mA en 1,2&nbsp;W bij 12&nbsp;V). Rechtsklik &rsaquo;
-      <b>Weerstand</b> om een andere lamp te kiezen: 24, 48, 60, 120, 240 of 480&nbsp;&Omega;. Ze brandt feller naarmate er
-      meer vermogen door gaat; de hint toont U, I en P.</li>
+      <b>Weerstand</b> om een andere lamp te kiezen: 24, 48, 60, 120, 240 of 480&nbsp;&Omega;. Met rechtsklik &rsaquo;
+      <b>Spanning van de lamp</b> &rsaquo; <b>Lamp voor 5&nbsp;V</b> wordt het een kleine lamp voor 5&nbsp;V: 50, 100, 250 of
+      500&nbsp;&Omega;. Die van 250&nbsp;&Omega; (20&nbsp;mA) brandt ook aan de uitgang van een poort, en een lamp voor 5&nbsp;V
+      telt mee in de waarheidstabel. Ze brandt feller naarmate er meer vermogen door gaat, vol bij het vermogen op haar
+      eigen spanning; de hint toont U, I en P.</li>
     <li><b>Schakelaar</b>: klik op de hendel om hem te openen of te sluiten, ook tijdens de simulatie. Met rechtsklik &rsaquo; <b>Soort</b> &rsaquo; <b>Drukknop</b> wordt het een drukknop: hij is alleen dicht zolang je de muisknop ingedrukt houdt. Een schakelaar met drie klemmen is de <a href="#wisselschakelaar">wisselschakelaar</a>.</li>
     <li><b>Voltmeter</b>: zet de + en de &minus; over een onderdeel. Hij meet het spanningsverschil tussen zijn twee klemmen
       en neemt zelf geen stroom.</li>
@@ -369,6 +375,17 @@
       Maak de rail zo nodig langer.</li>
     <li>Met de pijltjestoetsen verschuif je per pixel; zo kan je een onderdeel ook weer lostrekken.</li>
   </ul>
+
+  <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">De zoemer met twee klemmen</h2>
+  <p>Een zoemer van 200&nbsp;&Omega; met twee klemmen: links in, rechts uit (meestal naar de &minus; rail). Hij zoemt zodra er minstens 10&nbsp;mA door loopt. Aan de uitgang van een poort (5&nbsp;V) loopt er ongeveer 20&nbsp;mA, dus een poort kan hem rechtstreeks sturen. Zie <a href="les05.html">les 5</a>.</p>
+
+  <h2 id="relais2"><img src="../img/pal-relais2.png" class="ico" alt="">Het relais</h2>
+  <p>Een relais in schemasymbool: een schakelaar die door een elektromagneet bediend wordt.</p>
+  <ul>
+    <li>De <b>spoel</b> (onderaan, 60&nbsp;&Omega;) heeft twee klemmen: links in, rechts uit. Vanaf 35&nbsp;mA trekt het relais aan, onder 20&nbsp;mA valt het af. Een poort (5&nbsp;V) kan de spoel sturen.</li>
+    <li>Het <b>wisselcontact</b>: links boven het gemeenschappelijke contact <b>C</b>, rechts boven het <b>maakcontact</b> (dicht als de spoel aantrekt) en rechts in het midden het <b>verbreekcontact</b> (dicht in rust).</li>
+  </ul>
+  <p>Spoel en contact zijn elektrisch gescheiden: het contact mag in een andere kring hangen, met een andere bron. Het relais werkt ook in de waarheidstabel: daar telt het als 1 als het aangetrokken is. Zie <a href="les11.html">les 11</a>; hoe een relais vanbinnen werkt, zie je in <a href="lesm4.html">Magnetisme 4</a>.</p>
 
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetisme: staafmagneet, kompas, veldlijnenplaat, spoel, spijker, relais, stroomschommel, elektromotor, nulpuntmeter, draaiende magneet en transformator</h2>
   <p>De staafmagneet, het kompas en de veldlijnenplaat hebben geen klemmen: ze horen niet bij de stroomkring. Je zet ze los op het paneel en sleept ze rond. Zie <a href="lesm1.html">Wat is magnetisme?</a></p>

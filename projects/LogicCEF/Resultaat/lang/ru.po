@@ -2194,3 +2194,66 @@ msgstr "Сейчас: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
 
 msgid "Right-click: turns of the primary and the secondary coil."
 msgstr "Правый щелчок: витки первичной и вторичной обмотки."
+
+msgid "create buzzer (two terminals)"
+msgstr "создать зуммер (две клеммы)"
+
+msgid "create relay (two-terminal coil, changeover contact)"
+msgstr "создать реле (катушка с двумя клеммами, переключающий контакт)"
+
+msgid "The buzzer is sounding."
+msgstr "Зуммер звучит."
+
+msgid "The buzzer is silent: less than 10 mA flows."
+msgstr "Зуммер молчит: течёт меньше 10 мА."
+
+msgid "Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate."
+msgstr "Две клеммы: вход слева, выход справа (к шине -). Звучит от 10 мА, в том числе на выходе логического элемента."
+
+msgid "coil"
+msgstr "катушка"
+
+msgid "The relay is energised: the NO contact is closed, the NC contact open."
+msgstr "Реле сработало: нормально открытый контакт замкнут, нормально закрытый разомкнут."
+
+msgid "The relay is released: the NC contact is closed, the NO contact open."
+msgstr "Реле отпущено: нормально закрытый контакт замкнут, нормально открытый разомкнут."
+
+msgid "Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA."
+msgstr "Катушка: 60 Ом, ток %s. Срабатывает от 35 мА, отпускает ниже 20 мА."
+
+msgid "Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,\ntop right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil."
+msgstr "Клеммы: катушка внизу (вход слева, выход справа); слева вверху общий контакт C,\nсправа вверху контакт НО и справа посередине контакт НЗ. Логический элемент (5 В) может управлять катушкой."
+
+msgid "Lamp voltage"
+msgstr "Напряжение лампы"
+
+msgid "Lamp for 5 V (also on a gate)"
+msgstr "Лампа на 5 В (также на логическом элементе)"
+
+msgid "Lamp for 12 V"
+msgstr "Лампа на 12 В"
+
+msgid "Lamp for %s V (%s)"
+msgstr "Лампа на %s В (%s)"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit."
+msgstr "Лампа с двумя клеммами: включите её в цепь последовательно или параллельно."
+
+msgid "At %s V: %s and %s. The more power, the brighter it shines."
+msgstr "При %s В: %s и %s. Чем больше мощность, тем ярче она горит."
+
+msgid "A 5 V lamp also lights on the output of a gate and counts in the truth table."
+msgstr "Лампа на 5 В горит и на выходе логического элемента и учитывается в таблице истинности."
+
+msgid "Right-click: choose the voltage and the resistance."
+msgstr "Правый щелчок: выбрать напряжение и сопротивление."
+
+msgid "create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)"
+msgstr "создать лампу с 2 клеммами на 12 В или 5 В (последовательно и параллельно)"
+
+msgid "voltage divider"
+msgstr "делитель напряжения"
+
+msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
+msgstr "Вместе с фоторезистором или термистором этот резистор образует делитель напряжения: напряжение\nмежду ними меняется со светом или температурой и подаётся на логический элемент.\nС другим сопротивлением элемент переключается при другой освещённости или температуре."

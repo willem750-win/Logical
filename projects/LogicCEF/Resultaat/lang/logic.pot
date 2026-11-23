@@ -206,7 +206,7 @@ msgstr ""
 msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
 msgstr ""
 
-#: jsl_bewegend.inc:1780 jsl_bewegend.inc:1786 jsl_rails_kring.inc:578
+#: jsl_bewegend.inc:1780 jsl_bewegend.inc:1786 jsl_rails_kring.inc:582
 msgid "red"
 msgstr ""
 
@@ -214,11 +214,11 @@ msgstr ""
 msgid "amber"
 msgstr ""
 
-#: jsl_bewegend.inc:1782 jsl_bewegend.inc:1787 jsl_rails_kring.inc:580
+#: jsl_bewegend.inc:1782 jsl_bewegend.inc:1787 jsl_rails_kring.inc:584
 msgid "green"
 msgstr ""
 
-#: jsl_bewegend.inc:1783 jsl_bewegend.inc:1788 jsl_voedingsdelen.inc:2629
+#: jsl_bewegend.inc:1783 jsl_bewegend.inc:1788 jsl_voedingsdelen.inc:2717
 msgid "off"
 msgstr ""
 
@@ -254,11 +254,11 @@ msgstr ""
 msgid "closing"
 msgstr ""
 
-#: jsl_bewegend.inc:2009 jsl_voedingsdelen.inc:3149 jsl_voedingsdelen.inc:3224
+#: jsl_bewegend.inc:2009 jsl_voedingsdelen.inc:3237 jsl_voedingsdelen.inc:3312
 msgid "open"
 msgstr ""
 
-#: jsl_bewegend.inc:2011 jsl_voedingsdelen.inc:3148 jsl_voedingsdelen.inc:3197
+#: jsl_bewegend.inc:2011 jsl_voedingsdelen.inc:3236 jsl_voedingsdelen.inc:3285
 msgid "closed"
 msgstr ""
 
@@ -270,259 +270,259 @@ msgstr ""
 msgid "input O: on = barrier opens, off = barrier closes\nlimit switches Closed and Open (right-click: Place limit switches)"
 msgstr ""
 
-#: jsl_box_bediening.inc:504 jsl_box_bediening.inc:504
+#: jsl_box_bediening.inc:508 jsl_box_bediening.inc:508
 msgid "create Switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1491 jsl_box_bediening.inc:1491
-msgid "create Buzzer"
-msgstr ""
-
-#: jsl_box_bediening.inc:1492 jsl_box_bediening.inc:1492
-msgid "create Motor"
-msgstr ""
-
-#: jsl_box_bediening.inc:1493 jsl_box_bediening.inc:1493
-msgid "create DipSwitsh"
-msgstr ""
-
-#: jsl_box_bediening.inc:1494 jsl_box_bediening.inc:1494
-msgid "create 7 segment display"
-msgstr ""
-
-#: jsl_box_bediening.inc:1495 jsl_box_bediening.inc:1495
-msgid "create Connection"
-msgstr ""
-
-#: jsl_box_bediening.inc:1496 jsl_box_bediening.inc:1496
-msgid "create Push button"
-msgstr ""
-
-#: jsl_box_bediening.inc:1497 jsl_box_bediening.inc:1497
-msgid "create logic lamp (5 V)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1498 jsl_box_bediening.inc:1498
-msgid "create AND-Logic gate"
-msgstr ""
-
 #: jsl_box_bediening.inc:1499 jsl_box_bediening.inc:1499
-msgid "create NOT-Logic gate"
+msgid "create buzzer (two terminals)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1500 jsl_box_bediening.inc:1500
-msgid "create OR-Logic gate"
+msgid "create Motor"
 msgstr ""
 
 #: jsl_box_bediening.inc:1501 jsl_box_bediening.inc:1501
-msgid "create NAND-Logic gate (not-and)"
+msgid "create DipSwitsh"
 msgstr ""
 
 #: jsl_box_bediening.inc:1502 jsl_box_bediening.inc:1502
-msgid "create NOR-Logic gate (not-or)"
+msgid "create 7 segment display"
 msgstr ""
 
 #: jsl_box_bediening.inc:1503 jsl_box_bediening.inc:1503
-msgid "create XOR-Logic gate (exclusive or)"
+msgid "create Connection"
 msgstr ""
 
 #: jsl_box_bediening.inc:1504 jsl_box_bediening.inc:1504
-msgid "create Memory block"
+msgid "create Push button"
 msgstr ""
 
 #: jsl_box_bediening.inc:1505 jsl_box_bediening.inc:1505
-msgid "create Impuls generator"
+msgid "create logic lamp (5 V)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1506 jsl_box_bediening.inc:1506
-msgid "create Relay"
+msgid "create AND-Logic gate"
 msgstr ""
 
 #: jsl_box_bediening.inc:1507 jsl_box_bediening.inc:1507
-msgid "create Switching relay (relay with contact)"
+msgid "create NOT-Logic gate"
 msgstr ""
 
 #: jsl_box_bediening.inc:1508 jsl_box_bediening.inc:1508
-msgid "create Switsh"
+msgid "create OR-Logic gate"
 msgstr ""
 
 #: jsl_box_bediening.inc:1509 jsl_box_bediening.inc:1509
-msgid "create Light sensor"
+msgid "create NAND-Logic gate (not-and)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1510 jsl_box_bediening.inc:1510
-msgid "create Counter block"
+msgid "create NOR-Logic gate (not-or)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1511 jsl_box_bediening.inc:1511
-msgid "create Step counter (counts up to 9999)"
+msgid "create XOR-Logic gate (exclusive or)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1512 jsl_box_bediening.inc:1512
-msgid "create Flip-flop (SR, D, JK or T)"
+msgid "create Memory block"
 msgstr ""
 
 #: jsl_box_bediening.inc:1513 jsl_box_bediening.inc:1513
-msgid "create Stopwatch (time with end time)"
+msgid "create Impuls generator"
 msgstr ""
 
 #: jsl_box_bediening.inc:1514 jsl_box_bediening.inc:1514
-msgid "create HeatSensor"
+msgid "create relay (two-terminal coil, changeover contact)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1515 jsl_box_bediening.inc:1515
-msgid "create Voltmeter"
+msgid "create Switching relay (relay with contact)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1516 jsl_box_bediening.inc:1516
-msgid "create Person (with limit switches)"
+msgid "create Switsh"
 msgstr ""
 
 #: jsl_box_bediening.inc:1517 jsl_box_bediening.inc:1517
-msgid "create Cart (road with posts)"
+msgid "create Light sensor"
 msgstr ""
 
 #: jsl_box_bediening.inc:1518 jsl_box_bediening.inc:1518
-msgid "create Music box (8 piano keys)"
+msgid "create Counter block"
 msgstr ""
 
 #: jsl_box_bediening.inc:1519 jsl_box_bediening.inc:1519
-msgid "create Traffic light (with pedestrian light)"
+msgid "create Step counter (counts up to 9999)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1520 jsl_box_bediening.inc:1520
-msgid "create Barrier gate (car park)"
+msgid "create Flip-flop (SR, D, JK or T)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1521 jsl_box_bediening.inc:1521
-msgid "create + rail (supply)"
+msgid "create Stopwatch (time with end time)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1522 jsl_box_bediening.inc:1522
-msgid "create - rail (ground)"
+msgid "create HeatSensor"
 msgstr ""
 
 #: jsl_box_bediening.inc:1523 jsl_box_bediening.inc:1523
-msgid "create Source (battery, 0 to 12 V)"
+msgid "create Voltmeter"
 msgstr ""
 
 #: jsl_box_bediening.inc:1524 jsl_box_bediening.inc:1524
-msgid "create Fuse"
+msgid "create Person (with limit switches)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1525 jsl_box_bediening.inc:1525
-msgid "create Milliammeter"
+msgid "create Cart (road with posts)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1526 jsl_box_bediening.inc:1526
-msgid "create Wattmeter"
+msgid "create Music box (8 piano keys)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1527 jsl_box_bediening.inc:1527
-msgid "create Resistance (contact, long wire)"
+msgid "create Traffic light (with pedestrian light)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1528 jsl_box_bediening.inc:1528
-msgid "create Lamp with 2 terminals (series and parallel)"
+msgid "create Barrier gate (car park)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1529 jsl_box_bediening.inc:1529
-msgid "create Switch with 2 terminals"
+msgid "create + rail (supply)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1530 jsl_box_bediening.inc:1530
-msgid "create Changeover switch"
+msgid "create - rail (ground)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1531 jsl_box_bediening.inc:1531
-msgid "create Pulse generator"
+msgid "create Source (battery, 0 to 12 V)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1532 jsl_box_bediening.inc:1532
-msgid "create DIP switch"
+msgid "create Fuse"
 msgstr ""
 
 #: jsl_box_bediening.inc:1533 jsl_box_bediening.inc:1533
-msgid "create bar magnet"
+msgid "create Milliammeter"
 msgstr ""
 
 #: jsl_box_bediening.inc:1534 jsl_box_bediening.inc:1534
-msgid "create compass"
+msgid "create Wattmeter"
 msgstr ""
 
 #: jsl_box_bediening.inc:1535 jsl_box_bediening.inc:1535
-msgid "create field line sheet"
+msgid "create Resistance (contact, long wire)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1536 jsl_box_bediening.inc:1536
-msgid "create coil"
+msgid "create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1537 jsl_box_bediening.inc:1537
-msgid "create nail (iron)"
+msgid "create Switch with 2 terminals"
 msgstr ""
 
 #: jsl_box_bediening.inc:1538 jsl_box_bediening.inc:1538
-msgid "create relay (open model)"
+msgid "create Changeover switch"
 msgstr ""
 
 #: jsl_box_bediening.inc:1539 jsl_box_bediening.inc:1539
-msgid "create current swing"
+msgid "create Pulse generator"
 msgstr ""
 
 #: jsl_box_bediening.inc:1540 jsl_box_bediening.inc:1540
-msgid "create electric motor (model)"
+msgid "create DIP switch"
 msgstr ""
 
 #: jsl_box_bediening.inc:1541 jsl_box_bediening.inc:1541
-msgid "create centre-zero meter (galvanometer)"
+msgid "create bar magnet"
 msgstr ""
 
 #: jsl_box_bediening.inc:1542 jsl_box_bediening.inc:1542
-msgid "create rotating magnet (dynamo)"
+msgid "create compass"
 msgstr ""
 
 #: jsl_box_bediening.inc:1543 jsl_box_bediening.inc:1543
-msgid "create transformer"
+msgid "create field line sheet"
 msgstr ""
 
 #: jsl_box_bediening.inc:1544 jsl_box_bediening.inc:1544
-msgid "create Voltmeter with 2 terminals"
+msgid "create coil"
 msgstr ""
 
 #: jsl_box_bediening.inc:1545 jsl_box_bediening.inc:1545
-msgid "create LED with 2 terminals (with series resistor)"
+msgid "create nail (iron)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1546 jsl_box_bediening.inc:1546
-msgid "create Capacitor (charging and discharging)"
+msgid "create relay (open model)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1547 jsl_box_bediening.inc:1547
-msgid "create Potentiometer (three terminals)"
+msgid "create current swing"
 msgstr ""
 
 #: jsl_box_bediening.inc:1548 jsl_box_bediening.inc:1548
-msgid "create Diode"
+msgid "create electric motor (model)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1549 jsl_box_bediening.inc:1549
-msgid "create AC voltage source"
+msgid "create centre-zero meter (galvanometer)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1550 jsl_box_bediening.inc:1550
-msgid "create Oscilloscope"
+msgid "create rotating magnet (dynamo)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1551 jsl_box_bediening.inc:1551
-msgid "create Transistor"
+msgid "create transformer"
 msgstr ""
 
 #: jsl_box_bediening.inc:1552 jsl_box_bediening.inc:1552
-msgid "create LDR"
+msgid "create Voltmeter with 2 terminals"
 msgstr ""
 
 #: jsl_box_bediening.inc:1553 jsl_box_bediening.inc:1553
+msgid "create LED with 2 terminals (with series resistor)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1554 jsl_box_bediening.inc:1554
+msgid "create Capacitor (charging and discharging)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1555 jsl_box_bediening.inc:1555
+msgid "create Potentiometer (three terminals)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1556 jsl_box_bediening.inc:1556
+msgid "create Diode"
+msgstr ""
+
+#: jsl_box_bediening.inc:1557 jsl_box_bediening.inc:1557
+msgid "create AC voltage source"
+msgstr ""
+
+#: jsl_box_bediening.inc:1558 jsl_box_bediening.inc:1558
+msgid "create Oscilloscope"
+msgstr ""
+
+#: jsl_box_bediening.inc:1559 jsl_box_bediening.inc:1559
+msgid "create Transistor"
+msgstr ""
+
+#: jsl_box_bediening.inc:1560 jsl_box_bediening.inc:1560
+msgid "create LDR"
+msgstr ""
+
+#: jsl_box_bediening.inc:1561 jsl_box_bediening.inc:1561
 msgid "create NTC"
 msgstr ""
 
@@ -786,11 +786,11 @@ msgstr ""
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr ""
 
-#: jsl_magnetisme.inc:1741
+#: jsl_magnetisme.inc:1741 jsl_magnetisme.inc:3541
 msgid "NC"
 msgstr ""
 
-#: jsl_magnetisme.inc:1742
+#: jsl_magnetisme.inc:1742 jsl_magnetisme.inc:3540
 msgid "NO"
 msgstr ""
 
@@ -914,7 +914,7 @@ msgstr ""
 msgid "Right-click: turn the magnet round, or leave out the commutator."
 msgstr ""
 
-#: jsl_magnetisme.inc:2750 jsl_voedingsdelen.inc:3743
+#: jsl_magnetisme.inc:2750 jsl_voedingsdelen.inc:3831
 msgid "Range"
 msgstr ""
 
@@ -1002,11 +1002,51 @@ msgstr ""
 msgid "Right-click: turns of the primary and the secondary coil."
 msgstr ""
 
+#: jsl_magnetisme.inc:3431
+msgid "The buzzer is sounding."
+msgstr ""
+
+#: jsl_magnetisme.inc:3433
+msgid "The buzzer is silent: less than 10 mA flows."
+msgstr ""
+
+#: jsl_magnetisme.inc:3435 jsl_magnetisme.inc:3447 fsettings.lfm
+msgid "Buzzer"
+msgstr ""
+
+#: jsl_magnetisme.inc:3439
+msgid "Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate."
+msgstr ""
+
+#: jsl_magnetisme.inc:3542
+msgid "coil"
+msgstr ""
+
+#: jsl_magnetisme.inc:3555
+msgid "The relay is energised: the NO contact is closed, the NC contact open."
+msgstr ""
+
+#: jsl_magnetisme.inc:3560
+msgid "The relay is released: the NC contact is closed, the NO contact open."
+msgstr ""
+
+#: jsl_magnetisme.inc:3563 jsl_magnetisme.inc:3583 fsettings.lfm
+msgid "Relay"
+msgstr ""
+
+#: jsl_magnetisme.inc:3565
+msgid "Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA."
+msgstr ""
+
+#: jsl_magnetisme.inc:3572
+msgid "Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,\ntop right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil."
+msgstr ""
+
 #: jsl_oude_invoer.inc:302
 msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
 msgstr ""
 
-#: jsl_oude_invoer.inc:1344 jsl_oude_invoer.inc:1377 jsl_voedingsdelen.inc:3182
+#: jsl_oude_invoer.inc:1344 jsl_oude_invoer.inc:1377 jsl_voedingsdelen.inc:3270
 msgid "Push button"
 msgstr ""
 
@@ -1030,7 +1070,7 @@ msgstr ""
 msgid "emperature sensor"
 msgstr ""
 
-#: jsl_oude_invoer.inc:3295 jsl_voedingsdelen.inc:700 jsl_voedingsdelen.inc:3327
+#: jsl_oude_invoer.inc:3295 jsl_voedingsdelen.inc:700 jsl_voedingsdelen.inc:3415
 msgid "Frequency"
 msgstr ""
 
@@ -1090,31 +1130,31 @@ msgstr ""
 msgid "Ground"
 msgstr ""
 
-#: jsl_rails_kring.inc:565
+#: jsl_rails_kring.inc:569
 msgid "good contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:566
+#: jsl_rails_kring.inc:570
 msgid "long thin wire"
 msgstr ""
 
-#: jsl_rails_kring.inc:567
+#: jsl_rails_kring.inc:571
 msgid "poor contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:568
+#: jsl_rails_kring.inc:572
 msgid "burnt contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:570
+#: jsl_rails_kring.inc:574
 msgid "series resistor"
 msgstr ""
 
-#: jsl_rails_kring.inc:579
+#: jsl_rails_kring.inc:583
 msgid "yellow"
 msgstr ""
 
-#: jsl_rails_kring.inc:582
+#: jsl_rails_kring.inc:586
 msgid "blue"
 msgstr ""
 
@@ -1234,11 +1274,11 @@ msgstr ""
 msgid "Set Q to 0"
 msgstr ""
 
-#: jsl_uitvoer.inc:342 jsl_voedingsdelen.inc:2178
+#: jsl_uitvoer.inc:342 jsl_voedingsdelen.inc:2266
 msgid "Colour"
 msgstr ""
 
-#: jsl_uitvoer.inc:348 jsl_voedingsdelen.inc:2050 jsl_voedingsdelen.inc:2075
+#: jsl_uitvoer.inc:348 jsl_voedingsdelen.inc:2163 fsettings.lfm
 msgid "Lamp"
 msgstr ""
 
@@ -1330,263 +1370,291 @@ msgstr ""
 msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1240 jsl_voedingsdelen.inc:2594
+#: jsl_voedingsdelen.inc:1240 jsl_voedingsdelen.inc:2682
 msgid "Kind"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1347 jsl_voedingsdelen.inc:1367 jsl_voedingsdelen.inc:1968
+#: jsl_voedingsdelen.inc:1257
+msgid "voltage divider"
+msgstr ""
+
+#: jsl_voedingsdelen.inc:1363 jsl_voedingsdelen.inc:1397 jsl_voedingsdelen.inc:2046
 msgid "Resistance"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1356
+#: jsl_voedingsdelen.inc:1374
+msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
+msgstr ""
+
+#: jsl_voedingsdelen.inc:1386
 msgid "In series in the supply line: some voltage is lost (U = I × R).\nMeasure it with a voltmeter across both terminals. Right-click: choose the kind."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1452 AdvancedPropertyGridComponent.pas:989
+#: jsl_voedingsdelen.inc:1482 AdvancedPropertyGridComponent.pas:989
 msgid "Value"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1573 jsl_voedingsdelen.inc:1592
+#: jsl_voedingsdelen.inc:1603 jsl_voedingsdelen.inc:1622
 msgid "Potentiometer"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1574
+#: jsl_voedingsdelen.inc:1604
 msgid "wiper at"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1581
+#: jsl_voedingsdelen.inc:1611
 msgid "Three terminals: the ends A and B, and the wiper L. Drag the wiper with the mouse.\nRight-click: choose the value."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1776
+#: jsl_voedingsdelen.inc:1806
 msgid "light"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1826
+#: jsl_voedingsdelen.inc:1856
 msgid "Light-dependent resistor: the more light, the lower the resistance\n(1 MΩ in the dark, 100 Ω in bright light). Drag the knob to set the light."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1832 jsl_voedingsdelen.inc:1902
+#: jsl_voedingsdelen.inc:1862 jsl_voedingsdelen.inc:1932
 msgid "Click beside the knob for a step of 1."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1896
+#: jsl_voedingsdelen.inc:1926
 msgid "Temperature-dependent resistor: the warmer, the lower the resistance\n(10 kΩ at 25 °C). Drag the knob to set the temperature."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2061
-msgid "Lamp with two terminals: put it in series or in parallel in the circuit.\nAt 12 V: "
+#: jsl_voedingsdelen.inc:2023
+msgid "Lamp voltage"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2062
-msgid " and "
+#: jsl_voedingsdelen.inc:2030
+msgid "Lamp for 5 V (also on a gate)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2063
-msgid ". The more power, the brighter it shines. Right-click: choose the resistance."
+#: jsl_voedingsdelen.inc:2037
+msgid "Lamp for 12 V"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2173
+#: jsl_voedingsdelen.inc:2131
+msgid "Lamp for %s V (%s)"
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2141
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit."
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2146
+msgid "At %s V: %s and %s. The more power, the brighter it shines."
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2153
+msgid "A 5 V lamp also lights on the output of a gate and counts in the truth table."
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2156
+msgid "Right-click: choose the voltage and the resistance."
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2261
 msgid "Replace LED"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2263 jsl_voedingsdelen.inc:2273 jsl_voedingsdelen.inc:2320
+#: jsl_voedingsdelen.inc:2351 jsl_voedingsdelen.inc:2361 jsl_voedingsdelen.inc:2408
 msgid "broken"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2288 jsl_voedingsdelen.inc:2318
+#: jsl_voedingsdelen.inc:2376 jsl_voedingsdelen.inc:2406
 msgid "LED"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2292
+#: jsl_voedingsdelen.inc:2380
 msgid "Broken: more than 30 mA went through it. Right-click: replace LED."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2303
+#: jsl_voedingsdelen.inc:2391
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2383
+#: jsl_voedingsdelen.inc:2471
 msgid "Turn round"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2387
+#: jsl_voedingsdelen.inc:2475
 msgid "Replace diode"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2443 jsl_voedingsdelen.inc:2452
+#: jsl_voedingsdelen.inc:2531 jsl_voedingsdelen.inc:2540
 msgid "diode"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2465 jsl_voedingsdelen.inc:2492 fsettings.lfm
+#: jsl_voedingsdelen.inc:2553 jsl_voedingsdelen.inc:2580 fsettings.lfm
 msgid "Diode"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2468
+#: jsl_voedingsdelen.inc:2556
 msgid "Broken: more than 1 A went through it. Right-click: replace diode."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2475
+#: jsl_voedingsdelen.inc:2563
 msgid "blocking: no current"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2479
+#: jsl_voedingsdelen.inc:2567
 msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2485
+#: jsl_voedingsdelen.inc:2573
 msgid "Right-click: turn round."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2607
+#: jsl_voedingsdelen.inc:2695
 msgid "Gain"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2620
+#: jsl_voedingsdelen.inc:2708
 msgid "Replace transistor"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2630
+#: jsl_voedingsdelen.inc:2718
 msgid "saturated"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2631
+#: jsl_voedingsdelen.inc:2719
 msgid "amplifying"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2718 jsl_voedingsdelen.inc:2764 fsettings.lfm
+#: jsl_voedingsdelen.inc:2806 jsl_voedingsdelen.inc:2852 fsettings.lfm
 msgid "Transistor"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2723
+#: jsl_voedingsdelen.inc:2811
 msgid "Broken: too much current went through the base or the collector. Right-click: replace transistor."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2735
+#: jsl_voedingsdelen.inc:2823
 msgid "Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2742
+#: jsl_voedingsdelen.inc:2830
 msgid "A small current out of the base (B) controls a large current from the emitter (E) to the collector (C)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2748
+#: jsl_voedingsdelen.inc:2836
 msgid "A small current into the base (B) controls a large current from the collector (C) to the emitter (E)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2753
+#: jsl_voedingsdelen.inc:2841
 msgid "Always put a resistor before the base. Right-click: choose the kind and the gain."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2839
+#: jsl_voedingsdelen.inc:2927
 msgid "Discharge"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2843
+#: jsl_voedingsdelen.inc:2931
 msgid "Capacitance"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2923 jsl_voedingsdelen.inc:2946 fsettings.lfm
+#: jsl_voedingsdelen.inc:3011 jsl_voedingsdelen.inc:3034 fsettings.lfm
 msgid "Capacitor"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2932
+#: jsl_voedingsdelen.inc:3020
 msgid "Capacitor with two terminals: + on the left. It charges when there is a voltage on it and gives\nthat charge back. How long that takes: time constant tau = R × C (e.g. 1000 ohm × 1000 µF = 1 s).\nRight-click: choose the capacitance or discharge."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3057
+#: jsl_voedingsdelen.inc:3145
 msgid "Type"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3063
+#: jsl_voedingsdelen.inc:3151
 msgid "Switch (stays put)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3066
+#: jsl_voedingsdelen.inc:3154
 msgid "Push button (only while pressed)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3145 jsl_voedingsdelen.inc:3184
+#: jsl_voedingsdelen.inc:3233 jsl_voedingsdelen.inc:3272
 msgid "pressed"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3146
+#: jsl_voedingsdelen.inc:3234
 msgid "released"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3165 jsl_voedingsdelen.inc:3213 fsettings.lfm
+#: jsl_voedingsdelen.inc:3253 jsl_voedingsdelen.inc:3301 fsettings.lfm
 msgid "Changeover switch"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3167
+#: jsl_voedingsdelen.inc:3255
 msgid "the middle is connected to "
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3172
+#: jsl_voedingsdelen.inc:3260
 msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3186
+#: jsl_voedingsdelen.inc:3274
 msgid "released: no current flows"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3190
+#: jsl_voedingsdelen.inc:3278
 msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3195 jsl_voedingsdelen.inc:3215 fsettings.lfm
+#: jsl_voedingsdelen.inc:3283 jsl_voedingsdelen.inc:3303 fsettings.lfm
 msgid "Switch"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3199
+#: jsl_voedingsdelen.inc:3287
 msgid "open: no current flows"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3203
+#: jsl_voedingsdelen.inc:3291
 msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3380 uLogicRun.pas:712 uOefening.pas:276
+#: jsl_voedingsdelen.inc:3468 uLogicRun.pas:712 uOefening.pas:276
 msgid "on"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3395 jsl_voedingsdelen.inc:3406 fsettings.lfm
+#: jsl_voedingsdelen.inc:3483 jsl_voedingsdelen.inc:3494 fsettings.lfm
 msgid "Pulse generator"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3398
+#: jsl_voedingsdelen.inc:3486
 msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3520 jsl_voedingsdelen.inc:3531 fsettings.lfm
+#: jsl_voedingsdelen.inc:3608 jsl_voedingsdelen.inc:3619 fsettings.lfm
 msgid "DIP switch"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3523
+#: jsl_voedingsdelen.inc:3611
 msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3600 jsl_voedingsdelen.inc:3615 fsettings.lfm
+#: jsl_voedingsdelen.inc:3688 jsl_voedingsdelen.inc:3703 fsettings.lfm
 msgid "Voltmeter"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3604
+#: jsl_voedingsdelen.inc:3692
 msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3756
+#: jsl_voedingsdelen.inc:3844
 msgid "Time base"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3769
+#: jsl_voedingsdelen.inc:3857
 msgid "Clear screen"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3855 jsl_voedingsdelen.inc:3871 fsettings.lfm
+#: jsl_voedingsdelen.inc:3943 jsl_voedingsdelen.inc:3959 fsettings.lfm
 msgid "Oscilloscope"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3860
+#: jsl_voedingsdelen.inc:3948
 msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
 msgstr ""
 
@@ -1818,87 +1886,87 @@ msgstr ""
 msgid "Check for updates"
 msgstr ""
 
-#: uhelpmanager.pas:264
+#: uhelpmanager.pas:268
 msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
 msgstr ""
 
-#: uhelpmanager.pas:286
+#: uhelpmanager.pas:290
 msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
 msgstr ""
 
-#: uhelpmanager.pas:305
+#: uhelpmanager.pas:309
 msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
 msgstr ""
 
-#: uhelpmanager.pas:324
+#: uhelpmanager.pas:328
 msgid "Power rail\n\n- + rail: plug inputs in on the right; the voltage comes from the source.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
 msgstr ""
 
-#: uhelpmanager.pas:343
+#: uhelpmanager.pas:347
 msgid "Source (battery)\n\n- Slider: 0 to 12 V in steps of 0.5 V.\n- + with a wire to the + rail, - to the - rail.\n- Right-click: internal resistance."
 msgstr ""
 
-#: uhelpmanager.pas:362
+#: uhelpmanager.pas:366
 msgid "Fuse\n\n- In series between the source and the + rail.\n- Blows when the current is too high.\n- Right-click: rated current, replace fuse."
 msgstr ""
 
-#: uhelpmanager.pas:380
+#: uhelpmanager.pas:384
 msgid "Milliammeter\n\n- In series between the source and the + rail.\n- Shows the current the circuit uses."
 msgstr ""
 
-#: uhelpmanager.pas:395
+#: uhelpmanager.pas:399
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr ""
 
-#: uhelpmanager.pas:412
+#: uhelpmanager.pas:416
 msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
 msgstr ""
 
-#: uhelpmanager.pas:433
+#: uhelpmanager.pas:437
 msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
 msgstr ""
 
-#: uhelpmanager.pas:449
+#: uhelpmanager.pas:453
 msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
 msgstr ""
 
-#: uhelpmanager.pas:467
+#: uhelpmanager.pas:471
 msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
 msgstr ""
 
-#: uhelpmanager.pas:481
+#: uhelpmanager.pas:485
 msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
 msgstr ""
 
-#: uhelpmanager.pas:493
+#: uhelpmanager.pas:497
 msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
 msgstr ""
 
-#: uhelpmanager.pas:507
+#: uhelpmanager.pas:511
 msgid "DIP switch\n\n- Allows multiple fixed binary settings."
 msgstr ""
 
-#: uhelpmanager.pas:520
+#: uhelpmanager.pas:524
 msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
 msgstr ""
 
-#: uhelpmanager.pas:536
+#: uhelpmanager.pas:540
 msgid "No specific help found for keyword: "
 msgstr ""
 
-#: uhelpmanager.pas:536
+#: uhelpmanager.pas:540
 msgid "\n\nExpected help page:\n"
 msgstr ""
 
-#: uhelpmanager.pas:554
+#: uhelpmanager.pas:558
 msgid "No HelpKeyword assigned."
 msgstr ""
 
-#: uhelpmanager.pas:571 uhelpmanager.pas:639
+#: uhelpmanager.pas:575 uhelpmanager.pas:643
 msgid "No internal help handler assigned.\n"
 msgstr ""
 
-#: uhelpmanager.pas:648
+#: uhelpmanager.pas:652
 msgid "Table of contents not found.\n"
 msgstr ""
 
@@ -2295,10 +2363,6 @@ msgid "Header"
 msgstr ""
 
 #: fsettings.lfm fsettings.lfm
-msgid "Buzzer"
-msgstr ""
-
-#: fsettings.lfm fsettings.lfm
 msgid "7 segment display"
 msgstr ""
 
@@ -2372,10 +2436,6 @@ msgstr ""
 
 #: fsettings.lfm fsettings.lfm
 msgid "XOR gate"
-msgstr ""
-
-#: fsettings.lfm fsettings.lfm
-msgid "Relay"
 msgstr ""
 
 #: fsettings.lfm fsettings.lfm

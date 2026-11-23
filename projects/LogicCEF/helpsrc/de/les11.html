@@ -6,39 +6,32 @@
 
   <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les11-schakelrelais.png" alt="Zwei Quellen: ein Steuerstromkreis mit Taster und ein Laststromkreis mit Schaltrelais und Lampe">
-    <figcaption>Der Taster ist gedrückt: Die Spule ist erregt, der Kontakt ist geschlossen und die 5&nbsp;V der oberen Quelle gehen zur Lampe.</figcaption>
+    <img src="../img/les11-schakelrelais.png" alt="Zwei Quellen: ein 5-V-Steuerstromkreis mit Taster und Relaisspule und ein 12-V-Laststromkreis mit dem Relaiskontakt und einer Lampe">
+    <figcaption>Der Taster ist gedrückt: Die Spule zieht an, die Kontaktzunge liegt am Schließer, und die Lampe leuchtet mit 12&nbsp;V.</figcaption>
   </figure>
 
   <h2>Zwei Stromkreise</h2>
   <ul>
-    <li>Der <b>Steuerstromkreis</b>: Die untere Quelle speist die linke + Schiene. Der Taster hängt mit einem Draht an dieser Schiene, seine
-      andere Klemme führt zu <b>R+</b>, der Spule des <a href="uitvoer.html#schakelrelais">Schaltrelais</a>. Die Spule sitzt mit
-      <b>R&minus;</b> an der &minus; Schiene neben dem Relais; diese ist mit der &minus; Klemme der unteren Quelle verbunden.</li>
-    <li>Der <b>Laststromkreis</b>: Die obere Quelle speist eine zweite + Schiene mit 5&nbsp;V. Der Kontakt des Relais sitzt
-      mit <b>R1</b> an dieser Schiene. Von <b>R2</b> führt ein Draht zur Lampe, und die Lampe sitzt an der &minus; Schiene rechts.</li>
+    <li>Der <b>Steuerstromkreis</b> (unten): die 5-V-Quelle, der Taster und die <b>Spule</b> des <a href="voeding.html#relais2">Relais</a> (die beiden Klemmen unten). Drückt man, fließen etwa 80&nbsp;mA durch die Spule.</li>
+    <li>Der <b>Laststromkreis</b> (oben): die 12-V-Quelle, der <b>Kontakt</b> des Relais und eine Lampe. Der Pluspol der Quelle geht zu <b>C</b>, dem gemeinsamen Kontakt. Vom <b>Schließer</b> geht ein Draht zur Lampe, und die Lampe geht zurück zum Minuspol der Quelle.</li>
   </ul>
-  <p>Jeder Stromkreis hat seine eigene Quelle: Die beiden Stromkreise berühren sich nicht. Die Spule betätigt den
-  Kontakt mit einem Elektromagneten: Das ist die gestrichelte Linie im Symbol. So kann ein kleiner Taster ein großes
-  Gerät schalten. Im Auto schaltet ein kleiner Schalter über ein Relais die starken Scheinwerfer ein.</p>
+  <p>Jeder Kreis hat seine eigene Quelle: Die beiden Kreise berühren sich nicht. Die Spule betätigt den Kontakt mit einem Elektromagneten: Das ist die gestrichelte Linie im Schaltzeichen. So schaltet ein kleiner 5-V-Taster eine 12-V-Lampe. Im Auto schaltet ein leichter Schalter über ein Relais die schweren Scheinwerfer ein. Wie ein Relais innen funktioniert, zeigt <a href="lesm4.html">Magnetismus 4</a>.</p>
+  <p>Das Relais hat einen <b>Wechsler</b>: In Ruhe ist C mit dem <b>Öffner</b> verbunden, wenn die Spule anzieht mit dem <b>Schließer</b>.</p>
 
   <h2>Ausprobieren</h2>
   <ol class="steps">
-    <li>Starten Sie die Simulation und drücken Sie den Taster: Die LED des Relais wird rot, der Kontakt schließt und die Lampe leuchtet.</li>
-    <li>Lassen Sie los: Der Kontakt öffnet und die Lampe geht aus.</li>
-    <li>Stellen Sie mit dem Schieberegler die obere Quelle (den Laststromkreis) auf 1&nbsp;V und drücken Sie erneut.</li>
+    <li>Starten Sie die Simulation und drücken Sie den Taster: Die Spule wird grün, die Kontaktzunge springt zum Schließer, und die Lampe leuchtet.</li>
+    <li>Lassen Sie los: Die Kontaktzunge fällt zum Öffner zurück, und die Lampe geht aus.</li>
+    <li>Stellen Sie die untere Quelle (den Steuerstromkreis) mit dem Schieberegler auf 2&nbsp;V und drücken Sie erneut.</li>
   </ol>
 
   <h2>Übung</h2>
-  <p>Warum bleibt die Lampe aus, wenn die Quelle des Laststromkreises auf 1&nbsp;V steht, obwohl die Spule noch
-  funktioniert? Stellen Sie die Quelle danach wieder auf 5&nbsp;V und fügen Sie einen Summer hinzu, der zusammen mit
-  der Lampe angeht.</p>
+  <p>1. Warum zieht das Relais nicht an, wenn der Steuerstromkreis nur 2&nbsp;V bekommt? Ab welcher Spannung klappt es?</p>
+  <p>2. Stellen Sie die Quelle wieder auf 5&nbsp;V. Schließen Sie eine zweite Lampe am <b>Öffner</b> an (und zurück zum Minuspol der oberen Quelle). Wann leuchtet welche Lampe?</p>
   <details>
     <summary>Lösung</summary>
-    <p>Der Kontakt gibt die Spannung von R1 weiter. 1&nbsp;V ist weniger als 2&nbsp;V, für die Lampe bedeutet das
-    &bdquo;aus&ldquo; (siehe <a href="les10.html">Lektion 10</a>). Die Spule funktioniert, weil sie ihr Signal vom Taster
-    bekommt, der an der Schiene der anderen 5&nbsp;V-Quelle sitzt. Für den Summer: Setzen Sie ihn mit der rechten Seite an
-    eine &minus; Schiene und führen Sie einen zweiten Draht von R2 zu seinem Eingang. Ein Ausgang darf mehrere Drähte haben.</p>
+    <p>1. Die Spule hat 60&nbsp;&Omega; und zieht ab 35&nbsp;mA an. Bei 2&nbsp;V fließen nur 2 / 60 = 33&nbsp;mA: knapp zu wenig. Ab 2,5&nbsp;V (42&nbsp;mA) zieht das Relais an.</p>
+    <p>2. Ohne Drücken leuchtet die Lampe am Öffner; drückt man, geht sie aus, und die Lampe am Schließer leuchtet. So wählt man mit einem Relais zwischen zwei Geräten.</p>
   </details>
 
   <div class="pager"><a href="les10.html">&larr; Lektion 10: Versorgung und Spannung</a><a href="les12.html">Lektion 12: Programmieren mit LogicRun &rarr;</a></div>

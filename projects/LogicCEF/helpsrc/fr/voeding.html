@@ -33,6 +33,8 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens, au-dessus de 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Un petit courant de base commande un grand courant de collecteur : commuter et amplifier.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Buzzer</a></td><td>Buzzer à deux bornes&nbsp;: sonne à partir de 10&nbsp;mA, aussi sur une porte.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relais</a></td><td>Bobine à deux bornes et contact inverseur (C, travail, repos).</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Aimant droit</a></td><td>Aimant avec un pôle nord (rouge) et un pôle sud (bleu), sans bornes.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Boussole</a></td><td>Une aiguille qui s&rsquo;oriente le long du champ magnétique.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Plaque de lignes de champ</a></td><td>Montre les lignes de champ des aimants posés dessus, comme de la limaille de fer.</td></tr>
@@ -208,6 +210,7 @@
     <tr><td>contact brûlé</td><td>10&nbsp;&Omega;</td><td>une borne devenue trop chaude</td></tr>
     <tr><td>résistance série</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2,2, 4,7, 10, 47 ou 100&nbsp;k&Omega;</td><td>une vraie résistance, p. ex. en série avec une <a href="#led">LED</a> ou avant la base d&rsquo;un <a href="#transistor">transistor</a></td></tr>
   </table>
+  <p>Si la résistance forme avec une <a href="#ldr">LDR ou une CTN</a> un <b>diviseur de tension</b> (elles partagent une borne sans rail ni source), on lit <b>diviseur de tension</b> en dessous au lieu de résistance série. La tension entre les deux varie alors avec la lumière ou la température, et elle commande une porte ou un transistor. Voir la <a href="les06.html">leçon 6</a> et la <a href="les40.html">leçon 40</a>.</p>
   <p>Le bloc devient orange puis rouge à mesure qu&rsquo;il chauffe. Mesurez la chute de tension avec un
   <a href="#voltmeter">voltmètre</a>&nbsp;: + sur la borne du côté de la source, &minus; sur l&rsquo;autre borne.
   Voir la <a href="les24.html">leçon 24</a>.</p>
@@ -218,8 +221,11 @@
   circuit avec les lois de Kirchhoff&nbsp;: la tension sur chaque borne et le courant dans chaque composant.</p>
   <ul>
     <li><b>Lampe</b>&nbsp;: une ampoule de 120&nbsp;&Omega; (100&nbsp;mA et 1,2&nbsp;W sous 12&nbsp;V). Clic droit &rsaquo;
-      <b>Résistance</b> pour choisir une autre lampe&nbsp;: 24, 48, 60, 120, 240 ou 480&nbsp;&Omega;. Elle brille d&rsquo;autant
-      plus que la puissance est grande&nbsp;; l&rsquo;info-bulle montre U, I et P.</li>
+      <b>Résistance</b> pour choisir une autre lampe&nbsp;: 24, 48, 60, 120, 240 ou 480&nbsp;&Omega;. Avec clic droit &rsaquo;
+      <b>Tension de la lampe</b> &rsaquo; <b>Lampe pour 5&nbsp;V</b>, elle devient une petite lampe de 5&nbsp;V&nbsp;: 50, 100,
+      250 ou 500&nbsp;&Omega;. Celle de 250&nbsp;&Omega; (20&nbsp;mA) brille aussi à la sortie d&rsquo;une porte, et une lampe de
+      5&nbsp;V compte dans la table de vérité. Elle brille d&rsquo;autant plus que la puissance est grande, pleinement à la
+      puissance de sa propre tension&nbsp;; l&rsquo;info-bulle montre U, I et P.</li>
     <li><b>Interrupteur</b>&nbsp;: cliquez sur le levier pour l&rsquo;ouvrir ou le fermer, aussi pendant la simulation. Clic droit &rsaquo; <b>Type</b> &rsaquo; <b>Bouton-poussoir</b> en fait un bouton-poussoir&nbsp;: il n&rsquo;est fermé que tant que vous gardez le bouton de la souris enfoncé. Un interrupteur à trois bornes, c&rsquo;est le <a href="#wisselschakelaar">commutateur va-et-vient</a>.</li>
     <li><b>Voltmètre</b>&nbsp;: placez le + et le &minus; aux bornes d&rsquo;un composant. Il mesure la différence de tension
       entre ses deux bornes et ne prend lui-même aucun courant.</li>
@@ -382,6 +388,17 @@
       en dessous. Allongez le rail si nécessaire.</li>
     <li>Les touches fléchées déplacent d&rsquo;un pixel ; vous pouvez ainsi aussi débrancher un composant.</li>
   </ul>
+
+  <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">Le buzzer à deux bornes</h2>
+  <p>Un buzzer de 200&nbsp;&Omega; à deux bornes&nbsp;: entrée à gauche, sortie à droite (généralement vers le rail &minus;). Il sonne dès qu&rsquo;au moins 10&nbsp;mA le traversent. À la sortie d&rsquo;une porte (5&nbsp;V), il passe environ 20&nbsp;mA&nbsp;: une porte peut donc le commander directement. Voir la <a href="les05.html">leçon 5</a>.</p>
+
+  <h2 id="relais2"><img src="../img/pal-relais2.png" class="ico" alt="">Le relais</h2>
+  <p>Un relais en symbole&nbsp;: un interrupteur commandé par un électroaimant.</p>
+  <ul>
+    <li>La <b>bobine</b> (en bas, 60&nbsp;&Omega;) a deux bornes&nbsp;: entrée à gauche, sortie à droite. À partir de 35&nbsp;mA, le relais s&rsquo;enclenche&nbsp;; sous 20&nbsp;mA, il retombe. Une porte (5&nbsp;V) peut commander la bobine.</li>
+    <li>Le <b>contact inverseur</b>&nbsp;: en haut à gauche le contact commun <b>C</b>, en haut à droite le <b>contact travail</b> (fermé quand la bobine est enclenchée) et à droite au milieu le <b>contact repos</b> (fermé au repos).</li>
+  </ul>
+  <p>La bobine et le contact sont séparés électriquement&nbsp;: le contact peut se trouver dans un autre circuit, avec une autre source. Le relais fonctionne aussi dans la table de vérité&nbsp;: il y compte comme 1 quand il est enclenché. Voir la <a href="les11.html">leçon 11</a>&nbsp;; le fonctionnement interne d&rsquo;un relais est montré dans <a href="lesm4.html">Magnétisme 4</a>.</p>
 
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnétisme&nbsp;: aimant droit, boussole, plaque de lignes de champ, bobine, clou, relais, balançoire électrique, moteur électrique, galvanomètre, aimant tournant et transformateur</h2>
   <p>L&rsquo;aimant droit, la boussole et la plaque de lignes de champ n&rsquo;ont pas de bornes&nbsp;: ils ne font pas partie du circuit. On les place librement sur le panneau et on les fait glisser. Voir <a href="lesm1.html">Qu&rsquo;est-ce que le magnétisme&nbsp;?</a></p>

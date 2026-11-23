@@ -187,6 +187,10 @@ begin
       begin Result := 'voeding'; AAnchor := 'magnetisme'; end;
     'transistor':
       begin Result := 'voeding'; AAnchor := 'transistor'; end;
+    'zoemer2':
+      begin Result := 'voeding'; AAnchor := 'zoemer2'; end;
+    'relais2':
+      begin Result := 'voeding'; AAnchor := 'relais2'; end;
     'wisselschakelaar':
       begin Result := 'voeding'; AAnchor := 'wisselschakelaar'; end;
     'puls2':

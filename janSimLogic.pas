@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -3426,8 +3426,10 @@ end;
     FSoort: Integer;       // index in WeerstandOhm
     FStroom: Double;       // A
     FInVolt, FUitVolt: Double;
+    FDeler: Boolean;       // vormt met een LDR of NTC een spanningsdeler
     procedure SetSoort(const Value: Integer);
     procedure SoortClick(Sender: TObject);
+    procedure SetDeler(const Value: Boolean);
   protected
     procedure AddMenuItems(APop: TPopupMenu); override;
     function KanDraaien: Boolean; override;
@@ -3440,22 +3442,26 @@ end;
     function PinPos(I: Integer): TPoint; override;
     function Ohm: Double; virtual;
     function Vermogen: Double;   // W
+    function Naam: string;       // soort, of "spanningsdeler" naast een LDR of NTC
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
     property Stroom: Double read FStroom;
+    property Deler: Boolean read FDeler write SetDeler;
   published
     property Soort: Integer read FSoort write SetSoort;
   end;
 
   { TjanLamp2: gloeilamp met twee klemmen (standaard 120 ohm: 100 mA bij 12 V;
-    rechtsklik: andere weerstand, zie Lamp2Ohm).
+    rechtsklik: lamp voor 5 of 12 V en andere weerstand, zie Lamp2Ohm).
     Je zet ze vrij in de voedingskring, ook in serie of parallel. Ze brandt
-    feller naarmate er meer vermogen door gaat (P = U x I, vol bij 1,2 W). }
+    feller naarmate er meer vermogen door gaat (P = U x I, vol bij het vermogen
+    op haar eigen spanning). Een lamp voor 5 V telt mee in de waarheidstabel. }
   TjanLamp2 = class(TjanVoedingsDeel)
   private
     FSoort: Integer;       // index in Lamp2Ohm
     procedure SetSoort(const Value: Integer);
     procedure SoortClick(Sender: TObject);
+    procedure VoltClick(Sender: TObject);
   protected
     function KanDraaien: Boolean; override;
     function StdMaat: TPoint; override;
@@ -3467,6 +3473,9 @@ end;
     function PinCount: Integer; override;
     function PinPos(I: Integer): TPoint; override;
     function Ohm: Double;
+    function Volt: Double;       // spanning waarvoor de lamp gemaakt is: 5 of 12 V
+    function Is5V: Boolean;
+    function Aan: Boolean;       // brandt (minstens een kwart van haar vermogen)
     function Spanning: Double;   // V over de lamp
     function Vermogen: Double;   // W
     procedure UpdateHintText; override;
@@ -3992,9 +4001,9 @@ end;
     procedure Paint; override;
     function PinCount: Integer; override;
     function PinPos(I: Integer): TPoint; override;
-    function MaakDicht: Boolean;
-    function VerbreekDicht: Boolean;
-    function SpoelOhm: Double;
+    function MaakDicht: Boolean; virtual;
+    function VerbreekDicht: Boolean; virtual;
+    function SpoelOhm: Double; virtual;
     // magnetische sterkte (+ = noordpool boven) en de polen van de kern
     function Sterkte: Double;
     procedure Polen(out PN, PZ: TMagVec);
@@ -4187,6 +4196,49 @@ end;
   published
     property N1Idx: Integer read FN1Idx write SetN1Idx;
     property N2Idx: Integer read FN2Idx write SetN2Idx;
+  end;
+
+  { TjanZoemer2: zoemer met twee klemmen in de voedingskring (links in,
+    rechts uit), 200 ohm. Hij zoemt vanaf 10 mA, dus ook aan de uitgang van
+    een poort (5 V). }
+  TjanZoemer2 = class(TjanWeerstand)
+  protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; override;
+    function Aan: Boolean;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  end;
+
+  { TjanRelais2: relais in schemasymbool met een spoel met twee klemmen
+    (onderaan: klem 0 links, klem 1 rechts, 70 ohm) en een wisselcontact
+    (C links boven = klem 2, maakcontact rechts boven = klem 3,
+    verbreekcontact rechts in het midden = klem 4). Vanaf 35 mA door de spoel
+    trekt het aan, onder 20 mA valt het af; ook een poort (5 V) stuurt het.
+    Het schakelt meteen in de berekening (de waarheidstabel klopt), het mesje
+    beweegt zichtbaar mee. }
+  TjanRelais2 = class(TjanRelaisModel)
+  private
+    FAan: Boolean;
+    FGewisseld: Boolean;   // al eens omgeschakeld in deze berekening
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function MaakDicht: Boolean; override;
+    function VerbreekDicht: Boolean; override;
+    function SpoelOhm: Double; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Aan: Boolean read FAan write FAan;
+    property Gewisseld: Boolean read FGewisseld write FGewisseld;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

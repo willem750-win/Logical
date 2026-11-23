@@ -33,6 +33,8 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lets current through in one direction only, above 0.7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>A small base current controls a large collector current: switching and amplifying.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Buzzer</a></td><td>Buzzer with two terminals: sounds from 10&nbsp;mA, also on a gate.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relay</a></td><td>Coil with two terminals and a changeover contact (C, NO, NC).</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Bar magnet</a></td><td>Magnet with a north pole (red) and a south pole (blue), without terminals.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Compass</a></td><td>A needle that points along the magnetic field.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Field line sheet</a></td><td>Shows the field lines of the magnets lying on it, like iron filings.</td></tr>
@@ -203,6 +205,7 @@
     <tr><td>burnt contact</td><td>10&nbsp;&Omega;</td><td>a terminal that has become too hot</td></tr>
     <tr><td>series resistor</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2.2, 4.7, 10, 47 or 100&nbsp;k&Omega;</td><td>a real resistor, e.g. in series with an <a href="#led">LED</a> or before the base of a <a href="#transistor">transistor</a></td></tr>
   </table>
+  <p>If the resistor forms a <b>voltage divider</b> together with an <a href="#ldr">LDR or NTC</a> (they share a terminal with no rail or source on it), it says <b>voltage divider</b> below it instead of series resistor. The voltage between the two then changes with the light or the temperature, and it drives a gate or transistor. See <a href="les06.html">lesson 6</a> and <a href="les40.html">lesson 40</a>.</p>
   <p>The block turns orange to red as it gets warmer. Measure the voltage drop with a
   <a href="#voltmeter">voltmeter</a>: + on the terminal on the source side, &minus; on the other terminal.
   See <a href="les24.html">lesson 24</a>.</p>
@@ -213,8 +216,11 @@
   Kirchhoff&rsquo;s laws: the voltage on every terminal and the current through every part.</p>
   <ul>
     <li><b>Lamp</b>: a light bulb of 120&nbsp;&Omega; (100&nbsp;mA and 1.2&nbsp;W at 12&nbsp;V). Right-click &rsaquo;
-      <b>Resistance</b> to choose another lamp: 24, 48, 60, 120, 240 or 480&nbsp;&Omega;. It shines more brightly as more
-      power goes through it; the hint shows U, I and P.</li>
+      <b>Resistance</b> to choose another lamp: 24, 48, 60, 120, 240 or 480&nbsp;&Omega;. With right-click &rsaquo;
+      <b>Lamp voltage</b> &rsaquo; <b>Lamp for 5&nbsp;V</b> it becomes a small 5&nbsp;V lamp: 50, 100, 250 or
+      500&nbsp;&Omega;. The 250&nbsp;&Omega; one (20&nbsp;mA) also lights on the output of a gate, and a 5&nbsp;V lamp
+      counts in the truth table. It shines more brightly as more power goes through it, fully at the power for its own
+      voltage; the hint shows U, I and P.</li>
     <li><b>Switch</b>: click the lever to open or close it, also during the simulation. Right-click &rsaquo; <b>Type</b> &rsaquo; <b>Push button</b> makes it a push button: it is only closed while you hold the mouse button down. A switch with three terminals is the <a href="#wisselschakelaar">changeover switch</a>.</li>
     <li><b>Voltmeter</b>: put the + and the &minus; across a part. It measures the voltage difference between its two
       terminals and takes no current itself.</li>
@@ -370,6 +376,17 @@
       Make the rail longer if needed.</li>
     <li>The arrow keys move one pixel at a time; that way you can also pull a component off again.</li>
   </ul>
+
+  <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">The buzzer with two terminals</h2>
+  <p>A 200&nbsp;&Omega; buzzer with two terminals: in on the left, out on the right (usually to the &minus; rail). It sounds as soon as at least 10&nbsp;mA flows through it. On the output of a gate (5&nbsp;V) about 20&nbsp;mA flows, so a gate can drive it directly. See <a href="les05.html">lesson 5</a>.</p>
+
+  <h2 id="relais2"><img src="../img/pal-relais2.png" class="ico" alt="">The relay</h2>
+  <p>A relay as a circuit symbol: a switch operated by an electromagnet.</p>
+  <ul>
+    <li>The <b>coil</b> (at the bottom, 60&nbsp;&Omega;) has two terminals: in on the left, out on the right. From 35&nbsp;mA the relay pulls in, below 20&nbsp;mA it drops out. A gate (5&nbsp;V) can drive the coil.</li>
+    <li>The <b>changeover contact</b>: top left the common contact <b>C</b>, top right the <b>NO contact</b> (closed when the coil pulls in) and middle right the <b>NC contact</b> (closed at rest).</li>
+  </ul>
+  <p>Coil and contact are electrically separate: the contact may be in another circuit, with another source. The relay also works in the truth table: there it counts as 1 when it is pulled in. See <a href="les11.html">lesson 11</a>; how a relay works inside is shown in <a href="lesm4.html">Magnetism 4</a>.</p>
 
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetism: bar magnet, compass, field line sheet, coil, nail, relay, current swing, electric motor, centre-zero meter, rotating magnet and transformer</h2>
   <p>The bar magnet, the compass and the field line sheet have no terminals: they are not part of the circuit. You put them anywhere on the panel and drag them around. See <a href="lesm1.html">What is magnetism?</a></p>

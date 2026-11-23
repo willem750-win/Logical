@@ -273,11 +273,11 @@ begin
       for i := 0 to Outs.Count - 1 do
       begin
         c := TControl(Outs[i]);
-        if c is TjanSimBuzzer then
+        if (c is TjanSimBuzzer) or (c is TjanZoemer2) then
         begin
           Inc(NZ); S := T('Z', 'B', 'B', 'S') + IntToStr(NZ);
         end
-        else if c is TjanSimRelais then
+        else if (c is TjanSimRelais) or (c is TjanRelais2) then
         begin
           Inc(NR); S := 'R' + IntToStr(NR);
         end

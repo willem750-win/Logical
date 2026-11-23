@@ -503,9 +503,13 @@ const
   WeerstandOhm: array[0..12] of Double = (0.05, 1, 2, 10, 100, 220, 470, 1000, 2200, 4700, 10000, 47000, 100000);
   WeerstandW = 100; WeerstandH = 42;
   // onderdelen met twee klemmen voor serie en parallel
-  // lampen voor 12 V: 6 W, 3 W, 2,4 W, 1,2 W, 0,6 W, 0,3 W
-  Lamp2Ohm: array[0..5] of Double = (24, 48, 60, 120, 240, 480);
+  // lampen voor 12 V (0..5): 6 W, 3 W, 2,4 W, 1,2 W, 0,6 W, 0,3 W
+  // lampen voor 5 V (6..9): 0,5 W, 0,25 W, 0,1 W, 0,05 W; die van 250 en
+  // 500 ohm branden goed aan de uitgang van een poort (5 V, 50 ohm)
+  Lamp2Ohm: array[0..9] of Double = (24, 48, 60, 120, 240, 480, 50, 100, 250, 500);
   Lamp2Standaard = 3;     // 120 ohm: 100 mA bij 12 V
+  Lamp2Eerste5V = 6;
+  Lamp2Standaard5V = 8;   // 250 ohm: 20 mA bij 5 V
   Lamp2W = 64; Lamp2H = 46;
   Schakelaar2W = 64; Schakelaar2H = 40;
   Voltmeter2W = 100; Voltmeter2H = 51;
@@ -855,6 +859,8 @@ var
   Pa, Pb: TPoint;
   G, E, Gs, Amp, U, F, Hulp: Double;
   Smelt, Changed: Boolean;
+  DelerKnoop: Integer;              // knooppunt bij het zoeken naar spanningsdelers
+  IsDeler: Boolean;
   Z: TjanZekering;
   LoadItA, LoadItB: Integer;       // klem/rail waar de verbruikers aan hangen
   LoadG: Double;
@@ -1134,8 +1140,36 @@ begin
       LoadItB := NK + k;
     end;
 
+  // een weerstand die een knooppunt deelt met een LDR of NTC, zonder rail of
+  // bron op dat knooppunt, vormt er een spanningsdeler mee
+  for k := 0 to NP - 1 do
+    if (Parts[k].ClassType = TjanWeerstand) then
+    begin
+      IsDeler := False;
+      for A := 0 to 1 do
+      begin
+        DelerKnoop := PinNode(k, A);
+        for j := 0 to NP - 1 do
+          if (Parts[j] is TjanSensorR) and ((PinNode(j, 0) = DelerKnoop) or (PinNode(j, 1) = DelerKnoop)) then
+          begin
+            IsDeler := True;
+            for i := 0 to NR - 1 do
+              if NodeOf[NK + i] = DelerKnoop then IsDeler := False;
+            for i := 0 to NP - 1 do
+              if (Parts[i] is TjanBron) and ((PinNode(i, 0) = DelerKnoop) or (PinNode(i, 1) = DelerKnoop)) then
+                IsDeler := False;
+            if IsDeler then Break;
+          end;
+        if IsDeler then Break;
+      end;
+      TjanWeerstand(Parts[k]).Deler := IsDeler;
+    end;
+
   SetLength(V, N);
   SetLength(NewVolt, NR);
+  // een relais (schemasymbool) mag per berekening hoogstens een keer omschakelen
+  for k := 0 to NP - 1 do
+    if Parts[k] is TjanRelais2 then TjanRelais2(Parts[k]).Gewisseld := False;
   for Ronde := 1 to 40 do
   begin
     // takken
@@ -1474,6 +1508,20 @@ begin
           Smelt := True;
         end;
       end;
+    // relais (schemasymbool): trekt aan vanaf 35 mA, valt af onder 20 mA
+    for k := 0 to NP - 1 do
+      if (Parts[k] is TjanRelais2) and not TjanRelais2(Parts[k]).Gewisseld then
+        with TjanRelais2(Parts[k]) do
+        begin
+          Amp := Abs(V[PinNode(k, 0)] - V[PinNode(k, 1)]) / SpoelOhm;
+          if (not Aan and (Amp >= 0.035)) or (Aan and (Amp < 0.020)) then
+          begin
+            Aan := not Aan;
+            Gewisseld := True;
+            Smelt := True;
+            Invalidate;
+          end;
+        end;
     if not Smelt then Break;
   end;
 
@@ -1850,10 +1898,14 @@ begin
   else if C is TjanZekering then
     Result := Format('TjanZekering;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanZekering(C).NomIdx])
+  else if C is TjanRelais2 then
+    Result := Format('TjanRelais2;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanRelaisModel then
     Result := Format('TjanRelaisModel;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanZoemer2 then
+    Result := Format('TjanZoemer2;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanTransformator then
     Result := Format('TjanTransformator;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanTransformator(C).N1Idx, TjanTransformator(C).N2Idx])

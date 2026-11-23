@@ -1251,6 +1251,22 @@ begin
   end;
 end;
 
+function TjanWeerstand.Naam: string;
+begin
+  if FDeler and (FSoort >= 4) then
+    Result := Tr(FTaal, 'spanningsdeler', 'voltage divider', 'diviseur de tension', 'Spannungsteiler')
+  else
+    Result := WeerstandNaam(FTaal, FSoort);
+end;
+
+procedure TjanWeerstand.SetDeler(const Value: Boolean);
+begin
+  if Value = FDeler then Exit;
+  FDeler := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
 procedure TjanWeerstand.Paint;
 var
   R: TRect;
@@ -1303,7 +1319,7 @@ begin
       Font.Size := 7; Font.Style := []; Font.Color := clBlack;
       if FSoort <= 3 then Font.Style := [fsBold];
       if FSoort = 3 then Font.Color := RGBToColor(150, 0, 0);
-      S := WeerstandNaam(FTaal, FSoort);
+      S := Naam;
       K := Pos(' ', S);
       if (TextWidth(S) > Width - X) and (K > 0) then
       begin
@@ -1335,7 +1351,7 @@ begin
     begin
       Font.Size := 7; Font.Style := []; Font.Color := clBlack;
     end;
-    S := WeerstandNaam(FTaal, FSoort);
+    S := Naam;
     TW := TextWidth(S);
     TextOut((WeerstandW - TW) div 2, CY + 10, S);
   end;
@@ -1345,12 +1361,26 @@ end;
 procedure TjanWeerstand.UpdateHintText;
 begin
   Hint := Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand') + ': ' +
-    WeerstandNaam(FTaal, FSoort) + ' (' + OhmText(Ohm) + ')' + #13#10 +
+    Naam + ' (' + OhmText(Ohm) + ')' + #13#10 +
     StroomRegel(FStroom) + #13#10 +
     'U = I × R = ' + AmpText(FStroom) + ' × ' + OhmText(Ohm) + ' = ' +
       VoltText(FStroom * Ohm) + #13#10 +
-    VermogenRegel(FStroom * Ohm, FStroom) + #13#10 +
-    Tr(FTaal,
+    VermogenRegel(FStroom * Ohm, FStroom) + #13#10;
+  if FDeler and (FSoort >= 4) then
+    Hint := Hint + Tr(FTaal,
+      'Samen met de LDR of NTC vormt deze weerstand een spanningsdeler: de spanning tussen' + #13#10 +
+        'de twee verandert met het licht of de temperatuur, en die gaat naar de poort.' + #13#10 +
+        'Met een andere weerstand schakelt de poort bij een ander licht of een andere temperatuur om.',
+      'Together with the LDR or NTC this resistor forms a voltage divider: the voltage between' + #13#10 +
+        'the two changes with the light or the temperature, and it goes to the gate.' + #13#10 +
+        'With another resistance the gate switches at another light level or temperature.',
+      'Avec la LDR ou la CTN, cette résistance forme un diviseur de tension : la tension entre' + #13#10 +
+        'les deux varie avec la lumière ou la température, et elle va à la porte.' + #13#10 +
+        'Avec une autre résistance, la porte bascule à une autre lumière ou une autre température.',
+      'Zusammen mit dem LDR oder NTC bildet dieser Widerstand einen Spannungsteiler: Die Spannung zwischen' + #13#10 +
+        'beiden ändert sich mit dem Licht oder der Temperatur und geht zum Gatter.' + #13#10 +
+        'Mit einem anderen Widerstand schaltet das Gatter bei einem anderen Licht oder einer anderen Temperatur um.') + #13#10;
+  Hint := Hint + Tr(FTaal,
       'In serie in de voedingsleiding: er gaat spanning verloren (U = I × R).' + #13#10 +
         'Meet ze met een voltmeter over de twee klemmen. Rechtsklik: soort kiezen.',
       'In series in the supply line: some voltage is lost (U = I × R).' + #13#10 +
@@ -1365,7 +1395,7 @@ procedure TjanWeerstand.SendStatusToBar;
 begin
   if not Assigned(FOnStatus) then Exit;
   FOnStatus(Self, Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand') + ' > ', 0);
-  FOnStatus(Self, WeerstandNaam(FTaal, FSoort) + ' ' + OhmText(Ohm) + '   I = ' +
+  FOnStatus(Self, Naam + ' ' + OhmText(Ohm) + '   I = ' +
     FormatFloat('0', FStroom * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
@@ -1944,6 +1974,31 @@ begin
   Result := Lamp2Ohm[FSoort];
 end;
 
+function TjanLamp2.Is5V: Boolean;
+begin
+  Result := FSoort >= Lamp2Eerste5V;
+end;
+
+function TjanLamp2.Volt: Double;
+begin
+  if Is5V then Result := 5 else Result := BronMaxVolt;
+end;
+
+function TjanLamp2.Aan: Boolean;
+begin
+  Result := Vermogen >= 0.25 * Volt * Volt / Ohm;
+end;
+
+procedure TjanLamp2.VoltClick(Sender: TObject);
+begin
+  if TMenuItem(Sender).Tag = 5 then
+  begin
+    if not Is5V then Soort := Lamp2Standaard5V;
+  end
+  else if Is5V then
+    Soort := Lamp2Standaard;
+end;
+
 procedure TjanLamp2.SetSoort(const Value: Integer);
 begin
   if (Value < Low(Lamp2Ohm)) or (Value > High(Lamp2Ohm)) or (Value = FSoort) then Exit;
@@ -1965,13 +2020,37 @@ var
   i: Integer;
 begin
   Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Spanning van de lamp', 'Lamp voltage', 'Tension de la lampe', 'Spannung der Lampe');
+  APop.Items.Add(Mi);
+  for i := 0 to 1 do
+  begin
+    Sub := TMenuItem.Create(APop);
+    if i = 0 then
+    begin
+      Sub.Caption := Tr(FTaal, 'Lamp voor 5 V (ook aan een poort)', 'Lamp for 5 V (also on a gate)',
+        'Lampe pour 5 V (aussi sur une porte)', 'Lampe für 5 V (auch an einem Gatter)');
+      Sub.Tag := 5;
+      Sub.Checked := Is5V;
+    end
+    else
+    begin
+      Sub.Caption := Tr(FTaal, 'Lamp voor 12 V', 'Lamp for 12 V', 'Lampe pour 12 V', 'Lampe für 12 V');
+      Sub.Tag := 12;
+      Sub.Checked := not Is5V;
+    end;
+    Sub.RadioItem := True;
+    Sub.OnClick := VoltClick;
+    Mi.Add(Sub);
+  end;
+  Mi := TMenuItem.Create(APop);
   Mi.Caption := Tr(FTaal, 'Weerstand', 'Resistance', 'Résistance', 'Widerstand');
   APop.Items.Add(Mi);
   for i := Low(Lamp2Ohm) to High(Lamp2Ohm) do
   begin
+    if (i >= Lamp2Eerste5V) <> Is5V then Continue;
     Sub := TMenuItem.Create(APop);
-    Sub.Caption := OhmText(Lamp2Ohm[i]) + '  (12 V: ' + MilliAmpText(BronMaxVolt / Lamp2Ohm[i]) +
-      ', ' + WattText(BronMaxVolt * BronMaxVolt / Lamp2Ohm[i]) + ')';
+    Sub.Caption := OhmText(Lamp2Ohm[i]) + '  (' + FormatFloat('0', Volt) + ' V: ' + MilliAmpText(Volt / Lamp2Ohm[i]) +
+      ', ' + WattText(Volt * Volt / Lamp2Ohm[i]) + ')';
     Sub.Tag := i;
     Sub.RadioItem := True;
     Sub.Checked := i = FSoort;
@@ -2000,8 +2079,9 @@ begin
   CX := Lamp2W div 2;
   CY := 17 + 3;
   Rr := 12;
-  // helderheid volgt het vermogen: vol bij het vermogen van de lamp op 12 V
-  K := Vermogen / (BronMaxVolt * BronMaxVolt / Ohm);
+  // helderheid volgt het vermogen: vol bij het vermogen van de lamp op haar
+  // eigen spanning (5 of 12 V)
+  K := Vermogen / (Volt * Volt / Ohm);
   if K > 1 then K := 1;
   with Canvas do
   begin
@@ -2033,6 +2113,7 @@ begin
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := []; Font.Color := clNavy;
     S := OhmText(Ohm);
+    if Is5V then S := '5 V ' + S;
     TW := TextWidth(S);
     if FGedraaid then
       TextOut(CY + Rr + 6, CX - 6, S)          // rechts naast de lamp
@@ -2047,7 +2128,8 @@ var
   I: Double;
 begin
   I := Abs(FAmp);
-  Hint := Tr(FTaal, 'Lamp', 'Lamp', 'Lampe', 'Lampe') + ' (' + OhmText(Ohm) + ')' + #13#10;
+  Hint := Format(Tr(FTaal, 'Lamp voor %s V (%s)', 'Lamp for %s V (%s)', 'Lampe pour %s V (%s)', 'Lampe für %s V (%s)'),
+    [FormatFloat('0', Volt), OhmText(Ohm)]) + #13#10;
   if I > 0.00005 then
     Hint := Hint +
       'U = I × R = ' + AmpText(I) + ' × ' + OhmText(Ohm) + ' = ' + VoltText(Spanning) + #13#10 +
@@ -2055,18 +2137,24 @@ begin
         ' = ' + MilliAmpText(I) + #13#10 +
       VermogenRegel(Spanning, I) + #13#10;
   Hint := Hint + Tr(FTaal,
-      'Lamp met twee klemmen: zet ze in serie of parallel in de kring.' + #13#10 +
-        'Bij 12 V: ' + MilliAmpText(BronMaxVolt / Ohm) + ' en ' + WattText(BronMaxVolt * BronMaxVolt / Ohm) +
-        '. Hoe meer vermogen, hoe feller ze brandt. Rechtsklik: weerstand kiezen.',
-      'Lamp with two terminals: put it in series or in parallel in the circuit.' + #13#10 +
-        'At 12 V: ' + MilliAmpText(BronMaxVolt / Ohm) + ' and ' + WattText(BronMaxVolt * BronMaxVolt / Ohm) +
-        '. The more power, the brighter it shines. Right-click: choose the resistance.',
-      'Lampe à deux bornes : placez-la en série ou en parallèle dans le circuit.' + #13#10 +
-        'À 12 V : ' + MilliAmpText(BronMaxVolt / Ohm) + ' et ' + WattText(BronMaxVolt * BronMaxVolt / Ohm) +
-        '. Plus la puissance est grande, plus elle brille. Clic droit : choisir la résistance.',
-      'Lampe mit zwei Klemmen: in Reihe oder parallel in den Stromkreis setzen.' + #13#10 +
-        'Bei 12 V: ' + MilliAmpText(BronMaxVolt / Ohm) + ' und ' + WattText(BronMaxVolt * BronMaxVolt / Ohm) +
-        '. Je mehr Leistung, desto heller leuchtet sie. Rechtsklick: Widerstand wählen.');
+      'Lamp met twee klemmen: zet ze in serie of parallel in de kring.',
+      'Lamp with two terminals: put it in series or in parallel in the circuit.',
+      'Lampe à deux bornes : placez-la en série ou en parallèle dans le circuit.',
+      'Lampe mit zwei Klemmen: in Reihe oder parallel in den Stromkreis setzen.') + #13#10 +
+    Format(Tr(FTaal,
+      'Bij %s V: %s en %s. Hoe meer vermogen, hoe feller ze brandt.',
+      'At %s V: %s and %s. The more power, the brighter it shines.',
+      'À %s V : %s et %s. Plus la puissance est grande, plus elle brille.',
+      'Bei %s V: %s und %s. Je mehr Leistung, desto heller leuchtet sie.'),
+      [FormatFloat('0', Volt), MilliAmpText(Volt / Ohm), WattText(Volt * Volt / Ohm)]) + #13#10;
+  if Is5V then
+    Hint := Hint + Tr(FTaal,
+      'Een lamp voor 5 V brandt ook aan de uitgang van een poort en telt mee in de waarheidstabel.',
+      'A 5 V lamp also lights on the output of a gate and counts in the truth table.',
+      'Une lampe de 5 V brille aussi à la sortie d''une porte et compte dans la table de vérité.',
+      'Eine 5-V-Lampe leuchtet auch am Ausgang eines Gatters und zählt in der Wahrheitstabelle.') + #13#10;
+  Hint := Hint + Tr(FTaal, 'Rechtsklik: spanning en weerstand kiezen.', 'Right-click: choose the voltage and the resistance.',
+    'Clic droit : choisir la tension et la résistance.', 'Rechtsklick: Spannung und Widerstand wählen.');
 end;
 
 procedure TjanLamp2.SendStatusToBar;

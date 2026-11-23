@@ -166,7 +166,8 @@ end;
 class function TjanSimLogicBox.IsUitvoer(C: TControl): Boolean;
 begin
   Result := (C is TjanSimLight) or (C is TjanSimBuzzer) or (C is TjanSimRelais) or
-    (C is TjanSimMotor) or (C is TjanDisplay);
+    (C is TjanSimMotor) or (C is TjanDisplay) or (C is TjanZoemer2) or (C is TjanRelais2) or
+    ((C is TjanLamp2) and TjanLamp2(C).Is5V);
 end;
 
 class function TjanSimLogicBox.InvoerAan(C: TControl): Boolean;
@@ -210,6 +211,9 @@ begin
   if C is TjanSimLight then B := TjanSimLight(C).Lit
   else if C is TjanSimBuzzer then B := TjanSimBuzzer(C).Lit
   else if C is TjanSimRelais then B := TjanSimRelais(C).Lit
+  else if C is TjanZoemer2 then B := TjanZoemer2(C).Aan
+  else if C is TjanRelais2 then B := TjanRelais2(C).Aan
+  else if C is TjanLamp2 then B := TjanLamp2(C).Aan
   else B := False;
   if B then Result := '1';
 end;
@@ -1488,7 +1492,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') then
     begin
       with TStringList.Create do
       try
@@ -1516,6 +1520,8 @@ begin
           else if obj[1] = 'TjanNulmeter' then VD := TjanNulmeter.Create(Self)
           else if obj[1] = 'TjanDraaimagneet' then VD := TjanDraaimagneet.Create(Self)
           else if obj[1] = 'TjanTransformator' then VD := TjanTransformator.Create(Self)
+          else if obj[1] = 'TjanZoemer2' then VD := TjanZoemer2.Create(Self)
+          else if obj[1] = 'TjanRelais2' then VD := TjanRelais2.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -1547,6 +1553,10 @@ begin
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanZoemer2 then
+          begin
+            // geen extra velden
+          end
           else if VD is TjanTransformator then
           begin
             if Count >= 5 then TjanTransformator(VD).N1Idx := StrToIntDef(Trim(Strings[4]), 2);
@@ -2498,6 +2508,8 @@ begin
     28: D := TjanNulmeter.Create(Self);
     29: D := TjanDraaimagneet.Create(Self);
     30: D := TjanTransformator.Create(Self);
+    31: D := TjanZoemer2.Create(Self);
+    32: D := TjanRelais2.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2998,6 +3010,16 @@ begin
             MoveTo(CX + 5, CY - 5 + K * 3); LineTo(CX + 11, CY - 5 + K * 3);
           end;
           Pen.Color := clBlack;
+        end;
+      31:
+        begin
+          // zoemer met twee klemmen
+          DrawBuzzerSymbol(Canvas, R.Left + 2, R.Right - 3, CY - 3, 6, False);
+        end;
+      32:
+        begin
+          // relais: spoel links, contact rechts
+          DrawRelaySymbol(Canvas, R.Left + 3, R.Left + 10, CY, 10, R.Right - 6, CY - 9, CY + 9, False);
         end;
       6:
         begin

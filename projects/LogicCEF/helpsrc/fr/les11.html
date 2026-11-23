@@ -6,38 +6,32 @@
 
   <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les11-schakelrelais.png" alt="Deux sources : un circuit de commande avec un bouton-poussoir et un circuit de puissance avec un relais avec contact et une lampe">
-    <figcaption>Le bouton-poussoir est enfoncé&nbsp;: la bobine est alimentée, le contact est fermé et les 5&nbsp;V de la source du haut vont vers la lampe.</figcaption>
+    <img src="../img/les11-schakelrelais.png" alt="Deux sources : un circuit de commande de 5 V avec bouton-poussoir et bobine du relais, et un circuit de puissance de 12 V avec le contact du relais et une lampe">
+    <figcaption>Le bouton-poussoir est enfoncé&nbsp;: la bobine est enclenchée, la lame est sur le contact travail et la lampe brille sous 12&nbsp;V.</figcaption>
   </figure>
 
   <h2>Deux circuits</h2>
   <ul>
-    <li>Le <b>circuit de commande</b>&nbsp;: la source du bas alimente le rail + de gauche. Le bouton-poussoir est relié à ce
-      rail par un fil et son autre borne va vers <b>R+</b>, la bobine du <a href="uitvoer.html#schakelrelais">relais avec contact</a>. La bobine
-      est avec <b>R&minus;</b> sur le rail &minus; à côté du relais, relié à la borne &minus; de la source du bas.</li>
-    <li>Le <b>circuit de puissance</b>&nbsp;: la source du haut alimente un deuxième rail + de 5&nbsp;V. Le contact du relais
-      est sur ce rail avec <b>R1</b>. De <b>R2</b>, un fil va vers la lampe, et la lampe est sur le rail &minus; de droite.</li>
+    <li>Le <b>circuit de commande</b> (en bas)&nbsp;: la source de 5&nbsp;V, le bouton-poussoir et la <b>bobine</b> du <a href="voeding.html#relais2">relais</a> (les deux bornes du bas). Quand vous appuyez, environ 80&nbsp;mA traversent la bobine.</li>
+    <li>Le <b>circuit de puissance</b> (en haut)&nbsp;: la source de 12&nbsp;V, le <b>contact</b> du relais et une lampe. Le + de la source va à <b>C</b>, le contact commun. Du <b>contact travail</b>, un fil va à la lampe, et la lampe revient au &minus; de la source.</li>
   </ul>
-  <p>Chaque circuit a sa propre source&nbsp;: les deux circuits ne se touchent pas. La bobine actionne le contact avec un
-  électroaimant&nbsp;: c&rsquo;est le trait pointillé du symbole. Ainsi, un petit bouton peut commander un gros appareil.
-  Dans une voiture, un petit interrupteur allume les phares puissants par l&rsquo;intermédiaire d&rsquo;un relais.</p>
+  <p>Chaque circuit a sa propre source&nbsp;: les deux circuits ne se touchent pas. La bobine commande le contact par un électroaimant&nbsp;: c&rsquo;est le pointillé du symbole. Ainsi, un petit bouton de 5&nbsp;V commute une lampe de 12&nbsp;V. Dans une voiture, un petit interrupteur allume les gros phares par un relais. Le fonctionnement interne d&rsquo;un relais est montré dans <a href="lesm4.html">Magnétisme 4</a>.</p>
+  <p>Le relais a un <b>contact inverseur</b>&nbsp;: au repos, C est relié au <b>contact repos</b>&nbsp;; quand la bobine est enclenchée, au <b>contact travail</b>.</p>
 
   <h2>Essayez</h2>
   <ol class="steps">
-    <li>Démarrez la simulation et appuyez sur le bouton-poussoir&nbsp;: la LED du relais devient rouge, le contact se ferme et la lampe s&rsquo;allume.</li>
-    <li>Relâchez&nbsp;: le contact s&rsquo;ouvre et la lampe s&rsquo;éteint.</li>
-    <li>Avec son curseur, réglez la source du haut (le circuit de puissance) sur 1&nbsp;V et appuyez de nouveau.</li>
+    <li>Lancez la simulation et appuyez sur le bouton-poussoir&nbsp;: la bobine devient verte, la lame bascule vers le contact travail et la lampe s&rsquo;allume.</li>
+    <li>Relâchez&nbsp;: la lame retombe sur le contact repos et la lampe s&rsquo;éteint.</li>
+    <li>Réglez avec le curseur la source du bas (le circuit de commande) sur 2&nbsp;V et appuyez de nouveau.</li>
   </ol>
 
   <h2>Exercice</h2>
-  <p>Pourquoi la lampe reste-t-elle éteinte quand la source du circuit de puissance est à 1&nbsp;V, alors que la bobine
-  fonctionne encore&nbsp;? Remettez ensuite la source à 5&nbsp;V et ajoutez un ronfleur qui fonctionne en même temps que la lampe.</p>
+  <p>1. Pourquoi le relais ne s&rsquo;enclenche-t-il pas quand le circuit de commande ne reçoit que 2&nbsp;V&nbsp;? À partir de quelle tension cela marche-t-il&nbsp;?</p>
+  <p>2. Remettez la source sur 5&nbsp;V. Branchez une deuxième lampe sur le <b>contact repos</b> (et retour vers le &minus; de la source du haut). Quand quelle lampe s&rsquo;allume-t-elle&nbsp;?</p>
   <details>
     <summary>Solution</summary>
-    <p>Le contact transmet la tension de R1. 1&nbsp;V est inférieur à 2&nbsp;V, donc pour la lampe c&rsquo;est
-    &laquo;&nbsp;éteint&nbsp;&raquo; (voir la <a href="les10.html">leçon 10</a>). La bobine fonctionne, car elle reçoit son signal
-    du bouton-poussoir, qui est relié au rail de l&rsquo;autre source de 5&nbsp;V. Pour le ronfleur&nbsp;: placez-le avec son
-    côté droit contre un rail &minus; et tirez un deuxième fil de R2 vers son entrée. Une sortie peut avoir plusieurs fils.</p>
+    <p>1. La bobine fait 60&nbsp;&Omega; et s&rsquo;enclenche à partir de 35&nbsp;mA. Sous 2&nbsp;V, il ne passe que 2 / 60 = 33&nbsp;mA&nbsp;: juste trop peu. À partir de 2,5&nbsp;V (42&nbsp;mA), le relais s&rsquo;enclenche.</p>
+    <p>2. Sans appuyer, la lampe du contact repos brille&nbsp;; quand vous appuyez, elle s&rsquo;éteint et la lampe du contact travail s&rsquo;allume. Avec un seul relais, on choisit ainsi entre deux appareils.</p>
   </details>
 
   <div class="pager"><a href="les10.html">&larr; Leçon 10 : Alimentation et tension</a><a href="les12.html">Leçon 12 : Programmer avec LogicRun &rarr;</a></div>

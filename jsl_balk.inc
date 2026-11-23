@@ -1274,38 +1274,9 @@ begin
         NextX(B + SPATIE);
       end;
 
-      if FRelais = True then
-      begin
-        RRelais := Rect(LK, TOP, BK, HK);
-        Rb := RRelais;
-        if not DRelais then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(1, bmRelais, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FSchakelRelais = True then
-      begin
-        RSchakel := Rect(LK, TOP, BK, HK);
-        Rb := RSchakel;
-        if not DSchakel then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(4, bmRelais, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
-
-      if FBuzzer = True then
-      begin
-        RBuzzer := Rect(LK, TOP, BK, HK);
-        Rb := RBuzzer;
-        if not DBuzzer then Frame3D(Rb, clBtnHighlight, clBtnShadow, 1)
-        else Frame3D(Rb, clBtnShadow, clBtnHighlight, 1);
-        FillRect(Rb);
-        DrawOutputIcon(2, bmBuzzer, LK+1, TOP+2);
-        NextX(B + SPATIE);
-      end;
+      // relais, schakelrelais en zoemer zonder klemmen staan niet meer in de
+      // balk: ze zijn vervangen door de zoemer en het relais met twee klemmen
+      // (bij de voeding). Oude panelen met deze onderdelen werken nog.
 
       if FMotor = True then
       begin

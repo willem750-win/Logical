@@ -6,38 +6,32 @@
 
   <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les11-schakelrelais.png" alt="Two sources: a control circuit with a push button and a load circuit with a switching relay and a lamp">
-    <figcaption>The push button is pressed: the coil is energized, the contact is closed and the 5&nbsp;V of the top source goes to the lamp.</figcaption>
+    <img src="../img/les11-schakelrelais.png" alt="Two sources: a 5 V control circuit with push button and relay coil, and a 12 V load circuit with the relay contact and a lamp">
+    <figcaption>The push button is pressed: the coil pulls in, the blade is on the NO contact and the lamp lights at 12&nbsp;V.</figcaption>
   </figure>
 
   <h2>Two circuits</h2>
   <ul>
-    <li>The <b>control circuit</b>: the bottom source feeds the left + rail. The push button is wired to that rail and its
-      other terminal goes to <b>R+</b>, the coil of the <a href="uitvoer.html#schakelrelais">switching relay</a>. The coil sits with
-      <b>R&minus;</b> on the &minus; rail next to the relay, which is connected to the &minus; terminal of the bottom source.</li>
-    <li>The <b>load circuit</b>: the top source feeds a second 5&nbsp;V + rail. The contact of the relay sits on that rail
-      with <b>R1</b>. From <b>R2</b> a wire runs to the lamp, and the lamp sits on the &minus; rail on the right.</li>
+    <li>The <b>control circuit</b> (bottom): the 5&nbsp;V source, the push button and the <b>coil</b> of the <a href="voeding.html#relais2">relay</a> (the two terminals at the bottom). When you press, about 80&nbsp;mA flows through the coil.</li>
+    <li>The <b>load circuit</b> (top): the 12&nbsp;V source, the <b>contact</b> of the relay and a lamp. The + of the source goes to <b>C</b>, the common contact. From the <b>NO contact</b> a wire goes to the lamp, and the lamp goes back to the &minus; of the source.</li>
   </ul>
-  <p>Each circuit has its own source: the two circuits do not touch. The coil operates the contact with an
-  electromagnet: that is the dashed line in the symbol. This way a small button can switch a big device. In a car,
-  a light switch turns on the heavy headlights through a relay.</p>
+  <p>Each circuit has its own source: the two circuits do not touch. The coil operates the contact with an electromagnet: that is the dotted line in the symbol. So a small 5&nbsp;V button switches a 12&nbsp;V lamp. In a car a light switch turns on the heavy headlights through a relay. How a relay works inside is shown in <a href="lesm4.html">Magnetism 4</a>.</p>
+  <p>The relay has a <b>changeover contact</b>: at rest C is connected to the <b>NC contact</b>, when the coil pulls in to the <b>NO contact</b>.</p>
 
   <h2>Try it</h2>
   <ol class="steps">
-    <li>Start the simulation and press the push button: the LED of the relay turns red, the contact closes and the lamp lights up.</li>
-    <li>Release it: the contact opens and the lamp goes out.</li>
-    <li>With its slider, set the top source (the load circuit) to 1&nbsp;V and press again.</li>
+    <li>Start the simulation and press the push button: the coil turns green, the blade snaps to the NO contact and the lamp lights.</li>
+    <li>Release it: the blade falls back to the NC contact and the lamp goes out.</li>
+    <li>Set the bottom source (the control circuit) to 2&nbsp;V with the slider and press again.</li>
   </ol>
 
   <h2>Exercise</h2>
-  <p>Why does the lamp stay off when the source of the load circuit is at 1&nbsp;V, even though the coil still works?
-  Then set the source back to 5&nbsp;V and add a buzzer that comes on together with the lamp.</p>
+  <p>1. Why does the relay not pull in when the control circuit gets only 2&nbsp;V? From which voltage does it work?</p>
+  <p>2. Set the source back to 5&nbsp;V. Connect a second lamp to the <b>NC contact</b> (and back to the &minus; of the top source). When does which lamp light?</p>
   <details>
     <summary>Solution</summary>
-    <p>The contact passes on the voltage of R1. 1&nbsp;V is less than 2&nbsp;V, so for the lamp it means
-    &ldquo;off&rdquo; (see <a href="les10.html">lesson 10</a>). The coil still works, because it gets its signal from the
-    push button, which is wired to the rail of the other 5&nbsp;V source. For the buzzer: put it with its right side against
-    a &minus; rail and run a second wire from R2 to its input. An output may have several wires.</p>
+    <p>1. The coil has 60&nbsp;&Omega; and pulls in from 35&nbsp;mA. At 2&nbsp;V only 2 / 60 = 33&nbsp;mA flows: just too little. From 2.5&nbsp;V (42&nbsp;mA) the relay pulls in.</p>
+    <p>2. Without pressing, the lamp on the NC contact lights; when you press, it goes out and the lamp on the NO contact lights. So with one relay you choose between two devices.</p>
   </details>
 
   <div class="pager"><a href="les10.html">&larr; Lesson 10: Power and voltage</a><a href="les12.html">Lesson 12: Programming with LogicRun &rarr;</a></div>

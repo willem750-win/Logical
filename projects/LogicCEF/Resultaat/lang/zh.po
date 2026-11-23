@@ -2194,3 +2194,66 @@ msgstr "现在：U1 = %s，I1 = %s；U2 = %s，I2 = %s。"
 
 msgid "Right-click: turns of the primary and the secondary coil."
 msgstr "右键：初级和次级线圈的匝数。"
+
+msgid "create buzzer (two terminals)"
+msgstr "创建蜂鸣器 (两个端子)"
+
+msgid "create relay (two-terminal coil, changeover contact)"
+msgstr "创建继电器 (两端子线圈，转换触点)"
+
+msgid "The buzzer is sounding."
+msgstr "蜂鸣器在响。"
+
+msgid "The buzzer is silent: less than 10 mA flows."
+msgstr "蜂鸣器不响：电流小于 10 mA。"
+
+msgid "Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate."
+msgstr "两个端子：左边进，右边出 (接 - 导轨)。电流达到 10 mA 就响，门电路的输出也能驱动。"
+
+msgid "coil"
+msgstr "线圈"
+
+msgid "The relay is energised: the NO contact is closed, the NC contact open."
+msgstr "继电器已吸合：常开触点闭合，常闭触点断开。"
+
+msgid "The relay is released: the NC contact is closed, the NO contact open."
+msgstr "继电器已释放：常闭触点闭合，常开触点断开。"
+
+msgid "Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA."
+msgstr "线圈：60 欧，电流 %s。35 mA 起吸合，低于 20 mA 释放。"
+
+msgid "Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,\ntop right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil."
+msgstr "端子：线圈在下方 (左进右出)；左上是公共触点 C，\n右上是常开触点，右侧中间是常闭触点。门电路 (5 V) 可以驱动线圈。"
+
+msgid "Lamp voltage"
+msgstr "灯泡电压"
+
+msgid "Lamp for 5 V (also on a gate)"
+msgstr "5 V 灯泡 (也可接门电路)"
+
+msgid "Lamp for 12 V"
+msgstr "12 V 灯泡"
+
+msgid "Lamp for %s V (%s)"
+msgstr "%s V 灯泡 (%s)"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit."
+msgstr "两端子灯泡：可串联或并联接入电路。"
+
+msgid "At %s V: %s and %s. The more power, the brighter it shines."
+msgstr "在 %s V 时：%s，%s。功率越大，灯越亮。"
+
+msgid "A 5 V lamp also lights on the output of a gate and counts in the truth table."
+msgstr "5 V 灯泡在门电路的输出端也能点亮，并计入真值表。"
+
+msgid "Right-click: choose the voltage and the resistance."
+msgstr "右键：选择电压和电阻。"
+
+msgid "create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)"
+msgstr "创建双接线柱灯，12 V 或 5 V（串联和并联）"
+
+msgid "voltage divider"
+msgstr "分压器"
+
+msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
+msgstr "这个电阻与 LDR 或 NTC 组成分压器：两者之间的电压\n随光照或温度变化，并送到门电路。\n换一个电阻，门电路就在另一个光照或温度下翻转。"

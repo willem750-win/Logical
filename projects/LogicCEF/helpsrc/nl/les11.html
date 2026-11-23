@@ -6,38 +6,32 @@
 
   <p><a class="open" href="../../panels/lessen/les11-schakelrelais.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les11-schakelrelais.png" alt="Twee bronnen: een stuurkring met drukknop en een werkkring met schakelrelais en lamp">
-    <figcaption>De drukknop is ingedrukt: de spoel is bekrachtigd, het contact is gesloten en de 5&nbsp;V van de bovenste bron gaat naar de lamp.</figcaption>
+    <img src="../img/les11-schakelrelais.png" alt="Twee bronnen: een stuurkring van 5 V met drukknop en relaisspoel, en een werkkring van 12 V met het relaiscontact en een lamp">
+    <figcaption>De drukknop is ingedrukt: de spoel trekt aan, het mesje staat op het maakcontact en de lamp brandt op 12&nbsp;V.</figcaption>
   </figure>
 
   <h2>Twee stroomkringen</h2>
   <ul>
-    <li>De <b>stuurkring</b>: de onderste bron voedt de linker + rail. De drukknop hangt met een draad aan die rail en
-      zijn andere klem gaat naar <b>R+</b>, de spoel van het <a href="uitvoer.html#schakelrelais">schakelrelais</a>. De spoel zit met
-      <b>R&minus;</b> op de &minus; rail naast het relais, en die is verbonden met de &minus; klem van de onderste bron.</li>
-    <li>De <b>werkkring</b>: de bovenste bron voedt een tweede + rail van 5&nbsp;V. Het contact van het relais zit met
-      <b>R1</b> op die rail. Vanaf <b>R2</b> loopt een draad naar de lamp, en de lamp zit op de &minus; rail rechts.</li>
+    <li>De <b>stuurkring</b> (onder): de bron van 5&nbsp;V, de drukknop en de <b>spoel</b> van het <a href="voeding.html#relais2">relais</a> (de twee klemmen onderaan). Druk je, dan loopt er ongeveer 80&nbsp;mA door de spoel.</li>
+    <li>De <b>werkkring</b> (boven): de bron van 12&nbsp;V, het <b>contact</b> van het relais en een lamp. De + van de bron gaat naar <b>C</b>, het gemeenschappelijke contact. Van het <b>maakcontact</b> gaat een draad naar de lamp, en de lamp gaat terug naar de &minus; van de bron.</li>
   </ul>
-  <p>Elke kring heeft haar eigen bron: de twee kringen raken elkaar niet. De spoel bedient het contact met een elektromagneet: dat is de
-  stippellijn in het symbool. Zo kan een klein knopje een groot toestel schakelen. In een auto zet je met een
-  licht schakelaartje via een relais de zware koplampen aan.</p>
+  <p>Elke kring heeft haar eigen bron: de twee kringen raken elkaar niet. De spoel bedient het contact met een elektromagneet: dat is de stippellijn in het symbool. Zo schakelt een klein knopje op 5&nbsp;V een lamp op 12&nbsp;V. In een auto zet je met een licht schakelaartje via een relais de zware koplampen aan. Hoe een relais vanbinnen werkt, zie je in <a href="lesm4.html">Magnetisme 4</a>.</p>
+  <p>Het relais heeft een <b>wisselcontact</b>: in rust is C verbonden met het <b>verbreekcontact</b>, als de spoel aantrekt met het <b>maakcontact</b>.</p>
 
   <h2>Probeer het</h2>
   <ol class="steps">
-    <li>Start de simulatie en druk op de drukknop: het ledje van het relais wordt rood, het contact sluit en de lamp brandt.</li>
-    <li>Laat los: het contact gaat open en de lamp gaat uit.</li>
-    <li>Zet met de schuifregelaar de bovenste bron (de werkkring) op 1&nbsp;V en druk opnieuw.</li>
+    <li>Start de simulatie en druk op de drukknop: de spoel wordt groen, het mesje springt naar het maakcontact en de lamp brandt.</li>
+    <li>Laat los: het mesje valt terug naar het verbreekcontact en de lamp gaat uit.</li>
+    <li>Zet met de schuifregelaar de onderste bron (de stuurkring) op 2&nbsp;V en druk opnieuw.</li>
   </ol>
 
   <h2>Opdracht</h2>
-  <p>Waarom blijft de lamp uit als de bron van de werkkring op 1&nbsp;V staat, ook al werkt de spoel nog? Zet de bron daarna
-  terug op 5&nbsp;V en voeg een zoemer toe die samen met de lamp gaat.</p>
+  <p>1. Waarom trekt het relais niet aan als de stuurkring maar 2&nbsp;V krijgt? Vanaf welke spanning lukt het wel?</p>
+  <p>2. Zet de bron terug op 5&nbsp;V. Leg een tweede lamp aan het <b>verbreekcontact</b> (en terug naar de &minus; van de bovenste bron). Wanneer brandt welke lamp?</p>
   <details>
     <summary>Oplossing</summary>
-    <p>Het contact geeft de spanning van R1 door. 1&nbsp;V is minder dan 2&nbsp;V, dus voor de lamp is dat
-    &bdquo;uit&rdquo; (zie <a href="les10.html">les 10</a>). De spoel werkt wel, want die krijgt haar signaal van de
-    drukknop, die aan de rail van de andere bron van 5&nbsp;V hangt. Voor de zoemer: zet hem met zijn rechterkant tegen een &minus; rail en
-    leg een tweede draad vanaf R2 naar zijn ingang. Een uitgang mag meerdere draden hebben.</p>
+    <p>1. De spoel heeft 60&nbsp;&Omega; en trekt aan vanaf 35&nbsp;mA. Bij 2&nbsp;V loopt er maar 2 / 60 = 33&nbsp;mA: net te weinig. Vanaf 2,5&nbsp;V (42&nbsp;mA) trekt het relais aan.</p>
+    <p>2. Zonder drukken brandt de lamp aan het verbreekcontact; als je drukt, gaat die uit en gaat de lamp aan het maakcontact aan. Zo kies je met één relais tussen twee toestellen.</p>
   </details>
 
   <div class="pager"><a href="les10.html">&larr; Les 10: Voeding en spanning</a><a href="les12.html">Les 12: Programmeren met LogicRun &rarr;</a></div>

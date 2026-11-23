@@ -1884,3 +1884,66 @@ msgstr "Ora: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
 
 msgid "Right-click: turns of the primary and the secondary coil."
 msgstr "Clic destro: spire della bobina primaria e secondaria."
+
+msgid "create buzzer (two terminals)"
+msgstr "crea cicalino (due morsetti)"
+
+msgid "create relay (two-terminal coil, changeover contact)"
+msgstr "crea relè (bobina a due morsetti, contatto di scambio)"
+
+msgid "The buzzer is sounding."
+msgstr "Il cicalino suona."
+
+msgid "The buzzer is silent: less than 10 mA flows."
+msgstr "Il cicalino è silenzioso: passano meno di 10 mA."
+
+msgid "Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate."
+msgstr "Due morsetti: ingresso a sinistra, uscita a destra (verso la barra -). Suona da 10 mA, anche all'uscita di una porta."
+
+msgid "coil"
+msgstr "bobina"
+
+msgid "The relay is energised: the NO contact is closed, the NC contact open."
+msgstr "Il relè è eccitato: il contatto NA è chiuso, il contatto NC aperto."
+
+msgid "The relay is released: the NC contact is closed, the NO contact open."
+msgstr "Il relè è a riposo: il contatto NC è chiuso, il contatto NA aperto."
+
+msgid "Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA."
+msgstr "Bobina: 60 ohm, corrente %s. Si eccita da 35 mA, si diseccita sotto 20 mA."
+
+msgid "Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,\ntop right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil."
+msgstr "Morsetti: la bobina in basso (ingresso a sinistra, uscita a destra); in alto a sinistra il contatto comune C,\nin alto a destra il contatto NA e a destra al centro il contatto NC. Una porta (5 V) può comandare la bobina."
+
+msgid "Lamp voltage"
+msgstr "Tensione della lampada"
+
+msgid "Lamp for 5 V (also on a gate)"
+msgstr "Lampada da 5 V (anche su una porta)"
+
+msgid "Lamp for 12 V"
+msgstr "Lampada da 12 V"
+
+msgid "Lamp for %s V (%s)"
+msgstr "Lampada da %s V (%s)"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit."
+msgstr "Lampada a due morsetti: mettila in serie o in parallelo nel circuito."
+
+msgid "At %s V: %s and %s. The more power, the brighter it shines."
+msgstr "A %s V: %s e %s. Più potenza, più luce."
+
+msgid "A 5 V lamp also lights on the output of a gate and counts in the truth table."
+msgstr "Una lampada da 5 V si accende anche all'uscita di una porta e conta nella tabella di verità."
+
+msgid "Right-click: choose the voltage and the resistance."
+msgstr "Clic destro: scegli la tensione e la resistenza."
+
+msgid "create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)"
+msgstr "crea lampada a 2 morsetti, per 12 V o 5 V (serie e parallelo)"
+
+msgid "voltage divider"
+msgstr "partitore di tensione"
+
+msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
+msgstr "Insieme alla LDR o alla NTC questa resistenza forma un partitore di tensione: la tensione tra\nle due cambia con la luce o la temperatura, e va alla porta.\nCon un'altra resistenza la porta commuta con un'altra luce o temperatura."

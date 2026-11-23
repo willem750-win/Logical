@@ -2189,3 +2189,66 @@ msgstr "Ahora: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
 
 msgid "Right-click: turns of the primary and the secondary coil."
 msgstr "Clic derecho: espiras de la bobina primaria y secundaria."
+
+msgid "create buzzer (two terminals)"
+msgstr "crear zumbador (dos bornes)"
+
+msgid "create relay (two-terminal coil, changeover contact)"
+msgstr "crear relé (bobina de dos bornes, contacto conmutado)"
+
+msgid "The buzzer is sounding."
+msgstr "El zumbador suena."
+
+msgid "The buzzer is silent: less than 10 mA flows."
+msgstr "El zumbador está en silencio: pasan menos de 10 mA."
+
+msgid "Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate."
+msgstr "Dos bornes: entrada a la izquierda, salida a la derecha (al raíl -). Suena a partir de 10 mA, también en la salida de una puerta."
+
+msgid "coil"
+msgstr "bobina"
+
+msgid "The relay is energised: the NO contact is closed, the NC contact open."
+msgstr "El relé está activado: el contacto NA está cerrado, el contacto NC abierto."
+
+msgid "The relay is released: the NC contact is closed, the NO contact open."
+msgstr "El relé está en reposo: el contacto NC está cerrado, el contacto NA abierto."
+
+msgid "Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA."
+msgstr "Bobina: 60 ohmios, corriente %s. Se activa a partir de 35 mA, se desactiva por debajo de 20 mA."
+
+msgid "Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,\ntop right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil."
+msgstr "Bornes: la bobina abajo (entrada a la izquierda, salida a la derecha); arriba a la izquierda el contacto común C,\narriba a la derecha el contacto NA y a la derecha en el centro el contacto NC. Una puerta (5 V) puede controlar la bobina."
+
+msgid "Lamp voltage"
+msgstr "Tensión de la lámpara"
+
+msgid "Lamp for 5 V (also on a gate)"
+msgstr "Lámpara de 5 V (también en una puerta)"
+
+msgid "Lamp for 12 V"
+msgstr "Lámpara de 12 V"
+
+msgid "Lamp for %s V (%s)"
+msgstr "Lámpara de %s V (%s)"
+
+msgid "Lamp with two terminals: put it in series or in parallel in the circuit."
+msgstr "Lámpara de dos bornes: colóquela en serie o en paralelo en el circuito."
+
+msgid "At %s V: %s and %s. The more power, the brighter it shines."
+msgstr "A %s V: %s y %s. Cuanta más potencia, más brilla."
+
+msgid "A 5 V lamp also lights on the output of a gate and counts in the truth table."
+msgstr "Una lámpara de 5 V también se enciende en la salida de una puerta y cuenta en la tabla de verdad."
+
+msgid "Right-click: choose the voltage and the resistance."
+msgstr "Clic derecho: elegir la tensión y la resistencia."
+
+msgid "create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)"
+msgstr "crear lámpara de 2 bornes, para 12 V o 5 V (serie y paralelo)"
+
+msgid "voltage divider"
+msgstr "divisor de tensión"
+
+msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
+msgstr "Junto con la LDR o la NTC, esta resistencia forma un divisor de tensión: la tensión entre\nlas dos cambia con la luz o la temperatura, y va a la puerta.\nCon otra resistencia, la puerta conmuta con otra luz u otra temperatura."

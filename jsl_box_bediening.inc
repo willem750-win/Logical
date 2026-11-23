@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -68,6 +68,8 @@ begin
   else if PtInRect(RNulmeter, P) then DNulmeter := True
   else if PtInRect(RDraaiM, P) then DDraaiM := True
   else if PtInRect(RTrafo, P) then DTrafo := True
+  else if PtInRect(RZoemer2, P) then DZoemer2 := True
+  else if PtInRect(RRelais2, P) then DRelais2 := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -155,6 +157,8 @@ begin
   else if PtInRect(RNulmeter, P) then NewHint := FHNulmeter
   else if PtInRect(RDraaiM, P) then NewHint := FHDraaiM
   else if PtInRect(RTrafo, P) then NewHint := FHTrafo
+  else if PtInRect(RZoemer2, P) then NewHint := FHBuzzer
+  else if PtInRect(RRelais2, P) then NewHint := FHRelais
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -566,7 +570,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False;
 
     // nieuw
     DSquare := False;
@@ -852,6 +856,10 @@ begin
     NewVoedingsDeel(29)
   else if DTrafo then
     NewVoedingsDeel(30)
+  else if DZoemer2 then
+    NewVoedingsDeel(31)
+  else if DRelais2 then
+    NewVoedingsDeel(32)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1419,7 +1427,7 @@ begin
 if FBoxTaal=stDutch then
  Begin
   Taal:='NL';
-  HBuzzer:='maak Zoemer';
+  HBuzzer:='maak Zoemer (twee klemmen)';
   HMotor:='maak Motor';
   HDipSwitsh:='maak DipSwitsh';
   HDisplay:='maak 7 segmentdisplay';
@@ -1434,7 +1442,7 @@ if FBoxTaal=stDutch then
   HLogicXor:='maak EX-OF-poort (exclusieve of)';
   HMemory:='maak Geheugenblok';
   HPuls:='maak Impulsgenerator';
-  HRelais:='maak Relais';
+  HRelais:='maak Relais (spoel met twee klemmen, wisselcontact)';
   HSchakelRelais:='maak Schakelrelais (relais met contact)';
   HSchakelaar:='maak Schakelaar';
   HSensor:='maak Lichtsensor';
@@ -1456,7 +1464,7 @@ if FBoxTaal=stDutch then
   HAmpMeter:='maak Milliampèremeter';
   HWattMeter:='maak Wattmeter';
   HWeerstand:='maak Weerstand (contact, lange draad)';
-  HLamp2:='maak Lamp met 2 klemmen (serie en parallel)';
+  HLamp2:='maak Lamp met 2 klemmen, voor 12 V of 5 V (serie en parallel)';
   HSchakelaar2:='maak Schakelaar met 2 klemmen';
   HWisselschakelaar:='maak Wisselschakelaar';
   HPuls2:='maak Impulsgenerator';
@@ -1488,7 +1496,7 @@ if FBoxTaal=stEnglish then
  Begin
   // LangTr: ook voor een extra taal (lang\<code>.po)
   Taal:='ENG';
-  HBuzzer:=LangTr('create Buzzer');
+  HBuzzer:=LangTr('create buzzer (two terminals)');
   HMotor:=LangTr('create Motor');
   HDipSwitsh:=LangTr('create DipSwitsh');
   HDisplay:=LangTr('create 7 segment display');
@@ -1503,7 +1511,7 @@ if FBoxTaal=stEnglish then
   HLogicXor:=LangTr('create XOR-Logic gate (exclusive or)');
   HMemory:=LangTr('create Memory block');
   HPuls:=LangTr('create Impuls generator');
-  HRelais:=LangTr('create Relay');
+  HRelais:=LangTr('create relay (two-terminal coil, changeover contact)');
   HSchakelRelais:=LangTr('create Switching relay (relay with contact)');
   HSchakelaar:=LangTr('create Switsh');
   HSensor:=LangTr('create Light sensor');
@@ -1525,7 +1533,7 @@ if FBoxTaal=stEnglish then
   HAmpMeter:=LangTr('create Milliammeter');
   HWattMeter:=LangTr('create Wattmeter');
   HWeerstand:=LangTr('create Resistance (contact, long wire)');
-  HLamp2:=LangTr('create Lamp with 2 terminals (series and parallel)');
+  HLamp2:=LangTr('create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)');
   HSchakelaar2:=LangTr('create Switch with 2 terminals');
   HWisselschakelaar:=LangTr('create Changeover switch');
   HPuls2:=LangTr('create Pulse generator');
@@ -1555,7 +1563,7 @@ if FBoxTaal=stEnglish then
 if FBoxTaal=stFrench then
  Begin
   Taal:='FR' ;
-  HBuzzer:='faire Ronfleur';
+  HBuzzer:='faire Buzzer (deux bornes)';
   HMotor:='faire Moteur';
   HDipSwitsh:='faire DipSwitsh';
   HDisplay:='faire Affichage à 7 segments';
@@ -1570,7 +1578,7 @@ if FBoxTaal=stFrench then
   HLogicXor:='faire OU-X-La porte logique (ou exclusif)';
   HMemory:='faire Bloc mémoire';
   HPuls:='faire Générateur d"impulsions';
-  HRelais:='faire Relais';
+  HRelais:='faire Relais (bobine à deux bornes, contact inverseur)';
   HSchakelRelais:='faire Relais avec contact';
   HSchakelaar:='faire un changement';
   HSensor:='faire Capteur de lumière';
@@ -1592,7 +1600,7 @@ if FBoxTaal=stFrench then
   HAmpMeter:='faire Milliampèremètre';
   HWattMeter:='faire Wattmètre';
   HWeerstand:='faire Résistance (contact, long fil)';
-  HLamp2:='faire Lampe à 2 bornes (série et parallèle)';
+  HLamp2:='faire Lampe à 2 bornes, pour 12 V ou 5 V (série et parallèle)';
   HSchakelaar2:='faire Interrupteur à 2 bornes';
   HWisselschakelaar:='faire Commutateur va-et-vient';
   HPuls2:='faire Générateur d''impulsions';
@@ -1623,7 +1631,7 @@ if FBoxTaal=stFrench then
  if FBoxTaal=stGerman then
   Begin
   Taal:='DU';
-  HBuzzer:='Buzzer erstellen';
+  HBuzzer:='Summer (zwei Klemmen) erstellen';
   HMotor:='Motor erstellen';
   HDipSwitsh:='DipSwitsh erstellen';
   HDisplay:='Erstellen Sie eine 7-Segment-Anzeige';
@@ -1638,7 +1646,7 @@ if FBoxTaal=stFrench then
   HLogicXor:='XOR-Gatter erstellen (exklusives oder)';
   HMemory:='Speicherblock erstellen';
   HPuls:='Impulsgenerator herstellen';
-  HRelais:='Relais erstellen';
+  HRelais:='Relais (Spule mit zwei Klemmen, Wechsler) erstellen';
   HSchakelRelais:='Schaltrelais (Relais mit Kontakt) erstellen';
   HSchakelaar:='Schalter machen';
   HSensor:='Lichtsensor herstellen';
@@ -1660,7 +1668,7 @@ if FBoxTaal=stFrench then
   HAmpMeter:='Milliamperemeter erstellen';
   HWattMeter:='Wattmeter erstellen';
   HWeerstand:='Widerstand erstellen (Kontakt, langer Draht)';
-  HLamp2:='Lampe mit 2 Klemmen erstellen (Reihe und parallel)';
+  HLamp2:='Lampe mit 2 Klemmen für 12 V oder 5 V erstellen (Reihe und parallel)';
   HSchakelaar2:='Schalter mit 2 Klemmen erstellen';
   HWisselschakelaar:='Wechselschalter erstellen';
   HPuls2:='Impulsgenerator erstellen';
@@ -1875,6 +1883,8 @@ begin
   RNulmeter := Rect(0, 0, 0, 0);
   RDraaiM := Rect(0, 0, 0, 0);
   RTrafo := Rect(0, 0, 0, 0);
+  RZoemer2 := Rect(0, 0, 0, 0);
+  RRelais2 := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1893,6 +1903,8 @@ begin
   if FLdrK then Knop(RLdr, 15, DLdr);
   if FNtcK then Knop(RNtc, 16, DNtc);
   if FLamp2K then Knop(RLamp2, 4, DLamp2);
+  if FBuzzer then Knop(RZoemer2, 31, DZoemer2);
+  if FRelais then Knop(RRelais2, 32, DRelais2);
   if FLed2K then Knop(RLed2, 7, DLed2);
   if FDiodeK then Knop(RDiode, 11, DDiode);
   if FCondK then Knop(RCond, 8, DCond);

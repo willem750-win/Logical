@@ -33,6 +33,8 @@
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch, über 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Ein kleiner Basisstrom steuert einen großen Kollektorstrom: schalten und verstärken.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Summer</a></td><td>Summer mit zwei Klemmen: summt ab 10&nbsp;mA, auch an einem Gatter.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relais</a></td><td>Spule mit zwei Klemmen und ein Wechsler (C, Schließer, Öffner).</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="#magnetisme">Stabmagnet</a></td><td>Magnet mit einem Nordpol (rot) und einem Südpol (blau), ohne Klemmen.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="#magnetisme">Kompass</a></td><td>Eine Nadel, die entlang des Magnetfelds zeigt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="#magnetisme">Feldlinienplatte</a></td><td>Zeigt die Feldlinien der Magnete, die darauf liegen, wie Eisenfeilspäne.</td></tr>
@@ -206,6 +208,7 @@
     <tr><td>verbrannter Kontakt</td><td>10&nbsp;&Omega;</td><td>eine Klemme, die zu heiß geworden ist</td></tr>
     <tr><td>Vorwiderstand</td><td>100, 220, 470, 1000&nbsp;&Omega;, 2,2, 4,7, 10, 47 oder 100&nbsp;k&Omega;</td><td>ein echter Widerstand, z. B. in Reihe mit einer <a href="#led">LED</a> oder vor der Basis eines <a href="#transistor">Transistors</a></td></tr>
   </table>
+  <p>Bildet der Widerstand zusammen mit einem <a href="#ldr">LDR oder NTC</a> einen <b>Spannungsteiler</b> (sie teilen sich eine Klemme ohne Schiene oder Quelle), steht darunter <b>Spannungsteiler</b> statt Vorwiderstand. Die Spannung zwischen beiden ändert sich dann mit dem Licht oder der Temperatur und steuert ein Gatter oder einen Transistor. Siehe <a href="les06.html">Lektion 6</a> und <a href="les40.html">Lektion 40</a>.</p>
   <p>Der Block färbt sich orange bis rot, je wärmer er wird. Messen Sie den Spannungsabfall mit einem
   <a href="#voltmeter">Voltmeter</a>: + an die Klemme auf der Seite der Quelle, &minus; an die andere Klemme.
   Siehe <a href="les24.html">Lektion 24</a>.</p>
@@ -216,8 +219,11 @@
   den Kirchhoffschen Regeln: die Spannung an jeder Klemme und den Strom durch jedes Bauteil.</p>
   <ul>
     <li><b>Lampe</b>: eine Glühlampe von 120&nbsp;&Omega; (100&nbsp;mA und 1,2&nbsp;W bei 12&nbsp;V). Rechtsklick &rsaquo;
-      <b>Widerstand</b>, um eine andere Lampe zu wählen: 24, 48, 60, 120, 240 oder 480&nbsp;&Omega;. Sie leuchtet umso heller,
-      je mehr Leistung durch sie geht; der Hinweis zeigt U, I und P.</li>
+      <b>Widerstand</b>, um eine andere Lampe zu wählen: 24, 48, 60, 120, 240 oder 480&nbsp;&Omega;. Mit Rechtsklick &rsaquo;
+      <b>Spannung der Lampe</b> &rsaquo; <b>Lampe für 5&nbsp;V</b> wird sie eine kleine 5-V-Lampe: 50, 100, 250 oder
+      500&nbsp;&Omega;. Die mit 250&nbsp;&Omega; (20&nbsp;mA) leuchtet auch am Ausgang eines Gatters, und eine 5-V-Lampe zählt
+      in der Wahrheitstabelle. Sie leuchtet umso heller, je mehr Leistung durch sie geht, voll bei der Leistung ihrer
+      eigenen Spannung; der Hinweis zeigt U, I und P.</li>
     <li><b>Schalter</b>: Klicken Sie auf den Hebel, um ihn zu öffnen oder zu schließen, auch während der Simulation. Mit Rechtsklick &rsaquo; <b>Art</b> &rsaquo; <b>Taster</b> wird er zum Taster: Er ist nur geschlossen, solange Sie die Maustaste gedrückt halten. Ein Schalter mit drei Klemmen ist der <a href="#wisselschakelaar">Wechselschalter</a>.</li>
     <li><b>Voltmeter</b>: Legen Sie + und &minus; über ein Bauteil. Es misst den Spannungsunterschied zwischen seinen beiden
       Klemmen und nimmt selbst keinen Strom.</li>
@@ -376,6 +382,17 @@
       darunter. Verlängern Sie die Schiene bei Bedarf.</li>
     <li>Mit den Pfeiltasten verschieben Sie pixelweise; so können Sie ein Bauteil auch wieder abziehen.</li>
   </ul>
+
+  <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">Der Summer mit zwei Klemmen</h2>
+  <p>Ein Summer mit 200&nbsp;&Omega; und zwei Klemmen: links hinein, rechts hinaus (meist zur &minus;-Schiene). Er summt, sobald mindestens 10&nbsp;mA hindurchfließen. Am Ausgang eines Gatters (5&nbsp;V) fließen etwa 20&nbsp;mA, also kann ein Gatter ihn direkt steuern. Siehe <a href="les05.html">Lektion 5</a>.</p>
+
+  <h2 id="relais2"><img src="../img/pal-relais2.png" class="ico" alt="">Das Relais</h2>
+  <p>Ein Relais als Schaltzeichen: ein Schalter, der von einem Elektromagneten betätigt wird.</p>
+  <ul>
+    <li>Die <b>Spule</b> (unten, 60&nbsp;&Omega;) hat zwei Klemmen: links hinein, rechts hinaus. Ab 35&nbsp;mA zieht das Relais an, unter 20&nbsp;mA fällt es ab. Ein Gatter (5&nbsp;V) kann die Spule steuern.</li>
+    <li>Der <b>Wechsler</b>: links oben der gemeinsame Kontakt <b>C</b>, rechts oben der <b>Schließer</b> (geschlossen, wenn die Spule anzieht) und rechts in der Mitte der <b>Öffner</b> (in Ruhe geschlossen).</li>
+  </ul>
+  <p>Spule und Kontakt sind elektrisch getrennt: Der Kontakt darf in einem anderen Kreis mit einer anderen Quelle liegen. Das Relais funktioniert auch in der Wahrheitstabelle: Dort zählt es als 1, wenn es angezogen ist. Siehe <a href="les11.html">Lektion 11</a>; wie ein Relais innen funktioniert, zeigt <a href="lesm4.html">Magnetismus 4</a>.</p>
 
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetismus: Stabmagnet, Kompass, Feldlinienplatte, Spule, Nagel, Relais, Leiterschaukel, Elektromotor, Nullpunktmessgerät, drehender Magnet und Transformator</h2>
   <p>Stabmagnet, Kompass und Feldlinienplatte haben keine Klemmen: Sie gehören nicht zum Stromkreis. Man legt sie frei auf das Panel und zieht sie herum. Siehe <a href="lesm1.html">Was ist Magnetismus?</a></p>

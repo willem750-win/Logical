@@ -923,7 +923,7 @@ Begin
     SettingsFrame.PropB22.DefaultPropHolder:=SettingsFrame.iniBox_schakellelementen;
     SettingsFrame.PropB22.TranslationHolder:=SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB22.AddRelevantProperties('KColor,KBuzzer,KMotor,KDisplay,KDraad,KLamp,'+
-                                  'KLogicAnd,KLogicNot,KLogicOr,KLogicNand,KLogicNor,KLogicXor,KMemory,KRelais,KSchakelRelais,'+
+                                  'KLogicAnd,KLogicNot,KLogicOr,KLogicNand,KLogicNor,KLogicXor,KMemory,KRelais,'+
                                   'KTeller,KStappen,KFlipFlop,KStopwatch,KSlagboom,KVoeding,KBron,KWisselbron,KZekering,KAmpMeter,KWattMeter,KWeerstand,KLamp2,KSchakelaar2,KWisselschakelaar,KPuls2,KDip2,KVoltmeter2,KScoop,KLed2,KDiode,KCondensator,KPotmeter,KLDR,KNTC,KTransistor,KMagnetisme,KMeter,KSymbolen');
     SettingsFrame.PropB22.ConnectObject :=mainForm.Box;
     SettingsFrame.PropB22.Cols[0];
@@ -933,7 +933,7 @@ Begin
     SettingsFrame.PropB222.DefaultPropHolder:=SettingsFrame.iniBox_Hints;
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDisplay,HDraad,HLamp,'+
-                                  'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HRelais,HSchakelRelais,'+
+                                  'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HRelais,'+
                                   'HTeller,HStappen,HFlipFlop,HStopwatch,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HWisselschakelaar,HPuls2,HDip2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,HMagneet,HKompas,HVeldplaat,HSpoel,HIJzer,HRelaisModel,HSchommel,HElektromotor,HNulmeter,HDraaimagneet,HTransformator,'+
                                   'HPersoon,HWagen,HMuziek,HVerkeer,HSlagboom,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
