@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2407,6 +2407,7 @@ type
     property HElektromotor: string read FHMotorM write FHMotorM;
     property HNulmeter: string read FHNulmeter write FHNulmeter;
     property HDraaimagneet: string read FHDraaiM write FHDraaiM;
+    property HTransformator: string read FHTrafo write FHTrafo;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -4146,6 +4147,46 @@ end;
   published
     property ToerIdx: Integer read FToerIdx write SetToerIdx;
     property Draait: Boolean read FDraait write SetDraait;
+  end;
+
+  { TjanTransformator: twee spoelen op een ijzeren kern. Links de primaire
+    spoel (klemmen 0 boven en 1 onder), rechts de secundaire (klemmen 2 boven
+    en 3 onder). Bij wisselspanning is U2 = (N2 / N1) x U1, en de primaire
+    stroom volgt wat de secundaire kring vraagt (I1 = N2 / N1 x I2). Bij
+    gelijkspanning verandert het veld niet: dan geeft de secundaire niets en
+    is de primaire gewoon een weerstand van 40 ohm. De twee kringen zijn
+    elektrisch gescheiden. }
+  TjanTransformator = class(TjanVoedingsDeel)
+  private
+    FN1Idx, FN2Idx: Integer;   // index in TrafoWindingen
+    FAc: Double;               // 1 = wisselspanning (koppeling), 0 = gelijkspanning
+    FGem: Double;              // trage gemiddelde primaire spanning
+    FTOud: Double;             // simulatietijd van de vorige meting
+    FU1, FU2, FI1, FI2: Double;
+    procedure SetN1Idx(const Value: Integer);
+    procedure SetN2Idx(const Value: Integer);
+    procedure N1Click(Sender: TObject);
+    procedure N2Click(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function N1: Integer;
+    function N2: Integer;
+    function Verhouding: Double;    // N2 / N1
+    function Koppeling: Double;     // FAc
+    procedure Meet(AU1, AU2, AI1, AI2: Double);
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property U1: Double read FU1;
+    property U2: Double read FU2;
+    property I2: Double read FI2;
+  published
+    property N1Idx: Integer read FN1Idx write SetN1Idx;
+    property N2Idx: Integer read FN2Idx write SetN2Idx;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

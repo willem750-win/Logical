@@ -1,0 +1,70 @@
+<!-- titel: Magnetismus 9 - Der Transformator -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetismus</a> &rsaquo; Lektion 9 von 9</p>
+  <h1>Der Transformator</h1>
+  <div class="goal"><strong>Ziel:</strong> sehen, wie ein <b>Transformator</b> mit zwei Spulen auf einem Eisenkern eine
+  Wechselspannung <b>herauf-</b> oder <b>heruntersetzt</b>, die Regel U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> /
+  N<sub>1</sub> lernen und verstehen, warum er nur mit <b>Wechselspannung</b> funktioniert.</div>
+
+  <h2>Zwei Spulen, ein Kern</h2>
+  <p>Ein Transformator hat einen geschlossenen Eisenkern mit zwei Spulen darauf:</p>
+  <ul>
+    <li>Die <b>Primärspule</b> (N<sub>1</sub> Windungen) hängt an einer Wechselspannung. Sie erzeugt ein Magnetfeld im Kern
+    (<a href="lesm2.html">Lektion 2</a>), und weil der Strom ständig seine Richtung wechselt, wechselt das Feld mit;</li>
+    <li>der Kern leitet dieses wechselnde Feld durch die <b>Sekundärspule</b> (N<sub>2</sub> Windungen). Dort ändert sich
+    das Feld ständig, und das induziert eine Spannung: Induktion, wie in <a href="lesm7.html">Lektion 7</a>.</li>
+  </ul>
+  <p>Jede Windung bekommt dieselbe Spannung. Hat die Sekundärspule halb so viele Windungen, bekommt sie die halbe
+  Spannung; doppelt so viele Windungen ergeben die doppelte Spannung:</p>
+  <div class="tip"><strong>Transformatorregel:</strong> U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub></div>
+
+  <p><a class="open" href="../../panels/lessen/magn9-transformator.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/lesm9.png" alt="Eine Wechselspannungsquelle mit 12 V an der Primärspule (200 Windungen); die Sekundärspule (100 Windungen) versorgt eine Lampe">
+    <figcaption>200 Windungen primär, 100 sekundär: Aus 12&nbsp;V werden etwa 6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation. Die Wechselspannungsquelle gibt 12&nbsp;V an die Primärspule. Unter N<sub>1</sub> und
+    N<sub>2</sub> sehen Sie die Spannung jeder Spule. Sie schwankt mit der Wechselspannung; die Höchstwerte sind etwa 12&nbsp;V und 6&nbsp;V. Die Lampe leuchtet schwach.</li>
+    <li>Klicken Sie mit der rechten Maustaste auf den Transformator und wählen Sie unter <b>Sekundärwindungen</b> 200: Jetzt
+    ist U<sub>2</sub> so groß wie U<sub>1</sub>, und die Lampe leuchtet voll.</li>
+    <li>Wählen Sie 50 Sekundärwindungen: U<sub>2</sub> wird ein Viertel, etwa 3&nbsp;V.</li>
+    <li>Stellen Sie die Sekundärseite wieder auf 100 und wählen Sie unter <b>Primärwindungen</b> 100: Jetzt ist
+    N<sub>2</sub> gleich N<sub>1</sub>, und U<sub>2</sub> ist wieder 12&nbsp;V.</li>
+    <li>Zeigen Sie auf den Transformator: Der Hinweis zeigt auch die Ströme I<sub>1</sub> und I<sub>2</sub>.</li>
+  </ol>
+
+  <h2>Spannung herunter, Strom herauf</h2>
+  <p>Ein Transformator erzeugt keine Energie. Was er an Spannung gewinnt, verliert er an Strom, und umgekehrt:
+  U<sub>1</sub> &times; I<sub>1</sub> ist etwa U<sub>2</sub> &times; I<sub>2</sub>. Halbiert er die Spannung, kann die
+  Sekundärseite doppelt so viel Strom liefern, wie die Primärseite aufnimmt.</p>
+
+  <h2>Nur Wechselspannung</h2>
+  <p>Ersetzen Sie die Wechselspannungsquelle einmal durch eine gewöhnliche Quelle (einen Akku, Gleichspannung). Nach dem
+  Einschalten bleibt das Feld im Kern gleich, und ein Feld, das sich nicht ändert, induziert keine Spannung. Die
+  Sekundärseite liefert dann <b>nichts</b>, und die Primärspule ist nur ein Draht mit Widerstand: Es fließt viel Strom, und
+  sie wird warm. Deshalb arbeitet das Stromnetz mit Wechselspannung.</p>
+
+  <h2>Wo gibt es einen Transformator?</h2>
+  <ul>
+    <li>In einem <b>Ladegerät</b> oder Netzteil: von 230&nbsp;V auf zum Beispiel 5&nbsp;V.</li>
+    <li>Im <b>Hochspannungsnetz</b>: Neben dem Kraftwerk setzt ein Transformator die Spannung auf Hunderttausende Volt
+    herauf. Dieselbe Energie fließt dann mit viel weniger Strom durch die langen Leitungen, und die werden weniger warm. In
+    der Nähe der Häuser setzen Transformatoren die Spannung wieder auf 230&nbsp;V herunter.</li>
+  </ul>
+
+  <h2>Aufgabe</h2>
+  <p>1. Die Primärspule hat 200 Windungen und bekommt 12&nbsp;V. Wie viele Windungen braucht die Sekundärspule für
+  6&nbsp;V? Und für 24&nbsp;V? Prüfen Sie es im Beispiel.</p>
+  <p>2. Warum überträgt man Strom über große Entfernungen bei sehr hoher Spannung?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>1. Für 6&nbsp;V: N<sub>2</sub> = 200 &times; 6 / 12 = <b>100</b> Windungen. Für 24&nbsp;V: N<sub>2</sub> = 200
+    &times; 24 / 12 = <b>400</b> Windungen. (In Logic ist U<sub>2</sub> etwas niedriger, wegen eines kleinen
+    Spannungsverlusts in der Sekundärspule.)</p>
+    <p>2. Die Leistung ist P = U &times; I. Bei hoher Spannung braucht man für dieselbe Leistung nur einen kleinen Strom.
+    Ein kleiner Strom verliert in den langen Drähten viel weniger Energie als Wärme.</p>
+  </details>
+
+  <div class="pager"><a href="lesm8.html">&larr; Magnetismus 8: Der Dynamo</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

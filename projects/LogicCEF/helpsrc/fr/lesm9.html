@@ -1,0 +1,72 @@
+<!-- titel: Magnétisme 9 - Le transformateur -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnétisme</a> &rsaquo; Leçon 9 sur 9</p>
+  <h1>Le transformateur</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> voir comment un <b>transformateur</b> à deux bobines sur un même noyau
+  de fer <b>élève</b> ou <b>abaisse</b> une tension alternative, apprendre la règle U<sub>2</sub> / U<sub>1</sub> =
+  N<sub>2</sub> / N<sub>1</sub>, et comprendre pourquoi il ne fonctionne qu&rsquo;en <b>tension alternative</b>.</div>
+
+  <h2>Deux bobines, un noyau</h2>
+  <p>Un transformateur a un noyau de fer fermé portant deux bobines&nbsp;:</p>
+  <ul>
+    <li>la bobine <b>primaire</b> (N<sub>1</sub> spires) est reliée à une tension alternative. Elle crée un champ
+    magnétique dans le noyau (<a href="lesm2.html">leçon 2</a>), et comme le courant change sans cesse de sens, ce champ
+    change avec lui&nbsp;;</li>
+    <li>le noyau conduit ce champ variable à travers la bobine <b>secondaire</b> (N<sub>2</sub> spires). Le champ y varie
+    sans cesse, ce qui induit une tension&nbsp;: l&rsquo;induction, comme dans la <a href="lesm7.html">leçon 7</a>.</li>
+  </ul>
+  <p>Chaque spire reçoit la même tension. Si la bobine secondaire a deux fois moins de spires, elle reçoit deux fois moins
+  de tension&nbsp;; deux fois plus de spires donne deux fois plus de tension&nbsp;:</p>
+  <div class="tip"><strong>Règle du transformateur&nbsp;:</strong> U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> /
+  N<sub>1</sub></div>
+
+  <p><a class="open" href="../../panels/lessen/magn9-transformator.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/lesm9.png" alt="Une source de tension alternative de 12 V sur la bobine primaire (200 spires) ; la bobine secondaire (100 spires) alimente une lampe">
+    <figcaption>200 spires au primaire, 100 au secondaire&nbsp;: 12&nbsp;V deviennent environ 6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation. La source de tension alternative donne 12&nbsp;V à la bobine primaire. Sous N<sub>1</sub> et
+    N<sub>2</sub>, on voit la tension de chaque bobine. Elle varie avec la tension alternative&nbsp;; les valeurs maximales sont d&rsquo;environ 12&nbsp;V et 6&nbsp;V. La lampe brille faiblement.</li>
+    <li>Faites un clic droit sur le transformateur et choisissez 200 sous <b>Spires secondaires</b>&nbsp;: U<sub>2</sub>
+    est maintenant égale à U<sub>1</sub>, et la lampe brille pleinement.</li>
+    <li>Choisissez 50 spires secondaires&nbsp;: U<sub>2</sub> devient un quart, environ 3&nbsp;V.</li>
+    <li>Remettez le secondaire à 100 et choisissez 100 sous <b>Spires primaires</b>&nbsp;: N<sub>2</sub> est égal à
+    N<sub>1</sub>, et U<sub>2</sub> vaut de nouveau 12&nbsp;V.</li>
+    <li>Pointez le transformateur&nbsp;: l&rsquo;info-bulle montre aussi les courants I<sub>1</sub> et I<sub>2</sub>.</li>
+  </ol>
+
+  <h2>Tension plus basse, courant plus grand</h2>
+  <p>Un transformateur ne crée pas d&rsquo;énergie. Ce qu&rsquo;il gagne en tension, il le perd en courant, et
+  inversement&nbsp;: U<sub>1</sub> &times; I<sub>1</sub> vaut environ U<sub>2</sub> &times; I<sub>2</sub>. S&rsquo;il divise
+  la tension par deux, le secondaire peut fournir deux fois plus de courant que le primaire n&rsquo;en prend.</p>
+
+  <h2>Uniquement en alternatif</h2>
+  <p>Remplacez la source alternative par une source ordinaire (une batterie, tension continue). Après la mise sous
+  tension, le champ dans le noyau reste le même, et un champ qui ne varie pas n&rsquo;induit aucune tension. Le secondaire
+  ne donne alors <b>rien</b>, et la bobine primaire n&rsquo;est qu&rsquo;un fil avec une résistance&nbsp;: il passe beaucoup de
+  courant et elle chauffe. C&rsquo;est pourquoi le réseau électrique fonctionne en tension alternative.</p>
+
+  <h2>Où trouve-t-on un transformateur&nbsp;?</h2>
+  <ul>
+    <li>Dans un <b>chargeur</b> ou un adaptateur&nbsp;: de 230&nbsp;V à par exemple 5&nbsp;V.</li>
+    <li>Dans le <b>réseau haute tension</b>&nbsp;: près de la centrale, un transformateur élève la tension à des centaines
+    de milliers de volts. La même énergie passe alors avec beaucoup moins de courant dans les longues lignes, qui chauffent
+    moins. Près des maisons, des transformateurs abaissent de nouveau la tension à 230&nbsp;V.</li>
+  </ul>
+
+  <h2>Exercice</h2>
+  <p>1. La bobine primaire a 200 spires et reçoit 12&nbsp;V. Combien de spires faut-il au secondaire pour 6&nbsp;V&nbsp;? Et
+  pour 24&nbsp;V&nbsp;? Vérifiez-le dans l&rsquo;exemple.</p>
+  <p>2. Pourquoi transporte-t-on l&rsquo;électricité sur de longues distances sous une tension très élevée&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>1. Pour 6&nbsp;V&nbsp;: N<sub>2</sub> = 200 &times; 6 / 12 = <b>100</b> spires. Pour 24&nbsp;V&nbsp;: N<sub>2</sub> =
+    200 &times; 24 / 12 = <b>400</b> spires. (Dans Logic, U<sub>2</sub> est un peu plus basse, à cause d&rsquo;une petite
+    perte de tension dans la bobine secondaire.)</p>
+    <p>2. La puissance vaut P = U &times; I. Sous une tension élevée, un petit courant suffit pour la même puissance. Un
+    petit courant perd beaucoup moins d&rsquo;énergie en chaleur dans les longs fils.</p>
+  </details>
+
+  <div class="pager"><a href="lesm8.html">&larr; Magnétisme 8&nbsp;: La dynamo</a><a href="leerpad.html">Parcours &rarr;</a></div>

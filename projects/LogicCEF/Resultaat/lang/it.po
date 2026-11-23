@@ -1857,3 +1857,30 @@ msgstr "Clic: girare o fermare. Clic destro: velocità."
 
 msgid "Rotating magnet"
 msgstr "Magnete rotante"
+
+msgid "create transformer"
+msgstr "crea trasformatore"
+
+msgid "Primary turns (N1)"
+msgstr "Spire primarie (N1)"
+
+msgid "Secondary turns (N2)"
+msgstr "Spire secondarie (N2)"
+
+msgid "The primary voltage does not change (direct voltage): the field in the core stays the same, the secondary gives nothing.\nThe primary coil is now just a 40 ohm resistor and gets warm."
+msgstr "La tensione primaria non cambia (tensione continua): il campo nel nucleo resta uguale, il secondario non dà nulla.\nLa bobina primaria è ora solo una resistenza di 40 ohm e si scalda."
+
+msgid "U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2."
+msgstr "U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2."
+
+msgid "Transformer"
+msgstr "Trasformatore"
+
+msgid "Two coils on an iron core: the primary on the left, the secondary on the right.\nThe alternating voltage in the primary makes an alternating field in the core, which induces a voltage in the secondary."
+msgstr "Due bobine su un nucleo di ferro: il primario a sinistra, il secondario a destra.\nLa tensione alternata nel primario crea un campo alternato nel nucleo, che induce una tensione nel secondario."
+
+msgid "Now: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
+msgstr "Ora: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
+
+msgid "Right-click: turns of the primary and the secondary coil."
+msgstr "Clic destro: spire della bobina primaria e secondaria."

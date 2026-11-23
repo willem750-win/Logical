@@ -2167,3 +2167,30 @@ msgstr "点击：转动或停止。右键：转速。"
 
 msgid "Rotating magnet"
 msgstr "旋转磁铁"
+
+msgid "create transformer"
+msgstr "创建变压器"
+
+msgid "Primary turns (N1)"
+msgstr "初级匝数 (N1)"
+
+msgid "Secondary turns (N2)"
+msgstr "次级匝数 (N2)"
+
+msgid "The primary voltage does not change (direct voltage): the field in the core stays the same, the secondary gives nothing.\nThe primary coil is now just a 40 ohm resistor and gets warm."
+msgstr "初级电压不变 (直流)：铁芯中的磁场不变，次级没有输出。\n初级线圈现在只是一个 40 欧的电阻，会发热。"
+
+msgid "U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2."
+msgstr "U2 = N2 / N1 x U1 = %d / %d x %s = %s。  I1 = N2 / N1 x I2。"
+
+msgid "Transformer"
+msgstr "变压器"
+
+msgid "Two coils on an iron core: the primary on the left, the secondary on the right.\nThe alternating voltage in the primary makes an alternating field in the core, which induces a voltage in the secondary."
+msgstr "铁芯上的两个线圈：左边是初级，右边是次级。\n初级的交流电压在铁芯中产生交变磁场，在次级中感应出电压。"
+
+msgid "Now: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
+msgstr "现在：U1 = %s，I1 = %s；U2 = %s，I2 = %s。"
+
+msgid "Right-click: turns of the primary and the secondary coil."
+msgstr "右键：初级和次级线圈的匝数。"

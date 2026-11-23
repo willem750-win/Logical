@@ -3088,3 +3088,276 @@ begin
   FOnStatus(Self, FormatFloat('0', Toeren) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min'), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
+
+{ TjanTransformator }
+
+const
+  TrafoW = 150;
+  TrafoH = 110;
+  TrafoWindingen: array[0..4] of Integer = (50, 100, 200, 400, 800);
+
+constructor TjanTransformator.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FN1Idx := 2;
+  FN2Idx := 1;
+  FAc := 1;
+  FTOud := -1;
+  Width := TrafoW;
+  Height := TrafoH;
+  HelpKeyword := 'magnetisme';
+end;
+
+function TjanTransformator.PinCount: Integer;
+begin
+  Result := 4;
+end;
+
+function TjanTransformator.PinPos(I: Integer): TPoint;
+begin
+  case I of
+    0: Result := Point(1, 15);
+    1: Result := Point(1, 88);
+    2: Result := Point(TrafoW - 8, 15);
+  else
+    Result := Point(TrafoW - 8, 88);
+  end;
+end;
+
+function TjanTransformator.N1: Integer;
+begin
+  Result := TrafoWindingen[FN1Idx];
+end;
+
+function TjanTransformator.N2: Integer;
+begin
+  Result := TrafoWindingen[FN2Idx];
+end;
+
+function TjanTransformator.Verhouding: Double;
+begin
+  Result := N2 / N1;
+end;
+
+function TjanTransformator.Koppeling: Double;
+begin
+  Result := FAc;
+end;
+
+// na elke berekening: spanningen en stromen onthouden, en kijken of de
+// primaire spanning verandert (wissel) of gelijk blijft (dan zakt de koppeling weg)
+procedure TjanTransformator.Meet(AU1, AU2, AI1, AI2: Double);
+var
+  Dt, Afw: Double;
+begin
+  FU1 := AU1; FU2 := AU2; FI1 := AI1; FI2 := AI2;
+  if FTOud < 0 then
+  begin
+    FTOud := SimTijd;
+    FGem := AU1;
+    Exit;
+  end;
+  Dt := SimTijd - FTOud;
+  if Dt <= 0 then Exit;
+  if Dt > 0.5 then Dt := 0.5;
+  FTOud := SimTijd;
+  // trage gemiddelde (ongeveer 1 s): bij wisselspanning bijna 0, bij gelijkspanning de spanning zelf
+  FGem := FGem + (AU1 - FGem) * Dt;
+  Afw := 2 * Abs(AU1 - FGem) / (Abs(AU1) + Abs(FGem) + 0.05);
+  if Afw > 1 then Afw := 1;
+  FAc := FAc + (Afw - FAc) * Dt * 3;
+  if FAc < 0 then FAc := 0;
+  if FAc > 1 then FAc := 1;
+end;
+
+procedure TjanTransformator.SetN1Idx(const Value: Integer);
+begin
+  if (Value < Low(TrafoWindingen)) or (Value > High(TrafoWindingen)) or (Value = FN1Idx) then Exit;
+  FN1Idx := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then UpdateSupply(Parent, True);
+end;
+
+procedure TjanTransformator.SetN2Idx(const Value: Integer);
+begin
+  if (Value < Low(TrafoWindingen)) or (Value > High(TrafoWindingen)) or (Value = FN2Idx) then Exit;
+  FN2Idx := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then UpdateSupply(Parent, True);
+end;
+
+procedure TjanTransformator.N1Click(Sender: TObject);
+begin
+  if not FLock then N1Idx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanTransformator.N2Click(Sender: TObject);
+begin
+  if not FLock then N2Idx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanTransformator.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i, k: Integer;
+begin
+  for k := 1 to 2 do
+  begin
+    Mi := TMenuItem.Create(APop);
+    if k = 1 then
+      Mi.Caption := Tr(FTaal, 'Primaire windingen (N1)', 'Primary turns (N1)', 'Spires primaires (N1)', 'Primärwindungen (N1)')
+    else
+      Mi.Caption := Tr(FTaal, 'Secundaire windingen (N2)', 'Secondary turns (N2)', 'Spires secondaires (N2)', 'Sekundärwindungen (N2)');
+    Mi.Enabled := not FLock;
+    APop.Items.Add(Mi);
+    for i := Low(TrafoWindingen) to High(TrafoWindingen) do
+    begin
+      Sub := TMenuItem.Create(APop);
+      Sub.Caption := IntToStr(TrafoWindingen[i]);
+      Sub.Tag := i;
+      Sub.RadioItem := True;
+      if k = 1 then
+      begin
+        Sub.Checked := i = FN1Idx;
+        Sub.OnClick := N1Click;
+      end
+      else
+      begin
+        Sub.Checked := i = FN2Idx;
+        Sub.OnClick := N2Click;
+      end;
+      Mi.Add(Sub);
+    end;
+  end;
+end;
+
+procedure TjanTransformator.Paint;
+var
+  i: Integer;
+
+  procedure Spoel(X1, X2, YBoven, YOnder, AAantal: Integer);
+  var
+    j, YY: Integer;
+  begin
+    with Canvas do
+    begin
+      Pen.Color := RGBToColor(184, 100, 30);
+      Pen.Width := 2;
+      Brush.Style := bsClear;
+      for j := 0 to AAantal - 1 do
+      begin
+        if AAantal > 1 then YY := YBoven + Round(j * (YOnder - YBoven - 6) / (AAantal - 1))
+        else YY := (YBoven + YOnder) div 2;
+        Ellipse(X1, YY, X2, YY + 6);
+      end;
+      Pen.Width := 1;
+    end;
+  end;
+
+  function Aantal(AN: Integer): Integer;
+  begin
+    case AN of
+      50: Result := 3;
+      100: Result := 5;
+      200: Result := 8;
+      400: Result := 12;
+    else
+      Result := 16;
+    end;
+  end;
+
+begin
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // ijzeren kern: een gesloten raam
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(140, 140, 150);
+    FillRect(Rect(40, 8, 110, 20));
+    FillRect(Rect(40, 86, 110, 98));
+    FillRect(Rect(40, 8, 54, 98));
+    FillRect(Rect(96, 8, 110, 98));
+    Pen.Color := RGBToColor(80, 80, 90);
+    Brush.Style := bsClear;
+    Rectangle(Rect(40, 8, 110, 98));
+    Rectangle(Rect(54, 20, 96, 86));
+    // aansluitdraadjes naar de klemmen
+    Pen.Color := clBlack;
+    MoveTo(PinPos(0).X + 6, PinPos(0).Y + 3); LineTo(34, PinPos(0).Y + 3); LineTo(34, 24);
+    MoveTo(PinPos(1).X + 6, PinPos(1).Y + 3); LineTo(34, PinPos(1).Y + 3); LineTo(34, 82);
+    MoveTo(PinPos(2).X, PinPos(2).Y + 3); LineTo(116, PinPos(2).Y + 3); LineTo(116, 24);
+    MoveTo(PinPos(3).X, PinPos(3).Y + 3); LineTo(116, PinPos(3).Y + 3); LineTo(116, 82);
+    // de twee spoelen
+    Spoel(32, 62, 22, 84, Aantal(N1));
+    Spoel(88, 118, 22, 84, Aantal(N2));
+    // windingen en spanningen
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    Font.Color := clNavy;
+    TextOut(2, 34, 'N1');
+    TextOut(2, 46, IntToStr(N1));
+    TextOut(TrafoW - 26, 34, 'N2');
+    TextOut(TrafoW - 26, 46, IntToStr(N2));
+    Font.Style := [];
+    Font.Color := RGBToColor(80, 80, 80);
+    TextOut(2, 60, FormatFloat('0.0', Abs(FU1)) + ' V');
+    TextOut(TrafoW - 32, 60, FormatFloat('0.0', Abs(FU2)) + ' V');
+  end;
+  for i := 0 to 3 do
+    PaintPin(PinPos(i).X, PinPos(i).Y, Abs(FPinV[i]) >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanTransformator.UpdateHintText;
+var
+  S: string;
+begin
+  if FAc < 0.2 then
+    S := Tr(FTaal,
+      'De primaire spanning verandert niet (gelijkspanning): het veld in de kern blijft gelijk, de secundaire geeft niets.' + #13#10 +
+        'De primaire spoel is nu gewoon een weerstand van 40 ohm en wordt warm.',
+      'The primary voltage does not change (direct voltage): the field in the core stays the same, the secondary gives nothing.' + #13#10 +
+        'The primary coil is now just a 40 ohm resistor and gets warm.',
+      'La tension primaire ne varie pas (tension continue) : le champ dans le noyau reste le même, le secondaire ne donne rien.' + #13#10 +
+        'La bobine primaire n''est plus qu''une résistance de 40 ohms et chauffe.',
+      'Die Primärspannung ändert sich nicht (Gleichspannung): Das Feld im Kern bleibt gleich, die Sekundärseite liefert nichts.' + #13#10 +
+        'Die Primärspule ist jetzt nur ein Widerstand von 40 Ohm und wird warm.')
+  else
+    S := Format(Tr(FTaal,
+      'U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2.',
+      'U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2.',
+      'U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2.',
+      'U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2.'),
+      [N2, N1, VoltText(Abs(FU1)), VoltText(Abs(FU1) * Verhouding)]);
+  Hint := Tr(FTaal, 'Transformator', 'Transformer', 'Transformateur', 'Transformator') + #13#10 +
+    Tr(FTaal,
+      'Twee spoelen op een ijzeren kern: links de primaire, rechts de secundaire.' + #13#10 +
+        'De wisselspanning in de primaire maakt een wisselend veld in de kern, en dat wekt in de secundaire een spanning op.',
+      'Two coils on an iron core: the primary on the left, the secondary on the right.' + #13#10 +
+        'The alternating voltage in the primary makes an alternating field in the core, which induces a voltage in the secondary.',
+      'Deux bobines sur un noyau de fer : le primaire à gauche, le secondaire à droite.' + #13#10 +
+        'La tension alternative au primaire crée un champ alternatif dans le noyau, qui induit une tension au secondaire.',
+      'Zwei Spulen auf einem Eisenkern: links die Primärspule, rechts die Sekundärspule.' + #13#10 +
+        'Die Wechselspannung in der Primärspule erzeugt ein wechselndes Feld im Kern, das in der Sekundärspule eine Spannung induziert.') + #13#10 +
+    S + #13#10 +
+    Format(Tr(FTaal, 'Nu: U1 = %s, I1 = %s; U2 = %s, I2 = %s.', 'Now: U1 = %s, I1 = %s; U2 = %s, I2 = %s.',
+      'Maintenant : U1 = %s, I1 = %s ; U2 = %s, I2 = %s.', 'Jetzt: U1 = %s, I1 = %s; U2 = %s, I2 = %s.'),
+      [VoltText(Abs(FU1)), AmpText(Abs(FI1)), VoltText(Abs(FU2)), AmpText(Abs(FI2))]) + #13#10 +
+    Tr(FTaal, 'Rechtsklik: windingen van de primaire en de secundaire spoel.',
+      'Right-click: turns of the primary and the secondary coil.',
+      'Clic droit : spires de la bobine primaire et secondaire.',
+      'Rechtsklick: Windungen der Primär- und der Sekundärspule.');
+end;
+
+procedure TjanTransformator.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Transformator', 'Transformer', 'Transformateur', 'Transformator') + ' > ', 0);
+  FOnStatus(Self, Format('N1 = %d  N2 = %d   U1 = %s  U2 = %s', [N1, N2, VoltText(Abs(FU1)), VoltText(Abs(FU2))]), 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;

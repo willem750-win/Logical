@@ -1,0 +1,12 @@
+TjanWisselbron;84;40;40;112;120;0;1;1;
+TjanTransformator;110;230;99;150;2;1;
+TjanLamp2;46;440;170;64;3;
+TjanConnector;9;141;113;98;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;82;43;113;196;jcmBR;jcpTL;jcsTLBR;0,020408163265306;11;
+TjanConnector;9;371;186;78;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;82;371;113;133;jcmBR;jcpTL;jcsTLBR;0,962406015037594;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Voeding;1;
+Grid;True;
+Statusbalk;False;

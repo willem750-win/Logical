@@ -1200,6 +1200,32 @@ begin
         else if TjanRelaisModel(Parts[k]).VerbreekDicht then
           AddTak(PinNode(k, 2), PinNode(k, 4), 1 / RKlein, Parts[k]);
       end
+      else if Parts[k] is TjanTransformator then
+        with TjanTransformator(Parts[k]) do
+        begin
+          // transformator: n = N2 / N1 maal de koppeling (0 bij gelijkspanning).
+          // Primaire: een kleine magnetiseringsstroom (bij gelijkspanning 40 ohm);
+          // secundaire: n x U1 achter 1 ohm; de primaire stroom volgt n x I2.
+          Hulp := Verhouding * Koppeling;
+          AddTak(PinNode(k, 0), PinNode(k, 1), Koppeling * 0.001 + (1 - Koppeling) / 40, Parts[k]);
+          AddTak(PinNode(k, 2), PinNode(k, 3), 1, Parts[k]);
+          SetLength(Gest, Length(Gest) + 3);
+          with Gest[High(Gest) - 2] do
+          begin
+            Van := PinNode(k, 3); Naar := PinNode(k, 2); P := PinNode(k, 0); M := PinNode(k, 1);
+            G := Hulp; Off := 0;
+          end;
+          with Gest[High(Gest) - 1] do
+          begin
+            Van := PinNode(k, 0); Naar := PinNode(k, 1); P := PinNode(k, 0); M := PinNode(k, 1);
+            G := Hulp * Hulp; Off := 0;
+          end;
+          with Gest[High(Gest)] do
+          begin
+            Van := PinNode(k, 0); Naar := PinNode(k, 1); P := PinNode(k, 2); M := PinNode(k, 3);
+            G := -Hulp; Off := 0;
+          end;
+        end
       else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
       begin
         // wisselschakelaar: het midden (klem 2) naar B (klem 1) of A (klem 0)
@@ -1298,6 +1324,13 @@ begin
       begin
         i := Find(PinNode(k, 1));
         if CompGnd[i] < 0 then CompGnd[i] := PinNode(k, 1);
+      end;
+    // de secundaire kring van een transformator is gescheiden: eigen massa
+    for k := 0 to NP - 1 do
+      if Parts[k] is TjanTransformator then
+      begin
+        i := Find(PinNode(k, 3));
+        if CompGnd[i] < 0 then CompGnd[i] := PinNode(k, 3);
       end;
 
     // matrix opbouwen
@@ -1516,6 +1549,15 @@ begin
         else if VerbreekDicht then FIc := (V[PinNode(k, 2)] - V[PinNode(k, 4)]) / RKlein
         else FIc := 0;
       end
+    else if Parts[k] is TjanTransformator then
+      with TjanTransformator(Parts[k]) do
+      begin
+        Hulp := Verhouding * Koppeling;
+        F := V[PinNode(k, 2)] - V[PinNode(k, 3)];
+        Amp := Hulp * U - F;   // secundaire stroom (uit klem 2)
+        SetStroom(Parts[k], U * (Koppeling * 0.001 + (1 - Koppeling) / 40) + Hulp * Amp);
+        Meet(U, F, Parts[k].FAmp, Amp);
+      end
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // stroom van het midden naar het gekozen contact
@@ -1659,6 +1701,12 @@ begin
         Vraag[PinBase[k]] := Amp;
         for j := 1 to 4 do Vraag[PinBase[k] + j] := -FIs[j];
       end;
+    if Parts[k] is TjanTransformator then
+    begin
+      // de secundaire stroom komt uit klem 2 en gaat terug in klem 3
+      Vraag[PinBase[k] + 2] := -TjanTransformator(Parts[k]).I2;
+      Vraag[PinBase[k] + 3] := TjanTransformator(Parts[k]).I2;
+    end;
     if Parts[k] is TjanRelaisModel then
       with TjanRelaisModel(Parts[k]) do
       begin
@@ -1806,6 +1854,9 @@ begin
     Result := Format('TjanRelaisModel;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanTransformator then
+    Result := Format('TjanTransformator;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanTransformator(C).N1Idx, TjanTransformator(C).N2Idx])
   else if C is TjanDraaimagneet then
     Result := Format('TjanDraaimagneet;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanDraaimagneet(C).ToerIdx, Ord(TjanDraaimagneet(C).Draait)])

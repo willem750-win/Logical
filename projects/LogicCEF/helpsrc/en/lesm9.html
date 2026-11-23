@@ -1,0 +1,71 @@
+<!-- titel: Magnetism 9 - The transformer -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetism</a> &rsaquo; Lesson 9 of 9</p>
+  <h1>The transformer</h1>
+  <div class="goal"><strong>Goal:</strong> see how a <b>transformer</b> with two coils on one iron core steps an
+  alternating voltage <b>up</b> or <b>down</b>, learn the rule U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> /
+  N<sub>1</sub>, and understand why it only works with <b>alternating voltage</b>.</div>
+
+  <h2>Two coils, one core</h2>
+  <p>A transformer has a closed iron core with two coils on it:</p>
+  <ul>
+    <li>the <b>primary</b> coil (N<sub>1</sub> turns) is connected to an alternating voltage. It makes a magnetic field in
+    the core (<a href="lesm2.html">lesson 2</a>), and because the current keeps changing direction, that field changes
+    with it;</li>
+    <li>the core leads that changing field through the <b>secondary</b> coil (N<sub>2</sub> turns). There the field keeps
+    changing, and that induces a voltage: induction, as in <a href="lesm7.html">lesson 7</a>.</li>
+  </ul>
+  <p>Every turn gets the same voltage. If the secondary coil has half as many turns, it gets half the voltage; twice as
+  many turns gives twice the voltage:</p>
+  <div class="tip"><strong>Transformer rule:</strong> U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub></div>
+
+  <p><a class="open" href="../../panels/lessen/magn9-transformator.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/lesm9.png" alt="A 12 V alternating voltage source on the primary coil (200 turns); the secondary coil (100 turns) feeds a lamp">
+    <figcaption>200 turns primary, 100 secondary: 12&nbsp;V becomes about 6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation. The alternating voltage source gives 12&nbsp;V to the primary coil. Below N<sub>1</sub> and
+    N<sub>2</sub> you see the voltage of each coil. It goes up and down with the alternating voltage; the highest values are about 12&nbsp;V and 6&nbsp;V. The lamp glows dimly.</li>
+    <li>Right-click the transformer and choose 200 under <b>Secondary turns</b>: now U<sub>2</sub> equals U<sub>1</sub>,
+    and the lamp glows fully.</li>
+    <li>Choose 50 secondary turns: U<sub>2</sub> becomes a quarter, about 3&nbsp;V.</li>
+    <li>Set the secondary back to 100 and choose 100 under <b>Primary turns</b>: now N<sub>2</sub> equals N<sub>1</sub>, and
+    U<sub>2</sub> is 12&nbsp;V again.</li>
+    <li>Point at the transformer: the hint also shows the currents I<sub>1</sub> and I<sub>2</sub>.</li>
+  </ol>
+
+  <h2>Voltage down, current up</h2>
+  <p>A transformer does not make energy. What it gains in voltage it loses in current, and the other way round:
+  U<sub>1</sub> &times; I<sub>1</sub> is about U<sub>2</sub> &times; I<sub>2</sub>. If it halves the voltage, the secondary
+  can give twice as much current as the primary takes.</p>
+
+  <h2>Only alternating voltage</h2>
+  <p>Replace the alternating voltage source with an ordinary source (a battery, direct voltage). After switching on, the
+  field in the core stays the same, and a field that does not change induces no voltage. The secondary then gives
+  <b>nothing</b>, and the primary coil is just a wire with resistance: a lot of current flows and it gets warm. That is why
+  the electricity grid uses alternating voltage.</p>
+
+  <h2>Where is there a transformer?</h2>
+  <ul>
+    <li>In a <b>charger</b> or adapter: from 230&nbsp;V to, for example, 5&nbsp;V.</li>
+    <li>In the <b>high-voltage grid</b>: next to the power station a transformer steps the voltage up to hundreds of
+    thousands of volts. The same energy then goes through the long lines with much less current, and they get less warm.
+    Near the houses transformers step the voltage down again to 230&nbsp;V.</li>
+  </ul>
+
+  <h2>Exercise</h2>
+  <p>1. The primary coil has 200 turns and gets 12&nbsp;V. How many turns must the secondary coil have for 6&nbsp;V? And for
+  24&nbsp;V? Check it in the example.</p>
+  <p>2. Why is electricity sent over long distances at a very high voltage?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>1. For 6&nbsp;V: N<sub>2</sub> = 200 &times; 6 / 12 = <b>100</b> turns. For 24&nbsp;V: N<sub>2</sub> = 200 &times; 24 /
+    12 = <b>400</b> turns. (In Logic U<sub>2</sub> is a little lower, because of a small voltage loss in the secondary
+    coil.)</p>
+    <p>2. The power is P = U &times; I. At a high voltage only a small current is needed for the same power. A small current
+    loses much less energy as heat in the long wires.</p>
+  </details>
+
+  <div class="pager"><a href="lesm8.html">&larr; Magnetism 8: The dynamo</a><a href="leerpad.html">Learning path &rarr;</a></div>

@@ -2167,3 +2167,30 @@ msgstr "Щелчок: вращать или остановить. Правый �
 
 msgid "Rotating magnet"
 msgstr "Вращающийся магнит"
+
+msgid "create transformer"
+msgstr "создать трансформатор"
+
+msgid "Primary turns (N1)"
+msgstr "Витки первичной обмотки (N1)"
+
+msgid "Secondary turns (N2)"
+msgstr "Витки вторичной обмотки (N2)"
+
+msgid "The primary voltage does not change (direct voltage): the field in the core stays the same, the secondary gives nothing.\nThe primary coil is now just a 40 ohm resistor and gets warm."
+msgstr "Первичное напряжение не меняется (постоянное напряжение): поле в сердечнике не меняется, вторичная обмотка ничего не даёт.\nПервичная обмотка теперь просто сопротивление 40 Ом и нагревается."
+
+msgid "U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2."
+msgstr "U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2."
+
+msgid "Transformer"
+msgstr "Трансформатор"
+
+msgid "Two coils on an iron core: the primary on the left, the secondary on the right.\nThe alternating voltage in the primary makes an alternating field in the core, which induces a voltage in the secondary."
+msgstr "Две катушки на железном сердечнике: слева первичная, справа вторичная.\nПеременное напряжение в первичной обмотке создаёт переменное поле в сердечнике, которое наводит напряжение во вторичной."
+
+msgid "Now: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
+msgstr "Сейчас: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
+
+msgid "Right-click: turns of the primary and the secondary coil."
+msgstr "Правый щелчок: витки первичной и вторичной обмотки."

@@ -2167,3 +2167,30 @@ msgstr "クリック：回転または停止。右クリック：回転数。"
 
 msgid "Rotating magnet"
 msgstr "回転磁石"
+
+msgid "create transformer"
+msgstr "変圧器を作成"
+
+msgid "Primary turns (N1)"
+msgstr "一次巻数 (N1)"
+
+msgid "Secondary turns (N2)"
+msgstr "二次巻数 (N2)"
+
+msgid "The primary voltage does not change (direct voltage): the field in the core stays the same, the secondary gives nothing.\nThe primary coil is now just a 40 ohm resistor and gets warm."
+msgstr "一次電圧が変化しません (直流)：鉄心の磁界は変わらず、二次側は何も出しません。\n一次コイルは 40 オームの抵抗にすぎず、熱くなります。"
+
+msgid "U2 = N2 / N1 x U1 = %d / %d x %s = %s.  I1 = N2 / N1 x I2."
+msgstr "U2 = N2 / N1 x U1 = %d / %d x %s = %s。  I1 = N2 / N1 x I2。"
+
+msgid "Transformer"
+msgstr "変圧器"
+
+msgid "Two coils on an iron core: the primary on the left, the secondary on the right.\nThe alternating voltage in the primary makes an alternating field in the core, which induces a voltage in the secondary."
+msgstr "鉄心に巻いた 2 つのコイル：左が一次、右が二次です。\n一次の交流電圧が鉄心に交番磁界をつくり、それが二次に電圧を誘導します。"
+
+msgid "Now: U1 = %s, I1 = %s; U2 = %s, I2 = %s."
+msgstr "現在：U1 = %s、I1 = %s；U2 = %s、I2 = %s。"
+
+msgid "Right-click: turns of the primary and the secondary coil."
+msgstr "右クリック：一次コイルと二次コイルの巻数。"

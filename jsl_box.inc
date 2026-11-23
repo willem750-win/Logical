@@ -396,6 +396,7 @@ begin
   FHMotorM:='maak Elektromotor (model)';
   FHNulmeter:='maak Nulpuntmeter (galvanometer)';
   FHDraaiM:='maak Draaiende magneet (dynamo)';
+  FHTrafo:='maak Transformator';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1487,7 +1488,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') then
     begin
       with TStringList.Create do
       try
@@ -1514,6 +1515,7 @@ begin
           else if obj[1] = 'TjanElektromotor' then VD := TjanElektromotor.Create(Self)
           else if obj[1] = 'TjanNulmeter' then VD := TjanNulmeter.Create(Self)
           else if obj[1] = 'TjanDraaimagneet' then VD := TjanDraaimagneet.Create(Self)
+          else if obj[1] = 'TjanTransformator' then VD := TjanTransformator.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -1545,6 +1547,11 @@ begin
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanTransformator then
+          begin
+            if Count >= 5 then TjanTransformator(VD).N1Idx := StrToIntDef(Trim(Strings[4]), 2);
+            if Count >= 6 then TjanTransformator(VD).N2Idx := StrToIntDef(Trim(Strings[5]), 1);
+          end
           else if VD is TjanDraaimagneet then
           begin
             if Count >= 5 then TjanDraaimagneet(VD).ToerIdx := StrToIntDef(Trim(Strings[4]), 2);
@@ -2490,6 +2497,7 @@ begin
     27: D := TjanElektromotor.Create(Self);
     28: D := TjanNulmeter.Create(Self);
     29: D := TjanDraaimagneet.Create(Self);
+    30: D := TjanTransformator.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2976,6 +2984,20 @@ begin
           Polygon([Point(CX, CY - 2), Point(CX + 7, CY - 9), Point(CX + 9, CY - 7), Point(CX + 2, CY)]);
           Brush.Color := RGBToColor(40, 90, 200);
           Polygon([Point(CX, CY - 2), Point(CX - 7, CY + 5), Point(CX - 5, CY + 7), Point(CX + 2, CY)]);
+        end;
+      30:
+        begin
+          // transformator: twee spoelen op een kern
+          Brush.Style := bsClear;
+          Pen.Color := RGBToColor(110, 110, 120);
+          Rectangle(Rect(CX - 7, CY - 8, CX + 8, CY + 9));
+          Pen.Color := RGBToColor(184, 100, 30);
+          for K := 0 to 3 do
+          begin
+            MoveTo(CX - 10, CY - 5 + K * 3); LineTo(CX - 4, CY - 5 + K * 3);
+            MoveTo(CX + 5, CY - 5 + K * 3); LineTo(CX + 11, CY - 5 + K * 3);
+          end;
+          Pen.Color := clBlack;
         end;
       6:
         begin

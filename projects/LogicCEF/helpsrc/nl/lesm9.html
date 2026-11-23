@@ -1,0 +1,71 @@
+<!-- titel: Magnetisme 9 - De transformator -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetisme</a> &rsaquo; Les 9 van 9</p>
+  <h1>De transformator</h1>
+  <div class="goal"><strong>Doel:</strong> zien hoe een <b>transformator</b> met twee spoelen op één ijzeren kern een
+  wisselspanning <b>omhoog</b> of <b>omlaag</b> zet, de regel U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> /
+  N<sub>1</sub> leren, en begrijpen waarom hij alleen met <b>wisselspanning</b> werkt.</div>
+
+  <h2>Twee spoelen, één kern</h2>
+  <p>Een transformator heeft een gesloten ijzeren kern met twee spoelen erop:</p>
+  <ul>
+    <li>de <b>primaire</b> spoel (N<sub>1</sub> windingen) hangt aan een wisselspanning. Ze maakt een magnetisch veld in
+    de kern (<a href="lesm2.html">les 2</a>), en omdat de stroom steeds van richting wisselt, wisselt dat veld mee;</li>
+    <li>de kern leidt dat wisselende veld door de <b>secundaire</b> spoel (N<sub>2</sub> windingen). Daar verandert het
+    veld dus voortdurend, en dat wekt een spanning op: inductie, zoals in <a href="lesm7.html">les 7</a>.</li>
+  </ul>
+  <p>Elke winding krijgt evenveel spanning. Heeft de secundaire spoel half zoveel windingen, dan krijgt ze half zoveel
+  spanning; twee keer zoveel windingen geeft twee keer zoveel spanning:</p>
+  <div class="tip"><strong>Regel van de transformator:</strong> U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> /
+  N<sub>1</sub></div>
+
+  <p><a class="open" href="../../panels/lessen/magn9-transformator.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/lesm9.png" alt="Een wisselspanningsbron van 12 V aan de primaire spoel (200 windingen); de secundaire spoel (100 windingen) voedt een lamp">
+    <figcaption>200 windingen primair, 100 secundair: van 12&nbsp;V wordt ongeveer 6&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie. De wisselspanningsbron geeft 12&nbsp;V aan de primaire spoel. Onder N<sub>1</sub> en
+    N<sub>2</sub> zie je de spanning van elke spoel. Ze golft mee met de wisselspanning; de hoogste waarden zijn ongeveer 12&nbsp;V en 6&nbsp;V. De lamp brandt zwak.</li>
+    <li>Klik met de rechtermuisknop op de transformator en kies bij <b>Secundaire windingen</b> 200: nu is
+    U<sub>2</sub> even groot als U<sub>1</sub>, en de lamp brandt vol.</li>
+    <li>Kies 50 secundaire windingen: U<sub>2</sub> wordt een kwart, ongeveer 3&nbsp;V.</li>
+    <li>Zet de secundaire terug op 100 en kies bij <b>Primaire windingen</b> 100: nu is N<sub>2</sub> gelijk aan
+    N<sub>1</sub>, en U<sub>2</sub> is weer 12&nbsp;V.</li>
+    <li>Wijs de transformator aan: de hint toont ook de stromen I<sub>1</sub> en I<sub>2</sub>.</li>
+  </ol>
+
+  <h2>Spanning omlaag, stroom omhoog</h2>
+  <p>Een transformator maakt geen energie. Wat hij aan spanning wint, verliest hij aan stroom, en omgekeerd:
+  U<sub>1</sub> &times; I<sub>1</sub> is ongeveer U<sub>2</sub> &times; I<sub>2</sub>. Zet hij de spanning op de helft,
+  dan kan de secundaire twee keer zoveel stroom geven als de primaire neemt.</p>
+
+  <h2>Alleen wisselspanning</h2>
+  <p>Vervang de wisselspanningsbron eens door een gewone bron (een accu, gelijkspanning). Na het inschakelen blijft het
+  veld in de kern gelijk, en een veld dat niet verandert, wekt geen spanning op. De secundaire geeft dan <b>niets</b>, en
+  de primaire spoel is gewoon een draad met weerstand: er loopt veel stroom en ze wordt warm. Daarom werkt het
+  elektriciteitsnet met wisselspanning.</p>
+
+  <h2>Waar zit een transformator?</h2>
+  <ul>
+    <li>In een <b>oplader</b> of adapter: van 230&nbsp;V naar bijvoorbeeld 5&nbsp;V.</li>
+    <li>In het <b>hoogspanningsnet</b>: naast de centrale zet een transformator de spanning op tot honderdduizenden volt.
+    Dezelfde energie gaat dan met veel minder stroom door de lange leidingen, en die worden minder warm. Dicht bij de
+    huizen zetten transformatoren de spanning weer omlaag tot 230&nbsp;V.</li>
+  </ul>
+
+  <h2>Opdracht</h2>
+  <p>1. De primaire spoel heeft 200 windingen en krijgt 12&nbsp;V. Hoeveel windingen moet de secundaire spoel hebben voor
+  6&nbsp;V? En voor 24&nbsp;V? Controleer het in het voorbeeld.</p>
+  <p>2. Waarom stuurt men elektriciteit over grote afstanden bij een heel hoge spanning?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>1. Voor 6&nbsp;V: N<sub>2</sub> = 200 &times; 6 / 12 = <b>100</b> windingen. Voor 24&nbsp;V: N<sub>2</sub> =
+    200 &times; 24 / 12 = <b>400</b> windingen. (In Logic ligt U<sub>2</sub> een tikje lager, door een klein
+    spanningsverlies in de secundaire spoel.)</p>
+    <p>2. Het vermogen is P = U &times; I. Bij een hoge spanning is voor hetzelfde vermogen maar een kleine stroom nodig.
+    Een kleine stroom verliest veel minder energie als warmte in de lange draden.</p>
+  </details>
+
+  <div class="pager"><a href="lesm8.html">&larr; Magnetisme 8: De dynamo</a><a href="leerpad.html">Leerpad &rarr;</a></div>
