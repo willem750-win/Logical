@@ -1,0 +1,74 @@
+<!-- titel: Magnetism 6 - The electric motor -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnetism</a> &rsaquo; Lesson 6 of 6</p>
+  <h1>The electric motor</h1>
+  <div class="goal"><strong>Goal:</strong> understand how a <b>DC motor</b> turns: the Lorentz force on the two wires of a
+  coil, the <b>dead point</b>, and why a motor needs a <b>commutator</b>.</div>
+
+  <h2>From swing to motor</h2>
+  <p>In <a href="lesm5.html">lesson 5</a> the Lorentz force pushed one wire aside. Bend the wire into a rectangular
+  <b>coil</b> on an <b>axle</b> between two poles, and the two long sides run parallel to the axle. In one side the current
+  goes into the screen, in the other it comes out. So one side is pushed down and the other up: the coil turns.</p>
+
+  <h2>The model</h2>
+  <ul>
+    <li>On the <b>left</b> you look <b>along the axle</b>. The north pole is on the left, the south pole on the right, and
+    the field lines run from left to right. You see the coil as a line between two wires, with a cross (the current goes
+    into the screen) or a dot (the current comes out). The yellow arrows show the Lorentz force on each wire.</li>
+    <li>In the middle is the <b>commutator</b>: a small ring in two halves on the axle, with a <b>brush</b> on the left and
+    on the right rubbing against it. The left brush is connected to the left terminal, the right one to the right
+    terminal.</li>
+    <li>On the <b>right</b> you see the same thing <b>at an angle</b>: the coil between the poles, with the commutator at
+    the front of the axle.</li>
+  </ul>
+
+  <p><a class="open" href="../../panels/lessen/magn6-elektromotor.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/lesm6.png" alt="A source, a switch, the electric motor model and a lamp in series; the coil turns">
+    <figcaption>The left wire (cross) is pushed down, the right one (dot) up: the coil turns anticlockwise, about 50&nbsp;rpm.</figcaption>
+  </figure>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and close the switch. The coil starts to turn, anticlockwise. Below the motor you see the
+    speed.</li>
+    <li>Watch the moment the coil stands <b>upright</b>. Then the two forces point exactly along the coil and do not push
+    it further round: that is the <b>dead point</b>. The coil gets past it by its momentum.</li>
+    <li>Set the source to 6&nbsp;V with the slider: less current flows, the forces are smaller, and the motor turns more
+    slowly.</li>
+    <li>Right-click the motor and choose <b>Turn the magnet round</b>: the motor now turns clockwise.</li>
+  </ol>
+
+  <h2>The commutator</h2>
+  <p>After half a turn the wire that was on the left is on the right. If nothing changed, the current in it would keep
+  flowing the same way, and then the force would push the coil back. That is why a motor has a <b>commutator</b>: every
+  half turn the brushes slide from one half of the ring to the other. So the wire on the <b>left</b> always gets the
+  current into the screen and is always pushed down; the wire on the <b>right</b> is always pushed up. The coil keeps
+  turning the same way.</p>
+  <p>Right-click the motor and untick <b>Commutator</b>. Now each wire stays connected to the same brush, as with two
+  ordinary slip rings. The coil turns a little, swings back and forth and then stays <b>upright</b>: there the forces
+  point along the coil and everything is in balance.</p>
+  <figure>
+    <img src="../img/lesm6b.png" alt="The electric motor model without a commutator: the coil stands still upright">
+    <figcaption>Without a commutator: the coil stands still upright. The upper wire is pulled up, the lower one down.</figcaption>
+  </figure>
+
+  <h2>Real motors</h2>
+  <p>A real motor has coils with many turns on an iron <b>armature</b>, and usually more than one coil, so that there is
+  no dead point. The magnets are sometimes permanent magnets, sometimes electromagnets. You find them everywhere: in a
+  fan, a drill, a windscreen wiper, an electric bike or car. In <a href="les13.html">lesson 13</a> you control a motor with
+  LogicRun.</p>
+
+  <h2>Exercise</h2>
+  <p>1. The motor turns anticlockwise. Which way does it turn if you turn the magnet round <b>and</b> reverse the
+  current?</p>
+  <p>2. Why does the coil without a commutator always come to rest upright, and never lying flat?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>1. <b>Anticlockwise</b> again. Reversing once reverses the forces; reversing twice puts them back, just like the
+    current swing in lesson 5.</p>
+    <p>2. When the coil lies flat (wires left and right), the forces push one wire up and the other down: then it turns.
+    Only when it stands upright (wires at the top and bottom) do the forces point along the coil, and it stops turning.
+    Without a commutator the current never reverses, so the coil comes to rest there.</p>
+  </details>
+
+  <div class="pager"><a href="lesm5.html">&larr; Magnetism 5: The Lorentz force</a><a href="leerpad.html">Learning path &rarr;</a></div>

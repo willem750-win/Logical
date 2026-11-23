@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -64,6 +64,7 @@ begin
   else if PtInRect(RIJzer, P) then DIJzer := True
   else if PtInRect(RRelaisM, P) then DRelaisM := True
   else if PtInRect(RSchommel, P) then DSchommel := True
+  else if PtInRect(RMotorM, P) then DMotorM := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -147,6 +148,7 @@ begin
   else if PtInRect(RIJzer, P) then NewHint := FHIJzer
   else if PtInRect(RRelaisM, P) then NewHint := FHRelaisM
   else if PtInRect(RSchommel, P) then NewHint := FHSchommel
+  else if PtInRect(RMotorM, P) then NewHint := FHMotorM
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -558,7 +560,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False;
 
     // nieuw
     DSquare := False;
@@ -836,6 +838,8 @@ begin
     NewVoedingsDeel(25)
   else if DSchommel then
     NewVoedingsDeel(26)
+  else if DMotorM then
+    NewVoedingsDeel(27)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1452,6 +1456,7 @@ if FBoxTaal=stDutch then
   HIJzer:='maak Spijker (ijzer)';
   HRelaisModel:='maak Relais (open model)';
   HSchommel:='maak Stroomschommel';
+  HElektromotor:='maak Elektromotor (model)';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -1517,6 +1522,7 @@ if FBoxTaal=stEnglish then
   HIJzer:=LangTr('create nail (iron)');
   HRelaisModel:=LangTr('create relay (open model)');
   HSchommel:=LangTr('create current swing');
+  HElektromotor:=LangTr('create electric motor (model)');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -1580,6 +1586,7 @@ if FBoxTaal=stFrench then
   HIJzer:='faire Clou (fer)';
   HRelaisModel:='faire Relais (modèle ouvert)';
   HSchommel:='faire Balançoire électrique';
+  HElektromotor:='faire Moteur électrique (modèle)';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -1644,6 +1651,7 @@ if FBoxTaal=stFrench then
   HIJzer:='Nagel (Eisen) erstellen';
   HRelaisModel:='Relais (offenes Modell) erstellen';
   HSchommel:='Leiterschaukel erstellen';
+  HElektromotor:='Elektromotor (Modell) erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -1839,6 +1847,7 @@ begin
   RIJzer := Rect(0, 0, 0, 0);
   RRelaisM := Rect(0, 0, 0, 0);
   RSchommel := Rect(0, 0, 0, 0);
+  RMotorM := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1876,6 +1885,7 @@ begin
     Knop(RIJzer, 24, DIJzer);
     Knop(RRelaisM, 25, DRelaisM);
     Knop(RSchommel, 26, DSchommel);
+    Knop(RMotorM, 27, DMotorM);
   end;
 end;
 

@@ -2072,3 +2072,433 @@ begin
   FOnStatus(Self, 'I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
+
+{ TjanElektromotor }
+
+const
+  MotorW = 240;
+  MotorH = 150;
+  MotorR = 30;               // straal van het spoeltje in het vooraanzicht
+  MotorK = 0.2;              // koppel per ampère
+  MotorWrijving = 0.1;       // wrijving: remt de snelheid af
+
+constructor TjanElektromotor.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := MotorW;
+  Height := MotorH;
+  HelpKeyword := 'magnetisme';
+  FHoek := 0.4;              // niet op het dode punt
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
+end;
+
+function TjanElektromotor.KanDraaien: Boolean;
+begin
+  Result := False;
+end;
+
+function TjanElektromotor.StdMaat: TPoint;
+begin
+  Result := Point(MotorW, MotorH);
+end;
+
+function TjanElektromotor.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanElektromotor.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, 1) else Result := Point(132, 1);
+end;
+
+function TjanElektromotor.Ohm: Double;
+begin
+  Result := 4;
+end;
+
+// draad A staat op FHoek, draad B er recht tegenover. De + borstel (links)
+// raakt via de collector altijd de draad aan de linkerkant: daar gaat de
+// stroom het scherm in. Zonder collector houdt draad A altijd dezelfde stroom.
+function TjanElektromotor.StroomA: Integer;
+begin
+  if Abs(FAmp) <= 0.0005 then Exit(0);
+  if FAmp > 0 then Result := 1 else Result := -1;
+  if not FGeenCollector then
+    if Cos(FHoek) > 0 then Result := -Result;
+end;
+
+function TjanElektromotor.Toeren: Double;
+begin
+  Result := FOmega / (2 * Pi) * 25 * 60;
+end;
+
+procedure TjanElektromotor.Tik(Sender: TObject);
+var
+  B, Tau: Double;
+begin
+  if (Parent = nil) or not Visible then Exit;
+  if FOmgekeerd then B := -1 else B := 1;
+  // koppel (tegen de klok in positief) van de twee draden samen
+  Tau := -2 * MotorK * Abs(FAmp) * B * StroomA * Cos(FHoek);
+  if (Abs(FOmega) < 0.003) and (Abs(Tau) < 0.002) then
+  begin
+    if FOmega <> 0 then
+    begin
+      FOmega := 0;
+      UpdateHintText;
+    end;
+    Exit;
+  end;
+  FOmega := FOmega + Tau - MotorWrijving * FOmega;
+  FHoek := FHoek + FOmega;
+  while FHoek > Pi do FHoek := FHoek - 2 * Pi;
+  while FHoek < -Pi do FHoek := FHoek + 2 * Pi;
+  Invalidate;
+end;
+
+procedure TjanElektromotor.SetOmgekeerd(const Value: Boolean);
+begin
+  if Value = FOmgekeerd then Exit;
+  FOmgekeerd := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanElektromotor.SetGeenCollector(const Value: Boolean);
+begin
+  if Value = FGeenCollector then Exit;
+  FGeenCollector := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanElektromotor.OmdraaiClick(Sender: TObject);
+begin
+  if not FLock then Omgekeerd := not Omgekeerd;
+end;
+
+procedure TjanElektromotor.CollectorClick(Sender: TObject);
+begin
+  if not FLock then GeenCollector := not GeenCollector;
+end;
+
+procedure TjanElektromotor.AddMenuItems(APop: TPopupMenu);
+var
+  Mi: TMenuItem;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Magneet omdraaien (N en Z wisselen)', 'Turn the magnet round (swap N and S)',
+    'Retourner l''aimant (échanger N et S)', 'Magnet umdrehen (N und S tauschen)');
+  Mi.Enabled := not FLock;
+  Mi.OnClick := OmdraaiClick;
+  APop.Items.Add(Mi);
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Collector (stroom elke halve draai omkeren)', 'Commutator (reverse the current every half turn)',
+    'Collecteur (inverser le courant à chaque demi-tour)', 'Kommutator (Strom jede halbe Drehung umkehren)');
+  Mi.Checked := not FGeenCollector;
+  Mi.Enabled := not FLock;
+  Mi.OnClick := CollectorClick;
+  APop.Items.Add(Mi);
+end;
+
+procedure TjanElektromotor.Paint;
+const
+  CX = 70; CY = 88;
+var
+  i, S, Y: Integer;
+  AX, AY, BX, BY, PX, PY: Integer;
+  LinksKl, RechtsKl: TColor;
+  LinksT, RechtsT: string;
+  B: Integer;
+
+  procedure Pijlkop(PX0, PY0, DX, DY: Integer);
+  begin
+    Canvas.Polygon([Point(PX0, PY0), Point(PX0 - 4 * DX - 3 * DY, PY0 - 4 * DY - 3 * DX),
+      Point(PX0 - 4 * DX + 3 * DY, PY0 - 4 * DY + 3 * DX)]);
+  end;
+
+  procedure Draad(X, Y, AStr: Integer);
+  begin
+    with Canvas do
+    begin
+      Pen.Color := RGBToColor(120, 60, 20);
+      Brush.Color := RGBToColor(200, 120, 50);
+      Brush.Style := bsSolid;
+      Ellipse(X - 7, Y - 7, X + 8, Y + 8);
+      Pen.Color := clBlack;
+      if AStr > 0 then
+      begin
+        Pen.Width := 2;
+        MoveTo(X - 3, Y - 3); LineTo(X + 4, Y + 4);
+        MoveTo(X + 3, Y - 3); LineTo(X - 4, Y + 4);
+        Pen.Width := 1;
+      end
+      else if AStr < 0 then
+      begin
+        Brush.Color := clBlack;
+        Ellipse(X - 2, Y - 2, X + 3, Y + 3);
+      end;
+      // Lorentzkracht: omlaag als (stroom het scherm in) en (veld naar rechts)
+      if AStr <> 0 then
+      begin
+        Pen.Color := clYellow;
+        Pen.Width := 3;
+        MoveTo(X + 10, Y);
+        LineTo(X + 10, Y + AStr * B * 14);
+        Pen.Width := 1;
+        Pen.Color := clBlack;
+        Brush.Color := clYellow;
+        Pijlkop(X + 10, Y + AStr * B * 20, 0, AStr * B);
+      end;
+    end;
+  end;
+
+begin
+  if FOmgekeerd then
+  begin
+    LinksKl := RGBToColor(40, 90, 200); RechtsKl := RGBToColor(215, 40, 40);
+    LinksT := Tr(FTaal, 'Z', 'S', 'S', 'S'); RechtsT := 'N'; B := -1;
+  end
+  else
+  begin
+    LinksKl := RGBToColor(215, 40, 40); RechtsKl := RGBToColor(40, 90, 200);
+    LinksT := 'N'; RechtsT := Tr(FTaal, 'Z', 'S', 'S', 'S'); B := 1;
+  end;
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // aansluitingen van de klemmen naar de borstels
+    Pen.Color := clBlack;
+    MoveTo(PinPos(0).X + 3, PinPos(0).Y + 6); LineTo(PinPos(0).X + 3, CY); LineTo(CX - 16, CY);
+    MoveTo(PinPos(1).X + 3, PinPos(1).Y + 6); LineTo(PinPos(1).X + 3, CY); LineTo(CX + 16, CY);
+    // de polen
+    Brush.Style := bsSolid;
+    Brush.Color := LinksKl;
+    FillRect(Rect(10, 40, 28, 136));
+    Brush.Color := RechtsKl;
+    FillRect(Rect(112, 40, 130, 136));
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 9;
+    Font.Style := [fsBold];
+    Font.Color := clWhite;
+    TextOut(14, 42, LinksT);
+    TextOut(116, 42, RechtsT);
+    // veldlijnen van N naar Z
+    Pen.Color := RGBToColor(110, 110, 110);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(110, 110, 110);
+    for i := 0 to 1 do
+    begin
+      if i = 0 then Y := 48 else Y := 128;
+      Pen.Style := psDot;
+      MoveTo(30, Y); LineTo(110, Y);
+      Pen.Style := psSolid;
+      Pijlkop(70 + 4 * B, Y, B, 0);
+    end;
+    // het spoeltje (van opzij: een lijn tussen de twee draden)
+    AX := CX + Round(MotorR * Cos(FHoek));
+    AY := CY - Round(MotorR * Sin(FHoek));
+    BX := 2 * CX - AX;
+    BY := 2 * CY - AY;
+    Pen.Color := RGBToColor(184, 100, 30);
+    Pen.Width := 2;
+    MoveTo(AX, AY); LineTo(BX, BY);
+    Pen.Width := 1;
+    // collector: een ring in twee helften, de spleet dwars op het spoeltje
+    Pen.Color := RGBToColor(120, 90, 20);
+    Brush.Color := RGBToColor(220, 180, 60);
+    Ellipse(CX - 10, CY - 10, CX + 11, CY + 11);
+    if not FGeenCollector then
+    begin
+      PX := Round(11 * Sin(FHoek));
+      PY := Round(11 * Cos(FHoek));
+      Pen.Color := RGBToColor(80, 50, 10);
+      Pen.Width := 2;
+      MoveTo(CX - PX, CY - PY); LineTo(CX + PX, CY + PY);
+      Pen.Width := 1;
+    end;
+    // borstels
+    Brush.Color := RGBToColor(90, 90, 90);
+    FillRect(Rect(CX - 17, CY - 4, CX - 10, CY + 5));
+    FillRect(Rect(CX + 11, CY - 4, CX + 18, CY + 5));
+    // de twee draden met stroom en kracht
+    S := StroomA;
+    Draad(AX, AY, S);
+    Draad(BX, BY, -S);
+    // toerental
+    Brush.Style := bsClear;
+    Font.Size := 7;
+    Font.Style := [];
+    Font.Color := RGBToColor(60, 60, 60);
+    TextOut(36, 139, FormatFloat('0', Abs(Toeren)) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min'));
+  end;
+  TekenSchuin;
+  PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+  PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+  PaintSelection;
+end;
+
+// rechts een schuin tekeningetje: het spoeltje tussen de polen, de collector
+// vooraan op de as met de twee borstels
+procedure TjanElektromotor.TekenSchuin;
+const
+  OX = 146; OY = 30; DX = 26; DY = -15; RS = 13;
+var
+  CXs, CYs, UX, UY: Double;
+  KX, KY: Double;
+  A1, A2, B1, B2: TPoint;
+  LinksKl, RechtsKl, LinksL, RechtsL: TColor;
+  S: Integer;
+
+  function Pt(X, Y: Double): TPoint;
+  begin
+    Result := Point(Round(X), Round(Y));
+  end;
+
+  procedure Pijl(const P, Q: TPoint; ARichting: Integer);
+  var
+    MX, MY, VX, VY, L: Double;
+  begin
+    // pijltje midden op de draad van P naar Q (ARichting +1) of terug (-1)
+    MX := (P.X + Q.X) / 2; MY := (P.Y + Q.Y) / 2;
+    VX := (Q.X - P.X) * ARichting; VY := (Q.Y - P.Y) * ARichting;
+    L := Sqrt(VX * VX + VY * VY);
+    if L < 1 then Exit;
+    VX := VX / L; VY := VY / L;
+    Canvas.Pen.Color := clBlack;
+    Canvas.Brush.Color := RGBToColor(220, 0, 0);
+    Canvas.Polygon([Pt(MX + 6 * VX, MY + 6 * VY), Pt(MX - 4 * VX - 4 * VY, MY - 4 * VY + 4 * VX),
+      Pt(MX - 4 * VX + 4 * VY, MY - 4 * VY - 4 * VX)]);
+  end;
+
+begin
+  if FOmgekeerd then
+  begin
+    LinksKl := RGBToColor(40, 90, 200); RechtsKl := RGBToColor(215, 40, 40);
+    LinksL := RGBToColor(150, 175, 230); RechtsL := RGBToColor(240, 160, 160);
+  end
+  else
+  begin
+    LinksKl := RGBToColor(215, 40, 40); RechtsKl := RGBToColor(40, 90, 200);
+    LinksL := RGBToColor(240, 160, 160); RechtsL := RGBToColor(150, 175, 230);
+  end;
+  CXs := OX + 32; CYs := OY + 64;
+  UX := RS * Cos(FHoek); UY := -RS * Sin(FHoek);
+  KX := CXs - 0.5 * DX; KY := CYs - 0.5 * DY;
+  A1 := Pt(CXs + UX, CYs + UY); A2 := Pt(CXs + UX + DX, CYs + UY + DY);
+  B1 := Pt(CXs - UX, CYs - UY); B2 := Pt(CXs - UX + DX, CYs - UY + DY);
+  S := StroomA;
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    Pen.Color := RGBToColor(90, 90, 90);
+    Brush.Style := bsSolid;
+    // linkse pool: bovenkant en voorkant
+    Brush.Color := LinksL;
+    Polygon([Point(OX, OY + 30), Point(OX + 12, OY + 30), Point(OX + 12 + DX, OY + 30 + DY), Point(OX + DX, OY + 30 + DY)]);
+    Brush.Color := LinksKl;
+    FillRect(Rect(OX, OY + 30, OX + 12, OY + 96));
+    // het spoeltje: twee draden langs de as, achteraan verbonden
+    Pen.Color := RGBToColor(184, 100, 30);
+    Pen.Width := 3;
+    MoveTo(A1.X, A1.Y); LineTo(A2.X, A2.Y); LineTo(B2.X, B2.Y); LineTo(B1.X, B1.Y);
+    // vooraan naar de collector
+    Pen.Width := 2;
+    MoveTo(A1.X, A1.Y); LineTo(Round(KX + 0.4 * UX), Round(KY + 0.4 * UY));
+    MoveTo(B1.X, B1.Y); LineTo(Round(KX - 0.4 * UX), Round(KY - 0.4 * UY));
+    Pen.Width := 1;
+    // as
+    Pen.Color := RGBToColor(60, 60, 60);
+    MoveTo(Round(KX - 0.4 * DX), Round(KY - 0.4 * DY)); LineTo(Round(CXs + 1.3 * DX), Round(CYs + 1.3 * DY));
+    // collector en borstels
+    Pen.Color := RGBToColor(120, 90, 20);
+    Brush.Color := RGBToColor(220, 180, 60);
+    Ellipse(Round(KX) - 5, Round(KY) - 5, Round(KX) + 6, Round(KY) + 6);
+    if not FGeenCollector then
+    begin
+      Pen.Color := RGBToColor(80, 50, 10);
+      MoveTo(Round(KX - 6 * Sin(FHoek)), Round(KY - 6 * Cos(FHoek)));
+      LineTo(Round(KX + 6 * Sin(FHoek)), Round(KY + 6 * Cos(FHoek)));
+    end;
+    Brush.Color := RGBToColor(90, 90, 90);
+    FillRect(Rect(Round(KX) - 11, Round(KY) - 3, Round(KX) - 5, Round(KY) + 4));
+    FillRect(Rect(Round(KX) + 6, Round(KY) - 3, Round(KX) + 12, Round(KY) + 4));
+    // stroom in de draden: het scherm in = naar achteren
+    if S <> 0 then
+    begin
+      Pijl(A1, A2, S);
+      Pijl(B1, B2, -S);
+    end;
+    // rechtse pool: bovenkant, zijkant en voorkant (voor het spoeltje)
+    Pen.Color := RGBToColor(90, 90, 90);
+    Brush.Color := RechtsL;
+    Polygon([Point(OX + 52, OY + 30), Point(OX + 64, OY + 30), Point(OX + 64 + DX, OY + 30 + DY), Point(OX + 52 + DX, OY + 30 + DY)]);
+    Brush.Color := RGBToColor(110, 110, 110);
+    Polygon([Point(OX + 64, OY + 30), Point(OX + 64 + DX, OY + 30 + DY), Point(OX + 64 + DX, OY + 96 + DY), Point(OX + 64, OY + 96)]);
+    Brush.Color := RechtsKl;
+    FillRect(Rect(OX + 52, OY + 30, OX + 64, OY + 96));
+    // uitleg
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 6;
+    Font.Style := [];
+    Font.Color := RGBToColor(90, 90, 90);
+    TextOut(OX - 4, OY + 99, Tr(FTaal, 'schuin gezien', 'seen at an angle', 'vue en biais', 'schräg gesehen'));
+    TextOut(OX - 4, OY + 108, Tr(FTaal, 'links: langs de as', 'left: along the axle', 'à gauche : le long de l''axe', 'links: entlang der Achse'));
+  end;
+end;
+
+procedure TjanElektromotor.UpdateHintText;
+var
+  S: string;
+begin
+  if Abs(FAmp) <= 0.0005 then
+    S := Tr(FTaal, 'Er loopt geen stroom: geen kracht.', 'No current flows: no force.',
+      'Aucun courant : pas de force.', 'Es fließt kein Strom: keine Kraft.')
+  else if FGeenCollector then
+    S := Tr(FTaal, 'Zonder collector keert de stroom in het spoeltje nooit om: het draait tot het rechtop staat en blijft daar.',
+      'Without a commutator the current in the coil never reverses: it turns until it stands upright and stays there.',
+      'Sans collecteur, le courant dans la bobine ne s''inverse jamais : elle tourne jusqu''à la verticale et y reste.',
+      'Ohne Kommutator kehrt sich der Strom in der Spule nie um: Sie dreht sich, bis sie senkrecht steht, und bleibt dort.')
+  else if Toeren > 1 then
+    S := Format(Tr(FTaal, 'Het spoeltje draait tegen de klok in: %s omw/min.', 'The coil turns anticlockwise: %s rpm.',
+      'La bobine tourne dans le sens antihoraire : %s tr/min.', 'Die Spule dreht sich gegen den Uhrzeigersinn: %s U/min.'),
+      [FormatFloat('0', Toeren)])
+  else if Toeren < -1 then
+    S := Format(Tr(FTaal, 'Het spoeltje draait met de klok mee: %s omw/min.', 'The coil turns clockwise: %s rpm.',
+      'La bobine tourne dans le sens horaire : %s tr/min.', 'Die Spule dreht sich im Uhrzeigersinn: %s U/min.'),
+      [FormatFloat('0', -Toeren)])
+  else
+    S := Tr(FTaal, 'Het spoeltje staat stil.', 'The coil is standing still.', 'La bobine est immobile.', 'Die Spule steht still.');
+  Hint := Tr(FTaal, 'Elektromotor (model)', 'Electric motor (model)', 'Moteur électrique (modèle)', 'Elektromotor (Modell)') + #13#10 +
+    Tr(FTaal,
+      'Links kijk je langs de as: een spoeltje met twee draden draait tussen een noordpool en een zuidpool.' + #13#10 +
+        'De collector in het midden met de twee borstels keert de stroom in het spoeltje elke halve draai om.',
+      'On the left you look along the axle: a coil with two wires turns between a north pole and a south pole.' + #13#10 +
+        'The commutator in the middle with its two brushes reverses the current in the coil every half turn.',
+      'À gauche, on regarde le long de l''axe : une bobine à deux fils tourne entre un pôle nord et un pôle sud.' + #13#10 +
+        'Le collecteur au centre, avec ses deux balais, inverse le courant dans la bobine à chaque demi-tour.',
+      'Links sieht man entlang der Achse: Eine Spule mit zwei Drähten dreht sich zwischen einem Nordpol und einem Südpol.' + #13#10 +
+        'Der Kommutator in der Mitte mit seinen zwei Bürsten kehrt den Strom in der Spule jede halbe Drehung um.') + #13#10 +
+    StroomRegel(FStroom) + #13#10 + S + #13#10 +
+    Tr(FTaal, 'Rechtsklik: magneet omdraaien, of de collector weglaten.',
+      'Right-click: turn the magnet round, or leave out the commutator.',
+      'Clic droit : retourner l''aimant, ou supprimer le collecteur.',
+      'Rechtsklick: Magnet umdrehen oder den Kommutator weglassen.');
+end;
+
+procedure TjanElektromotor.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Elektromotor (model)', 'Electric motor (model)', 'Moteur électrique (modèle)', 'Elektromotor (Modell)') + ' > ', 0);
+  FOnStatus(Self, FormatFloat('0', Abs(Toeren)) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min') +
+    '   I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;

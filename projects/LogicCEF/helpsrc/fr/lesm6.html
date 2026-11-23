@@ -1,0 +1,79 @@
+<!-- titel: Magnétisme 6 - Le moteur électrique -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#magnetisme">Magnétisme</a> &rsaquo; Leçon 6 sur 6</p>
+  <h1>Le moteur électrique</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> comprendre comment tourne un <b>moteur à courant continu</b>&nbsp;: la
+  force de Lorentz sur les deux fils d&rsquo;une bobine, le <b>point mort</b>, et pourquoi un moteur a besoin d&rsquo;un
+  <b>collecteur</b>.</div>
+
+  <h2>De la balançoire au moteur</h2>
+  <p>Dans la <a href="lesm5.html">leçon 5</a>, la force de Lorentz poussait un fil sur le côté. Pliez le fil en une
+  <b>bobine</b> rectangulaire sur un <b>axe</b> entre deux pôles&nbsp;: les deux grands côtés sont parallèles à l&rsquo;axe.
+  Dans un côté, le courant entre dans l&rsquo;écran, dans l&rsquo;autre il en sort. Un côté est donc poussé vers le bas et
+  l&rsquo;autre vers le haut&nbsp;: la bobine tourne.</p>
+
+  <h2>Le modèle</h2>
+  <ul>
+    <li>À <b>gauche</b>, on regarde <b>le long de l&rsquo;axe</b>. Le pôle nord est à gauche, le pôle sud à droite, et les
+    lignes de champ vont de gauche à droite. On voit la bobine comme une ligne entre deux fils, avec une croix (le courant
+    entre dans l&rsquo;écran) ou un point (le courant sort). Les flèches jaunes montrent la force de Lorentz sur chaque
+    fil.</li>
+    <li>Au centre se trouve le <b>collecteur</b>&nbsp;: un petit anneau en deux moitiés sur l&rsquo;axe, avec à gauche et à
+    droite un <b>balai</b> qui frotte dessus. Le balai de gauche est relié à la borne de gauche, celui de droite à la borne
+    de droite.</li>
+    <li>À <b>droite</b>, on voit la même chose <b>en biais</b>&nbsp;: la bobine entre les pôles, avec le collecteur à
+    l&rsquo;avant de l&rsquo;axe.</li>
+  </ul>
+
+  <p><a class="open" href="../../panels/lessen/magn6-elektromotor.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/lesm6.png" alt="Une source, un interrupteur, le modèle de moteur électrique et une lampe en série ; la bobine tourne">
+    <figcaption>Le fil de gauche (croix) est poussé vers le bas, celui de droite (point) vers le haut&nbsp;: la bobine tourne dans le sens antihoraire, environ 50&nbsp;tr/min.</figcaption>
+  </figure>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et fermez l&rsquo;interrupteur. La bobine se met à tourner, dans le sens antihoraire. Sous le
+    moteur, on voit la vitesse de rotation.</li>
+    <li>Observez le moment où la bobine est <b>verticale</b>. Les deux forces sont alors dirigées exactement le long de la
+    bobine et ne la font plus tourner&nbsp;: c&rsquo;est le <b>point mort</b>. La bobine le franchit grâce à son élan.</li>
+    <li>Réglez la source sur 6&nbsp;V avec le curseur&nbsp;: le courant est plus faible, les forces aussi, et le moteur
+    tourne plus lentement.</li>
+    <li>Faites un clic droit sur le moteur et choisissez <b>Retourner l&rsquo;aimant</b>&nbsp;: le moteur tourne maintenant
+    dans le sens horaire.</li>
+  </ol>
+
+  <h2>Le collecteur</h2>
+  <p>Après un demi-tour, le fil qui était à gauche se retrouve à droite. Si rien ne changeait, le courant y circulerait
+  toujours dans le même sens, et la force repousserait alors la bobine en arrière. C&rsquo;est pourquoi un moteur a un
+  <b>collecteur</b>&nbsp;: à chaque demi-tour, les balais passent d&rsquo;une moitié de l&rsquo;anneau à l&rsquo;autre. Ainsi,
+  le fil qui est à <b>gauche</b> reçoit toujours le courant qui entre dans l&rsquo;écran et est toujours poussé vers le
+  bas&nbsp;; le fil de <b>droite</b> est toujours poussé vers le haut. La bobine continue de tourner dans le même sens.</p>
+  <p>Faites un clic droit sur le moteur et décochez <b>Collecteur</b>. Chaque fil reste alors relié au même balai, comme
+  avec deux bagues collectrices ordinaires. La bobine tourne un peu, oscille puis reste <b>verticale</b>&nbsp;: les forces
+  y sont dirigées le long de la bobine et tout est en équilibre.</p>
+  <figure>
+    <img src="../img/lesm6b.png" alt="Le modèle de moteur électrique sans collecteur : la bobine est immobile, verticale">
+    <figcaption>Sans collecteur&nbsp;: la bobine est immobile, verticale. Le fil du haut est tiré vers le haut, celui du bas vers le bas.</figcaption>
+  </figure>
+
+  <h2>Les vrais moteurs</h2>
+  <p>Un vrai moteur a des bobines à nombreuses spires sur un <b>induit</b> en fer, et généralement plus d&rsquo;une bobine,
+  pour éviter le point mort. Les aimants sont parfois permanents, parfois des électroaimants. On en trouve partout&nbsp;:
+  dans un ventilateur, une perceuse, un essuie-glace, un vélo ou une voiture électrique. Dans la
+  <a href="les13.html">leçon 13</a>, vous commandez un moteur avec LogicRun.</p>
+
+  <h2>Exercice</h2>
+  <p>1. Le moteur tourne dans le sens antihoraire. Dans quel sens tourne-t-il si vous retournez l&rsquo;aimant <b>et</b>
+  inversez le courant&nbsp;?</p>
+  <p>2. Pourquoi la bobine sans collecteur s&rsquo;arrête-t-elle toujours à la verticale, et jamais à plat&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>1. De nouveau dans le <b>sens antihoraire</b>. Une inversion inverse les forces&nbsp;; deux inversions les
+    remettent dans leur sens, comme pour la balançoire électrique de la leçon 5.</p>
+    <p>2. Quand la bobine est à plat (fils à gauche et à droite), les forces poussent un fil vers le haut et l&rsquo;autre
+    vers le bas&nbsp;: elle tourne. Ce n&rsquo;est que verticale (fils en haut et en bas) que les forces sont dirigées le long
+    de la bobine et qu&rsquo;elle ne tourne plus. Sans collecteur, le courant ne s&rsquo;inverse jamais&nbsp;: la bobine
+    s&rsquo;y arrête.</p>
+  </details>
+
+  <div class="pager"><a href="lesm5.html">&larr; Magnétisme 5&nbsp;: La force de Lorentz</a><a href="leerpad.html">Parcours &rarr;</a></div>

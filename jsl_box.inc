@@ -393,6 +393,7 @@ begin
   FHIJzer:='maak Spijker (ijzer)';
   FHRelaisM:='maak Relais (open model)';
   FHSchommel:='maak Stroomschommel';
+  FHMotorM:='maak Elektromotor (model)';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1484,7 +1485,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') then
     begin
       with TStringList.Create do
       try
@@ -1508,6 +1509,7 @@ begin
           else if obj[1] = 'TjanIJzer' then VD := TjanIJzer.Create(Self)
           else if obj[1] = 'TjanRelaisModel' then VD := TjanRelaisModel.Create(Self)
           else if obj[1] = 'TjanSchommel' then VD := TjanSchommel.Create(Self)
+          else if obj[1] = 'TjanElektromotor' then VD := TjanElektromotor.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -1539,6 +1541,12 @@ begin
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanElektromotor then
+          begin
+            // TjanElektromotor;h;l;t;w;omgekeerd;geencollector;
+            if Count >= 5 then TjanElektromotor(VD).Omgekeerd := Trim(Strings[4]) = '1';
+            if Count >= 6 then TjanElektromotor(VD).GeenCollector := Trim(Strings[5]) = '1';
+          end
           else if VD is TjanSchommel then
           begin
             // TjanSchommel;h;l;t;w;omgekeerd;sterk;
@@ -2466,6 +2474,7 @@ begin
     24: D := TjanIJzer.Create(Self);
     25: D := TjanRelaisModel.Create(Self);
     26: D := TjanSchommel.Create(Self);
+    27: D := TjanElektromotor.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2915,6 +2924,22 @@ begin
           MoveTo(CX - 2, CY - 11); LineTo(CX - 4, CY);
           Brush.Color := RGBToColor(200, 120, 50);
           Ellipse(Rect(CX - 7, CY - 3, CX - 1, CY + 3));
+        end;
+      27:
+        begin
+          // elektromotor: twee polen en een spoeltje met een draaipijl
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(215, 40, 40);
+          FillRect(Rect(CX - 11, CY - 7, CX - 7, CY + 8));
+          Brush.Color := RGBToColor(40, 90, 200);
+          FillRect(Rect(CX + 8, CY - 7, CX + 12, CY + 8));
+          Pen.Color := RGBToColor(184, 100, 30);
+          Pen.Width := 2;
+          MoveTo(CX - 4, CY + 4); LineTo(CX + 5, CY - 4);
+          Pen.Width := 1;
+          Pen.Color := clBlack;
+          Brush.Style := bsClear;
+          Arc(CX - 6, CY - 6, CX + 7, CY + 7, CX + 6, CY + 2, CX - 2, CY - 6);
         end;
       6:
         begin

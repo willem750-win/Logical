@@ -2083,3 +2083,39 @@ msgstr "слева: вид сбоку"
 
 msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
 msgstr "Медный стержень (кусок толстой медной проволоки) висит на двух тонких проводах между полюсами подковообразного магнита.\nТок спускается по одному проводу, проходит через стержень и возвращается по другому.\nСлева вы видите его сбоку (стержень — это кружок), справа наискось."
+
+msgid "create electric motor (model)"
+msgstr "создать электродвигатель (модель)"
+
+msgid "Commutator (reverse the current every half turn)"
+msgstr "Коллектор (менять направление тока каждые пол-оборота)"
+
+msgid "rpm"
+msgstr "об/мин"
+
+msgid "left: along the axle"
+msgstr "слева: вдоль оси"
+
+msgid "No current flows: no force."
+msgstr "Ток не течёт: силы нет."
+
+msgid "Without a commutator the current in the coil never reverses: it turns until it stands upright and stays there."
+msgstr "Без коллектора ток в катушке никогда не меняет направление: она поворачивается до вертикали и останавливается."
+
+msgid "The coil turns anticlockwise: %s rpm."
+msgstr "Катушка вращается против часовой стрелки: %s об/мин."
+
+msgid "The coil turns clockwise: %s rpm."
+msgstr "Катушка вращается по часовой стрелке: %s об/мин."
+
+msgid "The coil is standing still."
+msgstr "Катушка стоит на месте."
+
+msgid "Electric motor (model)"
+msgstr "Электродвигатель (модель)"
+
+msgid "On the left you look along the axle: a coil with two wires turns between a north pole and a south pole.\nThe commutator in the middle with its two brushes reverses the current in the coil every half turn."
+msgstr "Слева вы смотрите вдоль оси: катушка с двумя проводами вращается между северным и южным полюсом.\nКоллектор в центре с двумя щётками меняет направление тока в катушке каждые пол-оборота."
+
+msgid "Right-click: turn the magnet round, or leave out the commutator."
+msgstr "Правый щелчок: перевернуть магнит или убрать коллектор."

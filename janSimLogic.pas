@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2404,6 +2404,7 @@ type
     property HIJzer: string read FHIJzer write FHIJzer;
     property HRelaisModel: string read FHRelaisM write FHRelaisM;
     property HSchommel: string read FHSchommel write FHSchommel;
+    property HElektromotor: string read FHMotorM write FHMotorM;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -4027,6 +4028,48 @@ end;
   published
     property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
     property Sterk: Boolean read FSterk write SetSterk;
+  end;
+
+  { TjanElektromotor: model van een gelijkstroommotor. Links het vooraanzicht
+    langs de as: een noordpool links en een zuidpool rechts, een spoeltje
+    met twee draden die draaien, en in het midden de collector met twee
+    borstels (klem 0 links, klem 1 rechts). Rechts een schuin tekeningetje.
+    De Lorentzkracht duwt de ene draad omhoog en de andere omlaag; de
+    collector keert de stroom in het spoeltje elke halve draai om, zodat het
+    rond blijft draaien. Zonder collector (sleepringen) blijft het rechtop
+    staan. Elektrisch een kleine weerstand (4 ohm). }
+  TjanElektromotor = class(TjanWeerstand)
+  private
+    FTimer: TTimer;
+    FOmgekeerd: Boolean;   // zuidpool links
+    FGeenCollector: Boolean;
+    FHoek, FOmega: Double; // stand van het spoeltje (radialen, tegen de klok in) en snelheid per tik
+    procedure Tik(Sender: TObject);
+    procedure SetOmgekeerd(const Value: Boolean);
+    procedure SetGeenCollector(const Value: Boolean);
+    procedure OmdraaiClick(Sender: TObject);
+    procedure CollectorClick(Sender: TObject);
+    procedure TekenSchuin;
+    // stroom in draad A (+1 = het scherm in, -1 = eruit, 0 = geen)
+    function StroomA: Integer;
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; override;
+    // toerental in omwentelingen per minuut (+ = tegen de klok in)
+    function Toeren: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property Hoek: Double read FHoek;
+  published
+    property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
+    property GeenCollector: Boolean read FGeenCollector write SetGeenCollector;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

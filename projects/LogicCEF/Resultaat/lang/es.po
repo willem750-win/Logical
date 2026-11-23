@@ -2078,3 +2078,39 @@ msgstr "izquierda: de lado"
 
 msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
 msgstr "Una varilla de cobre (un trozo de hilo de cobre grueso) cuelga de dos hilos finos entre los polos de un imán en U.\nLa corriente baja por un hilo, atraviesa la varilla y vuelve por el otro.\nA la izquierda la ves de lado (la varilla es el círculo), a la derecha en perspectiva."
+
+msgid "create electric motor (model)"
+msgstr "crear motor eléctrico (modelo)"
+
+msgid "Commutator (reverse the current every half turn)"
+msgstr "Colector (invertir la corriente cada media vuelta)"
+
+msgid "rpm"
+msgstr "rpm"
+
+msgid "left: along the axle"
+msgstr "izquierda: a lo largo del eje"
+
+msgid "No current flows: no force."
+msgstr "No pasa corriente: no hay fuerza."
+
+msgid "Without a commutator the current in the coil never reverses: it turns until it stands upright and stays there."
+msgstr "Sin colector, la corriente en la bobina nunca se invierte: gira hasta quedar vertical y se queda ahí."
+
+msgid "The coil turns anticlockwise: %s rpm."
+msgstr "La bobina gira en sentido antihorario: %s rpm."
+
+msgid "The coil turns clockwise: %s rpm."
+msgstr "La bobina gira en sentido horario: %s rpm."
+
+msgid "The coil is standing still."
+msgstr "La bobina está parada."
+
+msgid "Electric motor (model)"
+msgstr "Motor eléctrico (modelo)"
+
+msgid "On the left you look along the axle: a coil with two wires turns between a north pole and a south pole.\nThe commutator in the middle with its two brushes reverses the current in the coil every half turn."
+msgstr "A la izquierda miras a lo largo del eje: una bobina con dos hilos gira entre un polo norte y un polo sur.\nEl colector del centro, con sus dos escobillas, invierte la corriente en la bobina cada media vuelta."
+
+msgid "Right-click: turn the magnet round, or leave out the commutator."
+msgstr "Clic derecho: dar la vuelta al imán o quitar el colector."

@@ -2083,3 +2083,39 @@ msgstr "左：横から見た図"
 
 msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
 msgstr "銅の棒 (太い銅線の一部) が 2 本の細い線で U 字形磁石の極の間につり下がっています。\n電流は一方の線を下り、棒を通って、もう一方の線を戻ります。\n左は横から見た図 (棒は円)、右は斜めから見た図です。"
+
+msgid "create electric motor (model)"
+msgstr "電動機 (モデル) を作成"
+
+msgid "Commutator (reverse the current every half turn)"
+msgstr "整流子 (半回転ごとに電流を反転)"
+
+msgid "rpm"
+msgstr "rpm"
+
+msgid "left: along the axle"
+msgstr "左：軸の方向から"
+
+msgid "No current flows: no force."
+msgstr "電流が流れていません：力はありません。"
+
+msgid "Without a commutator the current in the coil never reverses: it turns until it stands upright and stays there."
+msgstr "整流子がないとコイルの電流は反転しません：コイルは縦になるまで回り、そこで止まります。"
+
+msgid "The coil turns anticlockwise: %s rpm."
+msgstr "コイルは反時計回りに回っています：%s rpm。"
+
+msgid "The coil turns clockwise: %s rpm."
+msgstr "コイルは時計回りに回っています：%s rpm。"
+
+msgid "The coil is standing still."
+msgstr "コイルは止まっています。"
+
+msgid "Electric motor (model)"
+msgstr "電動機 (モデル)"
+
+msgid "On the left you look along the axle: a coil with two wires turns between a north pole and a south pole.\nThe commutator in the middle with its two brushes reverses the current in the coil every half turn."
+msgstr "左は軸の方向から見た図です：2 本の導線をもつコイルが N 極と S 極の間で回ります。\n中央の整流子と 2 つのブラシが、半回転ごとにコイルの電流を反転させます。"
+
+msgid "Right-click: turn the magnet round, or leave out the commutator."
+msgstr "右クリック：磁石を裏返す、または整流子を外す。"

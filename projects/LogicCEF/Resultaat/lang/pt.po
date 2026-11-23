@@ -2083,3 +2083,39 @@ msgstr "à esquerda: de lado"
 
 msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
 msgstr "Uma barra de cobre (um pedaço de fio de cobre grosso) está pendurada em dois fios finos entre os polos de um íman em U.\nA corrente desce por um fio, atravessa a barra e volta pelo outro.\nÀ esquerda vê-a de lado (a barra é o círculo), à direita em perspetiva."
+
+msgid "create electric motor (model)"
+msgstr "criar motor elétrico (modelo)"
+
+msgid "Commutator (reverse the current every half turn)"
+msgstr "Coletor (inverter a corrente a cada meia volta)"
+
+msgid "rpm"
+msgstr "rpm"
+
+msgid "left: along the axle"
+msgstr "à esquerda: ao longo do eixo"
+
+msgid "No current flows: no force."
+msgstr "Não passa corrente: não há força."
+
+msgid "Without a commutator the current in the coil never reverses: it turns until it stands upright and stays there."
+msgstr "Sem coletor, a corrente na bobina nunca se inverte: roda até ficar vertical e fica aí."
+
+msgid "The coil turns anticlockwise: %s rpm."
+msgstr "A bobina roda no sentido anti-horário: %s rpm."
+
+msgid "The coil turns clockwise: %s rpm."
+msgstr "A bobina roda no sentido horário: %s rpm."
+
+msgid "The coil is standing still."
+msgstr "A bobina está parada."
+
+msgid "Electric motor (model)"
+msgstr "Motor elétrico (modelo)"
+
+msgid "On the left you look along the axle: a coil with two wires turns between a north pole and a south pole.\nThe commutator in the middle with its two brushes reverses the current in the coil every half turn."
+msgstr "À esquerda olha ao longo do eixo: uma bobina com dois fios roda entre um polo norte e um polo sul.\nO coletor ao centro, com as suas duas escovas, inverte a corrente na bobina a cada meia volta."
+
+msgid "Right-click: turn the magnet round, or leave out the commutator."
+msgstr "Clique direito: virar o íman ou retirar o coletor."

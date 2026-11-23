@@ -1773,3 +1773,39 @@ msgstr "a sinistra: di lato"
 
 msgid "A copper rod (a piece of thick copper wire) hangs on two thin wires between the poles of a U-magnet.\nThe current flows down one thin wire, through the rod and back up the other.\nOn the left you see it from the side (the rod is the circle), on the right at an angle."
 msgstr "Un'asta di rame (un pezzo di filo di rame spesso) pende da due fili sottili tra i poli di un magnete a U.\nLa corrente scende per un filo, attraversa l'asta e risale per l'altro.\nA sinistra la vedi di lato (l'asta è il cerchio), a destra di sbieco."
+
+msgid "create electric motor (model)"
+msgstr "crea motore elettrico (modello)"
+
+msgid "Commutator (reverse the current every half turn)"
+msgstr "Collettore (invertire la corrente ogni mezzo giro)"
+
+msgid "rpm"
+msgstr "giri/min"
+
+msgid "left: along the axle"
+msgstr "a sinistra: lungo l'asse"
+
+msgid "No current flows: no force."
+msgstr "Non passa corrente: nessuna forza."
+
+msgid "Without a commutator the current in the coil never reverses: it turns until it stands upright and stays there."
+msgstr "Senza collettore la corrente nella bobina non si inverte mai: gira finché è verticale e resta lì."
+
+msgid "The coil turns anticlockwise: %s rpm."
+msgstr "La bobina gira in senso antiorario: %s giri/min."
+
+msgid "The coil turns clockwise: %s rpm."
+msgstr "La bobina gira in senso orario: %s giri/min."
+
+msgid "The coil is standing still."
+msgstr "La bobina è ferma."
+
+msgid "Electric motor (model)"
+msgstr "Motore elettrico (modello)"
+
+msgid "On the left you look along the axle: a coil with two wires turns between a north pole and a south pole.\nThe commutator in the middle with its two brushes reverses the current in the coil every half turn."
+msgstr "A sinistra guardi lungo l'asse: una bobina con due fili gira tra un polo nord e un polo sud.\nIl collettore al centro, con le sue due spazzole, inverte la corrente nella bobina ogni mezzo giro."
+
+msgid "Right-click: turn the magnet round, or leave out the commutator."
+msgstr "Clic destro: girare il magnete o togliere il collettore."
