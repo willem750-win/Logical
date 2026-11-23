@@ -1,0 +1,11 @@
+TjanVeldplaat;320;40;100;480;2;
+TjanMagneet;24;80;212;96;0;
+TjanSpoel;48;300;200;120;1;0;0;
+TjanNulmeter;72;310;320;100;1;
+TjanConnector;167;300;216;19;jcmBR;jcpTL;jcsTLBR;0,210526315789474;11;
+TjanConnector;167;401;216;19;jcmTR;jcpBL;jcsTRBL;0,736842105263158;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Voeding;1;
+Grid;True;
+Statusbalk;False;

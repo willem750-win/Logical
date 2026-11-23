@@ -2119,3 +2119,24 @@ msgstr "左は軸の方向から見た図です：2 本の導線をもつコイ�
 
 msgid "Right-click: turn the magnet round, or leave out the commutator."
 msgstr "右クリック：磁石を裏返す、または整流子を外す。"
+
+msgid "create centre-zero meter (galvanometer)"
+msgstr "中央ゼロ形検流計を作成"
+
+msgid "Induction: the magnetic field through the coil is changing; a voltage of %s is induced."
+msgstr "電磁誘導：コイルを通る磁界が変化しています。%s の電圧が生じます。"
+
+msgid "Centre-zero meter (galvanometer)"
+msgstr "中央ゼロ形検流計"
+
+msgid "The zero is in the middle. When the current flows from the left to the right terminal the needle swings to the right;\nwhen it flows the other way, to the left. So you also see the direction of the current."
+msgstr "ゼロは中央にあります。電流が左の端子から右の端子へ流れると針は右に振れ、\n逆向きに流れると左に振れます。電流の向きもわかります。"
+
+msgid "Current: %s mA (full scale at %s)."
+msgstr "電流：%s mA (フルスケール %s)。"
+
+msgid "Right-click: range."
+msgstr "右クリック：レンジ。"
+
+msgid "Centre-zero meter"
+msgstr "検流計"

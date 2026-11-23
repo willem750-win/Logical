@@ -1809,3 +1809,24 @@ msgstr "A sinistra guardi lungo l'asse: una bobina con due fili gira tra un polo
 
 msgid "Right-click: turn the magnet round, or leave out the commutator."
 msgstr "Clic destro: girare il magnete o togliere il collettore."
+
+msgid "create centre-zero meter (galvanometer)"
+msgstr "crea galvanometro a zero centrale"
+
+msgid "Induction: the magnetic field through the coil is changing; a voltage of %s is induced."
+msgstr "Induzione: il campo magnetico nella bobina cambia; si induce una tensione di %s."
+
+msgid "Centre-zero meter (galvanometer)"
+msgstr "Galvanometro a zero centrale"
+
+msgid "The zero is in the middle. When the current flows from the left to the right terminal the needle swings to the right;\nwhen it flows the other way, to the left. So you also see the direction of the current."
+msgstr "Lo zero è al centro. Quando la corrente va dal morsetto sinistro a quello destro, l'ago devia a destra;\nquando va al contrario, a sinistra. Così vedi anche il verso della corrente."
+
+msgid "Current: %s mA (full scale at %s)."
+msgstr "Corrente: %s mA (fondo scala a %s)."
+
+msgid "Right-click: range."
+msgstr "Clic destro: portata."
+
+msgid "Centre-zero meter"
+msgstr "Galvanometro"

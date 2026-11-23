@@ -394,6 +394,7 @@ begin
   FHRelaisM:='maak Relais (open model)';
   FHSchommel:='maak Stroomschommel';
   FHMotorM:='maak Elektromotor (model)';
+  FHNulmeter:='maak Nulpuntmeter (galvanometer)';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1485,7 +1486,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') then
     begin
       with TStringList.Create do
       try
@@ -1510,6 +1511,7 @@ begin
           else if obj[1] = 'TjanRelaisModel' then VD := TjanRelaisModel.Create(Self)
           else if obj[1] = 'TjanSchommel' then VD := TjanSchommel.Create(Self)
           else if obj[1] = 'TjanElektromotor' then VD := TjanElektromotor.Create(Self)
+          else if obj[1] = 'TjanNulmeter' then VD := TjanNulmeter.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
           else if obj[1] = 'TjanCondensator' then VD := TjanCondensator.Create(Self)
@@ -1541,6 +1543,10 @@ begin
           end
           else if (VD is TjanZekering) and (Count >= 5) then
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanNulmeter then
+          begin
+            if Count >= 5 then TjanNulmeter(VD).BereikIdx := StrToIntDef(Trim(Strings[4]), 1);
+          end
           else if VD is TjanElektromotor then
           begin
             // TjanElektromotor;h;l;t;w;omgekeerd;geencollector;
@@ -2475,6 +2481,7 @@ begin
     25: D := TjanRelaisModel.Create(Self);
     26: D := TjanSchommel.Create(Self);
     27: D := TjanElektromotor.Create(Self);
+    28: D := TjanNulmeter.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -2940,6 +2947,16 @@ begin
           Pen.Color := clBlack;
           Brush.Style := bsClear;
           Arc(CX - 6, CY - 6, CX + 7, CY + 7, CX + 6, CY + 2, CX - 2, CY - 6);
+        end;
+      28:
+        begin
+          // nulpuntmeter: boogje met de nul in het midden en een naald
+          Brush.Style := bsClear;
+          Arc(CX - 9, CY - 8, CX + 10, CY + 11, CX + 9, CY + 1, CX - 9, CY + 1);
+          Pen.Color := RGBToColor(200, 0, 0);
+          MoveTo(CX, CY + 5); LineTo(CX + 4, CY - 5);
+          Pen.Color := clBlack;
+          MoveTo(CX, CY - 8); LineTo(CX, CY - 6);
         end;
       6:
         begin

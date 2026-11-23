@@ -2119,3 +2119,24 @@ msgstr "Слева вы смотрите вдоль оси: катушка с д
 
 msgid "Right-click: turn the magnet round, or leave out the commutator."
 msgstr "Правый щелчок: перевернуть магнит или убрать коллектор."
+
+msgid "create centre-zero meter (galvanometer)"
+msgstr "создать гальванометр с нулём посередине"
+
+msgid "Induction: the magnetic field through the coil is changing; a voltage of %s is induced."
+msgstr "Индукция: магнитное поле в катушке меняется; наводится напряжение %s."
+
+msgid "Centre-zero meter (galvanometer)"
+msgstr "Гальванометр с нулём посередине"
+
+msgid "The zero is in the middle. When the current flows from the left to the right terminal the needle swings to the right;\nwhen it flows the other way, to the left. So you also see the direction of the current."
+msgstr "Ноль посередине. Когда ток идёт от левой клеммы к правой, стрелка отклоняется вправо;\nкогда наоборот — влево. Так видно и направление тока."
+
+msgid "Current: %s mA (full scale at %s)."
+msgstr "Ток: %s мА (полная шкала при %s)."
+
+msgid "Right-click: range."
+msgstr "Правый щелчок: диапазон."
+
+msgid "Centre-zero meter"
+msgstr "Гальванометр"

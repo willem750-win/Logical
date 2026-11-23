@@ -934,7 +934,7 @@ Begin
     SettingsFrame.PropB222.TranslationHolder:= SettingsFrame.StringHolderTranslations;
     SettingsFrame.PropB222.AddRelevantProperties('HBuzzer,HMotor,HDisplay,HDraad,HLamp,'+
                                   'HLogicAnd,HLogicNot,HLogicOr,HLogicNand,HLogicNor,HLogicXor,HMemory,HRelais,HSchakelRelais,'+
-                                  'HTeller,HStappen,HFlipFlop,HStopwatch,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HWisselschakelaar,HPuls2,HDip2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,HMagneet,HKompas,HVeldplaat,HSpoel,HIJzer,HRelaisModel,HSchommel,HElektromotor,'+
+                                  'HTeller,HStappen,HFlipFlop,HStopwatch,HMeter,HRailPlus,HRailMin,HBron,HWisselbron,HZekering,HAmpMeter,HWattMeter,HWeerstand,HLamp2,HSchakelaar2,HWisselschakelaar,HPuls2,HDip2,HVoltmeter2,HScoop,HLed2,HDiode,HCondensator,HPotmeter,HLDR,HNTC,HTransistor,HMagneet,HKompas,HVeldplaat,HSpoel,HIJzer,HRelaisModel,HSchommel,HElektromotor,HNulmeter,'+
                                   'HPersoon,HWagen,HMuziek,HVerkeer,HSlagboom,ShowHint');
     SettingsFrame.PropB222.ConnectObject := mainForm.Box;
     SettingsFrame.PropB222.Cols[0];

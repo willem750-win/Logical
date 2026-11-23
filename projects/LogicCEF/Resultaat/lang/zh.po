@@ -2119,3 +2119,24 @@ msgstr "左边是沿轴方向看：一个有两根导线的线圈在 N 极和 S 
 
 msgid "Right-click: turn the magnet round, or leave out the commutator."
 msgstr "右键：翻转磁铁或去掉换向器。"
+
+msgid "create centre-zero meter (galvanometer)"
+msgstr "创建零点在中间的检流计"
+
+msgid "Induction: the magnetic field through the coil is changing; a voltage of %s is induced."
+msgstr "电磁感应：穿过线圈的磁场在变化；产生 %s 的电压。"
+
+msgid "Centre-zero meter (galvanometer)"
+msgstr "零点在中间的检流计"
+
+msgid "The zero is in the middle. When the current flows from the left to the right terminal the needle swings to the right;\nwhen it flows the other way, to the left. So you also see the direction of the current."
+msgstr "零点在中间。电流从左端子流向右端子时指针向右偏；\n反方向流动时向左偏。这样也能看出电流的方向。"
+
+msgid "Current: %s mA (full scale at %s)."
+msgstr "电流：%s mA (满刻度 %s)。"
+
+msgid "Right-click: range."
+msgstr "右键：量程。"
+
+msgid "Centre-zero meter"
+msgstr "检流计"

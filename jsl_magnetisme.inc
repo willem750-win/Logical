@@ -781,6 +781,10 @@ begin
   Width := SpoelW;
   Height := SpoelH;
   HelpKeyword := 'magnetisme';
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
 end;
 
 destructor TjanSpoel.Destroy;
@@ -847,6 +851,138 @@ begin
   begin
     PN := MagV(CX + A, CY);
     PZ := MagV(CX - A, CY);
+  end;
+end;
+
+const
+  SpoelInductieK = 0.15;    // ge\xc3\xafnduceerde spanning per eenheid fluxverandering per seconde
+
+// flux door de spoel: het veld van de andere magneten langs de as, gemiddeld
+// over het midden en de twee uiteinden, maal de windingen (en de kern)
+function TjanSpoel.Flux: Double;
+var
+  Pl: TMagPolen;
+  CX, CY, A, S: Double;
+  i, j: Integer;
+  B: TMagVec;
+
+  // veld in (X, Y) van de andere magneten, verzacht vlak bij een pool: zo
+  // schiet de flux niet omhoog als een pool door de spoel gaat
+  function Zacht(X, Y: Double): TMagVec;
+  var
+    k: Integer;
+    DX, DY, R2, R3, ZX, ZY, NX, NY, L, T, D, W: Double;
+
+    function Ramp(V: Double): Double;
+    begin
+      Result := V / 12;
+      if Result < 0 then Result := 0;
+      if Result > 1 then Result := 1;
+    end;
+
+  begin
+    Result := MagV(0, 0);
+    for k := 0 to High(Pl) do
+      if Pl[k].Bron <> Self then
+      begin
+        DX := X - Pl[k].P.X;
+        DY := Y - Pl[k].P.Y;
+        R2 := DX * DX + DY * DY + 225;
+        R3 := R2 * Sqrt(R2);
+        Result.X := Result.X + Pl[k].Q * DX / R3;
+        Result.Y := Result.Y + Pl[k].Q * DY / R3;
+      end;
+    // binnen een magneet (of een spoel) loopt het veld van Z naar N: het
+    // model met twee polen geeft daar de verkeerde richting, dus tel het
+    // veld van de magnetisatie erbij (de polen staan per twee in de lijst)
+    k := 0;
+    while k < High(Pl) do
+    begin
+      if Pl[k].Bron <> Self then
+      begin
+        if Pl[k].Q > 0 then
+        begin
+          NX := Pl[k].P.X; NY := Pl[k].P.Y; ZX := Pl[k + 1].P.X; ZY := Pl[k + 1].P.Y;
+        end
+        else
+        begin
+          NX := Pl[k + 1].P.X; NY := Pl[k + 1].P.Y; ZX := Pl[k].P.X; ZY := Pl[k].P.Y;
+        end;
+        L := Sqrt(Sqr(NX - ZX) + Sqr(NY - ZY));
+        if L > 1 then
+        begin
+          // T: plaats langs de as (0 = zuidpool, L = noordpool), D: afstand tot de as
+          T := ((X - ZX) * (NX - ZX) + (Y - ZY) * (NY - ZY)) / L;
+          D := Abs((X - ZX) * (NY - ZY) - (Y - ZY) * (NX - ZX)) / L;
+          // geleidelijk: 1 diep in de magneet, 0 er ver buiten
+          W := Ramp(T + 10) * Ramp(L + 10 - T) * Ramp(14 - D);
+          if W > 0 then
+          begin
+            Result.X := Result.X + W * 0.01 * Abs(Pl[k].Q) * (NX - ZX) / L;
+            Result.Y := Result.Y + W * 0.01 * Abs(Pl[k].Q) * (NY - ZY) / L;
+          end;
+        end;
+      end;
+      Inc(k, 2);
+    end;
+  end;
+
+begin
+  Result := 0;
+  if Parent = nil then Exit;
+  Pl := MagAllePolen(Parent);
+  if Length(Pl) = 0 then Exit;
+  CX := Left + Width / 2;
+  CY := Top + Height / 2;
+  A := (SpoelW - 40) / 2 - 6;
+  S := 0;
+  // gemiddeld over 7 x 3 punten: langs de as en over de doorsnede
+  for i := -3 to 3 do
+    for j := -1 to 1 do
+      if FGedraaid then
+      begin
+        B := Zacht(CX + j * 8, CY + i * A / 3);
+        S := S + B.Y;
+      end
+      else
+      begin
+        B := Zacht(CX + i * A / 3, CY + j * 8);
+        S := S + B.X;
+      end;
+  Result := Windingen * S / 21;
+  if FKern then Result := Result * SpoelKernFactor;
+  if FOmgekeerd then Result := -Result;
+end;
+
+// inductie: verandert de flux, dan ontstaat er een spanning die de
+// verandering tegenwerkt (wet van Lenz): U = -k x (verandering van de flux) / tijd
+procedure TjanSpoel.Tik(Sender: TObject);
+var
+  Nu: QWord;
+  Dt, Phi, E: Double;
+begin
+  if (Parent = nil) or not Visible then Exit;
+  Nu := GetTickCount64;
+  Phi := Flux;
+  if not FHeeftPhi then
+  begin
+    FHeeftPhi := True;
+    FPhiOud := Phi;
+    FTijdOud := Nu;
+    Exit;
+  end;
+  Dt := (Nu - FTijdOud) / 1000;
+  if Dt < 0.02 then Exit;
+  E := -SpoelInductieK * (Phi - FPhiOud) / Dt;
+  FEmf := 0.5 * FEmf + 0.5 * E;
+  if Abs(FEmf) < 0.0005 then FEmf := 0;
+  FPhiOud := Phi;
+  FTijdOud := Nu;
+  if (Abs(FEmf - FEmfInKring) > 0.002) or ((FEmf = 0) and (FEmfInKring <> 0)) then
+  begin
+    FEmfInKring := FEmf;
+    UpdateHintText;
+    UpdateSupply(Parent, True);
   end;
 end;
 
@@ -1072,6 +1208,13 @@ begin
       'Right-click: turns, core, wound the other way or rotate.',
       'Clic droit : spires, noyau, enroulée dans l''autre sens ou pivoter.',
       'Rechtsklick: Windungen, Kern, andersherum gewickelt oder drehen.');
+  if Abs(FEmfInKring) > 0.0005 then
+    Hint := Hint + #13#10 + Format(Tr(FTaal,
+      'Inductie: het magnetisch veld door de spoel verandert; er ontstaat een spanning van %s.',
+      'Induction: the magnetic field through the coil is changing; a voltage of %s is induced.',
+      'Induction : le champ magnétique dans la bobine change ; une tension de %s apparaît.',
+      'Induktion: Das Magnetfeld in der Spule ändert sich; es entsteht eine Spannung von %s.'),
+      [VoltText(Abs(FEmfInKring))]);
 end;
 
 procedure TjanSpoel.SendStatusToBar;
@@ -2500,5 +2643,202 @@ begin
   FOnStatus(Self, Tr(FTaal, 'Elektromotor (model)', 'Electric motor (model)', 'Moteur électrique (modèle)', 'Elektromotor (Modell)') + ' > ', 0);
   FOnStatus(Self, FormatFloat('0', Abs(Toeren)) + ' ' + Tr(FTaal, 'omw/min', 'rpm', 'tr/min', 'U/min') +
     '   I = ' + FormatFloat('0', FStroom * 1000) + ' mA', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;
+
+{ TjanNulmeter }
+
+const
+  NulmeterW = 100;
+  NulmeterH = 72;
+  NulmeterBereik: array[0..2] of Double = (0.01, 0.1, 1);
+
+constructor TjanNulmeter.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FBereikIdx := 1;
+  Width := NulmeterW;
+  Height := NulmeterH;
+  HelpKeyword := 'magnetisme';
+  FTimer := TTimer.Create(Self);
+  FTimer.Interval := 40;
+  FTimer.OnTimer := Tik;
+  FTimer.Enabled := True;
+end;
+
+function TjanNulmeter.KanDraaien: Boolean;
+begin
+  Result := False;
+end;
+
+function TjanNulmeter.StdMaat: TPoint;
+begin
+  Result := Point(NulmeterW, NulmeterH);
+end;
+
+function TjanNulmeter.ExtraBreedte: Integer;
+begin
+  Result := 0;
+end;
+
+function TjanNulmeter.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(1, NulmeterH - 17) else Result := Point(NulmeterW - 8, NulmeterH - 17);
+end;
+
+function TjanNulmeter.Ohm: Double;
+begin
+  Result := 1;
+end;
+
+function TjanNulmeter.Bereik: Double;
+begin
+  Result := NulmeterBereik[FBereikIdx];
+end;
+
+procedure TjanNulmeter.Tik(Sender: TObject);
+var
+  Doel: Double;
+begin
+  if (Parent = nil) or not Visible then Exit;
+  Doel := FAmp / Bereik;
+  if Doel > 1.1 then Doel := 1.1;
+  if Doel < -1.1 then Doel := -1.1;
+  if (Abs(Doel - FNaald) < 0.002) and (Abs(FNaaldV) < 0.002) then
+  begin
+    if (FNaald <> Doel) or (FNaaldV <> 0) then
+    begin
+      FNaald := Doel;
+      FNaaldV := 0;
+      Invalidate;
+    end;
+    Exit;
+  end;
+  FNaaldV := (FNaaldV + (Doel - FNaald) * 0.3) * 0.6;
+  FNaald := FNaald + FNaaldV;
+  Invalidate;
+end;
+
+procedure TjanNulmeter.SetBereikIdx(const Value: Integer);
+begin
+  if (Value < Low(NulmeterBereik)) or (Value > High(NulmeterBereik)) or (Value = FBereikIdx) then Exit;
+  FBereikIdx := Value;
+  UpdateHintText;
+  Invalidate;
+end;
+
+procedure TjanNulmeter.BereikClick(Sender: TObject);
+begin
+  if not FLock then BereikIdx := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanNulmeter.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Bereik', 'Range', 'Calibre', 'Messbereich');
+  Mi.Enabled := not FLock;
+  APop.Items.Add(Mi);
+  for i := Low(NulmeterBereik) to High(NulmeterBereik) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := AmpText(NulmeterBereik[i]);
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FBereikIdx;
+    Sub.OnClick := BereikClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+procedure TjanNulmeter.Paint;
+const
+  MX = 50; MY = 46; R = 36;
+var
+  i: Integer;
+  A, N: Double;
+  S: string;
+begin
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // kastje en wijzerplaat
+    Pen.Color := RGBToColor(90, 90, 90);
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(245, 245, 235);
+    RoundRect(6, 2, NulmeterW - 6, NulmeterH - 20, 8, 8);
+    // schaal: 11 streepjes van -50 tot +50 graden, de nul in het midden
+    for i := -5 to 5 do
+    begin
+      A := i * 10 * Pi / 180;
+      if i = 0 then Pen.Color := clBlack else Pen.Color := RGBToColor(110, 110, 110);
+      MoveTo(MX + Round((R - 6) * Sin(A)), MY - Round((R - 6) * Cos(A)));
+      LineTo(MX + Round(R * Sin(A)), MY - Round(R * Cos(A)));
+    end;
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Size := 7;
+    Font.Style := [fsBold];
+    Font.Color := RGBToColor(60, 60, 60);
+    TextOut(MX - 3, MY - R - 2, '0');
+    TextOut(MX - R - 4, MY - 22, '-');
+    TextOut(MX + R - 2, MY - 22, '+');
+    // naald
+    N := FNaald;
+    if N > 1.1 then N := 1.1;
+    if N < -1.1 then N := -1.1;
+    A := N * 50 * Pi / 180;
+    Pen.Color := RGBToColor(200, 0, 0);
+    Pen.Width := 2;
+    MoveTo(MX, MY);
+    LineTo(MX + Round((R - 2) * Sin(A)), MY - Round((R - 2) * Cos(A)));
+    Pen.Width := 1;
+    Pen.Color := clBlack;
+    Brush.Style := bsSolid;
+    Brush.Color := clBlack;
+    Ellipse(MX - 3, MY - 3, MX + 4, MY + 4);
+    // waarde
+    Brush.Style := bsClear;
+    Font.Style := [];
+    Font.Color := clNavy;
+    S := FormatFloat('+0.0;-0.0;0', FAmp * 1000) + ' mA';
+    TextOut(MX - TextWidth(S) div 2, NulmeterH - 18, S);
+    // aansluitdraadjes naar de klemmen
+    Pen.Color := clBlack;
+    MoveTo(PinPos(0).X + 6, PinPos(0).Y + 3); LineTo(10, PinPos(0).Y + 3);
+    MoveTo(PinPos(1).X, PinPos(1).Y + 3); LineTo(NulmeterW - 10, PinPos(1).Y + 3);
+  end;
+  PaintPin(PinPos(0).X, PinPos(0).Y, FInVolt >= RailMinVolt);
+  PaintPin(PinPos(1).X, PinPos(1).Y, FUitVolt >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanNulmeter.UpdateHintText;
+begin
+  Hint := Tr(FTaal, 'Nulpuntmeter (galvanometer)', 'Centre-zero meter (galvanometer)',
+      'Galvanomètre à zéro central', 'Nullpunktmessgerät (Galvanometer)') + #13#10 +
+    Tr(FTaal,
+      'De nul staat in het midden. Loopt de stroom van de linkse naar de rechtse klem, dan slaat de naald naar rechts uit;' + #13#10 +
+        'loopt hij andersom, dan naar links. Zo zie je ook de richting van de stroom.',
+      'The zero is in the middle. When the current flows from the left to the right terminal the needle swings to the right;' + #13#10 +
+        'when it flows the other way, to the left. So you also see the direction of the current.',
+      'Le zéro est au milieu. Quand le courant va de la borne gauche à la borne droite, l''aiguille dévie vers la droite ;' + #13#10 +
+        'dans l''autre sens, vers la gauche. On voit donc aussi le sens du courant.',
+      'Die Null ist in der Mitte. Fließt der Strom von der linken zur rechten Klemme, schlägt der Zeiger nach rechts aus;' + #13#10 +
+        'fließt er andersherum, nach links. So sieht man auch die Stromrichtung.') + #13#10 +
+    Format(Tr(FTaal, 'Stroom: %s mA (volle uitslag bij %s).', 'Current: %s mA (full scale at %s).',
+      'Courant : %s mA (pleine échelle à %s).', 'Strom: %s mA (Vollausschlag bei %s).'),
+      [FormatFloat('+0.0;-0.0;0', FAmp * 1000), AmpText(Bereik)]) + #13#10 +
+    Tr(FTaal, 'Rechtsklik: bereik.', 'Right-click: range.', 'Clic droit : calibre.', 'Rechtsklick: Messbereich.');
+end;
+
+procedure TjanNulmeter.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'Nulpuntmeter', 'Centre-zero meter', 'Galvanomètre', 'Nullpunktmessgerät') + ' > ', 0);
+  FOnStatus(Self, FormatFloat('+0.0;-0.0;0', FAmp * 1000) + ' mA', 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;

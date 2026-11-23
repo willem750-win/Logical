@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2405,6 +2405,7 @@ type
     property HRelaisModel: string read FHRelaisM write FHRelaisM;
     property HSchommel: string read FHSchommel write FHSchommel;
     property HElektromotor: string read FHMotorM write FHMotorM;
+    property HNulmeter: string read FHNulmeter write FHNulmeter;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3893,6 +3894,13 @@ end;
     FWindIdx: Integer;     // index in SpoelWindingen
     FKern: Boolean;        // ijzeren kern
     FOmgekeerd: Boolean;
+    FTimer: TTimer;
+    FPhiOud: Double;       // flux bij de vorige tik (inductie)
+    FTijdOud: QWord;
+    FHeeftPhi: Boolean;
+    FEmf: Double;          // geïnduceerde spanning (V), + = klem 1 wordt de + kant
+    FEmfInKring: Double;   // de spanning waarmee de voedingskring rekent
+    procedure Tik(Sender: TObject);
     procedure SetWindIdx(const Value: Integer);
     procedure SetKern(const Value: Boolean);
     procedure SetOmgekeerd(const Value: Boolean);
@@ -3915,6 +3923,9 @@ end;
     function Sterkte: Double;
     // noordkant en zuidkant in paneelcoördinaten (de pool met + sterkte is PN)
     procedure Polen(out PN, PZ: TMagVec);
+    // magnetische flux door de spoel van de andere magneten (windingen x veld langs de as)
+    function Flux: Double;
+    property Emf: Double read FEmfInKring;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
   published
@@ -4070,6 +4081,37 @@ end;
   published
     property Omgekeerd: Boolean read FOmgekeerd write SetOmgekeerd;
     property GeenCollector: Boolean read FGeenCollector write SetGeenCollector;
+  end;
+
+  { TjanNulmeter: nulpuntmeter (galvanometer) met de nul in het midden.
+    In serie in de kring, elektrisch 1 ohm. Loopt de stroom van de linkse
+    naar de rechtse klem, dan slaat de naald naar rechts uit, andersom naar
+    links. De naald beweegt met wat traagheid, zodat je ook een korte
+    stroomstoot ziet. Rechtsklik: bereik 10 mA, 100 mA of 1 A. }
+  TjanNulmeter = class(TjanWeerstand)
+  private
+    FTimer: TTimer;
+    FBereikIdx: Integer;
+    FNaald, FNaaldV: Double;   // stand van de naald (-1 .. 1) en snelheid
+    procedure Tik(Sender: TObject);
+    procedure SetBereikIdx(const Value: Integer);
+    procedure BereikClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; override;
+    function Bereik: Double;   // A voor volle uitslag
+    property Amp: Double read FAmp;   // stroom met teken (+ = van links naar rechts)
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property BereikIdx: Integer read FBereikIdx write SetBereikIdx;
   end;
 
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.

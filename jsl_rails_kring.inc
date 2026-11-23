@@ -1164,6 +1164,9 @@ begin
       end
       else if Parts[k] is TjanAmpMeter then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / RKlein, Parts[k])
+      else if Parts[k] is TjanSpoel then
+        // spoel: een kleine weerstand met de geïnduceerde spanning (+ aan klem 1)
+        AddTakE(PinNode(k, 1), PinNode(k, 0), 1 / TjanSpoel(Parts[k]).Ohm, TjanSpoel(Parts[k]).Emf, Parts[k])
       else if Parts[k] is TjanWeerstand then
         AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanWeerstand(Parts[k]).Ohm, Parts[k])
       else if Parts[k] is TjanPotmeter then
@@ -1469,6 +1472,8 @@ begin
       SetStroom(Parts[k], 0)
     else if (Parts[k] is TjanZekering) or (Parts[k] is TjanAmpMeter) then
       SetStroom(Parts[k], U / RKlein)
+    else if Parts[k] is TjanSpoel then
+      SetStroom(Parts[k], (U + TjanSpoel(Parts[k]).Emf) / TjanSpoel(Parts[k]).Ohm)
     else if Parts[k] is TjanWeerstand then
       SetStroom(Parts[k], U / TjanWeerstand(Parts[k]).Ohm)
     else if Parts[k] is TjanPotmeter then
@@ -1801,6 +1806,8 @@ begin
     Result := Format('TjanRelaisModel;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanNulmeter then
+    Result := Format('TjanNulmeter;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanNulmeter(C).BereikIdx])
   else if C is TjanElektromotor then
     Result := Format('TjanElektromotor;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       Ord(TjanElektromotor(C).Omgekeerd), Ord(TjanElektromotor(C).GeenCollector)])
