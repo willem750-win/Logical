@@ -67,7 +67,19 @@ details summary { color: var(--text); }
 foreach ($L in $Langs) {
   $LangDir = Join-Path $Src $L
   if (-not (Test-Path $LangDir)) { continue }
-  $Lessons = @(Get-ChildItem $LangDir -Filter 'les*.html' | Sort-Object Name | ForEach-Object { $_.BaseName })
+  # de lessen in de volgorde van het leerpad (energie, magnetisme, ...);
+  # lessen die daar niet in staan, komen achteraan op naam
+  $Alle = @(Get-ChildItem $LangDir -Filter 'les*.html' | Sort-Object Name | ForEach-Object { $_.BaseName })
+  $Lessons = New-Object System.Collections.Generic.List[string]
+  $Leerpad = Join-Path $LangDir 'leerpad.html'
+  if (Test-Path $Leerpad) {
+    $LpTekst = [IO.File]::ReadAllText($Leerpad)
+    foreach ($M in [regex]::Matches($LpTekst, 'href="(les[a-z0-9]*)\.html"')) {
+      $B = $M.Groups[1].Value
+      if (($Alle -contains $B) -and -not $Lessons.Contains($B)) { $Lessons.Add($B) }
+    }
+  }
+  foreach ($B in $Alle) { if (-not $Lessons.Contains($B)) { $Lessons.Add($B) } }
   $Pages = foreach ($P in $Order) { if ($P -eq 'LESSEN') { $Lessons } else { $P } }
 
   $Toc = New-Object System.Text.StringBuilder
