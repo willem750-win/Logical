@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom;
 const
   IniFileName = 'taal.ini';
 
@@ -163,6 +163,9 @@ type
      // onthoudt Box.KillCount, zodat laden of een nieuw paneel de lijsten leegt.
      FUndoList, FRedoList: TStringList;
      FUndoCur, FUndoCurSorted: string;
+     FWelkom: TWelkomForm;
+     FRond: TRondleiding;
+     FMWelkom: TMenuItem;
      FUndoKill: Integer;
      btUndo, btRedo: TSpeedButton;
      btLogicRun: TSpeedButton;          // LogicRun-venster openen
@@ -197,6 +200,13 @@ type
      procedure GridKStatusBalkChange(Sender: TObject);
      procedure LogicRunEdit(Sender: TObject);
      function LogicRunTaal: string;
+     // welkomstvenster en rondleiding (uWelkom)
+     procedure ToonWelkom;
+     procedure WelkomBijStart(Data: PtrInt);
+     procedure WelkomTaal(AIndex: Integer);
+     procedure StartRondleiding;
+     procedure StartLes1(Sender: TObject);
+     procedure MWelkomClick(Sender: TObject);
      procedure CreateUndoButtons;
      procedure UpdateUndoHints;
      procedure UpdateUndoButtons;
@@ -1478,6 +1488,13 @@ end;
   MTeller.Caption               := BuiltinPanelName(2);
   MGeheugenpaneel.Caption       := BuiltinPanelName(3);
   MNieuwStandaardpaneel.Caption := BuiltinPanelName(4);
+  if Assigned(FMWelkom) then
+    FMWelkom.Caption := MyTr(LogicRunTaal, 'Welkom en rondleiding...', 'Welcome and guided tour...',
+      'Bienvenue et visite guidée...', 'Willkommen und Rundgang...');
+  if Assigned(FWelkom) and FWelkom.Visible then
+    FWelkom.SetTaal(LogicRunTaal, Taal.ItemIndex);
+  if Assigned(FRond) then
+    FRond.SetTaal(LogicRunTaal);
   if FBuiltinPanel > 0 then
     ShowBuiltinPanelTitle(FBuiltinPanel);
 
@@ -2948,6 +2965,13 @@ begin
   end;
   end;
   Taal.HelpKeyword := 'taal';
+
+  // welkomstvenster en rondleiding terug te vinden onder Paneelkeuze
+  PPanels.Items.Add(NewLine);
+  FMWelkom := TMenuItem.Create(Self);
+  FMWelkom.Caption := 'Welkom en rondleiding...';
+  FMWelkom.OnClick := @MWelkomClick;
+  PPanels.Items.Add(FMWelkom);
 end;
 
 procedure TmainForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -3080,6 +3104,10 @@ begin
 
    // nieuwe versie? (op de achtergrond, hoogstens 1 keer per dag)
    StartAutoUpdateCheck(Self, TitelBar2, Grid.Language);
+
+   // welkomstvenster bij het opstarten (tenzij uitgezet, of als er een
+   // bestand meegegeven is)
+   Application.QueueAsyncCall(@WelkomBijStart, 0);
  end;
 end;
 
@@ -3433,7 +3461,159 @@ begin
   MarkPanelClean;
 end;
 
+{ Welkomstvenster en rondleiding }
 
+// na het opstarten (zodra het hoofdvenster zichtbaar is): het welkomstvenster,
+// tenzij het uitgezet is of er een bestand meegegeven is
+procedure TmainForm.WelkomBijStart(Data: PtrInt);
+var
+  Ini: TIniFile;
+  Toon: Boolean;
+begin
+  if (ParamCount > 0) and FileExists(ParamStr(1)) then Exit;
+  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + IniFileName);
+  try
+    Toon := Ini.ReadBool('Settings', 'Welkom', True);
+  finally
+    Ini.Free;
+  end;
+  if Toon then ToonWelkom;
+end;
+
+procedure TmainForm.ToonWelkom;
+var
+  Ini: TIniFile;
+  K: TWelkomKeuze;
+begin
+  if FRunMode then
+  begin
+    btSimulate.Down := False;
+    btnSimulateClick(nil);
+  end;
+  if FWelkom = nil then
+  begin
+    FWelkom := TWelkomForm.CreateWelkom(Self, Taal.Items, Taal.ItemIndex);
+    FWelkom.OnTaal := @WelkomTaal;
+  end;
+  FWelkom.SetTaal(LogicRunTaal, Taal.ItemIndex);
+  FWelkom.ShowModal;
+  K := FWelkom.Keuze;
+  // het vinkje "Toon dit venster bij het opstarten" bewaren
+  try
+    Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + IniFileName);
+    try
+      Ini.WriteBool('Settings', 'Welkom', FWelkom.ToonBijStart);
+    finally
+      Ini.Free;
+    end;
+  except
+    // map niet schrijfbaar: dan komt het venster gewoon terug
+  end;
+  case K of
+    wkLes1: StartLes1(nil);
+    wkRondleiding: StartRondleiding;
+    wkLeerpad:
+      if Assigned(AppHelpManager) then AppHelpManager.ShowHelpPage('leerpad');
+  end;
+end;
+
+// taal gekozen in het welkomstvenster: zoals de taalkeuze onderaan
+procedure TmainForm.WelkomTaal(AIndex: Integer);
+begin
+  if (AIndex < 0) or (AIndex >= Taal.Items.Count) or (AIndex = Taal.ItemIndex) then Exit;
+  Taal.ItemIndex := AIndex;
+  TaalChange(Taal);
+  if Assigned(FWelkom) then
+    FWelkom.SetTaal(LogicRunTaal, Taal.ItemIndex);
+end;
+
+// les 1: het voorbeeld op het paneel en de les in de help
+procedure TmainForm.StartLes1(Sender: TObject);
+begin
+  OpenPanelFromHelp(ExtractFilePath(ParamStr(0)) + 'panels' + PathDelim + 'lessen' + PathDelim +
+    'les01-schakelaar-en-lamp.lpl');
+  if Assigned(AppHelpManager) then
+    AppHelpManager.ShowHelpPage('les01');
+end;
+
+procedure TmainForm.MWelkomClick(Sender: TObject);
+begin
+  ToonWelkom;
+end;
+
+procedure TmainForm.StartRondleiding;
+begin
+  if FRond = nil then
+  begin
+    FRond := TRondleiding.Create(Self);
+    FRond.OnLes1 := @StartLes1;
+    FRond.RondStap(Box,
+      'Dit is de onderdelenbalk. Klik op een onderdeel en daarna op het paneel om het te plaatsen.' + LineEnding +
+        'Links staat de invoer (schakelaars, knoppen), dan de verwerking (poorten), de uitvoer (lampen) en de voeding.' + LineEnding +
+        'Houd de muis boven een knop om te zien wat het is.',
+      'This is the component toolbar. Click a component and then click on the panel to place it.' + LineEnding +
+        'On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply.' + LineEnding +
+        'Hold the mouse over a button to see what it is.',
+      'Voici la barre des composants. Cliquez sur un composant, puis sur le panneau pour le placer.' + LineEnding +
+        'À gauche l''entrée (interrupteurs, boutons), puis le traitement (portes), la sortie (lampes) et l''alimentation.' + LineEnding +
+        'Laissez la souris sur un bouton pour voir ce que c''est.',
+      'Das ist die Bauteilleiste. Klicken Sie auf ein Bauteil und dann auf das Panel, um es zu platzieren.' + LineEnding +
+        'Links die Eingabe (Schalter, Taster), dann die Verarbeitung (Gatter), die Ausgabe (Lampen) und die Stromversorgung.' + LineEnding +
+        'Halten Sie die Maus über eine Taste, um zu sehen, was sie ist.');
+    FRond.RondStap(Grid,
+      'Dit is het paneel: hier bouw je je schakeling. Versleep een onderdeel om het te verplaatsen.' + LineEnding +
+        'Een draad leg je met Verbinding in de onderdelenbalk: klik op een aansluitpunt en sleep naar het volgende.',
+      'This is the panel: here you build your circuit. Drag a component to move it.' + LineEnding +
+        'You lay a wire with Connection in the toolbar: click a terminal and drag to the next one.',
+      'Voici le panneau : c''est ici que vous construisez votre circuit. Faites glisser un composant pour le déplacer.' + LineEnding +
+        'Un fil se pose avec Connexion dans la barre : cliquez sur une borne et faites glisser jusqu''à la suivante.',
+      'Das ist das Panel: Hier bauen Sie Ihre Schaltung. Ziehen Sie ein Bauteil, um es zu verschieben.' + LineEnding +
+        'Einen Draht legen Sie mit Verbindung in der Leiste: Klicken Sie auf einen Anschluss und ziehen Sie zum nächsten.');
+    FRond.RondStap(btSimulate,
+      'Start de simulatie: nu werkt je schakeling. Klik op schakelaars en knoppen en kijk wat de lampen doen.' + LineEnding +
+        'Klik nog eens om verder te bouwen.',
+      'Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do.' + LineEnding +
+        'Click again to go on building.',
+      'Lancez la simulation : votre circuit fonctionne. Cliquez sur les interrupteurs et les boutons et regardez les lampes.' + LineEnding +
+        'Cliquez encore pour continuer à construire.',
+      'Starten Sie die Simulation: Jetzt arbeitet Ihre Schaltung. Klicken Sie auf Schalter und Taster und sehen Sie, was die Lampen tun.' + LineEnding +
+        'Klicken Sie noch einmal, um weiterzubauen.');
+    FRond.RondStap(LGPanels1,
+      'Paneelkeuze: open een kant-en-klaar paneel of begin een nieuw. Hier vind je ook het welkomstvenster en deze rondleiding terug.',
+      'Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again.',
+      'Choix du panneau : ouvrez un panneau tout prêt ou commencez-en un nouveau. Vous y retrouvez aussi la fenêtre de bienvenue et cette visite.',
+      'Panelwahl: Öffnen Sie ein fertiges Panel oder beginnen Sie ein neues. Hier finden Sie auch das Willkommensfenster und diesen Rundgang wieder.');
+    FRond.RondStap(btOpenPaneel1,
+      'Open een paneel dat je bewaard hebt. In de map lessen staan de voorbeelden van alle lessen.',
+      'Open a panel you saved. The folder lessen holds the examples of all lessons.',
+      'Ouvrez un panneau enregistré. Le dossier lessen contient les exemples de toutes les leçons.',
+      'Öffnen Sie ein gespeichertes Panel. Im Ordner lessen stehen die Beispiele aller Lektionen.');
+    FRond.RondStap(btnSavePanel1,
+      'Bewaar je schakeling in een bestand, zodat je later verder kunt.',
+      'Save your circuit to a file, so you can continue later.',
+      'Enregistrez votre circuit dans un fichier pour continuer plus tard.',
+      'Speichern Sie Ihre Schaltung in einer Datei, damit Sie später weitermachen können.');
+    FRond.RondStap(Panel2,
+      'Hulpmiddelen voor het paneel: een onderdeel of alle draden verwijderen, het raster en de hulplijnen, en de instellingen.',
+      'Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings.',
+      'Outils du panneau : supprimer un composant ou tous les fils, la grille et les repères, et les réglages.',
+      'Werkzeuge für das Panel: ein Bauteil oder alle Drähte löschen, Raster und Hilfslinien, und die Einstellungen.');
+    FRond.RondStap(brInfo1,
+      'De help, met het leerpad: lessen van de eerste schakeling tot magnetisme.' + LineEnding +
+        'Druk ook op F1 met de muis boven een onderdeel of knop: dan krijg je uitleg over dat ding.',
+      'The help, with the learning path: lessons from the first circuit to magnetism.' + LineEnding +
+        'Also press F1 with the mouse over a component or button: you get an explanation of that item.',
+      'L''aide, avec le parcours : des leçons du premier circuit au magnétisme.' + LineEnding +
+        'Appuyez aussi sur F1, la souris sur un composant ou un bouton : vous obtenez une explication.',
+      'Die Hilfe mit dem Lernpfad: Lektionen von der ersten Schaltung bis zum Magnetismus.' + LineEnding +
+        'Drücken Sie auch F1 mit der Maus über einem Bauteil oder einer Taste: Dann bekommen Sie eine Erklärung dazu.');
+    FRond.RondStap(Taal,
+      'Hier kies je de taal. Klaar! Begin met les 1 om je eerste schakeling te bouwen.',
+      'Here you choose the language. Done! Start with lesson 1 to build your first circuit.',
+      'Ici, vous choisissez la langue. Terminé ! Commencez la leçon 1 pour construire votre premier circuit.',
+      'Hier wählen Sie die Sprache. Fertig! Beginnen Sie mit Lektion 1, um Ihre erste Schaltung zu bauen.');
+  end;
+  FRond.Start(LogicRunTaal);
+end;
 
 end.
-

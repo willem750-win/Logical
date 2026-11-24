@@ -2257,3 +2257,102 @@ msgstr "分圧回路"
 
 msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
 msgstr "この抵抗は LDR または NTC と組んで分圧回路になります：2 つの間の電圧は\n光や温度で変わり、ゲートに送られます。\n抵抗を変えると、ゲートが切り替わる明るさや温度が変わります。"
+
+msgid "Welcome and guided tour..."
+msgstr "ようこそとガイドツアー..."
+
+msgid "This is the component toolbar. Click a component and then click on the panel to place it."
+msgstr "これは部品バーです。部品をクリックしてからパネルをクリックすると配置できます。"
+
+msgid "On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply."
+msgstr "左から入力 (スイッチ、ボタン)、処理 (ゲート)、出力 (ランプ)、電源の順です。"
+
+msgid "Hold the mouse over a button to see what it is."
+msgstr "ボタンの上にマウスを置くと、それが何かがわかります。"
+
+msgid "This is the panel: here you build your circuit. Drag a component to move it."
+msgstr "これはパネルです。ここで回路を作ります。部品はドラッグで移動できます。"
+
+msgid "You lay a wire with Connection in the toolbar: click a terminal and drag to the next one."
+msgstr "配線はバーの「接続」で行います。端子をクリックして次の端子までドラッグします。"
+
+msgid "Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do."
+msgstr "シミュレーションを開始すると回路が動きます。スイッチやボタンをクリックしてランプを見てください。"
+
+msgid "Click again to go on building."
+msgstr "もう一度クリックすると組み立てに戻ります。"
+
+msgid "Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again."
+msgstr "パネルの選択：既製のパネルを開くか、新しく始めます。ようこそ画面とこのツアーもここにあります。"
+
+msgid "Open a panel you saved. The folder lessen holds the examples of all lessons."
+msgstr "保存したパネルを開きます。lessen フォルダーに全レッスンの例があります。"
+
+msgid "Save your circuit to a file, so you can continue later."
+msgstr "回路をファイルに保存して、あとで続けられます。"
+
+msgid "Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings."
+msgstr "パネルのツール：部品やすべての配線の削除、グリッドとガイド、設定。"
+
+msgid "The help, with the learning path: lessons from the first circuit to magnetism."
+msgstr "ヘルプと学習コース：最初の回路から磁気までのレッスン。"
+
+msgid "Also press F1 with the mouse over a component or button: you get an explanation of that item."
+msgstr "部品やボタンの上にマウスを置いて F1 を押すと、その説明が表示されます。"
+
+msgid "Here you choose the language. Done! Start with lesson 1 to build your first circuit."
+msgstr "ここで言語を選びます。完了！レッスン 1 で最初の回路を作りましょう。"
+
+msgid "Welcome"
+msgstr "ようこそ"
+
+msgid "Welcome to Logic"
+msgstr "Logic へようこそ"
+
+msgid "With Logic you build circuits on the screen: switches, lamps, gates, sources and more. Start the simulation and you see them work. Where do you want to begin?"
+msgstr "Logic では画面上で回路を作ります：スイッチ、ランプ、ゲート、電源など。シミュレーションを開始すると動作が見られます。どこから始めますか？"
+
+msgid "Language:"
+msgstr "言語："
+
+msgid "Start with lesson 1"
+msgstr "レッスン 1 から始める"
+
+msgid "Your first circuit: a switch and a lamp. The lesson opens in the help, the example is placed straight on the panel."
+msgstr "最初の回路：スイッチとランプ。レッスンはヘルプで開き、例はすぐパネルに表示されます。"
+
+msgid "Guided tour"
+msgstr "ガイドツアー"
+
+msgid "A short step-by-step tour: what is what on the screen, and where to find things."
+msgstr "短いステップ式のツアー：画面の各部分と、どこに何があるか。"
+
+msgid "View the learning path"
+msgstr "学習コースを見る"
+
+msgid "All lessons in a row, from the first circuit to energy, power supply, electronics and magnetism."
+msgstr "最初の回路からエネルギー、電源、電子回路、磁気まで、すべてのレッスンの一覧。"
+
+msgid "Empty panel"
+msgstr "空のパネル"
+
+msgid "I already know Logic: start right away with an empty panel."
+msgstr "Logic はもう知っている：空のパネルですぐ始める。"
+
+msgid "Show this window at startup (you can find it later under Panel choice)"
+msgstr "起動時にこのウィンドウを表示する (あとで「パネルの選択」から開けます)"
+
+msgid "Step %d of %d"
+msgstr "ステップ %d / %d"
+
+msgid "< Back"
+msgstr "< 戻る"
+
+msgid "Done"
+msgstr "完了"
+
+msgid "Next >"
+msgstr "次へ >"
+
+msgid "Start lesson 1"
+msgstr "レッスン 1"

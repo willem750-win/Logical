@@ -118,7 +118,8 @@ foreach ($F in $Files) {
 
     # Tr(...) / MyTr / TrHelp: 5 argumenten, Engels = 3e; T(...): 4, Engels = 2e;
     # LangTr(...) / PoTr(...): 1 argument
-    if ($X.K -eq 'i' -and ($X.V -eq 'tr' -or $X.V -eq 'mytr' -or $X.V -eq 'trhelp' -or $X.V -eq 't' -or $X.V -eq 'langtr' -or $X.V -eq 'potr') -and
+    # RondStap(Doel, NL, EN, FR, DE): een stap van de rondleiding (uWelkom)
+    if ($X.K -eq 'i' -and ($X.V -eq 'tr' -or $X.V -eq 'mytr' -or $X.V -eq 'trhelp' -or $X.V -eq 't' -or $X.V -eq 'langtr' -or $X.V -eq 'potr' -or $X.V -eq 'rondstap') -and
         ($i + 1) -lt $N -and $T[$i + 1].V -eq '(') {
       $CallArgs = @(); $Start = $i + 2; $Par = 0
       for ($j = $i + 2; $j -lt $N; $j++) {

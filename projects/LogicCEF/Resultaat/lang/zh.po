@@ -2257,3 +2257,102 @@ msgstr "分压器"
 
 msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
 msgstr "这个电阻与 LDR 或 NTC 组成分压器：两者之间的电压\n随光照或温度变化，并送到门电路。\n换一个电阻，门电路就在另一个光照或温度下翻转。"
+
+msgid "Welcome and guided tour..."
+msgstr "欢迎和导览..."
+
+msgid "This is the component toolbar. Click a component and then click on the panel to place it."
+msgstr "这是元件栏。点击一个元件，再点击面板即可放置。"
+
+msgid "On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply."
+msgstr "左边是输入 (开关、按钮)，然后是处理 (门电路)、输出 (灯) 和电源。"
+
+msgid "Hold the mouse over a button to see what it is."
+msgstr "把鼠标停在按钮上，可以看到它是什么。"
+
+msgid "This is the panel: here you build your circuit. Drag a component to move it."
+msgstr "这是面板：在这里搭建电路。拖动元件可以移动它。"
+
+msgid "You lay a wire with Connection in the toolbar: click a terminal and drag to the next one."
+msgstr "用元件栏中的\"连接\"布线：点击一个端子，拖到下一个端子。"
+
+msgid "Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do."
+msgstr "开始仿真：电路就会工作。点击开关和按钮，看看灯的变化。"
+
+msgid "Click again to go on building."
+msgstr "再点一次可继续搭建。"
+
+msgid "Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again."
+msgstr "面板选择：打开现成的面板或新建一个。欢迎窗口和本导览也可在这里再次找到。"
+
+msgid "Open a panel you saved. The folder lessen holds the examples of all lessons."
+msgstr "打开已保存的面板。lessen 文件夹里有所有课程的示例。"
+
+msgid "Save your circuit to a file, so you can continue later."
+msgstr "把电路保存到文件，以后可以继续。"
+
+msgid "Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings."
+msgstr "面板工具：删除元件或全部导线，网格和辅助线，以及设置。"
+
+msgid "The help, with the learning path: lessons from the first circuit to magnetism."
+msgstr "帮助和学习路径：从第一个电路到磁学的课程。"
+
+msgid "Also press F1 with the mouse over a component or button: you get an explanation of that item."
+msgstr "把鼠标停在元件或按钮上按 F1，可以看到它的说明。"
+
+msgid "Here you choose the language. Done! Start with lesson 1 to build your first circuit."
+msgstr "在这里选择语言。完成！从第 1 课开始搭建你的第一个电路。"
+
+msgid "Welcome"
+msgstr "欢迎"
+
+msgid "Welcome to Logic"
+msgstr "欢迎使用 Logic"
+
+msgid "With Logic you build circuits on the screen: switches, lamps, gates, sources and more. Start the simulation and you see them work. Where do you want to begin?"
+msgstr "用 Logic 可以在屏幕上搭建电路：开关、灯、门电路、电源等。开始仿真就能看到它们工作。想从哪里开始？"
+
+msgid "Language:"
+msgstr "语言："
+
+msgid "Start with lesson 1"
+msgstr "从第 1 课开始"
+
+msgid "Your first circuit: a switch and a lamp. The lesson opens in the help, the example is placed straight on the panel."
+msgstr "你的第一个电路：一个开关和一盏灯。课程在帮助中打开，示例会直接出现在面板上。"
+
+msgid "Guided tour"
+msgstr "导览"
+
+msgid "A short step-by-step tour: what is what on the screen, and where to find things."
+msgstr "简短的分步导览：屏幕上各部分是什么，以及在哪里找到。"
+
+msgid "View the learning path"
+msgstr "查看学习路径"
+
+msgid "All lessons in a row, from the first circuit to energy, power supply, electronics and magnetism."
+msgstr "所有课程一览，从第一个电路到能量、电源、电子学和磁学。"
+
+msgid "Empty panel"
+msgstr "空白面板"
+
+msgid "I already know Logic: start right away with an empty panel."
+msgstr "我已经熟悉 Logic：直接从空白面板开始。"
+
+msgid "Show this window at startup (you can find it later under Panel choice)"
+msgstr "启动时显示此窗口 (以后可在\"面板选择\"中找到)"
+
+msgid "Step %d of %d"
+msgstr "第 %d 步，共 %d 步"
+
+msgid "< Back"
+msgstr "< 上一步"
+
+msgid "Done"
+msgstr "完成"
+
+msgid "Next >"
+msgstr "下一步 >"
+
+msgid "Start lesson 1"
+msgstr "第 1 课"

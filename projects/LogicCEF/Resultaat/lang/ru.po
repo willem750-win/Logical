@@ -2257,3 +2257,102 @@ msgstr "делитель напряжения"
 
 msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
 msgstr "Вместе с фоторезистором или термистором этот резистор образует делитель напряжения: напряжение\nмежду ними меняется со светом или температурой и подаётся на логический элемент.\nС другим сопротивлением элемент переключается при другой освещённости или температуре."
+
+msgid "Welcome and guided tour..."
+msgstr "Приветствие и экскурсия..."
+
+msgid "This is the component toolbar. Click a component and then click on the panel to place it."
+msgstr "Это панель компонентов. Щёлкните компонент, а затем панель, чтобы его разместить."
+
+msgid "On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply."
+msgstr "Слева — ввод (выключатели, кнопки), затем обработка (логические элементы), вывод (лампы) и питание."
+
+msgid "Hold the mouse over a button to see what it is."
+msgstr "Задержите мышь над кнопкой, чтобы увидеть, что это."
+
+msgid "This is the panel: here you build your circuit. Drag a component to move it."
+msgstr "Это панель: здесь вы собираете схему. Перетащите компонент, чтобы его переместить."
+
+msgid "You lay a wire with Connection in the toolbar: click a terminal and drag to the next one."
+msgstr "Провод прокладывается кнопкой Соединение: щёлкните вывод и тяните к следующему."
+
+msgid "Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do."
+msgstr "Запустите моделирование: теперь схема работает. Щёлкайте выключатели и кнопки и смотрите на лампы."
+
+msgid "Click again to go on building."
+msgstr "Щёлкните ещё раз, чтобы продолжить сборку."
+
+msgid "Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again."
+msgstr "Выбор панели: откройте готовую панель или начните новую. Здесь же снова найдёте приветствие и эту экскурсию."
+
+msgid "Open a panel you saved. The folder lessen holds the examples of all lessons."
+msgstr "Откройте сохранённую панель. В папке lessen лежат примеры всех уроков."
+
+msgid "Save your circuit to a file, so you can continue later."
+msgstr "Сохраните схему в файл, чтобы продолжить позже."
+
+msgid "Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings."
+msgstr "Инструменты панели: удалить компонент или все провода, сетка и направляющие, настройки."
+
+msgid "The help, with the learning path: lessons from the first circuit to magnetism."
+msgstr "Справка с учебным курсом: уроки от первой схемы до магнетизма."
+
+msgid "Also press F1 with the mouse over a component or button: you get an explanation of that item."
+msgstr "Нажмите также F1, наведя мышь на компонент или кнопку: появится объяснение."
+
+msgid "Here you choose the language. Done! Start with lesson 1 to build your first circuit."
+msgstr "Здесь выбирается язык. Готово! Начните с урока 1, чтобы собрать первую схему."
+
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+msgid "Welcome to Logic"
+msgstr "Добро пожаловать в Logic"
+
+msgid "With Logic you build circuits on the screen: switches, lamps, gates, sources and more. Start the simulation and you see them work. Where do you want to begin?"
+msgstr "В Logic вы собираете схемы на экране: выключатели, лампы, логические элементы, источники и многое другое. Запустите моделирование и увидите, как они работают. С чего начнём?"
+
+msgid "Language:"
+msgstr "Язык:"
+
+msgid "Start with lesson 1"
+msgstr "Начать с урока 1"
+
+msgid "Your first circuit: a switch and a lamp. The lesson opens in the help, the example is placed straight on the panel."
+msgstr "Ваша первая схема: выключатель и лампа. Урок открывается в справке, пример сразу появляется на панели."
+
+msgid "Guided tour"
+msgstr "Экскурсия"
+
+msgid "A short step-by-step tour: what is what on the screen, and where to find things."
+msgstr "Короткая пошаговая экскурсия: что есть что на экране и где что найти."
+
+msgid "View the learning path"
+msgstr "Учебный курс"
+
+msgid "All lessons in a row, from the first circuit to energy, power supply, electronics and magnetism."
+msgstr "Все уроки по порядку: от первой схемы до энергии, питания, электроники и магнетизма."
+
+msgid "Empty panel"
+msgstr "Пустая панель"
+
+msgid "I already know Logic: start right away with an empty panel."
+msgstr "Я уже знаю Logic: сразу начать с пустой панели."
+
+msgid "Show this window at startup (you can find it later under Panel choice)"
+msgstr "Показывать это окно при запуске (позже его можно найти в Выборе панели)"
+
+msgid "Step %d of %d"
+msgstr "Шаг %d из %d"
+
+msgid "< Back"
+msgstr "< Назад"
+
+msgid "Done"
+msgstr "Готово"
+
+msgid "Next >"
+msgstr "Далее >"
+
+msgid "Start lesson 1"
+msgstr "Урок 1"

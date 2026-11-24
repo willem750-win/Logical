@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les10-voeding-en-spanning.png" alt="Two sources of 7.5 V and 1.5 V, each with a + rail and a push button, two lamps and a voltmeter">
-    <figcaption>The bottom push button is pressed: the voltmeter measures 1.5&nbsp;V, but the lamp stays off.</figcaption>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Two sources of 5 V and 1.5 V, each with a + rail and a push button, two 5 V lamps and a voltmeter">
+    <figcaption>The bottom push button is pressed: the voltmeter measures 1.5&nbsp;V, and the lamp barely glows.</figcaption>
   </figure>
 
   <h2>Source and power rails</h2>
@@ -19,17 +19,18 @@
     <li>the blue <b>&minus; rail</b> is ground (0&nbsp;V). The &minus; terminal of the source is connected to it and the
       outputs (the lamps) are connected to it.</li>
   </ul>
-  <p>The top source is set to <b>7.5&nbsp;V</b>, the bottom one to <b>1.5&nbsp;V</b>. Each source feeds its own + rail;
+  <p>The top source is set to <b>5&nbsp;V</b>, the bottom one to <b>1.5&nbsp;V</b>. Each source feeds its own + rail;
   they share the &minus; rail.</p>
 
   <h2>Measuring voltage</h2>
   <p>The <a href="voeding.html#voltmeter">voltmeter</a> has its + on the output of the bottom push button and its &minus; on the &minus; rail. It
-  measures the voltage against ground: <b>1.5&nbsp;V</b>. Still the lamp stays off. A logic input only works from about
-  <b>2&nbsp;V</b>: below that the signal counts as &ldquo;off&rdquo;.</p>
+  measures the voltage against ground: <b>1.5&nbsp;V</b>. Still the lamp barely glows. It is a <a href="voeding.html#serie">5&nbsp;V lamp</a>: at 1.5&nbsp;V it gets only
+  9&nbsp;% of its power (P = U &times; U / R). Only from about <b>2.5&nbsp;V</b> (a quarter of its power) does it really light up.
+  A logic input also needs enough voltage: only from about <b>2&nbsp;V</b> does the signal count as 1.</p>
 
   <h2>Try it</h2>
   <ol class="steps">
-    <li>Start the simulation and press the bottom push button: the voltmeter shows 1.5&nbsp;V, the lamp stays off.</li>
+    <li>Start the simulation and press the bottom push button: the voltmeter shows 1.5&nbsp;V, the lamp barely glows.</li>
     <li>Drag the slider of the bottom source to 3&nbsp;V. You may do this during the simulation.</li>
     <li>Press again: the voltmeter shows 3.0&nbsp;V and the lamp lights up.</li>
   </ol>
@@ -39,7 +40,7 @@
   the wire between the &minus; terminal of a source and the &minus; rail?</p>
   <details>
     <summary>Solution</summary>
-    <p>From <b>2&nbsp;V</b> the lamp lights up; at 1.5&nbsp;V and lower it does not. Without the wire to the &minus; rail
+    <p>From about <b>2.5&nbsp;V</b> the lamp lights up (a quarter of its power), at 5&nbsp;V it shines fully; at 1.5&nbsp;V it barely glows. Without the wire to the &minus; rail
     the circuit is not closed: the + rail of that source drops to 0&nbsp;V and turns grey, and the push button fed from that
     rail no longer works. No current can flow without a way back to the source.</p>
   </details>

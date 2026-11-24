@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les10-voeding-en-spanning.png" alt="Zwei Quellen mit 7,5 V und 1,5 V, jede mit einer + Schiene und einem Taster, zwei Lampen und ein Voltmeter">
-    <figcaption>Der untere Taster ist gedrückt: Das Voltmeter misst 1,5&nbsp;V, aber die Lampe bleibt aus.</figcaption>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Zwei Quellen mit 5 V und 1,5 V, jede mit einer + Schiene und einem Taster, zwei 5-V-Lampen und ein Voltmeter">
+    <figcaption>Der untere Taster ist gedrückt: Das Voltmeter misst 1,5&nbsp;V, und die Lampe glimmt kaum.</figcaption>
   </figure>
 
   <h2>Quelle und Versorgungsschienen</h2>
@@ -19,17 +19,18 @@
     <li>die blaue <b>&minus; Schiene</b> ist die Masse (0&nbsp;V). Die &minus; Klemme der Quelle ist mit ihr verbunden, und
       die Ausgänge (die Lampen) sind daran angeschlossen.</li>
   </ul>
-  <p>Die obere Quelle steht auf <b>7,5&nbsp;V</b>, die untere auf <b>1,5&nbsp;V</b>. Jede Quelle speist ihre eigene
+  <p>Die obere Quelle steht auf <b>5&nbsp;V</b>, die untere auf <b>1,5&nbsp;V</b>. Jede Quelle speist ihre eigene
   + Schiene; die &minus; Schiene teilen sie sich.</p>
 
   <h2>Spannung messen</h2>
   <p>Das <a href="voeding.html#voltmeter">Voltmeter</a> hängt mit + am Ausgang des unteren Tasters und mit &minus; an der &minus; Schiene. Es
-  misst die Spannung gegen Masse: <b>1,5&nbsp;V</b>. Trotzdem bleibt die Lampe aus. Ein Logikeingang funktioniert erst ab etwa <b>2&nbsp;V</b>:
-  darunter gilt das Signal als &bdquo;aus&ldquo;.</p>
+  misst die Spannung gegen Masse: <b>1,5&nbsp;V</b>. Trotzdem glimmt die Lampe kaum. Es ist eine <a href="voeding.html#serie">5-V-Lampe</a>: Bei 1,5&nbsp;V bekommt sie nur
+  9&nbsp;% ihrer Leistung (P = U &times; U / R). Erst ab etwa <b>2,5&nbsp;V</b> (ein Viertel ihrer Leistung) leuchtet sie richtig.
+  Auch ein Logikeingang braucht genug Spannung: Erst ab etwa <b>2&nbsp;V</b> gilt das Signal als 1.</p>
 
   <h2>Ausprobieren</h2>
   <ol class="steps">
-    <li>Starten Sie die Simulation und drücken Sie den unteren Taster: Das Voltmeter zeigt 1,5&nbsp;V, die Lampe bleibt aus.</li>
+    <li>Starten Sie die Simulation und drücken Sie den unteren Taster: Das Voltmeter zeigt 1,5&nbsp;V, die Lampe glimmt kaum.</li>
     <li>Ziehen Sie den Schieberegler der unteren Quelle auf 3&nbsp;V. Das geht auch während der Simulation.</li>
     <li>Drücken Sie erneut: Das Voltmeter zeigt 3,0&nbsp;V und die Lampe leuchtet.</li>
   </ol>
@@ -39,7 +40,7 @@
   wenn Sie den Draht zwischen der &minus; Klemme einer Quelle und der &minus; Schiene löschen?</p>
   <details>
     <summary>Lösung</summary>
-    <p>Ab <b>2&nbsp;V</b> leuchtet die Lampe, bei 1,5&nbsp;V und darunter nicht. Ohne den Draht zur &minus; Schiene ist
+    <p>Ab etwa <b>2,5&nbsp;V</b> leuchtet die Lampe (ein Viertel ihrer Leistung), bei 5&nbsp;V leuchtet sie voll; bei 1,5&nbsp;V glimmt sie kaum. Ohne den Draht zur &minus; Schiene ist
     der Kreis nicht geschlossen: Die + Schiene dieser Quelle fällt auf 0&nbsp;V und wird grau, und der Taster an dieser
     Schiene funktioniert nicht mehr. Ohne Rückweg zur Quelle kann kein Strom fließen.</p>
   </details>

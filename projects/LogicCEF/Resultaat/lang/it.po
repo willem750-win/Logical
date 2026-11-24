@@ -1947,3 +1947,102 @@ msgstr "partitore di tensione"
 
 msgid "Together with the LDR or NTC this resistor forms a voltage divider: the voltage between\nthe two changes with the light or the temperature, and it goes to the gate.\nWith another resistance the gate switches at another light level or temperature."
 msgstr "Insieme alla LDR o alla NTC questa resistenza forma un partitore di tensione: la tensione tra\nle due cambia con la luce o la temperatura, e va alla porta.\nCon un'altra resistenza la porta commuta con un'altra luce o temperatura."
+
+msgid "Welcome and guided tour..."
+msgstr "Benvenuto e visita guidata..."
+
+msgid "This is the component toolbar. Click a component and then click on the panel to place it."
+msgstr "Questa è la barra dei componenti. Fai clic su un componente e poi sul pannello per posizionarlo."
+
+msgid "On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply."
+msgstr "A sinistra c'è l'ingresso (interruttori, pulsanti), poi l'elaborazione (porte), l'uscita (lampade) e l'alimentazione."
+
+msgid "Hold the mouse over a button to see what it is."
+msgstr "Tieni il mouse su un pulsante per vedere che cos'è."
+
+msgid "This is the panel: here you build your circuit. Drag a component to move it."
+msgstr "Questo è il pannello: qui costruisci il tuo circuito. Trascina un componente per spostarlo."
+
+msgid "You lay a wire with Connection in the toolbar: click a terminal and drag to the next one."
+msgstr "Un filo si posa con Connessione nella barra: fai clic su un morsetto e trascina fino al successivo."
+
+msgid "Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do."
+msgstr "Avvia la simulazione: ora il circuito funziona. Fai clic su interruttori e pulsanti e guarda cosa fanno le lampade."
+
+msgid "Click again to go on building."
+msgstr "Fai clic di nuovo per continuare a costruire."
+
+msgid "Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again."
+msgstr "Scelta del pannello: apri un pannello pronto o iniziane uno nuovo. Qui ritrovi anche il benvenuto e questa visita."
+
+msgid "Open a panel you saved. The folder lessen holds the examples of all lessons."
+msgstr "Apri un pannello salvato. La cartella lessen contiene gli esempi di tutte le lezioni."
+
+msgid "Save your circuit to a file, so you can continue later."
+msgstr "Salva il circuito in un file per continuare più tardi."
+
+msgid "Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings."
+msgstr "Strumenti del pannello: eliminare un componente o tutti i fili, la griglia e le guide, e le impostazioni."
+
+msgid "The help, with the learning path: lessons from the first circuit to magnetism."
+msgstr "La guida, con il percorso: lezioni dal primo circuito al magnetismo."
+
+msgid "Also press F1 with the mouse over a component or button: you get an explanation of that item."
+msgstr "Premi anche F1 con il mouse su un componente o un pulsante: ottieni una spiegazione."
+
+msgid "Here you choose the language. Done! Start with lesson 1 to build your first circuit."
+msgstr "Qui scegli la lingua. Fatto! Inizia con la lezione 1 per costruire il tuo primo circuito."
+
+msgid "Welcome"
+msgstr "Benvenuto"
+
+msgid "Welcome to Logic"
+msgstr "Benvenuto in Logic"
+
+msgid "With Logic you build circuits on the screen: switches, lamps, gates, sources and more. Start the simulation and you see them work. Where do you want to begin?"
+msgstr "Con Logic costruisci circuiti sullo schermo: interruttori, lampade, porte, sorgenti e altro. Avvia la simulazione e li vedi funzionare. Da dove vuoi cominciare?"
+
+msgid "Language:"
+msgstr "Lingua:"
+
+msgid "Start with lesson 1"
+msgstr "Inizia con la lezione 1"
+
+msgid "Your first circuit: a switch and a lamp. The lesson opens in the help, the example is placed straight on the panel."
+msgstr "Il tuo primo circuito: un interruttore e una lampada. La lezione si apre nella guida, l'esempio compare subito sul pannello."
+
+msgid "Guided tour"
+msgstr "Visita guidata"
+
+msgid "A short step-by-step tour: what is what on the screen, and where to find things."
+msgstr "Una breve visita passo per passo: che cosa c'è sullo schermo e dove trovarlo."
+
+msgid "View the learning path"
+msgstr "Vedi il percorso"
+
+msgid "All lessons in a row, from the first circuit to energy, power supply, electronics and magnetism."
+msgstr "Tutte le lezioni in fila, dal primo circuito a energia, alimentazione, elettronica e magnetismo."
+
+msgid "Empty panel"
+msgstr "Pannello vuoto"
+
+msgid "I already know Logic: start right away with an empty panel."
+msgstr "Conosco già Logic: inizia subito con un pannello vuoto."
+
+msgid "Show this window at startup (you can find it later under Panel choice)"
+msgstr "Mostra questa finestra all'avvio (la ritrovi poi in Scelta del pannello)"
+
+msgid "Step %d of %d"
+msgstr "Passo %d di %d"
+
+msgid "< Back"
+msgstr "< Indietro"
+
+msgid "Done"
+msgstr "Fatto"
+
+msgid "Next >"
+msgstr "Avanti >"
+
+msgid "Start lesson 1"
+msgstr "Lezione 1"

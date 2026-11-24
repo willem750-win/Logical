@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les10-voeding-en-spanning.png" alt="Twee bronnen van 7,5 V en 1,5 V met elk een + rail en een drukknop, twee lampen en een voltmeter">
-    <figcaption>De onderste drukknop is ingedrukt: de voltmeter meet 1,5&nbsp;V, maar de lamp blijft uit.</figcaption>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Twee bronnen van 5 V en 1,5 V met elk een + rail en een drukknop, twee lampen voor 5 V en een voltmeter">
+    <figcaption>De onderste drukknop is ingedrukt: de voltmeter meet 1,5&nbsp;V, en de lamp gloeit nauwelijks.</figcaption>
   </figure>
 
   <h2>Bron en voedingsrails</h2>
@@ -19,17 +19,18 @@
     <li>de blauwe <b>&minus; rail</b> is de massa (0&nbsp;V). De &minus; klem van de bron is ermee verbonden en de
       uitvoer (de lampen) is erop aangesloten.</li>
   </ul>
-  <p>De bovenste bron staat op <b>7,5&nbsp;V</b>, de onderste op <b>1,5&nbsp;V</b>. Elke bron voedt haar eigen + rail;
+  <p>De bovenste bron staat op <b>5&nbsp;V</b>, de onderste op <b>1,5&nbsp;V</b>. Elke bron voedt haar eigen + rail;
   de &minus; rail delen ze.</p>
 
   <h2>Spanning meten</h2>
   <p>De <a href="voeding.html#voltmeter">voltmeter</a> zit met + aan de uitgang van de onderste drukknop en met &minus; aan de &minus; rail. Hij
-  meet de spanning tegenover de massa: <b>1,5&nbsp;V</b>. Toch blijft de lamp uit. Een logische ingang werkt pas vanaf ongeveer
-  <b>2&nbsp;V</b>: daaronder telt het signaal als &ldquo;uit&rdquo;.</p>
+  meet de spanning tegenover de massa: <b>1,5&nbsp;V</b>. Toch gloeit de lamp nauwelijks. Het is een <a href="voeding.html#serie">lamp voor 5&nbsp;V</a>: bij 1,5&nbsp;V krijgt ze maar
+  9&nbsp;% van haar vermogen (P = U &times; U / R). Pas vanaf ongeveer <b>2,5&nbsp;V</b> (een kwart van haar vermogen) brandt ze echt.
+  Ook een logische ingang heeft genoeg spanning nodig: pas vanaf ongeveer <b>2&nbsp;V</b> telt het signaal als 1.</p>
 
   <h2>Probeer het</h2>
   <ol class="steps">
-    <li>Start de simulatie en druk de onderste drukknop in: de voltmeter toont 1,5&nbsp;V, de lamp blijft uit.</li>
+    <li>Start de simulatie en druk de onderste drukknop in: de voltmeter toont 1,5&nbsp;V, de lamp gloeit nauwelijks.</li>
     <li>Sleep de schuifregelaar van de onderste bron naar 3&nbsp;V. Dat mag tijdens de simulatie.</li>
     <li>Druk opnieuw: de voltmeter toont 3,0&nbsp;V en de lamp brandt.</li>
   </ol>
@@ -39,7 +40,7 @@
   draad tussen de &minus; klem van een bron en de &minus; rail verwijdert?</p>
   <details>
     <summary>Oplossing</summary>
-    <p>Vanaf <b>2&nbsp;V</b> brandt de lamp; bij 1,5&nbsp;V en lager niet. Zonder de draad naar de &minus; rail is de
+    <p>Vanaf ongeveer <b>2,5&nbsp;V</b> brandt de lamp (een kwart van haar vermogen), bij 5&nbsp;V brandt ze vol; bij 1,5&nbsp;V gloeit ze nauwelijks. Zonder de draad naar de &minus; rail is de
     kring niet gesloten: de + rail van die bron valt op 0&nbsp;V en wordt grijs, en de drukknop aan die rail werkt niet
     meer. Er kan geen stroom lopen zonder een weg terug naar de bron.</p>
   </details>

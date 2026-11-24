@@ -6,8 +6,8 @@
 
   <p><a class="open" href="../../panels/lessen/les10-voeding-en-spanning.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les10-voeding-en-spanning.png" alt="Deux sources de 7,5 V et 1,5 V, chacune avec un rail + et un bouton-poussoir, deux lampes et un voltmètre">
-    <figcaption>Le bouton-poussoir du bas est enfoncé&nbsp;: le voltmètre mesure 1,5&nbsp;V, mais la lampe reste éteinte.</figcaption>
+    <img src="../img/les10-voeding-en-spanning.png" alt="Deux sources de 5 V et 1,5 V, chacune avec un rail + et un bouton-poussoir, deux lampes de 5 V et un voltmètre">
+    <figcaption>Le bouton-poussoir du bas est enfoncé&nbsp;: le voltmètre mesure 1,5&nbsp;V, et la lampe rougeoie à peine.</figcaption>
   </figure>
 
   <h2>Source et rails d&rsquo;alimentation</h2>
@@ -19,17 +19,19 @@
     <li>le <b>rail &minus;</b> bleu est la masse (0&nbsp;V). La borne &minus; de la source y est reliée, ainsi que les
       sorties (les lampes).</li>
   </ul>
-  <p>La source du haut est réglée sur <b>7,5&nbsp;V</b>, celle du bas sur <b>1,5&nbsp;V</b>. Chaque source alimente son
+  <p>La source du haut est réglée sur <b>5&nbsp;V</b>, celle du bas sur <b>1,5&nbsp;V</b>. Chaque source alimente son
   propre rail +&nbsp;; elles partagent le rail &minus;.</p>
 
   <h2>Mesurer la tension</h2>
   <p>Le <a href="voeding.html#voltmeter">voltmètre</a> a sa borne + sur la sortie du bouton-poussoir du bas et sa borne &minus; sur le rail &minus;.
-  Il mesure la tension par rapport à la masse&nbsp;: <b>1,5&nbsp;V</b>. Pourtant la lampe reste éteinte. Une entrée logique ne fonctionne
-  qu&rsquo;à partir d&rsquo;environ <b>2&nbsp;V</b>&nbsp;: en dessous, le signal compte comme &laquo;&nbsp;éteint&nbsp;&raquo;.</p>
+  Il mesure la tension par rapport à la masse&nbsp;: <b>1,5&nbsp;V</b>. Pourtant la lampe rougeoie à peine. C&rsquo;est une <a href="voeding.html#serie">lampe de 5&nbsp;V</a>&nbsp;: sous 1,5&nbsp;V,
+  elle ne reçoit que 9&nbsp;% de sa puissance (P = U &times; U / R). Ce n&rsquo;est qu&rsquo;à partir d&rsquo;environ <b>2,5&nbsp;V</b>
+  (un quart de sa puissance) qu&rsquo;elle s&rsquo;allume vraiment. Une entrée logique a aussi besoin d&rsquo;assez de tension&nbsp;:
+  ce n&rsquo;est qu&rsquo;à partir d&rsquo;environ <b>2&nbsp;V</b> que le signal compte comme 1.</p>
 
   <h2>Essayez</h2>
   <ol class="steps">
-    <li>Démarrez la simulation et appuyez sur le bouton-poussoir du bas&nbsp;: le voltmètre indique 1,5&nbsp;V, la lampe reste éteinte.</li>
+    <li>Démarrez la simulation et appuyez sur le bouton-poussoir du bas&nbsp;: le voltmètre indique 1,5&nbsp;V, la lampe rougeoie à peine.</li>
     <li>Faites glisser le curseur de la source du bas jusqu&rsquo;à 3&nbsp;V. C&rsquo;est possible pendant la simulation.</li>
     <li>Appuyez de nouveau&nbsp;: le voltmètre indique 3,0&nbsp;V et la lampe s&rsquo;allume.</li>
   </ol>
@@ -39,7 +41,7 @@
   si vous supprimez le fil entre la borne &minus; d&rsquo;une source et le rail &minus;&nbsp;?</p>
   <details>
     <summary>Solution</summary>
-    <p>À partir de <b>2&nbsp;V</b>, la lampe s&rsquo;allume&nbsp;; à 1,5&nbsp;V et moins, non. Sans le fil vers le rail
+    <p>À partir d&rsquo;environ <b>2,5&nbsp;V</b>, la lampe s&rsquo;allume (un quart de sa puissance), à 5&nbsp;V elle brille pleinement&nbsp;; à 1,5&nbsp;V elle rougeoie à peine. Sans le fil vers le rail
     &minus;, le circuit n&rsquo;est pas fermé&nbsp;: le rail + de cette source tombe à 0&nbsp;V et devient gris, et le
     bouton-poussoir relié à ce rail ne fonctionne plus. Aucun courant ne peut circuler sans chemin de retour vers la source.</p>
   </details>

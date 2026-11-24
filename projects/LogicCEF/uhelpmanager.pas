@@ -37,6 +37,8 @@ type
     procedure ShowHelpForObject(AObject: TObject);
     procedure ShowHelpForKeyword(const AKeyword: string);
     procedure ShowTableOfContents;
+    // een helppagina (zonder .html) in de taal van nu, bv. les01 of leerpad
+    procedure ShowHelpPage(const APage: string);
 
     procedure RegisterDefaultKeyword(AControl: TControl);
     procedure RegisterDefaultKeywords(AParent: TWinControl);
@@ -622,6 +624,17 @@ begin
 
   if AObject is TControl then
     ShowHelpForControl(TControl(AObject))
+  else
+    ShowTableOfContents;
+end;
+
+procedure TAppHelpManager.ShowHelpPage(const APage: string);
+var
+  FN: string;
+begin
+  FN := BuildHelpPageFileName(APage);
+  if FileExists(FN) and Assigned(FOnOpenHelpFile) then
+    FOnOpenHelpFile(FN)
   else
     ShowTableOfContents;
 end;
