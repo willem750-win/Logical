@@ -1,8 +1,8 @@
 <!-- titel: Lernpfad -->
   <h1>Lernpfad</h1>
-  <p class="lead">Mehr als fünfzig Lektionen in Blöcken: <a href="#energie">Energie</a>, <a href="#magnetisme">Magnetismus</a>,
-  <a href="#basis">Logik und Versorgung</a>, <a href="#gevorderden">Programmieren mit LogicRun</a>, <a href="#elektriciteit">Strom und Spannung</a>,
-  <a href="#rekenen">Rechnen mit Gattern</a> und <a href="#elektronica">Elektronik</a>, danach <a href="#oefenen">Übungen mit Prüfung</a>.
+  <p class="lead">Mehr als fünfzig Lektionen in drei Stufen: <a href="#niveau-basis">Basis</a> (Energie, Logik und Versorgung, Übungen),
+  <a href="#niveau-uitgebreid">Erweitert</a> (Magnetismus, Strom und Spannung, Rechnen mit Gattern, Elektronik) und
+  <a href="#niveau-gevorderden">Fortgeschritten</a> (Programmieren mit LogicRun).
   Vom Schalter mit Lampe bis zu Zähler, Speicher, Relais, einen Motor steuern, Musik machen, Transistor, Elektromotor und Transformator.
   Jede Lektion hat ein ausgearbeitetes Beispiel, eine Erklärung und eine Übung zum Weitermachen.</p>
 
@@ -10,7 +10,12 @@
   und starten Sie die <a href="simulatie.html">Simulation</a>, um das Beispiel arbeiten zu sehen. Versuchen Sie dann
   die Übung. Klappen Sie die Lösung erst auf, wenn Sie nicht weiterkommen.</div>
 
-  <h2 id="energie">Neu: von der Energie aus (Probeblock)</h2>
+  <p>Der Lernpfad folgt den drei <a href="instellingen.html#niveau">Stufen</a> der Bauteilleiste: Wählen Sie die Stufe mit <b>Panelwahl &rsaquo; Stufe</b>, dann zeigt die Leiste, was Sie für diese Lektionen brauchen. Die Lektionsnummern laufen über die Stufen hinweg weiter; bei jeder Lektion steht oben, zu welcher Stufe sie gehört.</p>
+
+  <h2 id="niveau-basis">Stufe Basis</h2>
+  <p>Die ersten Schritte: Energie, Ihre ersten Schaltungen mit Gattern, Zähler und Speicher, und die Übungen.</p>
+
+  <h3 id="energie">Neu: von der Energie aus (Probeblock)</h3>
   <p>Fünf Lektionen, die bei den Grundlagen beginnen: Was ist Energie, wie fließt sie, und wie schaltet man sie? Mit dem Vergleich mit Wasser und immer einem geschlossenen Kreis von der Quelle durch den Verbraucher zurück zur Quelle. Ab Lektion 4 hängt alles zwischen einer + Schiene und einer &minus; Schiene.</p>
   <ol class="lessons">
     <li><a href="lesp1.html"><b>Energie fließt wie Wasser</b></a><span>Quelle, Draht und Lampe als Pumpe, Rohr und Wasserrad: Spannung und Strom.</span></li>
@@ -20,21 +25,7 @@
     <li><a href="lesp5.html"><b>Der Transistor auf Schienen</b></a><span>Ein kleiner Strom schaltet einen großen, übersichtlich zwischen den Schienen.</span></li>
   </ol>
 
-  <h2 id="magnetisme">Magnetismus</h2>
-  <p>Magnete und Spulen: was ein Magnet tut, wie ein Strom einen Magneten erzeugt, wie man ihn stärker macht und wo man dem Elektromagneten begegnet; danach die Lorentzkraft auf einen stromdurchflossenen Draht, der Elektromotor und die Induktion.</p>
-  <ol class="lessons">
-    <li><a href="lesm1.html"><b>Was ist Magnetismus?</b></a><span>Nordpol und Südpol, Feldlinien und der Kompass; gleichnamige Pole stoßen sich ab, ungleichnamige ziehen sich an.</span></li>
-    <li><a href="lesm2.html"><b>Magnetismus in einer Spule</b></a><span>Ein Strom macht einen Magneten; die Stromrichtung bestimmt N und S: die Rechte-Hand-Regel.</span></li>
-    <li><a href="lesm3.html"><b>Die Kraft einer Spule</b></a><span>Mehr Strom, mehr Windungen und ein Eisenkern: Wie viele Nägel zieht die Spule an?</span></li>
-    <li><a href="lesm4.html"><b>Der Elektromagnet bei der Arbeit</b></a><span>Ein offenes Relais schaltet einen zweiten Kreis; mit seinem eigenen Öffner wird es eine elektrische Klingel.</span></li>
-    <li><a href="lesm5.html"><b>Die Lorentzkraft</b></a><span>Ein stromdurchflossener Draht im Magnetfeld erfährt eine Kraft: die Leiterschaukel und die Linke-Hand-Regel.</span></li>
-    <li><a href="lesm6.html"><b>Der Elektromotor</b></a><span>Eine Spule, die sich zwischen zwei Polen dreht: die Lorentzkraft, der Totpunkt und der Kommutator.</span></li>
-    <li><a href="lesm7.html"><b>Induktion</b></a><span>Ein bewegter Magnet induziert eine Spannung in einer Spule; das Nullpunktmessgerät und die Lenzsche Regel.</span></li>
-    <li><a href="lesm8.html"><b>Der Dynamo</b></a><span>Ein drehender Magnet neben einer Spule liefert Wechselspannung: Schnelleres Drehen ergibt mehr Spannung und eine höhere Frequenz.</span></li>
-    <li><a href="lesm9.html"><b>Der Transformator</b></a><span>Zwei Spulen auf einem Kern setzen eine Wechselspannung herauf oder herunter: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
-  </ol>
-
-  <h2 id="basis">Logik und Versorgung</h2>
+  <h3 id="basis">Logik und Versorgung</h3>
 
   <ol class="lessons">
     <li><a href="les01.html"><b>Ihre erste Schaltung</b></a><span>Ein Schalter, ein Draht und eine Lampe.</span></li>
@@ -51,23 +42,27 @@
     <li><a href="les11.html"><b>Das Relais</b></a><span>Mit einem Taster und einem Schaltrelais einen zweiten Stromkreis schalten.</span></li>
   </ol>
 
-  <h2 id="gevorderden">Für Fortgeschrittene: Programmieren mit LogicRun</h2>
-  <p>Die Lektionen 12 bis 22 sind eine Erweiterung für alle, die die Grundlagen (Lektion 1 bis 11) kennen. Sie programmieren mit <a href="logicrun.html">LogicRun</a> und lassen einen Motor, eine Person und einen Wagen mit einem Programm in Schritten bewegen oder eine Melodie spielen. Die Lehrkraft kann die Knöpfe LogicRun, Person, Wagen und Spieldose ausblenden, bis die Klasse so weit ist (siehe <a href="instellingen.html#algemeen">Einstellungen</a>).</p>
-  <ol class="lessons" start="12">
-    <li><a href="les12.html"><b>Programmieren mit LogicRun</b></a><span>Eine Ampel mit einem Programm in Schritten.</span></li>
-    <li><a href="les13.html"><b>Einen Motor steuern</b></a><span>Einen Motor mit LogicRun links und rechts herum drehen lassen.</span></li>
-    <li><a href="les14.html"><b>Eine Verpackungsmaschine</b></a><span>Kartons zählen mit LogicRun und dem Zähler.</span></li>
-    <li><a href="les15.html"><b>Binär zählen</b></a><span>Lämpchen und eine Anzeige zeigen dieselbe Zahl.</span></li>
-    <li><a href="les16.html"><b>Eine Person geht hin und her</b></a><span>Endschalter melden LogicRun, wo die Person ist.</span></li>
-    <li><a href="les17.html"><b>Ein Wagen auf der Strecke</b></a><span>LogicRun zählt die Pfosten an der Straße.</span></li>
-    <li><a href="les18.html"><b>Musik mit LogicRun</b></a><span>Ein Schritt pro Note: LogicRun spielt ein Lied auf einer Spieldose.</span></li>
-    <li><a href="les19.html"><b>Bis 1000 zählen</b></a><span>Der Schrittzähler zählt Impulse und schaltet beim Endwert eine Lampe ein.</span></li>
-    <li><a href="les20.html"><b>Nach Zeit schalten</b></a><span>Die Stoppuhr misst die Zeit und schaltet eine Lampe ein, wenn die Endzeit vorbei ist.</span></li>
-    <li><a href="les21.html"><b>Eine Ampel mit Fußgängertaste</b></a><span>LogicRun steuert eine Ampel: grün für die Autos, bis ein Fußgänger auf die Taste drückt.</span></li>
-    <li><a href="les22.html"><b>Eine Schranke am Parkplatz</b></a><span>Eine Stoppuhr und ein NICHT-Gatter: Die Schranke öffnet nach der Tickettaste und schließt von selbst.</span></li>
+  <h3 id="oefenen">Üben mit Prüfung</h3>
+  <p>Nach den Lektionen können Sie selbst mit den <a href="oefeningen.html">Übungen</a> loslegen: Sie bekommen eine Aufgabe, bauen die Schaltung, und Logic prüft, ob sie stimmt.</p>
+
+  <h2 id="niveau-uitgebreid">Stufe Erweitert</h2>
+  <p>Weiter mit Magnetismus, Messen, Rechnen mit Gattern und Elektronik.</p>
+
+  <h3 id="magnetisme">Magnetismus</h3>
+  <p>Magnete und Spulen: was ein Magnet tut, wie ein Strom einen Magneten erzeugt, wie man ihn stärker macht und wo man dem Elektromagneten begegnet; danach die Lorentzkraft auf einen stromdurchflossenen Draht, der Elektromotor und die Induktion.</p>
+  <ol class="lessons">
+    <li><a href="lesm1.html"><b>Was ist Magnetismus?</b></a><span>Nordpol und Südpol, Feldlinien und der Kompass; gleichnamige Pole stoßen sich ab, ungleichnamige ziehen sich an.</span></li>
+    <li><a href="lesm2.html"><b>Magnetismus in einer Spule</b></a><span>Ein Strom macht einen Magneten; die Stromrichtung bestimmt N und S: die Rechte-Hand-Regel.</span></li>
+    <li><a href="lesm3.html"><b>Die Kraft einer Spule</b></a><span>Mehr Strom, mehr Windungen und ein Eisenkern: Wie viele Nägel zieht die Spule an?</span></li>
+    <li><a href="lesm4.html"><b>Der Elektromagnet bei der Arbeit</b></a><span>Ein offenes Relais schaltet einen zweiten Kreis; mit seinem eigenen Öffner wird es eine elektrische Klingel.</span></li>
+    <li><a href="lesm5.html"><b>Die Lorentzkraft</b></a><span>Ein stromdurchflossener Draht im Magnetfeld erfährt eine Kraft: die Leiterschaukel und die Linke-Hand-Regel.</span></li>
+    <li><a href="lesm6.html"><b>Der Elektromotor</b></a><span>Eine Spule, die sich zwischen zwei Polen dreht: die Lorentzkraft, der Totpunkt und der Kommutator.</span></li>
+    <li><a href="lesm7.html"><b>Induktion</b></a><span>Ein bewegter Magnet induziert eine Spannung in einer Spule; das Nullpunktmessgerät und die Lenzsche Regel.</span></li>
+    <li><a href="lesm8.html"><b>Der Dynamo</b></a><span>Ein drehender Magnet neben einer Spule liefert Wechselspannung: Schnelleres Drehen ergibt mehr Spannung und eine höhere Frequenz.</span></li>
+    <li><a href="lesm9.html"><b>Der Transformator</b></a><span>Zwei Spulen auf einem Kern setzen eine Wechselspannung herauf oder herunter: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
   </ol>
 
-  <h2 id="elektriciteit">Strom und Spannung</h2>
+  <h3 id="elektriciteit">Strom und Spannung</h3>
   <p>Nach der Versorgung aus <a href="les10.html">Lektion 10</a> rechnen Sie hier mit Strom, Spannung und Widerstand. LogicRun brauchen Sie nicht.</p>
   <ol class="lessons" start="23">
     <li><a href="les23.html"><b>Das ohmsche Gesetz</b></a><span>Mehr Lampen, mehr Strom: Die Spannung sinkt und die Sicherung brennt durch.</span></li>
@@ -75,14 +70,14 @@
     <li><a href="les25.html"><b>Lampen parallel</b></a><span>Jede Lampe bekommt die volle Spannung, die Ströme addieren sich.</span></li>
   </ol>
 
-  <h2 id="rekenen">Rechnen mit Gattern</h2>
+  <h3 id="rekenen">Rechnen mit Gattern</h3>
   <p>Nach den Gattern aus <a href="les03.html">Lektion 3</a> bis <a href="les06.html">Lektion 6</a> rechnen Sie hier mit Gattern und speichern mit Flipflops. LogicRun brauchen Sie nicht.</p>
   <ol class="lessons" start="26">
     <li><a href="les26.html"><b>Der Halbaddierer</b></a><span>Ein XOR-Gatter und ein UND-Gatter addieren zwei Bits.</span></li>
     <li><a href="les27.html"><b>Das Flipflop merkt sich etwas</b></a><span>Ein SR-Flipflop speichert einen Tastendruck; zwei T-Flipflops zählen.</span></li>
   </ol>
 
-  <h2 id="elektronica">Elektronik</h2>
+  <h3 id="elektronica">Elektronik</h3>
   <p>Nach der Versorgung aus <a href="les23.html">Lektion 23</a> bis <a href="les25.html">Lektion 25</a> bauen Sie hier mit Widerständen, einem Potentiometer, LEDs, einem Kondensator und Dioden und machen aus Wechselspannung Gleichspannung. Zum Schluss schalten und verstärken Sie mit einem Transistor und bauen mit einem LDR und einem NTC ein Nachtlicht und einen Temperaturalarm.</p>
   <ol class="lessons" start="28">
     <li><a href="les28.html"><b>Die LED und der Kondensator</b></a><span>Ein Vorwiderstand schützt die LED; ein Kondensator lässt sie langsam ausgehen.</span></li>
@@ -102,8 +97,24 @@
     <li><a href="les42.html"><b>Ein Gatter steuert einen Transistor</b></a><span>Ein UND-Gatter lässt über einen Transistor eine 12&nbsp;V-Lampe leuchten: Logik und Leistung zusammen.</span></li>
   </ol>
 
-  <h2 id="oefenen">Üben mit Prüfung</h2>
-  <p>Nach den Lektionen können Sie selbst mit den <a href="oefeningen.html">Übungen</a> loslegen: Sie bekommen eine Aufgabe, bauen die Schaltung, und Logic prüft, ob sie stimmt.</p>
+  <h2 id="niveau-gevorderden">Stufe Fortgeschritten</h2>
+  <p>Programmieren mit LogicRun: einen Motor, eine Person, einen Wagen, Musik und eine Ampel steuern.</p>
+
+  <h3 id="gevorderden">Für Fortgeschrittene: Programmieren mit LogicRun</h3>
+  <p>Die Lektionen 12 bis 22 sind eine Erweiterung für alle, die die Grundlagen (Lektion 1 bis 11) kennen. Sie programmieren mit <a href="logicrun.html">LogicRun</a> und lassen einen Motor, eine Person und einen Wagen mit einem Programm in Schritten bewegen oder eine Melodie spielen. Die Tasten LogicRun, Motor, Person, Wagen und Spieldose stehen erst in der <a href="instellingen.html#niveau">Stufe</a> Fortgeschritten in der Leiste.</p>
+  <ol class="lessons" start="12">
+    <li><a href="les12.html"><b>Programmieren mit LogicRun</b></a><span>Eine Ampel mit einem Programm in Schritten.</span></li>
+    <li><a href="les13.html"><b>Einen Motor steuern</b></a><span>Einen Motor mit LogicRun links und rechts herum drehen lassen.</span></li>
+    <li><a href="les14.html"><b>Eine Verpackungsmaschine</b></a><span>Kartons zählen mit LogicRun und dem Zähler.</span></li>
+    <li><a href="les15.html"><b>Binär zählen</b></a><span>Lämpchen und eine Anzeige zeigen dieselbe Zahl.</span></li>
+    <li><a href="les16.html"><b>Eine Person geht hin und her</b></a><span>Endschalter melden LogicRun, wo die Person ist.</span></li>
+    <li><a href="les17.html"><b>Ein Wagen auf der Strecke</b></a><span>LogicRun zählt die Pfosten an der Straße.</span></li>
+    <li><a href="les18.html"><b>Musik mit LogicRun</b></a><span>Ein Schritt pro Note: LogicRun spielt ein Lied auf einer Spieldose.</span></li>
+    <li><a href="les19.html"><b>Bis 1000 zählen</b></a><span>Der Schrittzähler zählt Impulse und schaltet beim Endwert eine Lampe ein.</span></li>
+    <li><a href="les20.html"><b>Nach Zeit schalten</b></a><span>Die Stoppuhr misst die Zeit und schaltet eine Lampe ein, wenn die Endzeit vorbei ist.</span></li>
+    <li><a href="les21.html"><b>Eine Ampel mit Fußgängertaste</b></a><span>LogicRun steuert eine Ampel: grün für die Autos, bis ein Fußgänger auf die Taste drückt.</span></li>
+    <li><a href="les22.html"><b>Eine Schranke am Parkplatz</b></a><span>Eine Stoppuhr und ein NICHT-Gatter: Die Schranke öffnet nach der Tickettaste und schließt von selbst.</span></li>
+  </ol>
 
   <div class="tip"><strong>Linux:</strong> Auch dort öffnet sich die Hilfe im eingebauten Browser, und die Schaltfläche
   <b>Dieses Beispiel öffnen</b> funktioniert. Fehlt der Ordner <code>ceflib</code>, öffnet sich die Hilfe im normalen

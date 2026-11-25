@@ -1,12 +1,12 @@
 <!-- titel: Les 14 - Een inpakmachine -->
-  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 14 van 42</p>
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 14 van 42 &nbsp;&middot;&nbsp; Niveau: <a href="instellingen.html#niveau">Gevorderden</a></p>
   <h1>Een inpakmachine: tellen met LogicRun</h1>
   <div class="goal"><strong>Doel:</strong> tellen hoeveel dozen er voorbij komen en na 5 dozen iets anders doen,
   met LogicRun en de teller samen.</div>
 
   <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les14-inpakmachine.png" alt="Inpakmachine met impulsgenerator, LogicRun, motor, led, teller en display">
+    <img src="../img/les14-inpakmachine.png" alt="Inpakmachine met impulsgenerator, LogicRun, motor, oranje lamp, teller en display">
     <figcaption>De band draait; de eerste doos is geteld.</figcaption>
   </figure>
 
@@ -18,8 +18,8 @@
       <a href="verwerking.html#teller">teller</a>. Een uitgang mag meerdere draden hebben.</li>
     <li>Het <a href="logicrun.html">LogicRun-blok</a> met drie uitgangen:
       <b>UIT0</b> naar <b>R</b> van de <a href="uitvoer.html#motor">motor</a> (de lopende band),
-      <b>UIT1</b> naar een oranje <a href="uitvoer.html#led">led</a> (inpakken) en
-      <b>UIT2</b> naar <b>Re</b> van de teller (op nul zetten).</li>
+      <b>UIT1</b> naar de linkse klem van een oranje <a href="voeding.html#serie">lamp met twee klemmen</a> voor 5&nbsp;V (inpakken) en
+      <b>UIT2</b> naar <b>Re</b> van de teller (op nul zetten). Van de rechtse klem van de lamp gaat een draad naar de &minus; rail.</li>
     <li>De teller met een display, zodat je ziet hoeveel dozen er al zijn. Vier draden gaan van <b>T8</b>, <b>T4</b>,
       <b>T2</b> en <b>T1</b> naar de ingangen <b>8</b>, <b>4</b>, <b>2</b> en <b>1</b> van het display.</li>
   </ul>
@@ -28,7 +28,7 @@
   <table>
     <tr><th>Stap</th><th>Aan</th><th>Wat gebeurt er?</th><th>Hoe lang?</th></tr>
     <tr><td>1</td><td>UIT0</td><td>de band draait</td><td><b>wacht op 5 x DIN2</b>: tot er 5 dozen voorbij zijn</td></tr>
-    <tr><td>2</td><td>UIT1 + UIT2</td><td>de band staat stil, de led brandt (inpakken) en de teller staat op 0</td><td>4 x 500&nbsp;ms = 2 seconden</td></tr>
+    <tr><td>2</td><td>UIT1 + UIT2</td><td>de band staat stil, de oranje lamp brandt (inpakken) en de teller staat op 0</td><td>4 x 500&nbsp;ms = 2 seconden</td></tr>
   </table>
   <p>Stap 1 duurt geen vaste tijd: in de kolom <b>wacht op</b> staat <b>5 x DIN2</b>. Het programma telt de pulsen
   op DIN2 en gaat verder zodra de vijfde puls voorbij is (zie <a href="logicrun.html#wacht">Wachten</a>). Bovenaan in
@@ -40,7 +40,7 @@
   <ol class="steps">
     <li>Start de simulatie en zet de schakelaar aan: de band draait.</li>
     <li>Klik op het knopje onder de impulsgenerator: de dozen komen. Het display telt mee.</li>
-    <li>Na de vijfde doos stopt de band, brandt de led 2 seconden en staat het display op 0. Daarna draait de band weer
+    <li>Na de vijfde doos stopt de band, brandt de oranje lamp 2 seconden en staat het display op 0. Daarna draait de band weer
       en begint het tellen opnieuw.</li>
     <li>Zet de schakelaar uit: de machine stopt.</li>
   </ol>

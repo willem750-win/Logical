@@ -5,33 +5,47 @@
 
   <h2>1. Choose a panel</h2>
   <p>Click <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Panel choice</b> and choose
-  <i>Nieuw standaardpaneel</i> (new standard panel). You get an empty panel with the component bar on the left.</p>
+  <i>New standard panel</i>. You get an empty panel with the <a href="onderdelenbalk.html">component bar</a> at the top.
+  If a button is missing there, the <a href="instellingen.html#niveau">level</a> may be too low: choose one with
+  <b>Panel choice &rsaquo; Level</b> (for this example <b>Basic</b> is enough).</p>
 
   <h2>2. Place components</h2>
+  <p>You place every component in the same way: click its button in the component bar (the mouse pointer takes the shape
+  of the component) and then click on the panel where it should go.</p>
   <ol class="steps">
-    <li>In the component bar, click <img src="../img/pal-schakelaar.png" class="ico" alt=""><b>Switch</b>.
-      The mouse pointer changes into the switch symbol.</li>
-    <li>Click on the panel where the switch should go.</li>
-    <li>Do the same for a second switch, an
-      <img src="../img/pal-en.png" class="ico" alt=""><b>AND gate</b> and a
-      <img src="../img/pal-lamp.png" class="ico" alt=""><b>Lamp</b>.</li>
+    <li>Start with the power, from the Power group: put the <img src="../img/pal-bron.png" class="ico" alt=""><b>source</b>
+      at the top in the middle, the red <img src="../img/pal-rail-plus.png" class="ico" alt=""><b>+ rail</b> on the left and the blue
+      <img src="../img/pal-rail-min.png" class="ico" alt=""><b>&minus; rail</b> on the right.</li>
+    <li>In the same group, click the <img src="../img/pal-schakelaar2.png" class="ico" alt=""><b>switch</b> and put it
+      to the right of the + rail. Put a second switch below it.</li>
+    <li>Put an <img src="../img/pal-en.png" class="ico" alt=""><b>AND gate</b> in the middle of the panel.</li>
+    <li>Put a <img src="../img/pal-lamp2.png" class="ico" alt=""><a href="voeding.html#serie"><b>lamp with two terminals</b></a>
+      (also from the Power group) to the right of the gate, a little before the &minus; rail.</li>
+    <li>The lamp will hang on a gate, so it has to be a lamp for 5&nbsp;V: right-click the lamp &rsaquo;
+      <b>Lamp voltage</b> &rsaquo; <b>Lamp for 5&nbsp;V (also on a gate)</b>.</li>
   </ol>
-  <p>Drag a placed component with the left mouse button to move it.</p>
+  <p>Drag a placed component with the left mouse button to move it. Drag an end of a rail to make it longer.</p>
 
   <h2>3. Connect</h2>
   <ol class="steps">
     <li>In the component bar, click <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>.
       The mouse pointer becomes a wire.</li>
-    <li>Click the output of the first switch. A piece of wire appears.</li>
-    <li>Drag the end of the wire to an input of the AND gate.</li>
-    <li>Connect the second switch to the other input in the same way, and the output of the AND gate to the lamp.</li>
+    <li>Click the + terminal of the source (bottom left). A piece of wire appears. Drag its end to the line
+      of the + rail. In the same way, connect the &minus; terminal of the source (bottom right) to the line of the &minus; rail.</li>
+    <li>Click the line of the + rail, level with the first switch, and drag the end of the wire to the
+      left terminal of that switch. Do the same for the second switch.</li>
+    <li>Draw a wire from the right terminal of the first switch to an input of the AND gate, and a wire from the
+      right terminal of the second switch to the other input.</li>
+    <li>Draw a wire from the output of the AND gate to the left terminal of the lamp, and a wire from the right terminal
+      of the lamp to the line of the &minus; rail: now the circuit is closed.</li>
   </ol>
-  <p>More about this in <a href="verbindingen.html">Connections</a>.</p>
+  <p>More about this in <a href="verbindingen.html">Connections</a> and in <a href="voeding.html#kring">The power circuit</a>.</p>
 
   <h2>4. Simulate</h2>
   <p>Click <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Start simulation</b>.
   The editing buttons and the component bar disappear. Click the switches: the lamp only lights
-  when both are on. Click the simulation button again to go back to editing.</p>
+  when both are on. Click the simulation button again to go back to editing.
+  The same circuit is ready-made in <a href="les04.html">lesson 4: The AND gate</a>.</p>
 
   <h2>5. Save</h2>
   <p>Click <img src="../img/knop-opslaan.png" class="ico" alt=""><b>Save panel</b> and enter a name.

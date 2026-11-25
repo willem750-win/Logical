@@ -5,26 +5,29 @@
 
   <h2 id="voeding">Wo sind Plus und Minus?</h2>
   <p>In einem echten Stromkreis fließt der Strom vom <b>+</b> einer Quelle (zum Beispiel einer Batterie)
-  durch den Schalter und die Lampe zurück zum <b>&minus;</b>. In Logic zeichnen Sie keine Quelle, und die
-  Bauteile haben kein + und &minus;. Das ist kein Fehler: Logic funktioniert wie <b>Digitalelektronik</b>.</p>
+  durch den Schalter und die Lampe zurück zum <b>&minus;</b>. In Logic bauen Sie das genauso: Die Schaltung
+  hat eine echte Versorgung, mit einer <b>Quelle</b> oben, einer roten <b>+ Schiene</b> links und einer blauen <b>&minus; Schiene</b> rechts.</p>
   <ul>
-    <li>Alle Bauteile werden von einer <b>unsichtbaren Versorgung</b> gespeist: <b>+5&nbsp;V</b> und
-      <b>0&nbsp;V</b> (Masse). Sie ist immer vorhanden; Sie müssen sie nicht zeichnen.</li>
-    <li>Ein Draht führt ein <b>Signal</b>: <b>ein</b> ist 5&nbsp;V, <b>aus</b> ist 0&nbsp;V, immer gegen
-      Masse gemessen.</li>
-    <li>Das &minus; jeder Lampe, jedes Summers und jedes Relais ist unsichtbar mit Masse verbunden. Darum
-      kann ein einziger Draht eine Lampe leuchten lassen.</li>
+    <li>Der Strom fließt in einem <b>geschlossenen Stromkreis</b>: von der + Schiene durch den Schalter und die
+      <a href="voeding.html#serie">Lampe mit zwei Klemmen</a> und von der rechten Klemme der Lampe zurück zur
+      &minus; Schiene. Siehe <a href="les01.html">Lektion 1</a>.</li>
+    <li>Ein Draht führt ein <b>Signal</b>. Ein <b>roter</b> Draht steht unter Spannung: Bei 2&nbsp;V oder mehr ist das
+      Signal <b>an</b> (1), sonst ist es <b>aus</b> (0), immer gegen die &minus; Schiene (Masse, 0&nbsp;V) gemessen.</li>
+    <li><a href="verwerking.html">Gatter</a>, Zähler, Flipflops, der Speicher und LogicRun haben kein + und &minus;: Sie bekommen
+      ihre eigene Versorgung <b>unsichtbar</b> (+5&nbsp;V und Masse) und geben 5&nbsp;V an ihrem Ausgang ab. Das reicht für eine
+      Lampe für 5&nbsp;V oder einen <a href="voeding.html#zoemer2">Summer</a>.</li>
+    <li>Alte Panels mit der früheren Lampe, dem früheren Summer oder Relais mit einem Eingang funktionieren weiterhin: Das &minus; dieser
+      Bauteile ist unsichtbar mit Masse verbunden. Darum genügt dort ein einziger Draht.</li>
   </ul>
   <figure>
-    <img src="../img/voeding.svg" alt="Schalter und Lampe mit der unsichtbaren Versorgung">
-    <figcaption>Durchgezogene Linien: was Sie in Logic zeichnen (ein Schalter, ein Draht und eine Lampe).
-    Gestrichelte Linien: die Versorgung, die Logic selbst ergänzt, von +5&nbsp;V nach Masse (0&nbsp;V).</figcaption>
+    <img src="../img/les01-schakelaar-en-lamp.png" alt="Quelle mit einer + Schiene und einer &minus; Schiene; ein Schalter zwischen der + Schiene und einer Lampe, die mit einem Draht an der &minus; Schiene hängt">
+    <figcaption>Plus und Minus stehen auf dem Panel: die Quelle oben, die + Schiene links und die &minus; Schiene rechts.
+    Der Schalter ist geschlossen, also ist der Stromkreis geschlossen: Der Draht ist rot und die Lampe leuchtet.</figcaption>
   </figure>
-  <p>Auch echte Logikschaltpläne werden so gezeichnet: Die Versorgungsleitungen sind selten eingezeichnet,
-  weil sie für alle Bauteile gleich sind.</p>
-  <p>Möchten Sie die Versorgung trotzdem sichtbar machen, zum Beispiel um zu erklären, woher der Strom kommt?
-  Setzen Sie dann <a href="voeding.html">Versorgungsschienen</a> auf das Panel: eine rote + Schiene und eine blaue
-  &minus; Schiene. Mit dem <a href="voeding.html#voltmeter">Voltmeter</a> messen Sie die Spannung.</p>
+  <p>Auch echte Logikschaltpläne werden so gezeichnet: Die Versorgungsleitungen der Gatter sind selten eingezeichnet,
+  weil sie für alle Gatter gleich sind.</p>
+  <p>Mehr über die Quelle, die Schienen und das <a href="voeding.html#voltmeter">Voltmeter</a>, mit dem Sie die Spannung messen,
+  lesen Sie in <a href="voeding.html">Versorgung &amp; Voltmeter</a>.</p>
 
   <h2>Simulation starten und beenden</h2>
   <p>Klicken Sie auf <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Simulation starten</b>. Die Schaltfläche wird rot
@@ -36,10 +39,11 @@
     <li>Die Bauteilleiste, die Bearbeitungsschaltflächen, die Lineale und die Statusleiste werden ausgeblendet.
       So hat das Panel mehr Platz.</li>
     <li>Die Hilfslinien werden ausgeschaltet.</li>
-    <li>Bauteile können nicht mehr verschoben werden. Eingangsbauteile bedienen Sie wie gewohnt mit der Maus.</li>
+    <li>Bauteile können nicht mehr verschoben werden. Sie bedienen sie mit der Maus: Klicken Sie auf einen Schalter, um ihn
+      zu öffnen oder zu schließen, und halten Sie einen Taster gedrückt, solange er geschlossen bleiben soll.</li>
   </ul>
   <p>Nach der Simulation ist alles wieder wie vorher, auch die Einstellung der Hilfslinien.</p>
 
   <div class="tip"><strong>Tipp:</strong> Funktioniert die Schaltung nicht wie erwartet? Beenden Sie die Simulation,
-  halten Sie die Maus über die Bauteile und sehen Sie in der Statusleiste ihren Zustand, oder schließen Sie eine
-  <a href="uitvoer.html#lamp">Lampe</a> an einen Draht an, um das Signal zu prüfen.</div>
+  halten Sie die Maus über die Bauteile und sehen Sie in der Statusleiste ihren Zustand, oder setzen Sie eine
+  5-V-<a href="voeding.html#serie">Lampe mit zwei Klemmen</a> zwischen einen Draht und die &minus; Schiene, um das Signal zu prüfen.</div>

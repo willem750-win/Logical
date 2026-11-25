@@ -1,10 +1,11 @@
 <!-- titel: Versorgung & Voltmeter -->
   <h1 id="voeding">Versorgung &amp; Voltmeter</h1>
-  <p class="lead">Normalerweise bekommen alle Bauteile ihre Versorgung unsichtbar im Hintergrund (siehe
-  <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a>). Möchten Sie sehen, woher der Strom kommt, bauen
-  Sie einen <b>Versorgungskreis</b>: eine <b>Quelle</b> (Akku) von 0 bis 12&nbsp;V, nach Wunsch eine <b>Sicherung</b>
-  und ein <b>Milliamperemeter</b>, eine rote <b>+ Schiene</b> für die Eingänge und eine blaue <b>&minus; Schiene</b>
-  (Masse) für die Ausgänge. Mit dem <b>Voltmeter</b> messen Sie die Spannung.</p>
+  <p class="lead">Eine Schaltung in Logic hat einen <b>Versorgungskreis</b>: eine <b>Quelle</b> (Akku) von 0 bis
+  12&nbsp;V, nach Wunsch eine <b>Sicherung</b> und ein <b>Milliamperemeter</b>, eine rote <b>+ Schiene</b> für die
+  Eingänge und eine blaue <b>&minus; Schiene</b> (Masse) für die Ausgänge. Die Gatter und die anderen
+  Verarbeitungsblöcke bekommen ihre Versorgung unsichtbar (siehe
+  <a href="simulatie.html#voeding">Wo sind Plus und Minus?</a>).
+  Mit dem <b>Voltmeter</b> messen Sie die Spannung.</p>
 
   <figure>
     <img src="../img/voeding-basis.png" alt="Quelle mit 6,5 V, Sicherung 500 mA, + Schiene und − Schiene">
@@ -13,8 +14,8 @@
   </figure>
 
   <h2 id="rails">Die Schaltflächen</h2>
-  <p>Unten in der <a href="onderdelenbalk.html">Bauteilleiste</a> stehen fünf halbe Schaltflächen; das
-  Milliamperemeter hat eine normale Schaltfläche neben dem Voltmeter.</p>
+  <p>Diese Schaltflächen stehen in der Gruppe Versorgung der <a href="onderdelenbalk.html#voeding">Bauteilleiste</a>; das
+  Milliamperemeter und das Wattmeter haben eine Schaltfläche bei den Ausgängen, neben dem Voltmeter.</p>
   <table>
     <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ Schiene (Versorgung)</td><td>Rote Schiene für die Eingänge. Oben steht die Spannung, die sie von der Quelle bekommt, zum Beispiel <b>5V</b>.</td></tr>
@@ -29,9 +30,15 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Widerstand mit einem Schleifer und drei Klemmen: ein einstellbarer Spannungsteiler.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Fotowiderstand: Je mehr Licht, desto kleiner der Widerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">NTC</a></td><td>Heißleiter: Je wärmer, desto kleiner der Widerstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="#serie">Lampe</a></td><td>Lampe mit zwei Klemmen, für 12&nbsp;V oder 5&nbsp;V; eine 5-V-Lampe leuchtet auch an einem Gatter. Rechtsklick &rsaquo; Farbe: rot, grün oder orange.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED mit 2 Klemmen</a></td><td>Leitet nur in eine Richtung; gehört mit einem Vorwiderstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch, über 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="#serie">Schalter oder Taster</a></td><td>Schalter mit zwei Klemmen; mit Rechtsklick &rsaquo; Art &rsaquo; Taster wird er zum Taster.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="#wisselschakelaar">Wechselschalter</a></td><td>Drei Klemmen: Die Mitte ist mit A oder B verbunden.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="#puls2">Impulsgenerator</a></td><td>Schalter, der sich von selbst öffnet und schließt: Impulse von 0,5 bis 5&nbsp;Hz.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="#dip2">DIP-Schalter</a></td><td>Vier kleine Schalter: eine Zahl von 0 bis 15 an den Ausgängen 8, 4, 2 und 1.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="#serie">Voltmeter mit 2 Klemmen</a></td><td>Schmale Schaltfläche mit einem V im Kreis. Misst den Spannungsunterschied zwischen seinen beiden Klemmen.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Ein kleiner Basisstrom steuert einen großen Kollektorstrom: schalten und verstärken.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Summer</a></td><td>Summer mit zwei Klemmen: summt ab 10&nbsp;mA, auch an einem Gatter.</td></tr>
     <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relais</a></td><td>Spule mit zwei Klemmen und ein Wechsler (C, Schließer, Öffner).</td></tr>
@@ -91,13 +98,14 @@
   <p>Jeder Verbraucher, der eingeschaltet ist, verhält sich wie ein fester Widerstand. Bei 12&nbsp;V nimmt er auf:</p>
   <table>
     <tr><th>Verbraucher (ein)</th><th>Strom bei 12&nbsp;V</th></tr>
-    <tr><td>Lampe</td><td>100&nbsp;mA</td></tr>
+    <tr><td>Lampe (120&nbsp;&Omega;)</td><td>100&nbsp;mA</td></tr>
     <tr><td>Motor (dreht)</td><td>200&nbsp;mA</td></tr>
-    <tr><td>Relais oder Schaltrelais (Spule erregt)</td><td>40&nbsp;mA</td></tr>
-    <tr><td>Summer</td><td>30&nbsp;mA</td></tr>
-    <tr><td>LED, Person (pro eingeschaltetem Eingang)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>Relais mit zwei Klemmen (Spule mit 60&nbsp;&Omega;)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>Summer mit zwei Klemmen (200&nbsp;&Omega;)</td><td>60&nbsp;mA</td></tr>
+    <tr><td>Person (pro eingeschaltetem Eingang)</td><td>20&nbsp;mA</td></tr>
     <tr><td>7-Segment-Anzeige</td><td>10&nbsp;mA pro leuchtendem Segment</td></tr>
     <tr><td>Gatter, Zähler, Speicher, LogicRun, eingesteckter Eingang</td><td>1&nbsp;mA</td></tr>
+    <tr><td>in alten Panels, ohne Klemmen: Relais oder Schaltrelais, Summer, farbige LED</td><td>40&nbsp;mA, 30&nbsp;mA, 20&nbsp;mA</td></tr>
   </table>
   <p>Bei einer niedrigeren Spannung ist der Strom im gleichen Verhältnis kleiner: Eine Lampe nimmt bei 6&nbsp;V
   50&nbsp;mA auf. Der Strom der Quelle ist die Summe aller Verbraucher. Mit dem Innenwiderstand Ri der Quelle gilt:</p>
@@ -223,7 +231,8 @@
       <b>Spannung der Lampe</b> &rsaquo; <b>Lampe für 5&nbsp;V</b> wird sie eine kleine 5-V-Lampe: 50, 100, 250 oder
       500&nbsp;&Omega;. Die mit 250&nbsp;&Omega; (20&nbsp;mA) leuchtet auch am Ausgang eines Gatters, und eine 5-V-Lampe zählt
       in der Wahrheitstabelle. Sie leuchtet umso heller, je mehr Leistung durch sie geht, voll bei der Leistung ihrer
-      eigenen Spannung; der Hinweis zeigt U, I und P.</li>
+      eigenen Spannung; der Hinweis zeigt U, I und P. Mit Rechtsklick &rsaquo; <b>Farbe</b> wird sie eine rote, grüne oder
+      orange Lampe, zum Beispiel für eine Ampel.</li>
     <li><b>Schalter</b>: Klicken Sie auf den Hebel, um ihn zu öffnen oder zu schließen, auch während der Simulation. Mit Rechtsklick &rsaquo; <b>Art</b> &rsaquo; <b>Taster</b> wird er zum Taster: Er ist nur geschlossen, solange Sie die Maustaste gedrückt halten. Ein Schalter mit drei Klemmen ist der <a href="#wisselschakelaar">Wechselschalter</a>.</li>
     <li><b>Voltmeter</b>: Legen Sie + und &minus; über ein Bauteil. Es misst den Spannungsunterschied zwischen seinen beiden
       Klemmen und nimmt selbst keinen Strom.</li>
@@ -358,13 +367,16 @@
 
   <h2 id="regels">Was ändert sich, wenn Schienen auf dem Panel stehen?</h2>
   <p>Solange keine Schiene auf dem Panel steht, funktioniert alles wie bisher. Sobald <b>mindestens eine</b>
-  Schiene vorhanden ist, müssen Eingänge und Ausgänge <b>angesteckt</b> sein:</p>
+  Schiene vorhanden ist, müssen Eingänge und Ausgänge <b>ohne Klemmen</b> <b>angesteckt</b> sein:</p>
   <ul>
-    <li><a href="invoer.html">Eingänge</a> (Taster, Schalter, DIP-Schalter, Impulsgeber, Licht- und
-      Wärmesensor) sitzen <b>rechts</b> an einer <b>+ Schiene</b>.</li>
-    <li><a href="uitvoer.html">Ausgänge</a> (Lampe, Relais, Summer, Motor und Anzeige) sitzen <b>links</b> an einer
-      <b>&minus; Schiene</b>.</li>
+    <li>Die alten <a href="invoer.html">Eingänge</a> aus älteren Panels (Taster, Schalter, DIP-Schalter,
+      Impulsgeber, Licht- und Wärmesensor ohne Klemmen) sitzen <b>rechts</b> an einer <b>+ Schiene</b>.</li>
+    <li><a href="uitvoer.html">Ausgänge</a> ohne Klemmen (Motor, Anzeige, Person und die anderen Modelle; in älteren
+      Panels auch die alte Lampe, der alte Summer und das alte Relais) sitzen <b>links</b> an einer <b>&minus; Schiene</b>.</li>
   </ul>
+  <p>Die Bauteile <b>mit zwei Klemmen</b> (Schalter, Lampe, Summer, Relais &hellip;) werden nicht angesteckt. Sie
+  verbinden sie mit Drähten: von der + Schiene zur linken Klemme des Schalters und von der rechten Klemme der Lampe,
+  des Summers oder der Relaisspule zur &minus; Schiene. Siehe <a href="#serie">Lampe, Schalter und Voltmeter mit zwei Klemmen</a>.</p>
   <p>Statt ein Bauteil anzustecken, können Sie es auch mit einem Draht an eine Schiene anschließen: siehe
   <a href="#draad">Mit einem Versorgungsdraht anschließen</a>.</p>
   <p>Ein angestecktes Bauteil bekommt einen dünnen Stecker mit einem Punkt in der Farbe der Schiene. Ein

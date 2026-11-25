@@ -2434,3 +2434,66 @@ msgstr "端口 %s 已打开，但开发板没有响应。是否已上传 Standar
 
 msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
 msgstr "无法打开端口 %s。是否正被占用 (例如 Arduino IDE)？"
+
+msgid "You switched components on or off while the level \"%s\" is active."
+msgstr "在级别 \"%s\" 生效时，你打开或关闭了元件。"
+
+msgid "Do you want to save this as your own selection? Your previous own selection is then replaced."
+msgstr "要把它保存为你自己的选择吗？你之前的自选设置将被替换。"
+
+msgid "Level"
+msgstr "级别"
+
+msgid "level"
+msgstr "级别"
+
+msgid "This panel uses components of the level \"%s\". It works as it is."
+msgstr "这个面板使用了级别 \"%s\" 的元件。它可以正常工作。"
+
+msgid "Do you also want the buttons of that level in the component toolbar, until you close Logic?"
+msgstr "在关闭 Logic 之前，是否也在元件栏中显示该级别的按钮？"
+
+msgid "First come the wire, the gates and the counters, then the output and the power supply: source, switches, lamps and meters."
+msgstr "最前面是导线、门电路和计数器，然后是输出和电源：电源、开关、灯和仪表。"
+
+msgid "Under Level you choose how many components the toolbar shows: Basic, Extended or Advanced."
+msgstr "在\"级别\"中选择元件栏显示多少元件：基础、扩展或高级。"
+
+msgid "Basic"
+msgstr "基础"
+
+msgid "Extended"
+msgstr "扩展"
+
+msgid "Advanced (everything)"
+msgstr "高级 (全部)"
+
+msgid "Own selection (Settings)"
+msgstr "自选 (设置)"
+
+msgid "The first lessons: source, switch, lamp, the AND, OR and NOT gates, counter and display."
+msgstr "最初的课程：电源、开关、灯、与门、或门和非门、计数器和显示器。"
+
+msgid "Also measuring, magnetism and electronics: fuse, LED, diode, scope, coil and all gates."
+msgstr "还有测量、磁学和电子学：保险丝、LED、二极管、示波器、线圈和所有门电路。"
+
+msgid "Everything, also programming with LogicRun: motor, person, cart, traffic light and the Arduino board."
+msgstr "全部，包括用 LogicRun 编程：电机、小人、小车、红绿灯和 Arduino 开发板。"
+
+msgid "The components you switch on and off yourself in Settings."
+msgstr "你在设置中自己打开和关闭的元件。"
+
+msgid "Level:"
+msgstr "级别："
+
+msgid "Red lamp"
+msgstr "红灯"
+
+msgid "Green lamp"
+msgstr "绿灯"
+
+msgid "Orange lamp"
+msgstr "橙灯"
+
+msgid "Ordinary lamp"
+msgstr "普通灯泡"

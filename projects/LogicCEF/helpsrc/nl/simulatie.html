@@ -5,26 +5,29 @@
 
   <h2 id="voeding">Waar zijn de plus en de min?</h2>
   <p>In een echte elektrische kring loopt de stroom van de <b>+</b> van een bron (bijvoorbeeld een accu),
-  door de schakelaar en de lamp, en terug naar de <b>&minus;</b>. In Logic teken je geen bron, en de
-  onderdelen hebben geen + en &minus;. Dat is geen vergissing: Logic werkt zoals <b>digitale elektronica</b>.</p>
+  door de schakelaar en de lamp, en terug naar de <b>&minus;</b>. In Logic bouw je dat ook zo: de schakeling
+  heeft een echte voeding, met een <b>bron</b> bovenaan, een rode <b>+ rail</b> links en een blauwe <b>&minus; rail</b> rechts.</p>
   <ul>
-    <li>Alle onderdelen krijgen hun voeding van een <b>onzichtbare bron</b>: <b>+5&nbsp;V</b> en
-      <b>0&nbsp;V</b> (de massa). Die is er altijd; je hoeft ze niet te tekenen.</li>
-    <li>Een draad brengt een <b>signaal</b>: <b>aan</b> is 5&nbsp;V, <b>uit</b> is 0&nbsp;V, altijd gemeten
-      tegenover de massa.</li>
-    <li>De &minus; van elke lamp, zoemer en elk relais hangt onzichtbaar aan de massa. Daarom kan
-      één draad een lamp laten branden.</li>
+    <li>De stroom loopt in een <b>gesloten kring</b>: van de + rail door de schakelaar en de
+      <a href="voeding.html#serie">lamp met twee klemmen</a>, en van de rechtse klem van de lamp terug naar de
+      &minus; rail. Zie <a href="les01.html">les 1</a>.</li>
+    <li>Een draad brengt een <b>signaal</b>. Een <b>rode</b> draad staat onder spanning: met 2&nbsp;V of meer is het
+      signaal <b>aan</b> (1), anders is het <b>uit</b> (0), altijd gemeten tegenover de &minus; rail (de massa, 0&nbsp;V).</li>
+    <li><a href="verwerking.html">Poorten</a>, tellers, flipflops, het geheugen en LogicRun hebben geen + en &minus;: ze krijgen
+      hun eigen voeding <b>onzichtbaar</b> (+5&nbsp;V en de massa) en geven 5&nbsp;V op hun uitgang. Dat is genoeg voor een
+      lamp voor 5&nbsp;V of een <a href="voeding.html#zoemer2">zoemer</a>.</li>
+    <li>Oude panelen met de vroegere lamp, zoemer of relais met één ingang werken nog altijd: de &minus; van die
+      onderdelen hangt onzichtbaar aan de massa. Daarom volstaat daar één draad.</li>
   </ul>
   <figure>
-    <img src="../img/voeding.svg" alt="Schakelaar en lamp met de onzichtbare voeding">
-    <figcaption>Volle lijnen: wat je in Logic tekent (een schakelaar, een draad en een lamp).
-    Stippellijnen: de voeding die Logic er zelf bij denkt, van +5&nbsp;V naar de massa (0&nbsp;V).</figcaption>
+    <img src="../img/les01-schakelaar-en-lamp.png" alt="Bron met een + rail en een &minus; rail; een schakelaar tussen de + rail en een lamp, en de lamp met een draad naar de &minus; rail">
+    <figcaption>De plus en de min staan op het paneel: de bron bovenaan, de + rail links en de &minus; rail rechts.
+    De schakelaar is dicht, dus de kring is gesloten: de draad is rood en de lamp brandt.</figcaption>
   </figure>
-  <p>Zo tekent men ook echte logische schema&rsquo;s: de voedingslijnen staan er zelden op, omdat ze
-  voor alle onderdelen dezelfde zijn.</p>
-  <p>Wil je de voeding toch zichtbaar maken, bijvoorbeeld om uit te leggen waar de stroom vandaan komt?
-  Zet dan <a href="voeding.html">voedingsrails</a> op het paneel: een rode + rail en een blauwe
-  &minus; rail. Met de <a href="voeding.html#voltmeter">voltmeter</a> meet je de spanning.</p>
+  <p>Zo tekent men ook echte logische schema&rsquo;s: de voedingslijnen van de poorten staan er zelden op, omdat ze
+  voor alle poorten dezelfde zijn.</p>
+  <p>Meer over de bron, de rails en de <a href="voeding.html#voltmeter">voltmeter</a>, waarmee je de spanning meet,
+  lees je in <a href="voeding.html">Voeding &amp; voltmeter</a>.</p>
 
   <h2>Simulatie starten en stoppen</h2>
   <p>Klik op <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Start simulatie</b>. De knop wordt rood
@@ -36,10 +39,11 @@
     <li>De onderdelenbalk, de bewerkknoppen, de linialen en de statusbalk worden verborgen.
       Het paneel krijgt zo meer plaats.</li>
     <li>De richtlijnen gaan uit.</li>
-    <li>Onderdelen kunnen niet meer verplaatst worden. Invoeronderdelen bedien je gewoon met de muis.</li>
+    <li>Onderdelen kunnen niet meer verplaatst worden. Je bedient ze met de muis: klik op een schakelaar om hem
+      te openen of te sluiten, en houd een drukknop ingedrukt zolang hij dicht moet zijn.</li>
   </ul>
   <p>Na de simulatie komt alles terug zoals het was, ook de stand van de richtlijnen.</p>
 
   <div class="tip"><strong>Tip:</strong> werkt de schakeling niet zoals verwacht? Stop de simulatie,
-  houd de muis boven de onderdelen en kijk in de statusbalk naar hun toestand, of hang een
-  <a href="uitvoer.html#lamp">lamp</a> aan een draad om het signaal te controleren.</div>
+  houd de muis boven de onderdelen en kijk in de statusbalk naar hun toestand, of zet een
+  <a href="voeding.html#serie">lamp met twee klemmen</a> voor 5&nbsp;V tussen een draad en de &minus; rail om het signaal te controleren.</div>

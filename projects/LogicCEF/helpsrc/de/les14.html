@@ -1,12 +1,12 @@
 <!-- titel: Lektion 14 - Eine Verpackungsmaschine -->
-  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 14 von 42</p>
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 14 von 42 &nbsp;&middot;&nbsp; Stufe: <a href="instellingen.html#niveau">Fortgeschritten</a></p>
   <h1>Eine Verpackungsmaschine: zählen mit LogicRun</h1>
   <div class="goal"><strong>Ziel:</strong> zählen, wie viele Kartons vorbeikommen, und nach 5 Kartons etwas anderes tun,
   mit LogicRun und dem Zähler zusammen.</div>
 
   <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les14-inpakmachine.png" alt="Verpackungsmaschine mit Impulsgeber, LogicRun, Motor, LED, Zähler und Anzeige">
+    <img src="../img/les14-inpakmachine.png" alt="Verpackungsmaschine mit Impulsgeber, LogicRun, Motor, orange Lampe, Zähler und Anzeige">
     <figcaption>Das Band läuft; der erste Karton ist gezählt.</figcaption>
   </figure>
 
@@ -18,8 +18,8 @@
       <a href="verwerking.html#teller">Zählers</a>. Ein Ausgang darf mehrere Drähte haben.</li>
     <li>Der <a href="logicrun.html">LogicRun-Block</a> mit drei Ausgängen:
       <b>UIT0</b> an <b>R</b> des <a href="uitvoer.html#motor">Motors</a> (das Förderband),
-      <b>UIT1</b> an eine orange <a href="uitvoer.html#led">LED</a> (Verpacken) und
-      <b>UIT2</b> an <b>Re</b> des Zählers (auf null setzen).</li>
+      <b>UIT1</b> an die linke Klemme einer orangen 5-V-<a href="voeding.html#serie">Lampe mit zwei Klemmen</a> (Verpacken) und
+      <b>UIT2</b> an <b>Re</b> des Zählers (auf null setzen). Von der rechten Klemme der Lampe geht ein Draht zur &minus; Schiene.</li>
     <li>Der Zähler mit einer Anzeige, damit Sie sehen, wie viele Kartons es schon sind. Vier Drähte gehen von <b>T8</b>,
       <b>T4</b>, <b>T2</b> und <b>T1</b> zu den Eingängen <b>8</b>, <b>4</b>, <b>2</b> und <b>1</b> der Anzeige.</li>
   </ul>
@@ -28,7 +28,7 @@
   <table>
     <tr><th>Schritt</th><th>Ein</th><th>Was passiert?</th><th>Wie lange?</th></tr>
     <tr><td>1</td><td>UIT0</td><td>das Band läuft</td><td><b>warten auf 5 x DIN2</b>: bis 5 Kartons vorbei sind</td></tr>
-    <tr><td>2</td><td>UIT1 + UIT2</td><td>das Band steht, die LED leuchtet (Verpacken) und der Zähler steht auf 0</td><td>4 x 500&nbsp;ms = 2 Sekunden</td></tr>
+    <tr><td>2</td><td>UIT1 + UIT2</td><td>das Band steht, die orange Lampe leuchtet (Verpacken) und der Zähler steht auf 0</td><td>4 x 500&nbsp;ms = 2 Sekunden</td></tr>
   </table>
   <p>Schritt 1 hat keine feste Zeit: in der Spalte <b>warten auf</b> steht <b>5 x DIN2</b>. Das Programm zählt die Impulse
   an DIN2 und geht weiter, sobald der fünfte Impuls vorbei ist (siehe <a href="logicrun.html#wacht">Warten</a>). Oben im
@@ -41,7 +41,7 @@
   <ol class="steps">
     <li>Starten Sie die Simulation und schalten Sie den Schalter ein: das Band läuft.</li>
     <li>Klicken Sie auf den kleinen Knopf unter dem Impulsgeber: die Kartons kommen. Die Anzeige zählt mit.</li>
-    <li>Nach dem fünften Karton hält das Band an, die LED leuchtet 2 Sekunden und die Anzeige steht auf 0. Danach läuft
+    <li>Nach dem fünften Karton hält das Band an, die orange Lampe leuchtet 2 Sekunden und die Anzeige steht auf 0. Danach läuft
       das Band wieder und das Zählen beginnt von vorn.</li>
     <li>Schalten Sie den Schalter aus: die Maschine hält an.</li>
   </ol>

@@ -1935,6 +1935,21 @@ end;
 
 { TjanLamp2 }
 
+// kleur van een led of gekleurde lamp (staat verderop, in jsl_poorten_teller.inc)
+function LedColor(K: TLampKleur; On: Boolean): TColor; forward;
+
+// kleur tussen A (T = 0) en B (T = 1)
+function MengKleur(A, B: TColor; T: Double): TColor;
+var
+  Ra, Ga, Ba, Rb, Gb, Bb: Byte;
+begin
+  if T < 0 then T := 0;
+  if T > 1 then T := 1;
+  RedGreenBlue(ColorToRGB(A), Ra, Ga, Ba);
+  RedGreenBlue(ColorToRGB(B), Rb, Gb, Bb);
+  Result := RGBToColor(Round(Ra + (Rb - Ra) * T), Round(Ga + (Gb - Ga) * T), Round(Ba + (Bb - Ba) * T));
+end;
+
 constructor TjanLamp2.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
@@ -2020,10 +2035,23 @@ begin
   Soort := TMenuItem(Sender).Tag;
 end;
 
+procedure TjanLamp2.SetKleur(const Value: TLampKleur);
+begin
+  if Value = FKleur then Exit;
+  FKleur := Value;
+  Invalidate;
+end;
+
+procedure TjanLamp2.KleurClick(Sender: TObject);
+begin
+  Kleur := TLampKleur(TMenuItem(Sender).Tag);
+end;
+
 procedure TjanLamp2.AddMenuItems(APop: TPopupMenu);
 var
   Mi, Sub: TMenuItem;
   i: Integer;
+  k: TLampKleur;
 begin
   Mi := TMenuItem.Create(APop);
   Mi.Caption := Tr(FTaal, 'Spanning van de lamp', 'Lamp voltage', 'Tension de la lampe', 'Spannung der Lampe');
@@ -2063,6 +2091,26 @@ begin
     Sub.OnClick := SoortClick;
     Mi.Add(Sub);
   end;
+  // kleur: een gewone lamp of een gekleurde (zoals een signaallamp)
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Kleur', 'Colour', 'Couleur', 'Farbe');
+  APop.Items.Add(Mi);
+  for k := Low(TLampKleur) to High(TLampKleur) do
+  begin
+    Sub := TMenuItem.Create(APop);
+    case k of
+      lkRood:   Sub.Caption := Tr(FTaal, 'Rode lamp', 'Red lamp', 'Lampe rouge', 'Rote Lampe');
+      lkGroen:  Sub.Caption := Tr(FTaal, 'Groene lamp', 'Green lamp', 'Lampe verte', 'Grüne Lampe');
+      lkOranje: Sub.Caption := Tr(FTaal, 'Oranje lamp', 'Orange lamp', 'Lampe orange', 'Orange Lampe');
+    else
+      Sub.Caption := Tr(FTaal, 'Gewone lamp', 'Ordinary lamp', 'Lampe ordinaire', 'Gewöhnliche Lampe');
+    end;
+    Sub.Tag := Ord(k);
+    Sub.RadioItem := True;
+    Sub.Checked := k = FKleur;
+    Sub.OnClick := KleurClick;
+    Mi.Add(Sub);
+  end;
 end;
 
 function TjanLamp2.Spanning: Double;
@@ -2099,12 +2147,24 @@ begin
     begin
       Pen.Style := psClear;
       Brush.Style := bsSolid;
-      Brush.Color := RGBToColor(255, 240, Round(200 - 120 * K));
+      if FKleur = lkLamp then
+        Brush.Color := RGBToColor(255, 240, Round(200 - 120 * K))
+      else
+        Brush.Color := MengKleur(clWhite, LedColor(FKleur, True), 0.15 + 0.30 * K);
       Ellipse(TRc(CX - Rr - 5, CY - Rr - 5, CX + Rr + 6, CY + Rr + 6));
       Pen.Style := psSolid;
     end;
     Brush.Style := bsSolid;
-    if K > 0.02 then
+    if FKleur <> lkLamp then
+    begin
+      // gekleurde lamp: uit een lichte tint (zo zie je welke kleur ze heeft),
+      // feller naarmate ze meer vermogen krijgt
+      if K > 0.02 then
+        Brush.Color := MengKleur(MengKleur(clWhite, LedColor(FKleur, True), 0.25), LedColor(FKleur, True), K)
+      else
+        Brush.Color := MengKleur(clWhite, LedColor(FKleur, True), 0.25);
+    end
+    else if K > 0.02 then
       Brush.Color := RGBToColor(255, 255 - Round(43 * K), 255 - Round(255 * K))
     else
       Brush.Color := clWhite;

@@ -292,3 +292,7 @@ ol.lessons li.b::before { content: attr(data-nr) "."; position: absolute; left: 
 .stroomdemo label { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-weight: 600; }
 .stroomdemo input[type=range] { flex: 1; }
 .stroomdemo .uitlezing { margin-top: 6px; font-family: Consolas, "Courier New", monospace; font-size: 14px; min-height: 2.8em; }
+
+/* ingang naar een deel van een pagina (de drie niveaus van het leerpad) */
+nav > a.sub { padding: 4px 20px 4px 44px; font-size: 14px; }
+nav > a.sub.active { font-weight: 600; }

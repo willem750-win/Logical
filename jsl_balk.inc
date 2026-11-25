@@ -506,6 +506,26 @@ begin
   invalidate;
 end;
 
+// Een onderdeel dat in de balk gekozen is, hangt onzichtbaar aan de muis tot
+// het op het paneel gezet wordt. Verdwijnt zijn knop intussen (ander niveau,
+// instellingen), dan mag het niet als spook op het paneel achterblijven.
+procedure TjanSimLogicBox.AnnuleerNieuwObject;
+var
+  a: Integer;
+begin
+  if FNew and (FParent <> nil) then
+    for a := FParent.ControlCount - 1 downto 0 do
+      if (FParent.Controls[a] <> Self) and (FParent.Controls[a].Tag = FObjectID) and
+         not FParent.Controls[a].Visible then
+      begin
+        FParent.Controls[a].Free;
+        Screen.Cursor := crDefault;
+        Break;
+      end;
+  FNew := False;
+  Invalidate;
+end;
+
 procedure TjanSimLogicBox.SetNewObject(const Value: Boolean);
 begin
   if value<>FNew then
@@ -868,6 +888,7 @@ var
         Width := Nodig;
         D := Width - Oud;       // alleen de echte verandering
         if (D <> 0) and (Align = alLeft) then ShiftPanelObjects(D, 0);
+        if (D <> 0) and (FParent <> nil) then FParent.Invalidate;   // titel en linialen van het paneel
       end
       else
       begin
@@ -876,6 +897,7 @@ var
         Height := Nodig;
         D := Height - Oud;
         if (D <> 0) and (Align = alTop) then ShiftPanelObjects(0, D);
+        if (D <> 0) and (FParent <> nil) then FParent.Invalidate;
       end;
       // deze tekenbeurt mag alleen binnen de oude maat tekenen: na afloop
       // de hele balk nog eens tekenen, anders blijft de nieuwe rij leeg
@@ -942,6 +964,7 @@ begin
       // ===========================================================
       // Connector (BESTAAND)
       // ===========================================================
+      RCon := Rect(0, 0, 0, 0);   // verborgen knop: geen klik of hint op de oude plaats
       if FDraad = True then
       begin
         RCon := Rect(LK, TOP, LK + 29, TOP + 28);
@@ -1112,6 +1135,12 @@ begin
 
       Brush.Color := clSilver;
 
+      // rechthoeken van knoppen die nu verborgen zijn wissen: anders toont
+      // MouseMove hun hint boven de knop die op hun plaats gekomen is
+      RLogicAnd := Rect(0, 0, 0, 0); RLogicOr := Rect(0, 0, 0, 0); RLogicNot := Rect(0, 0, 0, 0);
+      RTeller := Rect(0, 0, 0, 0); RMemory := Rect(0, 0, 0, 0); RStappen := Rect(0, 0, 0, 0);
+      RStopwatch := Rect(0, 0, 0, 0); RLight := Rect(0, 0, 0, 0); RMotor := Rect(0, 0, 0, 0);
+      RDisplay := Rect(0, 0, 0, 0); RMeter := Rect(0, 0, 0, 0);
       if FLogicAnd = True then
       begin
         RLogicAnd := Rect(LK, TOP, BK, HK);

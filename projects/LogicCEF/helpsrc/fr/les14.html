@@ -1,12 +1,12 @@
 <!-- titel: Leçon 14 - Une emballeuse -->
-  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 14 sur 42</p>
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 14 sur 42 &nbsp;&middot;&nbsp; Niveau&nbsp;: <a href="instellingen.html#niveau">Avancé</a></p>
   <h1>Une emballeuse : compter avec LogicRun</h1>
   <div class="goal"><strong>Objectif :</strong> compter combien de boîtes passent et faire autre chose après 5 boîtes,
   avec LogicRun et le compteur ensemble.</div>
 
   <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les14-inpakmachine.png" alt="Emballeuse avec générateur d'impulsions, LogicRun, moteur, LED, compteur et afficheur">
+    <img src="../img/les14-inpakmachine.png" alt="Emballeuse avec générateur d'impulsions, LogicRun, moteur, lampe orange, compteur et afficheur">
     <figcaption>Le tapis tourne ; la première boîte a été comptée.</figcaption>
   </figure>
 
@@ -19,8 +19,8 @@
       <a href="verwerking.html#teller">compteur</a>. Une sortie peut avoir plusieurs fils.</li>
     <li>Le <a href="logicrun.html">bloc LogicRun</a> avec trois sorties :
       <b>UIT0</b> vers <b>R</b> du <a href="uitvoer.html#motor">moteur</a> (le tapis roulant),
-      <b>UIT1</b> vers une <a href="uitvoer.html#led">LED</a> orange (emballage) et
-      <b>UIT2</b> vers <b>Re</b> du compteur (remise à zéro).</li>
+      <b>UIT1</b> vers la borne gauche d&rsquo;une <a href="voeding.html#serie">lampe à deux bornes</a> orange de 5&nbsp;V (emballage) et
+      <b>UIT2</b> vers <b>Re</b> du compteur (remise à zéro). Un fil va de la borne droite de la lampe vers le rail &minus;.</li>
     <li>Le compteur avec un afficheur, pour voir combien de boîtes il y a. Quatre fils vont de <b>T8</b>, <b>T4</b>,
       <b>T2</b> et <b>T1</b> aux entrées <b>8</b>, <b>4</b>, <b>2</b> et <b>1</b> de l&rsquo;afficheur.</li>
   </ul>
@@ -29,7 +29,7 @@
   <table>
     <tr><th>Pas</th><th>Actif</th><th>Que se passe-t-il ?</th><th>Combien de temps ?</th></tr>
     <tr><td>1</td><td>UIT0</td><td>le tapis tourne</td><td><b>attendre 5 x DIN2</b> : jusqu&rsquo;à ce que 5 boîtes soient passées</td></tr>
-    <tr><td>2</td><td>UIT1 + UIT2</td><td>le tapis s&rsquo;arrête, la LED est allumée (emballage) et le compteur est à 0</td><td>4 x 500&nbsp;ms = 2 secondes</td></tr>
+    <tr><td>2</td><td>UIT1 + UIT2</td><td>le tapis s&rsquo;arrête, la lampe orange est allumée (emballage) et le compteur est à 0</td><td>4 x 500&nbsp;ms = 2 secondes</td></tr>
   </table>
   <p>Le pas 1 n&rsquo;a pas de durée fixe : la colonne <b>attendre</b> indique <b>5 x DIN2</b>. Le programme compte les
   impulsions sur DIN2 et continue dès que la cinquième impulsion est terminée (voir <a href="logicrun.html#wacht">Attendre</a>).
@@ -42,7 +42,7 @@
   <ol class="steps">
     <li>Lancez la simulation et fermez l&rsquo;interrupteur : le tapis tourne.</li>
     <li>Cliquez sur le petit bouton sous le générateur d&rsquo;impulsions : les boîtes arrivent. L&rsquo;afficheur compte.</li>
-    <li>Après la cinquième boîte, le tapis s&rsquo;arrête, la LED s&rsquo;allume pendant 2 secondes et l&rsquo;afficheur
+    <li>Après la cinquième boîte, le tapis s&rsquo;arrête, la lampe orange s&rsquo;allume pendant 2 secondes et l&rsquo;afficheur
       indique 0. Ensuite, le tapis tourne à nouveau et le comptage recommence.</li>
     <li>Ouvrez l&rsquo;interrupteur : la machine s&rsquo;arrête.</li>
   </ol>

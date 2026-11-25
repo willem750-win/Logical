@@ -5,9 +5,9 @@
 
   <h2>How to use it</h2>
   <ol class="steps">
-    <li>Open a panel or build a circuit with inputs (<a href="invoer.html#schakelaar">switches</a>,
-      <a href="invoer.html#drukknop">push buttons</a>, <a href="invoer.html#puls">pulse generators</a> &hellip;) and outputs
-      (<a href="uitvoer.html#lamp">lamps</a>, <a href="uitvoer.html#zoemer">buzzers</a> &hellip;).</li>
+    <li>Open a panel or build a circuit with inputs (<a href="voeding.html#serie">switches and
+      push buttons</a>) and outputs
+      (<a href="voeding.html#serie">lamps with two terminals</a> for 5&nbsp;V, <a href="voeding.html#zoemer2">buzzers</a> &hellip;).</li>
     <li>In the title bar, click <img src="../img/knop-tijd.png" class="ico" alt=""><b>Timing diagram</b>. The window
       opens to the right of Logic.</li>
     <li>Switch the <a href="simulatie.html">simulation</a> on and operate the switches and push buttons. Ten times a second
@@ -16,9 +16,11 @@
 
   <h2>Reading the diagram</h2>
   <ul>
-    <li><b>A, B, C &hellip;</b> (blue) are the switches, push buttons, DIP switches and sensors, from top to bottom,
-      just as in the <a href="waarheidstabel.html">truth table</a>. <b>P1, P2 &hellip;</b> are the pulse generators.</li>
-    <li>Below the grey line are the outputs (green): <b>L</b> = lamp or LED, <b>B</b> = buzzer, <b>R</b> = relay,
+    <li><b>A, B, C &hellip;</b> (blue) are the switches and push buttons, from top to bottom,
+      just as in the <a href="waarheidstabel.html">truth table</a>; in old panels also the DIP switches and sensors
+      without terminals. <b>P1, P2 &hellip;</b> are the old pulse generators without terminals. The
+      <a href="voeding.html#puls2">pulse generator</a> with two terminals gets no line of its own: you see its pulses on the outputs.</li>
+    <li>Below the grey line are the outputs (green): <b>L</b> = lamp (ordinary or coloured), <b>B</b> = buzzer, <b>R</b> = relay,
       <b>M</b> = motor (with <b>L</b> or <b>R</b> for the direction) and <b>D</b> = display (with the digit).</li>
     <li>One box is <b>one second</b>; at the bottom you see the time since the recording started.</li>
     <li>The window remembers the last 5 minutes.</li>
@@ -32,10 +34,10 @@
   </ul>
 
   <div class="tip"><strong>Tip:</strong> a timing diagram is most useful for circuits that change over time:
-  a <a href="verwerking.html#flipflop">flip-flop</a>, a counter or a <a href="invoer.html#puls">pulse generator</a>.
+  a <a href="verwerking.html#flipflop">flip-flop</a>, a counter or a <a href="voeding.html#puls2">pulse generator</a>.
   There a <a href="waarheidstabel.html">truth table</a> does not tell everything, because the output also depends on
   what happened before.</div>
 
   <h2>Try it</h2>
   <p>Open <a href="les27.html">lesson 27</a> (flip-flop), switch the simulation on and press S and R a few times. In the
-  timing diagram you see that the LED stays on after a short press on S, until you press R: that is the memory of the flip-flop.</p>
+  timing diagram you see that the lamp stays on after a short press on S, until you press R: that is the memory of the flip-flop.</p>

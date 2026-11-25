@@ -4,6 +4,35 @@
   het uitzicht van het paneel en van de onderdelenbalk aan. Het instellingenvenster verschijnt midden
   op het paneel en heeft drie tabbladen: <b>Algemeen</b>, <b>SchakelElementen</b> en <b>Hints</b>.</p>
 
+  <h2 id="niveau">Niveau van de onderdelenbalk</h2>
+  <p>De onderdelenbalk kan bijna zestig knoppen tonen. Met een <b>niveau</b> kies je in één keer hoeveel er staan.
+  Elk niveau bevat alles van het vorige.</p>
+  <table>
+    <tr><th>Niveau</th><th>Wat staat erin?</th><th>Voor welke lessen?</th></tr>
+    <tr><td class="name">Basis</td><td>Bron, rails, schakelaar en drukknop, lamp, de poorten EN, OF en NIET, zoemer, relais,
+      weerstand, LDR, NTC, impulsgenerator, dipschakelaar, teller, geheugen, display, voltmeter, milliampèremeter en
+      transistor.</td><td>Het energieblok, les 1 tot 11 en de oefeningen (oefening 6 gaat makkelijker in Uitgebreid, met de
+      EX-OF-poort).</td></tr>
+    <tr><td class="name">Uitgebreid</td><td>Ook magnetisme, zekering, wisselspanningsbron, de poorten EX-OF, NEN en NOF,
+      flipflop, led, condensator, potentiometer, diode, oscilloscoop, wattmeter en wisselschakelaar.</td><td>Magnetisme en
+      les 23 tot 42.</td></tr>
+    <tr><td class="name">Gevorderden (alles)</td><td>Alles: ook LogicRun, motor, stappenteller, stopwatch, slagboom, persoon,
+      wagentje, muziekdoos, verkeerslicht en het <a href="board.html">Arduino-board</a>.</td><td>Les 12 tot 22.</td></tr>
+    <tr><td class="name">Eigen keuze (Instellingen)</td><td>Wat je zelf aan- en uitzet op het tabblad
+      <a href="#schakelelementen">SchakelElementen</a>.</td><td>&ndash;</td></tr>
+  </table>
+  <p>Je kiest het niveau in het welkomstvenster, of later met <b>Paneelkeuze &rsaquo; Niveau</b> in de
+  <a href="knoppen.html#paneelkeuze">knoppenbalk</a>. Het actieve niveau staat in de titelbalk van het venster.</p>
+  <ul>
+    <li>Een niveau verandert je eigen instellingen niet: met <b>Eigen keuze</b> krijg je ze terug.</li>
+    <li>Elke les en elk paneel opent in elk niveau en werkt gewoon. Bevat een paneel onderdelen van een hoger niveau, dan
+      vraagt Logic één keer of de knoppen daarvan erbij mogen. Dat geldt tot je Logic afsluit.</li>
+    <li>Zet je in Instellingen zelf knoppen aan of uit terwijl een niveau actief is, dan vraagt Logic bij het sluiten of
+      dat je eigen keuze moet worden.</li>
+    <li>Voor de klas: het niveau staat in het bestand <code>taal.ini</code> naast het programma, als regel
+      <code>Niveau=basis</code>, <code>uitgebreid</code>, <code>gevorderden</code> of <code>eigen</code>.</li>
+  </ul>
+
   <h2>Een instelling wijzigen</h2>
   <ol class="steps">
     <li>Vink in de lijst het vakje aan van de eigenschap die je wil wijzigen.</li>

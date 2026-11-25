@@ -4,6 +4,35 @@
   the appearance of the panel and of the component bar. The settings window appears in the middle of
   the panel and has three tabs: <b>General</b>, <b>Switch Elements</b> and <b>Hints</b>.</p>
 
+  <h2 id="niveau">Level of the component toolbar</h2>
+  <p>The component toolbar can show almost sixty buttons. With a <b>level</b> you choose in one go how many are shown.
+  Each level contains everything of the previous one.</p>
+  <table>
+    <tr><th>Level</th><th>What is in it?</th><th>For which lessons?</th></tr>
+    <tr><td class="name">Basic</td><td>Source, rails, switch and push button, lamp, the AND, OR and NOT gates, buzzer, relay,
+      resistor, LDR, NTC, pulse generator, DIP switch, counter, memory, display, voltmeter, milliammeter and
+      transistor.</td><td>The energy block, lessons 1 to 11 and the exercises (exercise 6 is easier in Extended, with the
+      XOR gate).</td></tr>
+    <tr><td class="name">Extended</td><td>Also magnetism, fuse, AC source, the XOR, NAND and NOR gates,
+      flip-flop, LED, capacitor, potentiometer, diode, oscilloscope, wattmeter and changeover switch.</td><td>Magnetism and
+      lessons 23 to 42.</td></tr>
+    <tr><td class="name">Advanced (everything)</td><td>Everything: also LogicRun, motor, step counter, stopwatch, barrier, person,
+      cart, music box, traffic light and the <a href="board.html">Arduino board</a>.</td><td>Lessons 12 to 22.</td></tr>
+    <tr><td class="name">Own selection (Settings)</td><td>What you switch on and off yourself on the tab
+      <a href="#schakelelementen">SchakelElementen</a>.</td><td>&ndash;</td></tr>
+  </table>
+  <p>You choose the level in the welcome window, or later with <b>Panel choice &rsaquo; Level</b> in the
+  <a href="knoppen.html#paneelkeuze">button bar</a>. The active level is shown in the title bar of the window.</p>
+  <ul>
+    <li>A level does not change your own settings: <b>Own selection</b> brings them back.</li>
+    <li>Every lesson and every panel opens at every level and simply works. If a panel contains components of a higher
+      level, Logic asks once whether their buttons may be added. That holds until you close Logic.</li>
+    <li>If you switch buttons on or off yourself in Settings while a level is active, Logic asks on closing whether that
+      should become your own selection.</li>
+    <li>For the classroom: the level is in the file <code>taal.ini</code> next to the program, as the line
+      <code>Niveau=basis</code>, <code>uitgebreid</code>, <code>gevorderden</code> or <code>eigen</code>.</li>
+  </ul>
+
   <h2>Changing a setting</h2>
   <ol class="steps">
     <li>In the list, tick the box of the property you want to change.</li>

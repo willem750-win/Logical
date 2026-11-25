@@ -15,7 +15,7 @@ begin
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
-  else if ptinrect(RCon,p) then Dcon:=true
+  else if ptinrect(RCon,p) and KDraad then Dcon:=true
   else if ptinrect(RLogicAnd,p)and (KLogicAnd=true) then DLogicAnd:=true
   else if ptinrect(RLogicOr,p)and (KLogicOr=true) then DLogicOr:=true
   else if ptinrect(RLogicNot,p)and (KLogicNot=true) then DLogicNot:=true
@@ -1792,6 +1792,9 @@ begin SetVoedingKnop(FDip2K, Value); end;
 procedure TjanSimLogicBox.SetKMagnetisme(const Value: Boolean);
 begin SetVoedingKnop(FMagK, Value); end;
 
+procedure TjanSimLogicBox.SetKBoard(const Value: Boolean);
+begin SetVoedingKnop(FBoardK, Value); end;
+
 procedure TjanSimLogicBox.SetKVoltmeter2(const Value: Boolean);
 begin SetVoedingKnop(FVolt2K, Value); end;
 
@@ -1948,8 +1951,11 @@ begin
     Knop(RTrafo, 30, DTrafo);
   end;
   // een echt Arduino-board (via USB): ingang en uitgang
-  Knop(RBoardIn, 33, DBoardIn);
-  Knop(RBoardUit, 34, DBoardUit);
+  if FBoardK then
+  begin
+    Knop(RBoardIn, 33, DBoardIn);
+    Knop(RBoardUit, 34, DBoardUit);
+  end;
 end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);

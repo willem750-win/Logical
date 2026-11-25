@@ -1,10 +1,10 @@
 <!-- titel: Power & voltmeter -->
   <h1 id="voeding">Power &amp; voltmeter</h1>
-  <p class="lead">Normally all components get their power invisibly in the background (see
-  <a href="simulatie.html#voeding">Where are the plus and the minus?</a>). If you want to see where the current
-  comes from, build a <b>power circuit</b>: a <b>source</b> (battery) of 0 to 12&nbsp;V, if you like a <b>fuse</b>
-  and a <b>milliammeter</b>, a red <b>+ rail</b> for the inputs and a blue <b>&minus; rail</b> (ground) for the
-  outputs. With the <b>voltmeter</b> you measure the voltage.</p>
+  <p class="lead">In Logic you build a <b>power circuit</b>: a <b>source</b> (battery) of 0 to 12&nbsp;V,
+  if you like a <b>fuse</b> and a <b>milliammeter</b>, a red <b>+ rail</b> for the inputs and a blue
+  <b>&minus; rail</b> (ground) for the outputs. The gates and the other processing blocks get their power
+  invisibly (see <a href="simulatie.html#voeding">Where are the plus and the minus?</a>).
+  With the <b>voltmeter</b> you measure the voltage.</p>
 
   <figure>
     <img src="../img/voeding-basis.png" alt="A 6.5 V source with a 500 mA fuse, a + rail and a − rail">
@@ -13,8 +13,8 @@
   </figure>
 
   <h2 id="rails">The buttons</h2>
-  <p>At the bottom of the <a href="onderdelenbalk.html">component bar</a> there are five half buttons; the
-  milliammeter has a normal button, next to the voltmeter.</p>
+  <p>These buttons are in the Power group of the <a href="onderdelenbalk.html#voeding">component bar</a>; the
+  milliammeter and the wattmeter have a button with the outputs, next to the voltmeter.</p>
   <table>
     <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (supply)</td><td>Red rail for the inputs. The voltage it gets from the source is shown at the top, for example <b>5V</b>.</td></tr>
@@ -29,9 +29,15 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Resistor with a wiper and three terminals: an adjustable voltage divider.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Light-dependent resistor: the more light, the lower the resistance.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">NTC</a></td><td>Temperature-dependent resistor: the warmer, the lower the resistance.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="#serie">Lamp</a></td><td>Lamp with two terminals, for 12&nbsp;V or 5&nbsp;V; a 5&nbsp;V lamp also lights on a gate. Right-click &rsaquo; Colour: red, green or orange.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Lets current through in one direction only, above 0.7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="#serie">Switch or push button</a></td><td>Switch with two terminals; right-click &rsaquo; Type &rsaquo; Push button makes it a push button.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="#wisselschakelaar">Changeover switch</a></td><td>Three terminals: the middle is connected to A or to B.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="#puls2">Pulse generator</a></td><td>Switch that opens and closes by itself: pulses from 0.5 to 5&nbsp;Hz.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="#dip2">DIP switch</a></td><td>Four small switches: a number from 0 to 15 on the outputs 8, 4, 2 and 1.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="#serie">Voltmeter with 2 terminals</a></td><td>Narrow button with a V in a circle. Measures the voltage difference between its two terminals.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>A small base current controls a large collector current: switching and amplifying.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Buzzer</a></td><td>Buzzer with two terminals: sounds from 10&nbsp;mA, also on a gate.</td></tr>
     <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relay</a></td><td>Coil with two terminals and a changeover contact (C, NO, NC).</td></tr>
@@ -91,13 +97,14 @@
   <p>Every load that is on behaves like a fixed resistor. At 12&nbsp;V it draws:</p>
   <table>
     <tr><th>Load (on)</th><th>Current at 12&nbsp;V</th></tr>
-    <tr><td>lamp</td><td>100&nbsp;mA</td></tr>
+    <tr><td>lamp (120&nbsp;&Omega;)</td><td>100&nbsp;mA</td></tr>
     <tr><td>motor (running)</td><td>200&nbsp;mA</td></tr>
-    <tr><td>relay or switching relay (coil energised)</td><td>40&nbsp;mA</td></tr>
-    <tr><td>buzzer</td><td>30&nbsp;mA</td></tr>
-    <tr><td>LED, person (per input that is on)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>relay with two terminals (coil of 60&nbsp;&Omega;)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>buzzer with two terminals (200&nbsp;&Omega;)</td><td>60&nbsp;mA</td></tr>
+    <tr><td>person (per input that is on)</td><td>20&nbsp;mA</td></tr>
     <tr><td>7-segment display</td><td>10&nbsp;mA per lit segment</td></tr>
     <tr><td>gate, counter, memory, LogicRun, plugged-in input</td><td>1&nbsp;mA</td></tr>
+    <tr><td>in old panels, without terminals: relay or switching relay, buzzer, coloured LED</td><td>40&nbsp;mA, 30&nbsp;mA, 20&nbsp;mA</td></tr>
   </table>
   <p>At a lower voltage the current is proportionally smaller: a lamp draws 50&nbsp;mA at 6&nbsp;V. The current of
   the source is the sum of all loads together. With the internal resistance Ri of the source this becomes:</p>
@@ -220,7 +227,8 @@
       <b>Lamp voltage</b> &rsaquo; <b>Lamp for 5&nbsp;V</b> it becomes a small 5&nbsp;V lamp: 50, 100, 250 or
       500&nbsp;&Omega;. The 250&nbsp;&Omega; one (20&nbsp;mA) also lights on the output of a gate, and a 5&nbsp;V lamp
       counts in the truth table. It shines more brightly as more power goes through it, fully at the power for its own
-      voltage; the hint shows U, I and P.</li>
+      voltage; the hint shows U, I and P. Right-click &rsaquo; <b>Colour</b> makes it a red, green or orange lamp, for a
+      traffic light for example.</li>
     <li><b>Switch</b>: click the lever to open or close it, also during the simulation. Right-click &rsaquo; <b>Type</b> &rsaquo; <b>Push button</b> makes it a push button: it is only closed while you hold the mouse button down. A switch with three terminals is the <a href="#wisselschakelaar">changeover switch</a>.</li>
     <li><b>Voltmeter</b>: put the + and the &minus; across a part. It measures the voltage difference between its two
       terminals and takes no current itself.</li>
@@ -352,13 +360,16 @@
 
   <h2 id="regels">What changes when there are rails on the panel?</h2>
   <p>As long as there is no rail on the panel, everything works as before. As soon as there is
-  <b>at least one</b> rail, inputs and outputs must be <b>plugged in</b>:</p>
+  <b>at least one</b> rail, inputs and outputs <b>without terminals</b> must be <b>plugged in</b>:</p>
   <ul>
-    <li><a href="invoer.html">Inputs</a> (push button, switch, DIP switch, pulse generator, light and
-      heat sensor) sit on the <b>right</b> of a <b>+ rail</b>.</li>
-    <li><a href="uitvoer.html">Outputs</a> (lamp, relay, buzzer, motor and display) sit on the <b>left</b> of a
-      <b>&minus; rail</b>.</li>
+    <li>The old <a href="invoer.html">inputs</a> from older panels (push button, switch, DIP switch, pulse
+      generator, light and heat sensor without terminals) sit on the <b>right</b> of a <b>+ rail</b>.</li>
+    <li><a href="uitvoer.html">Outputs</a> without terminals (motor, display, person and the other models; in older
+      panels also the old lamp, buzzer and relay) sit on the <b>left</b> of a <b>&minus; rail</b>.</li>
   </ul>
+  <p>The parts <b>with two terminals</b> (switch, lamp, buzzer, relay &hellip;) are not plugged in. You connect
+  them with wires: from the + rail to the left terminal of the switch, and from the right terminal of the lamp, the
+  buzzer or the relay coil to the &minus; rail. See <a href="#serie">lamp, switch and voltmeter with two terminals</a>.</p>
   <p>Instead of plugging a component in, you can also connect it to a rail with a wire: see
   <a href="#draad">Connecting with a power wire</a>.</p>
   <p>A plugged-in component gets a thin plug with a dot in the colour of the rail. A component that is not

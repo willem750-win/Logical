@@ -4,6 +4,35 @@
   das Aussehen des Panels und der Bauteilleiste. Das Einstellungsfenster erscheint in der Mitte des
   Panels und hat drei Registerkarten: <b>Allgemein</b>, <b>Schaltereinheiten</b> und <b>Hinweise</b>.</p>
 
+  <h2 id="niveau">Stufe der Bauteilleiste</h2>
+  <p>Die Bauteilleiste kann fast sechzig Tasten zeigen. Mit einer <b>Stufe</b> wählen Sie auf einmal, wie viele es sind.
+  Jede Stufe enthält alles aus der vorigen.</p>
+  <table>
+    <tr><th>Stufe</th><th>Was ist enthalten?</th><th>Für welche Lektionen?</th></tr>
+    <tr><td class="name">Basis</td><td>Quelle, Schienen, Schalter und Taster, Lampe, die Gatter UND, ODER und NICHT, Summer,
+      Relais, Widerstand, LDR, NTC, Impulsgenerator, DIP-Schalter, Zähler, Speicher, Anzeige, Voltmeter, Milliamperemeter
+      und Transistor.</td><td>Der Energieblock, Lektion 1 bis 11 und die Übungen (Übung 6 geht in Erweitert leichter, mit
+      dem EXOR-Gatter).</td></tr>
+    <tr><td class="name">Erweitert</td><td>Auch Magnetismus, Sicherung, Wechselspannungsquelle, die Gatter EXOR, NAND und NOR,
+      Flipflop, LED, Kondensator, Potentiometer, Diode, Oszilloskop, Wattmeter und Wechselschalter.</td><td>Magnetismus und
+      Lektion 23 bis 42.</td></tr>
+    <tr><td class="name">Fortgeschritten (alles)</td><td>Alles: auch LogicRun, Motor, Schrittzähler, Stoppuhr, Schranke, Person,
+      Wagen, Spieldose, Ampel und das <a href="board.html">Arduino-Board</a>.</td><td>Lektion 12 bis 22.</td></tr>
+    <tr><td class="name">Eigene Auswahl (Einstellungen)</td><td>Was Sie selbst auf der Registerkarte
+      <a href="#schakelelementen">SchakelElementen</a> ein- und ausschalten.</td><td>&ndash;</td></tr>
+  </table>
+  <p>Sie wählen die Stufe im Willkommensfenster oder später mit <b>Panelwahl &rsaquo; Stufe</b> in der
+  <a href="knoppen.html#paneelkeuze">Schaltflächenleiste</a>. Die aktive Stufe steht in der Titelleiste des Fensters.</p>
+  <ul>
+    <li>Eine Stufe ändert Ihre eigenen Einstellungen nicht: Mit <b>Eigene Auswahl</b> bekommen Sie sie zurück.</li>
+    <li>Jede Lektion und jedes Panel öffnet sich in jeder Stufe und funktioniert normal. Enthält ein Panel Bauteile einer
+      höheren Stufe, fragt Logic einmal, ob deren Tasten dazukommen dürfen. Das gilt, bis Sie Logic schließen.</li>
+    <li>Schalten Sie in den Einstellungen selbst Tasten ein oder aus, während eine Stufe aktiv ist, fragt Logic beim
+      Schließen, ob das Ihre eigene Auswahl werden soll.</li>
+    <li>Für die Klasse: Die Stufe steht in der Datei <code>taal.ini</code> neben dem Programm, als Zeile
+      <code>Niveau=basis</code>, <code>uitgebreid</code>, <code>gevorderden</code> oder <code>eigen</code>.</li>
+  </ul>
+
   <h2>Eine Einstellung ändern</h2>
   <ol class="steps">
     <li>Setzen Sie in der Liste das Häkchen bei der Eigenschaft, die Sie ändern möchten.</li>

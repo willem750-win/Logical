@@ -81,16 +81,21 @@
   <p>The clock input C has a small triangle in the block. The flip-flop only reacts to C <b>turning on</b>
   (the edge), not while C stays on. Try it in <a href="les27.html">lesson 27</a>.</p>
     <h3 id="ff-bouwen">Build it yourself: four small panels</h3>
-  <p>For each example, click <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flip-flop</b>, place it in the
-  middle of the panel and choose the type with the right mouse button. Put the inputs on the left and the lamps on the
-  right. Connect everything with <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>
+  <p>First set up the power as in <a href="les01.html">lesson 1</a>: source, + rail and &minus; rail.
+  For each example, click <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flip-flop</b> (in the component bar from the
+  Extended <a href="instellingen.html#niveau">level</a> on), place it in the middle of the panel and choose the type with the right mouse button.</p>
+  <p>Put the inputs on the left, next to the + rail: take the <a href="voeding.html#serie"><img src="../img/pal-schakelaar2.png" class="ico" alt="">switch</a>
+  from the Power group; right-click &rsaquo; <b>Type</b> &rsaquo; <b>Push button</b> makes it a push button.
+  Put the lamps on the right, near the &minus; rail: take a <a href="voeding.html#serie"><img src="../img/pal-lamp2.png" class="ico" alt="">lamp with two terminals</a>
+  for 5&nbsp;V (right-click &rsaquo; <b>Lamp voltage</b> &rsaquo; <b>Lamp for 5&nbsp;V (also on a gate)</b>).
+  Connect everything with <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>
   (see <a href="verbindingen.html">Connections</a>) and then start the simulation.</p>
 
   <h3 id="ff-sr">SR flip-flop: an alarm that keeps going</h3>
   <ol class="steps">
-    <li>Put two <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">push buttons</a> on the left: the top one is &ldquo;alarm&rdquo;, the bottom one &ldquo;reset&rdquo;.</li>
-    <li>Connect the top push button to <span class="pin in">S</span> and the bottom one to <span class="pin in">R</span>.</li>
-    <li>Put a <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">lamp</a> on the right and connect it to <span class="pin out">Q</span>.</li>
+    <li>Put two push buttons on the left, next to the + rail: the top one is &ldquo;alarm&rdquo;, the bottom one &ldquo;reset&rdquo;. Wire from the + rail to the left terminal of each push button.</li>
+    <li>Wire from the right terminal of the top push button to <span class="pin in">S</span>, and from the right terminal of the bottom one to <span class="pin in">R</span>.</li>
+    <li>Put a lamp on the right. Wire from <span class="pin out">Q</span> to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.</li>
   </ol>
   <p><b>What do you see?</b> Briefly press &ldquo;alarm&rdquo;: the lamp comes on and <b>stays</b> on when you release
   it. Only &ldquo;reset&rdquo; switches it off again. This is how an alarm remembers that a door was open for a moment.
@@ -98,9 +103,9 @@
 
   <h3 id="ff-d">D flip-flop: capturing a value</h3>
   <ol class="steps">
-    <li>Put a <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">switch</a> on the left and connect it to <span class="pin in">D</span> (the data: what must be stored).</li>
-    <li>Put a push button below it and connect it to <span class="pin in">C</span> (the clock: when it must be stored).</li>
-    <li>Put a lamp on the right and connect it to <span class="pin out">Q</span>.</li>
+    <li>Put a switch on the left, next to the + rail. Wire from the + rail to its left terminal, and from its right terminal to <span class="pin in">D</span> (the data: what must be stored).</li>
+    <li>Put a push button below it. Wire from the + rail to its left terminal, and from its right terminal to <span class="pin in">C</span> (the clock: when it must be stored).</li>
+    <li>Put a lamp on the right. Wire from <span class="pin out">Q</span> to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.</li>
   </ol>
   <p><b>What do you see?</b> Switch the switch on: the lamp stays off. Only when you press the push button does Q take
   over the position of the switch and the lamp comes on. Switch the switch off again: the lamp stays on until you press
@@ -109,9 +114,9 @@
 
   <h3 id="ff-jk">JK flip-flop: four options in one</h3>
   <ol class="steps">
-    <li>Put two switches on the left: connect the top one to <span class="pin in">J</span> and the bottom one to <span class="pin in">K</span>.</li>
-    <li>Put a push button between the two switches and connect it to the clock <span class="pin in">C</span>.</li>
-    <li>Put a lamp on the right and connect it to <span class="pin out">Q</span>.</li>
+    <li>Put two switches on the left, next to the + rail, each with a wire from the + rail to its left terminal. Wire from the right terminal of the top one to <span class="pin in">J</span>, and from the right terminal of the bottom one to <span class="pin in">K</span>.</li>
+    <li>Put a push button between the two switches. Wire from the + rail to its left terminal, and from its right terminal to the clock <span class="pin in">C</span>.</li>
+    <li>Put a lamp on the right. Wire from <span class="pin out">Q</span> to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.</li>
   </ol>
   <p><b>What do you see?</b> Choose a position of J and K and then press the push button. Nothing happens until that press:</p>
   <table>
@@ -127,15 +132,15 @@
 
   <h3 id="ff-t">T flip-flop: dividing by two and counting</h3>
   <ol class="steps">
-    <li>Put a push button on the left and connect it to <span class="pin in">T</span>.</li>
-    <li>Put a lamp on the right and connect it to <span class="pin out">Q</span>.</li>
+    <li>Put a push button on the left, next to the + rail. Wire from the + rail to its left terminal, and from its right terminal to <span class="pin in">T</span>.</li>
+    <li>Put a lamp on the right. Wire from <span class="pin out">Q</span> to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.</li>
   </ol>
   <p><b>What do you see?</b> The lamp toggles on every press: the first press on, the second off, the third on again,
-  &hellip; Put a <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">pulse generator</a> on T
-  instead of the push button and the lamp blinks half as fast as the pulses: the T flip-flop divides by two.</p>
+  &hellip; Put a <a href="voeding.html#puls2"><img src="../img/pal-puls2.png" class="ico" alt="">pulse generator</a> between the + rail and T
+  instead of the push button (click its box to start it) and the lamp blinks half as fast as the pulses: the T flip-flop divides by two.</p>
   <div class="tip"><strong>A counter from 0 to 3:</strong> put a second T flip-flop to the right of the first and connect
-  <span class="pin out">Q&#773;</span> (not-Q) of the first to <span class="pin in">T</span> of the second. Put a lamp on
-  Q of each flip-flop: the lamp of the first counts 1, the one of the second counts 2. Press four times: 1, 2, 3 and back
+  <span class="pin out">Q&#773;</span> (not-Q) of the first to <span class="pin in">T</span> of the second. Put a lamp between
+  Q of each flip-flop and the &minus; rail: the lamp of the first counts 1, the one of the second counts 2. Press four times: 1, 2, 3 and back
   to 0. In <a href="les27.html">lesson 27</a> you can open this counter straight away.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Counter block</h2>
@@ -146,8 +151,8 @@
     <tr><td><span class="pin in">Re</span></td><td>Reset: sets the counter back to 0.</td></tr>
     <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>The count as a binary number (0 to 15).</td></tr>
   </table>
-  <p>Connect the outputs to lamps or to a <a href="uitvoer.html#display">display</a> to see the count.
-  A <a href="invoer.html#drukknop">push button</a> or <a href="invoer.html#puls">pulse generator</a> on the count
+  <p>Connect the outputs to lamps (each lamp with a wire to the &minus; rail) or to a <a href="uitvoer.html#display">display</a> to see the count.
+  A <a href="voeding.html#serie">push button</a> or <a href="voeding.html#puls2">pulse generator</a> between the + rail and the count
   input makes the counter run.</p>
 
   <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Step counter</h2>
@@ -157,7 +162,7 @@
     <tr><th>Connection</th><th>Meaning</th></tr>
     <tr><td><span class="pin in">T</span></td><td>Count input: every pulse adds one to the count.</td></tr>
     <tr><td><span class="pin in">R</span></td><td>Reset: sets the count back to 0. While R is on, the counter does not count.</td></tr>
-    <tr><td><span class="pin out">Q</span></td><td>Output: on while the end value is reached, for example to a lamp, a buzzer or an input of <a href="logicrun.html">LogicRun</a>.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Output: on while the end value is reached, for example to a lamp, a <a href="voeding.html#zoemer2">buzzer with two terminals</a> or an input of <a href="logicrun.html">LogicRun</a>.</td></tr>
   </table>
   <p>Right-click the block (it must not be locked) to choose the <b>end value</b>: 10, 100, 1000, 9999 or another
   number. At the end value the counter stops. With <b>Repeat</b> switched on, the next pulse starts again at 1, so it
@@ -179,7 +184,7 @@
   05:00, 10:00 or another time (as mm:ss, for example 02:30). At the end time the stopwatch stops. If you switch on
   <b>Repeat</b>, it starts again at 00:01: Q then gives a signal of one second after every end time. The colon blinks
   while the time runs. The stopwatch is processing: it needs no power supply.</p>
-  <div class="tip"><strong>Tip:</strong> put a <a href="invoer.html#schakelaar">switch</a> on S and a lamp on Q: after
+  <div class="tip"><strong>Tip:</strong> put a <a href="voeding.html#serie">switch</a> between the + rail and S and a lamp between Q and the &minus; rail: after
   the end time the lamp comes on. Set the stopwatch to Repeat and connect Q to the count input of a
   <a href="#stappenteller">step counter</a>, and it counts the minutes.</div>
 
@@ -193,7 +198,7 @@
     <tr><th>Connection</th><th>Meaning</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Address inputs at the top: choose the memory location in binary.</td></tr>
     <tr><td>Input A16</td><td>The fifth address input (top left, next to A8) adds 16 to the address, for locations 16 to 31. The chosen address is shown in the block (<i>ADRES = &hellip;</i>).</td></tr>
-    <tr><td><span class="pin in">write</span></td><td>Write input on the left: connect a <a href="invoer.html#dipswitch">DIP switch</a> here. When you press the DIP switch's button, its number is stored at the chosen address.</td></tr>
+    <tr><td><span class="pin in">D8</span> <span class="pin in">D4</span> <span class="pin in">D2</span> <span class="pin in">D1</span> <span class="pin in">S</span></td><td>Data inputs and write input on the left: connect D8, D4, D2 and D1 to the outputs 8, 4, 2 and 1 of a <a href="voeding.html#dip2">DIP switch</a> (its left terminal to the + rail) and put a <a href="voeding.html#serie">push button</a> between the + rail and S. When you press the push button, the number is stored at the chosen address.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>The content of the chosen location as a binary number, at the bottom.</td></tr>
   </table>
   <p>The <a href="paneel.html#paneelkeuze">memory panel</a> shows a worked-out example with a counter

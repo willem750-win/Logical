@@ -1,8 +1,8 @@
 <!-- titel: Parcours -->
   <h1>Parcours d&rsquo;apprentissage</h1>
-  <p class="lead">Plus de cinquante leçons en blocs&nbsp;: <a href="#energie">énergie</a>, <a href="#magnetisme">magnétisme</a>,
-  <a href="#basis">logique et alimentation</a>, <a href="#gevorderden">programmation avec LogicRun</a>, <a href="#elektriciteit">courant et tension</a>,
-  <a href="#rekenen">calcul avec des portes</a> et <a href="#elektronica">électronique</a>, puis des <a href="#oefenen">exercices avec vérification</a>.
+  <p class="lead">Plus de cinquante leçons en trois niveaux&nbsp;: <a href="#niveau-basis">Base</a> (énergie, logique et alimentation, exercices),
+  <a href="#niveau-uitgebreid">Étendu</a> (magnétisme, courant et tension, calcul avec des portes, électronique) et
+  <a href="#niveau-gevorderden">Avancé</a> (programmation avec LogicRun).
   D&rsquo;un interrupteur avec une lampe jusqu&rsquo;aux compteurs, à la mémoire, au relais, à la commande d&rsquo;un moteur, à la musique, au transistor, au moteur électrique et au transformateur.
   Chaque leçon comporte un exemple complet, une explication et un exercice pour aller plus loin.</p>
 
@@ -10,7 +10,12 @@
   démarrez la <a href="simulatie.html">simulation</a> pour voir l&rsquo;exemple fonctionner. Essayez ensuite
   l&rsquo;exercice. N&rsquo;ouvrez la solution que si vous êtes bloqué.</div>
 
-  <h2 id="energie">Nouveau&nbsp;: partir de l&rsquo;énergie (bloc pilote)</h2>
+  <p>Le parcours suit les trois <a href="instellingen.html#niveau">niveaux</a> de la barre des composants&nbsp;: choisissez le niveau avec <b>Choix du panneau &rsaquo; Niveau</b>, et la barre affiche ce qu&rsquo;il faut pour ces leçons. La numérotation des leçons continue d&rsquo;un niveau à l&rsquo;autre&nbsp;; chaque leçon indique en haut à quel niveau elle appartient.</p>
+
+  <h2 id="niveau-basis">Niveau Base</h2>
+  <p>Les premiers pas&nbsp;: l&rsquo;énergie, vos premiers circuits avec des portes, un compteur et une mémoire, et les exercices.</p>
+
+  <h3 id="energie">Nouveau&nbsp;: partir de l&rsquo;énergie (bloc pilote)</h3>
   <p>Cinq leçons qui partent de la base&nbsp;: qu&rsquo;est-ce que l&rsquo;énergie, comment circule-t-elle, et comment la commuter&nbsp;? Avec la comparaison avec l&rsquo;eau et toujours un circuit fermé de la source, par le récepteur, et retour à la source. À partir de la leçon 4, tout se trouve entre un rail + et un rail &minus;.</p>
   <ol class="lessons">
     <li><a href="lesp1.html"><b>L&rsquo;énergie coule comme l&rsquo;eau</b></a><span>Source, fil et lampe comme pompe, tuyau et roue à aubes&nbsp;: tension et courant.</span></li>
@@ -20,21 +25,7 @@
     <li><a href="lesp5.html"><b>Le transistor sur rails</b></a><span>Un petit courant en commute un grand, clairement entre les rails.</span></li>
   </ol>
 
-  <h2 id="magnetisme">Magnétisme</h2>
-  <p>Aimants et bobines&nbsp;: ce que fait un aimant, comment un courant crée un aimant, comment le rendre plus fort et où l&rsquo;on rencontre l&rsquo;électroaimant&nbsp;; ensuite la force de Lorentz sur un fil parcouru par un courant,, le moteur électrique et l&rsquo;induction.</p>
-  <ol class="lessons">
-    <li><a href="lesm1.html"><b>Qu&rsquo;est-ce que le magnétisme&nbsp;?</b></a><span>Pôle nord et pôle sud, lignes de champ et boussole&nbsp;; des pôles semblables se repoussent, des pôles contraires s&rsquo;attirent.</span></li>
-    <li><a href="lesm2.html"><b>Le magnétisme d&rsquo;une bobine</b></a><span>Un courant crée un aimant&nbsp;; le sens du courant détermine N et S&nbsp;: la règle de la main droite.</span></li>
-    <li><a href="lesm3.html"><b>La force d&rsquo;une bobine</b></a><span>Plus de courant, plus de spires et un noyau de fer&nbsp;: combien de clous la bobine attire-t-elle&nbsp;?</span></li>
-    <li><a href="lesm4.html"><b>L&rsquo;électroaimant au travail</b></a><span>Un relais ouvert commute un deuxième circuit&nbsp;; avec son propre contact repos, il devient une sonnette électrique.</span></li>
-    <li><a href="lesm5.html"><b>La force de Lorentz</b></a><span>Un fil parcouru par un courant dans un champ magnétique subit une force&nbsp;: la balançoire électrique et la règle de la main gauche.</span></li>
-    <li><a href="lesm6.html"><b>Le moteur électrique</b></a><span>Une bobine qui tourne entre deux pôles&nbsp;: la force de Lorentz, le point mort et le collecteur.</span></li>
-    <li><a href="lesm7.html"><b>L&rsquo;induction</b></a><span>Un aimant en mouvement induit une tension dans une bobine&nbsp;; le galvanomètre et la loi de Lenz.</span></li>
-    <li><a href="lesm8.html"><b>La dynamo</b></a><span>Un aimant tournant près d&rsquo;une bobine donne une tension alternative&nbsp;: tourner plus vite donne plus de tension et une fréquence plus élevée.</span></li>
-    <li><a href="lesm9.html"><b>Le transformateur</b></a><span>Deux bobines sur un même noyau élèvent ou abaissent une tension alternative&nbsp;: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
-  </ol>
-
-  <h2 id="basis">Logique et alimentation</h2>
+  <h3 id="basis">Logique et alimentation</h3>
 
   <ol class="lessons">
     <li><a href="les01.html"><b>Votre premier circuit</b></a><span>Un interrupteur, un fil et une lampe.</span></li>
@@ -51,23 +42,27 @@
     <li><a href="les11.html"><b>Le relais</b></a><span>Commuter un deuxième circuit avec un bouton-poussoir et un relais avec contact.</span></li>
   </ol>
 
-  <h2 id="gevorderden">Pour les avancés&nbsp;: programmer avec LogicRun</h2>
-  <p>Les leçons 12 à 22 sont une extension pour ceux qui connaissent les bases (leçons 1 à 11). Vous y programmez avec <a href="logicrun.html">LogicRun</a> et faites bouger un moteur, une personne et un chariot ou jouer une mélodie avec un programme en pas. L&rsquo;enseignant peut masquer les boutons LogicRun, Personne, Chariot et Boîte à musique jusqu&rsquo;à ce que la classe soit prête (voir <a href="instellingen.html#algemeen">Réglages</a>).</p>
-  <ol class="lessons" start="12">
-    <li><a href="les12.html"><b>Programmer avec LogicRun</b></a><span>Un feu tricolore avec un programme par pas.</span></li>
-    <li><a href="les13.html"><b>Commander un moteur</b></a><span>Faire tourner un moteur à gauche et à droite avec LogicRun.</span></li>
-    <li><a href="les14.html"><b>Une emballeuse</b></a><span>Compter des boîtes avec LogicRun et le compteur.</span></li>
-    <li><a href="les15.html"><b>Compter en binaire</b></a><span>Des voyants et un afficheur montrent le même nombre.</span></li>
-    <li><a href="les16.html"><b>Une personne fait des allers-retours</b></a><span>Des fins de course indiquent à LogicRun où se trouve la personne.</span></li>
-    <li><a href="les17.html"><b>Un chariot sur un parcours</b></a><span>LogicRun compte les poteaux le long de la route.</span></li>
-    <li><a href="les18.html"><b>De la musique avec LogicRun</b></a><span>Un pas par note&nbsp;: LogicRun joue une chanson sur une boîte à musique.</span></li>
-    <li><a href="les19.html"><b>Compter jusqu&rsquo;à 1000</b></a><span>Le compteur de pas compte les impulsions et allume une lampe à la valeur finale.</span></li>
-    <li><a href="les20.html"><b>Commander dans le temps</b></a><span>Le chronomètre mesure le temps et allume une lampe quand l&rsquo;heure de fin est passée.</span></li>
-    <li><a href="les21.html"><b>Un feu avec bouton piétons</b></a><span>LogicRun commande un feu&nbsp;: vert pour les voitures jusqu&rsquo;à ce qu&rsquo;un piéton appuie sur le bouton.</span></li>
-    <li><a href="les22.html"><b>Une barrière de parking</b></a><span>Un chronomètre et une porte NON&nbsp;: la barrière s&rsquo;ouvre après le bouton du ticket et se referme toute seule.</span></li>
+  <h3 id="oefenen">S&rsquo;exercer avec vérification</h3>
+  <p>Après les leçons, mettez-vous au travail avec les <a href="oefeningen.html">exercices</a>&nbsp;: vous recevez une consigne, construisez le circuit et Logic vérifie s&rsquo;il est juste.</p>
+
+  <h2 id="niveau-uitgebreid">Niveau Étendu</h2>
+  <p>La suite&nbsp;: magnétisme, mesures, calcul avec des portes et électronique.</p>
+
+  <h3 id="magnetisme">Magnétisme</h3>
+  <p>Aimants et bobines&nbsp;: ce que fait un aimant, comment un courant crée un aimant, comment le rendre plus fort et où l&rsquo;on rencontre l&rsquo;électroaimant&nbsp;; ensuite la force de Lorentz sur un fil parcouru par un courant,, le moteur électrique et l&rsquo;induction.</p>
+  <ol class="lessons">
+    <li><a href="lesm1.html"><b>Qu&rsquo;est-ce que le magnétisme&nbsp;?</b></a><span>Pôle nord et pôle sud, lignes de champ et boussole&nbsp;; des pôles semblables se repoussent, des pôles contraires s&rsquo;attirent.</span></li>
+    <li><a href="lesm2.html"><b>Le magnétisme d&rsquo;une bobine</b></a><span>Un courant crée un aimant&nbsp;; le sens du courant détermine N et S&nbsp;: la règle de la main droite.</span></li>
+    <li><a href="lesm3.html"><b>La force d&rsquo;une bobine</b></a><span>Plus de courant, plus de spires et un noyau de fer&nbsp;: combien de clous la bobine attire-t-elle&nbsp;?</span></li>
+    <li><a href="lesm4.html"><b>L&rsquo;électroaimant au travail</b></a><span>Un relais ouvert commute un deuxième circuit&nbsp;; avec son propre contact repos, il devient une sonnette électrique.</span></li>
+    <li><a href="lesm5.html"><b>La force de Lorentz</b></a><span>Un fil parcouru par un courant dans un champ magnétique subit une force&nbsp;: la balançoire électrique et la règle de la main gauche.</span></li>
+    <li><a href="lesm6.html"><b>Le moteur électrique</b></a><span>Une bobine qui tourne entre deux pôles&nbsp;: la force de Lorentz, le point mort et le collecteur.</span></li>
+    <li><a href="lesm7.html"><b>L&rsquo;induction</b></a><span>Un aimant en mouvement induit une tension dans une bobine&nbsp;; le galvanomètre et la loi de Lenz.</span></li>
+    <li><a href="lesm8.html"><b>La dynamo</b></a><span>Un aimant tournant près d&rsquo;une bobine donne une tension alternative&nbsp;: tourner plus vite donne plus de tension et une fréquence plus élevée.</span></li>
+    <li><a href="lesm9.html"><b>Le transformateur</b></a><span>Deux bobines sur un même noyau élèvent ou abaissent une tension alternative&nbsp;: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
   </ol>
 
-  <h2 id="elektriciteit">Courant et tension</h2>
+  <h3 id="elektriciteit">Courant et tension</h3>
   <p>Après l&rsquo;alimentation de la <a href="les10.html">leçon 10</a>, vous calculez ici avec le courant, la tension et la résistance. LogicRun n&rsquo;est pas nécessaire.</p>
   <ol class="lessons" start="23">
     <li><a href="les23.html"><b>La loi d&rsquo;Ohm</b></a><span>Plus de lampes, plus de courant&nbsp;: la tension baisse et le fusible fond.</span></li>
@@ -75,14 +70,14 @@
     <li><a href="les25.html"><b>Des lampes en parallèle</b></a><span>Chaque lampe reçoit la tension complète, les courants s&rsquo;additionnent.</span></li>
   </ol>
 
-  <h2 id="rekenen">Calculer avec des portes</h2>
+  <h3 id="rekenen">Calculer avec des portes</h3>
   <p>Après les portes de la <a href="les03.html">leçon 3</a> à la <a href="les06.html">leçon 6</a>, vous additionnez ici avec des portes et retenez avec des bascules. LogicRun n&rsquo;est pas nécessaire.</p>
   <ol class="lessons" start="26">
     <li><a href="les26.html"><b>Le demi-additionneur</b></a><span>Une porte OU-X et une porte ET additionnent deux bits.</span></li>
     <li><a href="les27.html"><b>La bascule se souvient</b></a><span>Une bascule SR retient un appui sur le bouton&nbsp;; deux bascules T comptent.</span></li>
   </ol>
 
-  <h2 id="elektronica">Électronique</h2>
+  <h3 id="elektronica">Électronique</h3>
   <p>Après l&rsquo;alimentation de la <a href="les23.html">leçon 23</a> à la <a href="les25.html">leçon 25</a>, vous construisez ici avec des résistances, un potentiomètre, des LED, un condensateur et des diodes, et vous transformez une tension alternative en tension continue. Pour finir, vous commutez et amplifiez avec un transistor, et construisez une veilleuse et une alarme de température avec une LDR et une CTN.</p>
   <ol class="lessons" start="28">
     <li><a href="les28.html"><b>La LED et le condensateur</b></a><span>Une résistance série protège la LED&nbsp;; un condensateur la fait s&rsquo;éteindre lentement.</span></li>
@@ -97,13 +92,29 @@
     <li><a href="les37.html"><b>Le pont de Graetz</b></a><span>Quatre diodes utilisent les deux moitiés&nbsp;; un condensateur lisse la tension.</span></li>
     <li><a href="les38.html"><b>Le transistor en interrupteur</b></a><span>Un petit courant de base allume un grand courant dans une lampe.</span></li>
     <li><a href="les39.html"><b>Amplifier avec un transistor</b></a><span>I<sub>c</sub> = &beta; &times; I<sub>b</sub>, entre bloqué et saturé.</span></li>
-    <li><a href="les40.html"><b>Une veilleuse avec une LDR</b></a><span>Une photorésistance et un transistor    <li><a href="les39.html"><b>Amplifier avec un transistor</b></a><span>I<sub>c</sub> = &beta; &times; I<sub>b</sub>, entre bloqué et saturé.</span></li>nbsp;: la LED s&rsquo;allume quand il fait sombre.</span></li>
+    <li><a href="les40.html"><b>Une veilleuse avec une LDR</b></a><span>Une photorésistance et un transistor&nbsp;: la LED s&rsquo;allume quand il fait sombre.</span></li>
     <li><a href="les41.html"><b>Une alarme de température avec une CTN</b></a><span>Une thermistance allume la LED quand il fait trop chaud.</span></li>
     <li><a href="les42.html"><b>Une porte commande un transistor</b></a><span>Une porte ET allume une lampe de 12&nbsp;V grâce à un transistor : logique et puissance ensemble.</span></li>
   </ol>
 
-  <h2 id="oefenen">S&rsquo;exercer avec vérification</h2>
-  <p>Après les leçons, mettez-vous au travail avec les <a href="oefeningen.html">exercices</a>&nbsp;: vous recevez une consigne, construisez le circuit et Logic vérifie s&rsquo;il est juste.</p>
+  <h2 id="niveau-gevorderden">Niveau Avancé</h2>
+  <p>Programmer avec LogicRun&nbsp;: commander un moteur, une personne, un chariot, de la musique et un feu de signalisation.</p>
+
+  <h3 id="gevorderden">Pour les avancés&nbsp;: programmer avec LogicRun</h3>
+  <p>Les leçons 12 à 22 sont une extension pour ceux qui connaissent les bases (leçons 1 à 11). Vous y programmez avec <a href="logicrun.html">LogicRun</a> et faites bouger un moteur, une personne et un chariot ou jouer une mélodie avec un programme en pas. Les boutons LogicRun, Moteur, Personne, Chariot et Boîte à musique ne figurent dans la barre qu&rsquo;au <a href="instellingen.html#niveau">niveau</a> Avancé.</p>
+  <ol class="lessons" start="12">
+    <li><a href="les12.html"><b>Programmer avec LogicRun</b></a><span>Un feu tricolore avec un programme par pas.</span></li>
+    <li><a href="les13.html"><b>Commander un moteur</b></a><span>Faire tourner un moteur à gauche et à droite avec LogicRun.</span></li>
+    <li><a href="les14.html"><b>Une emballeuse</b></a><span>Compter des boîtes avec LogicRun et le compteur.</span></li>
+    <li><a href="les15.html"><b>Compter en binaire</b></a><span>Des voyants et un afficheur montrent le même nombre.</span></li>
+    <li><a href="les16.html"><b>Une personne fait des allers-retours</b></a><span>Des fins de course indiquent à LogicRun où se trouve la personne.</span></li>
+    <li><a href="les17.html"><b>Un chariot sur un parcours</b></a><span>LogicRun compte les poteaux le long de la route.</span></li>
+    <li><a href="les18.html"><b>De la musique avec LogicRun</b></a><span>Un pas par note&nbsp;: LogicRun joue une chanson sur une boîte à musique.</span></li>
+    <li><a href="les19.html"><b>Compter jusqu&rsquo;à 1000</b></a><span>Le compteur de pas compte les impulsions et allume une lampe à la valeur finale.</span></li>
+    <li><a href="les20.html"><b>Commander dans le temps</b></a><span>Le chronomètre mesure le temps et allume une lampe quand l&rsquo;heure de fin est passée.</span></li>
+    <li><a href="les21.html"><b>Un feu avec bouton piétons</b></a><span>LogicRun commande un feu&nbsp;: vert pour les voitures jusqu&rsquo;à ce qu&rsquo;un piéton appuie sur le bouton.</span></li>
+    <li><a href="les22.html"><b>Une barrière de parking</b></a><span>Un chronomètre et une porte NON&nbsp;: la barrière s&rsquo;ouvre après le bouton du ticket et se referme toute seule.</span></li>
+  </ol>
 
   <div class="tip"><strong>Linux :</strong> là aussi, l&rsquo;aide s&rsquo;ouvre dans le navigateur intégré et le bouton
   <b>Ouvrir cet exemple</b> fonctionne. Si le dossier <code>ceflib</code> manque, l&rsquo;aide s&rsquo;ouvre dans le

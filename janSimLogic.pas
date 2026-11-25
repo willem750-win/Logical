@@ -1879,7 +1879,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K, FMagK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K, FMagK, FBoardK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -2127,6 +2127,7 @@ type
     procedure SetKPuls2(const Value: Boolean);
     procedure SetKDip2(const Value: Boolean);
     procedure SetKMagnetisme(const Value: Boolean);
+    procedure SetKBoard(const Value: Boolean);
     procedure SetKVoltmeter2(const Value: Boolean);
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
@@ -2225,6 +2226,9 @@ type
     // (en bij het bewaren even terug).
     function LayoutShift: TPoint;
     procedure ShiftPanelObjects(DX, DY: Integer);
+    // het onderdeel dat nog aan de muis hangt (gekozen in de balk, nog niet op
+    // het paneel gezet) weghalen
+    procedure AnnuleerNieuwObject;
     function PanelText(Paneel: TjanGridS): string;
     procedure LoadPanelText(const AText: string; Paneel: TjanGridS);
     // Waarheidstabel: zet de schakelaars en drukknoppen (Ins, van boven naar
@@ -2365,6 +2369,8 @@ type
     property KPuls2: Boolean read FPuls2K write SetKPuls2 default True;
     property KDip2: Boolean read FDip2K write SetKDip2 default True;
     property KMagnetisme: Boolean read FMagK write SetKMagnetisme default True;
+    // de twee knoppen van het Arduino-board (ingang en uitgang)
+    property KBoard: Boolean read FBoardK write SetKBoard default True;
     property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
@@ -3461,6 +3467,9 @@ end;
   TjanLamp2 = class(TjanVoedingsDeel)
   private
     FSoort: Integer;       // index in Lamp2Ohm
+    FKleur: TLampKleur;    // gewone lamp of een gekleurde lamp (rood, groen, oranje)
+    procedure SetKleur(const Value: TLampKleur);
+    procedure KleurClick(Sender: TObject);
     procedure SetSoort(const Value: Integer);
     procedure SoortClick(Sender: TObject);
     procedure VoltClick(Sender: TObject);
@@ -3485,6 +3494,7 @@ end;
     procedure SendStatusToBar; override;
   published
     property Soort: Integer read FSoort write SetSoort;
+    property Kleur: TLampKleur read FKleur write SetKleur;
   end;
 
   { TjanSchakelaar2: schakelaar met twee klemmen in de voedingskring.

@@ -2434,3 +2434,66 @@ msgstr "A porta %s está aberta, mas a placa não responde. Tem o StandardFirmat
 
 msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
 msgstr "Não é possível abrir a porta %s. Está em uso (p. ex. pelo Arduino IDE)?"
+
+msgid "You switched components on or off while the level \"%s\" is active."
+msgstr "Ativou ou desativou componentes enquanto o nível \"%s\" está ativo."
+
+msgid "Do you want to save this as your own selection? Your previous own selection is then replaced."
+msgstr "Quer guardar isto como a sua seleção própria? A sua seleção própria anterior será substituída."
+
+msgid "Level"
+msgstr "Nível"
+
+msgid "level"
+msgstr "nível"
+
+msgid "This panel uses components of the level \"%s\". It works as it is."
+msgstr "Este painel usa componentes do nível \"%s\". Funciona tal como está."
+
+msgid "Do you also want the buttons of that level in the component toolbar, until you close Logic?"
+msgstr "Quer também os botões desse nível na barra de componentes, até fechar o Logic?"
+
+msgid "First come the wire, the gates and the counters, then the output and the power supply: source, switches, lamps and meters."
+msgstr "Primeiro estão o fio, as portas e os contadores, depois a saída e a alimentação: fonte, interruptores, lâmpadas e medidores."
+
+msgid "Under Level you choose how many components the toolbar shows: Basic, Extended or Advanced."
+msgstr "Em Nível escolhe quantos componentes a barra mostra: Básico, Alargado ou Avançado."
+
+msgid "Basic"
+msgstr "Básico"
+
+msgid "Extended"
+msgstr "Alargado"
+
+msgid "Advanced (everything)"
+msgstr "Avançado (tudo)"
+
+msgid "Own selection (Settings)"
+msgstr "Seleção própria (Definições)"
+
+msgid "The first lessons: source, switch, lamp, the AND, OR and NOT gates, counter and display."
+msgstr "As primeiras lições: fonte, interruptor, lâmpada, as portas AND, OR e NOT, contador e display."
+
+msgid "Also measuring, magnetism and electronics: fuse, LED, diode, scope, coil and all gates."
+msgstr "Também medir, magnetismo e eletrónica: fusível, LED, díodo, osciloscópio, bobina e todas as portas."
+
+msgid "Everything, also programming with LogicRun: motor, person, cart, traffic light and the Arduino board."
+msgstr "Tudo, também programar com o LogicRun: motor, pessoa, carrinho, semáforo e a placa Arduino."
+
+msgid "The components you switch on and off yourself in Settings."
+msgstr "Os componentes que ativa e desativa por si em Definições."
+
+msgid "Level:"
+msgstr "Nível:"
+
+msgid "Red lamp"
+msgstr "Lâmpada vermelha"
+
+msgid "Green lamp"
+msgstr "Lâmpada verde"
+
+msgid "Orange lamp"
+msgstr "Lâmpada laranja"
+
+msgid "Ordinary lamp"
+msgstr "Lâmpada normal"

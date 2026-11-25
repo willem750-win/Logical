@@ -60,9 +60,12 @@ try {
   }
   Copy-Item (Join-Path $src 'ceflib\locales') (Join-Path $stage 'ceflib\locales') -Recurse
 
-  # Vaste taal.ini: nieuwe gebruikers starten in het Nederlands, los van de
-  # taal die je zelf laatst koos (bestaande installaties houden hun keuze).
-  Set-Content (Join-Path $stage 'taal.ini') "[Settings]`r`nLanguage=0" -Encoding ascii
+  # Vaste taal.ini: nieuwe gebruikers starten in het Nederlands en in het
+  # niveau Basis (een rustige onderdelenbalk), los van wat je zelf laatst koos.
+  # Bij setup.exe houden bestaande installaties hun eigen taal.ini en dus hun
+  # keuze; wie de zip over een oudere map uitpakt, start in Basis (zijn eigen
+  # instellingen blijven: Paneelkeuze > Niveau > Eigen keuze).
+  Set-Content (Join-Path $stage 'taal.ini') "[Settings]`r`nLanguage=0`r`nNiveau=basis" -Encoding ascii
 
   # ----------------------------------------------------------------
   # panels, ini, html en lang (extra talen) uit Git (HEAD)

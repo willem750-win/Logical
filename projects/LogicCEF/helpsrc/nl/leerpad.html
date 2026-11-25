@@ -1,8 +1,8 @@
 <!-- titel: Leerpad -->
   <h1>Leerpad</h1>
-  <p class="lead">Meer dan vijftig lessen in blokken: <a href="#energie">energie</a>, <a href="#magnetisme">magnetisme</a>,
-  <a href="#basis">logica en voeding</a>, <a href="#gevorderden">programmeren met LogicRun</a>, <a href="#elektriciteit">stroom en spanning</a>,
-  <a href="#rekenen">rekenen met poorten</a> en <a href="#elektronica">elektronica</a>, en daarna <a href="#oefenen">oefeningen met controle</a>.
+  <p class="lead">Meer dan vijftig lessen in drie niveaus: <a href="#niveau-basis">Basis</a> (energie, logica en voeding, oefeningen),
+  <a href="#niveau-uitgebreid">Uitgebreid</a> (magnetisme, stroom en spanning, rekenen met poorten, elektronica) en
+  <a href="#niveau-gevorderden">Gevorderden</a> (programmeren met LogicRun).
   Van een schakelaar met een lamp tot tellers, geheugen, het relais, een motor sturen, muziek maken, de transistor, de elektromotor en de transformator.
   Elke les heeft een uitgewerkt voorbeeld, een uitleg en een opdracht om zelf verder te gaan.</p>
 
@@ -10,7 +10,12 @@
   zet de <a href="simulatie.html">simulatie</a> aan om het voorbeeld te zien werken. Probeer daarna de
   opdracht. Pas als je vastzit, klap je de oplossing open.</div>
 
-  <h2 id="energie">Nieuw: vertrekken van energie (proefblok)</h2>
+  <p>Het leerpad volgt de drie <a href="instellingen.html#niveau">niveaus</a> van de onderdelenbalk: kies het niveau met <b>Paneelkeuze &rsaquo; Niveau</b>, dan toont de balk wat je voor die lessen nodig hebt. De lesnummers lopen door over de niveaus heen; bij elke les staat bovenaan bij welk niveau ze hoort.</p>
+
+  <h2 id="niveau-basis">Niveau Basis</h2>
+  <p>De eerste stappen: energie, je eerste schakelingen met poorten, teller en geheugen, en de oefeningen.</p>
+
+  <h3 id="energie">Nieuw: vertrekken van energie (proefblok)</h3>
   <p>Vijf lessen die beginnen bij de basis: wat is energie, hoe stroomt ze, en hoe schakel je ze? Met de vergelijking met water en altijd een gesloten kring van de bron, door de verbruiker, terug naar de bron. Vanaf les 4 hangt alles tussen een + rail en een &minus; rail.</p>
   <ol class="lessons">
     <li><a href="lesp1.html"><b>Energie stroomt als water</b></a><span>Bron, draad en lamp als pomp, buis en waterrad: spanning en stroom.</span></li>
@@ -20,21 +25,7 @@
     <li><a href="lesp5.html"><b>De transistor op rails</b></a><span>Een kleine stroom schakelt een grote, overzichtelijk tussen de rails.</span></li>
   </ol>
 
-  <h2 id="magnetisme">Magnetisme</h2>
-  <p>Magneten en spoelen: wat een magneet doet, hoe een stroom een magneet maakt, hoe je die sterker maakt en waar je de elektromagneet tegenkomt; daarna de Lorentzkracht op een stroomdraad, de elektromotor en inductie.</p>
-  <ol class="lessons">
-    <li><a href="lesm1.html"><b>Wat is magnetisme?</b></a><span>Noordpool en zuidpool, veldlijnen en het kompas; gelijke polen stoten af, ongelijke trekken aan.</span></li>
-    <li><a href="lesm2.html"><b>Magnetisme in een spoel</b></a><span>Een stroom maakt een magneet; de richting van de stroom bepaalt N en Z: de rechterhandregel.</span></li>
-    <li><a href="lesm3.html"><b>De kracht van een spoel</b></a><span>Meer stroom, meer windingen en een ijzeren kern: hoeveel spijkers trekt de spoel aan?</span></li>
-    <li><a href="lesm4.html"><b>De elektromagneet aan het werk</b></a><span>Een open relais schakelt een tweede kring; met het eigen verbreekcontact wordt het een elektrische bel.</span></li>
-    <li><a href="lesm5.html"><b>De Lorentzkracht</b></a><span>Een stroomdraad in een magnetisch veld krijgt een kracht: de stroomschommel en de linkerhandregel.</span></li>
-    <li><a href="lesm6.html"><b>De elektromotor</b></a><span>Een draaiend spoeltje tussen twee polen: de Lorentzkracht, het dode punt en de collector.</span></li>
-    <li><a href="lesm7.html"><b>Inductie</b></a><span>Een bewegende magneet wekt een spanning op in een spoel; de nulpuntmeter en de wet van Lenz.</span></li>
-    <li><a href="lesm8.html"><b>De dynamo</b></a><span>Een draaiende magneet bij een spoel geeft wisselspanning: sneller draaien geeft meer spanning en een hogere frequentie.</span></li>
-    <li><a href="lesm9.html"><b>De transformator</b></a><span>Twee spoelen op één kern zetten een wisselspanning omhoog of omlaag: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
-  </ol>
-
-  <h2 id="basis">Logica en voeding</h2>
+  <h3 id="basis">Logica en voeding</h3>
 
   <ol class="lessons">
     <li><a href="les01.html"><b>Je eerste schakeling</b></a><span>Een schakelaar, een draad en een lamp.</span></li>
@@ -51,23 +42,27 @@
     <li><a href="les11.html"><b>Het relais</b></a><span>Met een drukknop en een schakelrelais een tweede stroomkring schakelen.</span></li>
   </ol>
 
-  <h2 id="gevorderden">Voor gevorderden: programmeren met LogicRun</h2>
-  <p>De lessen 12 tot 22 zijn een uitbreiding voor wie de basis (les 1 tot 11) kent. Je programmeert er met <a href="logicrun.html">LogicRun</a> en laat een motor, een persoon en een wagentje bewegen of een melodie spelen met een programma in stappen. De leerkracht kan de knoppen LogicRun, Persoon, Wagentje en Muziekdoos verbergen tot de klas zover is (zie <a href="instellingen.html#algemeen">Instellingen</a>).</p>
-  <ol class="lessons" start="12">
-    <li><a href="les12.html"><b>Programmeren met LogicRun</b></a><span>Een verkeerslicht met een programma in stappen.</span></li>
-    <li><a href="les13.html"><b>Een motor sturen</b></a><span>Een motor linksom en rechtsom laten draaien met LogicRun.</span></li>
-    <li><a href="les14.html"><b>Een inpakmachine</b></a><span>Dozen tellen met LogicRun en de teller.</span></li>
-    <li><a href="les15.html"><b>Binair tellen</b></a><span>Lampjes en een display tonen hetzelfde getal.</span></li>
-    <li><a href="les16.html"><b>Een persoon heen en weer</b></a><span>Eindschakelaars melden aan LogicRun waar de persoon is.</span></li>
-    <li><a href="les17.html"><b>Een wagentje op een parcours</b></a><span>LogicRun telt de paaltjes langs de weg.</span></li>
-    <li><a href="les18.html"><b>Muziek met LogicRun</b></a><span>Een stap per noot: LogicRun speelt een liedje op een muziekdoos.</span></li>
-    <li><a href="les19.html"><b>Tellen tot 1000</b></a><span>De stappenteller telt pulsen en zet een lamp aan bij de eindwaarde.</span></li>
-    <li><a href="les20.html"><b>Schakelen op tijd</b></a><span>De stopwatch meet de tijd en zet een lamp aan als de eindtijd voorbij is.</span></li>
-    <li><a href="les21.html"><b>Een verkeerslicht met voetgangersknop</b></a><span>LogicRun stuurt een verkeerslicht: groen voor de auto's tot een voetganger op de knop drukt.</span></li>
-    <li><a href="les22.html"><b>Een slagboom op een parking</b></a><span>Een stopwatch en een NIET-poort: de boom gaat open na de ticketknop en sluit vanzelf.</span></li>
+  <h3 id="oefenen">Oefenen met controle</h3>
+  <p>Na de lessen kun je zelf aan de slag met de <a href="oefeningen.html">oefeningen</a>: je krijgt een opdracht, bouwt de schakeling en Logic controleert of ze klopt.</p>
+
+  <h2 id="niveau-uitgebreid">Niveau Uitgebreid</h2>
+  <p>Verder met magnetisme, meten, rekenen met poorten en elektronica.</p>
+
+  <h3 id="magnetisme">Magnetisme</h3>
+  <p>Magneten en spoelen: wat een magneet doet, hoe een stroom een magneet maakt, hoe je die sterker maakt en waar je de elektromagneet tegenkomt; daarna de Lorentzkracht op een stroomdraad, de elektromotor en inductie.</p>
+  <ol class="lessons">
+    <li><a href="lesm1.html"><b>Wat is magnetisme?</b></a><span>Noordpool en zuidpool, veldlijnen en het kompas; gelijke polen stoten af, ongelijke trekken aan.</span></li>
+    <li><a href="lesm2.html"><b>Magnetisme in een spoel</b></a><span>Een stroom maakt een magneet; de richting van de stroom bepaalt N en Z: de rechterhandregel.</span></li>
+    <li><a href="lesm3.html"><b>De kracht van een spoel</b></a><span>Meer stroom, meer windingen en een ijzeren kern: hoeveel spijkers trekt de spoel aan?</span></li>
+    <li><a href="lesm4.html"><b>De elektromagneet aan het werk</b></a><span>Een open relais schakelt een tweede kring; met het eigen verbreekcontact wordt het een elektrische bel.</span></li>
+    <li><a href="lesm5.html"><b>De Lorentzkracht</b></a><span>Een stroomdraad in een magnetisch veld krijgt een kracht: de stroomschommel en de linkerhandregel.</span></li>
+    <li><a href="lesm6.html"><b>De elektromotor</b></a><span>Een draaiend spoeltje tussen twee polen: de Lorentzkracht, het dode punt en de collector.</span></li>
+    <li><a href="lesm7.html"><b>Inductie</b></a><span>Een bewegende magneet wekt een spanning op in een spoel; de nulpuntmeter en de wet van Lenz.</span></li>
+    <li><a href="lesm8.html"><b>De dynamo</b></a><span>Een draaiende magneet bij een spoel geeft wisselspanning: sneller draaien geeft meer spanning en een hogere frequentie.</span></li>
+    <li><a href="lesm9.html"><b>De transformator</b></a><span>Twee spoelen op één kern zetten een wisselspanning omhoog of omlaag: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
   </ol>
 
-  <h2 id="elektriciteit">Stroom en spanning</h2>
+  <h3 id="elektriciteit">Stroom en spanning</h3>
   <p>Na de voeding van <a href="les10.html">les 10</a> reken je hier met stroom, spanning en weerstand. Je hebt LogicRun niet nodig.</p>
   <ol class="lessons" start="23">
     <li><a href="les23.html"><b>De wet van Ohm</b></a><span>Meer lampen, meer stroom: de spanning zakt en de zekering smelt.</span></li>
@@ -75,14 +70,14 @@
     <li><a href="les25.html"><b>Lampen parallel</b></a><span>Elke lamp krijgt de volle spanning, de stromen tellen op.</span></li>
   </ol>
 
-  <h2 id="rekenen">Rekenen met poorten</h2>
+  <h3 id="rekenen">Rekenen met poorten</h3>
   <p>Na de poorten van <a href="les03.html">les 3</a> tot <a href="les06.html">les 6</a> tel je hier met poorten en onthoud je met flipflops. Je hebt LogicRun niet nodig.</p>
   <ol class="lessons" start="26">
     <li><a href="les26.html"><b>De halve opteller</b></a><span>Een EX-OF-poort en een EN-poort tellen twee bits op.</span></li>
     <li><a href="les27.html"><b>De flipflop onthoudt</b></a><span>Een SR-flipflop onthoudt een druk op de knop; twee T-flipflops tellen.</span></li>
   </ol>
 
-  <h2 id="elektronica">Elektronica</h2>
+  <h3 id="elektronica">Elektronica</h3>
   <p>Na de voeding van <a href="les23.html">les 23</a> tot <a href="les25.html">les 25</a> bouw je hier met weerstanden, een potentiometer, leds, een condensator en diodes, en maak je van wisselspanning een gelijkspanning. Tot slot schakel en versterk je met een transistor, en maak je met een LDR en een NTC een nachtlampje en een temperatuuralarm.</p>
   <ol class="lessons" start="28">
     <li><a href="les28.html"><b>De led en de condensator</b></a><span>Een voorschakelweerstand beschermt de led; een condensator laat ze langzaam doven.</span></li>
@@ -102,8 +97,24 @@
     <li><a href="les42.html"><b>Een poort stuurt een transistor</b></a><span>Een EN-poort laat via een transistor een lamp op 12&nbsp;V branden: logica en vermogen samen.</span></li>
   </ol>
 
-  <h2 id="oefenen">Oefenen met controle</h2>
-  <p>Na de lessen kun je zelf aan de slag met de <a href="oefeningen.html">oefeningen</a>: je krijgt een opdracht, bouwt de schakeling en Logic controleert of ze klopt.</p>
+  <h2 id="niveau-gevorderden">Niveau Gevorderden</h2>
+  <p>Programmeren met LogicRun: een motor, een persoon, een wagentje, muziek en een verkeerslicht sturen.</p>
+
+  <h3 id="gevorderden">Voor gevorderden: programmeren met LogicRun</h3>
+  <p>De lessen 12 tot 22 zijn een uitbreiding voor wie de basis (les 1 tot 11) kent. Je programmeert er met <a href="logicrun.html">LogicRun</a> en laat een motor, een persoon en een wagentje bewegen of een melodie spelen met een programma in stappen. De knoppen LogicRun, Motor, Persoon, Wagentje en Muziekdoos staan pas in de balk in het <a href="instellingen.html#niveau">niveau</a> Gevorderden.</p>
+  <ol class="lessons" start="12">
+    <li><a href="les12.html"><b>Programmeren met LogicRun</b></a><span>Een verkeerslicht met een programma in stappen.</span></li>
+    <li><a href="les13.html"><b>Een motor sturen</b></a><span>Een motor linksom en rechtsom laten draaien met LogicRun.</span></li>
+    <li><a href="les14.html"><b>Een inpakmachine</b></a><span>Dozen tellen met LogicRun en de teller.</span></li>
+    <li><a href="les15.html"><b>Binair tellen</b></a><span>Lampjes en een display tonen hetzelfde getal.</span></li>
+    <li><a href="les16.html"><b>Een persoon heen en weer</b></a><span>Eindschakelaars melden aan LogicRun waar de persoon is.</span></li>
+    <li><a href="les17.html"><b>Een wagentje op een parcours</b></a><span>LogicRun telt de paaltjes langs de weg.</span></li>
+    <li><a href="les18.html"><b>Muziek met LogicRun</b></a><span>Een stap per noot: LogicRun speelt een liedje op een muziekdoos.</span></li>
+    <li><a href="les19.html"><b>Tellen tot 1000</b></a><span>De stappenteller telt pulsen en zet een lamp aan bij de eindwaarde.</span></li>
+    <li><a href="les20.html"><b>Schakelen op tijd</b></a><span>De stopwatch meet de tijd en zet een lamp aan als de eindtijd voorbij is.</span></li>
+    <li><a href="les21.html"><b>Een verkeerslicht met voetgangersknop</b></a><span>LogicRun stuurt een verkeerslicht: groen voor de auto's tot een voetganger op de knop drukt.</span></li>
+    <li><a href="les22.html"><b>Een slagboom op een parking</b></a><span>Een stopwatch en een NIET-poort: de boom gaat open na de ticketknop en sluit vanzelf.</span></li>
+  </ol>
 
   <div class="tip"><strong>Linux:</strong> ook daar opent de help in de ingebouwde browser en werkt de knop
   <b>Open dit voorbeeld</b>. Ontbreekt de map <code>ceflib</code>, dan opent de help in de gewone browser en werkt

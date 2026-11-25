@@ -81,16 +81,21 @@
   <p>Der Takteingang C hat ein kleines Dreieck im Block. Das Flipflop reagiert nur auf das <b>Einschalten</b> von C
   (die Flanke), nicht solange C an bleibt. Probieren Sie es in <a href="les27.html">Lektion 27</a> aus.</p>
     <h3 id="ff-bouwen">Selbst bauen: vier kleine Panels</h3>
-  <p>Für jedes Beispiel klicken Sie auf <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flipflop</b>, setzen es
-  in die Mitte des Panels und wählen den Typ mit der rechten Maustaste. Die Eingänge kommen nach links, die Lampen nach
-  rechts. Verbinden Sie alles mit <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>
+  <p>Bereiten Sie zuerst die Versorgung wie in <a href="les01.html">Lektion 1</a> vor: Quelle, + Schiene und &minus; Schiene.
+  Für jedes Beispiel klicken Sie auf <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flipflop</b> (in der Leiste ab der
+  <a href="instellingen.html#niveau">Stufe</a> Erweitert), setzen es in die Mitte des Panels und wählen die Art mit der rechten Maustaste.</p>
+  <p>Die Eingänge kommen nach links, neben die + Schiene: Nehmen Sie den <a href="voeding.html#serie"><img src="../img/pal-schakelaar2.png" class="ico" alt="">Schalter</a>
+  aus der Gruppe Versorgung; mit Rechtsklick &rsaquo; <b>Art</b> &rsaquo; <b>Taster</b> wird er zum Taster.
+  Die Lampen kommen nach rechts, neben die &minus; Schiene: Nehmen Sie eine <a href="voeding.html#serie"><img src="../img/pal-lamp2.png" class="ico" alt="">Lampe mit zwei Klemmen</a>
+  für 5&nbsp;V (Rechtsklick &rsaquo; <b>Spannung der Lampe</b> &rsaquo; <b>Lampe für 5&nbsp;V (auch an einem Gatter)</b>).
+  Verbinden Sie alles mit <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>
   (siehe <a href="verbindingen.html">Verbindungen</a>) und starten Sie dann die Simulation.</p>
 
   <h3 id="ff-sr">SR-Flipflop: ein Alarm, der weiterläuft</h3>
   <ol class="steps">
-    <li>Setzen Sie zwei <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Taster</a> nach links: der obere ist &bdquo;Alarm&ldquo;, der untere &bdquo;Reset&ldquo;.</li>
-    <li>Verbinden Sie den oberen Taster mit <span class="pin in">S</span> und den unteren mit <span class="pin in">R</span>.</li>
-    <li>Setzen Sie eine <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</a> nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+    <li>Setzen Sie zwei Taster nach links, neben die + Schiene: Der obere ist &bdquo;Alarm&ldquo;, der untere &bdquo;Reset&ldquo;. Draht von der + Schiene zur linken Klemme jedes Tasters.</li>
+    <li>Draht von der rechten Klemme des oberen Tasters zu <span class="pin in">S</span> und von der rechten Klemme des unteren zu <span class="pin in">R</span>.</li>
+    <li>Setzen Sie eine Lampe nach rechts. Draht von <span class="pin out">Q</span> zur linken Klemme der Lampe und von der rechten Klemme der Lampe zur &minus; Schiene.</li>
   </ol>
   <p><b>Was sehen Sie?</b> Drücken Sie kurz auf &bdquo;Alarm&ldquo;: Die Lampe geht an und <b>bleibt</b> an, wenn Sie
   loslassen. Erst &bdquo;Reset&ldquo; schaltet sie wieder aus. So merkt sich eine Alarmanlage, dass eine Tür kurz offen
@@ -98,9 +103,9 @@
 
   <h3 id="ff-d">D-Flipflop: einen Wert festhalten</h3>
   <ol class="steps">
-    <li>Setzen Sie einen <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">Schalter</a> nach links und verbinden Sie ihn mit <span class="pin in">D</span> (die Daten: was gespeichert werden soll).</li>
-    <li>Setzen Sie einen Taster darunter und verbinden Sie ihn mit <span class="pin in">C</span> (der Takt: wann gespeichert werden soll).</li>
-    <li>Setzen Sie eine Lampe nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+    <li>Setzen Sie einen Schalter nach links, neben die + Schiene. Draht von der + Schiene zu seiner linken Klemme und von seiner rechten Klemme zu <span class="pin in">D</span> (die Daten: was gespeichert werden soll).</li>
+    <li>Setzen Sie einen Taster darunter. Draht von der + Schiene zu seiner linken Klemme und von seiner rechten Klemme zu <span class="pin in">C</span> (der Takt: wann gespeichert werden soll).</li>
+    <li>Setzen Sie eine Lampe nach rechts. Draht von <span class="pin out">Q</span> zur linken Klemme der Lampe und von der rechten Klemme der Lampe zur &minus; Schiene.</li>
   </ol>
   <p><b>Was sehen Sie?</b> Schalten Sie den Schalter ein: Die Lampe bleibt aus. Erst wenn Sie auf den Taster drücken,
   übernimmt Q die Stellung des Schalters und die Lampe geht an. Schalten Sie den Schalter wieder aus: Die Lampe leuchtet
@@ -109,9 +114,9 @@
 
   <h3 id="ff-jk">JK-Flipflop: vier Möglichkeiten in einem</h3>
   <ol class="steps">
-    <li>Setzen Sie zwei Schalter nach links: verbinden Sie den oberen mit <span class="pin in">J</span> und den unteren mit <span class="pin in">K</span>.</li>
-    <li>Setzen Sie einen Taster zwischen die beiden Schalter und verbinden Sie ihn mit dem Takt <span class="pin in">C</span>.</li>
-    <li>Setzen Sie eine Lampe nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+    <li>Setzen Sie zwei Schalter nach links, neben die + Schiene, jeden mit einem Draht von der + Schiene zu seiner linken Klemme. Draht von der rechten Klemme des oberen zu <span class="pin in">J</span> und von der rechten Klemme des unteren zu <span class="pin in">K</span>.</li>
+    <li>Setzen Sie einen Taster zwischen die beiden Schalter. Draht von der + Schiene zu seiner linken Klemme und von seiner rechten Klemme zum Takt <span class="pin in">C</span>.</li>
+    <li>Setzen Sie eine Lampe nach rechts. Draht von <span class="pin out">Q</span> zur linken Klemme der Lampe und von der rechten Klemme der Lampe zur &minus; Schiene.</li>
   </ol>
   <p><b>Was sehen Sie?</b> Wählen Sie eine Stellung von J und K und drücken Sie dann auf den Taster. Erst bei diesem Druck passiert etwas:</p>
   <table>
@@ -127,15 +132,15 @@
 
   <h3 id="ff-t">T-Flipflop: durch zwei teilen und zählen</h3>
   <ol class="steps">
-    <li>Setzen Sie einen Taster nach links und verbinden Sie ihn mit <span class="pin in">T</span>.</li>
-    <li>Setzen Sie eine Lampe nach rechts und verbinden Sie sie mit <span class="pin out">Q</span>.</li>
+    <li>Setzen Sie einen Taster nach links, neben die + Schiene. Draht von der + Schiene zu seiner linken Klemme und von seiner rechten Klemme zu <span class="pin in">T</span>.</li>
+    <li>Setzen Sie eine Lampe nach rechts. Draht von <span class="pin out">Q</span> zur linken Klemme der Lampe und von der rechten Klemme der Lampe zur &minus; Schiene.</li>
   </ol>
   <p><b>Was sehen Sie?</b> Die Lampe wechselt bei jedem Druck: beim ersten an, beim zweiten aus, beim dritten wieder an,
-  &hellip; Setzen Sie statt des Tasters einen <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">Impulsgeber</a>
-  auf T, dann blinkt die Lampe halb so schnell wie die Impulse: Das T-Flipflop teilt durch zwei.</p>
+  &hellip; Setzen Sie statt des Tasters einen <a href="voeding.html#puls2"><img src="../img/pal-puls2.png" class="ico" alt="">Impulsgenerator</a>
+  zwischen die + Schiene und T (klicken Sie auf sein Kästchen, um ihn zu starten), dann blinkt die Lampe halb so schnell wie die Impulse: Das T-Flipflop teilt durch zwei.</p>
   <div class="tip"><strong>Ein Zähler von 0 bis 3:</strong> Setzen Sie ein zweites T-Flipflop rechts neben das erste und
   verbinden Sie <span class="pin out">Q&#773;</span> (nicht-Q) des ersten mit <span class="pin in">T</span> des zweiten.
-  Setzen Sie eine Lampe an Q jedes Flipflops: Die Lampe des ersten zählt 1, die des zweiten zählt 2. Drücken Sie viermal:
+  Setzen Sie eine Lampe zwischen Q jedes Flipflops und die &minus; Schiene: Die Lampe des ersten zählt 1, die des zweiten zählt 2. Drücken Sie viermal:
   1, 2, 3 und wieder 0. In <a href="les27.html">Lektion 27</a> können Sie diesen Zähler direkt öffnen.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Zählerbaustein</h2>
@@ -146,8 +151,8 @@
     <tr><td><span class="pin in">Re</span></td><td>Reset: setzt den Zähler auf 0 zurück.</td></tr>
     <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Der Zählerstand als Binärzahl (0 bis 15).</td></tr>
   </table>
-  <p>Verbinden Sie die Ausgänge mit Lampen oder einer <a href="uitvoer.html#display">Anzeige</a>, um den Stand zu sehen.
-  Ein <a href="invoer.html#drukknop">Taster</a> oder <a href="invoer.html#puls">Impulsgeber</a> am Zähleingang
+  <p>Verbinden Sie die Ausgänge mit Lampen (jede Lampe mit einem Draht zur &minus; Schiene) oder einer <a href="uitvoer.html#display">Anzeige</a>, um den Stand zu sehen.
+  Ein <a href="voeding.html#serie">Taster</a> oder <a href="voeding.html#puls2">Impulsgenerator</a> zwischen der + Schiene und dem Zähleingang
   lässt den Zähler laufen.</p>
 
   <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Schrittzähler</h2>
@@ -157,7 +162,7 @@
     <tr><th>Anschluss</th><th>Bedeutung</th></tr>
     <tr><td><span class="pin in">T</span></td><td>Zähleingang: Jeder Impuls erhöht den Stand um eins.</td></tr>
     <tr><td><span class="pin in">R</span></td><td>Reset: setzt den Stand auf 0 zurück. Solange R ein ist, zählt der Zähler nicht.</td></tr>
-    <tr><td><span class="pin out">Q</span></td><td>Ausgang: ein, solange der Endwert erreicht ist, zum Beispiel zu einer Lampe, einem Summer oder einem Eingang von <a href="logicrun.html">LogicRun</a>.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Ausgang: ein, solange der Endwert erreicht ist, zum Beispiel zu einer Lampe, einem <a href="voeding.html#zoemer2">Summer mit zwei Klemmen</a> oder einem Eingang von <a href="logicrun.html">LogicRun</a>.</td></tr>
   </table>
   <p>Mit der rechten Maustaste (der Baustein darf nicht gesperrt sein) wählen Sie den <b>Endwert</b>: 10, 100, 1000, 9999
   oder eine andere Zahl. Beim Endwert bleibt der Zähler stehen. Ist <b>Wiederholen</b> eingeschaltet, beginnt er beim
@@ -181,8 +186,8 @@
   stehen. Schalten Sie <b>Wiederholen</b> ein, beginnt sie danach wieder bei 00:01: Q gibt dann nach jeder Endzeit
   ein Signal von einer Sekunde. Der Doppelpunkt blinkt, solange die Zeit läuft. Die Stoppuhr ist Verarbeitung: Sie
   braucht keine Stromversorgung.</p>
-  <div class="tip"><strong>Tipp:</strong> Setzen Sie einen <a href="invoer.html#schakelaar">Schalter</a> an S und eine
-  Lampe an Q: Nach der Endzeit geht die Lampe an. Stellen Sie die Stoppuhr auf Wiederholen und verbinden Sie Q mit dem
+  <div class="tip"><strong>Tipp:</strong> Setzen Sie einen <a href="voeding.html#serie">Schalter</a> zwischen die + Schiene und S und eine
+  Lampe zwischen Q und die &minus; Schiene: Nach der Endzeit geht die Lampe an. Stellen Sie die Stoppuhr auf Wiederholen und verbinden Sie Q mit dem
   Zähleingang eines <a href="#stappenteller">Schrittzählers</a>, dann zählt er die Minuten.</div>
 
   <h2 id="geheugen"><img src="../img/pal-geheugen.png" class="ico" alt="">Speicherbaustein</h2>
@@ -195,7 +200,7 @@
     <tr><th>Anschluss</th><th>Bedeutung</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Adresseingänge oben: wählen den Speicherplatz binär.</td></tr>
     <tr><td>Eingang A16</td><td>Der fünfte Adresseingang (oben links, neben A8) addiert 16 zur Adresse, für die Plätze 16 bis 31. Die gewählte Adresse steht im Baustein (<i>ADRES = &hellip;</i>).</td></tr>
-    <tr><td><span class="pin in">Schreiben</span></td><td>Schreibeingang links: Verbinden Sie hier einen <a href="invoer.html#dipswitch">DIP-Schalter</a>. Drücken Sie den Knopf des DIP-Schalters, wird seine Zahl an der gewählten Adresse gespeichert.</td></tr>
+    <tr><td><span class="pin in">D8</span> <span class="pin in">D4</span> <span class="pin in">D2</span> <span class="pin in">D1</span> <span class="pin in">S</span></td><td>Dateneingänge und Schreibeingang links: Verbinden Sie D8, D4, D2 und D1 mit den Ausgängen 8, 4, 2 und 1 eines <a href="voeding.html#dip2">DIP-Schalters</a> (seine linke Klemme an die + Schiene) und setzen Sie einen <a href="voeding.html#serie">Taster</a> zwischen die + Schiene und S. Drücken Sie den Taster, wird die Zahl an der gewählten Adresse gespeichert.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>Der Inhalt des gewählten Speicherplatzes als Binärzahl, unten.</td></tr>
   </table>
   <p>Das <a href="paneel.html#paneelkeuze">Speicherpanel</a> zeigt ein ausgearbeitetes Beispiel mit einem Zähler

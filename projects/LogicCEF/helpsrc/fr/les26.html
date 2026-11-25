@@ -1,12 +1,12 @@
 <!-- titel: Leçon 26 - Le demi-additionneur -->
-  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#rekenen">Calculer avec des portes</a> &rsaquo; Leçon 26 sur 42</p>
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#rekenen">Calculer avec des portes</a> &rsaquo; Leçon 26 sur 42 &nbsp;&middot;&nbsp; Niveau&nbsp;: <a href="instellingen.html#niveau">Étendu</a></p>
   <h1>Le demi-additionneur</h1>
   <div class="goal"><strong>Objectif&nbsp;:</strong> additionner deux chiffres binaires (bits) avec une porte OU-X et une porte ET.</div>
 
   <p><a class="open" href="../../panels/lessen/les26-halve-opteller.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les26-halve-opteller.png" alt="Source de 12 V avec rail + et rail &minus;, deux interrupteurs A et B, une porte OU-X avec une LED rouge et une porte ET avec une lampe">
-    <figcaption>A et B sont tous deux allumés&nbsp;: 1 + 1 = 10 (deux). La somme (LED rouge) est éteinte, la retenue (lampe) est allumée.</figcaption>
+    <img src="../img/les26-halve-opteller.png" alt="Source de 12 V avec rail + et rail &minus;, deux interrupteurs A et B, une porte OU-X avec une lampe rouge et une porte ET avec une lampe ordinaire">
+    <figcaption>A et B sont tous deux allumés&nbsp;: 1 + 1 = 10 (deux). La somme (lampe rouge) est éteinte, la retenue (lampe ordinaire) est allumée.</figcaption>
   </figure>
 
   <h2>Additionner en binaire</h2>
@@ -15,7 +15,7 @@
   vous <b>retenez</b> 1, comme pour 5 + 5 = 10 dans le système décimal. Ce chiffre retenu s&rsquo;appelle la
   <b>retenue</b> (en anglais <i>carry</i>, C). L&rsquo;autre chiffre est la <b>somme</b> (S).</p>
   <table>
-    <tr><th>A (interrupteur du haut)</th><th>B (interrupteur du bas)</th><th>Somme S (LED)</th><th>Retenue C (lampe)</th></tr>
+    <tr><th>A (interrupteur du haut)</th><th>B (interrupteur du bas)</th><th>Somme S (lampe rouge)</th><th>Retenue C (lampe ordinaire)</th></tr>
     <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
     <tr><td>0</td><td>1</td><td><b>1</b></td><td>0</td></tr>
     <tr><td>1</td><td>0</td><td><b>1</b></td><td>0</td></tr>
@@ -27,18 +27,20 @@
   <a href="verwerking.html#exof"><img src="../img/pal-exof.png" class="ico" alt="">porte OU-X</a>, allumée quand
   <b>exactement une</b> entrée est allumée. La colonne <b>retenue</b> est une
   <a href="verwerking.html#en"><img src="../img/pal-en.png" class="ico" alt="">porte ET</a>&nbsp;: allumée seulement si les deux
-  entrées sont allumées. Les deux interrupteurs vont donc vers les deux portes.</p>
+  entrées sont allumées. Les deux interrupteurs vont donc vers les deux portes. La sortie de chaque porte va à la borne gauche
+  d&rsquo;une <a href="voeding.html#serie">lampe à deux bornes</a> de 5&nbsp;V (une lampe rouge pour la porte OU-X, une lampe ordinaire
+  pour la porte ET), et la borne droite de chaque lampe va au rail &minus;.</p>
   <ol class="steps">
     <li>Lancez la simulation et basculez les interrupteurs, un par un.</li>
-    <li>Pour chaque position, vérifiez le tableau&nbsp;: la LED, la lampe ou les deux sont-elles allumées&nbsp;?</li>
-    <li>Lisez la lampe et la LED ensemble comme un nombre binaire&nbsp;: lampe = 2, LED = 1.</li>
+    <li>Pour chaque position, vérifiez le tableau&nbsp;: la lampe rouge, la lampe ordinaire ou les deux sont-elles allumées&nbsp;?</li>
+    <li>Lisez la lampe ordinaire et la lampe rouge ensemble comme un nombre binaire&nbsp;: lampe ordinaire = 2, lampe rouge = 1.</li>
   </ol>
 
   <h2>Exercice</h2>
   <p>Remplacez la porte OU-X par une porte OU ordinaire. Pour quelle position des interrupteurs la somme n&rsquo;est-elle plus juste&nbsp;?</p>
   <details>
     <summary>Solution</summary>
-    <p>Pour 1 + 1. La porte OU allume alors aussi la LED, et la LED et la lampe sont toutes deux allumées&nbsp;: cela fait 11, soit trois.
+    <p>Pour 1 + 1. La porte OU allume alors aussi la lampe rouge, et la lampe rouge et la lampe ordinaire sont toutes deux allumées&nbsp;: cela fait 11, soit trois.
     Or 1 + 1 font deux (10). La somme ne doit être allumée que si <b>exactement une</b> entrée est allumée, et c&rsquo;est ce que fait la porte OU-X.</p>
   </details>
 

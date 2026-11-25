@@ -1,21 +1,21 @@
 <!-- titel: Lesson 12 - Programming with LogicRun -->
-  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 12 of 42</p>
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 12 of 42 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Advanced</a></p>
   <h1>Programming with LogicRun</h1>
   <div class="goal"><strong>Goal:</strong> make a traffic light work with a program instead of gates and wires,
   the way a small computer or a PLC does it.</div>
 
   <p><a class="open" href="../../panels/lessen/les12-logicrun.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les12-logicrun.png" alt="LogicRun block with two push buttons and three LEDs">
-    <figcaption>The program is running: UIT0 is on, the top LED (red) is lit.</figcaption>
+    <img src="../img/les12-logicrun.png" alt="LogicRun block with two push buttons and three coloured lamps">
+    <figcaption>The program is running: UIT0 is on, the top lamp (red) is lit.</figcaption>
   </figure>
 
   <h2>What do you see?</h2>
   <ul>
     <li>The <a href="logicrun.html">LogicRun block</a> in the middle.</li>
     <li>On the left two push buttons: the top one is on <b>DIN1</b> (start/stop), the bottom one on <b>DIN3</b> (+1).</li>
-    <li>On the right three LEDs, like a traffic light: <b>UIT0</b> red (top), <b>UIT1</b> amber (middle) and
-      <b>UIT2</b> green (bottom).</li>
+    <li>On the right three coloured 5&nbsp;V <a href="voeding.html#serie">lamps with two terminals</a>, like a traffic light: <b>UIT0</b> red (top), <b>UIT1</b> amber (middle) and
+      <b>UIT2</b> green (bottom). From each output a wire runs to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.</li>
   </ul>
 
   <h2>The program</h2>
@@ -37,13 +37,13 @@
   </ol>
 
   <h2>Exercise</h2>
-  <p>Make the green light stay on for 5 seconds instead of 3. Then add a pedestrian light: a green LED on
+  <p>Make the green light stay on for 5 seconds instead of 3. Then add a pedestrian light: a green lamp on
   <b>UIT3</b> that is only lit when the traffic light is red.</p>
   <details>
     <summary>Solution</summary>
     <p>With a step time of 500&nbsp;ms, 5 seconds is 10 times the step time: set <b>time x</b> of step 2 to 10.
-    In step 1 (red) also click the circle of UIT3. Put a lamp on the panel, turn it into a green LED with the right mouse button
-    (<b>Colour</b> &rsaquo; <b>Green LED</b>) and run a wire from UIT3 to that LED. That way one program controls several LEDs at the same time.</p>
+    In step 1 (red) also click the circle of UIT3. Put a 5&nbsp;V lamp with two terminals on the panel (right-click &rsaquo; <b>Lamp voltage</b> &rsaquo; <b>Lamp for 5&nbsp;V (also on a gate)</b>) and turn it into a green lamp
+    (right-click &rsaquo; <b>Colour</b> &rsaquo; <b>Green lamp</b>). Run a wire from UIT3 to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail. That way one program controls several lamps at the same time.</p>
   </details>
 
   <div class="pager"><a href="les11.html">&larr; Lesson 11: The relay</a><a href="les13.html">Lesson 13: Controlling a motor &rarr;</a></div>

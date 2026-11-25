@@ -1,13 +1,13 @@
 <!-- titel: Les 15 - Binair tellen -->
-  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 15 van 42</p>
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#gevorderden">Voor gevorderden</a> &rsaquo; Les 15 van 42 &nbsp;&middot;&nbsp; Niveau: <a href="instellingen.html#niveau">Gevorderden</a></p>
   <h1>Binair tellen met LogicRun</h1>
   <div class="goal"><strong>Doel:</strong> begrijpen hoe een binair getal werkt: vier lampjes en een display tonen
   hetzelfde getal, op twee manieren.</div>
 
   <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Open dit voorbeeld</a></p>
   <figure>
-    <img src="../img/les15-binair-tellen.png" alt="LogicRun telt; vier leds tonen 1000 en het display toont 8">
-    <figcaption>Stap 9: alleen led 8 brandt: het getal is 8. Het display toont 8.</figcaption>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun telt; vier rode lampen tonen 1000 en het display toont 8">
+    <figcaption>Stap 9: alleen de lamp met de waarde 8 (de onderste) brandt: het getal is 8. Het display toont 8.</figcaption>
   </figure>
 
   <h2>Wat zie je?</h2>
@@ -15,8 +15,9 @@
     <li>Een <a href="voeding.html#serie">schakelaar</a> op <b>DIN1</b> (functie <b>aan/uit</b>): het tellen aan of uit.</li>
     <li>Het <a href="logicrun.html">LogicRun-blok</a> met 16 stappen: stap 1 is 0, stap 2 is 1, &hellip; stap 16 is 15.
       Elke stap duurt 1 seconde.</li>
-    <li>Vier rode <a href="uitvoer.html#led">leds</a> op <b>UIT0</b> tot <b>UIT3</b>. Elke led heeft een eigen
-      waarde: UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Vier rode <a href="voeding.html#serie">lampen met twee klemmen</a> voor 5&nbsp;V onder elkaar, op <b>UIT0</b> tot <b>UIT3</b>.
+      Van elke uitgang loopt een draad naar de linkse klem van de lamp, en van de rechtse klem van de lamp naar de &minus; rail.
+      Elke lamp heeft een eigen waarde, van boven naar onder: UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
     <li>Een <a href="uitvoer.html#display">display</a> met vier draden: UIT0, UIT1, UIT2 en UIT3 gaan ook naar de ingangen <b>1</b>, <b>2</b>,
       <b>4</b> en <b>8</b> van het display. Het leest de vier uitgangen als één getal.</li>
   </ul>
@@ -42,7 +43,7 @@
   <h2>Probeer het</h2>
   <ol class="steps">
     <li>Start de simulatie en zet de schakelaar aan: LogicRun begint te tellen.</li>
-    <li>Kijk welke leds branden en tel hun waarden op. Klopt het met het display?</li>
+    <li>Kijk welke lampen branden en tel hun waarden op. Klopt het met het display?</li>
     <li>Open het LogicRun-venster (dubbelklik op het blok) en klik op <b>Pauze</b>. Met <b>Stap</b> ga je één getal
       verder. In de kolom <b>T1</b> zie je per stap het cijfer van het display.</li>
     <li>Na 15 begint het opnieuw bij 0. Zet de schakelaar uit: alles stopt.</li>
@@ -53,7 +54,7 @@
   <details>
     <summary>Oplossing</summary>
     <p>Verwijder met <b>- stap</b> stappen tot je er 10 over hebt. Klik in de kolom <b>T1</b> van stap 1 en kies
-    <b>9</b>, bij stap 2 <b>8</b>, &hellip; tot stap 10 <b>0</b>. LogicRun zet zelf de juiste leds aan. Haal het vinkje
+    <b>9</b>, bij stap 2 <b>8</b>, &hellip; tot stap 10 <b>0</b>. LogicRun zet zelf de juiste lampen aan. Haal het vinkje
     bij <b>Herhalen</b> weg: na de laatste stap blijft het programma staan.</p>
   </details>
 

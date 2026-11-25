@@ -1,10 +1,10 @@
 <!-- titel: Voeding & voltmeter -->
   <h1 id="voeding">Voeding &amp; voltmeter</h1>
-  <p class="lead">Normaal hangt de voeding van alle onderdelen onzichtbaar op de achtergrond (zie
-  <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a>). Wil je zien waar de stroom vandaan komt,
-  bouw dan een <b>voedingskring</b>: een <b>bron</b> (accu) van 0 tot 12&nbsp;V, eventueel een <b>zekering</b>
-  en een <b>milliampèremeter</b>, een rode <b>+ rail</b> voor de invoer en een blauwe <b>&minus; rail</b>
-  (de massa) voor de uitvoer. Met de <b>voltmeter</b> meet je de spanning.</p>
+  <p class="lead">Een schakeling in Logic heeft een <b>voedingskring</b>: een <b>bron</b> (accu) van 0 tot
+  12&nbsp;V, eventueel een <b>zekering</b> en een <b>milliampèremeter</b>, een rode <b>+ rail</b> voor de invoer
+  en een blauwe <b>&minus; rail</b> (de massa) voor de uitvoer. De poorten en de andere verwerkingsblokken krijgen
+  hun voeding onzichtbaar (zie <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a>).
+  Met de <b>voltmeter</b> meet je de spanning.</p>
 
   <figure>
     <img src="../img/voeding-basis.png" alt="Bron van 6,5 V met een zekering van 500 mA, een + rail en een − rail">
@@ -13,8 +13,8 @@
   </figure>
 
   <h2 id="rails">De knoppen</h2>
-  <p>Onderaan de <a href="onderdelenbalk.html">onderdelenbalk</a> staan vijf halve knoppen; de milliampèremeter
-  heeft een gewone knop, naast de voltmeter.</p>
+  <p>Deze knoppen staan in de groep Voeding van de <a href="onderdelenbalk.html#voeding">onderdelenbalk</a>; de
+  milliampèremeter en de wattmeter hebben een knop bij de uitvoer, naast de voltmeter.</p>
   <table>
     <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">+ rail (voeding)</td><td>Rode rail voor de invoer. Bovenaan staat de spanning die hij van de bron krijgt, bijvoorbeeld <b>5V</b>.</td></tr>
@@ -29,9 +29,15 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiometer</a></td><td>Weerstand met een loper en drie klemmen: een instelbare spanningsdeler.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Lichtgevoelige weerstand: hoe meer licht, hoe kleiner de weerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">NTC</a></td><td>Temperatuurgevoelige weerstand: hoe warmer, hoe kleiner de weerstand.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="#serie">Lamp</a></td><td>Lamp met twee klemmen, voor 12&nbsp;V of 5&nbsp;V; een lamp voor 5&nbsp;V brandt ook aan een poort. Rechtsklik &rsaquo; Kleur: rood, groen of oranje.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">Led met 2 klemmen</a></td><td>Geleidt maar in één richting; hoort met een voorschakelweerstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Laat stroom maar in één richting door, boven 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensator</a></td><td>Laadt op en ontlaadt in de tijd.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="#serie">Schakelaar of drukknop</a></td><td>Schakelaar met twee klemmen; met rechtsklik &rsaquo; Soort &rsaquo; Drukknop wordt het een drukknop.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="#wisselschakelaar">Wisselschakelaar</a></td><td>Drie klemmen: het midden is verbonden met A of met B.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="#puls2">Impulsgenerator</a></td><td>Schakelaar die vanzelf opent en sluit: pulsen van 0,5 tot 5&nbsp;Hz.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="#dip2">Dipschakelaar</a></td><td>Vier schakelaartjes: een getal van 0 tot 15 op de uitgangen 8, 4, 2 en 1.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="#serie">Voltmeter met 2 klemmen</a></td><td>Smalle knop met een V in een cirkel. Meet het spanningsverschil tussen zijn twee klemmen.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Een kleine basisstroom stuurt een grote collectorstroom: schakelen en versterken.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Zoemer</a></td><td>Zoemer met twee klemmen: zoemt vanaf 10&nbsp;mA, ook aan een poort.</td></tr>
     <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relais</a></td><td>Spoel met twee klemmen en een wisselcontact (C, maak, verbreek).</td></tr>
@@ -91,13 +97,14 @@
   <p>Elke verbruiker die aan staat, gedraagt zich als een vaste weerstand. Bij 12&nbsp;V trekt hij:</p>
   <table>
     <tr><th>Verbruiker (aan)</th><th>Stroom bij 12&nbsp;V</th></tr>
-    <tr><td>lamp</td><td>100&nbsp;mA</td></tr>
+    <tr><td>lamp (120&nbsp;&Omega;)</td><td>100&nbsp;mA</td></tr>
     <tr><td>motor (draait)</td><td>200&nbsp;mA</td></tr>
-    <tr><td>relais of schakelrelais (spoel bekrachtigd)</td><td>40&nbsp;mA</td></tr>
-    <tr><td>zoemer</td><td>30&nbsp;mA</td></tr>
-    <tr><td>led, persoon (per ingang die aan staat)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>relais met twee klemmen (spoel van 60&nbsp;&Omega;)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>zoemer met twee klemmen (200&nbsp;&Omega;)</td><td>60&nbsp;mA</td></tr>
+    <tr><td>persoon (per ingang die aan staat)</td><td>20&nbsp;mA</td></tr>
     <tr><td>7-segmentdisplay</td><td>10&nbsp;mA per segment dat brandt</td></tr>
     <tr><td>poort, teller, geheugen, LogicRun, ingeplugde invoer</td><td>1&nbsp;mA</td></tr>
+    <tr><td>in oude panelen, zonder klemmen: relais of schakelrelais, zoemer, gekleurde led</td><td>40&nbsp;mA, 30&nbsp;mA, 20&nbsp;mA</td></tr>
   </table>
   <p>Bij een lagere spanning is de stroom evenredig kleiner: een lamp trekt bij 6&nbsp;V 50&nbsp;mA. De stroom van
   de bron is de som van alle verbruikers samen. Met de inwendige weerstand Ri van de bron wordt dat:</p>
@@ -220,7 +227,8 @@
       <b>Spanning van de lamp</b> &rsaquo; <b>Lamp voor 5&nbsp;V</b> wordt het een kleine lamp voor 5&nbsp;V: 50, 100, 250 of
       500&nbsp;&Omega;. Die van 250&nbsp;&Omega; (20&nbsp;mA) brandt ook aan de uitgang van een poort, en een lamp voor 5&nbsp;V
       telt mee in de waarheidstabel. Ze brandt feller naarmate er meer vermogen door gaat, vol bij het vermogen op haar
-      eigen spanning; de hint toont U, I en P.</li>
+      eigen spanning; de hint toont U, I en P. Met rechtsklik &rsaquo; <b>Kleur</b> wordt het een rode, groene of oranje
+      lamp, bijvoorbeeld voor een verkeerslicht.</li>
     <li><b>Schakelaar</b>: klik op de hendel om hem te openen of te sluiten, ook tijdens de simulatie. Met rechtsklik &rsaquo; <b>Soort</b> &rsaquo; <b>Drukknop</b> wordt het een drukknop: hij is alleen dicht zolang je de muisknop ingedrukt houdt. Een schakelaar met drie klemmen is de <a href="#wisselschakelaar">wisselschakelaar</a>.</li>
     <li><b>Voltmeter</b>: zet de + en de &minus; over een onderdeel. Hij meet het spanningsverschil tussen zijn twee klemmen
       en neemt zelf geen stroom.</li>
@@ -351,13 +359,16 @@
 
   <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
   <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er
-  <b>minstens één</b> rail, dan moeten invoer en uitvoer <b>ingeplugd</b> zijn:</p>
+  <b>minstens één</b> rail, dan moeten invoer en uitvoer <b>zonder klemmen</b> <b>ingeplugd</b> zijn:</p>
   <ul>
-    <li><a href="invoer.html">Invoer</a> (drukknop, schakelaar, dipschakelaar, impulsgenerator, licht- en
-      warmtesensor) zit <b>rechts</b> van een <b>+ rail</b>.</li>
-    <li><a href="uitvoer.html">Uitvoer</a> (lamp, relais, zoemer, motor en display) zit <b>links</b> van een
-      <b>&minus; rail</b>.</li>
+    <li>De oude <a href="invoer.html">invoer</a> uit oudere panelen (drukknop, schakelaar, dipschakelaar,
+      impulsgenerator, licht- en warmtesensor zonder klemmen) zit <b>rechts</b> van een <b>+ rail</b>.</li>
+    <li><a href="uitvoer.html">Uitvoer</a> zonder klemmen (motor, display, persoon en de andere modellen; in oudere
+      panelen ook de oude lamp, zoemer en relais) zit <b>links</b> van een <b>&minus; rail</b>.</li>
   </ul>
+  <p>De onderdelen <b>met twee klemmen</b> (schakelaar, lamp, zoemer, relais &hellip;) plug je niet in. Je verbindt
+  ze met draden: van de + rail naar de linkse klem van de schakelaar, en van de rechtse klem van de lamp, de zoemer
+  of de spoel van het relais naar de &minus; rail. Zie <a href="#serie">lamp, schakelaar en voltmeter met twee klemmen</a>.</p>
   <p>In plaats van in te pluggen kan je een onderdeel ook met een draad op een rail aansluiten: zie
   <a href="#draad">Aansluiten met een voedingsdraad</a>.</p>
   <p>Een ingeplugd onderdeel krijgt een dunne stekker met een bolletje in de kleur van de rail. Een onderdeel

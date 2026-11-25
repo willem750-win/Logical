@@ -1,36 +1,38 @@
 <!-- titel: Lesson 27 - The flip-flop remembers -->
-  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#rekenen">Calculating with gates</a> &rsaquo; Lesson 27 of 42</p>
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#rekenen">Calculating with gates</a> &rsaquo; Lesson 27 of 42 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Extended</a></p>
   <h1>The flip-flop remembers</h1>
   <div class="goal"><strong>Goal:</strong> use an SR flip-flop to remember a short press on a button, like an alarm that keeps going.</div>
 
   <p><a class="open" href="../../panels/lessen/les27-flipflop.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les27-flipflop.png" alt="12 V source with + and &minus; rail, two push buttons on the inputs S and R of an SR flip-flop, and a red LED on output Q">
-    <figcaption>The top push button (S) has already been released, but the LED stays on: the flip-flop remembers it.</figcaption>
+    <img src="../img/les27-flipflop.png" alt="12 V source with + and &minus; rail, two push buttons on the inputs S and R of an SR flip-flop, and a red lamp with two terminals between output Q and the &minus; rail">
+    <figcaption>The top push button (S) has already been released, but the lamp stays on: the flip-flop remembers it.</figcaption>
   </figure>
 
   <h2>A gate forgets, a flip-flop remembers</h2>
   <p>With a gate, the output only depends on the inputs <b>right now</b>. Release the button and the lamp goes off.
   A <a href="verwerking.html#flipflop"><img src="../img/pal-flipflop.png" class="ico" alt="">flip-flop</a> has a
-  <b>memory</b> of one bit: output <b>Q</b> stays 1 or 0, even when the inputs go off again.</p>
+  <b>memory</b> of one bit: output <b>Q</b> stays 1 or 0, even when the inputs go off again.
+  In the example a red <a href="voeding.html#serie">lamp with two terminals</a> for 5&nbsp;V shows what Q does: a wire from
+  <b>Q</b> to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.</p>
   <table>
-    <tr><th>S (top button)</th><th>R (bottom button)</th><th>Q (LED)</th></tr>
+    <tr><th>S (top button)</th><th>R (bottom button)</th><th>Q (lamp)</th></tr>
     <tr><td>0</td><td>0</td><td>stays as it was</td></tr>
     <tr><td><b>1</b></td><td>0</td><td><b>1</b> (set)</td></tr>
     <tr><td>0</td><td><b>1</b></td><td>0 (reset)</td></tr>
     <tr><td>1</td><td>1</td><td>forbidden; in Logic R wins: 0</td></tr>
   </table>
   <ol class="steps">
-    <li>Start the simulation. The LED is off: a new flip-flop starts with Q = 0.</li>
-    <li>Briefly press the top button (S). The LED comes on and <b>stays</b> on when you release it.</li>
+    <li>Start the simulation. The lamp is off: a new flip-flop starts with Q = 0.</li>
+    <li>Briefly press the top button (S). The lamp comes on and <b>stays</b> on when you release it.</li>
     <li>Press S again: nothing changes, Q is already 1.</li>
-    <li>Press the bottom button (R). Now the LED goes off and stays off.</li>
+    <li>Press the bottom button (R). Now the lamp goes off and stays off.</li>
   </ol>
 
   <h2>An alarm</h2>
   <p>This is how an alarm works: a door contact or motion sensor only gives a short signal on S, but the siren must
-  keep sounding until someone presses <b>reset</b>. Feel free to replace the LED with a
-  <a href="uitvoer.html#zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">buzzer</a>.</p>
+  keep sounding until someone presses <b>reset</b>. Feel free to replace the lamp with a
+  <a href="voeding.html#zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">buzzer</a>.</p>
 
   <h2>Exercise: counting to three</h2>
   <p>Right-click the flip-flop and choose <b>T</b>. Now Q toggles on every press of the button: the flip-flop divides
@@ -38,8 +40,9 @@
   count in binary: 0, 1, 2, 3 and back to 0?</p>
   <details>
     <summary>Solution</summary>
-    <p>The push button goes to T of the first flip-flop. Its <b>Q</b> goes to a lamp with value 1. Its
-    <b>Q&#773;</b> (not-Q) goes to T of the second flip-flop, and Q of that second flip-flop goes to a lamp with value 2.
+    <p>The push button goes to T of the first flip-flop. Its <b>Q</b> goes to the left terminal of a lamp with value 1. Its
+    <b>Q&#773;</b> (not-Q) goes to T of the second flip-flop, and Q of that second flip-flop goes to the left terminal of a lamp with value 2.
+    Use two lamps with two terminals for 5&nbsp;V (right-click &rsaquo; <b>Lamp voltage</b>) and draw a wire from the right terminal of each lamp to the &minus; rail.
     Each time the first lamp goes from 1 to 0, Q&#773; comes on and the second flip-flop toggles: that is the carry,
     just like in the <a href="les26.html">half adder</a>.</p>
     <p><a class="open" href="../../panels/lessen/les27-teller.lpl">&#9654; Open the counter</a></p>

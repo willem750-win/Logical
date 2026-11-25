@@ -1,10 +1,11 @@
 <!-- titel: Alimentation & voltmètre -->
   <h1 id="voeding">Alimentation &amp; voltmètre</h1>
-  <p class="lead">Normalement, tous les composants reçoivent leur alimentation de façon invisible, en arrière-plan
-  (voir <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a>). Pour voir d&rsquo;où vient le
-  courant, construisez un <b>circuit d&rsquo;alimentation</b>&nbsp;: une <b>source</b> (batterie) de 0 à 12&nbsp;V,
-  éventuellement un <b>fusible</b> et un <b>milliampèremètre</b>, un <b>rail +</b> rouge pour les entrées et un
-  <b>rail &minus;</b> bleu (la masse) pour les sorties. Avec le <b>voltmètre</b>, vous mesurez la tension.</p>
+  <p class="lead">Dans Logic, vous construisez un <b>circuit d&rsquo;alimentation</b>&nbsp;: une <b>source</b> (batterie)
+  de 0 à 12&nbsp;V, éventuellement un <b>fusible</b> et un <b>milliampèremètre</b>, un <b>rail +</b> rouge pour les
+  entrées et un <b>rail &minus;</b> bleu (la masse) pour les sorties. Les portes et les autres blocs de traitement
+  reçoivent leur alimentation de façon invisible (voir
+  <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a>).
+  Avec le <b>voltmètre</b>, vous mesurez la tension.</p>
 
   <figure>
     <img src="../img/voeding-basis.png" alt="Source de 6,5 V avec un fusible de 500 mA, un rail + et un rail −">
@@ -13,8 +14,8 @@
   </figure>
 
   <h2 id="rails">Les boutons</h2>
-  <p>En bas de la <a href="onderdelenbalk.html">barre des composants</a> se trouvent cinq demi-boutons&nbsp;; le
-  milliampèremètre a un bouton normal, à côté du voltmètre.</p>
+  <p>Ces boutons se trouvent dans le groupe Alimentation de la <a href="onderdelenbalk.html#voeding">barre des composants</a>&nbsp;; le
+  milliampèremètre et le wattmètre ont un bouton parmi les sorties, à côté du voltmètre.</p>
   <table>
     <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
     <tr><td class="btn"><img src="../img/pal-rail-plus.png" alt=""></td><td class="name">Rail + (alimentation)</td><td>Rail rouge pour les entrées. En haut s&rsquo;affiche la tension qu&rsquo;il reçoit de la source, par exemple <b>5V</b>.</td></tr>
@@ -29,9 +30,15 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="#potmeter">Potentiomètre</a></td><td>Résistance avec un curseur et trois bornes&nbsp;: un diviseur de tension réglable.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="#ldr">LDR</a></td><td>Photorésistance&nbsp;: plus il y a de lumière, plus la résistance est faible.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="#ntc">CTN</a></td><td>Thermistance&nbsp;: plus il fait chaud, plus la résistance est faible.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="#serie">Lampe</a></td><td>Lampe à deux bornes, pour 12&nbsp;V ou 5&nbsp;V&nbsp;; une lampe de 5&nbsp;V s&rsquo;allume aussi sur une porte. Clic droit &rsaquo; Couleur&nbsp;: rouge, verte ou orange.</td></tr>
     <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens ; va avec une résistance série.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens, au-dessus de 0,7&nbsp;V.</td></tr>
     <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="#serie">Interrupteur ou bouton-poussoir</a></td><td>Interrupteur à deux bornes&nbsp;; clic droit &rsaquo; Type &rsaquo; Bouton-poussoir en fait un bouton-poussoir.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="#wisselschakelaar">Commutateur va-et-vient</a></td><td>Trois bornes&nbsp;: le milieu est relié à A ou à B.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="#puls2">Générateur d&rsquo;impulsions</a></td><td>Interrupteur qui s&rsquo;ouvre et se ferme tout seul&nbsp;: impulsions de 0,5 à 5&nbsp;Hz.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="#dip2">Interrupteur DIP</a></td><td>Quatre petits interrupteurs&nbsp;: un nombre de 0 à 15 sur les sorties 8, 4, 2 et 1.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="#serie">Voltmètre à 2 bornes</a></td><td>Bouton étroit avec un V dans un cercle. Mesure la différence de tension entre ses deux bornes.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="#transistor">Transistor</a></td><td>Un petit courant de base commande un grand courant de collecteur : commuter et amplifier.</td></tr>
     <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="#zoemer2">Buzzer</a></td><td>Buzzer à deux bornes&nbsp;: sonne à partir de 10&nbsp;mA, aussi sur une porte.</td></tr>
     <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="#relais2">Relais</a></td><td>Bobine à deux bornes et contact inverseur (C, travail, repos).</td></tr>
@@ -91,13 +98,14 @@
   <p>Chaque récepteur allumé se comporte comme une résistance fixe. À 12&nbsp;V, il consomme&nbsp;:</p>
   <table>
     <tr><th>Récepteur (allumé)</th><th>Courant à 12&nbsp;V</th></tr>
-    <tr><td>lampe</td><td>100&nbsp;mA</td></tr>
+    <tr><td>lampe (120&nbsp;&Omega;)</td><td>100&nbsp;mA</td></tr>
     <tr><td>moteur (en marche)</td><td>200&nbsp;mA</td></tr>
-    <tr><td>relais ou relais de commutation (bobine excitée)</td><td>40&nbsp;mA</td></tr>
-    <tr><td>buzzer</td><td>30&nbsp;mA</td></tr>
-    <tr><td>LED, personnage (par entrée activée)</td><td>20&nbsp;mA</td></tr>
+    <tr><td>relais à deux bornes (bobine de 60&nbsp;&Omega;)</td><td>200&nbsp;mA</td></tr>
+    <tr><td>buzzer à deux bornes (200&nbsp;&Omega;)</td><td>60&nbsp;mA</td></tr>
+    <tr><td>personnage (par entrée activée)</td><td>20&nbsp;mA</td></tr>
     <tr><td>afficheur 7 segments</td><td>10&nbsp;mA par segment allumé</td></tr>
     <tr><td>porte, compteur, mémoire, LogicRun, entrée branchée</td><td>1&nbsp;mA</td></tr>
+    <tr><td>dans les anciens panneaux, sans bornes&nbsp;: relais ou relais de commutation, buzzer, LED de couleur</td><td>40&nbsp;mA, 30&nbsp;mA, 20&nbsp;mA</td></tr>
   </table>
   <p>À une tension plus basse, le courant diminue dans la même proportion&nbsp;: une lampe consomme 50&nbsp;mA à
   6&nbsp;V. Le courant de la source est la somme de tous les récepteurs. Avec la résistance interne Ri de la source,
@@ -225,7 +233,8 @@
       <b>Tension de la lampe</b> &rsaquo; <b>Lampe pour 5&nbsp;V</b>, elle devient une petite lampe de 5&nbsp;V&nbsp;: 50, 100,
       250 ou 500&nbsp;&Omega;. Celle de 250&nbsp;&Omega; (20&nbsp;mA) brille aussi à la sortie d&rsquo;une porte, et une lampe de
       5&nbsp;V compte dans la table de vérité. Elle brille d&rsquo;autant plus que la puissance est grande, pleinement à la
-      puissance de sa propre tension&nbsp;; l&rsquo;info-bulle montre U, I et P.</li>
+      puissance de sa propre tension&nbsp;; l&rsquo;info-bulle montre U, I et P. Clic droit &rsaquo; <b>Couleur</b> en fait une
+      lampe rouge, verte ou orange, par exemple pour un feu tricolore.</li>
     <li><b>Interrupteur</b>&nbsp;: cliquez sur le levier pour l&rsquo;ouvrir ou le fermer, aussi pendant la simulation. Clic droit &rsaquo; <b>Type</b> &rsaquo; <b>Bouton-poussoir</b> en fait un bouton-poussoir&nbsp;: il n&rsquo;est fermé que tant que vous gardez le bouton de la souris enfoncé. Un interrupteur à trois bornes, c&rsquo;est le <a href="#wisselschakelaar">commutateur va-et-vient</a>.</li>
     <li><b>Voltmètre</b>&nbsp;: placez le + et le &minus; aux bornes d&rsquo;un composant. Il mesure la différence de tension
       entre ses deux bornes et ne prend lui-même aucun courant.</li>
@@ -364,13 +373,18 @@
 
   <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>
   <p>Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau, tout fonctionne comme avant. Dès qu&rsquo;il y a
-  <b>au moins un</b> rail, les entrées et les sorties doivent être <b>branchées</b> :</p>
+  <b>au moins un</b> rail, les entrées et les sorties <b>sans bornes</b> doivent être <b>branchées</b>&nbsp;:</p>
   <ul>
-    <li>les <a href="invoer.html">entrées</a> (bouton-poussoir, interrupteur, commutateur DIP, générateur
-      d&rsquo;impulsions, capteurs de lumière et de chaleur) se placent à <b>droite</b> d&rsquo;un <b>rail +</b> ;</li>
-    <li>les <a href="uitvoer.html">sorties</a> (lampe, relais, buzzer, moteur et afficheur) se placent à <b>gauche</b>
-      d&rsquo;un <b>rail &minus;</b>.</li>
+    <li>les anciennes <a href="invoer.html">entrées</a> des anciens panneaux (bouton-poussoir, interrupteur,
+      commutateur DIP, générateur d&rsquo;impulsions, capteurs de lumière et de chaleur sans bornes) se placent à
+      <b>droite</b> d&rsquo;un <b>rail +</b>&nbsp;;</li>
+    <li>les <a href="uitvoer.html">sorties</a> sans bornes (moteur, afficheur, personne et les autres modèles&nbsp;; dans
+      les anciens panneaux aussi l&rsquo;ancienne lampe, l&rsquo;ancien buzzer et l&rsquo;ancien relais) se placent à
+      <b>gauche</b> d&rsquo;un <b>rail &minus;</b>.</li>
   </ul>
+  <p>Les composants <b>à deux bornes</b> (interrupteur, lampe, buzzer, relais &hellip;) ne se branchent pas. Vous les
+  reliez par des fils&nbsp;: du rail + à la borne gauche de l&rsquo;interrupteur, et de la borne droite de la lampe, du
+  buzzer ou de la bobine du relais au rail &minus;. Voir <a href="#serie">lampe, interrupteur et voltmètre à deux bornes</a>.</p>
   <p>Au lieu de brancher un composant, vous pouvez aussi le relier à un rail par un fil : voir
   <a href="#draad">Relier par un fil d&rsquo;alimentation</a>.</p>
   <p>Un composant branché reçoit une fine fiche avec un point de la couleur du rail. Un composant non branché

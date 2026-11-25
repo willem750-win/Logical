@@ -1,13 +1,13 @@
 <!-- titel: Lektion 15 - Binär zählen -->
-  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 15 von 42</p>
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#gevorderden">Fortgeschrittene</a> &rsaquo; Lektion 15 von 42 &nbsp;&middot;&nbsp; Stufe: <a href="instellingen.html#niveau">Fortgeschritten</a></p>
   <h1>Binär zählen mit LogicRun</h1>
   <div class="goal"><strong>Ziel:</strong> verstehen, wie eine Binärzahl funktioniert: vier Lämpchen und eine Anzeige
   zeigen dieselbe Zahl, auf zwei Arten.</div>
 
   <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Dieses Beispiel öffnen</a></p>
   <figure>
-    <img src="../img/les15-binair-tellen.png" alt="LogicRun zählt; vier LEDs zeigen 1000 und die Anzeige zeigt 8">
-    <figcaption>Schritt 9: Nur die LED 8 leuchtet: Die Zahl ist 8. Die Anzeige zeigt 8.</figcaption>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun zählt; vier rote Lampen zeigen 1000 und die Anzeige zeigt 8">
+    <figcaption>Schritt 9: Nur die Lampe mit dem Wert 8 (die unterste) leuchtet: Die Zahl ist 8. Die Anzeige zeigt 8.</figcaption>
   </figure>
 
   <h2>Was sehen Sie?</h2>
@@ -15,8 +15,9 @@
     <li>Ein <a href="voeding.html#serie">Schalter</a> an <b>DIN1</b> (Funktion <b>Ein/Aus</b>): das Zählen ein oder aus.</li>
     <li>Der <a href="logicrun.html">LogicRun-Block</a> mit 16 Schritten: Schritt 1 ist 0, Schritt 2 ist 1, &hellip;
       Schritt 16 ist 15. Jeder Schritt dauert 1 Sekunde.</li>
-    <li>Vier rote <a href="uitvoer.html#led">LEDs</a> an <b>UIT0</b> bis <b>UIT3</b>. Jede LED hat ihren eigenen Wert:
-      UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Vier rote 5-V-<a href="voeding.html#serie">Lampen mit zwei Klemmen</a> untereinander an <b>UIT0</b> bis <b>UIT3</b>.
+      Von jedem Ausgang führt ein Draht zur linken Klemme der Lampe und von der rechten Klemme der Lampe zur &minus; Schiene.
+      Jede Lampe hat ihren eigenen Wert, von oben nach unten: UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
     <li>Eine <a href="uitvoer.html#display">Anzeige</a> mit vier Drähten: UIT0, UIT1, UIT2 und UIT3 gehen auch zu den Eingängen <b>1</b>, <b>2</b>,
       <b>4</b> und <b>8</b> der Anzeige. Sie liest die vier Ausgänge als eine Zahl.</li>
   </ul>
@@ -42,7 +43,7 @@
   <h2>Probieren Sie es</h2>
   <ol class="steps">
     <li>Starten Sie die Simulation und schalten Sie den Schalter ein: LogicRun beginnt zu zählen.</li>
-    <li>Schauen Sie, welche LEDs leuchten, und zählen Sie ihre Werte zusammen. Stimmt es mit der Anzeige überein?</li>
+    <li>Schauen Sie, welche Lampen leuchten, und zählen Sie ihre Werte zusammen. Stimmt es mit der Anzeige überein?</li>
     <li>Öffnen Sie das LogicRun-Fenster (Doppelklick auf den Block) und klicken Sie auf <b>Pause</b>. Mit <b>Schritt</b>
       gehen Sie eine Zahl weiter. Die Spalte <b>T1</b> zeigt für jeden Schritt die Ziffer der Anzeige.</li>
     <li>Nach 15 beginnt es wieder bei 0. Schalten Sie den Schalter aus: alles hält an.</li>
@@ -54,7 +55,7 @@
     <summary>Lösung</summary>
     <p>Entfernen Sie mit <b>- Schritt</b> Schritte, bis 10 übrig sind. Klicken Sie in der Spalte <b>T1</b> von Schritt 1
     und wählen Sie <b>9</b>, bei Schritt 2 <b>8</b>, &hellip; bis Schritt 10 <b>0</b>. LogicRun schaltet selbst die
-    richtigen LEDs ein. Entfernen Sie das Häkchen bei <b>Wiederholen</b>: Nach dem letzten Schritt bleibt das Programm
+    richtigen Lampen ein. Entfernen Sie das Häkchen bei <b>Wiederholen</b>: Nach dem letzten Schritt bleibt das Programm
     stehen.</p>
   </details>
 

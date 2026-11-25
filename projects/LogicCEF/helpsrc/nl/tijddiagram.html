@@ -5,9 +5,9 @@
 
   <h2>Zo gebruik je het</h2>
   <ol class="steps">
-    <li>Open een paneel of bouw een schakeling met ingangen (<a href="invoer.html#schakelaar">schakelaars</a>,
-      <a href="invoer.html#drukknop">drukknoppen</a>, <a href="invoer.html#puls">pulsgevers</a> &hellip;) en uitgangen
-      (<a href="uitvoer.html#lamp">lampen</a>, <a href="uitvoer.html#zoemer">zoemers</a> &hellip;).</li>
+    <li>Open een paneel of bouw een schakeling met ingangen (<a href="voeding.html#serie">schakelaars en
+      drukknoppen</a>) en uitgangen
+      (<a href="voeding.html#serie">lampen met twee klemmen</a> voor 5&nbsp;V, <a href="voeding.html#zoemer2">zoemers</a> &hellip;).</li>
     <li>Klik in de titelbalk op <img src="../img/knop-tijd.png" class="ico" alt=""><b>Tijddiagram</b>. Het venster
       opent rechts naast Logic.</li>
     <li>Zet de <a href="simulatie.html">simulatie</a> aan en bedien de schakelaars en drukknoppen. Tien keer per seconde
@@ -16,9 +16,11 @@
 
   <h2>Het diagram lezen</h2>
   <ul>
-    <li><b>A, B, C &hellip;</b> (blauw) zijn de schakelaars, drukknoppen, dipswitches en sensoren, van boven naar onder,
-      net als in de <a href="waarheidstabel.html">waarheidstabel</a>. <b>P1, P2 &hellip;</b> zijn de pulsgevers.</li>
-    <li>Onder de grijze lijn staan de uitgangen (groen): <b>L</b> = lamp of led, <b>Z</b> = zoemer, <b>R</b> = relais,
+    <li><b>A, B, C &hellip;</b> (blauw) zijn de schakelaars en drukknoppen, van boven naar onder,
+      net als in de <a href="waarheidstabel.html">waarheidstabel</a>; in oude panelen ook de dipswitches en sensoren
+      zonder klemmen. <b>P1, P2 &hellip;</b> zijn de oude pulsgevers zonder klemmen. De
+      <a href="voeding.html#puls2">impulsgenerator</a> met twee klemmen krijgt geen eigen lijn: je ziet zijn pulsen aan de uitgangen.</li>
+    <li>Onder de grijze lijn staan de uitgangen (groen): <b>L</b> = lamp (gewoon of gekleurd), <b>Z</b> = zoemer, <b>R</b> = relais,
       <b>M</b> = motor (met <b>L</b> of <b>R</b> voor de draairichting) en <b>D</b> = display (met het cijfer).</li>
     <li>Eén vakje is <b>één seconde</b>; onderaan staat de tijd sinds het begin van de opname.</li>
     <li>Het venster onthoudt de laatste 5 minuten.</li>
@@ -32,10 +34,10 @@
   </ul>
 
   <div class="tip"><strong>Tip:</strong> een tijddiagram is vooral handig bij schakelingen die met de tijd veranderen:
-  een <a href="verwerking.html#flipflop">flipflop</a>, een teller of een <a href="invoer.html#puls">pulsgever</a>.
+  een <a href="verwerking.html#flipflop">flipflop</a>, een teller of een <a href="voeding.html#puls2">impulsgenerator</a>.
   Daar zegt een <a href="waarheidstabel.html">waarheidstabel</a> niet alles, want de uitgang hangt ook af van wat er
   vroeger gebeurde.</div>
 
   <h2>Probeer het</h2>
   <p>Open <a href="les27.html">les 27</a> (flipflop), zet de simulatie aan en druk een paar keer op S en R. In het
-  tijddiagram zie je dat de led aan blijft na een korte druk op S, tot je op R drukt: dat is het geheugen van de flipflop.</p>
+  tijddiagram zie je dat de lamp aan blijft na een korte druk op S, tot je op R drukt: dat is het geheugen van de flipflop.</p>

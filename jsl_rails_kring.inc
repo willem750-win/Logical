@@ -1934,8 +1934,8 @@ begin
   else if C is TjanBoardUit then
     Result := Format('TjanBoardUit;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanBoardUit(C).Pin])
   else if C is TjanLamp2 then
-    Result := Format('TjanLamp2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
-      TjanLamp2(C).Soort])
+    Result := Format('TjanLamp2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanLamp2(C).Soort, Ord(TjanLamp2(C).Kleur)])
   else if C is TjanPuls2 then
     Result := Format('TjanPuls2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanPuls2(C).Interval, Ord(TjanPuls2(C).Loopt)])
   else if C is TjanMagneet then

@@ -3,6 +3,8 @@
   <p class="lead">La barre des composants se trouve en haut du panneau. Choisissez-y un composant,
   puis placez-le d&rsquo;un clic sur le panneau. Si la fenêtre est trop étroite pour tous les boutons, les autres boutons passent sur une deuxième rangée.</p>
 
+  <div class="tip"><strong>Un bouton manque&nbsp;?</strong> Choisissez un <a href="instellingen.html#niveau">niveau</a> plus élevé avec <b>Choix du panneau &rsaquo; Niveau</b>.</div>
+
   <h2>Placer un composant</h2>
   <ol class="steps">
     <li>Cliquez sur le composant dans la barre. Le pointeur de la souris prend la forme de ce composant.</li>
@@ -12,8 +14,8 @@
   <div class="tip"><strong>Astuce&nbsp;:</strong> laissez la souris sur un bouton de la barre pour voir de quel composant il s&rsquo;agit.</div>
 
   <h2>Organisation</h2>
-  <p>Les composants sont répartis en trois groupes, de gauche à droite dans un circuit&nbsp;:
-  entrée &rarr; traitement &rarr; sortie.</p>
+  <p>Après le bouton Connexion viennent trois groupes de boutons&nbsp;: traitement, sorties et alimentation. Dans un
+  circuit, les composants se suivent de gauche à droite&nbsp;: entrée &rarr; traitement &rarr; sortie.</p>
 
   <h3>Relier</h3>
   <table>
@@ -41,15 +43,14 @@
   </table>
 
   <h3>Sorties</h3>
+  <p>La lampe, le buzzer et le relais se trouvent dans le groupe <a href="#voeding">Alimentation</a>&nbsp;: ils ont deux bornes, entre la sortie d&rsquo;une porte et le rail &minus;. L&rsquo;ancienne lampe, l&rsquo;ancien buzzer et l&rsquo;ancien relais sans bornes (voir <a href="uitvoer.html">Sorties</a>) ne sont plus dans la barre&nbsp;; seule l&rsquo;ancienne lampe peut encore être activée dans les <a href="instellingen.html#schakelelementen">Réglages</a>.</p>
   <table>
     <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-lamp.png" alt=""></td><td class="name"><a href="uitvoer.html#lamp">Lampe</a></td><td>S&rsquo;allume quand l&rsquo;entrée est active.</td></tr>
     <tr><td class="btn"><img src="../img/pal-motor.png" alt=""></td><td class="name"><a href="uitvoer.html#motor">Moteur</a></td><td>Tourne à gauche (entrée L) ou à droite (entrée R).</td></tr>
     <tr><td class="btn"><img src="../img/pal-display.png" alt=""></td><td class="name"><a href="uitvoer.html#display">Afficheur 7 segments</a></td><td>Affiche un chiffre ou une lettre.</td></tr>
     <tr><td class="btn"><img src="../img/pal-meter.png" alt=""></td><td class="name"><a href="voeding.html#voltmeter">Voltmètre</a></td><td>Affiche la tension, par exemple 3,3&nbsp;V.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="voeding.html#ampmeter">Milliampèremètre</a></td><td>Affiche le courant en mA&nbsp;; visible seulement si les boutons de l&rsquo;alimentation sont activés.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="voeding.html#wattmeter">Wattmètre</a></td><td>Affiche la puissance en W de tout ce qui suit&nbsp;; visible seulement si les boutons de l&rsquo;alimentation sont activés.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="voeding.html#scoop">Oscilloscope</a></td><td>Trace la tension entre + et &minus; dans le temps.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="voeding.html#ampmeter">Milliampèremètre</a></td><td>Affiche le courant en mA&nbsp;; il se place en série dans le circuit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="voeding.html#wattmeter">Wattmètre</a></td><td>Affiche la puissance en W de tout ce qui suit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-persoon.png" alt=""></td><td class="name"><a href="uitvoer.html#persoon">Personne</a></td><td>Marche vers la gauche (entrée L) ou la droite (entrée R)&nbsp;; les fins de course S1 et S2 indiquent où elle se trouve.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wagen.png" alt=""></td><td class="name"><a href="uitvoer.html#wagen">Chariot</a></td><td>Roule en avant (entrée V) ou en arrière (entrée A) sur une route sinueuse&nbsp;; Start, Finish et Tel (une impulsion à chaque poteau) indiquent où il se trouve.</td></tr>
     <tr><td class="btn"><img src="../img/pal-muziek.png" alt=""></td><td class="name"><a href="uitvoer.html#muziek">Boîte à musique</a></td><td>Clavier de 8 touches de piano (do à do'), une entrée par touche&nbsp;: active, la touche s&rsquo;allume et la note sonne.</td></tr>
@@ -69,15 +70,19 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="voeding.html#potmeter">Potentiomètre</a></td><td>Résistance avec un curseur et trois bornes (A, B et L)&nbsp;; faites glisser le curseur avec la souris.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="voeding.html#ldr">LDR</a></td><td>Photorésistance&nbsp;; réglez la lumière avec le curseur.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="voeding.html#ntc">CTN</a></td><td>Thermistance&nbsp;; réglez la température avec le curseur.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="voeding.html#serie">Lampe</a></td><td>Lampe à deux bornes, pour 12&nbsp;V ou 5&nbsp;V&nbsp;; une lampe de 5&nbsp;V s&rsquo;allume aussi sur une porte. Clic droit &rsaquo; Couleur&nbsp;: rouge, verte ou orange.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="voeding.html#zoemer2">Buzzer</a></td><td>Buzzer à deux bornes&nbsp;: sonne à partir de 10&nbsp;mA, aussi sur une porte.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="voeding.html#relais2">Relais</a></td><td>Bobine à deux bornes et contact inverseur (C, travail, repos).</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="voeding.html#led">LED à 2 bornes</a></td><td>Ne conduit que dans un sens&nbsp;; va avec une résistance série.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="voeding.html#diode">Diode</a></td><td>Ne laisse passer le courant que dans un sens (de A vers K), au-dessus de 0,7&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="voeding.html#condensator">Condensateur</a></td><td>Se charge et se décharge dans le temps.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="voeding.html#serie">Interrupteur ou bouton-poussoir</a></td><td>Interrupteur à deux bornes&nbsp;; clic droit &rsaquo; Type &rsaquo; Bouton-poussoir en fait un bouton-poussoir.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="voeding.html#wisselschakelaar">Commutateur va-et-vient</a></td><td>Trois bornes&nbsp;: le milieu est relié à A ou à B. Deux commutateurs commandent une lampe depuis deux endroits (escalier).</td></tr>
     <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="voeding.html#puls2">Générateur d&rsquo;impulsions</a></td><td>Interrupteur qui s&rsquo;ouvre et se ferme tout seul&nbsp;: impulsions de 0,5 à 5&nbsp;Hz.</td></tr>
     <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="voeding.html#dip2">Interrupteur DIP</a></td><td>Quatre petits interrupteurs&nbsp;: un nombre de 0 à 15 sur les sorties 8, 4, 2 et 1.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="voeding.html#transistor">Transistor</a></td><td>NPN ou PNP à trois bornes (C, B et E) : I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="voeding.html#zoemer2">Buzzer</a></td><td>Buzzer à deux bornes&nbsp;: sonne à partir de 10&nbsp;mA, aussi sur une porte.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="voeding.html#relais2">Relais</a></td><td>Bobine à deux bornes et contact inverseur (C, travail, repos).</td></tr>
-    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name"><a href="board.html">Entrée Arduino</a></td><td>Un vrai bouton-poussoir sur une broche d&rsquo;une carte Arduino, comme bouton-poussoir à deux bornes.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name"><a href="board.html">Sortie Arduino</a></td><td>Une lampe de 5&nbsp;V qui met une vraie broche d&rsquo;une carte Arduino à l&rsquo;état haut ou bas.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="voeding.html#serie">Voltmètre à 2 bornes</a></td><td>Bouton étroit avec un V dans un cercle. Mesure la différence de tension entre ses deux bornes.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="voeding.html#scoop">Oscilloscope</a></td><td>Trace la tension entre + et &minus; dans le temps.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="voeding.html#transistor">Transistor</a></td><td>NPN ou PNP à trois bornes (C, B et E)&nbsp;: I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Aimant droit</a></td><td>Aimant avec un pôle nord (rouge) et un pôle sud (bleu), sans bornes.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Boussole</a></td><td>Une aiguille qui s&rsquo;oriente le long du champ magnétique.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Plaque de lignes de champ</a></td><td>Montre les lignes de champ des aimants posés dessus, comme de la limaille de fer.</td></tr>
@@ -89,6 +94,8 @@
     <tr><td class="btn"><img src="../img/pal-nulmeter.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Galvanomètre</a></td><td>Galvanomètre à zéro central&nbsp;: montre le courant et son sens.</td></tr>
     <tr><td class="btn"><img src="../img/pal-draaimagneet.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Aimant tournant</a></td><td>Un aimant puissant sur un axe, comme dans une dynamo&nbsp;; cliquez pour le faire tourner.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transformator.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Transformateur</a></td><td>Deux bobines sur un noyau de fer&nbsp;: élève ou abaisse une tension alternative.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name"><a href="board.html">Entrée Arduino</a></td><td>Un vrai bouton-poussoir sur une broche d&rsquo;une carte Arduino, comme bouton-poussoir à deux bornes.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name"><a href="board.html">Sortie Arduino</a></td><td>Une lampe de 5&nbsp;V qui met une vraie broche d&rsquo;une carte Arduino à l&rsquo;état haut ou bas.</td></tr>
   </table>
 
   <div class="tip"><strong>Attention&nbsp;:</strong> les composants présents dans la barre se règlent dans les

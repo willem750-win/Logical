@@ -2434,3 +2434,66 @@ msgstr "Порт %s открыт, но плата не отвечает. Заг�
 
 msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
 msgstr "Не удаётся открыть порт %s. Он занят (например, Arduino IDE)?"
+
+msgid "You switched components on or off while the level \"%s\" is active."
+msgstr "Вы включили или выключили компоненты, пока активен уровень \"%s\"."
+
+msgid "Do you want to save this as your own selection? Your previous own selection is then replaced."
+msgstr "Сохранить это как ваш собственный выбор? Ваш прежний собственный выбор будет заменён."
+
+msgid "Level"
+msgstr "Уровень"
+
+msgid "level"
+msgstr "уровень"
+
+msgid "This panel uses components of the level \"%s\". It works as it is."
+msgstr "Эта панель использует компоненты уровня \"%s\". Она работает как есть."
+
+msgid "Do you also want the buttons of that level in the component toolbar, until you close Logic?"
+msgstr "Добавить кнопки этого уровня на панель компонентов до закрытия Logic?"
+
+msgid "First come the wire, the gates and the counters, then the output and the power supply: source, switches, lamps and meters."
+msgstr "Сначала идут провод, логические элементы и счётчики, затем вывод и питание: источник, выключатели, лампы и приборы."
+
+msgid "Under Level you choose how many components the toolbar shows: Basic, Extended or Advanced."
+msgstr "В пункте Уровень выбирается, сколько компонентов показывает панель: Базовый, Расширенный или Продвинутый."
+
+msgid "Basic"
+msgstr "Базовый"
+
+msgid "Extended"
+msgstr "Расширенный"
+
+msgid "Advanced (everything)"
+msgstr "Продвинутый (всё)"
+
+msgid "Own selection (Settings)"
+msgstr "Собственный выбор (Настройки)"
+
+msgid "The first lessons: source, switch, lamp, the AND, OR and NOT gates, counter and display."
+msgstr "Первые уроки: источник, выключатель, лампа, элементы И, ИЛИ и НЕ, счётчик и индикатор."
+
+msgid "Also measuring, magnetism and electronics: fuse, LED, diode, scope, coil and all gates."
+msgstr "Также измерения, магнетизм и электроника: предохранитель, светодиод, диод, осциллограф, катушка и все элементы."
+
+msgid "Everything, also programming with LogicRun: motor, person, cart, traffic light and the Arduino board."
+msgstr "Всё, включая программирование в LogicRun: мотор, человечек, тележка, светофор и плата Arduino."
+
+msgid "The components you switch on and off yourself in Settings."
+msgstr "Компоненты, которые вы сами включаете и выключаете в Настройках."
+
+msgid "Level:"
+msgstr "Уровень:"
+
+msgid "Red lamp"
+msgstr "Красная лампа"
+
+msgid "Green lamp"
+msgstr "Зелёная лампа"
+
+msgid "Orange lamp"
+msgstr "Оранжевая лампа"
+
+msgid "Ordinary lamp"
+msgstr "Обычная лампа"

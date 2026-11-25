@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom, uBoard;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom, uBoard, uNiveau;
 const
   IniFileName = 'taal.ini';
 
@@ -166,6 +166,15 @@ type
      FWelkom: TWelkomForm;
      FRond: TRondleiding;
      FMWelkom: TMenuItem;
+     // niveau van de onderdelenbalk (uNiveau)
+     FNiveau: TNiveau;
+     FNiveauBekend: Boolean;        // de sleutel Niveau staat in taal.ini
+     FNiveauGelezen: Boolean;
+     FTaalGelezen: Boolean;         // de taal uit taal.ini is gelezen
+     FNietVragenTot: TNiveau;       // niveauvraag bij een paneel al met Nee beantwoord
+     FCaptionBasis: string;         // venstertitel zonder het niveau
+     FMNiveau: TMenuItem;
+     FMNiveauItem: array[TNiveau] of TMenuItem;
      FUndoKill: Integer;
      btUndo, btRedo: TSpeedButton;
      btLogicRun: TSpeedButton;          // LogicRun-venster openen
@@ -211,6 +220,13 @@ type
      procedure StartRondleiding;
      procedure StartLes1(Sender: TObject);
      procedure MWelkomClick(Sender: TObject);
+     function IniBestand: string;
+     function GetoondNiveau: TNiveau;
+     procedure ZetNiveau(N: TNiveau; ABewaar: Boolean = True);
+     procedure UpdateNiveauUI;
+     procedure MNiveauClick(Sender: TObject);
+     procedure WelkomNiveau(AIndex: Integer);
+     procedure VraagNiveauVoorPaneel;
      procedure CreateUndoButtons;
      procedure UpdateUndoHints;
      procedure UpdateUndoButtons;
@@ -671,20 +687,77 @@ end;
 
 procedure TmainForm.BewaarInstellingen;
 var
-  Dir: string;
+  Dir, EigenLR, Msg: string;
+  Ini: TIniFile;
 begin
   // Instellingen van de tabbladen Algemeen en SchakelElementen bewaren in de
   // bestanden die LaadGridsettings/LaadBoxsettings bij het starten inlezen.
   // De hintteksten (tabblad Hints) volgen de gekozen taal en worden niet bewaard.
   if not Assigned(SettingsFrame) then Exit;
   Dir := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)) + 'ini');
+
+  // Een niveau is actief en in Instellingen zijn zelf knoppen aan- of
+  // uitgezet: dat wordt de eigen keuze, maar alleen na een duidelijk Ja.
+  // Eerst beslissen, dan pas bewaren.
+  if (FNiveau <> nvEigen) and not NiveauKlopt(Box, Grid, FNiveau) then
+  begin
+    Msg := Format(MyTr(LogicRunTaal,
+        'Je hebt onderdelen aan- of uitgezet terwijl het niveau "%s" actief is.',
+        'You switched components on or off while the level "%s" is active.',
+        'Vous avez activé ou désactivé des composants alors que le niveau « %s » est actif.',
+        'Sie haben Bauteile ein- oder ausgeschaltet, während die Stufe „%s“ aktiv ist.'),
+        [NiveauNaam(LogicRunTaal, FNiveau)]) + LineEnding +
+      MyTr(LogicRunTaal,
+        'Wil je dit bewaren als je eigen keuze? Je vorige eigen keuze wordt dan vervangen.',
+        'Do you want to save this as your own selection? Your previous own selection is then replaced.',
+        'Voulez-vous l''enregistrer comme votre choix personnel ? Votre choix personnel précédent sera remplacé.',
+        'Möchten Sie das als Ihre eigene Auswahl speichern? Ihre vorherige eigene Auswahl wird dann ersetzt.');
+    if MessageDlg(Msg, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+      FNiveau := nvEigen;
+      FNiveauBekend := True;
+      Box.KBoard := True;   // hoort bij Eigen keuze (staat niet in Instellingen)
+      SchrijfNiveau(IniBestand, nvEigen);
+    end
+    else
+      PasNiveauToe(Box, Grid, FNiveau);   // terug naar het niveau
+  end;
+
   try
     ForceDirectories(Dir);
-    SettingsFrame.PropB2.SaveToIniFile(Dir + 'defaultgrid.ini');
-    SettingsFrame.PropB22.SaveToIniFile(Dir + 'defaultschakel.ini');
+    if FNiveau = nvEigen then
+    begin
+      SettingsFrame.PropB2.SaveToIniFile(Dir + 'defaultgrid.ini');
+      SettingsFrame.PropB22.SaveToIniFile(Dir + 'defaultschakel.ini');
+    end
+    else
+    begin
+      // Een niveau is actief: kleuren, titel en raster (tabblad Algemeen) wel
+      // bewaren, maar de knoppen niet: ini\defaultschakel.ini en KLogicRun
+      // blijven de eigen keuze van de gebruiker.
+      EigenLR := 'True';
+      if FileExists(Dir + 'defaultgrid.ini') then
+      begin
+        Ini := TIniFile.Create(Dir + 'defaultgrid.ini');
+        try
+          EigenLR := Ini.ReadString('Properties', 'KLogicRun', 'True');
+        finally
+          Ini.Free;
+        end;
+      end;
+      SettingsFrame.PropB2.SaveToIniFile(Dir + 'defaultgrid.ini');
+      Ini := TIniFile.Create(Dir + 'defaultgrid.ini');
+      try
+        Ini.WriteString('Properties', 'KLogicRun', EigenLR);
+      finally
+        Ini.Free;
+      end;
+    end;
   except
     // bewaren mag het sluiten van het venster niet tegenhouden
   end;
+  // het menu Niveau volgt wat er nu in de balk staat
+  UpdateNiveauUI;
 end;
 
 procedure TMainForm.RemoveSettingsFrame(Sender: TObject);
@@ -724,8 +797,10 @@ var
 begin
   FileName := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'ini' +
     PathDelim + 'defaultschakel.ini';
-  if not FileExists(FileName) then Exit;
   try
+    // ontbreekt het bestand, dan wordt het hier aangemaakt (alleen de rij
+    // KSymbolen): LaadBoxsettings vindt het dan bij de volgende start
+    ForceDirectories(ExtractFilePath(FileName));
     Ini := TIniFile.Create(FileName);
     try
       N := Ini.ReadInteger('Settings', 'RowCount', 0);
@@ -1005,17 +1080,21 @@ var
   Ini: TIniFile;
 begin
   // Naast het programma, niet in de huidige map (onder Linux is dat vaak ~).
-  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + IniFileName);
+  // Een map die niet schrijfbaar is, mag de taalwissel niet tegenhouden.
   try
-    // Language = 0..3 (vaste talen); bij een extra taal 1 (Engels, voor een
-    // oudere versie van Logic) en de code in LanguageCode
-    Ini.WriteInteger('Settings', 'Language', TaalIndex);
-    if PoActive then
-      Ini.WriteString('Settings', 'LanguageCode', PoCode)
-    else
-      Ini.DeleteKey('Settings', 'LanguageCode');
-  finally
-    Ini.Free;
+    Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + IniFileName);
+    try
+      // Language = 0..3 (vaste talen); bij een extra taal 1 (Engels, voor een
+      // oudere versie van Logic) en de code in LanguageCode
+      Ini.WriteInteger('Settings', 'Language', TaalIndex);
+      if PoActive then
+        Ini.WriteString('Settings', 'LanguageCode', PoCode)
+      else
+        Ini.DeleteKey('Settings', 'LanguageCode');
+    finally
+      Ini.Free;
+    end;
+  except
   end;
 end;
 
@@ -1495,6 +1574,14 @@ end;
   if Assigned(FMWelkom) then
     FMWelkom.Caption := MyTr(LogicRunTaal, 'Welkom en rondleiding...', 'Welcome and guided tour...',
       'Bienvenue et visite guidée...', 'Willkommen und Rundgang...');
+  if Assigned(FMNiveau) then
+  begin
+    FMNiveau.Caption := MyTr(LogicRunTaal, 'Niveau', 'Level', 'Niveau', 'Stufe');
+    FMNiveauItem[nvBasis].Caption := NiveauNaam(LogicRunTaal, nvBasis);
+    FMNiveauItem[nvUitgebreid].Caption := NiveauNaam(LogicRunTaal, nvUitgebreid);
+    FMNiveauItem[nvGevorderden].Caption := NiveauNaam(LogicRunTaal, nvGevorderden);
+    FMNiveauItem[nvEigen].Caption := NiveauNaam(LogicRunTaal, nvEigen);
+  end;
   if Assigned(FWelkom) and FWelkom.Visible then
     FWelkom.SetTaal(LogicRunTaal, Taal.ItemIndex);
   if Assigned(FRond) then
@@ -1507,6 +1594,9 @@ end;
      StatusBar1.Panels.Items[2].Text := moduscurrent;
    // extra taal: de Engelse teksten op de vensters meteen vertalen
    PoTranslateScreen;
+   // de venstertitel is nu weer de kale titel in de nieuwe taal: het niveau erachter
+   FCaptionBasis := Caption;
+   UpdateNiveauUI;
    SaveLanguageSetting;
  end;
 
@@ -2412,7 +2502,7 @@ end;
 procedure TmainForm.BSettingsClick(Sender: TObject);
 begin
   // zeker zijn: geen nieuw object meer in slep-modus
-  Box.NewObject := False;
+  Box.AnnuleerNieuwObject;
   killframes;
   maaksettingsframe;
   TaalChange(self);
@@ -2779,6 +2869,7 @@ begin
   SetPanelTitle(ChangeFileExt(ExtractFileName(AFileName), ''));
   MarkPanelClean;
   ToonOefening;
+  VraagNiveauVoorPaneel;
 end;
 
 procedure TmainForm.btOpenPaneelClick(Sender: TObject);
@@ -2811,6 +2902,7 @@ begin
        SetPanelTitle(ChangeFileExt(ExtractFileName(OpenDialog.FileName), ''));
        MarkPanelClean;
        ToonOefening;
+       VraagNiveauVoorPaneel;
        end;
  OpenDialog.Free;
 end;
@@ -2839,7 +2931,16 @@ end;
 
 procedure TmainForm.FormActivate(Sender: TObject);
 begin
-   LoadLanguageSetting;
+   // de bewaarde taal maar een keer lezen: kan taal.ini niet geschreven
+   // worden, dan zou een taalwissel anders bij elke activering teruggedraaid
+   // worden. Daarna alleen de teksten verversen in de taal van nu.
+   if not FTaalGelezen then
+   begin
+     FTaalGelezen := True;
+     LoadLanguageSetting;
+   end
+   else
+     TaalChange(Taal);
    TitelBar2.Caption:='';
 end;
 
@@ -2875,6 +2976,8 @@ end;
 procedure TmainForm.FormCreate(Sender: TObject);
 var
   BarIcon: TBitmap;
+  i: Integer;
+  Mi: TMenuItem;
 begin
   Box.OnStatusText := @StatusFromLogicBox;
   Box.OnObjectMove := @BoxObjectMove;
@@ -3008,6 +3111,22 @@ begin
   FMWelkom.Caption := 'Welkom en rondleiding...';
   FMWelkom.OnClick := @MWelkomClick;
   PPanels.Items.Add(FMWelkom);
+
+  // niveau van de onderdelenbalk: Basis, Uitgebreid, Gevorderden, Eigen keuze
+  FMNiveau := TMenuItem.Create(Self);
+  FMNiveau.Caption := 'Niveau';
+  PPanels.Items.Add(FMNiveau);
+  for i := Low(NiveauVolgorde) to High(NiveauVolgorde) do
+  begin
+    Mi := TMenuItem.Create(Self);
+    Mi.Caption := NiveauNaam('NL', NiveauVolgorde[i]);
+    Mi.RadioItem := True;
+    Mi.GroupIndex := 7;
+    Mi.Tag := Ord(NiveauVolgorde[i]);
+    Mi.OnClick := @MNiveauClick;
+    FMNiveau.Add(Mi);
+    FMNiveauItem[NiveauVolgorde[i]] := Mi;
+  end;
 end;
 
 procedure TmainForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -3126,6 +3245,17 @@ begin
  LaadGridsettings;
  LaadBoxsettings;
  SyncSymbolenCombo;
+
+ // niveau van de onderdelenbalk: de eigen instellingen zijn geladen, het
+ // niveau komt eroverheen (het schrijft niets in de ini-bestanden)
+ if not FNiveauGelezen then
+ begin
+   FNiveau := LeesNiveau(IniBestand, FNiveauBekend);
+   FNiveauGelezen := True;
+ end;
+ if FNiveau <> nvEigen then
+   PasNiveauToe(Box, Grid, FNiveau);
+ UpdateNiveauUI;
 
  // vertrekpunt voor "niet-bewaarde wijzigingen": het lege paneel bij de start
  if FDirtyTimer = nil then
@@ -3411,6 +3541,8 @@ begin
   P := Point(LGPanels1.Left, LGPanels1.Top + LGPanels1.Height+25);
   // Omzetten naar schermcoördinaten
   P := LGPanels1.Parent.ClientToScreen(P);
+  // het bolletje in het menu Niveau volgt wat er nu in de balk staat
+  UpdateNiveauUI;
   // PopupMenu openen op locatie P
   PPanels.PopUp(P.X, P.Y);
 
@@ -3514,6 +3646,117 @@ begin
   FBoardForm.BringToFront;
 end;
 
+
+{ Niveau van de onderdelenbalk (uNiveau) }
+
+function TmainForm.IniBestand: string;
+begin
+  Result := ExtractFilePath(ParamStr(0)) + IniFileName;
+end;
+
+// Het niveau dat het menu en het welkomstvenster tonen. Wie nog nooit een
+// niveau koos (de sleutel ontbreekt in taal.ini) en alles aan heeft staan,
+// ziet "Gevorderden (alles)" in plaats van "Eigen keuze": dat is wat er op
+// het scherm staat.
+function TmainForm.GetoondNiveau: TNiveau;
+begin
+  Result := FNiveau;
+  if (FNiveau = nvEigen) and (not FNiveauBekend) and AllesStaatAan(Box, Grid) then
+    Result := nvGevorderden;
+end;
+
+// Een niveau kiezen. ABewaar = False: alleen tot Logic afgesloten wordt
+// (de vraag bij een paneel met onderdelen van een hoger niveau).
+procedure TmainForm.ZetNiveau(N: TNiveau; ABewaar: Boolean);
+begin
+  // geen onderdeel meer aan de muis: zijn knop kan zo meteen verdwijnen
+  Box.AnnuleerNieuwObject;
+  // een open instellingenvenster eerst sluiten (en bewaren): het zou anders
+  // de oude waarden blijven tonen
+  killframes;
+  if N = nvEigen then
+  begin
+    // de eigen keuze uit ini\defaultschakel.ini; eerst alles aan, want een
+    // ouder bestand heeft geen rij voor de nieuwere knoppen
+    AllesAan(Box);
+    LaadBoxsettings;
+    Grid.KLogicRun := EigenKLogicRun(ExtractFilePath(ParamStr(0)) + 'ini');
+  end
+  else
+    PasNiveauToe(Box, Grid, N);
+  FNiveau := N;
+  if ABewaar then
+  begin
+    FNiveauBekend := True;
+    SchrijfNiveau(IniBestand, N);
+  end;
+  SyncSymbolenCombo;
+  Box.Invalidate;
+  Grid.Invalidate;
+  UpdateNiveauUI;
+end;
+
+// menu, venstertitel en welkomstvenster laten zien welk niveau actief is
+procedure TmainForm.UpdateNiveauUI;
+var
+  N, Toon: TNiveau;
+begin
+  Toon := GetoondNiveau;
+  for N := Low(TNiveau) to High(TNiveau) do
+    if Assigned(FMNiveauItem[N]) then
+      FMNiveauItem[N].Checked := N = Toon;
+  if FCaptionBasis = '' then FCaptionBasis := Caption;
+  if FNiveau <> nvEigen then
+    Caption := FCaptionBasis + '  -  ' +
+      MyTr(LogicRunTaal, 'niveau', 'level', 'niveau', 'Stufe') + ': ' + NiveauNaam(LogicRunTaal, FNiveau)
+  else
+    Caption := FCaptionBasis;
+  if Assigned(FWelkom) then
+    FWelkom.SetNiveau(NiveauIndex(Toon));
+end;
+
+procedure TmainForm.MNiveauClick(Sender: TObject);
+begin
+  ZetNiveau(TNiveau(TMenuItem(Sender).Tag));
+end;
+
+// niveau gekozen in het welkomstvenster (AIndex = plaats in NiveauVolgorde)
+procedure TmainForm.WelkomNiveau(AIndex: Integer);
+begin
+  if (AIndex < Low(NiveauVolgorde)) or (AIndex > High(NiveauVolgorde)) then Exit;
+  if NiveauVolgorde[AIndex] <> GetoondNiveau then
+    ZetNiveau(NiveauVolgorde[AIndex]);
+end;
+
+// Na het openen van een paneel: bevat het onderdelen waarvan de knop pas in
+// een hoger niveau staat, dan één keer vragen of die knoppen erbij mogen.
+// Het paneel werkt in elk geval; het antwoord geldt tot Logic afgesloten
+// wordt (het bewaarde niveau van deze computer verandert niet).
+procedure TmainForm.VraagNiveauVoorPaneel;
+var
+  N: TNiveau;
+  Msg: string;
+begin
+  if not (FNiveau in [nvBasis, nvUitgebreid]) then Exit;
+  N := NodigNiveau(Box);
+  if (N <= FNiveau) or (N <= FNietVragenTot) then Exit;
+  Msg := Format(MyTr(LogicRunTaal,
+      'Dit paneel gebruikt onderdelen van het niveau "%s". Het werkt gewoon.',
+      'This panel uses components of the level "%s". It works as it is.',
+      'Ce panneau utilise des composants du niveau « %s ». Il fonctionne tel quel.',
+      'Dieses Panel verwendet Bauteile der Stufe „%s“. Es funktioniert so, wie es ist.'),
+      [NiveauNaam(LogicRunTaal, N)]) + LineEnding +
+    MyTr(LogicRunTaal,
+      'Wil je de knoppen van dat niveau ook in de onderdelenbalk, tot je Logic afsluit?',
+      'Do you also want the buttons of that level in the component toolbar, until you close Logic?',
+      'Voulez-vous aussi les boutons de ce niveau dans la barre des composants, jusqu''à la fermeture de Logic ?',
+      'Möchten Sie die Tasten dieser Stufe auch in der Bauteilleiste, bis Sie Logic schließen?');
+  if MessageDlg(Msg, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    ZetNiveau(N, False)
+  else
+    FNietVragenTot := N;
+end;
+
 { Welkomstvenster en rondleiding }
 
 // na het opstarten (zodra het hoofdvenster zichtbaar is): het welkomstvenster,
@@ -3537,6 +3780,7 @@ procedure TmainForm.ToonWelkom;
 var
   Ini: TIniFile;
   K: TWelkomKeuze;
+  Toon: Boolean;
 begin
   if FRunMode then
   begin
@@ -3547,8 +3791,22 @@ begin
   begin
     FWelkom := TWelkomForm.CreateWelkom(Self, Taal.Items, Taal.ItemIndex);
     FWelkom.OnTaal := @WelkomTaal;
+    FWelkom.OnNiveau := @WelkomNiveau;
   end;
   FWelkom.SetTaal(LogicRunTaal, Taal.ItemIndex);
+  // het vinkje volgt wat bewaard is; sluiten met het kruisje is "Leeg paneel"
+  Toon := True;
+  try
+    Ini := TIniFile.Create(IniBestand);
+    try
+      Toon := Ini.ReadBool('Settings', 'Welkom', True);
+    finally
+      Ini.Free;
+    end;
+  except
+  end;
+  FWelkom.Voorbereid(Toon);
+  FWelkom.SetNiveau(NiveauIndex(GetoondNiveau));
   FWelkom.ShowModal;
   K := FWelkom.Keuze;
   // het vinkje "Toon dit venster bij het opstarten" bewaren
@@ -3602,16 +3860,16 @@ begin
     FRond.OnLes1 := @StartLes1;
     FRond.RondStap(Box,
       'Dit is de onderdelenbalk. Klik op een onderdeel en daarna op het paneel om het te plaatsen.' + LineEnding +
-        'Links staat de invoer (schakelaars, knoppen), dan de verwerking (poorten), de uitvoer (lampen) en de voeding.' + LineEnding +
+        'Vooraan staan de draad, de poorten en de tellers, dan de uitvoer en de voeding: bron, schakelaars, lampen en meters.' + LineEnding +
         'Houd de muis boven een knop om te zien wat het is.',
       'This is the component toolbar. Click a component and then click on the panel to place it.' + LineEnding +
-        'On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply.' + LineEnding +
+        'First come the wire, the gates and the counters, then the output and the power supply: source, switches, lamps and meters.' + LineEnding +
         'Hold the mouse over a button to see what it is.',
       'Voici la barre des composants. Cliquez sur un composant, puis sur le panneau pour le placer.' + LineEnding +
-        'À gauche l''entrée (interrupteurs, boutons), puis le traitement (portes), la sortie (lampes) et l''alimentation.' + LineEnding +
+        'D''abord le fil, les portes et les compteurs, puis la sortie et l''alimentation : source, interrupteurs, lampes et appareils de mesure.' + LineEnding +
         'Laissez la souris sur un bouton pour voir ce que c''est.',
       'Das ist die Bauteilleiste. Klicken Sie auf ein Bauteil und dann auf das Panel, um es zu platzieren.' + LineEnding +
-        'Links die Eingabe (Schalter, Taster), dann die Verarbeitung (Gatter), die Ausgabe (Lampen) und die Stromversorgung.' + LineEnding +
+        'Zuerst der Draht, die Gatter und die Zähler, dann die Ausgabe und die Versorgung: Quelle, Schalter, Lampen und Messgeräte.' + LineEnding +
         'Halten Sie die Maus über eine Taste, um zu sehen, was sie ist.');
     FRond.RondStap(Grid,
       'Dit is het paneel: hier bouw je je schakeling. Versleep een onderdeel om het te verplaatsen.' + LineEnding +
@@ -3632,10 +3890,14 @@ begin
       'Starten Sie die Simulation: Jetzt arbeitet Ihre Schaltung. Klicken Sie auf Schalter und Taster und sehen Sie, was die Lampen tun.' + LineEnding +
         'Klicken Sie noch einmal, um weiterzubauen.');
     FRond.RondStap(LGPanels1,
-      'Paneelkeuze: open een kant-en-klaar paneel of begin een nieuw. Hier vind je ook het welkomstvenster en deze rondleiding terug.',
-      'Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again.',
-      'Choix du panneau : ouvrez un panneau tout prêt ou commencez-en un nouveau. Vous y retrouvez aussi la fenêtre de bienvenue et cette visite.',
-      'Panelwahl: Öffnen Sie ein fertiges Panel oder beginnen Sie ein neues. Hier finden Sie auch das Willkommensfenster und diesen Rundgang wieder.');
+      'Paneelkeuze: open een kant-en-klaar paneel of begin een nieuw. Hier vind je ook het welkomstvenster en deze rondleiding terug.' + LineEnding +
+        'Onder Niveau kies je hoeveel onderdelen de onderdelenbalk toont: Basis, Uitgebreid of Gevorderden.',
+      'Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again.' + LineEnding +
+        'Under Level you choose how many components the toolbar shows: Basic, Extended or Advanced.',
+      'Choix du panneau : ouvrez un panneau tout prêt ou commencez-en un nouveau. Vous y retrouvez aussi la fenêtre de bienvenue et cette visite.' + LineEnding +
+        'Sous Niveau, vous choisissez combien de composants la barre affiche : Base, Étendu ou Avancé.',
+      'Panelwahl: Öffnen Sie ein fertiges Panel oder beginnen Sie ein neues. Hier finden Sie auch das Willkommensfenster und diesen Rundgang wieder.' + LineEnding +
+        'Unter Stufe wählen Sie, wie viele Bauteile die Leiste zeigt: Basis, Erweitert oder Fortgeschritten.');
     FRond.RondStap(btOpenPaneel1,
       'Open een paneel dat je bewaard hebt. In de map lessen staan de voorbeelden van alle lessen.',
       'Open a panel you saved. The folder lessen holds the examples of all lessons.',

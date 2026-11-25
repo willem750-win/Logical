@@ -1,12 +1,12 @@
 <!-- titel: Lesson 14 - A packing machine -->
-  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 14 of 42</p>
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 14 of 42 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Advanced</a></p>
   <h1>A packing machine: counting with LogicRun</h1>
   <div class="goal"><strong>Goal:</strong> count how many boxes pass by and do something else after 5 boxes,
   with LogicRun and the counter together.</div>
 
   <p><a class="open" href="../../panels/lessen/les14-inpakmachine.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les14-inpakmachine.png" alt="Packing machine with pulse generator, LogicRun, motor, LED, counter and display">
+    <img src="../img/les14-inpakmachine.png" alt="Packing machine with pulse generator, LogicRun, motor, orange lamp, counter and display">
     <figcaption>The belt is running; the first box has been counted.</figcaption>
   </figure>
 
@@ -18,8 +18,8 @@
       <a href="verwerking.html#teller">counter</a>. An output may have several wires.</li>
     <li>The <a href="logicrun.html">LogicRun block</a> with three outputs:
       <b>UIT0</b> to <b>R</b> of the <a href="uitvoer.html#motor">motor</a> (the conveyor belt),
-      <b>UIT1</b> to an orange <a href="uitvoer.html#led">LED</a> (packing) and
-      <b>UIT2</b> to <b>Re</b> of the counter (reset to zero).</li>
+      <b>UIT1</b> to the left terminal of an orange 5&nbsp;V <a href="voeding.html#serie">lamp with two terminals</a> (packing) and
+      <b>UIT2</b> to <b>Re</b> of the counter (reset to zero). A wire goes from the right terminal of the lamp to the &minus; rail.</li>
     <li>The counter with a display, so you see how many boxes there are. Four wires go from <b>T8</b>, <b>T4</b>,
       <b>T2</b> and <b>T1</b> to the inputs <b>8</b>, <b>4</b>, <b>2</b> and <b>1</b> of the display.</li>
   </ul>
@@ -28,7 +28,7 @@
   <table>
     <tr><th>Step</th><th>On</th><th>What happens?</th><th>How long?</th></tr>
     <tr><td>1</td><td>UIT0</td><td>the belt runs</td><td><b>wait for 5 x DIN2</b>: until 5 boxes have passed</td></tr>
-    <tr><td>2</td><td>UIT1 + UIT2</td><td>the belt stops, the LED is lit (packing) and the counter is at 0</td><td>4 x 500&nbsp;ms = 2 seconds</td></tr>
+    <tr><td>2</td><td>UIT1 + UIT2</td><td>the belt stops, the orange lamp is lit (packing) and the counter is at 0</td><td>4 x 500&nbsp;ms = 2 seconds</td></tr>
   </table>
   <p>Step 1 has no fixed time: the <b>wait for</b> column shows <b>5 x DIN2</b>. The program counts the pulses on DIN2
   and continues as soon as the fifth pulse is over (see <a href="logicrun.html#wacht">Waiting</a>). At the top of the
@@ -40,7 +40,7 @@
   <ol class="steps">
     <li>Start the simulation and switch the switch on: the belt runs.</li>
     <li>Click the small button under the pulse generator: the boxes arrive. The display counts along.</li>
-    <li>After the fifth box the belt stops, the LED is lit for 2 seconds and the display shows 0. Then the belt runs
+    <li>After the fifth box the belt stops, the orange lamp is lit for 2 seconds and the display shows 0. Then the belt runs
       again and counting starts over.</li>
     <li>Switch the switch off: the machine stops.</li>
   </ol>

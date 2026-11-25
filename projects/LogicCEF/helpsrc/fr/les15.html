@@ -1,13 +1,13 @@
 <!-- titel: Leçon 15 - Compter en binaire -->
-  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 15 sur 42</p>
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#gevorderden">Avancé</a> &rsaquo; Leçon 15 sur 42 &nbsp;&middot;&nbsp; Niveau&nbsp;: <a href="instellingen.html#niveau">Avancé</a></p>
   <h1>Compter en binaire avec LogicRun</h1>
   <div class="goal"><strong>Objectif :</strong> comprendre comment fonctionne un nombre binaire&nbsp;: quatre voyants et un
   afficheur montrent le même nombre, de deux manières.</div>
 
   <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Ouvrir cet exemple</a></p>
   <figure>
-    <img src="../img/les15-binair-tellen.png" alt="LogicRun compte ; quatre LED montrent 1000 et l'afficheur montre 8">
-    <figcaption>Pas 9&nbsp;: seule la LED 8 est allumée&nbsp;: le nombre est 8. L&rsquo;afficheur montre 8.</figcaption>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun compte ; quatre lampes rouges montrent 1000 et l'afficheur montre 8">
+    <figcaption>Pas 9&nbsp;: seule la lampe de valeur 8 (celle du bas) est allumée&nbsp;: le nombre est 8. L&rsquo;afficheur montre 8.</figcaption>
   </figure>
 
   <h2>Que voyez-vous ?</h2>
@@ -16,8 +16,9 @@
       comptage en marche ou à l&rsquo;arrêt.</li>
     <li>Le <a href="logicrun.html">bloc LogicRun</a> avec 16 pas&nbsp;: le pas 1 vaut 0, le pas 2 vaut 1, &hellip; le
       pas 16 vaut 15. Chaque pas dure 1 seconde.</li>
-    <li>Quatre <a href="uitvoer.html#led">LED</a> rouges sur <b>UIT0</b> à <b>UIT3</b>. Chaque LED a sa propre valeur&nbsp;:
-      UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Quatre <a href="voeding.html#serie">lampes à deux bornes</a> rouges de 5&nbsp;V, l&rsquo;une sous l&rsquo;autre, sur <b>UIT0</b> à <b>UIT3</b>.
+      De chaque sortie, un fil va vers la borne gauche de la lampe, et de la borne droite de la lampe vers le rail &minus;.
+      Chaque lampe a sa propre valeur, de haut en bas&nbsp;: UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
     <li>Un <a href="uitvoer.html#display">afficheur</a> avec quatre fils&nbsp;: UIT0, UIT1, UIT2 et UIT3 vont aussi aux entrées <b>1</b>, <b>2</b>,
       <b>4</b> et <b>8</b> de l&rsquo;afficheur. Il lit les quatre sorties comme un seul nombre.</li>
   </ul>
@@ -43,7 +44,7 @@
   <h2>Essayez</h2>
   <ol class="steps">
     <li>Lancez la simulation et fermez l&rsquo;interrupteur&nbsp;: LogicRun commence à compter.</li>
-    <li>Regardez quelles LED sont allumées et additionnez leurs valeurs. Est-ce que cela correspond à l&rsquo;afficheur&nbsp;?</li>
+    <li>Regardez quelles lampes sont allumées et additionnez leurs valeurs. Est-ce que cela correspond à l&rsquo;afficheur&nbsp;?</li>
     <li>Ouvrez la fenêtre LogicRun (double-clic sur le bloc) et cliquez sur <b>Pause</b>. Avec <b>Pas</b>, vous passez au
       nombre suivant. La colonne <b>T1</b> montre le chiffre de l&rsquo;afficheur pour chaque pas.</li>
     <li>Après 15, tout recommence à 0. Ouvrez l&rsquo;interrupteur&nbsp;: tout s&rsquo;arrête.</li>
@@ -55,7 +56,7 @@
     <summary>Solution</summary>
     <p>Supprimez des pas avec <b>- pas</b> jusqu&rsquo;à ce qu&rsquo;il en reste 10. Cliquez dans la colonne <b>T1</b> du
     pas 1 et choisissez <b>9</b>, pour le pas 2 <b>8</b>, &hellip; jusqu&rsquo;au pas 10 <b>0</b>. LogicRun allume lui-même
-    les bonnes LED. Décochez <b>Répéter</b>&nbsp;: après le dernier pas, le programme reste arrêté.</p>
+    les bonnes lampes. Décochez <b>Répéter</b>&nbsp;: après le dernier pas, le programme reste arrêté.</p>
   </details>
 
   <h2>Exercice 2 : compter jusqu&rsquo;à 15 avec deux chiffres</h2>

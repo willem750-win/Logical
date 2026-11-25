@@ -5,34 +5,49 @@
 
   <h2>1. Ein Panel wählen</h2>
   <p>Klicken Sie auf <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Panelwahl</b> und wählen Sie
-  <i>Nieuw standaardpaneel</i> (neues Standardpanel). Sie erhalten ein leeres Panel mit der Bauteilleiste links.</p>
+  <i>Neues Standardpanel</i>. Sie erhalten ein leeres Panel mit der <a href="onderdelenbalk.html">Bauteilleiste</a> oben.
+  Fehlt dort eine Schaltfläche, ist die <a href="instellingen.html#niveau">Stufe</a> vielleicht zu niedrig: Wählen Sie eine mit
+  <b>Panelwahl &rsaquo; Stufe</b> (für dieses Beispiel genügt <b>Basis</b>).</p>
 
   <h2>2. Bauteile platzieren</h2>
+  <p>Jedes Bauteil platzieren Sie auf dieselbe Weise: Klicken Sie in der Bauteilleiste auf seine Schaltfläche (der Mauszeiger
+  nimmt die Form des Bauteils an) und dann auf das Panel, wo es hin soll.</p>
   <ol class="steps">
-    <li>Klicken Sie in der Bauteilleiste auf <img src="../img/pal-schakelaar.png" class="ico" alt=""><b>Schalter</b>.
-      Der Mauszeiger nimmt die Form des Schalters an.</li>
-    <li>Klicken Sie auf das Panel, wo der Schalter hin soll.</li>
-    <li>Machen Sie dasselbe für einen zweiten Schalter, ein
-      <img src="../img/pal-en.png" class="ico" alt=""><b>UND-Gatter</b> und eine
-      <img src="../img/pal-lamp.png" class="ico" alt=""><b>Lampe</b>.</li>
+    <li>Beginnen Sie mit der Versorgung, aus der Gruppe Versorgung: Setzen Sie die <img src="../img/pal-bron.png" class="ico" alt=""><b>Quelle</b>
+      oben in die Mitte, die rote <img src="../img/pal-rail-plus.png" class="ico" alt=""><b>+ Schiene</b> nach links und die blaue
+      <img src="../img/pal-rail-min.png" class="ico" alt=""><b>&minus; Schiene</b> nach rechts.</li>
+    <li>Klicken Sie in derselben Gruppe auf den <img src="../img/pal-schakelaar2.png" class="ico" alt=""><b>Schalter</b> und setzen Sie ihn
+      rechts neben die + Schiene. Setzen Sie einen zweiten Schalter darunter.</li>
+    <li>Setzen Sie ein <img src="../img/pal-en.png" class="ico" alt=""><b>UND-Gatter</b> in die Mitte des Panels.</li>
+    <li>Setzen Sie eine <img src="../img/pal-lamp2.png" class="ico" alt=""><a href="voeding.html#serie"><b>Lampe mit zwei Klemmen</b></a>
+      (auch aus der Gruppe Versorgung) rechts neben das Gatter, ein Stück vor die &minus; Schiene.</li>
+    <li>Die Lampe kommt an ein Gatter und muss deshalb eine Lampe für 5&nbsp;V sein: Rechtsklick auf die Lampe &rsaquo;
+      <b>Spannung der Lampe</b> &rsaquo; <b>Lampe für 5&nbsp;V (auch an einem Gatter)</b>.</li>
   </ol>
-  <p>Ein platziertes Bauteil verschieben Sie, indem Sie es mit der linken Maustaste ziehen.</p>
+  <p>Ein platziertes Bauteil verschieben Sie, indem Sie es mit der linken Maustaste ziehen. Eine Schiene verlängern Sie,
+  indem Sie an einem Ende ziehen.</p>
 
   <h2>3. Verbinden</h2>
   <ol class="steps">
     <li>Klicken Sie in der Bauteilleiste auf <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>.
       Der Mauszeiger wird zu einem Draht.</li>
-    <li>Klicken Sie auf den Ausgang des ersten Schalters. Ein Stück Draht erscheint.</li>
-    <li>Ziehen Sie das Ende des Drahtes zu einem Eingang des UND-Gatters.</li>
-    <li>Verbinden Sie ebenso den zweiten Schalter mit dem anderen Eingang und den Ausgang des UND-Gatters mit der Lampe.</li>
+    <li>Klicken Sie auf die + Klemme der Quelle (unten links). Ein Stück Draht erscheint. Ziehen Sie sein Ende zur Linie
+      der + Schiene. Verbinden Sie ebenso die &minus; Klemme der Quelle (unten rechts) mit der Linie der &minus; Schiene.</li>
+    <li>Klicken Sie auf die Linie der + Schiene, auf Höhe des ersten Schalters, und ziehen Sie das Ende des Drahtes zur
+      linken Klemme dieses Schalters. Machen Sie dasselbe für den zweiten Schalter.</li>
+    <li>Ziehen Sie einen Draht von der rechten Klemme des ersten Schalters zu einem Eingang des UND-Gatters und einen Draht von der
+      rechten Klemme des zweiten Schalters zum anderen Eingang.</li>
+    <li>Ziehen Sie einen Draht vom Ausgang des UND-Gatters zur linken Klemme der Lampe und einen Draht von der rechten Klemme
+      der Lampe zur Linie der &minus; Schiene: So ist der Stromkreis geschlossen.</li>
   </ol>
-  <p>Mehr dazu unter <a href="verbindingen.html">Verbindungen</a>.</p>
+  <p>Mehr dazu unter <a href="verbindingen.html">Verbindungen</a> und unter <a href="voeding.html#kring">Der Versorgungskreis</a>.</p>
 
   <h2>4. Simulieren</h2>
   <p>Klicken Sie auf <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Simulation starten</b>.
   Die Bearbeitungsschaltflächen und die Bauteilleiste verschwinden. Klicken Sie auf die Schalter:
   Die Lampe leuchtet nur, wenn beide eingeschaltet sind. Klicken Sie erneut auf die Simulationsschaltfläche,
-  um zum Bearbeiten zurückzukehren.</p>
+  um zum Bearbeiten zurückzukehren.
+  Dieselbe Schaltung steht fertig in <a href="les04.html">Lektion 4: Das UND-Gatter</a>.</p>
 
   <h2>5. Speichern</h2>
   <p>Klicken Sie auf <img src="../img/knop-opslaan.png" class="ico" alt=""><b>Panel speichern</b> und geben Sie einen Namen ein.

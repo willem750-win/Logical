@@ -1,5 +1,5 @@
 <!-- titel: Lesson 19 - Counting to 1000 -->
-  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 19 of 42</p>
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 19 of 42 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Advanced</a></p>
   <h1>Counting to 1000 with the step counter</h1>
   <div class="goal"><strong>Goal:</strong> count pulses in ordinary numbers, up to 10, 100 or 1000, and switch on a lamp
   when the goal is reached. Then count how often the person from lesson 16 walks back and forth.</div>
@@ -16,7 +16,8 @@
     <li>A <a href="voeding.html#serie">push button</a> on <b>R</b>: sets the counter back to 0.</li>
     <li>The <a href="verwerking.html#stappenteller">step counter</a> with a four-digit display. At the bottom you see the
       end value: <b>to 10</b>.</li>
-    <li>A <a href="uitvoer.html#lamp">lamp</a> on output <b>Q</b>: it switches on when the end value is reached.</li>
+    <li>A 5&nbsp;V <a href="voeding.html#serie">lamp with two terminals</a> on output <b>Q</b>: it switches on when the end value is reached.
+      The wire from Q goes to the left terminal of the lamp, and a wire goes from the right terminal of the lamp to the &minus; rail.</li>
   </ul>
 
   <h2>Counter or step counter?</h2>
@@ -56,7 +57,9 @@
   <details>
     <summary>Solution</summary>
     <p>Put a second <a href="invoer.html#eindschakelaar">limit switch</a> in the input area and choose <b>S2</b> (right)
-    with the right mouse button. Connect a step counter with end value <b>5</b> behind it, and a lamp on Q. Start the
+    with the right mouse button. Connect a step counter with end value <b>5</b> behind it, and a 5&nbsp;V lamp with two terminals
+    (right-click &rsaquo; <b>Lamp voltage</b>) on Q: a wire from Q to the left terminal of the lamp, and from the right terminal of
+    the lamp to the &minus; rail. Start the
     simulation and switch the switch on: every time the person arrives on the right, the step counter adds one.</p>
   </details>
 

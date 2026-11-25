@@ -3,6 +3,8 @@
   <p class="lead">The component bar is at the top of the panel. Choose a component there and
   then place it with a click on the panel. If the window is too narrow for all buttons, the remaining buttons go to a second row.</p>
 
+  <div class="tip"><strong>Is a button missing?</strong> Choose a higher <a href="instellingen.html#niveau">level</a> with <b>Panel choice &rsaquo; Level</b>.</div>
+
   <h2>Placing a component</h2>
   <ol class="steps">
     <li>Click the component in the component bar. The mouse pointer takes the shape of that component.</li>
@@ -12,8 +14,8 @@
   <div class="tip"><strong>Tip:</strong> hold the mouse over a button in the component bar to see which component it is.</div>
 
   <h2>Layout</h2>
-  <p>The components are divided into three groups, from left to right in a circuit:
-  input &rarr; processing &rarr; output.</p>
+  <p>After the Connection button come three groups of buttons: processing, outputs and power. In a circuit
+  the components go from left to right: input &rarr; processing &rarr; output.</p>
 
   <h3>Connecting</h3>
   <table>
@@ -41,15 +43,14 @@
   </table>
 
   <h3>Outputs</h3>
+  <p>The lamp, the buzzer and the relay are in the <a href="#voeding">Power</a> group: they have two terminals, between the output of a gate and the &minus; rail. The old lamp, buzzer and relay without terminals (see <a href="uitvoer.html">Outputs</a>) are no longer in the bar; only the old lamp can still be switched on in <a href="instellingen.html#schakelelementen">Settings</a>.</p>
   <table>
     <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-lamp.png" alt=""></td><td class="name"><a href="uitvoer.html#lamp">Lamp</a></td><td>Lights when the input is on.</td></tr>
     <tr><td class="btn"><img src="../img/pal-motor.png" alt=""></td><td class="name"><a href="uitvoer.html#motor">Motor</a></td><td>Turns left (input L) or right (input R).</td></tr>
     <tr><td class="btn"><img src="../img/pal-display.png" alt=""></td><td class="name"><a href="uitvoer.html#display">7-segment display</a></td><td>Shows a digit or letter.</td></tr>
     <tr><td class="btn"><img src="../img/pal-meter.png" alt=""></td><td class="name"><a href="voeding.html#voltmeter">Voltmeter</a></td><td>Shows the voltage, for example 3.3&nbsp;V.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="voeding.html#ampmeter">Milliammeter</a></td><td>Shows the current in mA; only visible when the power buttons are switched on.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="voeding.html#wattmeter">Wattmeter</a></td><td>Shows the power in W of everything after it; only visible when the power buttons are switched on.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="voeding.html#scoop">Oscilloscope</a></td><td>Draws the voltage between + and &minus; over time.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="voeding.html#ampmeter">Milliammeter</a></td><td>Shows the current in mA; you put it in series in the circuit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="voeding.html#wattmeter">Wattmeter</a></td><td>Shows the power in W of everything after it.</td></tr>
     <tr><td class="btn"><img src="../img/pal-persoon.png" alt=""></td><td class="name"><a href="uitvoer.html#persoon">Person</a></td><td>Walks left (input L) or right (input R); limit switches S1 and S2 report where he is.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wagen.png" alt=""></td><td class="name"><a href="uitvoer.html#wagen">Cart</a></td><td>Drives forward (input V) or backward (input A) along a winding road; Start, Finish and Tel (a pulse at each post) report where it is.</td></tr>
     <tr><td class="btn"><img src="../img/pal-muziek.png" alt=""></td><td class="name"><a href="uitvoer.html#muziek">Music box</a></td><td>Keyboard with 8 piano keys (do to do'), one input per key: on lights up the key and plays the note.</td></tr>
@@ -69,15 +70,19 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="voeding.html#potmeter">Potentiometer</a></td><td>Resistor with a wiper and three terminals (A, B and L); drag the wiper with the mouse.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="voeding.html#ldr">LDR</a></td><td>Light-dependent resistor; set the light with the slider.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="voeding.html#ntc">NTC</a></td><td>Temperature-dependent resistor; set the temperature with the slider.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="voeding.html#serie">Lamp</a></td><td>Lamp with two terminals, for 12&nbsp;V or 5&nbsp;V; a 5&nbsp;V lamp also lights on a gate. Right-click &rsaquo; Colour: red, green or orange.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="voeding.html#zoemer2">Buzzer</a></td><td>Buzzer with two terminals: sounds from 10&nbsp;mA, also on a gate.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="voeding.html#relais2">Relay</a></td><td>Coil with two terminals and a changeover contact (C, NO, NC).</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="voeding.html#led">LED with 2 terminals</a></td><td>Conducts in one direction only; goes with a series resistor.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="voeding.html#diode">Diode</a></td><td>Lets current through in one direction only (from A to K), above 0.7&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="voeding.html#condensator">Capacitor</a></td><td>Charges and discharges over time.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="voeding.html#serie">Switch or push button</a></td><td>Switch with two terminals; right-click &rsaquo; Type &rsaquo; Push button makes it a push button.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="voeding.html#wisselschakelaar">Changeover switch</a></td><td>Three terminals: the middle is connected to A or to B. Two of them switch a lamp from two places (staircase).</td></tr>
     <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="voeding.html#puls2">Pulse generator</a></td><td>Switch that opens and closes by itself: pulses from 0.5 to 5&nbsp;Hz.</td></tr>
     <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="voeding.html#dip2">DIP switch</a></td><td>Four small switches: a number from 0 to 15 on the outputs 8, 4, 2 and 1.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="voeding.html#serie">Voltmeter with 2 terminals</a></td><td>Narrow button with a V in a circle. Measures the voltage difference between its two terminals.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="voeding.html#scoop">Oscilloscope</a></td><td>Draws the voltage between + and &minus; over time.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="voeding.html#transistor">Transistor</a></td><td>NPN or PNP with three terminals (C, B and E): I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="voeding.html#zoemer2">Buzzer</a></td><td>Buzzer with two terminals: sounds from 10&nbsp;mA, also on a gate.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="voeding.html#relais2">Relay</a></td><td>Coil with two terminals and a changeover contact (C, NO, NC).</td></tr>
-    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name"><a href="board.html">Arduino input</a></td><td>A real push button on a pin of an Arduino board, as a push button with two terminals.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name"><a href="board.html">Arduino output</a></td><td>A 5&nbsp;V lamp that sets a real pin of an Arduino board high or low.</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Bar magnet</a></td><td>Magnet with a north pole (red) and a south pole (blue), without terminals.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Compass</a></td><td>A needle that points along the magnetic field.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Field line sheet</a></td><td>Shows the field lines of the magnets lying on it, like iron filings.</td></tr>
@@ -89,6 +94,8 @@
     <tr><td class="btn"><img src="../img/pal-nulmeter.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Centre-zero meter</a></td><td>Galvanometer with the zero in the middle: shows the current and its direction.</td></tr>
     <tr><td class="btn"><img src="../img/pal-draaimagneet.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Rotating magnet</a></td><td>A strong magnet on an axle, as in a dynamo; click to make it turn.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transformator.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Transformer</a></td><td>Two coils on an iron core: steps an alternating voltage up or down.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name"><a href="board.html">Arduino input</a></td><td>A real push button on a pin of an Arduino board, as a push button with two terminals.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name"><a href="board.html">Arduino output</a></td><td>A 5&nbsp;V lamp that sets a real pin of an Arduino board high or low.</td></tr>
   </table>
 
   <div class="tip"><strong>Note:</strong> which components appear in the bar can be set in

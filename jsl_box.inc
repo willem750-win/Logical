@@ -377,7 +377,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;FMagK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;FMagK:=True;FBoardK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -1605,7 +1605,12 @@ begin
             if Count >= 5 then TjanBoardIn(VD).Pin := StrToIntDef(Trim(Strings[4]), 2);
           end
           else if (VD is TjanLamp2) and (Count >= 5) then
-            TjanLamp2(VD).Soort := StrToIntDef(Trim(Strings[4]), Lamp2Standaard)
+          begin
+            TjanLamp2(VD).Soort := StrToIntDef(Trim(Strings[4]), Lamp2Standaard);
+            // zesde veld (nieuwer): kleur van de lamp
+            if (Count >= 6) and (StrToIntDef(Trim(Strings[5]), 0) in [0 .. Ord(High(TLampKleur))]) then
+              TjanLamp2(VD).Kleur := TLampKleur(StrToIntDef(Trim(Strings[5]), 0));
+          end
           else if (VD is TjanPuls2) and (Count >= 5) then
           begin
             TjanPuls2(VD).Interval := StrToIntDef(Trim(Strings[4]), 300);

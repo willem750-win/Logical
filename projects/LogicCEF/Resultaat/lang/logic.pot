@@ -50,7 +50,7 @@ msgstr ""
 msgid "Logic Panel"
 msgstr ""
 
-#: jsl_balk.inc:953
+#: jsl_balk.inc:976
 msgid "Connector tool"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgstr ""
 msgid "green"
 msgstr ""
 
-#: jsl_bewegend.inc:1783 jsl_bewegend.inc:1788 jsl_voedingsdelen.inc:2722
+#: jsl_bewegend.inc:1783 jsl_bewegend.inc:1788 jsl_voedingsdelen.inc:2782
 msgid "off"
 msgstr ""
 
@@ -254,11 +254,11 @@ msgstr ""
 msgid "closing"
 msgstr ""
 
-#: jsl_bewegend.inc:2009 jsl_voedingsdelen.inc:3242 jsl_voedingsdelen.inc:3317
+#: jsl_bewegend.inc:2009 jsl_voedingsdelen.inc:3302 jsl_voedingsdelen.inc:3377
 msgid "open"
 msgstr ""
 
-#: jsl_bewegend.inc:2011 jsl_voedingsdelen.inc:3241 jsl_voedingsdelen.inc:3290
+#: jsl_bewegend.inc:2011 jsl_voedingsdelen.inc:3301 jsl_voedingsdelen.inc:3350
 msgid "closed"
 msgstr ""
 
@@ -290,11 +290,11 @@ msgstr ""
 msgid "Connect the push button between the pin and GND (no resistor needed).\nPressed, the contact is closed. Right-click: choose the pin."
 msgstr ""
 
-#: jsl_board.inc:117 jsl_voedingsdelen.inc:3238 jsl_voedingsdelen.inc:3277
+#: jsl_board.inc:117 jsl_voedingsdelen.inc:3298 jsl_voedingsdelen.inc:3337
 msgid "pressed"
 msgstr ""
 
-#: jsl_board.inc:119 jsl_voedingsdelen.inc:3239
+#: jsl_board.inc:119 jsl_voedingsdelen.inc:3299
 msgid "released"
 msgstr ""
 
@@ -974,7 +974,7 @@ msgstr ""
 msgid "Right-click: turn the magnet round, or leave out the commutator."
 msgstr ""
 
-#: jsl_magnetisme.inc:2750 jsl_voedingsdelen.inc:3836
+#: jsl_magnetisme.inc:2750 jsl_voedingsdelen.inc:3896
 msgid "Range"
 msgstr ""
 
@@ -1106,7 +1106,7 @@ msgstr ""
 msgid "Voltmeter (measures against ground)\n+ left: connect a wire or plug onto a + rail.\n- right may stay open or be plugged onto a - rail."
 msgstr ""
 
-#: jsl_oude_invoer.inc:1344 jsl_oude_invoer.inc:1377 jsl_voedingsdelen.inc:3275
+#: jsl_oude_invoer.inc:1344 jsl_oude_invoer.inc:1377 jsl_voedingsdelen.inc:3335
 msgid "Push button"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgstr ""
 msgid "emperature sensor"
 msgstr ""
 
-#: jsl_oude_invoer.inc:3295 jsl_voedingsdelen.inc:700 jsl_voedingsdelen.inc:3420
+#: jsl_oude_invoer.inc:3295 jsl_voedingsdelen.inc:700 jsl_voedingsdelen.inc:3480
 msgid "Frequency"
 msgstr ""
 
@@ -1334,11 +1334,11 @@ msgstr ""
 msgid "Set Q to 0"
 msgstr ""
 
-#: jsl_uitvoer.inc:342 jsl_voedingsdelen.inc:2271
+#: jsl_uitvoer.inc:342 jsl_voedingsdelen.inc:2096 jsl_voedingsdelen.inc:2331
 msgid "Colour"
 msgstr ""
 
-#: jsl_uitvoer.inc:348 jsl_voedingsdelen.inc:2168 fsettings.lfm
+#: jsl_uitvoer.inc:348 jsl_voedingsdelen.inc:2228 fsettings.lfm
 msgid "Lamp"
 msgstr ""
 
@@ -1430,7 +1430,7 @@ msgstr ""
 msgid "In series, like a milliammeter. Shows the power P = U x I\nof everything after the meter (up to the - of the source)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1240 jsl_voedingsdelen.inc:2687
+#: jsl_voedingsdelen.inc:1240 jsl_voedingsdelen.inc:2747
 msgid "Kind"
 msgstr ""
 
@@ -1438,7 +1438,7 @@ msgstr ""
 msgid "voltage divider"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:1363 jsl_voedingsdelen.inc:1397 jsl_voedingsdelen.inc:2052
+#: jsl_voedingsdelen.inc:1363 jsl_voedingsdelen.inc:1397 jsl_voedingsdelen.inc:2080
 msgid "Resistance"
 msgstr ""
 
@@ -1482,495 +1482,539 @@ msgstr ""
 msgid "Temperature-dependent resistor: the warmer, the lower the resistance\n(10 kΩ at 25 °C). Drag the knob to set the temperature."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2029
+#: jsl_voedingsdelen.inc:2057
 msgid "Lamp voltage"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2036
+#: jsl_voedingsdelen.inc:2064
 msgid "Lamp for 5 V (also on a gate)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2043
+#: jsl_voedingsdelen.inc:2071
 msgid "Lamp for 12 V"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2136
+#: jsl_voedingsdelen.inc:2102
+msgid "Red lamp"
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2103
+msgid "Green lamp"
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2104
+msgid "Orange lamp"
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2106
+msgid "Ordinary lamp"
+msgstr ""
+
+#: jsl_voedingsdelen.inc:2196
 msgid "Lamp for %s V (%s)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2146
+#: jsl_voedingsdelen.inc:2206
 msgid "Lamp with two terminals: put it in series or in parallel in the circuit."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2151
+#: jsl_voedingsdelen.inc:2211
 msgid "At %s V: %s and %s. The more power, the brighter it shines."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2158
+#: jsl_voedingsdelen.inc:2218
 msgid "A 5 V lamp also lights on the output of a gate and counts in the truth table."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2161
+#: jsl_voedingsdelen.inc:2221
 msgid "Right-click: choose the voltage and the resistance."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2266
+#: jsl_voedingsdelen.inc:2326
 msgid "Replace LED"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2356 jsl_voedingsdelen.inc:2366 jsl_voedingsdelen.inc:2413
+#: jsl_voedingsdelen.inc:2416 jsl_voedingsdelen.inc:2426 jsl_voedingsdelen.inc:2473
 msgid "broken"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2381 jsl_voedingsdelen.inc:2411
+#: jsl_voedingsdelen.inc:2441 jsl_voedingsdelen.inc:2471
 msgid "LED"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2385
+#: jsl_voedingsdelen.inc:2445
 msgid "Broken: more than 30 mA went through it. Right-click: replace LED."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2396
+#: jsl_voedingsdelen.inc:2456
 msgid "LED with two terminals: + (anode) on the left, - (cathode) on the right. It conducts in one direction only,\nand only above %s. Full light at 20 mA, broken above 30 mA.\nPut a series resistor with it: R = (U - Ud) / I = (12 V - %s) / 0.02 A = %s. Right-click: choose the colour."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2476
+#: jsl_voedingsdelen.inc:2536
 msgid "Turn round"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2480
+#: jsl_voedingsdelen.inc:2540
 msgid "Replace diode"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2536 jsl_voedingsdelen.inc:2545
+#: jsl_voedingsdelen.inc:2596 jsl_voedingsdelen.inc:2605
 msgid "diode"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2558 jsl_voedingsdelen.inc:2585 fsettings.lfm
+#: jsl_voedingsdelen.inc:2618 jsl_voedingsdelen.inc:2645 fsettings.lfm
 msgid "Diode"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2561
+#: jsl_voedingsdelen.inc:2621
 msgid "Broken: more than 1 A went through it. Right-click: replace diode."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2568
+#: jsl_voedingsdelen.inc:2628
 msgid "blocking: no current"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2572
+#: jsl_voedingsdelen.inc:2632
 msgid "Diode: A (anode) on the left, K (cathode) on the right, at the bar. It only lets current through\nfrom A to K, and only above 0.7 V. Broken above 1 A."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2578
+#: jsl_voedingsdelen.inc:2638
 msgid "Right-click: turn round."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2700
+#: jsl_voedingsdelen.inc:2760
 msgid "Gain"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2713
+#: jsl_voedingsdelen.inc:2773
 msgid "Replace transistor"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2723
+#: jsl_voedingsdelen.inc:2783
 msgid "saturated"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2724
+#: jsl_voedingsdelen.inc:2784
 msgid "amplifying"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2811 jsl_voedingsdelen.inc:2857 fsettings.lfm
+#: jsl_voedingsdelen.inc:2871 jsl_voedingsdelen.inc:2917 fsettings.lfm
 msgid "Transistor"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2816
+#: jsl_voedingsdelen.inc:2876
 msgid "Broken: too much current went through the base or the collector. Right-click: replace transistor."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2828
+#: jsl_voedingsdelen.inc:2888
 msgid "Saturated: the rest of the circuit lets less through than β × Ib; only 0.2 V across C and E."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2835
+#: jsl_voedingsdelen.inc:2895
 msgid "A small current out of the base (B) controls a large current from the emitter (E) to the collector (C)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2841
+#: jsl_voedingsdelen.inc:2901
 msgid "A small current into the base (B) controls a large current from the collector (C) to the emitter (E)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2846
+#: jsl_voedingsdelen.inc:2906
 msgid "Always put a resistor before the base. Right-click: choose the kind and the gain."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2932
+#: jsl_voedingsdelen.inc:2992
 msgid "Discharge"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:2936
+#: jsl_voedingsdelen.inc:2996
 msgid "Capacitance"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3016 jsl_voedingsdelen.inc:3039 fsettings.lfm
+#: jsl_voedingsdelen.inc:3076 jsl_voedingsdelen.inc:3099 fsettings.lfm
 msgid "Capacitor"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3025
+#: jsl_voedingsdelen.inc:3085
 msgid "Capacitor with two terminals: + on the left. It charges when there is a voltage on it and gives\nthat charge back. How long that takes: time constant tau = R × C (e.g. 1000 ohm × 1000 µF = 1 s).\nRight-click: choose the capacitance or discharge."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3150
+#: jsl_voedingsdelen.inc:3210
 msgid "Type"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3156
+#: jsl_voedingsdelen.inc:3216
 msgid "Switch (stays put)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3159
+#: jsl_voedingsdelen.inc:3219
 msgid "Push button (only while pressed)"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3258 jsl_voedingsdelen.inc:3306 fsettings.lfm
+#: jsl_voedingsdelen.inc:3318 jsl_voedingsdelen.inc:3366 fsettings.lfm
 msgid "Changeover switch"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3260
+#: jsl_voedingsdelen.inc:3320
 msgid "the middle is connected to "
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3265
+#: jsl_voedingsdelen.inc:3325
 msgid "Changeover switch with three terminals: the middle (bottom) is connected to A or to B. Click to change over. Two changeover switches make a staircase circuit: you switch the light on and off from two places."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3279
+#: jsl_voedingsdelen.inc:3339
 msgid "released: no current flows"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3283
+#: jsl_voedingsdelen.inc:3343
 msgid "Push button with two terminals in the circuit. It is only closed while you press it (hold the mouse button)."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3288 jsl_voedingsdelen.inc:3308 fsettings.lfm
+#: jsl_voedingsdelen.inc:3348 jsl_voedingsdelen.inc:3368 fsettings.lfm
 msgid "Switch"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3292
+#: jsl_voedingsdelen.inc:3352
 msgid "open: no current flows"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3296
+#: jsl_voedingsdelen.inc:3356
 msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3473 uLogicRun.pas:712 uOefening.pas:276
+#: jsl_voedingsdelen.inc:3533 uLogicRun.pas:712 uOefening.pas:276
 msgid "on"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3488 jsl_voedingsdelen.inc:3499 fsettings.lfm
+#: jsl_voedingsdelen.inc:3548 jsl_voedingsdelen.inc:3559 fsettings.lfm
 msgid "Pulse generator"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3491
+#: jsl_voedingsdelen.inc:3551
 msgid "A switch that opens and closes by itself. Between the + rail and an input it gives pulses. Click the box: on or off. Right-click: frequency."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3613 jsl_voedingsdelen.inc:3624 fsettings.lfm
+#: jsl_voedingsdelen.inc:3673 jsl_voedingsdelen.inc:3684 fsettings.lfm
 msgid "DIP switch"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3616
+#: jsl_voedingsdelen.inc:3676
 msgid "Four small switches: on the left the common terminal (to the + rail), on the right the outputs 8, 4, 2 and 1. Click a slider to change it."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3693 jsl_voedingsdelen.inc:3708 fsettings.lfm
+#: jsl_voedingsdelen.inc:3753 jsl_voedingsdelen.inc:3768 fsettings.lfm
 msgid "Voltmeter"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3697
+#: jsl_voedingsdelen.inc:3757
 msgid "Connect the + terminal (left) and the − terminal (right) with a wire to both sides\nof a lamp, contact or source. The meter draws no current."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3849
+#: jsl_voedingsdelen.inc:3909
 msgid "Time base"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3862
+#: jsl_voedingsdelen.inc:3922
 msgid "Clear screen"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3948 jsl_voedingsdelen.inc:3964 fsettings.lfm
+#: jsl_voedingsdelen.inc:4008 jsl_voedingsdelen.inc:4024 fsettings.lfm
 msgid "Oscilloscope"
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3953
+#: jsl_voedingsdelen.inc:4013
 msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
 msgstr ""
 
-#: main.pas:296
+#: main.pas:312
 msgid "Stop simulation"
 msgstr ""
 
-#: main.pas:298 main.pas:1430
+#: main.pas:314 main.pas:1509
 msgid "Start simulation"
 msgstr ""
 
-#: main.pas:359
+#: main.pas:375
 msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
 msgstr ""
 
-#: main.pas:414
+#: main.pas:430
 msgid "Shows the name or info of the active object"
 msgstr ""
 
-#: main.pas:420
+#: main.pas:436
 msgid "Shows the current status or function"
 msgstr ""
 
-#: main.pas:426
+#: main.pas:442
 msgid "Displays the X and Y position of the current object"
 msgstr ""
 
-#: main.pas:432
+#: main.pas:448
 msgid "Shows the object type"
 msgstr ""
 
-#: main.pas:438
+#: main.pas:454
 msgid "Shows extra debug information"
 msgstr ""
 
-#: main.pas:446
+#: main.pas:462
 msgid "Status bar"
 msgstr ""
 
-#: main.pas:463
+#: main.pas:479
 msgid "Algemeen"
 msgstr ""
 
-#: main.pas:463
+#: main.pas:479
 msgid "General"
 msgstr ""
 
-#: main.pas:464
+#: main.pas:480
 msgid "SchakelElementen"
 msgstr ""
 
-#: main.pas:464
+#: main.pas:480
 msgid "Switch Elements"
 msgstr ""
 
-#: main.pas:465 main.pas:465
+#: main.pas:481 main.pas:481
 msgid "Hints"
 msgstr ""
 
-#: main.pas:1410
+#: main.pas:706
+msgid "You switched components on or off while the level \"%s\" is active."
+msgstr ""
+
+#: main.pas:712
+msgid "Do you want to save this as your own selection? Your previous own selection is then replaced."
+msgstr ""
+
+#: main.pas:1489
 msgid "Logic Circuits"
 msgstr ""
 
-#: main.pas:1411
+#: main.pas:1490
 msgid "Choose language..."
 msgstr ""
 
-#: main.pas:1412
+#: main.pas:1491
 msgid "Copy the panel to the clipboard..."
 msgstr ""
 
-#: main.pas:1414
+#: main.pas:1493
 msgid "Grid Yes/No\nGo to open settings for additional options..."
 msgstr ""
 
-#: main.pas:1415
+#: main.pas:1494
 msgid "Guidelines on grid YES/NO..."
 msgstr ""
 
-#: main.pas:1416
+#: main.pas:1495
 msgid "Draw frame on grid..."
 msgstr ""
 
-#: main.pas:1417
+#: main.pas:1496
 msgid "Change panel title..."
 msgstr ""
 
-#: main.pas:1418
+#: main.pas:1497
 msgid "Bar Input / Processing / Output on/off"
 msgstr ""
 
-#: main.pas:1419
+#: main.pas:1498
 msgid "Schematic symbols: IEC (European) or ANSI (American)"
 msgstr ""
 
-#: main.pas:1421
+#: main.pas:1500
 msgid "Open settings"
 msgstr ""
 
-#: main.pas:1422
+#: main.pas:1501
 msgid "Close application"
 msgstr ""
 
-#: main.pas:1423
+#: main.pas:1502
 msgid "About Logic..."
 msgstr ""
 
-#: main.pas:1424
+#: main.pas:1503
 msgid "Open help (F1)"
 msgstr ""
 
-#: main.pas:1425
+#: main.pas:1504
 msgid "Open saved panel..."
 msgstr ""
 
-#: main.pas:1426
+#: main.pas:1505
 msgid "Save panel..."
 msgstr ""
 
-#: main.pas:1427
+#: main.pas:1506
 msgid "Click here to select the panel..."
 msgstr ""
 
-#: main.pas:1428
+#: main.pas:1507
 msgid "Remove connections..."
 msgstr ""
 
-#: main.pas:1429
+#: main.pas:1508
 msgid "Delete selected object..."
 msgstr ""
 
-#: main.pas:1496
+#: main.pas:1575
 msgid "Welcome and guided tour..."
 msgstr ""
 
-#: main.pas:1518
+#: main.pas:1579
+msgid "Level"
+msgstr ""
+
+#: main.pas:1608
 msgid "Decision panel"
 msgstr ""
 
-#: main.pas:1519
+#: main.pas:1609
 msgid "Counter panel"
 msgstr ""
 
-#: main.pas:1520
+#: main.pas:1610
 msgid "Memory panel"
 msgstr ""
 
-#: main.pas:1521
+#: main.pas:1611
 msgid "New standard panel"
 msgstr ""
 
-#: main.pas:1916
+#: main.pas:2006
 msgid "Undo (Ctrl+Z)"
 msgstr ""
 
-#: main.pas:1917
+#: main.pas:2007
 msgid "Redo (Ctrl+Y)"
 msgstr ""
 
-#: main.pas:1935
+#: main.pas:2025
 msgid "LogicRun: program in steps"
 msgstr ""
 
-#: main.pas:1943 main.pas:1943
+#: main.pas:2033 main.pas:2033
 msgid "Truth table of the panel"
 msgstr ""
 
-#: main.pas:1951 main.pas:1951
+#: main.pas:2041 main.pas:2041
 msgid "Exercise: assignment and check"
 msgstr ""
 
-#: main.pas:1961 main.pas:1961
+#: main.pas:2051 main.pas:2051
 msgid "Timing diagram of the panel"
 msgstr ""
 
-#: main.pas:1969 main.pas:1969
+#: main.pas:2059 main.pas:2059
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr ""
 
-#: main.pas:1977 main.pas:1977
+#: main.pas:2067 main.pas:2067
 msgid "Arduino board: connect a real board through USB"
 msgstr ""
 
-#: main.pas:2082 main.pas:2082
+#: main.pas:2172 main.pas:2172
 msgid "This panel is not an exercise. Open an exercise from the help (Exercises)."
 msgstr ""
 
-#: main.pas:2348 main.pas:2348
+#: main.pas:2438 main.pas:2438
 msgid "without name"
 msgstr ""
 
-#: main.pas:2349 main.pas:2349
+#: main.pas:2439 main.pas:2439
 msgid "The panel \"%s\" has been changed."
 msgstr ""
 
-#: main.pas:2350 main.pas:2350
+#: main.pas:2440 main.pas:2440
 msgid "Do you want to save the changes?"
 msgstr ""
 
-#: main.pas:3172
+#: main.pas:3304
 msgid "Screenshot of the panel has been copied to the clipboard."
 msgstr ""
 
-#: main.pas:3376
+#: main.pas:3508
 msgid "Change title"
 msgstr ""
 
-#: main.pas:3377
+#: main.pas:3509
 msgid "Enter new title:"
 msgstr ""
 
-#: main.pas:3605
+#: main.pas:3711
+msgid "level"
+msgstr ""
+
+#: main.pas:3745
+msgid "This panel uses components of the level \"%s\". It works as it is."
+msgstr ""
+
+#: main.pas:3751
+msgid "Do you also want the buttons of that level in the component toolbar, until you close Logic?"
+msgstr ""
+
+#: main.pas:3865
 msgid "This is the component toolbar. Click a component and then click on the panel to place it."
 msgstr ""
 
-#: main.pas:3606
-msgid "On the left is the input (switches, buttons), then the processing (gates), the output (lamps) and the power supply."
+#: main.pas:3866
+msgid "First come the wire, the gates and the counters, then the output and the power supply: source, switches, lamps and meters."
 msgstr ""
 
-#: main.pas:3607
+#: main.pas:3867
 msgid "Hold the mouse over a button to see what it is."
 msgstr ""
 
-#: main.pas:3617
+#: main.pas:3877
 msgid "This is the panel: here you build your circuit. Drag a component to move it."
 msgstr ""
 
-#: main.pas:3618
+#: main.pas:3878
 msgid "You lay a wire with Connection in the toolbar: click a terminal and drag to the next one."
 msgstr ""
 
-#: main.pas:3626
+#: main.pas:3886
 msgid "Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do."
 msgstr ""
 
-#: main.pas:3627
+#: main.pas:3887
 msgid "Click again to go on building."
 msgstr ""
 
-#: main.pas:3634
+#: main.pas:3895
 msgid "Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again."
 msgstr ""
 
-#: main.pas:3639
+#: main.pas:3896
+msgid "Under Level you choose how many components the toolbar shows: Basic, Extended or Advanced."
+msgstr ""
+
+#: main.pas:3903
 msgid "Open a panel you saved. The folder lessen holds the examples of all lessons."
 msgstr ""
 
-#: main.pas:3644
+#: main.pas:3908
 msgid "Save your circuit to a file, so you can continue later."
 msgstr ""
 
-#: main.pas:3649
+#: main.pas:3913
 msgid "Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings."
 msgstr ""
 
-#: main.pas:3655
+#: main.pas:3919
 msgid "The help, with the learning path: lessons from the first circuit to magnetism."
 msgstr ""
 
-#: main.pas:3656
+#: main.pas:3920
 msgid "Also press F1 with the mouse over a component or button: you get an explanation of that item."
 msgstr ""
 
-#: main.pas:3663
+#: main.pas:3927
 msgid "Here you choose the language. Done! Start with lesson 1 to build your first circuit."
 msgstr ""
 
@@ -2278,6 +2322,38 @@ msgstr ""
 msgid "Number of pulses:"
 msgstr ""
 
+#: uNiveau.pas:174
+msgid "Basic"
+msgstr ""
+
+#: uNiveau.pas:176
+msgid "Extended"
+msgstr ""
+
+#: uNiveau.pas:178
+msgid "Advanced (everything)"
+msgstr ""
+
+#: uNiveau.pas:180
+msgid "Own selection (Settings)"
+msgstr ""
+
+#: uNiveau.pas:191
+msgid "The first lessons: source, switch, lamp, the AND, OR and NOT gates, counter and display."
+msgstr ""
+
+#: uNiveau.pas:197
+msgid "Also measuring, magnetism and electronics: fuse, LED, diode, scope, coil and all gates."
+msgstr ""
+
+#: uNiveau.pas:203
+msgid "Everything, also programming with LogicRun: motor, person, cart, traffic light and the Arduino board."
+msgstr ""
+
+#: uNiveau.pas:209
+msgid "The components you switch on and off yourself in Settings."
+msgstr ""
+
 #: uOefening.pas:152
 msgid "Exercise"
 msgstr ""
@@ -2418,75 +2494,79 @@ msgstr ""
 msgid "Note: the panel has components with a memory (flip-flop, counter, ...). Their output also depends on what happened before, so the table does not always apply."
 msgstr ""
 
-#: uWelkom.pas:195
+#: uWelkom.pas:233
+msgid "Level:"
+msgstr ""
+
+#: uWelkom.pas:235
 msgid "Welcome"
 msgstr ""
 
-#: uWelkom.pas:196
+#: uWelkom.pas:236
 msgid "Welcome to Logic"
 msgstr ""
 
-#: uWelkom.pas:199
+#: uWelkom.pas:239
 msgid "With Logic you build circuits on the screen: switches, lamps, gates, sources and more. Start the simulation and you see them work. Where do you want to begin?"
 msgstr ""
 
-#: uWelkom.pas:202
+#: uWelkom.pas:242
 msgid "Language:"
 msgstr ""
 
-#: uWelkom.pas:203
+#: uWelkom.pas:243
 msgid "Start with lesson 1"
 msgstr ""
 
-#: uWelkom.pas:206
+#: uWelkom.pas:246
 msgid "Your first circuit: a switch and a lamp. The lesson opens in the help, the example is placed straight on the panel."
 msgstr ""
 
-#: uWelkom.pas:209 uWelkom.pas:386
+#: uWelkom.pas:249 uWelkom.pas:462
 msgid "Guided tour"
 msgstr ""
 
-#: uWelkom.pas:212
+#: uWelkom.pas:252
 msgid "A short step-by-step tour: what is what on the screen, and where to find things."
 msgstr ""
 
-#: uWelkom.pas:215
+#: uWelkom.pas:255
 msgid "View the learning path"
 msgstr ""
 
-#: uWelkom.pas:218
+#: uWelkom.pas:258
 msgid "All lessons in a row, from the first circuit to energy, power supply, electronics and magnetism."
 msgstr ""
 
-#: uWelkom.pas:221
+#: uWelkom.pas:261
 msgid "Empty panel"
 msgstr ""
 
-#: uWelkom.pas:224
+#: uWelkom.pas:264
 msgid "I already know Logic: start right away with an empty panel."
 msgstr ""
 
-#: uWelkom.pas:229
+#: uWelkom.pas:269
 msgid "Show this window at startup (you can find it later under Panel choice)"
 msgstr ""
 
-#: uWelkom.pas:380
+#: uWelkom.pas:456
 msgid "Step %d of %d"
 msgstr ""
 
-#: uWelkom.pas:387
+#: uWelkom.pas:463
 msgid "< Back"
 msgstr ""
 
-#: uWelkom.pas:389
+#: uWelkom.pas:465
 msgid "Done"
 msgstr ""
 
-#: uWelkom.pas:391
+#: uWelkom.pas:467
 msgid "Next >"
 msgstr ""
 
-#: uWelkom.pas:392
+#: uWelkom.pas:468
 msgid "Start lesson 1"
 msgstr ""
 

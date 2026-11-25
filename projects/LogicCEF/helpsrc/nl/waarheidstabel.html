@@ -6,14 +6,14 @@
 
   <figure>
     <img src="../img/waarheidstabel-voorbeeld.png" alt="Venster Waarheidstabel met de kolommen A, B, L1 en L2 en vier rijen">
-    <figcaption>De waarheidstabel van de halve opteller uit <a href="les26.html">les 26</a>: L1 (de led, som) brandt bij
-    01 en 10, L2 (de lamp, overdracht) alleen bij 11.</figcaption>
+    <figcaption>De waarheidstabel van de halve opteller uit <a href="les26.html">les 26</a>: L1 (de rode lamp, som) brandt bij
+    01 en 10, L2 (de gewone lamp, overdracht) alleen bij 11.</figcaption>
   </figure>
 
   <h2>Zo gebruik je het</h2>
   <ol class="steps">
-    <li>Bouw een schakeling met <a href="invoer.html#schakelaar">schakelaars</a> of <a href="invoer.html#drukknop">drukknoppen</a>,
-      poorten en <a href="uitvoer.html#lamp">lampen</a> of <a href="uitvoer.html#zoemer">zoemers</a>, of open een voorbeeld.</li>
+    <li>Bouw een schakeling met <a href="voeding.html#serie">schakelaars of drukknoppen</a>,
+      poorten en <a href="voeding.html#serie">lampen met twee klemmen</a> voor 5&nbsp;V of <a href="voeding.html#zoemer2">zoemers</a>, of open een voorbeeld.</li>
     <li>Klik in de titelbalk op <img src="../img/knop-waarheid.png" class="ico" alt=""><b>Waarheidstabel</b>.</li>
     <li>Het venster toont de tabel en volgt je paneel: zet je een onderdeel of draad erbij, haal je er een weg of verplaats je er een, dan rekent Logic de tabel vanzelf opnieuw uit.</li>
     <li>Zet een schakelaar om (in de simulatie): de rij met de <b>rode rand</b> is de stand van nu en verspringt mee.</li>
@@ -21,11 +21,11 @@
 
   <h2>De tabel lezen</h2>
   <ul>
-    <li><b>A, B, C &hellip;</b> (lichtblauw) zijn de ingangen, van boven naar onder: <a href="invoer.html#schakelaar">schakelaars</a>, <a href="invoer.html#drukknop">drukknoppen</a>, <a href="invoer.html#dipswitch">dipswitches</a>, de <a href="invoer.html#sensor">lichtsensor</a> en de <a href="invoer.html#warm">warmtesensor</a>. Staan er twee
+    <li><b>A, B, C &hellip;</b> (lichtblauw) zijn de ingangen, van boven naar onder: de <a href="voeding.html#serie">schakelaars en drukknoppen</a> en de <a href="voeding.html#wisselschakelaar">wisselschakelaars</a>. In oude panelen tellen ook de onderdelen zonder klemmen mee: <a href="invoer.html#schakelaar">schakelaars</a>, <a href="invoer.html#drukknop">drukknoppen</a>, <a href="invoer.html#dipswitch">dipswitches</a>, de <a href="invoer.html#sensor">lichtsensor</a> en de <a href="invoer.html#warm">warmtesensor</a>. Staan er twee
       even hoog, dan komt de linkse eerst.</li>
-    <li><b>L1, L2 &hellip;</b> (lichtgeel) zijn de lampen en leds, ook van boven naar onder; <b>Z1, Z2 &hellip;</b> zijn de zoemers, <b>R1</b> &hellip; de relais en schakelrelais.</li>
+    <li><b>L1, L2 &hellip;</b> (lichtgeel) zijn de lampen (gewoon of gekleurd), ook van boven naar onder; <b>Z1, Z2 &hellip;</b> zijn de zoemers, <b>R1</b> &hellip; de relais en schakelrelais.</li>
     <li>Een <b>motor</b> (<b>M1</b> &hellip;) toont <b>L</b> (draait linksom), <b>R</b> (rechtsom) of <b>0</b> (stil). Een <b>display</b> (<b>D1</b> &hellip;) toont het cijfer dat erop staat; <b>-</b> betekent donker (geen voeding).</li>
-    <li>De pulsgever, de eindschakelaar en de onderdelen van LogicRun (persoon, wagentje &hellip;) doen niet mee: die hangen af van de tijd of van een programma.</li>
+    <li>De <a href="voeding.html#puls2">impulsgenerator</a>, de eindschakelaar en de onderdelen van LogicRun (persoon, wagentje &hellip;) doen niet mee: die hangen af van de tijd of van een programma. Ook de <a href="voeding.html#dip2">dipschakelaar</a>, de LDR en de NTC met klemmen zijn geen kolom: ze blijven staan zoals je ze zette.</li>
     <li>Een <b>1</b> betekent aan, een <b>0</b> uit. Een uitgang die aan is, wordt groen.</li>
     <li>Elke rij is één stand. Met 2 schakelaars zijn er 4 rijen, met 3 schakelaars 8 rijen; de tabel kan tot 6 schakelaars (64 rijen).</li>
   </ul>

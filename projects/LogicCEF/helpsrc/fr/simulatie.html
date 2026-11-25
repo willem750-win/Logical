@@ -5,27 +5,30 @@
 
   <h2 id="voeding">Où sont le plus et le moins&nbsp;?</h2>
   <p>Dans un vrai circuit électrique, le courant part du <b>+</b> d&rsquo;une source (une batterie, par exemple),
-  traverse l&rsquo;interrupteur et la lampe, et revient au <b>&minus;</b>. Dans Logic, vous ne dessinez pas de source,
-  et les composants n&rsquo;ont ni + ni &minus;. Ce n&rsquo;est pas une erreur&nbsp;: Logic fonctionne comme
-  l&rsquo;<b>électronique numérique</b>.</p>
+  traverse l&rsquo;interrupteur et la lampe, et revient au <b>&minus;</b>. Dans Logic, vous construisez le circuit de la même façon&nbsp;:
+  il a une vraie alimentation, avec une <b>source</b> en haut, un <b>rail +</b> rouge à gauche et un <b>rail &minus;</b> bleu
+  à droite.</p>
   <ul>
-    <li>Tous les composants sont alimentés par une <b>source invisible</b>&nbsp;: <b>+5&nbsp;V</b> et
-      <b>0&nbsp;V</b> (la masse). Elle est toujours présente&nbsp;; inutile de la dessiner.</li>
-    <li>Un fil transporte un <b>signal</b>&nbsp;: <b>actif</b> vaut 5&nbsp;V, <b>inactif</b> vaut 0&nbsp;V,
-      toujours mesuré par rapport à la masse.</li>
-    <li>Le &minus; de chaque lampe, buzzer et relais est relié de façon invisible à la masse. C&rsquo;est pourquoi
-      un seul fil suffit pour allumer une lampe.</li>
+    <li>Le courant circule dans un <b>circuit fermé</b>&nbsp;: du rail +, à travers l&rsquo;interrupteur et la
+      <a href="voeding.html#serie">lampe à deux bornes</a>, puis de la borne droite de la lampe jusqu&rsquo;au
+      rail &minus;. Voir la <a href="les01.html">leçon 1</a>.</li>
+    <li>Un fil transporte un <b>signal</b>. Un fil <b>rouge</b> est sous tension&nbsp;: avec 2&nbsp;V ou plus, le
+      signal est <b>allumé</b> (1), sinon il est <b>éteint</b> (0), toujours mesuré par rapport au rail &minus; (la masse, 0&nbsp;V).</li>
+    <li>Les <a href="verwerking.html">portes</a>, les compteurs, les bascules, la mémoire et LogicRun n&rsquo;ont ni + ni &minus;&nbsp;: ils reçoivent
+      leur propre alimentation de façon <b>invisible</b> (+5&nbsp;V et la masse) et donnent 5&nbsp;V sur leur sortie. Cela suffit pour une
+      lampe pour 5&nbsp;V ou un <a href="voeding.html#zoemer2">buzzer</a>.</li>
+    <li>Les anciens panneaux avec l&rsquo;ancienne lampe, l&rsquo;ancien buzzer ou l&rsquo;ancien relais à une seule entrée fonctionnent
+      toujours&nbsp;: le &minus; de ces composants est relié de façon invisible à la masse. C&rsquo;est pourquoi un seul fil y suffit.</li>
   </ul>
   <figure>
-    <img src="../img/voeding.svg" alt="Interrupteur et lampe avec l&rsquo;alimentation invisible">
-    <figcaption>Traits pleins&nbsp;: ce que vous dessinez dans Logic (un interrupteur, un fil et une lampe).
-    Pointillés&nbsp;: l&rsquo;alimentation que Logic ajoute de lui-même, du +5&nbsp;V à la masse (0&nbsp;V).</figcaption>
+    <img src="../img/les01-schakelaar-en-lamp.png" alt="Source avec un rail + et un rail &minus;&nbsp;; un interrupteur entre le rail + et une lampe, reliée par un fil au rail &minus;">
+    <figcaption>Le plus et le moins sont sur le panneau&nbsp;: la source en haut, le rail + à gauche et le rail &minus; à droite.
+    L&rsquo;interrupteur est fermé, donc le circuit est fermé&nbsp;: le fil est rouge et la lampe est allumée.</figcaption>
   </figure>
-  <p>Les vrais schémas logiques sont dessinés de la même façon&nbsp;: les lignes d&rsquo;alimentation y figurent
-  rarement, car elles sont les mêmes pour tous les composants.</p>
-  <p>Vous voulez quand même rendre l&rsquo;alimentation visible, par exemple pour expliquer d&rsquo;où vient le courant&nbsp;?
-  Placez alors des <a href="voeding.html">rails d&rsquo;alimentation</a> sur le panneau&nbsp;: un rail + rouge et un
-  rail &minus; bleu. Avec le <a href="voeding.html#voltmeter">voltmètre</a>, vous mesurez la tension.</p>
+  <p>Les vrais schémas logiques sont dessinés de la même façon&nbsp;: les lignes d&rsquo;alimentation des portes y figurent
+  rarement, car elles sont les mêmes pour toutes les portes.</p>
+  <p>Pour en savoir plus sur la source, les rails et le <a href="voeding.html#voltmeter">voltmètre</a>, qui mesure la tension,
+  voyez <a href="voeding.html">Alimentation &amp; voltmètre</a>.</p>
 
   <h2>Démarrer et arrêter la simulation</h2>
   <p>Cliquez sur <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Démarrer la simulation</b>. Le bouton devient rouge
@@ -37,10 +40,11 @@
     <li>La barre des composants, les boutons de modification, les règles et la barre d&rsquo;état sont masqués.
       Le panneau dispose ainsi de plus de place.</li>
     <li>Les guides sont désactivés.</li>
-    <li>Les composants ne peuvent plus être déplacés. Vous commandez les entrées avec la souris comme d&rsquo;habitude.</li>
+    <li>Les composants ne peuvent plus être déplacés. Vous les commandez avec la souris&nbsp;: cliquez sur un interrupteur pour
+      l&rsquo;ouvrir ou le fermer, et maintenez un bouton-poussoir enfoncé tant qu&rsquo;il doit rester fermé.</li>
   </ul>
   <p>Après la simulation, tout redevient comme avant, y compris l&rsquo;état des guides.</p>
 
   <div class="tip"><strong>Astuce&nbsp;:</strong> le circuit ne fonctionne pas comme prévu&nbsp;? Arrêtez la simulation,
-  survolez les composants avec la souris et regardez leur état dans la barre d&rsquo;état, ou reliez une
-  <a href="uitvoer.html#lamp">lampe</a> à un fil pour contrôler le signal.</div>
+  survolez les composants avec la souris et regardez leur état dans la barre d&rsquo;état, ou placez une
+  <a href="voeding.html#serie">lampe à deux bornes</a> de 5&nbsp;V entre un fil et le rail &minus; pour contrôler le signal.</div>

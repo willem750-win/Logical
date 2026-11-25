@@ -80,16 +80,21 @@
   <p>De klokingang C heeft een driehoekje in het blok. De flipflop reageert alleen op het <b>aangaan</b> van C
   (de flank), niet zolang C aan blijft. Probeer het in <a href="les27.html">les 27</a>.</p>
     <h3 id="ff-bouwen">Zelf bouwen: vier kleine panelen</h3>
-  <p>Voor elk voorbeeld klik je op <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flipflop</b>, zet je hem
-  midden op het paneel en kies je met de rechtermuisknop de soort. De ingangen zet je links, de lampen rechts.
+  <p>Zet eerst de voeding klaar zoals in <a href="les01.html">les 1</a>: bron, + rail en &minus; rail.
+  Voor elk voorbeeld klik je op <img src="../img/pal-flipflop.png" class="ico" alt=""><b>Flipflop</b> (in de balk vanaf het
+  <a href="instellingen.html#niveau">niveau</a> Uitgebreid), zet je hem midden op het paneel en kies je met de rechtermuisknop de soort.</p>
+  <p>De ingangen zet je links, naast de + rail: neem de <a href="voeding.html#serie"><img src="../img/pal-schakelaar2.png" class="ico" alt="">schakelaar</a>
+  uit de groep Voeding; met rechtsklik &rsaquo; <b>Soort</b> &rsaquo; <b>Drukknop</b> wordt het een drukknop.
+  De lampen zet je rechts, bij de &minus; rail: neem een <a href="voeding.html#serie"><img src="../img/pal-lamp2.png" class="ico" alt="">lamp met twee klemmen</a>
+  voor 5&nbsp;V (rechtsklik &rsaquo; <b>Spanning van de lamp</b> &rsaquo; <b>Lamp voor 5&nbsp;V (ook aan een poort)</b>).
   Verbind alles met <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbinding</b>
   (zie <a href="verbindingen.html">Verbindingen</a>) en start daarna de simulatie.</p>
 
   <h3 id="ff-sr">SR-flipflop: een alarm dat blijft afgaan</h3>
   <ol class="steps">
-    <li>Zet twee <a href="invoer.html#drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">drukknoppen</a> links: de bovenste is &ldquo;alarm&rdquo;, de onderste &ldquo;reset&rdquo;.</li>
-    <li>Verbind de bovenste drukknop met <span class="pin in">S</span> en de onderste met <span class="pin in">R</span>.</li>
-    <li>Zet een <a href="uitvoer.html#lamp"><img src="../img/pal-lamp.png" class="ico" alt="">lamp</a> rechts en verbind ze met <span class="pin out">Q</span>.</li>
+    <li>Zet twee drukknoppen links, naast de + rail: de bovenste is &ldquo;alarm&rdquo;, de onderste &ldquo;reset&rdquo;. Draad van de + rail naar de linkse klem van elke drukknop.</li>
+    <li>Draad van de rechtse klem van de bovenste drukknop naar <span class="pin in">S</span>, en van de rechtse klem van de onderste naar <span class="pin in">R</span>.</li>
+    <li>Zet een lamp rechts. Draad van <span class="pin out">Q</span> naar de linkse klem van de lamp, en van de rechtse klem van de lamp naar de &minus; rail.</li>
   </ol>
   <p><b>Wat zie je?</b> Druk kort op &ldquo;alarm&rdquo;: de lamp gaat aan en <b>blijft</b> aan als je loslaat.
   Pas met &ldquo;reset&rdquo; gaat ze weer uit. Zo onthoudt een alarm dat een deur even open was. Dit voorbeeld
@@ -97,9 +102,9 @@
 
   <h3 id="ff-d">D-flipflop: een waarde vastleggen</h3>
   <ol class="steps">
-    <li>Zet een <a href="invoer.html#schakelaar"><img src="../img/pal-schakelaar.png" class="ico" alt="">schakelaar</a> links en verbind hem met <span class="pin in">D</span> (de gegevens: wat moet bewaard worden).</li>
-    <li>Zet er een drukknop onder en verbind hem met <span class="pin in">C</span> (de klok: wanneer moet het bewaard worden).</li>
-    <li>Zet een lamp rechts en verbind ze met <span class="pin out">Q</span>.</li>
+    <li>Zet een schakelaar links, naast de + rail. Draad van de + rail naar zijn linkse klem, en van zijn rechtse klem naar <span class="pin in">D</span> (de gegevens: wat moet bewaard worden).</li>
+    <li>Zet er een drukknop onder. Draad van de + rail naar zijn linkse klem, en van zijn rechtse klem naar <span class="pin in">C</span> (de klok: wanneer moet het bewaard worden).</li>
+    <li>Zet een lamp rechts. Draad van <span class="pin out">Q</span> naar de linkse klem van de lamp, en van de rechtse klem van de lamp naar de &minus; rail.</li>
   </ol>
   <p><b>Wat zie je?</b> Zet de schakelaar aan: de lamp blijft uit. Pas als je op de drukknop drukt, neemt Q de stand
   van de schakelaar over en gaat de lamp aan. Zet de schakelaar weer uit: de lamp blijft branden tot je opnieuw
@@ -108,9 +113,9 @@
 
   <h3 id="ff-jk">JK-flipflop: vier mogelijkheden in één</h3>
   <ol class="steps">
-    <li>Zet twee schakelaars links: verbind de bovenste met <span class="pin in">J</span> en de onderste met <span class="pin in">K</span>.</li>
-    <li>Zet een drukknop tussen de twee schakelaars en verbind hem met de klok <span class="pin in">C</span>.</li>
-    <li>Zet een lamp rechts en verbind ze met <span class="pin out">Q</span>.</li>
+    <li>Zet twee schakelaars links, naast de + rail, elk met een draad van de + rail naar de linkse klem. Draad van de rechtse klem van de bovenste naar <span class="pin in">J</span>, en van de rechtse klem van de onderste naar <span class="pin in">K</span>.</li>
+    <li>Zet een drukknop tussen de twee schakelaars. Draad van de + rail naar zijn linkse klem, en van zijn rechtse klem naar de klok <span class="pin in">C</span>.</li>
+    <li>Zet een lamp rechts. Draad van <span class="pin out">Q</span> naar de linkse klem van de lamp, en van de rechtse klem van de lamp naar de &minus; rail.</li>
   </ol>
   <p><b>Wat zie je?</b> Kies een stand van J en K en druk dan op de drukknop. Er gebeurt pas iets bij die druk:</p>
   <table>
@@ -126,15 +131,15 @@
 
   <h3 id="ff-t">T-flipflop: delen door twee en tellen</h3>
   <ol class="steps">
-    <li>Zet een drukknop links en verbind hem met <span class="pin in">T</span>.</li>
-    <li>Zet een lamp rechts en verbind ze met <span class="pin out">Q</span>.</li>
+    <li>Zet een drukknop links, naast de + rail. Draad van de + rail naar zijn linkse klem, en van zijn rechtse klem naar <span class="pin in">T</span>.</li>
+    <li>Zet een lamp rechts. Draad van <span class="pin out">Q</span> naar de linkse klem van de lamp, en van de rechtse klem van de lamp naar de &minus; rail.</li>
   </ol>
   <p><b>Wat zie je?</b> Bij elke druk wisselt de lamp: de eerste druk aan, de tweede uit, de derde weer aan, &hellip;
-  Zet je een <a href="invoer.html#puls"><img src="../img/pal-puls.png" class="ico" alt="">impulsgenerator</a> op T in
-  plaats van de drukknop, dan knippert de lamp half zo snel als de impulsen: de T-flipflop deelt door twee.</p>
+  Zet je een <a href="voeding.html#puls2"><img src="../img/pal-puls2.png" class="ico" alt="">impulsgenerator</a> tussen de + rail en T in
+  plaats van de drukknop (klik op zijn kastje om hem te starten), dan knippert de lamp half zo snel als de impulsen: de T-flipflop deelt door twee.</p>
   <div class="tip"><strong>Een teller van 0 tot 3:</strong> zet een tweede T-flipflop rechts van de eerste en verbind
   <span class="pin out">Q&#773;</span> (niet-Q) van de eerste met <span class="pin in">T</span> van de tweede. Zet een lamp
-  op Q van elke flipflop: de lamp van de eerste telt 1, die van de tweede telt 2. Druk vier keer: 1, 2, 3 en weer 0.
+  tussen Q van elke flipflop en de &minus; rail: de lamp van de eerste telt 1, die van de tweede telt 2. Druk vier keer: 1, 2, 3 en weer 0.
   In <a href="les27.html">les 27</a> kan je deze teller meteen openen.</div>
 
   <h2 id="teller"><img src="../img/pal-teller.png" class="ico" alt="">Tellerblok</h2>
@@ -145,8 +150,8 @@
     <tr><td><span class="pin in">Re</span></td><td>Reset: zet de teller terug op 0.</td></tr>
     <tr><td><span class="pin out">8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>De stand van de teller als binair getal (0 tot 15).</td></tr>
   </table>
-  <p>Sluit de uitgangen aan op lampen of op een <a href="uitvoer.html#display">display</a> om de stand te zien.
-  Een <a href="invoer.html#drukknop">drukknop</a> of <a href="invoer.html#puls">impulsgenerator</a> op de telingang
+  <p>Sluit de uitgangen aan op lampen (elke lamp met een draad naar de &minus; rail) of op een <a href="uitvoer.html#display">display</a> om de stand te zien.
+  Een <a href="voeding.html#serie">drukknop</a> of <a href="voeding.html#puls2">impulsgenerator</a> tussen de + rail en de telingang
   laat de teller lopen.</p>
 
   <h2 id="stappenteller"><img src="../img/pal-stappenteller.png" class="ico" alt="">Stappenteller</h2>
@@ -156,7 +161,7 @@
     <tr><th>Aansluiting</th><th>Betekenis</th></tr>
     <tr><td><span class="pin in">T</span></td><td>Telingang: bij elke puls gaat de stand één omhoog.</td></tr>
     <tr><td><span class="pin in">R</span></td><td>Reset: zet de stand terug op 0. Zolang R aan is, telt de teller niet.</td></tr>
-    <tr><td><span class="pin out">Q</span></td><td>Uitgang: aan zolang de eindwaarde bereikt is, bijvoorbeeld naar een lamp, een zoemer of een ingang van <a href="logicrun.html">LogicRun</a>.</td></tr>
+    <tr><td><span class="pin out">Q</span></td><td>Uitgang: aan zolang de eindwaarde bereikt is, bijvoorbeeld naar een lamp, een <a href="voeding.html#zoemer2">zoemer met twee klemmen</a> of een ingang van <a href="logicrun.html">LogicRun</a>.</td></tr>
   </table>
   <p>Met de rechtermuisknop (het blok mag niet vergrendeld zijn) kies je de <b>eindwaarde</b>: 10, 100, 1000, 9999 of een
   ander getal. Bij de eindwaarde blijft de teller staan. Zet je <b>Herhalen</b> aan, dan begint hij bij de volgende puls
@@ -178,7 +183,7 @@
   10:00 of een andere tijd (als mm:ss, bijvoorbeeld 02:30). Bij de eindtijd blijft de stopwatch staan. Zet je
   <b>Herhalen</b> aan, dan begint hij daarna weer bij 00:01: Q geeft dan elke keer na de eindtijd een seintje van
   een seconde. De dubbelpunt knippert zolang de tijd loopt. De stopwatch is verwerking: hij heeft geen voeding nodig.</p>
-  <div class="tip"><strong>Tip:</strong> zet een <a href="invoer.html#schakelaar">schakelaar</a> op S en een lamp op Q:
+  <div class="tip"><strong>Tip:</strong> zet een <a href="voeding.html#serie">schakelaar</a> tussen de + rail en S en een lamp tussen Q en de &minus; rail:
   na de eindtijd gaat de lamp aan. Zet je de stopwatch op Herhalen en Q op de telingang van een
   <a href="#stappenteller">stappenteller</a>, dan telt die de minuten.</div>
 
@@ -192,7 +197,7 @@
     <tr><th>Aansluiting</th><th>Betekenis</th></tr>
     <tr><td><span class="pin in">A 8</span> <span class="pin in">4</span> <span class="pin in">2</span> <span class="pin in">1</span></td><td>Adresingangen bovenaan: kiezen binair de geheugenplaats.</td></tr>
     <tr><td>Ingang A16</td><td>De vijfde adresingang (linksboven, naast A8) telt 16 bij het adres op, voor de plaatsen 16 tot 31. Het gekozen adres staat in het blok (<i>ADRES = &hellip;</i>).</td></tr>
-    <tr><td><span class="pin in">schrijf</span></td><td>Schrijfingang links: verbind hier een <a href="invoer.html#dipswitch">dipschakelaar</a>. Druk je op de knop van de dipschakelaar, dan wordt zijn getal op het gekozen adres bewaard.</td></tr>
+    <tr><td><span class="pin in">D8</span> <span class="pin in">D4</span> <span class="pin in">D2</span> <span class="pin in">D1</span> <span class="pin in">S</span></td><td>Data-ingangen en schrijfingang links: verbind D8 tot D1 met de uitgangen 8, 4, 2 en 1 van een <a href="voeding.html#dip2">dipschakelaar</a> (zijn linkse klem aan de + rail) en zet een <a href="voeding.html#serie">drukknop</a> tussen de + rail en S. Druk je op de drukknop, dan wordt het getal op het gekozen adres bewaard.</td></tr>
     <tr><td><span class="pin out">G 8</span> <span class="pin out">4</span> <span class="pin out">2</span> <span class="pin out">1</span></td><td>De inhoud van de gekozen geheugenplaats als binair getal, onderaan.</td></tr>
   </table>
   <p>Het <a href="paneel.html#paneelkeuze">geheugenpaneel</a> toont een uitgewerkt voorbeeld met een teller

@@ -1,8 +1,8 @@
 <!-- titel: Learning path -->
   <h1>Learning path</h1>
-  <p class="lead">More than fifty lessons in blocks: <a href="#energie">energy</a>, <a href="#magnetisme">magnetism</a>,
-  <a href="#basis">logic and power supply</a>, <a href="#gevorderden">programming with LogicRun</a>, <a href="#elektriciteit">current and voltage</a>,
-  <a href="#rekenen">arithmetic with gates</a> and <a href="#elektronica">electronics</a>, followed by <a href="#oefenen">exercises with a check</a>.
+  <p class="lead">More than fifty lessons in three levels: <a href="#niveau-basis">Basic</a> (energy, logic and power supply, exercises),
+  <a href="#niveau-uitgebreid">Extended</a> (magnetism, current and voltage, arithmetic with gates, electronics) and
+  <a href="#niveau-gevorderden">Advanced</a> (programming with LogicRun).
   From a switch with a lamp to counters, memory, the relay, controlling a motor, making music, the transistor, the electric motor and the transformer.
   Each lesson has a worked example, an explanation and an exercise to take it further yourself.</p>
 
@@ -10,7 +10,12 @@
   start the <a href="simulatie.html">simulation</a> to see the example work. Then try the exercise.
   Only open the solution when you are stuck.</div>
 
-  <h2 id="energie">New: starting from energy (pilot block)</h2>
+  <p>The learning path follows the three <a href="instellingen.html#niveau">levels</a> of the component toolbar: choose the level with <b>Panel choice &rsaquo; Level</b>, and the toolbar shows what you need for those lessons. The lesson numbers run on across the levels; each lesson shows at the top which level it belongs to.</p>
+
+  <h2 id="niveau-basis">Level Basic</h2>
+  <p>The first steps: energy, your first circuits with gates, counter and memory, and the exercises.</p>
+
+  <h3 id="energie">New: starting from energy (pilot block)</h3>
   <p>Five lessons that start at the basics: what is energy, how does it flow, and how do you switch it? With the comparison with water and always a closed circuit from the source, through the load, back to the source. From lesson 4 on, everything sits between a + rail and a &minus; rail.</p>
   <ol class="lessons">
     <li><a href="lesp1.html"><b>Energy flows like water</b></a><span>Source, wire and lamp as pump, pipe and water wheel: voltage and current.</span></li>
@@ -20,21 +25,7 @@
     <li><a href="lesp5.html"><b>The transistor on rails</b></a><span>A small current switches a large one, neatly between the rails.</span></li>
   </ol>
 
-  <h2 id="magnetisme">Magnetism</h2>
-  <p>Magnets and coils: what a magnet does, how a current makes a magnet, how to make it stronger and where you meet the electromagnet; then the Lorentz force on a wire carrying a current,, the electric motor and induction.</p>
-  <ol class="lessons">
-    <li><a href="lesm1.html"><b>What is magnetism?</b></a><span>North pole and south pole, field lines and the compass; like poles repel, unlike poles attract.</span></li>
-    <li><a href="lesm2.html"><b>Magnetism in a coil</b></a><span>A current makes a magnet; the direction of the current decides N and S: the right-hand rule.</span></li>
-    <li><a href="lesm3.html"><b>The strength of a coil</b></a><span>More current, more turns and an iron core: how many nails does the coil pull?</span></li>
-    <li><a href="lesm4.html"><b>The electromagnet at work</b></a><span>An open relay switches a second circuit; with its own NC contact it becomes an electric bell.</span></li>
-    <li><a href="lesm5.html"><b>The Lorentz force</b></a><span>A wire carrying a current in a magnetic field gets a force: the current swing and the left-hand rule.</span></li>
-    <li><a href="lesm6.html"><b>The electric motor</b></a><span>A coil turning between two poles: the Lorentz force, the dead point and the commutator.</span></li>
-    <li><a href="lesm7.html"><b>Induction</b></a><span>A moving magnet induces a voltage in a coil; the centre-zero meter and Lenz&rsquo;s law.</span></li>
-    <li><a href="lesm8.html"><b>The dynamo</b></a><span>A rotating magnet next to a coil gives an alternating voltage: turning faster gives more voltage and a higher frequency.</span></li>
-    <li><a href="lesm9.html"><b>The transformer</b></a><span>Two coils on one core step an alternating voltage up or down: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
-  </ol>
-
-  <h2 id="basis">Logic and power supply</h2>
+  <h3 id="basis">Logic and power supply</h3>
 
   <ol class="lessons">
     <li><a href="les01.html"><b>Your first circuit</b></a><span>A switch, a wire and a lamp.</span></li>
@@ -51,23 +42,27 @@
     <li><a href="les11.html"><b>The relay</b></a><span>Switching a second circuit with a push button and a switching relay.</span></li>
   </ol>
 
-  <h2 id="gevorderden">For advanced users: programming with LogicRun</h2>
-  <p>Lessons 12 to 22 are an extension for those who know the basics (lessons 1 to 11). You program with <a href="logicrun.html">LogicRun</a> and make a motor, a person and a cart move or play a melody with a program in steps. The teacher can hide the LogicRun, Person, Cart and Music box buttons until the class is ready (see <a href="instellingen.html#algemeen">Settings</a>).</p>
-  <ol class="lessons" start="12">
-    <li><a href="les12.html"><b>Programming with LogicRun</b></a><span>A traffic light with a program in steps.</span></li>
-    <li><a href="les13.html"><b>Controlling a motor</b></a><span>Making a motor turn left and right with LogicRun.</span></li>
-    <li><a href="les14.html"><b>A packing machine</b></a><span>Counting boxes with LogicRun and the counter.</span></li>
-    <li><a href="les15.html"><b>Counting in binary</b></a><span>Lamps and a display show the same number.</span></li>
-    <li><a href="les16.html"><b>A person walking back and forth</b></a><span>Limit switches tell LogicRun where the person is.</span></li>
-    <li><a href="les17.html"><b>A cart on a road</b></a><span>LogicRun counts the posts along the road.</span></li>
-    <li><a href="les18.html"><b>Music with LogicRun</b></a><span>One step per note: LogicRun plays a song on a music box.</span></li>
-    <li><a href="les19.html"><b>Counting to 1000</b></a><span>The step counter counts pulses and switches on a lamp at the end value.</span></li>
-    <li><a href="les20.html"><b>Switching on time</b></a><span>The stopwatch measures time and switches on a lamp when the end time has passed.</span></li>
-    <li><a href="les21.html"><b>A traffic light with pedestrian button</b></a><span>LogicRun controls a traffic light: green for the cars until a pedestrian presses the button.</span></li>
-    <li><a href="les22.html"><b>A barrier gate at a car park</b></a><span>A stopwatch and a NOT gate: the barrier opens after the ticket button and closes by itself.</span></li>
+  <h3 id="oefenen">Practising with a check</h3>
+  <p>After the lessons you can get to work yourself with the <a href="oefeningen.html">exercises</a>: you get an assignment, build the circuit and Logic checks whether it is right.</p>
+
+  <h2 id="niveau-uitgebreid">Level Extended</h2>
+  <p>On to magnetism, measuring, arithmetic with gates and electronics.</p>
+
+  <h3 id="magnetisme">Magnetism</h3>
+  <p>Magnets and coils: what a magnet does, how a current makes a magnet, how to make it stronger and where you meet the electromagnet; then the Lorentz force on a wire carrying a current,, the electric motor and induction.</p>
+  <ol class="lessons">
+    <li><a href="lesm1.html"><b>What is magnetism?</b></a><span>North pole and south pole, field lines and the compass; like poles repel, unlike poles attract.</span></li>
+    <li><a href="lesm2.html"><b>Magnetism in a coil</b></a><span>A current makes a magnet; the direction of the current decides N and S: the right-hand rule.</span></li>
+    <li><a href="lesm3.html"><b>The strength of a coil</b></a><span>More current, more turns and an iron core: how many nails does the coil pull?</span></li>
+    <li><a href="lesm4.html"><b>The electromagnet at work</b></a><span>An open relay switches a second circuit; with its own NC contact it becomes an electric bell.</span></li>
+    <li><a href="lesm5.html"><b>The Lorentz force</b></a><span>A wire carrying a current in a magnetic field gets a force: the current swing and the left-hand rule.</span></li>
+    <li><a href="lesm6.html"><b>The electric motor</b></a><span>A coil turning between two poles: the Lorentz force, the dead point and the commutator.</span></li>
+    <li><a href="lesm7.html"><b>Induction</b></a><span>A moving magnet induces a voltage in a coil; the centre-zero meter and Lenz&rsquo;s law.</span></li>
+    <li><a href="lesm8.html"><b>The dynamo</b></a><span>A rotating magnet next to a coil gives an alternating voltage: turning faster gives more voltage and a higher frequency.</span></li>
+    <li><a href="lesm9.html"><b>The transformer</b></a><span>Two coils on one core step an alternating voltage up or down: U<sub>2</sub> / U<sub>1</sub> = N<sub>2</sub> / N<sub>1</sub>.</span></li>
   </ol>
 
-  <h2 id="elektriciteit">Current and voltage</h2>
+  <h3 id="elektriciteit">Current and voltage</h3>
   <p>After the power supply of <a href="les10.html">lesson 10</a> you calculate here with current, voltage and resistance. You do not need LogicRun.</p>
   <ol class="lessons" start="23">
     <li><a href="les23.html"><b>Ohm&rsquo;s law</b></a><span>More lamps, more current: the voltage drops and the fuse blows.</span></li>
@@ -75,14 +70,14 @@
     <li><a href="les25.html"><b>Lamps in parallel</b></a><span>Every lamp gets the full voltage, the currents add up.</span></li>
   </ol>
 
-  <h2 id="rekenen">Calculating with gates</h2>
+  <h3 id="rekenen">Calculating with gates</h3>
   <p>After the gates of <a href="les03.html">lesson 3</a> to <a href="les06.html">lesson 6</a> you add numbers with gates and remember with flip-flops here. You do not need LogicRun.</p>
   <ol class="lessons" start="26">
     <li><a href="les26.html"><b>The half adder</b></a><span>An XOR gate and an AND gate add two bits.</span></li>
     <li><a href="les27.html"><b>The flip-flop remembers</b></a><span>An SR flip-flop remembers a button press; two T flip-flops count.</span></li>
   </ol>
 
-  <h2 id="elektronica">Electronics</h2>
+  <h3 id="elektronica">Electronics</h3>
   <p>After the power supply of <a href="les23.html">lesson 23</a> to <a href="les25.html">lesson 25</a> you build with resistors, a potentiometer, LEDs, a capacitor and diodes here, and turn AC voltage into DC voltage. Finally you switch and amplify with a transistor, and build a night light and a temperature alarm with an LDR and an NTC.</p>
   <ol class="lessons" start="28">
     <li><a href="les28.html"><b>The LED and the capacitor</b></a><span>A series resistor protects the LED; a capacitor makes it go out slowly.</span></li>
@@ -102,8 +97,24 @@
     <li><a href="les42.html"><b>A gate drives a transistor</b></a><span>An AND gate lights a 12&nbsp;V lamp through a transistor: logic and power together.</span></li>
   </ol>
 
-  <h2 id="oefenen">Practising with a check</h2>
-  <p>After the lessons you can get to work yourself with the <a href="oefeningen.html">exercises</a>: you get an assignment, build the circuit and Logic checks whether it is right.</p>
+  <h2 id="niveau-gevorderden">Level Advanced</h2>
+  <p>Programming with LogicRun: controlling a motor, a person, a cart, music and a traffic light.</p>
+
+  <h3 id="gevorderden">For advanced users: programming with LogicRun</h3>
+  <p>Lessons 12 to 22 are an extension for those who know the basics (lessons 1 to 11). You program with <a href="logicrun.html">LogicRun</a> and make a motor, a person and a cart move or play a melody with a program in steps. The LogicRun, Motor, Person, Cart and Music box buttons are only in the toolbar at the <a href="instellingen.html#niveau">level</a> Advanced.</p>
+  <ol class="lessons" start="12">
+    <li><a href="les12.html"><b>Programming with LogicRun</b></a><span>A traffic light with a program in steps.</span></li>
+    <li><a href="les13.html"><b>Controlling a motor</b></a><span>Making a motor turn left and right with LogicRun.</span></li>
+    <li><a href="les14.html"><b>A packing machine</b></a><span>Counting boxes with LogicRun and the counter.</span></li>
+    <li><a href="les15.html"><b>Counting in binary</b></a><span>Lamps and a display show the same number.</span></li>
+    <li><a href="les16.html"><b>A person walking back and forth</b></a><span>Limit switches tell LogicRun where the person is.</span></li>
+    <li><a href="les17.html"><b>A cart on a road</b></a><span>LogicRun counts the posts along the road.</span></li>
+    <li><a href="les18.html"><b>Music with LogicRun</b></a><span>One step per note: LogicRun plays a song on a music box.</span></li>
+    <li><a href="les19.html"><b>Counting to 1000</b></a><span>The step counter counts pulses and switches on a lamp at the end value.</span></li>
+    <li><a href="les20.html"><b>Switching on time</b></a><span>The stopwatch measures time and switches on a lamp when the end time has passed.</span></li>
+    <li><a href="les21.html"><b>A traffic light with pedestrian button</b></a><span>LogicRun controls a traffic light: green for the cars until a pedestrian presses the button.</span></li>
+    <li><a href="les22.html"><b>A barrier gate at a car park</b></a><span>A stopwatch and a NOT gate: the barrier opens after the ticket button and closes by itself.</span></li>
+  </ol>
 
   <div class="tip"><strong>Linux:</strong> there too the help opens in the built-in browser and the
   <b>Open this example</b> button works. If the <code>ceflib</code> folder is missing, the help opens in the normal

@@ -5,9 +5,9 @@
 
   <h2>So benutzen Sie es</h2>
   <ol class="steps">
-    <li>Öffnen Sie ein Panel oder bauen Sie eine Schaltung mit Eingängen (<a href="invoer.html#schakelaar">Schaltern</a>,
-      <a href="invoer.html#drukknop">Tastern</a>, <a href="invoer.html#puls">Pulsgebern</a> &hellip;) und Ausgängen
-      (<a href="uitvoer.html#lamp">Lampen</a>, <a href="uitvoer.html#zoemer">Summern</a> &hellip;).</li>
+    <li>Öffnen Sie ein Panel oder bauen Sie eine Schaltung mit Eingängen (<a href="voeding.html#serie">Schaltern und
+      Tastern</a>) und Ausgängen
+      (5-V-<a href="voeding.html#serie">Lampen mit zwei Klemmen</a>, <a href="voeding.html#zoemer2">Summern</a> &hellip;).</li>
     <li>Klicken Sie in der Titelleiste auf <img src="../img/knop-tijd.png" class="ico" alt=""><b>Zeitdiagramm</b>. Das
       Fenster öffnet sich rechts neben Logic.</li>
     <li>Schalten Sie die <a href="simulatie.html">Simulation</a> ein und bedienen Sie die Schalter und Taster. Zehnmal pro
@@ -16,9 +16,11 @@
 
   <h2>Das Diagramm lesen</h2>
   <ul>
-    <li><b>A, B, C &hellip;</b> (blau) sind die Schalter, Taster, DIP-Schalter und Sensoren, von oben nach unten, genau
-      wie in der <a href="waarheidstabel.html">Wahrheitstabelle</a>. <b>P1, P2 &hellip;</b> sind die Pulsgeber.</li>
-    <li>Unter der grauen Linie stehen die Ausgänge (grün): <b>L</b> = Lampe oder LED, <b>S</b> = Summer, <b>R</b> = Relais,
+    <li><b>A, B, C &hellip;</b> (blau) sind die Schalter und Taster, von oben nach unten, genau
+      wie in der <a href="waarheidstabel.html">Wahrheitstabelle</a>; in alten Panels auch die DIP-Schalter und Sensoren
+      ohne Klemmen. <b>P1, P2 &hellip;</b> sind die alten Pulsgeber ohne Klemmen. Der
+      <a href="voeding.html#puls2">Impulsgenerator</a> mit zwei Klemmen bekommt keine eigene Linie: Sie sehen seine Impulse an den Ausgängen.</li>
+    <li>Unter der grauen Linie stehen die Ausgänge (grün): <b>L</b> = Lampe (gewöhnlich oder farbig), <b>S</b> = Summer, <b>R</b> = Relais,
       <b>M</b> = Motor (mit <b>L</b> oder <b>R</b> für die Drehrichtung) und <b>D</b> = Anzeige (mit der Ziffer).</li>
     <li>Ein Kästchen ist <b>eine Sekunde</b>; unten steht die Zeit seit dem Beginn der Aufnahme.</li>
     <li>Das Fenster merkt sich die letzten 5 Minuten.</li>
@@ -32,11 +34,11 @@
   </ul>
 
   <div class="tip"><strong>Tipp:</strong> Ein Zeitdiagramm ist vor allem nützlich bei Schaltungen, die sich mit der Zeit
-  ändern: ein <a href="verwerking.html#flipflop">Flipflop</a>, ein Zähler oder ein <a href="invoer.html#puls">Pulsgeber</a>.
+  ändern: ein <a href="verwerking.html#flipflop">Flipflop</a>, ein Zähler oder ein <a href="voeding.html#puls2">Impulsgenerator</a>.
   Dort sagt eine <a href="waarheidstabel.html">Wahrheitstabelle</a> nicht alles, denn der Ausgang hängt auch davon ab,
   was vorher geschah.</div>
 
   <h2>Probieren Sie es</h2>
   <p>Öffnen Sie <a href="les27.html">Lektion 27</a> (Flipflop), schalten Sie die Simulation ein und drücken Sie ein paar
-  Mal auf S und R. Im Zeitdiagramm sehen Sie, dass die LED nach einem kurzen Druck auf S an bleibt, bis Sie auf R
+  Mal auf S und R. Im Zeitdiagramm sehen Sie, dass die Lampe nach einem kurzen Druck auf S an bleibt, bis Sie auf R
   drücken: Das ist der Speicher des Flipflops.</p>

@@ -85,9 +85,12 @@ mkdir -p "$DST"
 cp "$SRC/logicCEF" "$DST/"
 strip "$DST/logicCEF" 2>/dev/null || true
 chmod 755 "$DST/logicCEF"
-# Vaste taal.ini: nieuwe gebruikers starten in het Nederlands, los van de
-# taal die je zelf laatst koos (bestaande installaties houden hun keuze).
-printf '[Settings]\nLanguage=0\n' > "$DST/taal.ini"
+# Vaste taal.ini: nieuwe gebruikers starten in het Nederlands en in het
+# niveau Basis (een rustige onderdelenbalk), los van wat je zelf laatst koos.
+# Bij het .deb-pakket houden bestaande gebruikers hun eigen taal.ini en dus
+# hun keuze; wie de tar.gz over een oudere map uitpakt, start in Basis (zijn
+# eigen instellingen blijven: Paneelkeuze > Niveau > Eigen keuze).
+printf '[Settings]\nLanguage=0\nNiveau=basis\n' > "$DST/taal.ini"
 
 # CEF-runtime voor de ingebouwde help (zie uCefGtk2Widgetset.pas)
 if [ -f "$SRC/ceflib/libcef.so" ]; then

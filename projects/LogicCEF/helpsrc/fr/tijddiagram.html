@@ -6,9 +6,9 @@
 
   <h2>Utilisation</h2>
   <ol class="steps">
-    <li>Ouvrez un panneau ou construisez un circuit avec des entrées (<a href="invoer.html#schakelaar">interrupteurs</a>,
-      <a href="invoer.html#drukknop">boutons-poussoirs</a>, <a href="invoer.html#puls">générateurs d&rsquo;impulsions</a> &hellip;)
-      et des sorties (<a href="uitvoer.html#lamp">lampes</a>, <a href="uitvoer.html#zoemer">buzzers</a> &hellip;).</li>
+    <li>Ouvrez un panneau ou construisez un circuit avec des entrées (<a href="voeding.html#serie">interrupteurs et
+      boutons-poussoirs</a>)
+      et des sorties (<a href="voeding.html#serie">lampes à deux bornes</a> de 5&nbsp;V, <a href="voeding.html#zoemer2">buzzers</a> &hellip;).</li>
     <li>Dans la barre de titre, cliquez sur <img src="../img/knop-tijd.png" class="ico" alt=""><b>Chronogramme</b>.
       La fenêtre s&rsquo;ouvre à droite de Logic.</li>
     <li>Lancez la <a href="simulatie.html">simulation</a> et manœuvrez les interrupteurs et boutons-poussoirs. Dix fois par
@@ -17,9 +17,11 @@
 
   <h2>Lire le chronogramme</h2>
   <ul>
-    <li><b>A, B, C &hellip;</b> (bleu) sont les interrupteurs, boutons-poussoirs, interrupteurs DIP et capteurs, de haut
-      en bas, comme dans la <a href="waarheidstabel.html">table de vérité</a>. <b>P1, P2 &hellip;</b> sont les générateurs d&rsquo;impulsions.</li>
-    <li>Sous la ligne grise se trouvent les sorties (vert)&nbsp;: <b>L</b> = lampe ou LED, <b>B</b> = buzzer, <b>R</b> = relais,
+    <li><b>A, B, C &hellip;</b> (bleu) sont les interrupteurs et boutons-poussoirs, de haut
+      en bas, comme dans la <a href="waarheidstabel.html">table de vérité</a>&nbsp;; dans les anciens panneaux aussi les
+      interrupteurs DIP et capteurs sans bornes. <b>P1, P2 &hellip;</b> sont les anciens générateurs d&rsquo;impulsions sans bornes. Le
+      <a href="voeding.html#puls2">générateur d&rsquo;impulsions</a> à deux bornes n&rsquo;a pas de ligne à lui&nbsp;: vous voyez ses impulsions sur les sorties.</li>
+    <li>Sous la ligne grise se trouvent les sorties (vert)&nbsp;: <b>L</b> = lampe (ordinaire ou de couleur), <b>B</b> = buzzer, <b>R</b> = relais,
       <b>M</b> = moteur (avec <b>L</b> ou <b>R</b> pour le sens) et <b>D</b> = afficheur (avec le chiffre).</li>
     <li>Une case vaut <b>une seconde</b>&nbsp;; en bas, vous voyez le temps depuis le début de l&rsquo;enregistrement.</li>
     <li>La fenêtre garde les 5 dernières minutes.</li>
@@ -33,11 +35,11 @@
   </ul>
 
   <div class="tip"><strong>Astuce&nbsp;:</strong> un chronogramme est surtout utile pour les circuits qui changent dans le
-  temps&nbsp;: une <a href="verwerking.html#flipflop">bascule</a>, un compteur ou un <a href="invoer.html#puls">générateur
+  temps&nbsp;: une <a href="verwerking.html#flipflop">bascule</a>, un compteur ou un <a href="voeding.html#puls2">générateur
   d&rsquo;impulsions</a>. Là, une <a href="waarheidstabel.html">table de vérité</a> ne dit pas tout, car la sortie dépend
   aussi de ce qui s&rsquo;est passé avant.</div>
 
   <h2>Essayez</h2>
   <p>Ouvrez la <a href="les27.html">leçon 27</a> (bascule), lancez la simulation et appuyez quelques fois sur S et R.
-  Dans le chronogramme, vous voyez que la LED reste allumée après un court appui sur S, jusqu&rsquo;à ce que vous
+  Dans le chronogramme, vous voyez que la lampe reste allumée après un court appui sur S, jusqu&rsquo;à ce que vous
   appuyiez sur R&nbsp;: c&rsquo;est la mémoire de la bascule.</p>

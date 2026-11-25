@@ -5,34 +5,49 @@
 
   <h2>1. Choisir un panneau</h2>
   <p>Cliquez sur <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Choix du panneau</b> et choisissez
-  <i>Nieuw standaardpaneel</i> (nouveau panneau standard). Vous obtenez un panneau vide avec la barre des composants à gauche.</p>
+  <i>Nouveau panneau standard</i>. Vous obtenez un panneau vide avec la <a href="onderdelenbalk.html">barre des composants</a> en haut.
+  S&rsquo;il y manque un bouton, le <a href="instellingen.html#niveau">niveau</a> est peut-être trop bas&nbsp;: choisissez-en un avec
+  <b>Choix du panneau &rsaquo; Niveau</b> (pour cet exemple, <b>Base</b> suffit).</p>
 
   <h2>2. Placer des composants</h2>
+  <p>Chaque composant se place de la même façon&nbsp;: cliquez sur son bouton dans la barre des composants (le pointeur de la souris
+  prend la forme du composant), puis cliquez sur le panneau à l&rsquo;endroit voulu.</p>
   <ol class="steps">
-    <li>Dans la barre des composants, cliquez sur <img src="../img/pal-schakelaar.png" class="ico" alt=""><b>Interrupteur</b>.
-      Le pointeur de la souris prend la forme de l&rsquo;interrupteur.</li>
-    <li>Cliquez sur le panneau à l&rsquo;endroit voulu.</li>
-    <li>Faites de même pour un deuxième interrupteur, une
-      <img src="../img/pal-en.png" class="ico" alt=""><b>porte ET</b> et une
-      <img src="../img/pal-lamp.png" class="ico" alt=""><b>lampe</b>.</li>
+    <li>Commencez par l&rsquo;alimentation, dans le groupe Alimentation&nbsp;: placez la <img src="../img/pal-bron.png" class="ico" alt=""><b>source</b>
+      en haut au milieu, le <img src="../img/pal-rail-plus.png" class="ico" alt=""><b>rail +</b> rouge à gauche et le
+      <img src="../img/pal-rail-min.png" class="ico" alt=""><b>rail &minus;</b> bleu à droite.</li>
+    <li>Dans le même groupe, cliquez sur l&rsquo;<img src="../img/pal-schakelaar2.png" class="ico" alt=""><b>interrupteur</b> et placez-le
+      à droite du rail +. Placez un deuxième interrupteur en dessous.</li>
+    <li>Placez une <img src="../img/pal-en.png" class="ico" alt=""><b>porte ET</b> au milieu du panneau.</li>
+    <li>Placez une <img src="../img/pal-lamp2.png" class="ico" alt=""><a href="voeding.html#serie"><b>lampe à deux bornes</b></a>
+      (aussi dans le groupe Alimentation) à droite de la porte, un peu avant le rail &minus;.</li>
+    <li>La lampe sera branchée sur une porte et doit donc être une lampe pour 5&nbsp;V&nbsp;: clic droit sur la lampe &rsaquo;
+      <b>Tension de la lampe</b> &rsaquo; <b>Lampe pour 5&nbsp;V (aussi sur une porte)</b>.</li>
   </ol>
-  <p>Faites glisser un composant placé avec le bouton gauche de la souris pour le déplacer.</p>
+  <p>Faites glisser un composant placé avec le bouton gauche de la souris pour le déplacer. Faites glisser une extrémité
+  d&rsquo;un rail pour l&rsquo;allonger.</p>
 
   <h2>3. Relier</h2>
   <ol class="steps">
     <li>Dans la barre des composants, cliquez sur <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>.
       Le pointeur devient un fil.</li>
-    <li>Cliquez sur la sortie du premier interrupteur. Un bout de fil apparaît.</li>
-    <li>Faites glisser l&rsquo;extrémité du fil vers une entrée de la porte ET.</li>
-    <li>Reliez de la même façon le deuxième interrupteur à l&rsquo;autre entrée, puis la sortie de la porte ET à la lampe.</li>
+    <li>Cliquez sur la borne + de la source (en bas à gauche). Un bout de fil apparaît. Faites glisser son extrémité vers la ligne
+      du rail +. Reliez de la même façon la borne &minus; de la source (en bas à droite) à la ligne du rail &minus;.</li>
+    <li>Cliquez sur la ligne du rail +, à la hauteur du premier interrupteur, et faites glisser l&rsquo;extrémité du fil vers la
+      borne gauche de cet interrupteur. Faites de même pour le deuxième interrupteur.</li>
+    <li>Tirez un fil de la borne droite du premier interrupteur vers une entrée de la porte ET, et un fil de la
+      borne droite du deuxième interrupteur vers l&rsquo;autre entrée.</li>
+    <li>Tirez un fil de la sortie de la porte ET vers la borne gauche de la lampe, et un fil de la borne droite
+      de la lampe vers la ligne du rail &minus;&nbsp;: le circuit est ainsi fermé.</li>
   </ol>
-  <p>Plus de détails dans <a href="verbindingen.html">Connexions</a>.</p>
+  <p>Plus de détails dans <a href="verbindingen.html">Connexions</a> et dans <a href="voeding.html#kring">Le circuit d&rsquo;alimentation</a>.</p>
 
   <h2>4. Simuler</h2>
   <p>Cliquez sur <img src="../img/knop-simuleren.png" class="ico" alt=""><b>Démarrer la simulation</b>.
   Les boutons de modification et la barre des composants disparaissent. Cliquez sur les interrupteurs&nbsp;:
   la lampe ne s&rsquo;allume que si les deux sont enclenchés. Cliquez à nouveau sur le bouton de simulation
-  pour revenir à la modification.</p>
+  pour revenir à la modification.
+  Le même circuit est prêt à l&rsquo;emploi dans la <a href="les04.html">leçon 4&nbsp;: La porte ET</a>.</p>
 
   <h2>5. Enregistrer</h2>
   <p>Cliquez sur <img src="../img/knop-opslaan.png" class="ico" alt=""><b>Enregistrer le panneau</b> et donnez un nom.

@@ -16,7 +16,7 @@ unit uWelkom;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, uLangPo;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, uLangPo, uNiveau;
 
 type
   TWelkomKeuze = (wkLes1, wkRondleiding, wkLeerpad, wkLeeg);
@@ -27,24 +27,34 @@ type
   TWelkomForm = class(TForm)
   private
     FTaal: string;
-    FTitel, FIntro, FTaalLabel: TLabel;
-    FTaalBox: TComboBox;
+    FTitel, FIntro, FTaalLabel, FNiveauLabel, FNiveauUitleg: TLabel;
+    FTaalBox, FNiveauBox: TComboBox;
     FKnop: array[TWelkomKeuze] of TButton;
     FUitleg: array[TWelkomKeuze] of TLabel;
     FToon: TCheckBox;
     FKeuze: TWelkomKeuze;
     FOnTaal: TWelkomTaalEvent;
+    FOnNiveau: TWelkomTaalEvent;
     FBezig: Boolean;
     function T(const NL, EN, FR, DE: string): string;
     procedure KnopClick(Sender: TObject);
     procedure TaalBoxChange(Sender: TObject);
+    procedure NiveauBoxChange(Sender: TObject);
+    procedure ToonNiveauUitleg;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   public
     constructor CreateWelkom(AOwner: TComponent; ATalen: TStrings; ATaalIndex: Integer);
     procedure SetTaal(const ATaal: string; ATaalIndex: Integer);
+    // het niveau in de keuzelijst zetten (plaats in NiveauVolgorde van uNiveau)
+    procedure SetNiveau(AIndex: Integer);
+    // voor elke keer dat het venster getoond wordt: sluiten met het kruisje
+    // is "Leeg paneel", en het vinkje volgt wat bewaard is
+    procedure Voorbereid(AToon: Boolean);
     function ToonBijStart: Boolean;
     property Keuze: TWelkomKeuze read FKeuze;
     property OnTaal: TWelkomTaalEvent read FOnTaal write FOnTaal;
+    // niveau gekozen: AIndex = plaats in NiveauVolgorde
+    property OnNiveau: TWelkomTaalEvent read FOnNiveau write FOnNiveau;
   end;
 
   { TRondleiding }
@@ -147,7 +157,26 @@ begin
   FTaalBox.ItemIndex := ATaalIndex;
   FTaalBox.OnChange := @TaalBoxChange;
 
-  Y := 154;
+  // niveau van de onderdelenbalk: zelfde vorm als de taalkeuze, met een
+  // regel uitleg eronder
+  FNiveauLabel := TLabel.Create(Self);
+  FNiveauLabel.Parent := Self;
+  FNiveauLabel.SetBounds(20, 156, 200, 20);
+
+  FNiveauBox := TComboBox.Create(Self);
+  FNiveauBox.Parent := Self;
+  FNiveauBox.Style := csDropDownList;
+  FNiveauBox.SetBounds(230, 152, 250, 24);
+  FNiveauBox.OnChange := @NiveauBoxChange;
+
+  FNiveauUitleg := TLabel.Create(Self);
+  FNiveauUitleg.Parent := Self;
+  FNiveauUitleg.WordWrap := True;
+  FNiveauUitleg.AutoSize := False;
+  FNiveauUitleg.SetBounds(20, 192, 520, 40);
+  FNiveauUitleg.Font.Color := clGrayText;
+
+  Y := 238;   // ruimte voor een hogere keuzelijst (GTK2) en twee regels uitleg
   for K := Low(TWelkomKeuze) to High(TWelkomKeuze) do
   begin
     FKnop[K] := TButton.Create(Self);
@@ -183,15 +212,26 @@ begin
 end;
 
 procedure TWelkomForm.SetTaal(const ATaal: string; ATaalIndex: Integer);
+var
+  i, Oud: Integer;
 begin
   FTaal := ATaal;
   FBezig := True;
   try
     if (ATaalIndex >= 0) and (ATaalIndex < FTaalBox.Items.Count) then
       FTaalBox.ItemIndex := ATaalIndex;
+    // de namen van de niveaus in de nieuwe taal; de keuze blijft
+    Oud := FNiveauBox.ItemIndex;
+    FNiveauBox.Items.Clear;
+    for i := Low(NiveauVolgorde) to High(NiveauVolgorde) do
+      FNiveauBox.Items.Add(NiveauNaam(FTaal, NiveauVolgorde[i]));
+    if Oud < 0 then Oud := NiveauIndex(nvEigen);
+    FNiveauBox.ItemIndex := Oud;
   finally
     FBezig := False;
   end;
+  FNiveauLabel.Caption := T('Niveau:', 'Level:', 'Niveau :', 'Stufe:');
+  ToonNiveauUitleg;
   Caption := T('Welkom', 'Welcome', 'Bienvenue', 'Willkommen');
   FTitel.Caption := T('Welkom bij Logic', 'Welcome to Logic', 'Bienvenue dans Logic', 'Willkommen bei Logic');
   FIntro.Caption := T(
@@ -249,6 +289,42 @@ procedure TWelkomForm.TaalBoxChange(Sender: TObject);
 begin
   if FBezig then Exit;
   if Assigned(FOnTaal) then FOnTaal(FTaalBox.ItemIndex);
+end;
+
+procedure TWelkomForm.ToonNiveauUitleg;
+var
+  i: Integer;
+begin
+  i := FNiveauBox.ItemIndex;
+  if (i >= Low(NiveauVolgorde)) and (i <= High(NiveauVolgorde)) then
+    FNiveauUitleg.Caption := NiveauUitleg(FTaal, NiveauVolgorde[i])
+  else
+    FNiveauUitleg.Caption := '';
+end;
+
+procedure TWelkomForm.NiveauBoxChange(Sender: TObject);
+begin
+  ToonNiveauUitleg;
+  if FBezig then Exit;
+  if Assigned(FOnNiveau) then FOnNiveau(FNiveauBox.ItemIndex);
+end;
+
+procedure TWelkomForm.SetNiveau(AIndex: Integer);
+begin
+  FBezig := True;
+  try
+    if (AIndex >= 0) and (AIndex < FNiveauBox.Items.Count) then
+      FNiveauBox.ItemIndex := AIndex;
+  finally
+    FBezig := False;
+  end;
+  ToonNiveauUitleg;
+end;
+
+procedure TWelkomForm.Voorbereid(AToon: Boolean);
+begin
+  FKeuze := wkLeeg;
+  FToon.Checked := AToon;
 end;
 
 procedure TWelkomForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

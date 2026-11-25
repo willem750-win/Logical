@@ -6,14 +6,14 @@
 
   <figure>
     <img src="../img/waarheidstabel-voorbeeld.png" alt="Truth table window with the columns A, B, L1 and L2 and four rows">
-    <figcaption>The truth table of the half adder from <a href="les26.html">lesson 26</a>: L1 (the LED, sum) is on at
-    01 and 10, L2 (the lamp, carry) only at 11.</figcaption>
+    <figcaption>The truth table of the half adder from <a href="les26.html">lesson 26</a>: L1 (the red lamp, sum) is on at
+    01 and 10, L2 (the ordinary lamp, carry) only at 11.</figcaption>
   </figure>
 
   <h2>How to use it</h2>
   <ol class="steps">
-    <li>Build a circuit with <a href="invoer.html#schakelaar">switches</a> or <a href="invoer.html#drukknop">push buttons</a>,
-      gates and <a href="uitvoer.html#lamp">lamps</a> or <a href="uitvoer.html#zoemer">buzzers</a>, or open an example.</li>
+    <li>Build a circuit with <a href="voeding.html#serie">switches or push buttons</a>,
+      gates and <a href="voeding.html#serie">lamps with two terminals</a> for 5&nbsp;V or <a href="voeding.html#zoemer2">buzzers</a>, or open an example.</li>
     <li>In the title bar, click <img src="../img/knop-waarheid.png" class="ico" alt=""><b>Truth table</b>.</li>
     <li>The window shows the table and follows your panel: if you add, remove or move a component or wire, Logic works out the table again by itself.</li>
     <li>Flip a switch (in the simulation): the row with the <b>red border</b> is the current position and moves along.</li>
@@ -21,11 +21,11 @@
 
   <h2>Reading the table</h2>
   <ul>
-    <li><b>A, B, C &hellip;</b> (light blue) are the inputs, from top to bottom: <a href="invoer.html#schakelaar">switches</a>, <a href="invoer.html#drukknop">push buttons</a>, <a href="invoer.html#dipswitch">DIP switches</a>, the <a href="invoer.html#sensor">light sensor</a> and the <a href="invoer.html#warm">heat sensor</a>. If two are at the
+    <li><b>A, B, C &hellip;</b> (light blue) are the inputs, from top to bottom: the <a href="voeding.html#serie">switches and push buttons</a> and the <a href="voeding.html#wisselschakelaar">changeover switches</a>. In old panels the parts without terminals count too: <a href="invoer.html#schakelaar">switches</a>, <a href="invoer.html#drukknop">push buttons</a>, <a href="invoer.html#dipswitch">DIP switches</a>, the <a href="invoer.html#sensor">light sensor</a> and the <a href="invoer.html#warm">heat sensor</a>. If two are at the
       same height, the left one comes first.</li>
-    <li><b>L1, L2 &hellip;</b> (light yellow) are the lamps and LEDs, also from top to bottom; <b>B1, B2 &hellip;</b> are the buzzers, <b>R1</b> &hellip; the relays and switching relays.</li>
+    <li><b>L1, L2 &hellip;</b> (light yellow) are the lamps (ordinary or coloured), also from top to bottom; <b>B1, B2 &hellip;</b> are the buzzers, <b>R1</b> &hellip; the relays and switching relays.</li>
     <li>A <b>motor</b> (<b>M1</b> &hellip;) shows <b>L</b> (turns anticlockwise), <b>R</b> (clockwise) or <b>0</b> (stopped). A <b>display</b> (<b>D1</b> &hellip;) shows the digit on it; <b>-</b> means dark (no power).</li>
-    <li>The pulse generator, the limit switch and the LogicRun components (person, cart &hellip;) are left out: they depend on time or on a program.</li>
+    <li>The <a href="voeding.html#puls2">pulse generator</a>, the limit switch and the LogicRun components (person, cart &hellip;) are left out: they depend on time or on a program. The <a href="voeding.html#dip2">DIP switch</a>, the LDR and the NTC with terminals are no column either: they stay as you set them.</li>
     <li>A <b>1</b> means on, a <b>0</b> off. An output that is on turns green.</li>
     <li>Each row is one position. With 2 switches there are 4 rows, with 3 switches 8 rows; the table handles up to 6 switches (64 rows).</li>
   </ul>

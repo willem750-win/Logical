@@ -4,6 +4,37 @@
   l&rsquo;apparence du panneau et de la barre des composants. La fenêtre des réglages apparaît au milieu
   du panneau et comporte trois onglets&nbsp;: <b>Général</b>, <b>Éléments de commutation</b> et <b>Conseils</b>.</p>
 
+  <h2 id="niveau">Niveau de la barre des composants</h2>
+  <p>La barre des composants peut afficher près de soixante boutons. Avec un <b>niveau</b>, vous choisissez d&rsquo;un coup
+  combien il y en a. Chaque niveau contient tout ce que contient le précédent.</p>
+  <table>
+    <tr><th>Niveau</th><th>Que contient-il&nbsp;?</th><th>Pour quelles leçons&nbsp;?</th></tr>
+    <tr><td class="name">Base</td><td>Source, rails, interrupteur et bouton-poussoir, lampe, les portes ET, OU et NON, buzzer,
+      relais, résistance, LDR, CTN, générateur d&rsquo;impulsions, interrupteur DIP, compteur, mémoire, afficheur, voltmètre,
+      milliampèremètre et transistor.</td><td>Le bloc énergie, les leçons 1 à 11 et les exercices (l&rsquo;exercice 6 est plus
+      facile en Étendu, avec la porte OU exclusif).</td></tr>
+    <tr><td class="name">Étendu</td><td>Aussi le magnétisme, fusible, source alternative, les portes OU exclusif, NON-ET et
+      NON-OU, bascule, LED, condensateur, potentiomètre, diode, oscilloscope, wattmètre et inverseur.</td><td>Le magnétisme
+      et les leçons 23 à 42.</td></tr>
+    <tr><td class="name">Avancé (tout)</td><td>Tout&nbsp;: aussi LogicRun, moteur, compteur de pas, chronomètre, barrière,
+      personne, chariot, boîte à musique, feu de signalisation et la <a href="board.html">carte Arduino</a>.</td><td>Les
+      leçons 12 à 22.</td></tr>
+    <tr><td class="name">Choix personnel (Réglages)</td><td>Ce que vous activez et désactivez vous-même dans l&rsquo;onglet
+      <a href="#schakelelementen">SchakelElementen</a>.</td><td>&ndash;</td></tr>
+  </table>
+  <p>Vous choisissez le niveau dans la fenêtre de bienvenue, ou plus tard avec <b>Choix du panneau &rsaquo; Niveau</b> dans
+  la <a href="knoppen.html#paneelkeuze">barre de boutons</a>. Le niveau actif est affiché dans la barre de titre de la fenêtre.</p>
+  <ul>
+    <li>Un niveau ne modifie pas vos propres réglages&nbsp;: <b>Choix personnel</b> les rétablit.</li>
+    <li>Chaque leçon et chaque panneau s&rsquo;ouvre à tous les niveaux et fonctionne normalement. Si un panneau contient des
+      composants d&rsquo;un niveau supérieur, Logic demande une fois si leurs boutons peuvent être ajoutés. Cela vaut
+      jusqu&rsquo;à la fermeture de Logic.</li>
+    <li>Si vous activez ou désactivez vous-même des boutons dans Réglages alors qu&rsquo;un niveau est actif, Logic demande
+      à la fermeture si cela doit devenir votre choix personnel.</li>
+    <li>Pour la classe&nbsp;: le niveau se trouve dans le fichier <code>taal.ini</code> à côté du programme, sous la forme
+      <code>Niveau=basis</code>, <code>uitgebreid</code>, <code>gevorderden</code> ou <code>eigen</code>.</li>
+  </ul>
+
   <h2>Modifier un réglage</h2>
   <ol class="steps">
     <li>Dans la liste, cochez la case de la propriété à modifier.</li>

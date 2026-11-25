@@ -1,13 +1,13 @@
 <!-- titel: Lesson 15 - Counting in binary -->
-  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 15 of 42</p>
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#gevorderden">Advanced</a> &rsaquo; Lesson 15 of 42 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Advanced</a></p>
   <h1>Counting in binary with LogicRun</h1>
   <div class="goal"><strong>Goal:</strong> understand how a binary number works: four lamps and a display show the same
   number, in two different ways.</div>
 
   <p><a class="open" href="../../panels/lessen/les15-binair-tellen.lpl">&#9654; Open this example</a></p>
   <figure>
-    <img src="../img/les15-binair-tellen.png" alt="LogicRun counts; four LEDs show 1000 and the display shows 8">
-    <figcaption>Step 9: only LED 8 is lit: the number is 8. The display shows 8.</figcaption>
+    <img src="../img/les15-binair-tellen.png" alt="LogicRun counts; four red lamps show 1000 and the display shows 8">
+    <figcaption>Step 9: only the lamp with the value 8 (the bottom one) is lit: the number is 8. The display shows 8.</figcaption>
   </figure>
 
   <h2>What do you see?</h2>
@@ -15,8 +15,9 @@
     <li>A <a href="voeding.html#serie">switch</a> on <b>DIN1</b> (function <b>on/off</b>): counting on or off.</li>
     <li>The <a href="logicrun.html">LogicRun block</a> with 16 steps: step 1 is 0, step 2 is 1, &hellip; step 16 is 15.
       Each step lasts 1 second.</li>
-    <li>Four red <a href="uitvoer.html#led">LEDs</a> on <b>UIT0</b> to <b>UIT3</b>. Each LED has its own value:
-      UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
+    <li>Four red 5&nbsp;V <a href="voeding.html#serie">lamps with two terminals</a>, one below the other, on <b>UIT0</b> to <b>UIT3</b>.
+      From each output a wire runs to the left terminal of the lamp, and from the right terminal of the lamp to the &minus; rail.
+      Each lamp has its own value, from top to bottom: UIT0 = <b>1</b>, UIT1 = <b>2</b>, UIT2 = <b>4</b>, UIT3 = <b>8</b>.</li>
     <li>A <a href="uitvoer.html#display">display</a> with four wires: UIT0, UIT1, UIT2 and UIT3 also go to the inputs <b>1</b>, <b>2</b>,
       <b>4</b> and <b>8</b> of the display. It reads the four outputs as one number.</li>
   </ul>
@@ -42,7 +43,7 @@
   <h2>Try it</h2>
   <ol class="steps">
     <li>Start the simulation and switch the switch on: LogicRun starts counting.</li>
-    <li>Look at which LEDs are lit and add up their values. Does it match the display?</li>
+    <li>Look at which lamps are lit and add up their values. Does it match the display?</li>
     <li>Open the LogicRun window (double-click the block) and click <b>Pause</b>. <b>Step</b> moves on one number.
       The <b>T1</b> column shows the display digit for each step.</li>
     <li>After 15 it starts again at 0. Switch the switch off: everything stops.</li>
@@ -53,7 +54,7 @@
   <details>
     <summary>Solution</summary>
     <p>Use <b>- step</b> to remove steps until 10 are left. Click the <b>T1</b> column of step 1 and choose <b>9</b>,
-    for step 2 <b>8</b>, &hellip; up to step 10 <b>0</b>. LogicRun switches on the right LEDs itself. Untick
+    for step 2 <b>8</b>, &hellip; up to step 10 <b>0</b>. LogicRun switches on the right lamps itself. Untick
     <b>Repeat</b>: after the last step the program stays where it is.</p>
   </details>
 

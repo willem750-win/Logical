@@ -3,6 +3,8 @@
   <p class="lead">Die Bauteilleiste befindet sich oben auf dem Panel. Dort wählen Sie ein Bauteil und
   setzen es anschließend mit einem Klick auf das Panel. Ist das Fenster zu schmal für alle Knöpfe, kommen die übrigen Knöpfe in eine zweite Reihe.</p>
 
+  <div class="tip"><strong>Fehlt eine Taste?</strong> Wählen Sie eine höhere <a href="instellingen.html#niveau">Stufe</a> mit <b>Panelwahl &rsaquo; Stufe</b>.</div>
+
   <h2>Ein Bauteil platzieren</h2>
   <ol class="steps">
     <li>Klicken Sie in der Leiste auf das Bauteil. Der Mauszeiger nimmt die Form dieses Bauteils an.</li>
@@ -12,8 +14,8 @@
   <div class="tip"><strong>Tipp:</strong> Halten Sie die Maus über eine Schaltfläche der Leiste, um zu sehen, welches Bauteil es ist.</div>
 
   <h2>Aufbau</h2>
-  <p>Die Bauteile sind in drei Gruppen eingeteilt, von links nach rechts in einer Schaltung:
-  Eingang &rarr; Verarbeitung &rarr; Ausgang.</p>
+  <p>Nach der Schaltfläche Verbindung folgen drei Gruppen von Schaltflächen: Verarbeitung, Ausgänge und Versorgung.
+  In einer Schaltung stehen die Bauteile von links nach rechts: Eingang &rarr; Verarbeitung &rarr; Ausgang.</p>
 
   <h3>Verbinden</h3>
   <table>
@@ -41,15 +43,14 @@
   </table>
 
   <h3>Ausgänge</h3>
+  <p>Lampe, Summer und Relais stehen in der Gruppe <a href="#voeding">Versorgung</a>: Sie haben zwei Klemmen, zwischen dem Ausgang eines Gatters und der &minus; Schiene. Die alte Lampe, der alte Summer und das alte Relais ohne Klemmen (siehe <a href="uitvoer.html">Ausgänge</a>) stehen nicht mehr in der Leiste; nur die alte Lampe können Sie in den <a href="instellingen.html#schakelelementen">Einstellungen</a> noch selbst einschalten.</p>
   <table>
     <tr><th>Schaltfläche</th><th>Name</th><th>Was ist das?</th></tr>
-    <tr><td class="btn"><img src="../img/pal-lamp.png" alt=""></td><td class="name"><a href="uitvoer.html#lamp">Lampe</a></td><td>Leuchtet, wenn der Eingang ein ist.</td></tr>
     <tr><td class="btn"><img src="../img/pal-motor.png" alt=""></td><td class="name"><a href="uitvoer.html#motor">Motor</a></td><td>Dreht links (Eingang L) oder rechts (Eingang R).</td></tr>
     <tr><td class="btn"><img src="../img/pal-display.png" alt=""></td><td class="name"><a href="uitvoer.html#display">7-Segment-Anzeige</a></td><td>Zeigt eine Ziffer oder einen Buchstaben.</td></tr>
     <tr><td class="btn"><img src="../img/pal-meter.png" alt=""></td><td class="name"><a href="voeding.html#voltmeter">Voltmeter</a></td><td>Zeigt die Spannung, zum Beispiel 3,3&nbsp;V.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="voeding.html#ampmeter">Milliamperemeter</a></td><td>Zeigt den Strom in mA; nur sichtbar, wenn die Schaltflächen der Versorgung eingeschaltet sind.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="voeding.html#wattmeter">Wattmeter</a></td><td>Zeigt die Leistung in W von allem, was dahinter hängt; nur sichtbar, wenn die Schaltflächen der Versorgung eingeschaltet sind.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="voeding.html#scoop">Oszilloskop</a></td><td>Zeichnet die Spannung zwischen + und &minus; über die Zeit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-ampmeter.png" alt=""></td><td class="name"><a href="voeding.html#ampmeter">Milliamperemeter</a></td><td>Zeigt den Strom in mA; es wird in Reihe in den Stromkreis gesetzt.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-wattmeter.png" alt=""></td><td class="name"><a href="voeding.html#wattmeter">Wattmeter</a></td><td>Zeigt die Leistung in W von allem, was dahinter hängt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-persoon.png" alt=""></td><td class="name"><a href="uitvoer.html#persoon">Person</a></td><td>Geht nach links (Eingang L) oder rechts (Eingang R); die Endschalter S1 und S2 melden, wo sie steht.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wagen.png" alt=""></td><td class="name"><a href="uitvoer.html#wagen">Wagen</a></td><td>Fährt vorwärts (Eingang V) oder rückwärts (Eingang A) über eine kurvige Straße; Start, Finish und Tel (ein Impuls an jedem Pfosten) melden, wo er ist.</td></tr>
     <tr><td class="btn"><img src="../img/pal-muziek.png" alt=""></td><td class="name"><a href="uitvoer.html#muziek">Spieldose</a></td><td>Tastatur mit 8 Klaviertasten (C bis C'), ein Eingang pro Taste: ein lässt die Taste leuchten und die Note klingen.</td></tr>
@@ -69,15 +70,19 @@
     <tr><td class="btn"><img src="../img/pal-potmeter.png" alt=""></td><td class="name"><a href="voeding.html#potmeter">Potentiometer</a></td><td>Widerstand mit einem Schleifer und drei Klemmen (A, B und L); ziehen Sie den Schleifer mit der Maus.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ldr.png" alt=""></td><td class="name"><a href="voeding.html#ldr">LDR</a></td><td>Fotowiderstand; das Licht mit dem Schieberegler einstellen.</td></tr>
     <tr><td class="btn"><img src="../img/pal-ntc.png" alt=""></td><td class="name"><a href="voeding.html#ntc">NTC</a></td><td>Heißleiter; die Temperatur mit dem Schieberegler einstellen.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-lamp2.png" alt=""></td><td class="name"><a href="voeding.html#serie">Lampe</a></td><td>Lampe mit zwei Klemmen, für 12&nbsp;V oder 5&nbsp;V; eine 5-V-Lampe leuchtet auch an einem Gatter. Rechtsklick &rsaquo; Farbe: rot, grün oder orange.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="voeding.html#zoemer2">Summer</a></td><td>Summer mit zwei Klemmen: summt ab 10&nbsp;mA, auch an einem Gatter.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="voeding.html#relais2">Relais</a></td><td>Spule mit zwei Klemmen und ein Wechsler (C, Schließer, Öffner).</td></tr>
+    <tr><td class="btn"><img src="../img/pal-led2.png" alt=""></td><td class="name"><a href="voeding.html#led">LED mit 2 Klemmen</a></td><td>Leitet nur in eine Richtung; gehört mit einem Vorwiderstand.</td></tr>
     <tr><td class="btn"><img src="../img/pal-diode.png" alt=""></td><td class="name"><a href="voeding.html#diode">Diode</a></td><td>Lässt Strom nur in eine Richtung durch (von A nach K), über 0,7&nbsp;V.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-condensator.png" alt=""></td><td class="name"><a href="voeding.html#condensator">Kondensator</a></td><td>Lädt und entlädt sich mit der Zeit.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-schakelaar2.png" alt=""></td><td class="name"><a href="voeding.html#serie">Schalter oder Taster</a></td><td>Schalter mit zwei Klemmen; mit Rechtsklick &rsaquo; Art &rsaquo; Taster wird er zum Taster.</td></tr>
     <tr><td class="btn"><img src="../img/pal-wisselschakelaar.png" alt=""></td><td class="name"><a href="voeding.html#wisselschakelaar">Wechselschalter</a></td><td>Drei Klemmen: Die Mitte ist mit A oder B verbunden. Zwei davon schalten eine Lampe von zwei Stellen (Treppenhaus).</td></tr>
     <tr><td class="btn"><img src="../img/pal-puls2.png" alt=""></td><td class="name"><a href="voeding.html#puls2">Impulsgenerator</a></td><td>Schalter, der sich von selbst öffnet und schließt: Impulse von 0,5 bis 5&nbsp;Hz.</td></tr>
     <tr><td class="btn"><img src="../img/pal-dip2.png" alt=""></td><td class="name"><a href="voeding.html#dip2">DIP-Schalter</a></td><td>Vier kleine Schalter: eine Zahl von 0 bis 15 an den Ausgängen 8, 4, 2 und 1.</td></tr>
+    <tr><td class="btn"></td><td class="name"><a href="voeding.html#serie">Voltmeter mit 2 Klemmen</a></td><td>Schmale Schaltfläche mit einem V im Kreis. Misst den Spannungsunterschied zwischen seinen beiden Klemmen.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-scoop.png" alt=""></td><td class="name"><a href="voeding.html#scoop">Oszilloskop</a></td><td>Zeichnet die Spannung zwischen + und &minus; über die Zeit.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transistor.png" alt=""></td><td class="name"><a href="voeding.html#transistor">Transistor</a></td><td>NPN oder PNP mit drei Klemmen (C, B und E): I<sub>c</sub> = &beta; &times; I<sub>b</sub>.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-zoemer2.png" alt=""></td><td class="name"><a href="voeding.html#zoemer2">Summer</a></td><td>Summer mit zwei Klemmen: summt ab 10&nbsp;mA, auch an einem Gatter.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-relais2.png" alt=""></td><td class="name"><a href="voeding.html#relais2">Relais</a></td><td>Spule mit zwei Klemmen und ein Wechsler (C, Schließer, Öffner).</td></tr>
-    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name"><a href="board.html">Arduino-Eingang</a></td><td>Ein echter Taster an einem Pin eines Arduino-Boards, als Taster mit zwei Klemmen.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name"><a href="board.html">Arduino-Ausgang</a></td><td>Eine 5-V-Lampe, die einen echten Pin eines Arduino-Boards hoch oder niedrig setzt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-magneet.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Stabmagnet</a></td><td>Magnet mit einem Nordpol (rot) und einem Südpol (blau), ohne Klemmen.</td></tr>
     <tr><td class="btn"><img src="../img/pal-kompas.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Kompass</a></td><td>Eine Nadel, die entlang des Magnetfelds zeigt.</td></tr>
     <tr><td class="btn"><img src="../img/pal-veldplaat.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Feldlinienplatte</a></td><td>Zeigt die Feldlinien der Magnete, die darauf liegen, wie Eisenfeilspäne.</td></tr>
@@ -89,6 +94,8 @@
     <tr><td class="btn"><img src="../img/pal-nulmeter.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Nullpunktmessgerät</a></td><td>Galvanometer mit der Null in der Mitte: zeigt den Strom und seine Richtung.</td></tr>
     <tr><td class="btn"><img src="../img/pal-draaimagneet.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Drehender Magnet</a></td><td>Ein starker Magnet auf einer Achse, wie in einem Dynamo; klicken, damit er sich dreht.</td></tr>
     <tr><td class="btn"><img src="../img/pal-transformator.png" alt=""></td><td class="name"><a href="voeding.html#magnetisme">Transformator</a></td><td>Zwei Spulen auf einem Eisenkern: setzt eine Wechselspannung herauf oder herunter.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name"><a href="board.html">Arduino-Eingang</a></td><td>Ein echter Taster an einem Pin eines Arduino-Boards, als Taster mit zwei Klemmen.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name"><a href="board.html">Arduino-Ausgang</a></td><td>Eine 5-V-Lampe, die einen echten Pin eines Arduino-Boards hoch oder niedrig setzt.</td></tr>
   </table>
 
   <div class="tip"><strong>Achtung:</strong> Welche Bauteile in der Leiste stehen, stellen Sie unter

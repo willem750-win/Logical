@@ -22,9 +22,12 @@ if (-not $Out) { $Out = Join-Path (Split-Path $Src -Parent) 'Resultaat/help' }
 $Langs = 'nl', 'en', 'fr', 'de'
 $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
 
-# Volgorde en groepen van de navigatie. 'group:' = tussenkop.
+# Volgorde en groepen van de navigatie. 'group:' = tussenkop. Een naam met
+# een # (pagina#anker) is een ingang naar een deel van een pagina: de drie
+# niveaus van het leerpad.
 $Pages = @(
-  'index', 'installeren', 'werkwijze', 'leerpad', 'oefeningen',
+  'index', 'installeren', 'werkwijze', 'leerpad',
+  'leerpad#niveau-basis', 'leerpad#niveau-uitgebreid', 'leerpad#niveau-gevorderden', 'oefeningen',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
   'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding', 'board',
   'group:werken', 'verbindingen', 'objecten', 'simulatie', 'logicrun', 'waarheidstabel', 'tijddiagram', 'instellingen'
@@ -32,24 +35,28 @@ $Pages = @(
 
 $Nav = @{
   nl = @{ index = 'Start'; installeren = 'Installeren'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; oefeningen = 'Oefeningen'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
+          'leerpad#niveau-basis' = 'Basis'; 'leerpad#niveau-uitgebreid' = 'Uitgebreid'; 'leerpad#niveau-gevorderden' = 'Gevorderden';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
           voeding = 'Voeding &amp; voltmeter'; board = 'Arduino-board';
           verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie'; logicrun = 'LogicRun'; waarheidstabel = 'Waarheidstabel'; tijddiagram = 'Tijddiagram';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
   en = @{ index = 'Start'; installeren = 'Installing'; werkwijze = 'Getting started'; leerpad = 'Learning path'; oefeningen = 'Exercises'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
+          'leerpad#niveau-basis' = 'Basic'; 'leerpad#niveau-uitgebreid' = 'Extended'; 'leerpad#niveau-gevorderden' = 'Advanced';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
           voeding = 'Power &amp; voltmeter'; board = 'Arduino board';
           verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Truth table'; tijddiagram = 'Timing diagram';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
   fr = @{ index = 'Accueil'; installeren = 'Installation'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; oefeningen = 'Exercices'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
+          'leerpad#niveau-basis' = 'Base'; 'leerpad#niveau-uitgebreid' = 'Étendu'; 'leerpad#niveau-gevorderden' = 'Avancé';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
           voeding = 'Alimentation &amp; voltmètre'; board = 'Carte Arduino';
           verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Table de vérité'; tijddiagram = 'Chronogramme';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
   de = @{ index = 'Start'; installeren = 'Installation'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; oefeningen = 'Übungen'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
+          'leerpad#niveau-basis' = 'Basis'; 'leerpad#niveau-uitgebreid' = 'Erweitert'; 'leerpad#niveau-gevorderden' = 'Fortgeschritten';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
           voeding = 'Versorgung &amp; Voltmeter'; board = 'Arduino-Board';
           verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Wahrheitstabelle'; tijddiagram = 'Zeitdiagramm';
@@ -83,8 +90,17 @@ foreach ($L in $Langs) {
   # gewone pagina's, plus de lessen van het leerpad (les*.html): die staan niet
   # apart in de navigatie, daar is 'Leerpad' actief
   $Lessons = @(Get-ChildItem $LangDir -Filter 'les*.html' | Sort-Object Name | ForEach-Object { $_.BaseName })
-  foreach ($P in @($Pages | Where-Object { $_ -notlike 'group:*' }) + $Lessons) {
+  foreach ($P in @($Pages | Where-Object { $_ -notlike 'group:*' -and $_ -notlike '*#*' }) + $Lessons) {
     $Active = if ($P -like 'les*') { 'leerpad' } else { $P }
+    # een les hoort bij een niveau: energieblok en les 1-11 Basis, les 12-22
+    # Gevorderden, magnetisme en les 23-42 Uitgebreid
+    $ActiefNiveau = ''
+    if ($P -match '^lesp[0-9]+$') { $ActiefNiveau = 'leerpad#niveau-basis' }
+    elseif ($P -match '^lesm[0-9]+$') { $ActiefNiveau = 'leerpad#niveau-uitgebreid' }
+    elseif ($P -match '^les([0-9]+)b?$') {
+      $Nr = [int]$Matches[1]
+      $ActiefNiveau = if ($Nr -le 11) { 'leerpad#niveau-basis' } elseif ($Nr -le 22) { 'leerpad#niveau-gevorderden' } else { 'leerpad#niveau-uitgebreid' }
+    }
     $File = Join-Path $LangDir "$P.html"
     if (-not (Test-Path $File)) { continue }
     $Body = [IO.File]::ReadAllText($File, $Utf8)
@@ -98,6 +114,12 @@ foreach ($L in $Langs) {
     foreach ($N in $Pages) {
       if ($N -like 'group:*') {
         [void]$sb.AppendLine("  <div class=""group"">$($Nav[$L][$N])</div>")
+        continue
+      }
+      if ($N -like '*#*') {
+        $Deel = $N.Split('#')
+        $subcls = if ($N -eq $ActiefNiveau) { 'sub active' } else { 'sub' }
+        [void]$sb.AppendLine("  <a href=""$($Deel[0]).html#$($Deel[1])"" class=""$subcls"">$($Nav[$L][$N])</a>")
         continue
       }
       $cls = if ($N -eq $Active) { ' class="active"' } else { '' }
