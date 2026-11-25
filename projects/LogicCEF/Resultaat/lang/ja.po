@@ -2356,3 +2356,81 @@ msgstr "次へ >"
 
 msgid "Start lesson 1"
 msgstr "レッスン 1"
+
+msgid "Arduino pin"
+msgstr "Arduino のピン"
+
+msgid "The board is connected: the real push button operates this contact."
+msgstr "ボードが接続されています：本物の押しボタンがこの接点を操作します。"
+
+msgid "No board connected: press it with the mouse, like a push button."
+msgstr "ボードが接続されていません：押しボタンのようにマウスで押してください。"
+
+msgid "Arduino input"
+msgstr "Arduino 入力"
+
+msgid "Connect the push button between the pin and GND (no resistor needed).\nPressed, the contact is closed. Right-click: choose the pin."
+msgstr "押しボタンをピンと GND の間に接続します (抵抗は不要)。\n押すと接点が閉じます。右クリック：ピンを選択。"
+
+msgid "The board is connected: when this lamp is lit, the pin is high (5 V)."
+msgstr "ボードが接続されています：このランプが点灯すると、ピンは High (5 V) になります。"
+
+msgid "No board connected: only the lamp on the screen lights."
+msgstr "ボードが接続されていません：画面上のランプだけが点灯します。"
+
+msgid "Arduino output"
+msgstr "Arduino 出力"
+
+msgid "Connect an LED with a 220 ohm resistor to GND on the pin. A pin gives at most 20 mA:\ndrive a lamp, motor or relay through a transistor. Right-click: choose the pin."
+msgstr "ピンに LED と 220 オームの抵抗を GND へ接続します。ピンの電流は最大 20 mA です：\nランプ、モーター、リレーはトランジスターを介して駆動します。右クリック：ピンを選択。"
+
+msgid "high (5 V)"
+msgstr "High (5 V)"
+
+msgid "low (0 V)"
+msgstr "Low (0 V)"
+
+msgid "create Arduino input (real push button)"
+msgstr "Arduino 入力 (本物の押しボタン) を作成"
+
+msgid "create Arduino output (real pin)"
+msgstr "Arduino 出力 (本物のピン) を作成"
+
+msgid "Arduino board: connect a real board through USB"
+msgstr "Arduino ボード：本物のボードを USB で接続"
+
+msgid "Arduino board"
+msgstr "Arduino ボード"
+
+msgid "Connect an Arduino Uno or Nano with the USB cable. First put StandardFirmata on it once (Arduino IDE: File > Examples > Firmata > StandardFirmata, then Upload). Then place an Arduino input or output from the Power group on the panel."
+msgstr "Arduino Uno または Nano を USB ケーブルで接続します。最初に一度 StandardFirmata を書き込みます (Arduino IDE：ファイル > スケッチ例 > Firmata > StandardFirmata、そして書き込み)。その後、電源グループの Arduino 入力または出力をパネルに置きます。"
+
+msgid "Port:"
+msgstr "ポート："
+
+msgid "Find ports"
+msgstr "ポートを検索"
+
+msgid "Disconnect"
+msgstr "切断"
+
+msgid "Connect"
+msgstr "接続"
+
+msgid "No port found. Plug in the board and click Find ports."
+msgstr "ポートが見つかりません。ボードを接続して「ポートを検索」をクリックしてください。"
+
+msgid "Not connected."
+msgstr "未接続。"
+
+msgid "Connecting to %s... (the board restarts for a moment)"
+msgstr "%s に接続中... (ボードが一時的に再起動します)"
+
+msgid "Connected to %s (Firmata %s). The components on the panel now follow the board."
+msgstr "%s に接続しました (Firmata %s)。パネルの部品はボードに従います。"
+
+msgid "Port %s is open, but the board does not answer. Is StandardFirmata on it?"
+msgstr "ポート %s は開いていますが、ボードが応答しません。StandardFirmata は書き込まれていますか？"
+
+msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
+msgstr "ポート %s を開けません。使用中ですか (例：Arduino IDE)？"

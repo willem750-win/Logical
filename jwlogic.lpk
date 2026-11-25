@@ -97,6 +97,10 @@
         <Type Value="Include"/>
       </Item>
       <Item>
+        <Filename Value="jsl_board.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
         <Filename Value="janSimPID.pas"/>
         <UnitName Value="janSimPID"/>
       </Item>

@@ -1,0 +1,59 @@
+<!-- titel: Carte Arduino -->
+  <h1 id="board"><img src="../img/pal-board-uit.png" class="ico" alt="">Une vraie carte Arduino</h1>
+  <p class="lead">Logic peut commander une vraie <b>Arduino Uno</b> (ou Nano) par le câble USB. Un vrai bouton-poussoir sur
+  la carte commande alors un circuit dans Logic, et Logic allume une vraie LED sur la carte. Vous construisez d&rsquo;abord
+  un circuit à l&rsquo;écran, puis vous le voyez fonctionner pour de vrai.</p>
+
+  <h2>De quoi avez-vous besoin&nbsp;?</h2>
+  <ul>
+    <li>Une <b>Arduino Uno</b> ou <b>Nano</b> (ou un clone) avec un câble USB, une plaque d&rsquo;essai, quelques LED, des
+      résistances de 220&nbsp;&Omega; et des boutons-poussoirs. Un kit de démarrage contient tout cela.</li>
+    <li>L&rsquo;<b>Arduino IDE</b> gratuit, pour charger une fois le programme <b>StandardFirmata</b> sur la carte&nbsp;:
+      <b>Fichier &rsaquo; Exemples &rsaquo; Firmata &rsaquo; StandardFirmata</b>, puis <b>Téléverser</b>. Logic parle à la
+      carte dans la langue de Firmata&nbsp;; ensuite, vous n&rsquo;avez plus besoin de l&rsquo;Arduino IDE.</li>
+    <li>Les clones bon marché utilisent souvent une puce CH340 pour l&rsquo;USB. Windows installe en général le pilote
+      lui-même&nbsp;; sinon, vous le trouvez avec l&rsquo;Arduino IDE.</li>
+  </ul>
+
+  <h2>Les deux composants</h2>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name">Entrée Arduino</td><td>Un
+      <b>bouton-poussoir à deux bornes</b> dans le circuit, comme le bouton-poussoir ordinaire. Il est fermé tant que le
+      <b>vrai bouton</b> sur la carte est enfoncé. Branchez le bouton entre la broche (D2 par défaut) et <b>GND</b>&nbsp;;
+      pas besoin de résistance, Logic active le pull-up interne de la broche. Sans carte, vous appuyez dessus avec la souris.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name">Sortie Arduino</td><td>Une
+      <a href="voeding.html#serie">lampe de 5&nbsp;V</a> à deux bornes. Quand elle brille (p.&nbsp;ex. à la sortie
+      d&rsquo;une porte), Logic met la <b>vraie broche</b> à l&rsquo;état haut (5&nbsp;V), sinon bas. Branchez sur la
+      broche (D13 par défaut) une LED avec une résistance de 220&nbsp;&Omega; vers GND. D13 a aussi une petite LED sur la carte.</td></tr>
+  </table>
+  <p>Avec clic droit &rsaquo; <b>Broche de l&rsquo;Arduino</b>, vous choisissez une autre broche&nbsp;: D2 à D13 (et pour
+  une entrée aussi A0 à A5). Les deux composants comptent dans la <a href="waarheidstabel.html">table de vérité</a>.</p>
+
+  <h2>Connecter</h2>
+  <ol class="steps">
+    <li>Branchez la carte sur un port USB.</li>
+    <li>Dans la barre du haut, cliquez sur <img src="../img/pal-board-uit.png" class="ico" alt=""><b>Carte Arduino</b> (à gauche de la loupe).</li>
+    <li>Choisissez le port (p.&nbsp;ex. COM3, sous Linux /dev/ttyACM0) et cliquez sur <b>Connecter</b>. La carte redémarre
+      un instant&nbsp;; après deux secondes, on lit <b>Connecté ... (Firmata 2.5)</b>.</li>
+    <li>Lancez la simulation et appuyez sur le vrai bouton.</li>
+  </ol>
+  <p><a class="open" href="../../panels/arduino-niet-poort.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/board-voorbeeld.png" alt="Une entrée Arduino sur D2, une porte NON et une sortie Arduino sur D13">
+    <figcaption>La porte NON de la <a href="les03.html">leçon 3</a>, maintenant avec un vrai bouton-poussoir sur D2 et la
+    LED sur D13&nbsp;: tant que vous n&rsquo;appuyez pas, la LED de la carte brille.</figcaption>
+  </figure>
+
+  <div class="tip"><strong>Attention&nbsp;:</strong> une broche donne au plus environ 20&nbsp;mA. Une LED avec une
+  résistance convient&nbsp;; commandez une lampe, un moteur ou un relais par un transistor ou un module relais (voir la
+  <a href="les42.html">leçon 42</a>). Ne branchez jamais du 230&nbsp;V sur la carte.</div>
+
+  <h2>Ça ne marche pas&nbsp;?</h2>
+  <ul>
+    <li><b>Aucun port trouvé</b>&nbsp;: rebranchez la carte et cliquez sur <b>Chercher les ports</b>. Sous Windows, regardez
+      dans le Gestionnaire de périphériques &rsaquo; Ports (COM et LPT).</li>
+    <li><b>Impossible d&rsquo;ouvrir le port</b>&nbsp;: fermez l&rsquo;Arduino IDE (ou le moniteur série)&nbsp;; un seul
+      programme à la fois peut utiliser le port.</li>
+    <li><b>La carte ne répond pas</b>&nbsp;: chargez (à nouveau) StandardFirmata.</li>
+  </ul>

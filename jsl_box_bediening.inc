@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -70,6 +70,8 @@ begin
   else if PtInRect(RTrafo, P) then DTrafo := True
   else if PtInRect(RZoemer2, P) then DZoemer2 := True
   else if PtInRect(RRelais2, P) then DRelais2 := True
+  else if PtInRect(RBoardIn, P) then DBoardIn := True
+  else if PtInRect(RBoardUit, P) then DBoardUit := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -159,6 +161,8 @@ begin
   else if PtInRect(RTrafo, P) then NewHint := FHTrafo
   else if PtInRect(RZoemer2, P) then NewHint := FHBuzzer
   else if PtInRect(RRelais2, P) then NewHint := FHRelais
+  else if PtInRect(RBoardIn, P) then NewHint := FHBoardIn
+  else if PtInRect(RBoardUit, P) then NewHint := FHBoardUit
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -570,7 +574,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False;
 
     // nieuw
     DSquare := False;
@@ -860,6 +864,10 @@ begin
     NewVoedingsDeel(31)
   else if DRelais2 then
     NewVoedingsDeel(32)
+  else if DBoardIn then
+    NewVoedingsDeel(33)
+  else if DBoardUit then
+    NewVoedingsDeel(34)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1480,6 +1488,8 @@ if FBoxTaal=stDutch then
   HNulmeter:='maak Nulpuntmeter (galvanometer)';
   HDraaimagneet:='maak Draaiende magneet (dynamo)';
   HTransformator:='maak Transformator';
+  HBoardIn:='maak Arduino-ingang (echte drukknop)';
+  HBoardUit:='maak Arduino-uitgang (echte pin)';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -1549,6 +1559,8 @@ if FBoxTaal=stEnglish then
   HNulmeter:=LangTr('create centre-zero meter (galvanometer)');
   HDraaimagneet:=LangTr('create rotating magnet (dynamo)');
   HTransformator:=LangTr('create transformer');
+  HBoardIn:=LangTr('create Arduino input (real push button)');
+  HBoardUit:=LangTr('create Arduino output (real pin)');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -1616,6 +1628,8 @@ if FBoxTaal=stFrench then
   HNulmeter:='faire Galvanomètre à zéro central';
   HDraaimagneet:='faire Aimant tournant (dynamo)';
   HTransformator:='faire Transformateur';
+  HBoardIn:='faire Entrée Arduino (vrai bouton-poussoir)';
+  HBoardUit:='faire Sortie Arduino (vraie broche)';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -1684,6 +1698,8 @@ if FBoxTaal=stFrench then
   HNulmeter:='Nullpunktmessgerät (Galvanometer) erstellen';
   HDraaimagneet:='Drehenden Magneten (Dynamo) erstellen';
   HTransformator:='Transformator erstellen';
+  HBoardIn:='Arduino-Eingang (echter Taster) erstellen';
+  HBoardUit:='Arduino-Ausgang (echter Pin) erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -1885,6 +1901,8 @@ begin
   RTrafo := Rect(0, 0, 0, 0);
   RZoemer2 := Rect(0, 0, 0, 0);
   RRelais2 := Rect(0, 0, 0, 0);
+  RBoardIn := Rect(0, 0, 0, 0);
+  RBoardUit := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1929,6 +1947,9 @@ begin
     Knop(RDraaiM, 29, DDraaiM);
     Knop(RTrafo, 30, DTrafo);
   end;
+  // een echt Arduino-board (via USB): ingang en uitgang
+  Knop(RBoardIn, 33, DBoardIn);
+  Knop(RBoardUit, 34, DBoardUit);
 end;
 
 procedure TjanSimLogicBox.SetSymbolen(const Value: TjanSymbolen);

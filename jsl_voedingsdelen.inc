@@ -1974,6 +1974,12 @@ begin
   Result := Lamp2Ohm[FSoort];
 end;
 
+function TjanLamp2.LampLabel: string;
+begin
+  Result := OhmText(Ohm);
+  if Is5V then Result := '5 V ' + Result;
+end;
+
 function TjanLamp2.Is5V: Boolean;
 begin
   Result := FSoort >= Lamp2Eerste5V;
@@ -2112,8 +2118,7 @@ begin
     PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
     Brush.Style := bsClear;
     Font.Name := 'Arial'; Font.Size := 7; Font.Style := []; Font.Color := clNavy;
-    S := OhmText(Ohm);
-    if Is5V then S := '5 V ' + S;
+    S := LampLabel;
     TW := TextWidth(S);
     if FGedraaid then
       TextOut(CY + Rr + 6, CX - 6, S)          // rechts naast de lamp

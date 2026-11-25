@@ -401,6 +401,8 @@ begin
   FHNulmeter:='maak Nulpuntmeter (galvanometer)';
   FHDraaiM:='maak Draaiende magneet (dynamo)';
   FHTrafo:='maak Transformator';
+  FHBoardIn:='maak Arduino-ingang (echte drukknop)';
+  FHBoardUit:='maak Arduino-uitgang (echte pin)';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1492,7 +1494,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') or (obj[1] = 'TjanBoardIn') or (obj[1] = 'TjanBoardUit') then
     begin
       with TStringList.Create do
       try
@@ -1521,6 +1523,8 @@ begin
           else if obj[1] = 'TjanDraaimagneet' then VD := TjanDraaimagneet.Create(Self)
           else if obj[1] = 'TjanTransformator' then VD := TjanTransformator.Create(Self)
           else if obj[1] = 'TjanZoemer2' then VD := TjanZoemer2.Create(Self)
+          else if obj[1] = 'TjanBoardIn' then VD := TjanBoardIn.Create(Self)
+          else if obj[1] = 'TjanBoardUit' then VD := TjanBoardUit.Create(Self)
           else if obj[1] = 'TjanRelais2' then VD := TjanRelais2.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
@@ -1592,6 +1596,14 @@ begin
           end
           else if (VD is TjanWeerstand) and (Count >= 5) then
             TjanWeerstand(VD).Soort := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanBoardUit then
+          begin
+            if Count >= 5 then TjanBoardUit(VD).Pin := StrToIntDef(Trim(Strings[4]), 13);
+          end
+          else if VD is TjanBoardIn then
+          begin
+            if Count >= 5 then TjanBoardIn(VD).Pin := StrToIntDef(Trim(Strings[4]), 2);
+          end
           else if (VD is TjanLamp2) and (Count >= 5) then
             TjanLamp2(VD).Soort := StrToIntDef(Trim(Strings[4]), Lamp2Standaard)
           else if (VD is TjanPuls2) and (Count >= 5) then
@@ -2509,6 +2521,8 @@ begin
     29: D := TjanDraaimagneet.Create(Self);
     30: D := TjanTransformator.Create(Self);
     31: D := TjanZoemer2.Create(Self);
+    33: D := TjanBoardIn.Create(Self);
+    34: D := TjanBoardUit.Create(Self);
     32: D := TjanRelais2.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
@@ -3020,6 +3034,35 @@ begin
         begin
           // relais: spoel links, contact rechts
           DrawRelaySymbol(Canvas, R.Left + 3, R.Left + 10, CY, 10, R.Right - 6, CY - 9, CY + 9, False);
+        end;
+      33, 34:
+        begin
+          // Arduino-board (blauwgroen) met een pijl: naar binnen (ingang)
+          // of naar buiten (uitgang)
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(0, 130, 140);
+          Pen.Color := RGBToColor(0, 90, 100);
+          Rectangle(Rect(CX - 6, CY - 8, CX + 8, CY + 9));
+          Pen.Color := clWhite;
+          for K := 0 to 2 do
+          begin
+            MoveTo(CX - 3, CY - 5 + K * 5); LineTo(CX + 5, CY - 5 + K * 5);
+          end;
+          Pen.Color := clBlack;
+          Pen.Width := 2;
+          if AKind = 33 then
+          begin
+            // ingang: pijl van links naar het board
+            MoveTo(R.Left + 2, CY); LineTo(CX - 7, CY);
+            MoveTo(CX - 10, CY - 3); LineTo(CX - 7, CY); LineTo(CX - 10, CY + 3);
+          end
+          else
+          begin
+            // uitgang: pijl van het board naar rechts
+            MoveTo(CX + 9, CY); LineTo(R.Right - 2, CY);
+            MoveTo(R.Right - 5, CY - 3); LineTo(R.Right - 2, CY); LineTo(R.Right - 5, CY + 3);
+          end;
+          Pen.Width := 1;
         end;
       6:
         begin

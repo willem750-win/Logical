@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2408,6 +2408,8 @@ type
     property HNulmeter: string read FHNulmeter write FHNulmeter;
     property HDraaimagneet: string read FHDraaiM write FHDraaiM;
     property HTransformator: string read FHTrafo write FHTrafo;
+    property HBoardIn: string read FHBoardIn write FHBoardIn;
+    property HBoardUit: string read FHBoardUit write FHBoardUit;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -3474,6 +3476,7 @@ end;
     function PinPos(I: Integer): TPoint; override;
     function Ohm: Double;
     function Volt: Double;       // spanning waarvoor de lamp gemaakt is: 5 of 12 V
+    function LampLabel: string; virtual;   // tekst onder de lamp
     function Is5V: Boolean;
     function Aan: Boolean;       // brandt (minstens een kwart van haar vermogen)
     function Spanning: Double;   // V over de lamp
@@ -4241,6 +4244,53 @@ end;
     property Gewisseld: Boolean read FGewisseld write FGewisseld;
   end;
 
+  { TjanBoardIn: een ingang van een echt Arduino-board (via USB, Firmata). Hij
+    werkt als een drukknop met twee klemmen in de voedingskring: dicht zolang
+    de echte drukknop op de gekozen pin ingedrukt is (pin met interne
+    pull-up: de knop gaat van de pin naar GND). Zonder board kun je er met de
+    muis op drukken, zoals op een gewone drukknop. }
+  TjanBoardIn = class(TjanSchakelaar2)
+  private
+    FPin: Integer;          // 2..13 = D2..D13, 14..19 = A0..A5
+    procedure SetPin(const Value: Integer);
+    procedure PinClick(Sender: TObject);
+  protected
+    function HandleClick(X, Y: Integer): Boolean; override;
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Pin: Integer read FPin write SetPin;
+  end;
+
+  { TjanBoardUit: een uitgang van een echt Arduino-board. Hij werkt als een
+    lamp van 5 V met twee klemmen: brandt hij (bv. aan de uitgang van een
+    poort), dan zet Logic de gekozen pin van het board hoog, anders laag.
+    Op de pin hangt dan bv. een led met een weerstand van 220 ohm naar GND. }
+  TjanBoardUit = class(TjanLamp2)
+  private
+    FPin: Integer;          // 2..13 = D2..D13
+    FGestuurd: Integer;     // laatst gestuurde toestand: -1 onbekend, 0 laag, 1 hoog
+    procedure SetPin(const Value: Integer);
+    procedure PinClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function LampLabel: string; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    // de pin van het board bijwerken als de toestand veranderd is (na elke
+    // berekening van de kring); AltijdSturen = ook als hij niet veranderd is
+    procedure Stuur(AltijdSturen: Boolean = False);
+  published
+    property Pin: Integer read FPin write SetPin;
+  end;
+
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.
     Wordt als onzichtbaar besturingselement op het paneel gezet. Tijdens het
     slepen van een selectierechthoek toont het die rechthoek; daarna ligt het
@@ -4370,6 +4420,10 @@ var
   // opent het LogicRun-venster voor het blok (Sender); gezet door het
   // programma, gebruikt bij dubbelklik en in het rechtsklikmenu van het blok
   LogicRunEditHook: TNotifyEvent = nil;
+  // echt Arduino-board (TjanBoardIn / TjanBoardUit): gezet door het programma.
+  // BoardSchrijf zet een pin hoog of laag; BoardVerbonden = er is een board.
+  BoardSchrijf: procedure(APin: Integer; AHoog: Boolean) of object = nil;
+  BoardVerbonden: Boolean = False;
 
 implementation
 
@@ -4399,4 +4453,5 @@ uses Process;
 {$I jsl_bewegend.inc}
 {$I jsl_stappen_flipflop.inc}
 {$I jsl_magnetisme.inc}
+{$I jsl_board.inc}
 end.

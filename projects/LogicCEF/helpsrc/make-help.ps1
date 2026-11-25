@@ -26,32 +26,32 @@ $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
 $Pages = @(
   'index', 'installeren', 'werkwijze', 'leerpad', 'oefeningen',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
-  'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding',
+  'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding', 'board',
   'group:werken', 'verbindingen', 'objecten', 'simulatie', 'logicrun', 'waarheidstabel', 'tijddiagram', 'instellingen'
 )
 
 $Nav = @{
   nl = @{ index = 'Start'; installeren = 'Installeren'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; oefeningen = 'Oefeningen'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
-          voeding = 'Voeding &amp; voltmeter';
+          voeding = 'Voeding &amp; voltmeter'; board = 'Arduino-board';
           verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie'; logicrun = 'LogicRun'; waarheidstabel = 'Waarheidstabel'; tijddiagram = 'Tijddiagram';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
   en = @{ index = 'Start'; installeren = 'Installing'; werkwijze = 'Getting started'; leerpad = 'Learning path'; oefeningen = 'Exercises'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
-          voeding = 'Power &amp; voltmeter';
+          voeding = 'Power &amp; voltmeter'; board = 'Arduino board';
           verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Truth table'; tijddiagram = 'Timing diagram';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
   fr = @{ index = 'Accueil'; installeren = 'Installation'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; oefeningen = 'Exercices'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
-          voeding = 'Alimentation &amp; voltmètre';
+          voeding = 'Alimentation &amp; voltmètre'; board = 'Carte Arduino';
           verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Table de vérité'; tijddiagram = 'Chronogramme';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
   de = @{ index = 'Start'; installeren = 'Installation'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; oefeningen = 'Übungen'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
-          voeding = 'Versorgung &amp; Voltmeter';
+          voeding = 'Versorgung &amp; Voltmeter'; board = 'Arduino-Board';
           verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Wahrheitstabelle'; tijddiagram = 'Zeitdiagramm';
           instellingen = 'Einstellungen &amp; Sprache';
           'group:scherm' = 'Das Fenster'; 'group:onderdelen' = 'Bauteile'; 'group:werken' = 'Arbeiten mit Logic' }
@@ -61,7 +61,7 @@ $Nav = @{
 $NavIcon = @{
   leerpad = 'knop-help'; oefeningen = 'knop-oef';
   knoppen = 'knop-simuleren'; paneel = 'knop-raster'; onderdelenbalk = 'pal-verbinding';
-  invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus';
+  invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus'; board = 'pal-board-uit';
   verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren'; logicrun = 'knop-logicrun'; waarheidstabel = 'knop-waarheid'; tijddiagram = 'knop-tijd';
   instellingen = 'knop-instellingen'
 }

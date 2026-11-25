@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom, uBoard;
 const
   IniFileName = 'taal.ini';
 
@@ -177,6 +177,9 @@ type
      btOefening: TSpeedButton;          // opdracht van een oefening + controle
      FOefForm: TOefForm;
      btLoep: TSpeedButton;              // loep aan/uit (F7); rechtsklik: 2x, 3x, 4x
+     btBoard: TSpeedButton;             // verbinding met een echt Arduino-board
+     FBoard: TBoard;
+     FBoardForm: TBoardForm;
      FLoep: TLoep;
      FpmLoep: TPopupMenu;
      // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
@@ -191,6 +194,7 @@ type
      procedure btTijdClick(Sender: TObject);
      procedure btOefeningClick(Sender: TObject);
      procedure btLoepClick(Sender: TObject);
+     procedure btBoardClick(Sender: TObject);
      procedure LoepZoomClick(Sender: TObject);
      procedure LoepMenuPopup(Sender: TObject);
      procedure ZetLoep(AAan: Boolean);
@@ -1853,6 +1857,26 @@ begin
   btLoep.OnClick := @btLoepClick;
   btLoep.OnMouseEnter := @btSimulateMouseEnter;
   btLoep.HelpKeyword := 'loep';
+  // Arduino-board links van de loep (ook tijdens de simulatie bereikbaar)
+  btBoard := TSpeedButton.Create(Self);
+  btBoard.Parent := TitelBar2;
+  btBoard.SetBounds(0, 1, 26, 22);
+  btBoard.Anchors := [akTop, akRight];
+  btBoard.AnchorSideRight.Control := btLoep;
+  btBoard.AnchorSideRight.Side := asrLeft;
+  btBoard.BorderSpacing.Right := 2;
+  btBoard.Flat := True;
+  btBoard.ShowHint := True;
+  btBoard.ParentShowHint := False;
+  G := MaakBoardGlyph;
+  try
+    btBoard.Glyph := G;
+  finally
+    G.Free;
+  end;
+  btBoard.OnClick := @btBoardClick;
+  btBoard.OnMouseEnter := @btSimulateMouseEnter;
+  btBoard.HelpKeyword := 'board';
   FpmLoep := TPopupMenu.Create(Self);
   FpmLoep.OnPopup := @LoepMenuPopup;
   for i := 0 to 2 do
@@ -1948,6 +1972,16 @@ begin
     else
       btLoep.Hint := 'Loep (F7): vergroot het paneel rond de muis. Rechtsklik: 1,5x, 2x of 3x';
     end;
+  if Assigned(btBoard) then
+    case Grid.Language of
+      chatgridpcodeSmall.lgEnglish: btBoard.Hint := PoTr('Arduino board: connect a real board through USB');
+      chatgridpcodeSmall.lgFrench:  btBoard.Hint := 'Carte Arduino : connecter une vraie carte par USB';
+      chatgridpcodeSmall.lgGerman:  btBoard.Hint := 'Arduino-Board: ein echtes Board über USB verbinden';
+    else
+      btBoard.Hint := 'Arduino-board: een echt board verbinden via USB';
+    end;
+  if Assigned(FBoardForm) then
+    FBoardForm.SetTaal(LogicRunTaal);
   if Assigned(FWaarheidForm) then
     FWaarheidForm.SetTaal(LogicRunTaal);
   if Assigned(FTijdForm) then
@@ -2907,7 +2941,9 @@ begin
   FcbSymbolen.Width := 96;
   FcbSymbolen.Top := 1;
   FcbSymbolen.Anchors := [akTop, akRight];   // blijft links van Help bij een breder venster
-  if Assigned(btLoep) then
+  if Assigned(btBoard) then
+    FcbSymbolen.AnchorSideRight.Control := btBoard
+  else if Assigned(btLoep) then
     FcbSymbolen.AnchorSideRight.Control := btLoep
   else
     FcbSymbolen.AnchorSideRight.Control := brInfo1;
@@ -3459,6 +3495,23 @@ begin
   ShowBuiltinPanelTitle(2);
   FCurrentFile := '';
   MarkPanelClean;
+end;
+
+
+// venster om een echt Arduino-board te verbinden (uBoard)
+procedure TmainForm.btBoardClick(Sender: TObject);
+begin
+  if FBoard = nil then
+    FBoard := TBoard.Create(Self, Grid);
+  if FBoardForm = nil then
+  begin
+    FBoardForm := TBoardForm.CreateVoor(Self, FBoard);
+    FBoardForm.PopupMode := pmExplicit;
+    FBoardForm.PopupParent := Self;
+  end;
+  FBoardForm.SetTaal(LogicRunTaal);
+  FBoardForm.Show;
+  FBoardForm.BringToFront;
 end;
 
 { Welkomstvenster en rondleiding }

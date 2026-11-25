@@ -2356,3 +2356,81 @@ msgstr "下一步 >"
 
 msgid "Start lesson 1"
 msgstr "第 1 课"
+
+msgid "Arduino pin"
+msgstr "Arduino 引脚"
+
+msgid "The board is connected: the real push button operates this contact."
+msgstr "开发板已连接：真实的按钮控制这个触点。"
+
+msgid "No board connected: press it with the mouse, like a push button."
+msgstr "未连接开发板：像按钮一样用鼠标按它。"
+
+msgid "Arduino input"
+msgstr "Arduino 输入"
+
+msgid "Connect the push button between the pin and GND (no resistor needed).\nPressed, the contact is closed. Right-click: choose the pin."
+msgstr "把按钮接在引脚和 GND 之间 (不需要电阻)。\n按下时触点闭合。右键：选择引脚。"
+
+msgid "The board is connected: when this lamp is lit, the pin is high (5 V)."
+msgstr "开发板已连接：这盏灯亮时，引脚为高电平 (5 V)。"
+
+msgid "No board connected: only the lamp on the screen lights."
+msgstr "未连接开发板：只有屏幕上的灯会亮。"
+
+msgid "Arduino output"
+msgstr "Arduino 输出"
+
+msgid "Connect an LED with a 220 ohm resistor to GND on the pin. A pin gives at most 20 mA:\ndrive a lamp, motor or relay through a transistor. Right-click: choose the pin."
+msgstr "在引脚上接一个 LED，并串一个 220 欧电阻到 GND。引脚最多提供 20 mA：\n灯、电机或继电器要通过晶体管驱动。右键：选择引脚。"
+
+msgid "high (5 V)"
+msgstr "高 (5 V)"
+
+msgid "low (0 V)"
+msgstr "低 (0 V)"
+
+msgid "create Arduino input (real push button)"
+msgstr "创建 Arduino 输入 (真实按钮)"
+
+msgid "create Arduino output (real pin)"
+msgstr "创建 Arduino 输出 (真实引脚)"
+
+msgid "Arduino board: connect a real board through USB"
+msgstr "Arduino 开发板：通过 USB 连接真实的开发板"
+
+msgid "Arduino board"
+msgstr "Arduino 开发板"
+
+msgid "Connect an Arduino Uno or Nano with the USB cable. First put StandardFirmata on it once (Arduino IDE: File > Examples > Firmata > StandardFirmata, then Upload). Then place an Arduino input or output from the Power group on the panel."
+msgstr "用 USB 线连接 Arduino Uno 或 Nano。先上传一次 StandardFirmata (Arduino IDE：文件 > 示例 > Firmata > StandardFirmata，然后上传)。然后把电源组中的 Arduino 输入或输出放到面板上。"
+
+msgid "Port:"
+msgstr "端口："
+
+msgid "Find ports"
+msgstr "查找端口"
+
+msgid "Disconnect"
+msgstr "断开"
+
+msgid "Connect"
+msgstr "连接"
+
+msgid "No port found. Plug in the board and click Find ports."
+msgstr "没有找到端口。插上开发板，然后点击\"查找端口\"。"
+
+msgid "Not connected."
+msgstr "未连接。"
+
+msgid "Connecting to %s... (the board restarts for a moment)"
+msgstr "正在连接 %s... (开发板会短暂重启)"
+
+msgid "Connected to %s (Firmata %s). The components on the panel now follow the board."
+msgstr "已连接 %s (Firmata %s)。面板上的元件现在跟随开发板。"
+
+msgid "Port %s is open, but the board does not answer. Is StandardFirmata on it?"
+msgstr "端口 %s 已打开，但开发板没有响应。是否已上传 StandardFirmata？"
+
+msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
+msgstr "无法打开端口 %s。是否正被占用 (例如 Arduino IDE)？"

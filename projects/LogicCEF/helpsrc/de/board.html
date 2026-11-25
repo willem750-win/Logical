@@ -1,0 +1,59 @@
+<!-- titel: Arduino-Board -->
+  <h1 id="board"><img src="../img/pal-board-uit.png" class="ico" alt="">Ein echtes Arduino-Board</h1>
+  <p class="lead">Logic kann einen echten <b>Arduino Uno</b> (oder Nano) über das USB-Kabel steuern. Ein echter Taster auf
+  dem Board bedient dann eine Schaltung in Logic, und Logic lässt eine echte LED auf dem Board leuchten. So bauen Sie eine
+  Schaltung zuerst auf dem Bildschirm und sehen sie danach wirklich arbeiten.</p>
+
+  <h2>Was brauchen Sie?</h2>
+  <ul>
+    <li>Einen <b>Arduino Uno</b> oder <b>Nano</b> (oder einen Klon) mit USB-Kabel, ein Steckbrett, einige LEDs,
+      Widerstände von 220&nbsp;&Omega; und Taster. Ein Starterkit enthält das alles.</li>
+    <li>Die kostenlose <b>Arduino IDE</b>, um einmal das Programm <b>StandardFirmata</b> auf das Board zu spielen:
+      <b>Datei &rsaquo; Beispiele &rsaquo; Firmata &rsaquo; StandardFirmata</b>, dann <b>Hochladen</b>. Logic spricht mit
+      dem Board in der Sprache von Firmata; danach brauchen Sie die Arduino IDE nicht mehr.</li>
+    <li>Günstige Klone verwenden oft einen CH340-Chip für USB. Windows installiert den Treiber meist selbst; sonst finden
+      Sie ihn bei der Arduino IDE.</li>
+  </ul>
+
+  <h2>Die zwei Bauteile</h2>
+  <table>
+    <tr><th>Taste</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name">Arduino-Eingang</td><td>Ein
+      <b>Taster mit zwei Klemmen</b> im Stromkreis, wie der gewöhnliche Taster. Er ist geschlossen, solange der <b>echte
+      Taster</b> auf dem Board gedrückt ist. Schließen Sie den Taster zwischen Pin (standardmäßig D2) und <b>GND</b> an;
+      ein Widerstand ist nicht nötig, Logic schaltet den internen Pull-up des Pins ein. Ohne Board drücken Sie mit der Maus darauf.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name">Arduino-Ausgang</td><td>Eine
+      <a href="voeding.html#serie">5-V-Lampe</a> mit zwei Klemmen. Leuchtet sie (z.&nbsp;B. am Ausgang eines Gatters),
+      setzt Logic den <b>echten Pin</b> hoch (5&nbsp;V), sonst niedrig. Schließen Sie am Pin (standardmäßig D13) eine LED
+      mit einem Widerstand von 220&nbsp;&Omega; nach GND an. An D13 sitzt auch schon eine kleine LED auf dem Board selbst.</td></tr>
+  </table>
+  <p>Mit Rechtsklick &rsaquo; <b>Pin des Arduino</b> wählen Sie einen anderen Pin: D2 bis D13 (und für einen Eingang auch
+  A0 bis A5). Beide Bauteile zählen in der <a href="waarheidstabel.html">Wahrheitstabelle</a>.</p>
+
+  <h2>Verbinden</h2>
+  <ol class="steps">
+    <li>Stecken Sie das Board in einen USB-Anschluss.</li>
+    <li>Klicken Sie in der oberen Leiste auf <img src="../img/pal-board-uit.png" class="ico" alt=""><b>Arduino-Board</b> (links von der Lupe).</li>
+    <li>Wählen Sie den Port (z.&nbsp;B. COM3, unter Linux /dev/ttyACM0) und klicken Sie auf <b>Verbinden</b>. Das Board
+      startet kurz neu; nach zwei Sekunden steht dort <b>Verbunden ... (Firmata 2.5)</b>.</li>
+    <li>Starten Sie die Simulation und drücken Sie den echten Taster.</li>
+  </ol>
+  <p><a class="open" href="../../panels/arduino-niet-poort.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/board-voorbeeld.png" alt="Ein Arduino-Eingang an D2, ein NICHT-Gatter und ein Arduino-Ausgang an D13">
+    <figcaption>Das NICHT-Gatter aus <a href="les03.html">Lektion 3</a>, jetzt mit einem echten Taster an D2 und der LED an
+    D13: Solange Sie den Taster nicht drücken, leuchtet die LED auf dem Board.</figcaption>
+  </figure>
+
+  <div class="tip"><strong>Achtung:</strong> Ein Pin liefert höchstens etwa 20&nbsp;mA. Eine LED mit Widerstand ist in
+  Ordnung; eine Lampe, einen Motor oder ein Relais steuern Sie über einen Transistor oder ein Relaismodul (siehe
+  <a href="les42.html">Lektion 42</a>). Schließen Sie nie 230&nbsp;V an das Board an.</div>
+
+  <h2>Klappt es nicht?</h2>
+  <ul>
+    <li><b>Kein Port gefunden</b>: Stecken Sie das Board erneut ein und klicken Sie auf <b>Ports suchen</b>. Unter Windows
+      schauen Sie im Geräte-Manager &rsaquo; Anschlüsse (COM &amp; LPT).</li>
+    <li><b>Port kann nicht geöffnet werden</b>: Schließen Sie die Arduino IDE (oder den seriellen Monitor); nur ein
+      Programm gleichzeitig kann den Port benutzen.</li>
+    <li><b>Das Board antwortet nicht</b>: Spielen Sie StandardFirmata (erneut) auf.</li>
+  </ul>

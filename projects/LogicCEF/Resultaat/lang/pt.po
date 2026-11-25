@@ -2356,3 +2356,81 @@ msgstr "Seguinte >"
 
 msgid "Start lesson 1"
 msgstr "Lição 1"
+
+msgid "Arduino pin"
+msgstr "Pino do Arduino"
+
+msgid "The board is connected: the real push button operates this contact."
+msgstr "A placa está ligada: o botão real aciona este contacto."
+
+msgid "No board connected: press it with the mouse, like a push button."
+msgstr "Nenhuma placa ligada: prima-o com o rato, como um botão de pressão."
+
+msgid "Arduino input"
+msgstr "Entrada Arduino"
+
+msgid "Connect the push button between the pin and GND (no resistor needed).\nPressed, the contact is closed. Right-click: choose the pin."
+msgstr "Ligue o botão entre o pino e GND (não é preciso resistência).\nPremido, o contacto está fechado. Clique direito: escolher o pino."
+
+msgid "The board is connected: when this lamp is lit, the pin is high (5 V)."
+msgstr "A placa está ligada: quando esta lâmpada acende, o pino fica alto (5 V)."
+
+msgid "No board connected: only the lamp on the screen lights."
+msgstr "Nenhuma placa ligada: só acende a lâmpada no ecrã."
+
+msgid "Arduino output"
+msgstr "Saída Arduino"
+
+msgid "Connect an LED with a 220 ohm resistor to GND on the pin. A pin gives at most 20 mA:\ndrive a lamp, motor or relay through a transistor. Right-click: choose the pin."
+msgstr "Ligue ao pino um LED com uma resistência de 220 ohms para GND. Um pino dá no máximo 20 mA:\numa lâmpada, motor ou relé comanda-se através de um transístor. Clique direito: escolher o pino."
+
+msgid "high (5 V)"
+msgstr "alto (5 V)"
+
+msgid "low (0 V)"
+msgstr "baixo (0 V)"
+
+msgid "create Arduino input (real push button)"
+msgstr "criar entrada Arduino (botão real)"
+
+msgid "create Arduino output (real pin)"
+msgstr "criar saída Arduino (pino real)"
+
+msgid "Arduino board: connect a real board through USB"
+msgstr "Placa Arduino: ligar uma placa real por USB"
+
+msgid "Arduino board"
+msgstr "Placa Arduino"
+
+msgid "Connect an Arduino Uno or Nano with the USB cable. First put StandardFirmata on it once (Arduino IDE: File > Examples > Firmata > StandardFirmata, then Upload). Then place an Arduino input or output from the Power group on the panel."
+msgstr "Ligue um Arduino Uno ou Nano com o cabo USB. Carregue primeiro uma vez o StandardFirmata (Arduino IDE: Ficheiro > Exemplos > Firmata > StandardFirmata, depois Carregar). Depois coloque no painel uma entrada ou saída Arduino do grupo Alimentação."
+
+msgid "Port:"
+msgstr "Porta:"
+
+msgid "Find ports"
+msgstr "Procurar portas"
+
+msgid "Disconnect"
+msgstr "Desligar"
+
+msgid "Connect"
+msgstr "Ligar"
+
+msgid "No port found. Plug in the board and click Find ports."
+msgstr "Nenhuma porta encontrada. Ligue a placa e clique em Procurar portas."
+
+msgid "Not connected."
+msgstr "Não ligado."
+
+msgid "Connecting to %s... (the board restarts for a moment)"
+msgstr "A ligar a %s... (a placa reinicia por um momento)"
+
+msgid "Connected to %s (Firmata %s). The components on the panel now follow the board."
+msgstr "Ligado a %s (Firmata %s). Os componentes do painel seguem agora a placa."
+
+msgid "Port %s is open, but the board does not answer. Is StandardFirmata on it?"
+msgstr "A porta %s está aberta, mas a placa não responde. Tem o StandardFirmata carregado?"
+
+msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
+msgstr "Não é possível abrir a porta %s. Está em uso (p. ex. pelo Arduino IDE)?"

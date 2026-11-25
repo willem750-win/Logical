@@ -187,6 +187,8 @@ begin
       begin Result := 'voeding'; AAnchor := 'ntc'; end;
     'magnetisme':
       begin Result := 'voeding'; AAnchor := 'magnetisme'; end;
+    'board':
+      begin Result := 'board'; AAnchor := ''; end;
     'transistor':
       begin Result := 'voeding'; AAnchor := 'transistor'; end;
     'zoemer2':

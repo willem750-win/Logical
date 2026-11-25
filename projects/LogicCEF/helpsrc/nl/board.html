@@ -1,0 +1,59 @@
+<!-- titel: Arduino-board -->
+  <h1 id="board"><img src="../img/pal-board-uit.png" class="ico" alt="">Een echt Arduino-board</h1>
+  <p class="lead">Logic kan een echt <b>Arduino Uno</b> (of Nano) sturen via de USB-kabel. Een echte drukknop op het board
+  bedient dan een schakeling in Logic, en Logic laat een echte led op het board branden. Zo bouw je een schakeling eerst
+  op het scherm en zie je ze daarna echt werken.</p>
+
+  <h2>Wat heb je nodig?</h2>
+  <ul>
+    <li>Een <b>Arduino Uno</b> of <b>Nano</b> (of een kloon) met een USB-kabel, een breadboard, een paar leds, weerstanden
+      van 220&nbsp;&Omega; en drukknoppen. Een starterkit bevat dat allemaal.</li>
+    <li>De gratis <b>Arduino IDE</b>, om één keer het programma <b>StandardFirmata</b> op het board te zetten:
+      <b>Bestand &rsaquo; Voorbeelden &rsaquo; Firmata &rsaquo; StandardFirmata</b>, daarna <b>Uploaden</b>. Logic praat
+      met het board in de taal van Firmata; daarna heb je de Arduino IDE niet meer nodig.</li>
+    <li>Goedkope klonen gebruiken vaak een CH340-chip voor de USB. Windows installeert de driver meestal zelf; anders vind
+      je hem bij de Arduino IDE.</li>
+  </ul>
+
+  <h2>De twee onderdelen</h2>
+  <table>
+    <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name">Arduino-ingang</td><td>Een
+      <b>drukknop met twee klemmen</b> in de kring, zoals de gewone drukknop. Hij is dicht zolang de <b>echte drukknop</b>
+      op het board ingedrukt is. Sluit de knop aan tussen de pin (standaard D2) en <b>GND</b>; een weerstand is niet nodig,
+      Logic zet de interne pull-up van de pin aan. Zonder board druk je er met de muis op.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name">Arduino-uitgang</td><td>Een
+      <a href="voeding.html#serie">lamp van 5&nbsp;V</a> met twee klemmen. Brandt ze (bv. aan de uitgang van een poort), dan
+      zet Logic de <b>echte pin</b> hoog (5&nbsp;V), anders laag. Sluit op de pin (standaard D13) een led aan met een
+      weerstand van 220&nbsp;&Omega; naar GND. Op D13 zit ook al een ledje op het board zelf.</td></tr>
+  </table>
+  <p>Met rechtsklik &rsaquo; <b>Pin van de Arduino</b> kies je een andere pin: D2 tot D13 (en voor een ingang ook A0 tot
+  A5). Beide onderdelen tellen mee in de <a href="waarheidstabel.html">waarheidstabel</a>.</p>
+
+  <h2>Verbinden</h2>
+  <ol class="steps">
+    <li>Steek het board in de USB-poort.</li>
+    <li>Klik in de bovenste balk op <img src="../img/pal-board-uit.png" class="ico" alt=""><b>Arduino-board</b> (links van de loep).</li>
+    <li>Kies de poort (bv. COM3, onder Linux /dev/ttyACM0) en klik op <b>Verbinden</b>. Het board herstart even; na twee
+      seconden staat er <b>Verbonden ... (Firmata 2.5)</b>.</li>
+    <li>Start de simulatie en druk op de echte knop.</li>
+  </ol>
+  <p><a class="open" href="../../panels/arduino-niet-poort.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/board-voorbeeld.png" alt="Een Arduino-ingang op D2, een NIET-poort en een Arduino-uitgang op D13">
+    <figcaption>De NIET-poort van <a href="les03.html">les 3</a>, nu met een echte drukknop op D2 en de led op D13: zolang
+    je de knop niet indrukt, brandt de led op het board.</figcaption>
+  </figure>
+
+  <div class="tip"><strong>Let op:</strong> een pin geeft hoogstens ongeveer 20&nbsp;mA. Een led met een weerstand is
+  goed; een lamp, motor of relais stuur je via een transistor of een relaismodule (zie <a href="les42.html">les 42</a>).
+  Sluit nooit 230&nbsp;V aan op het board.</div>
+
+  <h2>Lukt het niet?</h2>
+  <ul>
+    <li><b>Geen poort gevonden</b>: steek het board opnieuw in en klik op <b>Zoek poorten</b>. Kijk in Windows bij
+      Apparaatbeheer &rsaquo; Poorten (COM &amp; LPT).</li>
+    <li><b>Kan de poort niet openen</b>: sluit de Arduino IDE (of de seriële monitor); maar één programma tegelijk kan de
+      poort gebruiken.</li>
+    <li><b>Het board antwoordt niet</b>: zet StandardFirmata er (opnieuw) op.</li>
+  </ul>

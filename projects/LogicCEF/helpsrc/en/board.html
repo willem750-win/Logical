@@ -1,0 +1,58 @@
+<!-- titel: Arduino board -->
+  <h1 id="board"><img src="../img/pal-board-uit.png" class="ico" alt="">A real Arduino board</h1>
+  <p class="lead">Logic can drive a real <b>Arduino Uno</b> (or Nano) through the USB cable. A real push button on the board
+  then operates a circuit in Logic, and Logic lights a real LED on the board. You build a circuit on the screen first and
+  then see it really work.</p>
+
+  <h2>What do you need?</h2>
+  <ul>
+    <li>An <b>Arduino Uno</b> or <b>Nano</b> (or a clone) with a USB cable, a breadboard, a few LEDs, 220&nbsp;&Omega;
+      resistors and push buttons. A starter kit has all of it.</li>
+    <li>The free <b>Arduino IDE</b>, to put the program <b>StandardFirmata</b> on the board once:
+      <b>File &rsaquo; Examples &rsaquo; Firmata &rsaquo; StandardFirmata</b>, then <b>Upload</b>. Logic talks to the board
+      in the Firmata language; after that you no longer need the Arduino IDE.</li>
+    <li>Cheap clones often use a CH340 chip for USB. Windows usually installs the driver itself; otherwise you find it with
+      the Arduino IDE.</li>
+  </ul>
+
+  <h2>The two components</h2>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-board-in.png" alt=""></td><td class="name">Arduino input</td><td>A
+      <b>push button with two terminals</b> in the circuit, like the ordinary push button. It is closed while the <b>real
+      push button</b> on the board is pressed. Connect the button between the pin (D2 by default) and <b>GND</b>; no
+      resistor is needed, Logic turns on the internal pull-up of the pin. Without a board you press it with the mouse.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-board-uit.png" alt=""></td><td class="name">Arduino output</td><td>A
+      <a href="voeding.html#serie">5&nbsp;V lamp</a> with two terminals. When it lights (e.g. on the output of a gate),
+      Logic sets the <b>real pin</b> high (5&nbsp;V), otherwise low. Connect an LED with a 220&nbsp;&Omega; resistor to GND
+      on the pin (D13 by default). D13 also has a small LED on the board itself.</td></tr>
+  </table>
+  <p>With right-click &rsaquo; <b>Arduino pin</b> you choose another pin: D2 to D13 (and for an input also A0 to A5).
+  Both components count in the <a href="waarheidstabel.html">truth table</a>.</p>
+
+  <h2>Connecting</h2>
+  <ol class="steps">
+    <li>Plug the board into a USB port.</li>
+    <li>In the top bar, click <img src="../img/pal-board-uit.png" class="ico" alt=""><b>Arduino board</b> (left of the magnifier).</li>
+    <li>Choose the port (e.g. COM3, on Linux /dev/ttyACM0) and click <b>Connect</b>. The board restarts briefly; after two
+      seconds it says <b>Connected ... (Firmata 2.5)</b>.</li>
+    <li>Start the simulation and press the real button.</li>
+  </ol>
+  <p><a class="open" href="../../panels/arduino-niet-poort.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/board-voorbeeld.png" alt="An Arduino input on D2, a NOT gate and an Arduino output on D13">
+    <figcaption>The NOT gate of <a href="les03.html">lesson 3</a>, now with a real push button on D2 and the LED on D13: as
+    long as you do not press the button, the LED on the board lights.</figcaption>
+  </figure>
+
+  <div class="tip"><strong>Note:</strong> a pin gives at most about 20&nbsp;mA. An LED with a resistor is fine; drive a
+  lamp, motor or relay through a transistor or a relay module (see <a href="les42.html">lesson 42</a>). Never connect
+  230&nbsp;V to the board.</div>
+
+  <h2>Not working?</h2>
+  <ul>
+    <li><b>No port found</b>: plug the board in again and click <b>Find ports</b>. In Windows, look in Device Manager
+      &rsaquo; Ports (COM &amp; LPT).</li>
+    <li><b>Cannot open the port</b>: close the Arduino IDE (or the serial monitor); only one program at a time can use the port.</li>
+    <li><b>The board does not answer</b>: put StandardFirmata on it (again).</li>
+  </ul>

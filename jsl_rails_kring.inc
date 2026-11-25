@@ -1660,6 +1660,11 @@ begin
       SetStroom(Parts[k], 0);
   end;
 
+  // uitgangen van een echt Arduino-board: de pin volgt de lamp
+  if BoardVerbonden then
+    for k := 0 to NP - 1 do
+      if Parts[k] is TjanBoardUit then TjanBoardUit(Parts[k]).Stuur;
+
   // de + rails: spanning t.o.v. de - rail (zonder - rail: t.o.v. de massa)
   for k := 0 to NR - 1 do
   begin
@@ -1926,6 +1931,8 @@ begin
   else if C is TjanWeerstand then
     Result := Format('TjanWeerstand;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanWeerstand(C).Soort])
+  else if C is TjanBoardUit then
+    Result := Format('TjanBoardUit;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanBoardUit(C).Pin])
   else if C is TjanLamp2 then
     Result := Format('TjanLamp2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanLamp2(C).Soort])
@@ -1939,6 +1946,8 @@ begin
     Result := Format('TjanVeldplaat;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanVeldplaat(C).Maat])
   else if C is TjanDip2 then
     Result := Format('TjanDip2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanDip2(C).Waarde])
+  else if C is TjanBoardIn then
+    Result := Format('TjanBoardIn;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanBoardIn(C).Pin])
   else if C is TjanWissel2 then
     Result := Format('TjanWissel2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       Ord(TjanSchakelaar2(C).Aan)])

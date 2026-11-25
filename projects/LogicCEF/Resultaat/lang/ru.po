@@ -2356,3 +2356,81 @@ msgstr "Далее >"
 
 msgid "Start lesson 1"
 msgstr "Урок 1"
+
+msgid "Arduino pin"
+msgstr "Вывод Arduino"
+
+msgid "The board is connected: the real push button operates this contact."
+msgstr "Плата подключена: настоящая кнопка управляет этим контактом."
+
+msgid "No board connected: press it with the mouse, like a push button."
+msgstr "Плата не подключена: нажимайте мышью, как обычную кнопку."
+
+msgid "Arduino input"
+msgstr "Вход Arduino"
+
+msgid "Connect the push button between the pin and GND (no resistor needed).\nPressed, the contact is closed. Right-click: choose the pin."
+msgstr "Подключите кнопку между выводом и GND (резистор не нужен).\nПри нажатии контакт замкнут. Правый щелчок: выбрать вывод."
+
+msgid "The board is connected: when this lamp is lit, the pin is high (5 V)."
+msgstr "Плата подключена: когда лампа горит, на выводе высокий уровень (5 В)."
+
+msgid "No board connected: only the lamp on the screen lights."
+msgstr "Плата не подключена: горит только лампа на экране."
+
+msgid "Arduino output"
+msgstr "Выход Arduino"
+
+msgid "Connect an LED with a 220 ohm resistor to GND on the pin. A pin gives at most 20 mA:\ndrive a lamp, motor or relay through a transistor. Right-click: choose the pin."
+msgstr "Подключите к выводу светодиод с резистором 220 Ом на GND. Вывод даёт не более 20 мА:\nлампу, мотор или реле подключайте через транзистор. Правый щелчок: выбрать вывод."
+
+msgid "high (5 V)"
+msgstr "высокий (5 В)"
+
+msgid "low (0 V)"
+msgstr "низкий (0 В)"
+
+msgid "create Arduino input (real push button)"
+msgstr "создать вход Arduino (настоящая кнопка)"
+
+msgid "create Arduino output (real pin)"
+msgstr "создать выход Arduino (настоящий вывод)"
+
+msgid "Arduino board: connect a real board through USB"
+msgstr "Плата Arduino: подключить настоящую плату по USB"
+
+msgid "Arduino board"
+msgstr "Плата Arduino"
+
+msgid "Connect an Arduino Uno or Nano with the USB cable. First put StandardFirmata on it once (Arduino IDE: File > Examples > Firmata > StandardFirmata, then Upload). Then place an Arduino input or output from the Power group on the panel."
+msgstr "Подключите Arduino Uno или Nano кабелем USB. Сначала один раз загрузите StandardFirmata (Arduino IDE: Файл > Примеры > Firmata > StandardFirmata, затем Загрузить). Затем поместите на панель вход или выход Arduino из группы Питание."
+
+msgid "Port:"
+msgstr "Порт:"
+
+msgid "Find ports"
+msgstr "Найти порты"
+
+msgid "Disconnect"
+msgstr "Отключить"
+
+msgid "Connect"
+msgstr "Подключить"
+
+msgid "No port found. Plug in the board and click Find ports."
+msgstr "Порт не найден. Подключите плату и нажмите Найти порты."
+
+msgid "Not connected."
+msgstr "Не подключено."
+
+msgid "Connecting to %s... (the board restarts for a moment)"
+msgstr "Подключение к %s... (плата ненадолго перезапускается)"
+
+msgid "Connected to %s (Firmata %s). The components on the panel now follow the board."
+msgstr "Подключено к %s (Firmata %s). Компоненты на панели теперь следуют за платой."
+
+msgid "Port %s is open, but the board does not answer. Is StandardFirmata on it?"
+msgstr "Порт %s открыт, но плата не отвечает. Загружена ли StandardFirmata?"
+
+msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
+msgstr "Не удаётся открыть порт %s. Он занят (например, Arduino IDE)?"
