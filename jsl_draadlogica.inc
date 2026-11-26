@@ -84,6 +84,42 @@ begin
   else if C is TjanDipSwitsh then Add(93, 17);
 end;
 
+// Midden van de ingang (het groene vierkantje) van een blok zonder klemmen
+// waar Pt binnen KnoopTol van ligt; anders Pt zelf. Voor de knooppunten op
+// een ingang in UpdateSupply (jsl_rails_kring.inc).
+function IngangBij(P: TWinControl; const Pt: TPoint): TPoint;
+var
+  i, j, Dist, Best: Integer;
+  C: TControl;
+  Pins: TPinArray;
+  M: TPoint;
+begin
+  Result := Pt;
+  if P = nil then Exit;
+  Best := KnoopTol + 1;
+  for i := 0 to P.ControlCount - 1 do
+  begin
+    C := P.Controls[i];
+    if (not C.Visible) or (C is TjanConnector) or (C is TjanRail) or
+       (C is TjanVoedingsDeel) then Continue;
+    // alleen blokken in de buurt (InputPins maakt telkens een lijst)
+    if (Pt.X < C.Left - KnoopTol - 4) or (Pt.X > C.Left + C.Width + KnoopTol + 4) or
+       (Pt.Y < C.Top - KnoopTol - 4) or (Pt.Y > C.Top + C.Height + KnoopTol + 4) then Continue;
+    Pins := InputPins(C);
+    for j := 0 to High(Pins) do
+    begin
+      M := Point(C.Left + Pins[j].X + 3, C.Top + Pins[j].Y + 3);
+      Dist := Abs(M.X - Pt.X);
+      if Abs(M.Y - Pt.Y) > Dist then Dist := Abs(M.Y - Pt.Y);
+      if Dist < Best then
+      begin
+        Best := Dist;
+        Result := M;
+      end;
+    end;
+  end;
+end;
+
 // Elektronen langs de rails en door de signaaldraden naar de lampen e.d.
 // op de rails. Elke verbruiker C neemt LoadAmps12(C) x U / 12 V: die stroom
 // komt van de + rail via de invoer (bv. een drukknop) en de draad naar de

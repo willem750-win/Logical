@@ -1,21 +1,33 @@
 <!-- titel: Eingänge -->
   <h1>Eingänge</h1>
-  <p class="lead">Eingangsbauteile sind der Anfang jeder Schaltung: Sie geben ein Signal
-  (ein = 1, aus = 0) an ihrem Ausgang. Sie bedienen sie mit der Maus.</p>
+  <p class="lead">Eingangsbauteile sind der Anfang jeder Schaltung: Mit einem Schalter, einem Taster oder einem Sensor
+  bestimmen Sie, ob ein Signal (ein = 1, aus = 0) zum Rest der Schaltung geht. Sie bedienen sie mit der Maus.</p>
 
-  <p>Jedes Eingangsbauteil hat einen <span class="pin out">Ausgang</span> auf der rechten Seite.
-  Dort beginnen Sie einen Draht zum Rest der Schaltung. Siehe <a href="verbindingen.html">Verbindungen</a>.</p>
-  <p>Stehen <a href="voeding.html">Versorgungsschienen</a> auf dem Panel, stecken Sie die Eingänge rechts an eine
-  + Schiene. Die Spannung dieser Schiene bestimmt, ob der Eingang ein Signal geben kann (ab 2&nbsp;V).</p>
+  <p>Die Eingänge haben <b>Klemmen</b> und stehen in der Bauteilleiste in der Gruppe Versorgung: der
+  <a href="voeding.html#serie">Schalter oder Taster</a>, der <a href="voeding.html#wisselschakelaar">Wechselschalter</a>,
+  der <a href="voeding.html#puls2">Impulsgenerator</a>, der <a href="voeding.html#dip2">DIP-Schalter</a>, der
+  <a href="voeding.html#ldr">LDR</a> und der <a href="voeding.html#ntc">NTC</a>. Sie verbinden sie mit Drähten: siehe
+  <a href="verbindingen.html">Verbindungen</a>.</p>
+  <ul>
+    <li>Einen <b>Schalter</b>, <b>Taster</b> oder <b>Impulsgenerator</b> setzen Sie zwischen die + Schiene und den
+      Eingang: ein Draht von der + Schiene zur linken Klemme und ein Draht von der rechten Klemme zum Eingang.</li>
+    <li>Beim <b>DIP-Schalter</b> geht die linke Klemme zur + Schiene, und die Ausgänge 8, 4, 2 und 1 gehen zu den
+      Eingängen.</li>
+    <li>Ein <b>LDR</b> oder <b>NTC</b> bekommt zusätzlich einen Widerstand: die + Schiene zum Sensor, der Sensor zum
+      Widerstand und der Widerstand zur &minus; Schiene. Das Signal nehmen Sie an der Klemme zwischen Sensor und
+      Widerstand ab, wie im <a href="paneel.html#beslissen">Entscheidungspanel</a>. Ohne diesen Widerstand bleibt das
+      Signal eine 1, egal wie der Schieberegler steht.</li>
+  </ul>
+  <p>Ab 2&nbsp;V ist das Signal eine 1. So sieht man, dass das Signal Energie aus der Quelle ist.</p>
 
-  <div class="tip"><strong>Neu:</strong> Schalter, Taster, Licht- und Wärmesensor, DIP-Schalter und
-  Impulsgenerator auf dieser Seite stehen nicht mehr in der Bauteilleiste. Verwenden Sie stattdessen die Bauteile
-  mit Klemmen aus der Gruppe Versorgung: den <a href="voeding.html#serie">Schalter oder Taster</a>, den
-  <a href="voeding.html#wisselschakelaar">Wechselschalter</a>, den <a href="voeding.html#ldr">LDR</a>, den
-  <a href="voeding.html#ntc">NTC</a>, den <a href="voeding.html#puls2">Impulsgenerator</a> und den
-  <a href="voeding.html#dip2">DIP-Schalter</a>. Setzen Sie sie zwischen die + Schiene und den Eingang: Ab 2&nbsp;V ist
-  das Signal eine 1. So sieht man, dass das Signal Energie aus der Quelle ist. Alte Panels mit den Bauteilen
-  unten funktionieren weiterhin.</div>
+  <div class="tip"><strong>Ältere Panels:</strong> Taster, Schalter, DIP-Schalter, Impulsgenerator sowie Licht- und
+  Wärmesensor weiter unten haben keine Klemmen, sondern einen <span class="pin out">Ausgang</span> auf der rechten
+  Seite. Sie stehen nicht mehr in der Bauteilleiste, funktionieren aber in älteren Panels weiterhin. Stehen
+  <a href="voeding.html">Versorgungsschienen</a> auf einem solchen Panel, müssen sie an einer + Schiene hängen: rechts
+  an der Schiene <a href="voeding.html#inpluggen">angesteckt</a> oder mit einem
+  <a href="voeding.html#draad">Versorgungsdraht</a>. Die Spannung dieser Schiene bestimmt, ob sie ein Signal geben
+  können (ab 2&nbsp;V). Der <a href="#eindschakelaar">Endschalter</a> unten auf dieser Seite ist kein altes Bauteil: Er
+  gehört zu Modellen wie der Person und dem Wagen.</div>
 
   <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Taster</h2>
   <p>Der Ausgang ist ein, solange Sie den Taster mit der Maus gedrückt halten. Lassen Sie los, geht der Ausgang aus.

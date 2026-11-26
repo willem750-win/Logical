@@ -1,20 +1,32 @@
 <!-- titel: Inputs -->
   <h1>Inputs</h1>
-  <p class="lead">Input components are the start of every circuit: they give a signal
-  (on = 1, off = 0) at their output. You operate them with the mouse.</p>
+  <p class="lead">Input components are the start of every circuit: with a switch, a push button or a sensor you
+  decide whether a signal (on = 1, off = 0) goes to the rest of the circuit. You operate them with the mouse.</p>
 
-  <p>Every input component has an <span class="pin out">output</span> on its right-hand side.
-  That is where you start a wire to the rest of the circuit. See <a href="verbindingen.html">Connections</a>.</p>
-  <p>If there are <a href="voeding.html">power rails</a> on the panel, plug the inputs in on the right of a
-  + rail. The voltage of that rail decides whether the input can give a signal (from 2&nbsp;V).</p>
+  <p>The inputs have <b>terminals</b> and are in the Power group of the component bar: the
+  <a href="voeding.html#serie">switch or push button</a>, the <a href="voeding.html#wisselschakelaar">changeover switch</a>,
+  the <a href="voeding.html#puls2">pulse generator</a>, the <a href="voeding.html#dip2">DIP switch</a>, the
+  <a href="voeding.html#ldr">LDR</a> and the <a href="voeding.html#ntc">NTC</a>. You connect them with wires: see
+  <a href="verbindingen.html">Connections</a>.</p>
+  <ul>
+    <li>Put a <b>switch</b>, <b>push button</b> or <b>pulse generator</b> between the + rail and the input: a wire from
+      the + rail to the left terminal and a wire from the right terminal to the input.</li>
+    <li>On the <b>DIP switch</b> the left terminal goes to the + rail and the outputs 8, 4, 2 and 1 go to the inputs.</li>
+    <li>An <b>LDR</b> or <b>NTC</b> gets a resistor as well: the + rail to the sensor, the sensor to the resistor and
+      the resistor to the &minus; rail. Take the signal from the terminal between the sensor and the resistor, as in the
+      <a href="paneel.html#beslissen">Decision panel</a>. Without that resistor the signal stays a 1, wherever you put
+      the slider.</li>
+  </ul>
+  <p>From 2&nbsp;V the signal is a 1. This shows that the signal is energy coming from the source.</p>
 
-  <div class="tip"><strong>New:</strong> the switch, the push button, the light and heat sensors, the DIP switch
-  and the pulse generator on this page are no longer in the component bar. Use the parts with terminals from the
-  Power group instead: the <a href="voeding.html#serie">switch or push button</a>, the
-  <a href="voeding.html#wisselschakelaar">changeover switch</a>, the <a href="voeding.html#ldr">LDR</a>, the
-  <a href="voeding.html#ntc">NTC</a>, the <a href="voeding.html#puls2">pulse generator</a> and the
-  <a href="voeding.html#dip2">DIP switch</a>. Put them between the + rail and the input: from 2&nbsp;V the signal is a
-  1. This shows that the signal is energy coming from the source. Old panels with the parts below still work.</div>
+  <div class="tip"><strong>Older panels:</strong> the push button, the switch, the DIP switch, the pulse generator and
+  the light and heat sensors below have no terminals, but an <span class="pin out">output</span> on their right-hand
+  side. They are no longer in the component bar, but they still work in older panels. If there are
+  <a href="voeding.html">power rails</a> on such a panel, they must hang on a + rail:
+  <a href="voeding.html#inpluggen">plugged in</a> on the right of the rail, or with a
+  <a href="voeding.html#draad">power wire</a>. The voltage of that rail decides whether they can give a signal (from
+  2&nbsp;V). The <a href="#eindschakelaar">limit switch</a> at the bottom of this page is not an old part: it belongs to
+  models such as the person and the cart.</div>
 
   <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Push button</h2>
   <p>The output is on as long as you hold the button down with the mouse. When you let go, the output goes off.

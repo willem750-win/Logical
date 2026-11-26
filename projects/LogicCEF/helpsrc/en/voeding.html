@@ -359,33 +359,50 @@
   <p>Meters, sources, the oscilloscope, the potentiometer and the transistor do not rotate: their display or slider must stay readable.</p>
 
   <h2 id="regels">What changes when there are rails on the panel?</h2>
-  <p>As long as there is no rail on the panel, everything works as before. As soon as there is
-  <b>at least one</b> rail, inputs and outputs <b>without terminals</b> must be <b>plugged in</b>:</p>
-  <ul>
-    <li>The old <a href="invoer.html">inputs</a> from older panels (push button, switch, DIP switch, pulse
-      generator, light and heat sensor without terminals) sit on the <b>right</b> of a <b>+ rail</b>.</li>
-    <li><a href="uitvoer.html">Outputs</a> without terminals (motor, display, person and the other models; in older
-      panels also the old lamp, buzzer and relay) sit on the <b>left</b> of a <b>&minus; rail</b>.</li>
-  </ul>
-  <p>The parts <b>with two terminals</b> (switch, lamp, buzzer, relay &hellip;) are not plugged in. You connect
-  them with wires: from the + rail to the left terminal of the switch, and from the right terminal of the lamp, the
+  <p><b>For parts with two terminals nothing changes.</b> A switch or push button, lamp, buzzer, relay, resistance,
+  LDR, NTC, pulse generator or DIP switch is not plugged in. You connect
+  them with wires, as in a real circuit: from the + rail to the left terminal of the switch, and from the right terminal of the lamp, the
   buzzer or the relay coil to the &minus; rail. See <a href="#serie">lamp, switch and voltmeter with two terminals</a>.</p>
-  <p>Instead of plugging a component in, you can also connect it to a rail with a wire: see
-  <a href="#draad">Connecting with a power wire</a>.</p>
-  <p>A plugged-in component gets a thin plug with a dot in the colour of the rail. A component that is not
-  plugged in gets a <b>grey dot</b> and does not work: an input gives no signal, an output stays off and a
-  display stays dark.</p>
-  <p>The <a href="verwerking.html">processing</a> components (gates, counter and memory) are not plugged in:
-  they still get their power invisibly.</p>
+  <p>What follows only applies to components <b>without terminals</b>. As long as there is no rail on the panel, they
+  get their + and &minus; invisibly and everything works by itself. As soon as there is <b>at least one</b> rail, this holds:</p>
+  <table>
+    <tr><th>Component without terminals</th><th>With rails on the panel</th></tr>
+    <tr><td>The <a href="verwerking.html">processing</a> components: gates, flip-flop, counter, memory, step counter,
+      stopwatch and <a href="logicrun.html">LogicRun</a></td><td>Nothing to do: they still get their power invisibly.</td></tr>
+    <tr><td><a href="uitvoer.html">Outputs</a>: 7-segment display, motor, person, cart, music box, traffic light and
+      barrier gate</td><td>Must hang on a <b>&minus; rail</b>: <a href="#inpluggen">plugged in</a> on the <b>left</b> of the
+      rail, or with a <a href="#draad">power wire</a>.</td></tr>
+    <tr><td>The <a href="invoer.html#eindschakelaar">limit switches</a> of the person, the cart or the barrier
+      gate</td><td>Must hang on a <b>+ rail</b>: plugged in on the <b>right</b> of the rail, or with a power
+      wire.</td></tr>
+    <tr><td>The <a href="#voltmeter">voltmeter</a> with + and &minus;</td><td>Always works. You may plug it in, but you do not have to.</td></tr>
+    <tr><td>Only in old panels: the old <a href="invoer.html">inputs</a> without terminals (push button, switch,
+      DIP switch, pulse generator, light and heat sensor)</td><td>On the right of a + rail, like the limit
+      switches.</td></tr>
+    <tr><td>Only in old panels: lamp, buzzer, relay and switching relay without terminals (you can still switch the old
+      lamp on in <a href="instellingen.html#schakelelementen">Settings</a>)</td><td>On the left of a &minus; rail,
+      like the display.</td></tr>
+  </table>
+  <p>A component that hangs on a rail gets a dot in the colour of the rail; if it is plugged in, a thin plug also
+  runs to the rail. If it is not connected to any rail, the dot is <b>grey</b> and the component does not
+  work: a display stays dark, the motor and the models do not react and a limit switch gives no signal.
+  Only on the voltmeter may the dot (on the right, the &minus; side) stay grey: it then measures against ground.</p>
+  <p>The <b>signal</b> to an input of such a component comes through a normal wire, for example from the right
+  terminal of a switch to an input of a gate or of the display. From 2&nbsp;V it is a 1: see
+  <a href="#spanning">Voltage of a + rail</a>.</p>
 
   <h2 id="inpluggen">Plugging in</h2>
+  <p>Plugging in is only for components <b>without terminals</b> that need a rail: display, motor and models
+  (on the left of a &minus; rail) and limit switches (on the right of a + rail). You can also plug in the
+  <a href="#voltmeter">voltmeter</a> with + and &minus;, and in old panels the inputs and outputs without terminals. Parts
+  with two terminals do not snap onto a rail: you connect them with wires.</p>
   <ul>
-    <li>Drag a component against the rail. Within 12 pixels it snaps onto it.</li>
+    <li>Drag the component against the correct side of the rail. Within 12 pixels it snaps onto it.</li>
     <li>When you place a new component from the bar, or drag a group of components, it also snaps onto a rail
       nearby.</li>
     <li>The <b>middle</b> of the component must be next to the drawn part of the rail, not above or below it.
       Make the rail longer if needed.</li>
-    <li>The arrow keys move one pixel at a time; that way you can also pull a component off again.</li>
+    <li>The arrow keys move a selected component one pixel at a time; that way you can also pull it off again.</li>
   </ul>
 
   <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">The buzzer with two terminals</h2>
@@ -417,21 +434,28 @@
   <p>Logic calculates the field with two poles per magnet: each pole gives a field that decreases with the square of the distance. That is not exactly right, but the shape of the field lines and the direction of the compass are correct.</p>
 
   <h2 id="draad">Connecting with a power wire</h2>
-  <p>Instead of plugging a component in, you can also connect it to a rail with a wire, as in a real circuit.
-  The component can then be anywhere on the panel.</p>
+  <p>This too only applies to components <b>without terminals</b> that need a rail: display, motor, models and
+  limit switches, and in old panels the inputs and outputs without terminals. Instead of plugging such a component in,
+  you can also connect it to a rail with a wire, as in a real circuit.
+  The component can then be anywhere on the panel. Parts with two terminals have no dot: there you simply run the
+  wire from the rail to a terminal.</p>
   <ol class="steps">
     <li>Click <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connection</b>.</li>
     <li>Click the line of the rail, at the height where the wire should start. A wire appears.</li>
-    <li>Drag the end of the wire to the <b>grey dot</b> of the component: on the left for inputs (from a + rail),
-      on the right for outputs and for the &minus; side of the voltmeter (from a &minus; rail). From a &minus; rail the wire appears on the left of the rail. Within 12 pixels the end snaps onto the dot.</li>
+    <li>Drag the end of the wire to the <b>grey dot</b> of the component: on the right for outputs (display, motor,
+      models) and for the &minus; side of the voltmeter (from a &minus; rail), on the left for inputs (limit switches;
+      from a + rail). From a &minus; rail the wire appears on the left of the rail. Within 12 pixels the end snaps onto the dot.</li>
   </ol>
   <p>The dot takes the colour of the rail and the component works. A wire from a + rail turns red during the
   simulation when there is enough voltage on it; a wire to a &minus; rail is blue.</p>
   <ul>
     <li>If you drag the rail, the start of the wire stays on the rail. If you drag the component, the end of the
       wire moves along.</li>
-    <li>A wire from a + rail to an input (of a gate, the voltmeter or R1 of the switching relay) works like a
+    <li>A wire from a + rail to an <b>input</b> (of a gate, the counter, the display or the + of the voltmeter; in old
+      panels also R1 of the switching relay) is not a power wire: it works like a
       normal wire carrying the voltage of the rail.</li>
+    <li>A wire from a rail to a terminal of a part with two terminals is also a normal wire: it belongs to the
+      circuit.</li>
     <li>You delete a power wire like any other <a href="verbindingen.html#verwijderen">wire</a>.</li>
   </ul>
 
@@ -446,47 +470,78 @@
   </ul>
 
   <h2 id="spanning">Voltage of a + rail</h2>
-  <p>The + rail gets the terminal voltage of the source it is connected to. Just like in real logic
-  circuits, an input only works from about <b>2&nbsp;V</b>.</p>
+  <p>The + rail gets the terminal voltage of the source it is connected to. What does that mean for what hangs on it?</p>
+  <ul>
+    <li><b>Parts with two terminals</b> work with it as in a real circuit: at a lower voltage less current flows
+      and a lamp burns more dimly (see <a href="#ohm">Ohm&rsquo;s law</a>).</li>
+    <li>A <b>logic input</b> (of a gate, the counter, the display &hellip;) only works from about
+      <b>2&nbsp;V</b>, just like in real logic circuits. That holds for a wire that starts on the rail itself, and
+      also for a wire from a terminal, for example behind a switch: there the voltage on that terminal counts.</li>
+    <li><b>Display, motor and models</b> on the &minus; rail only work when there is a + rail with 2&nbsp;V or more on the
+      panel.</li>
+  </ul>
   <table>
-    <tr><th>Voltage</th><th>Rail</th><th>Input on this rail</th></tr>
-    <tr><td>0&nbsp;V (no closed circuit)</td><td>grey</td><td>gives no signal</td></tr>
-    <tr><td>below 2&nbsp;V</td><td>dark red</td><td>gives no signal: voltage too low</td></tr>
+    <tr><th>Voltage</th><th>Rail</th><th>Input that gets its signal from this rail</th></tr>
+    <tr><td>0&nbsp;V (no closed circuit)</td><td>grey</td><td>gets no signal</td></tr>
+    <tr><td>below 2&nbsp;V</td><td>dark red</td><td>gets no signal: voltage too low</td></tr>
     <tr><td>2&nbsp;V to 12&nbsp;V</td><td>red, brighter as the voltage rises</td><td>works</td></tr>
   </table>
+  <p>The same holds for a limit switch on the rail and, in old panels, for the inputs without terminals that are
+  plugged in on the rail.</p>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
-  <p>The voltmeter is in the component bar. To hide it, set <b>Voltmeter</b> to <b>False</b> in
+  <p>Logic has two voltmeters. This voltmeter has a <b>+</b> on the left and a <b>&minus;</b> on the right and needs only
+  one wire. The <a href="#serie">voltmeter with 2 terminals</a> measures the difference between its two terminals. You
+  may use both in a circuit with parts with two terminals.</p>
+  <p>This voltmeter is in the component bar from the <a href="instellingen.html#niveau">level</a>
+  <b>Extended</b> (<b>Panel choice &rsaquo; Level</b>), with the outputs. To show or hide only its button, set
+  <b>Voltmeter</b> to <b>True</b> or <b>False</b> in
   <a href="instellingen.html#schakelelementen">Settings</a>, <b>Switch Elements</b> tab.</p>
   <p>The voltmeter measures the voltage <b>against ground</b> (0&nbsp;V) and shows it with one decimal,
   in red as soon as there is a voltage.</p>
   <ul>
-    <li><b>+</b> (left): connect a wire, or plug the meter in on the right of a + rail. It then shows the
+    <li><b>+</b> (left): connect a wire from the point you want to measure: a terminal of a part with two
+      terminals (for example the right terminal of a switch), a + rail or the output of a gate. You may also plug the
+      meter in on the right of a + rail. It then shows the
       voltage of that rail.</li>
     <li><b>&minus;</b> (right): may stay open; the meter then measures against ground. You may also plug the meter in on the left of a &minus; rail,
       or run a wire from a &minus; rail to the dot on the right (parallel connection): the reading stays the same.
       If you run a wire to the green square on the right, the meter measures the <b>difference</b> between + and &minus;,
       for example the voltage drop across a <a href="#weerstand">contact</a>.</li>
   </ul>
-  <p>A wire carries the voltage of its source:</p>
+  <p>A wire carries the voltage of its source. That is what the meter shows:</p>
   <table>
-    <tr><th>Source</th><th>Voltage on the wire</th></tr>
-    <tr><td>input on a + rail, on</td><td>the voltage of that rail</td></tr>
-    <tr><td>wire starting on a + rail</td><td>the voltage of that rail</td></tr>
-    <tr><td>input without rails on the panel, on</td><td>5&nbsp;V</td></tr>
-    <tr><td>gate, counter or memory, output on</td><td>5&nbsp;V</td></tr>
-    <tr><td>anything that is off</td><td>0&nbsp;V</td></tr>
+    <tr><th>Source: the wire starts on &hellip;</th><th>Voltage on the wire</th></tr>
+    <tr><td>a + rail</td><td>the voltage of that rail</td></tr>
+    <tr><td>a terminal of a part with two terminals (source, switch, lamp, resistance &hellip;)</td><td>the voltage on that terminal</td></tr>
+    <tr><td>the output of a gate, counter, memory or LogicRun, on</td><td>5&nbsp;V</td></tr>
+    <tr><td>a limit switch on a + rail, on</td><td>the voltage of that rail</td></tr>
+    <tr><td>in old panels: input without terminals on a + rail, on</td><td>the voltage of that rail</td></tr>
+    <tr><td>in old panels: input without terminals, no rails on the panel, on</td><td>5&nbsp;V</td></tr>
+    <tr><td>an output that is off (gate, counter, limit switch, old input without terminals), and a &minus; rail</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Tip:</strong> set the source to 1&nbsp;V and connect a push button on the + rail to a
-  lamp and to the voltmeter. When you press the button, the meter shows 1.0&nbsp;V but the lamp stays off: the voltage
-  is too low for a logic input.</div>
+  <p>Note: the terminals of a lamp that is not lit can still carry a voltage. If the lamp is on the + rail and the
+  switch behind it is open, the meter shows the voltage of the rail on both terminals of the lamp.</p>
+  <div class="tip"><strong>Tip:</strong> set the source to 1&nbsp;V. Connect the + rail to the left terminal of a
+  switch, and the right terminal to the + of the voltmeter and to an input of an OR gate. Start the simulation and
+  close the switch: the meter shows 1.0&nbsp;V, but the wire to the gate stays black and the output of the gate
+  stays off. The voltage is too low for a logic input. Slide the source higher: from about 2&nbsp;V the wire turns
+  red and the output of the gate goes on.</div>
 
   <h2 id="bewaren">Saving and settings</h2>
   <ul>
     <li>Sources (voltage and Ri), fuses (rated current), meters and rails are saved with their position in the
       panel file (<code>.lpl</code>). A blown fuse is whole again after opening the panel.</li>
-    <li>If you do not want the power buttons in the component bar, set <b>Power rails (+ and -)</b> to
-      <b>False</b> in <a href="instellingen.html#schakelelementen">Settings</a>: the + rail and &minus; rail buttons then
+    <li>The parts with two terminals are also saved with their position and their choices: for example the resistance
+      and the colour of a lamp, the kind of a resistance and the position of a switch.</li>
+    <li>For components without terminals: if a component is against its rail again after opening, it is plugged in
+      again. A power wire is saved like any other wire.</li>
+    <li>Old panels with rails but without a source get a source above each + rail when they are opened: see
+      <a href="#kring">The power circuit</a>. Old panels without rails keep working without a source.</li>
+    <li>Which buttons are in the component bar, you choose in one go with a
+      <a href="instellingen.html#niveau">level</a>, or button by button in
+      <a href="instellingen.html#schakelelementen">Settings</a>. If you set <b>Power rails (+ and -)</b> to
+      <b>False</b> there, the + rail and &minus; rail buttons
       disappear from the bar. Every other part of the supply (source, fuse, milliammeter, resistance, lamp, switch and
       voltmeter with 2 terminals) has its own choice there.</li>
   </ul>

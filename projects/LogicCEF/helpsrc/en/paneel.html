@@ -33,31 +33,109 @@
 
   <h2 id="paneelkeuze">Panel choice</h2>
   <p>With <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Panel choice</b> you start a new panel.
-  The current panel is cleared; save it first if you want to keep it. The menu items have Dutch names.</p>
+  The current panel is cleared; save it first if you want to keep it.</p>
+  <p>The three example panels are built like a real circuit: a 12&nbsp;V
+  <a href="voeding.html#bron">source</a> at the top, a red + rail on the left, a blue &minus; rail on the right, and
+  between them components with <a href="voeding.html#serie">terminals</a>, connected by wires. All components
+  are in the <a href="instellingen.html#niveau">level</a> Basic.</p>
   <dl class="parts">
-    <dt>New standard panel (<i>Nieuw standaardpaneel</i>)</dt>
+    <dt>New standard panel</dt>
     <dd>An empty panel to build your own circuit.</dd>
 
-    <dt id="beslissen">Decision panel (<i>Beslissingspaneel</i>)</dt>
+    <dt id="beslissen">Decision panel</dt>
     <dd>A practice panel for making a decision with logic gates. Ready on the panel are:
       <ul>
-        <li>inputs: a push button, a switch, a light sensor and a heat sensor;</li>
-        <li>processing: an AND gate, an OR gate and a NOT gate;</li>
-        <li>outputs: a lamp, a relay and a buzzer.</li>
+        <li>inputs (left): a push button, a switch, an <a href="voeding.html#ldr">LDR</a> (light sensor) with a
+          10&nbsp;k&Omega; resistor and an <a href="voeding.html#ntc">NTC</a> (heat sensor) with a
+          1000&nbsp;&Omega; resistor;</li>
+        <li>processing (middle): an <a href="verwerking.html#en">AND gate</a>, an
+          <a href="verwerking.html#of">OR gate</a> and a <a href="verwerking.html#niet">NOT gate</a>;</li>
+        <li>outputs (right): a 5&nbsp;V lamp, a <a href="voeding.html#zoemer2">buzzer</a> and a
+          <a href="voeding.html#relais2">relay</a> whose NO contact switches a 12&nbsp;V lamp.</li>
       </ul>
-      There are no wires yet: you decide how to connect them. For example: the buzzer sounds
-      when it is warm <b>and</b> the switch is on.</dd>
+      <figure>
+        <img src="../img/paneel-beslissen.png" alt="Decision panel: source, + rail and &minus; rail; on the left push button, switch, LDR and NTC; in the middle three gates; on the right lamp, buzzer and relay">
+        <figcaption>The Decision panel when it opens: everything is already connected to the + and the &minus;, but no wire runs to the gates yet.</figcaption>
+      </figure>
+      <p><b>Already wired</b> is everything that goes to the + and the &minus;:</p>
+      <ul>
+        <li>the + rail goes to the left terminal of the push button, the switch, the LDR and the NTC;</li>
+        <li>each sensor goes through its resistor to the &minus; rail: together they form a
+          <a href="voeding.html#weerstand">voltage divider</a>;</li>
+        <li>the right terminal of the 5&nbsp;V lamp, of the buzzer and of the relay coil goes to the &minus; rail;</li>
+        <li>contact <b>C</b> of the relay is on the + rail, the NO contact on the 12&nbsp;V lamp, and that lamp on the
+          &minus; rail.</li>
+      </ul>
+      <p>The gates need no wire to the + or the &minus;: they get their power
+      <a href="simulatie.html#voeding">invisibly</a>.</p>
+      <p><b>You lay the signal wires</b> (see <a href="verbindingen.html">Connections</a>): from an input component to the
+      input of a gate, and from the output of a gate to an output component.</p>
+      <ul>
+        <li>At the push button and the switch the wire starts at the right terminal.</li>
+        <li>At a sensor it also starts at the right terminal, between the sensor and its resistor. Two wires then meet there.</li>
+        <li>Connect the output of a gate to the left terminal of the 5&nbsp;V lamp, the buzzer or the relay coil.</li>
+      </ul>
+      <p>An example: the buzzer sounds when it is warm <b>and</b> the switch is on.</p>
+      <ol class="steps">
+        <li>Draw a wire from the right terminal of the NTC to input <b>A1</b> of the AND gate.</li>
+        <li>Draw a wire from the right terminal of the switch to input <b>A2</b>.</li>
+        <li>Draw a wire from output <b>A</b> of the AND gate to the left terminal of the buzzer.</li>
+        <li>Start the simulation, click the lever of the switch and drag the slider under the NTC to 60&nbsp;&deg;C:
+          the buzzer sounds. At 20&nbsp;&deg;C, or with the switch open, it is silent.</li>
+      </ol>
+      <p>You change the light or the temperature with the slider under the sensor: drag the knob, or click beside it for
+      one step (1&nbsp;% light or 1&nbsp;&deg;C). This also works during the simulation.</p>
+      <p>Two more to try:</p>
+      <ul>
+        <li>A night light: the LDR to input <b>N1</b> of the NOT gate, output <b>N</b> to the 5&nbsp;V lamp. The lamp
+          lights when it is dark (15&nbsp;% light) and goes out at 80&nbsp;% light. See also <a href="les06.html">lesson 6</a>.</li>
+        <li>Switching a big appliance: the push button to input <b>O1</b> of the OR gate, output <b>O</b> to the relay
+          coil. As long as you press, the relay pulls in and the 12&nbsp;V lamp lights. See also
+          <a href="les07.html">lesson 7</a>.</li>
+      </ul>
+    </dd>
 
-    <dt id="tellerpaneel">Counter panel (<i>Tellerpaneel</i>)</dt>
-    <dd>A working counter example. A pulse generator and a push button supply the counting pulses,
-      a second push button resets the counter to 0, and a display shows the count.
-      The wires are already in place: start the simulation and the pulse generator.</dd>
+    <dt id="tellerpaneel">Counter panel</dt>
+    <dd>A working example of a <a href="verwerking.html#teller">counter</a>. All wires are already in place: the panel
+      works at once.
+      <figure>
+        <img src="../img/paneel-teller.png" alt="Counter panel: two push buttons, a pulse generator, an OR gate, a counter and a display between a + rail and a &minus; rail">
+        <figcaption>The Counter panel: the pulse generator and the bottom push button go through an OR gate to the count input Te; the top push button resets the counter to 0.</figcaption>
+      </figure>
+      <ul>
+        <li>The + rail goes to the left terminal of the two push buttons and of the
+          <a href="voeding.html#puls2">pulse generator</a>.</li>
+        <li>The pulse generator goes to input <b>O1</b> of an <a href="verwerking.html#of">OR gate</a>, the bottom
+          push button to <b>O2</b>. The output of the OR gate goes to the count input <b>Te</b>: the counter counts the pulses of
+          the generator <b>or</b> each press of the button.</li>
+        <li>The top push button goes to <b>Re</b>: it resets the counter to 0.</li>
+        <li>The outputs <b>T8</b>, <b>T4</b>, <b>T2</b> and <b>T1</b> of the counter go with four wires to the inputs
+          <b>8</b>, <b>4</b>, <b>2</b> and <b>1</b> of the <a href="uitvoer.html#display">7-segment display</a>, which shows the count.
+          The display has no terminals: it is <a href="voeding.html#inpluggen">plugged in</a> on the &minus; rail.</li>
+      </ul>
+      <p>Start the simulation and press the bottom push button a few times: the counter goes one further each time. Then
+      click the box of the pulse generator: it switches to <b>on</b> and the counter runs by itself. Click again to
+      stop, and press the top push button to start again at 0. More explanation is in
+      <a href="les08.html">lesson 8</a>.</p>
+    </dd>
 
-    <dt id="geheugenpaneel">Memory panel (<i>Geheugenpaneel</i>)</dt>
-    <dd>A working memory example. A counter with push buttons chooses the address, a DIP switch
-      writes a number into it, and two displays show the address and the content.
-      Set a number on the DIP switch and press its button to store it; then count on and come
-      back to read it again.</dd>
+    <dt id="geheugenpaneel">Memory panel</dt>
+    <dd>A working example of a <a href="verwerking.html#geheugen">memory</a>, the same circuit as in
+      <a href="les09.html">lesson 9</a>. Here too all wires are already in place.
+      <ul>
+        <li>The <a href="verwerking.html#teller">counter</a> at the top chooses the address. The top push button (on <b>Re</b>)
+          resets the address to 0, the second (on <b>Te</b>) goes one address further. The switch below them (on <b>A16</b>)
+          adds 16: that takes you to the addresses 16 to 31.</li>
+        <li>The <a href="voeding.html#dip2">DIP switch</a> sets a number from 0 to 15 on the data inputs
+          <b>D8</b>, <b>D4</b>, <b>D2</b> and <b>D1</b>. When the panel opens it is set to 5.</li>
+        <li>The bottom push button (on <b>S</b>, write) stores that number in the chosen address.</li>
+        <li>The top display shows the address, the bottom one the content of that address. Both displays are
+          <a href="voeding.html#inpluggen">plugged in</a> on the &minus; rail.</li>
+      </ul>
+      <p>Start the simulation. Click the sliders of the DIP switch to choose a number and press the bottom push
+      button to store it. Then go one address further with the second push button and back to 0 with the top one:
+      the number is still there.</p>
+    </dd>
   </dl>
 
   <h2 id="opslaan">Open and save</h2>

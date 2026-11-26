@@ -371,36 +371,58 @@
   <p>Les appareils de mesure, les sources, l&rsquo;oscilloscope, le potentiomètre et le transistor ne pivotent pas&nbsp;: leur écran ou
   leur curseur doit rester lisible.</p>
 
-  <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau ?</h2>
-  <p>Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau, tout fonctionne comme avant. Dès qu&rsquo;il y a
-  <b>au moins un</b> rail, les entrées et les sorties <b>sans bornes</b> doivent être <b>branchées</b>&nbsp;:</p>
-  <ul>
-    <li>les anciennes <a href="invoer.html">entrées</a> des anciens panneaux (bouton-poussoir, interrupteur,
-      commutateur DIP, générateur d&rsquo;impulsions, capteurs de lumière et de chaleur sans bornes) se placent à
-      <b>droite</b> d&rsquo;un <b>rail +</b>&nbsp;;</li>
-    <li>les <a href="uitvoer.html">sorties</a> sans bornes (moteur, afficheur, personne et les autres modèles&nbsp;; dans
-      les anciens panneaux aussi l&rsquo;ancienne lampe, l&rsquo;ancien buzzer et l&rsquo;ancien relais) se placent à
-      <b>gauche</b> d&rsquo;un <b>rail &minus;</b>.</li>
-  </ul>
-  <p>Les composants <b>à deux bornes</b> (interrupteur, lampe, buzzer, relais &hellip;) ne se branchent pas. Vous les
-  reliez par des fils&nbsp;: du rail + à la borne gauche de l&rsquo;interrupteur, et de la borne droite de la lampe, du
+  <h2 id="regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau&nbsp;?</h2>
+  <p><b>Pour les composants à deux bornes, rien ne change.</b> Un interrupteur ou bouton-poussoir, une lampe, un buzzer,
+  un relais, une résistance, une LDR, une CTN, un générateur d&rsquo;impulsions ou un interrupteur DIP ne se branche pas. Vous les
+  reliez par des fils, comme dans un vrai circuit&nbsp;: du rail + à la borne gauche de l&rsquo;interrupteur, et de la borne droite de la lampe, du
   buzzer ou de la bobine du relais au rail &minus;. Voir <a href="#serie">lampe, interrupteur et voltmètre à deux bornes</a>.</p>
-  <p>Au lieu de brancher un composant, vous pouvez aussi le relier à un rail par un fil : voir
-  <a href="#draad">Relier par un fil d&rsquo;alimentation</a>.</p>
-  <p>Un composant branché reçoit une fine fiche avec un point de la couleur du rail. Un composant non branché
-  reçoit un <b>point gris</b> et ne fonctionne pas : une entrée ne donne pas de signal, une sortie reste
-  éteinte et un afficheur reste sombre.</p>
-  <p>Le <a href="verwerking.html">traitement</a> (portes, compteur et mémoire) ne se branche pas : il reste
-  alimenté de manière invisible.</p>
+  <p>Ce qui suit ne concerne que les composants <b>sans bornes</b>. Tant qu&rsquo;il n&rsquo;y a aucun rail sur le panneau,
+  ils reçoivent leur + et leur &minus; de manière invisible et tout fonctionne tout seul. Dès qu&rsquo;il y a
+  <b>au moins un</b> rail, voici ce qui vaut&nbsp;:</p>
+  <table>
+    <tr><th>Composant sans bornes</th><th>Avec des rails sur le panneau</th></tr>
+    <tr><td>Le <a href="verwerking.html">traitement</a>&nbsp;: portes, bascule, compteur, mémoire, compteur de pas,
+      chronomètre et <a href="logicrun.html">LogicRun</a></td><td>Rien à faire&nbsp;: ils restent alimentés de manière
+      invisible.</td></tr>
+    <tr><td>Les <a href="uitvoer.html">sorties</a>&nbsp;: afficheur 7 segments, moteur, personne, chariot, boîte à
+      musique, feu tricolore et barrière</td><td>Doivent être reliées à un <b>rail &minus;</b>&nbsp;:
+      <a href="#inpluggen">branchées</a> à <b>gauche</b> du rail, ou par un
+      <a href="#draad">fil d&rsquo;alimentation</a>.</td></tr>
+    <tr><td>Les <a href="invoer.html#eindschakelaar">fins de course</a> de la personne, du chariot ou de la
+      barrière</td><td>Doivent être reliées à un <b>rail +</b>&nbsp;: branchées à <b>droite</b> du rail, ou par un fil
+      d&rsquo;alimentation.</td></tr>
+    <tr><td>Le <a href="#voltmeter">voltmètre</a> avec + et &minus;</td><td>Fonctionne toujours. Vous pouvez le brancher,
+      mais ce n&rsquo;est pas nécessaire.</td></tr>
+    <tr><td>Seulement dans les anciens panneaux&nbsp;: les anciennes <a href="invoer.html">entrées</a> sans bornes
+      (bouton-poussoir, interrupteur, commutateur DIP, générateur d&rsquo;impulsions, capteurs de lumière et de
+      chaleur)</td><td>À droite d&rsquo;un rail +, comme les fins de course.</td></tr>
+    <tr><td>Seulement dans les anciens panneaux&nbsp;: lampe, buzzer, relais et relais de commutation sans bornes
+      (vous pouvez encore activer l&rsquo;ancienne lampe dans les
+      <a href="instellingen.html#schakelelementen">Réglages</a>)</td><td>À gauche d&rsquo;un rail &minus;, comme
+      l&rsquo;afficheur.</td></tr>
+  </table>
+  <p>Un composant relié à un rail reçoit un point de la couleur du rail&nbsp;; s&rsquo;il est branché, une fine fiche va
+  aussi jusqu&rsquo;au rail. S&rsquo;il n&rsquo;est relié à aucun rail, le point est <b>gris</b> et le composant ne
+  fonctionne pas&nbsp;: un afficheur reste sombre, le moteur et les modèles ne réagissent pas et une fin de course ne donne
+  pas de signal. Seul le point du voltmètre (à droite, côté &minus;) peut rester gris&nbsp;: il mesure alors par rapport à
+  la masse.</p>
+  <p>Le <b>signal</b> vers une entrée d&rsquo;un tel composant arrive par un fil normal, par exemple de la borne droite
+  d&rsquo;un interrupteur vers une entrée d&rsquo;une porte ou de l&rsquo;afficheur. À partir de 2&nbsp;V, c&rsquo;est
+  un 1&nbsp;: voir <a href="#spanning">Tension d&rsquo;un rail +</a>.</p>
 
   <h2 id="inpluggen">Brancher</h2>
+  <p>Brancher ne concerne que les composants <b>sans bornes</b> qui ont besoin d&rsquo;un rail&nbsp;: afficheur, moteur
+  et modèles (à gauche d&rsquo;un rail &minus;) et fins de course (à droite d&rsquo;un rail +). Vous pouvez aussi brancher
+  le <a href="#voltmeter">voltmètre</a> avec + et &minus;, et dans les anciens panneaux les entrées et sorties sans
+  bornes. Les composants à deux bornes ne s&rsquo;accrochent pas à un rail&nbsp;: vous les reliez par des fils.</p>
   <ul>
-    <li>Faites glisser un composant contre le rail. À moins de 12 pixels, il s&rsquo;y accroche tout seul.</li>
+    <li>Faites glisser le composant contre le bon côté du rail. À moins de 12 pixels, il s&rsquo;y accroche tout seul.</li>
     <li>Quand vous placez un nouveau composant depuis la barre, ou que vous déplacez un groupe, il
       s&rsquo;accroche aussi à un rail proche.</li>
     <li>Le <b>milieu</b> du composant doit se trouver à côté de la partie dessinée du rail, pas au-dessus ni
       en dessous. Allongez le rail si nécessaire.</li>
-    <li>Les touches fléchées déplacent d&rsquo;un pixel ; vous pouvez ainsi aussi débrancher un composant.</li>
+    <li>Les touches fléchées déplacent un composant sélectionné d&rsquo;un pixel&nbsp;; vous pouvez ainsi aussi le
+      débrancher.</li>
   </ul>
 
   <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">Le buzzer à deux bornes</h2>
@@ -432,22 +454,30 @@
   <p>Logic calcule le champ avec deux pôles par aimant&nbsp;: chaque pôle donne un champ qui diminue avec le carré de la distance. Ce n&rsquo;est pas tout à fait exact, mais la forme des lignes de champ et la direction de la boussole sont correctes.</p>
 
   <h2 id="draad">Relier par un fil d&rsquo;alimentation</h2>
-  <p>Au lieu de brancher un composant, vous pouvez aussi le relier à un rail par un fil, comme dans un vrai
-  circuit. Le composant peut alors se trouver n&rsquo;importe où sur le panneau.</p>
+  <p>Ceci aussi ne concerne que les composants <b>sans bornes</b> qui ont besoin d&rsquo;un rail&nbsp;: afficheur,
+  moteur, modèles et fins de course, et dans les anciens panneaux les entrées et sorties sans bornes. Au lieu de
+  brancher un tel composant, vous pouvez aussi le relier à un rail par un fil, comme dans un vrai
+  circuit. Le composant peut alors se trouver n&rsquo;importe où sur le panneau. Les composants à deux bornes
+  n&rsquo;ont pas de point&nbsp;: là, vous tirez simplement le fil du rail vers une borne.</p>
   <ol class="steps">
     <li>Cliquez sur <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>.</li>
     <li>Cliquez sur la ligne du rail, à la hauteur où le fil doit commencer. Un fil apparaît.</li>
-    <li>Faites glisser l&rsquo;extrémité du fil vers le <b>point gris</b> du composant : à gauche pour une entrée
-      (depuis un rail +), à droite pour une sortie et pour le côté &minus; du voltmètre (depuis un rail &minus;). Depuis un rail &minus;, le fil apparaît à gauche du rail. À moins de 12 pixels, l&rsquo;extrémité
+    <li>Faites glisser l&rsquo;extrémité du fil vers le <b>point gris</b> du composant&nbsp;: à droite pour une sortie
+      (afficheur, moteur, modèles) et pour le côté &minus; du voltmètre (depuis un rail &minus;), à gauche pour une entrée
+      (fins de course&nbsp;; depuis un rail +). Depuis un rail &minus;, le fil apparaît à gauche du rail. À moins de 12 pixels, l&rsquo;extrémité
       se place d&rsquo;elle-même sur le point.</li>
   </ol>
   <p>Le point prend la couleur du rail et le composant fonctionne. Pendant la simulation, un fil venant d&rsquo;un
-  rail + devient rouge s&rsquo;il y a assez de tension ; un fil vers un rail &minus; est bleu.</p>
+  rail + devient rouge s&rsquo;il y a assez de tension&nbsp;; un fil vers un rail &minus; est bleu.</p>
   <ul>
     <li>Si vous déplacez le rail, le début du fil reste sur le rail. Si vous déplacez le composant, l&rsquo;extrémité
       du fil suit.</li>
-    <li>Un fil d&rsquo;un rail + vers une entrée (d&rsquo;une porte, du voltmètre ou R1 du relais de commutation)
+    <li>Un fil d&rsquo;un rail + vers une <b>entrée</b> (d&rsquo;une porte, du compteur, de l&rsquo;afficheur ou le + du
+      voltmètre&nbsp;; dans les anciens panneaux aussi R1 du relais de commutation) n&rsquo;est pas un fil
+      d&rsquo;alimentation&nbsp;: il
       fonctionne comme un fil normal qui porte la tension du rail.</li>
+    <li>Un fil d&rsquo;un rail vers une borne d&rsquo;un composant à deux bornes est aussi un fil normal&nbsp;: il fait
+      partie du circuit.</li>
     <li>Un fil d&rsquo;alimentation se supprime comme n&rsquo;importe quel autre <a href="verbindingen.html#verwijderen">fil</a>.</li>
   </ul>
 
@@ -462,49 +492,83 @@
   </ul>
 
   <h2 id="spanning">Tension d&rsquo;un rail +</h2>
-  <p>Le rail + reçoit la tension aux bornes de la source à laquelle il est relié. Comme
-  dans les vrais circuits logiques, une entrée ne fonctionne qu&rsquo;à partir d&rsquo;environ <b>2&nbsp;V</b>.</p>
+  <p>Le rail + reçoit la tension aux bornes de la source à laquelle il est relié. Qu&rsquo;est-ce que cela signifie pour
+  ce qui y est relié&nbsp;?</p>
+  <ul>
+    <li>Les <b>composants à deux bornes</b> en tiennent compte comme dans un vrai circuit&nbsp;: à une tension plus basse,
+      il passe moins de courant et une lampe brille moins (voir <a href="#ohm">la loi d&rsquo;Ohm</a>).</li>
+    <li>Une <b>entrée logique</b> (d&rsquo;une porte, du compteur, de l&rsquo;afficheur &hellip;) ne fonctionne
+      qu&rsquo;à partir d&rsquo;environ <b>2&nbsp;V</b>, comme dans les vrais circuits logiques. Cela vaut pour un fil qui
+      part du rail lui-même, et aussi pour un fil qui part d&rsquo;une borne, par exemple derrière un
+      interrupteur&nbsp;: là, c&rsquo;est la tension sur cette borne qui compte.</li>
+    <li><b>L&rsquo;afficheur, le moteur et les modèles</b> sur le rail &minus; ne fonctionnent que s&rsquo;il y a sur le
+      panneau un rail + avec 2&nbsp;V ou plus.</li>
+  </ul>
   <table>
-    <tr><th>Tension</th><th>Rail</th><th>Entrée sur ce rail</th></tr>
+    <tr><th>Tension</th><th>Rail</th><th>Entrée qui reçoit son signal de ce rail</th></tr>
     <tr><td>0&nbsp;V (pas de circuit fermé)</td><td>gris</td><td>pas de signal</td></tr>
-    <tr><td>moins de 2&nbsp;V</td><td>rouge foncé</td><td>pas de signal : tension trop faible</td></tr>
+    <tr><td>moins de 2&nbsp;V</td><td>rouge foncé</td><td>pas de signal&nbsp;: tension trop faible</td></tr>
     <tr><td>2&nbsp;V à 12&nbsp;V</td><td>rouge, plus vif quand la tension augmente</td><td>fonctionne</td></tr>
   </table>
+  <p>Il en va de même pour une fin de course sur le rail et, dans les anciens panneaux, pour les entrées sans bornes
+  branchées sur le rail.</p>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmètre</h2>
-  <p>Le voltmètre se trouve dans la barre des composants. Pour le masquer, mettez <b>Voltmètre</b> sur
+  <p>Logic a deux voltmètres. Ce voltmètre a un <b>+</b> à gauche et un <b>&minus;</b> à droite et n&rsquo;a besoin que
+  d&rsquo;un seul fil. Le <a href="#serie">voltmètre à 2 bornes</a> mesure la différence entre ses deux bornes. Vous
+  pouvez utiliser les deux dans un circuit avec des composants à deux bornes.</p>
+  <p>Ce voltmètre se trouve dans la barre des composants à partir du <a href="instellingen.html#niveau">niveau</a>
+  <b>Étendu</b> (<b>Choix du panneau &rsaquo; Niveau</b>), parmi les sorties. Pour afficher ou masquer seulement son
+  bouton, mettez <b>Voltmètre</b> sur <b>True</b> ou
   <b>False</b> dans les <a href="instellingen.html#schakelelementen">Réglages</a>, onglet <b>Éléments de commutation</b>.</p>
   <p>Le voltmètre mesure la tension <b>par rapport à la masse</b> (0&nbsp;V) et l&rsquo;affiche avec une
   décimale, en rouge dès qu&rsquo;il y a une tension.</p>
   <ul>
-    <li><b>+</b> (à gauche) : reliez un fil, ou branchez le voltmètre à droite d&rsquo;un rail +. Il affiche
+    <li><b>+</b> (à gauche)&nbsp;: reliez un fil depuis le point que vous voulez mesurer&nbsp;: une borne d&rsquo;un
+      composant à deux bornes (par exemple la borne droite d&rsquo;un interrupteur), un rail + ou la sortie d&rsquo;une
+      porte. Vous pouvez aussi brancher le voltmètre à droite d&rsquo;un rail +. Il affiche
       alors la tension de ce rail.</li>
-    <li><b>&minus;</b> (à droite) : peut rester libre ; le voltmètre mesure alors par rapport à la masse. Vous pouvez aussi brancher le voltmètre à gauche d&rsquo;un rail &minus;,
-      ou tirer un fil d&rsquo;un rail &minus; vers le point de droite (branchement en parallèle) : la mesure reste la même.
+    <li><b>&minus;</b> (à droite)&nbsp;: peut rester libre&nbsp;; le voltmètre mesure alors par rapport à la masse. Vous pouvez aussi brancher le voltmètre à gauche d&rsquo;un rail &minus;,
+      ou tirer un fil d&rsquo;un rail &minus; vers le point de droite (branchement en parallèle)&nbsp;: la mesure reste la même.
       Si vous tirez un fil vers le carré vert de droite, le voltmètre mesure la <b>différence</b> entre + et &minus;,
       par exemple la chute de tension aux bornes d&rsquo;un <a href="#weerstand">contact</a>.</li>
   </ul>
-  <p>Un fil transporte la tension de sa source :</p>
+  <p>Un fil transporte la tension de sa source. C&rsquo;est ce que le voltmètre affiche&nbsp;:</p>
   <table>
-    <tr><th>Source</th><th>Tension sur le fil</th></tr>
-    <tr><td>entrée sur un rail +, activée</td><td>la tension de ce rail</td></tr>
-    <tr><td>fil qui part d&rsquo;un rail +</td><td>la tension de ce rail</td></tr>
-    <tr><td>entrée sans rails sur le panneau, activée</td><td>5&nbsp;V</td></tr>
-    <tr><td>porte, compteur ou mémoire, sortie activée</td><td>5&nbsp;V</td></tr>
-    <tr><td>tout ce qui est éteint</td><td>0&nbsp;V</td></tr>
+    <tr><th>Source&nbsp;: le fil part de &hellip;</th><th>Tension sur le fil</th></tr>
+    <tr><td>un rail +</td><td>la tension de ce rail</td></tr>
+    <tr><td>une borne d&rsquo;un composant à deux bornes (source, interrupteur, lampe, résistance &hellip;)</td><td>la tension sur cette borne</td></tr>
+    <tr><td>la sortie d&rsquo;une porte, d&rsquo;un compteur, d&rsquo;une mémoire ou de LogicRun, activée</td><td>5&nbsp;V</td></tr>
+    <tr><td>une fin de course sur un rail +, activée</td><td>la tension de ce rail</td></tr>
+    <tr><td>dans les anciens panneaux&nbsp;: entrée sans bornes sur un rail +, activée</td><td>la tension de ce rail</td></tr>
+    <tr><td>dans les anciens panneaux&nbsp;: entrée sans bornes, sans rails sur le panneau, activée</td><td>5&nbsp;V</td></tr>
+    <tr><td>une sortie désactivée (porte, compteur, fin de course, ancienne entrée sans bornes), et un rail &minus;</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Astuce :</strong> réglez la source sur 1&nbsp;V et reliez un bouton-poussoir du rail +
-  à une lampe et au voltmètre. Quand vous appuyez, le voltmètre indique 1,0&nbsp;V mais la lampe reste
-  éteinte : la tension est trop faible pour une entrée logique.</div>
+  <p>Attention&nbsp;: les bornes d&rsquo;une lampe éteinte peuvent tout de même être sous tension. Si la lampe est reliée au
+  rail + et que l&rsquo;interrupteur placé après elle est ouvert, le voltmètre indique la tension du rail sur les deux
+  bornes de la lampe.</p>
+  <div class="tip"><strong>Astuce&nbsp;:</strong> réglez la source sur 1&nbsp;V. Reliez le rail + à la borne gauche
+  d&rsquo;un interrupteur, et la borne droite au + du voltmètre et à une entrée d&rsquo;une porte OU. Lancez la
+  simulation et fermez l&rsquo;interrupteur&nbsp;: le voltmètre indique 1,0&nbsp;V, mais le fil vers la porte reste noir
+  et la sortie de la porte reste éteinte. La tension est trop faible pour une entrée logique. Augmentez la tension de
+  la source&nbsp;: à partir d&rsquo;environ 2&nbsp;V, le fil devient rouge et la sortie de la porte s&rsquo;allume.</div>
 
   <h2 id="bewaren">Enregistrer et réglages</h2>
   <ul>
     <li>Les sources (tension et Ri), les fusibles (courant nominal), les appareils de mesure et les rails sont
       enregistrés avec leur position dans le fichier du panneau (<code>.lpl</code>). Un fusible fondu est à nouveau
       intact après l&rsquo;ouverture.</li>
-    <li>Si vous ne voulez pas les boutons de l&rsquo;alimentation dans la barre des composants, mettez
-      <b>Rails d&rsquo;alimentation (+ et -)</b> sur <b>False</b> dans les
-      <a href="instellingen.html#schakelelementen">Réglages</a>&nbsp;: les boutons rail + et rail &minus; disparaissent
-      alors de la barre. Chaque autre élément de l&rsquo;alimentation (source, fusible, milliampèremètre, résistance,
+    <li>Les composants à deux bornes sont aussi enregistrés avec leur position et leurs choix&nbsp;: par exemple la
+      résistance et la couleur d&rsquo;une lampe, le type d&rsquo;une résistance et la position d&rsquo;un interrupteur.</li>
+    <li>Pour les composants sans bornes&nbsp;: si un composant se retrouve contre son rail après l&rsquo;ouverture, il
+      est de nouveau branché. Un fil d&rsquo;alimentation est enregistré comme n&rsquo;importe quel autre fil.</li>
+    <li>Les anciens panneaux avec des rails mais sans source reçoivent à l&rsquo;ouverture une source au-dessus de chaque
+      rail +&nbsp;: voir <a href="#kring">Le circuit d&rsquo;alimentation</a>. Les anciens panneaux sans rails continuent
+      de fonctionner sans source.</li>
+    <li>Les boutons affichés dans la barre des composants se choisissent d&rsquo;un coup avec un
+      <a href="instellingen.html#niveau">niveau</a>, ou bouton par bouton dans les
+      <a href="instellingen.html#schakelelementen">Réglages</a>. Si vous y mettez
+      <b>Rails d&rsquo;alimentation (+ et -)</b> sur <b>False</b>, les boutons rail + et rail &minus; disparaissent
+      de la barre. Chaque autre élément de l&rsquo;alimentation (source, fusible, milliampèremètre, résistance,
       lampe, interrupteur et voltmètre à 2 bornes) y a son propre choix.</li>
   </ul>

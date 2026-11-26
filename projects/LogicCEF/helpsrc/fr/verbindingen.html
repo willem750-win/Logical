@@ -1,16 +1,34 @@
 <!-- titel: Connexions -->
   <h1 id="connector">Connexions</h1>
-  <p class="lead">Les fils transportent le signal d&rsquo;une sortie vers une entrée. Sans fils, un circuit ne fait rien.</p>
+  <p class="lead">Les fils relient les composants&nbsp;: du rail + vers un interrupteur, de l&rsquo;interrupteur vers une
+  porte, de la porte vers une lampe et de la lampe vers le rail &minus;. Sans fils, un circuit ne fait rien.</p>
 
   <h2>Poser un fil</h2>
   <ol class="steps">
     <li>Dans la barre des composants, cliquez sur <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Connexion</b>.
       Le pointeur devient un fil&nbsp;: le mode fil est actif.</li>
-    <li>Cliquez sur la borne d&rsquo;une <span class="pin out">sortie</span> (à droite d&rsquo;un composant).
-      Un bout de fil apparaît.</li>
-    <li>Faites glisser l&rsquo;extrémité du fil vers l&rsquo;<span class="pin in">entrée</span> du composant suivant.</li>
+    <li>Cliquez sur le point où le fil commence&nbsp;: une <b>borne</b> d&rsquo;un composant (le petit carré vert), la
+      <b>ligne d&rsquo;un rail</b> ou la <span class="pin out">sortie</span> d&rsquo;une porte ou d&rsquo;un autre bloc
+      (à droite). Un bout de fil apparaît.</li>
+    <li>Faites glisser l&rsquo;extrémité du fil vers le point où il doit finir&nbsp;: une borne,
+      l&rsquo;<span class="pin in">entrée</span> d&rsquo;une porte ou d&rsquo;un autre bloc (à gauche) ou la ligne d&rsquo;un
+      rail. Près d&rsquo;une borne ou d&rsquo;une entrée, l&rsquo;extrémité s&rsquo;y accroche toute seule&nbsp;; un fil qui
+      commence sur une borne s&rsquo;accroche aussi à la ligne d&rsquo;un rail.</li>
     <li>Recommencez pour chaque connexion. Cliquez à nouveau sur <b>Connexion</b> pour quitter le mode fil.</li>
   </ol>
+  <p>Une lampe ne s&rsquo;allume que si le circuit est fermé&nbsp;: il faut un chemin du rail + jusqu&rsquo;au rail &minus;.
+  Voir <a href="voeding.html#kring">Le circuit d&rsquo;alimentation</a>&nbsp;; un exemple pas à pas se trouve dans
+  <a href="werkwijze.html">Premiers pas</a>.</p>
+
+  <h2 id="parallel">Deux fils sur une même entrée</h2>
+  <p>Deux fils peuvent se rejoindre sur l&rsquo;entrée d&rsquo;une porte, d&rsquo;un compteur ou d&rsquo;un autre bloc, par exemple
+  depuis deux interrupteurs. L&rsquo;entrée est alors active dès que l&rsquo;un des deux interrupteurs est fermé, comme
+  deux interrupteurs en parallèle. Posez l&rsquo;extrémité du deuxième fil sur le même carré vert que le premier.</p>
+  <ul>
+    <li>Un fil du rail + et un fil du rail &minus; sur la même entrée forment un <b>court-circuit</b>.</li>
+    <li>Ne reliez pas deux sorties de portes entre elles. Utilisez pour cela une
+      <a href="verwerking.html#of">porte OU</a>, comme dans le <a href="paneel.html#tellerpaneel">Panneau compteur</a>.</li>
+  </ul>
 
   <h2>Déplacer des fils et des composants</h2>
   <p>Quand vous déplacez un composant, ses fils restent attachés et suivent.
@@ -29,10 +47,8 @@
   propose aussi <b>Sélectionner le fil</b>. Si le fil mène à une entrée active, cette entrée s&rsquo;éteint.</p>
 
   <h3>Supprimer tous les fils</h3>
-  <table>
-    <tr><th>Bouton</th><th>Où</th><th>Que fait-il&nbsp;?</th></tr>
-    <tr><td class="btn"><img src="../img/knop-draden-weg.png" alt=""></td><td class="name">Boutons de modification</td><td>Supprime tous les fils du panneau.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-draden-weg.png" alt=""></td><td class="name">Barre des composants</td><td>Fait la même chose&nbsp;: tous les fils disparaissent, les composants restent.</td></tr>
-  </table>
+  <p>Dans les <a href="knoppen.html#draden">boutons de modification</a>, cliquez sur
+  <img src="../img/knop-draden-weg.png" class="ico" alt=""><b>Supprimer les connexions</b>&nbsp;: tous les fils
+  disparaissent, y compris ceux vers les rails et la source. Les composants restent en place.</p>
   <div class="tip"><strong>Astuce&nbsp;:</strong> placez d&rsquo;abord tous les composants sur le panneau, puis posez les fils.
   Travaillez de gauche (entrées) à droite (sorties).</div>

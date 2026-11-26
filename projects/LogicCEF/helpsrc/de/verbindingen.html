@@ -1,16 +1,34 @@
 <!-- titel: Verbindungen -->
   <h1 id="connector">Verbindungen</h1>
-  <p class="lead">Drähte bringen das Signal von einem Ausgang zu einem Eingang. Ohne Drähte macht eine Schaltung nichts.</p>
+  <p class="lead">Drähte verbinden die Bauteile: von der + Schiene zu einem Schalter, vom Schalter zu einem Gatter, vom
+  Gatter zu einer Lampe und von der Lampe zur &minus; Schiene. Ohne Drähte macht eine Schaltung nichts.</p>
 
   <h2>Einen Draht legen</h2>
   <ol class="steps">
     <li>Klicken Sie in der Bauteilleiste auf <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>.
       Der Mauszeiger wird zu einem Draht: Der Drahtmodus ist eingeschaltet.</li>
-    <li>Klicken Sie auf den Anschlusspunkt eines <span class="pin out">Ausgangs</span> (rechts an einem Bauteil).
-      Ein Stück Draht erscheint.</li>
-    <li>Ziehen Sie das Ende des Drahtes zum <span class="pin in">Eingang</span> des nächsten Bauteils.</li>
+    <li>Klicken Sie auf den Punkt, an dem der Draht beginnt: eine <b>Klemme</b> eines Bauteils (das kleine grüne
+      Quadrat), die <b>Linie einer Schiene</b> oder den <span class="pin out">Ausgang</span> eines Gatters oder eines
+      anderen Blocks (rechts). Ein Stück Draht erscheint.</li>
+    <li>Ziehen Sie das Ende des Drahtes zu dem Punkt, an dem er enden soll: eine Klemme, der
+      <span class="pin in">Eingang</span> eines Gatters oder eines anderen Blocks (links) oder die Linie einer Schiene.
+      Nahe an einer Klemme oder einem Eingang springt das Ende von selbst darauf; ein Draht, der an einer Klemme
+      beginnt, springt auch auf die Linie einer Schiene.</li>
     <li>Wiederholen Sie das für jede Verbindung. Klicken Sie erneut auf <b>Verbindung</b>, um den Drahtmodus auszuschalten.</li>
   </ol>
+  <p>Eine Lampe leuchtet erst, wenn der Stromkreis geschlossen ist: Es muss einen Weg von der + Schiene bis zur
+  &minus; Schiene geben. Siehe <a href="voeding.html#kring">Der Versorgungskreis</a>; ein Beispiel Schritt für Schritt
+  steht in <a href="werkwijze.html">Erste Schritte</a>.</p>
+
+  <h2 id="parallel">Zwei Drähte an einem Eingang</h2>
+  <p>Am Eingang eines Gatters, eines Zählers oder eines anderen Blocks dürfen zwei Drähte zusammenkommen, zum Beispiel
+  von zwei Schaltern. Der Eingang ist dann an, sobald einer der beiden Schalter geschlossen ist, wie bei zwei
+  parallel geschalteten Schaltern. Legen Sie das Ende des zweiten Drahts auf dasselbe grüne Quadrat wie den ersten.</p>
+  <ul>
+    <li>Ein Draht von der + Schiene und ein Draht von der &minus; Schiene am selben Eingang ergeben einen <b>Kurzschluss</b>.</li>
+    <li>Verbinden Sie nicht zwei Gatterausgänge miteinander. Verwenden Sie dafür ein
+      <a href="verwerking.html#of">ODER-Gatter</a>, wie im <a href="paneel.html#tellerpaneel">Zählerpanel</a>.</li>
+  </ul>
 
   <h2>Drähte und Bauteile verschieben</h2>
   <p>Wenn Sie ein Bauteil ziehen, bleiben seine Drähte daran befestigt und wandern mit.
@@ -30,10 +48,8 @@
   Eingang ausgeschaltet.</p>
 
   <h3>Alle Drähte entfernen</h3>
-  <table>
-    <tr><th>Schaltfläche</th><th>Wo</th><th>Was macht sie?</th></tr>
-    <tr><td class="btn"><img src="../img/knop-draden-weg.png" alt=""></td><td class="name">Bearbeitungsschaltflächen</td><td>Entfernt alle Drähte vom Panel.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-draden-weg.png" alt=""></td><td class="name">Bauteilleiste</td><td>Macht dasselbe: alle Drähte weg, die Bauteile bleiben stehen.</td></tr>
-  </table>
+  <p>Klicken Sie bei den <a href="knoppen.html#draden">Bearbeitungsschaltflächen</a> auf
+  <img src="../img/knop-draden-weg.png" class="ico" alt=""><b>Verbindungen entfernen</b>: Alle Drähte verschwinden, auch
+  die zu den Schienen und zur Quelle. Die Bauteile bleiben stehen.</p>
   <div class="tip"><strong>Tipp:</strong> Setzen Sie zuerst alle Bauteile auf das Panel und legen Sie erst danach die Drähte.
   Arbeiten Sie von links (Eingänge) nach rechts (Ausgänge).</div>

@@ -1,22 +1,35 @@
 <!-- titel: Entrées -->
   <h1>Entrées</h1>
-  <p class="lead">Les composants d&rsquo;entrée sont le début de tout circuit&nbsp;: ils donnent un signal
-  (actif = 1, inactif = 0) sur leur sortie. Vous les commandez avec la souris.</p>
+  <p class="lead">Les composants d&rsquo;entrée sont le début de tout circuit&nbsp;: avec un interrupteur, un
+  bouton-poussoir ou un capteur, vous décidez si un signal (actif = 1, inactif = 0) va vers le reste du circuit. Vous
+  les commandez avec la souris.</p>
 
-  <p>Chaque composant d&rsquo;entrée a une <span class="pin out">sortie</span> sur son côté droit.
-  C&rsquo;est là que vous commencez un fil vers le reste du circuit. Voir <a href="verbindingen.html">Connexions</a>.</p>
-  <p>S&rsquo;il y a des <a href="voeding.html">rails d&rsquo;alimentation</a> sur le panneau, branchez les entrées à droite
-  d&rsquo;un rail +. La tension de ce rail détermine si l&rsquo;entrée peut donner un signal (à partir de 2&nbsp;V).</p>
+  <p>Les entrées ont des <b>bornes</b> et se trouvent dans le groupe Alimentation de la barre des composants&nbsp;:
+  l&rsquo;<a href="voeding.html#serie">interrupteur ou bouton-poussoir</a>, le
+  <a href="voeding.html#wisselschakelaar">commutateur va-et-vient</a>, le
+  <a href="voeding.html#puls2">générateur d&rsquo;impulsions</a>, l&rsquo;<a href="voeding.html#dip2">interrupteur DIP</a>,
+  la <a href="voeding.html#ldr">LDR</a> et la <a href="voeding.html#ntc">CTN</a>. Vous les reliez par des fils&nbsp;: voir
+  <a href="verbindingen.html">Connexions</a>.</p>
+  <ul>
+    <li>Un <b>interrupteur</b>, un <b>bouton-poussoir</b> ou un <b>générateur d&rsquo;impulsions</b> se place entre le
+      rail + et l&rsquo;entrée&nbsp;: un fil du rail + vers la borne gauche et un fil de la borne droite vers l&rsquo;entrée.</li>
+    <li>Sur l&rsquo;<b>interrupteur DIP</b>, la borne gauche va au rail + et les sorties 8, 4, 2 et 1 vont aux entrées.</li>
+    <li>Une <b>LDR</b> ou une <b>CTN</b> reçoit en plus une résistance&nbsp;: le rail + vers le capteur, le capteur vers
+      la résistance et la résistance vers le rail &minus;. Le signal se prend sur la borne entre le capteur et la
+      résistance, comme dans le <a href="paneel.html#beslissen">Panneau de décision</a>. Sans cette résistance, le
+      signal reste à 1, quelle que soit la position du curseur.</li>
+  </ul>
+  <p>À partir de 2&nbsp;V, le signal vaut 1. On voit ainsi que le signal est de l&rsquo;énergie qui vient de la source.</p>
 
-  <div class="tip"><strong>Nouveau&nbsp;:</strong> l&rsquo;interrupteur, le bouton-poussoir, les capteurs de lumière
-  et de chaleur, l&rsquo;interrupteur DIP et le générateur d&rsquo;impulsions de cette page ne sont plus dans la barre
-  des composants. Utilisez à la place les composants à bornes du groupe Alimentation&nbsp;: l&rsquo;<a
-  href="voeding.html#serie">interrupteur ou bouton-poussoir</a>, le <a href="voeding.html#wisselschakelaar">commutateur
-  va-et-vient</a>, la <a href="voeding.html#ldr">LDR</a>, la <a href="voeding.html#ntc">CTN</a>, le <a
-  href="voeding.html#puls2">générateur d&rsquo;impulsions</a> et l&rsquo;<a href="voeding.html#dip2">interrupteur
-  DIP</a>. Placez-les entre le rail + et l&rsquo;entrée&nbsp;: à partir de 2&nbsp;V, le signal vaut 1. On voit ainsi que
-  le signal est de l&rsquo;énergie qui vient de la source. Les anciens panneaux avec les composants ci-dessous
-  fonctionnent toujours.</div>
+  <div class="tip"><strong>Anciens panneaux&nbsp;:</strong> le bouton-poussoir, l&rsquo;interrupteur, l&rsquo;interrupteur
+  DIP, le générateur d&rsquo;impulsions et les capteurs de lumière et de chaleur ci-dessous n&rsquo;ont pas de bornes,
+  mais une <span class="pin out">sortie</span> sur leur côté droit. Ils ne sont plus dans la barre des composants, mais
+  ils fonctionnent toujours dans les anciens panneaux. S&rsquo;il y a des
+  <a href="voeding.html">rails d&rsquo;alimentation</a> sur un tel panneau, ils doivent être reliés à un rail +&nbsp;:
+  <a href="voeding.html#inpluggen">branchés</a> à droite du rail, ou par un
+  <a href="voeding.html#draad">fil d&rsquo;alimentation</a>. La tension de ce rail détermine s&rsquo;ils peuvent donner un
+  signal (à partir de 2&nbsp;V). La <a href="#eindschakelaar">fin de course</a> en bas de cette page n&rsquo;est pas un
+  ancien composant&nbsp;: elle va avec des modèles comme la personne et le chariot.</div>
 
   <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Bouton-poussoir</h2>
   <p>La sortie est active tant que vous maintenez le bouton enfoncé avec la souris. Dès que vous relâchez,

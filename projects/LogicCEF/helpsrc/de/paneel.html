@@ -33,31 +33,110 @@
 
   <h2 id="paneelkeuze">Panelwahl</h2>
   <p>Mit <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Panelwahl</b> beginnen Sie ein neues Panel.
-  Das aktuelle Panel wird dabei geleert; speichern Sie es zuerst, wenn Sie es behalten möchten. Die Menüpunkte haben niederländische Namen.</p>
+  Das aktuelle Panel wird dabei geleert; speichern Sie es zuerst, wenn Sie es behalten möchten.</p>
+  <p>Die drei Beispielpanels sind wie eine echte Schaltung gebaut: oben eine
+  <a href="voeding.html#bron">Quelle</a> mit 12&nbsp;V, links eine rote + Schiene, rechts eine blaue &minus; Schiene und
+  dazwischen Bauteile mit <a href="voeding.html#serie">Klemmen</a>, die mit Drähten verbunden sind. Alle Bauteile
+  gehören zur <a href="instellingen.html#niveau">Stufe</a> Basis.</p>
   <dl class="parts">
-    <dt>Neues Standardpanel (<i>Nieuw standaardpaneel</i>)</dt>
+    <dt>Neues Standardpanel</dt>
     <dd>Ein leeres Panel, um selbst eine Schaltung zu bauen.</dd>
 
-    <dt id="beslissen">Entscheidungspanel (<i>Beslissingspaneel</i>)</dt>
+    <dt id="beslissen">Entscheidungspanel</dt>
     <dd>Ein Übungspanel, um mit Logikgattern eine Entscheidung zu treffen. Bereits auf dem Panel:
       <ul>
-        <li>Eingänge: ein Taster, ein Schalter, ein Lichtsensor und ein Wärmesensor;</li>
-        <li>Verarbeitung: ein UND-, ein ODER- und ein NICHT-Gatter;</li>
-        <li>Ausgänge: eine Lampe, ein Relais und ein Summer.</li>
+        <li>Eingänge (links): ein Taster, ein Schalter, ein <a href="voeding.html#ldr">LDR</a> (Lichtsensor) mit einem
+          Widerstand von 10&nbsp;k&Omega; und ein <a href="voeding.html#ntc">NTC</a> (Wärmesensor) mit einem Widerstand von
+          1000&nbsp;&Omega;;</li>
+        <li>Verarbeitung (Mitte): ein <a href="verwerking.html#en">UND-Gatter</a>, ein
+          <a href="verwerking.html#of">ODER-Gatter</a> und ein <a href="verwerking.html#niet">NICHT-Gatter</a>;</li>
+        <li>Ausgänge (rechts): eine Lampe für 5&nbsp;V, ein <a href="voeding.html#zoemer2">Summer</a> und ein
+          <a href="voeding.html#relais2">Relais</a>, dessen Schließer eine Lampe für 12&nbsp;V schaltet.</li>
       </ul>
-      Es gibt noch keine Drähte: Sie entscheiden, wie Sie sie verbinden. Zum Beispiel: Der Summer ertönt,
-      wenn es warm ist <b>und</b> der Schalter eingeschaltet ist.</dd>
+      <figure>
+        <img src="../img/paneel-beslissen.png" alt="Entscheidungspanel: Quelle, + Schiene und &minus; Schiene; links Taster, Schalter, LDR und NTC; in der Mitte drei Gatter; rechts Lampe, Summer und Relais">
+        <figcaption>Das Entscheidungspanel beim Öffnen: Alles hängt schon am + und am &minus;, aber zu den Gattern führt noch kein Draht.</figcaption>
+      </figure>
+      <p><b>Schon verdrahtet</b> ist alles, was zum + und zum &minus; geht:</p>
+      <ul>
+        <li>die + Schiene geht zur linken Klemme des Tasters, des Schalters, des LDR und des NTC;</li>
+        <li>jeder Sensor geht über seinen Widerstand zur &minus; Schiene: Zusammen bilden sie einen
+          <a href="voeding.html#weerstand">Spannungsteiler</a>;</li>
+        <li>die rechte Klemme der Lampe für 5&nbsp;V, des Summers und der Relaisspule geht zur &minus; Schiene;</li>
+        <li>der Kontakt <b>C</b> des Relais hängt an der + Schiene, der Schließer an der Lampe für 12&nbsp;V und diese Lampe an
+          der &minus; Schiene.</li>
+      </ul>
+      <p>Die Gatter brauchen keinen Draht zum + oder zum &minus;: Sie werden
+      <a href="simulatie.html#voeding">unsichtbar</a> versorgt.</p>
+      <p><b>Sie legen die Signaldrähte</b> (siehe <a href="verbindingen.html">Verbindungen</a>): von einem Eingabebauteil zum
+      Eingang eines Gatters und vom Ausgang eines Gatters zu einem Ausgabebauteil.</p>
+      <ul>
+        <li>Beim Taster und beim Schalter beginnt der Draht an der rechten Klemme.</li>
+        <li>Bei einem Sensor beginnt er ebenfalls an der rechten Klemme, zwischen dem Sensor und seinem Widerstand. Dort treffen sich dann zwei Drähte.</li>
+        <li>Den Ausgang eines Gatters verbinden Sie mit der linken Klemme der Lampe für 5&nbsp;V, des Summers oder der Relaisspule.</li>
+      </ul>
+      <p>Ein Beispiel: Der Summer ertönt, wenn es warm ist <b>und</b> der Schalter eingeschaltet ist.</p>
+      <ol class="steps">
+        <li>Ziehen Sie einen Draht von der rechten Klemme des NTC zum Eingang <b>A1</b> des UND-Gatters.</li>
+        <li>Ziehen Sie einen Draht von der rechten Klemme des Schalters zum Eingang <b>A2</b>.</li>
+        <li>Ziehen Sie einen Draht vom Ausgang <b>A</b> des UND-Gatters zur linken Klemme des Summers.</li>
+        <li>Starten Sie die Simulation, klicken Sie auf den Hebel des Schalters und ziehen Sie den Schieberegler unter dem NTC
+          auf 60&nbsp;&deg;C: Der Summer ertönt. Bei 20&nbsp;&deg;C oder bei offenem Schalter schweigt er.</li>
+      </ol>
+      <p>Das Licht oder die Temperatur ändern Sie mit dem Schieberegler unter dem Sensor: Ziehen Sie den Knopf oder klicken
+      Sie daneben für einen Schritt (1&nbsp;% Licht oder 1&nbsp;&deg;C). Das geht auch während der Simulation.</p>
+      <p>Noch zwei zum Ausprobieren:</p>
+      <ul>
+        <li>Ein Nachtlicht: der LDR zum Eingang <b>N1</b> des NICHT-Gatters, der Ausgang <b>N</b> zur Lampe für 5&nbsp;V. Die
+          Lampe leuchtet, wenn es dunkel ist (15&nbsp;% Licht), und geht bei 80&nbsp;% Licht aus. Siehe auch
+          <a href="les06.html">Lektion 6</a>.</li>
+        <li>Ein großes Gerät schalten: der Taster zum Eingang <b>O1</b> des ODER-Gatters, der Ausgang <b>O</b> zur
+          Relaisspule. Solange Sie drücken, zieht das Relais an und die Lampe für 12&nbsp;V leuchtet. Siehe auch
+          <a href="les07.html">Lektion 7</a>.</li>
+      </ul>
+    </dd>
 
-    <dt id="tellerpaneel">Zählerpanel (<i>Tellerpaneel</i>)</dt>
-    <dd>Ein funktionierendes Zählerbeispiel. Ein Impulsgeber und ein Taster liefern die Zählimpulse,
-      ein zweiter Taster setzt den Zähler auf 0 zurück, und eine Anzeige zeigt den Zählerstand.
-      Die Drähte sind schon verlegt: Starten Sie die Simulation und den Impulsgeber.</dd>
+    <dt id="tellerpaneel">Zählerpanel</dt>
+    <dd>Ein funktionierendes Beispiel für einen <a href="verwerking.html#teller">Zähler</a>. Alle Drähte sind schon verlegt:
+      Das Panel funktioniert sofort.
+      <figure>
+        <img src="../img/paneel-teller.png" alt="Zählerpanel: zwei Taster, ein Impulsgenerator, ein ODER-Gatter, ein Zähler und eine Anzeige zwischen einer + Schiene und einer &minus; Schiene">
+        <figcaption>Das Zählerpanel: Der Impulsgenerator und der untere Taster gehen über ein ODER-Gatter zum Zähleingang Te; der obere Taster setzt den Zähler auf 0 zurück.</figcaption>
+      </figure>
+      <ul>
+        <li>Die + Schiene geht zur linken Klemme der beiden Taster und des
+          <a href="voeding.html#puls2">Impulsgenerators</a>.</li>
+        <li>Der Impulsgenerator geht zum Eingang <b>O1</b> eines <a href="verwerking.html#of">ODER-Gatters</a>, der untere
+          Taster zu <b>O2</b>. Der Ausgang des ODER-Gatters geht zum Zähleingang <b>Te</b>: Der Zähler zählt die Impulse des
+          Generators <b>oder</b> jeden Druck auf den Taster.</li>
+        <li>Der obere Taster geht zu <b>Re</b>: Er setzt den Zähler auf 0 zurück.</li>
+        <li>Die Ausgänge <b>T8</b>, <b>T4</b>, <b>T2</b> und <b>T1</b> des Zählers gehen mit vier Drähten zu den Eingängen
+          <b>8</b>, <b>4</b>, <b>2</b> und <b>1</b> der <a href="uitvoer.html#display">7-Segment-Anzeige</a>, die den Stand zeigt.
+          Die Anzeige hat keine Klemmen: Sie ist an der &minus; Schiene <a href="voeding.html#inpluggen">angesteckt</a>.</li>
+      </ul>
+      <p>Starten Sie die Simulation und drücken Sie ein paarmal den unteren Taster: Der Zähler zählt jedes Mal eins weiter.
+      Klicken Sie danach auf das Kästchen des Impulsgenerators: Er springt auf <b>an</b> und der Zähler läuft von selbst.
+      Klicken Sie erneut, um anzuhalten, und drücken Sie den oberen Taster, um wieder bei 0 zu beginnen. Mehr dazu in
+      <a href="les08.html">Lektion 8</a>.</p>
+    </dd>
 
-    <dt id="geheugenpaneel">Speicherpanel (<i>Geheugenpaneel</i>)</dt>
-    <dd>Ein funktionierendes Speicherbeispiel. Ein Zähler mit Tastern wählt die Adresse, ein DIP-Schalter
-      schreibt eine Zahl hinein, und zwei Anzeigen zeigen Adresse und Inhalt.
-      Stellen Sie eine Zahl am DIP-Schalter ein und drücken Sie seinen Knopf, um sie zu speichern; zählen Sie
-      dann weiter und kehren Sie zurück, um sie wieder auszulesen.</dd>
+    <dt id="geheugenpaneel">Speicherpanel</dt>
+    <dd>Ein funktionierendes Beispiel für einen <a href="verwerking.html#geheugen">Speicher</a>, dieselbe Schaltung wie in
+      <a href="les09.html">Lektion 9</a>. Auch hier sind alle Drähte schon verlegt.
+      <ul>
+        <li>Der <a href="verwerking.html#teller">Zähler</a> oben wählt die Adresse. Der obere Taster (an <b>Re</b>) setzt die
+          Adresse auf 0 zurück, der zweite (an <b>Te</b>) geht eine Adresse weiter. Der Schalter darunter (an <b>A16</b>)
+          zählt 16 dazu: So erreichen Sie die Adressen 16 bis 31.</li>
+        <li>Der <a href="voeding.html#dip2">DIP-Schalter</a> legt eine Zahl von 0 bis 15 an die Dateneingänge
+          <b>D8</b>, <b>D4</b>, <b>D2</b> und <b>D1</b>. Beim Öffnen des Panels steht er auf 5.</li>
+        <li>Der untere Taster (an <b>S</b>, schreiben) speichert diese Zahl in der gewählten Adresse.</li>
+        <li>Die obere Anzeige zeigt die Adresse, die untere den Inhalt dieser Adresse. Beide Anzeigen sind an der
+          &minus; Schiene <a href="voeding.html#inpluggen">angesteckt</a>.</li>
+      </ul>
+      <p>Starten Sie die Simulation. Klicken Sie auf die Schieber des DIP-Schalters, um eine Zahl zu wählen, und drücken Sie
+      den unteren Taster, um sie zu speichern. Gehen Sie dann mit dem zweiten Taster eine Adresse weiter und mit dem oberen
+      zurück auf 0: Die Zahl ist noch da.</p>
+    </dd>
   </dl>
 
   <h2 id="opslaan">Öffnen und speichern</h2>

@@ -366,33 +366,51 @@
   muss lesbar bleiben.</p>
 
   <h2 id="regels">Was ändert sich, wenn Schienen auf dem Panel stehen?</h2>
-  <p>Solange keine Schiene auf dem Panel steht, funktioniert alles wie bisher. Sobald <b>mindestens eine</b>
-  Schiene vorhanden ist, müssen Eingänge und Ausgänge <b>ohne Klemmen</b> <b>angesteckt</b> sein:</p>
-  <ul>
-    <li>Die alten <a href="invoer.html">Eingänge</a> aus älteren Panels (Taster, Schalter, DIP-Schalter,
-      Impulsgeber, Licht- und Wärmesensor ohne Klemmen) sitzen <b>rechts</b> an einer <b>+ Schiene</b>.</li>
-    <li><a href="uitvoer.html">Ausgänge</a> ohne Klemmen (Motor, Anzeige, Person und die anderen Modelle; in älteren
-      Panels auch die alte Lampe, der alte Summer und das alte Relais) sitzen <b>links</b> an einer <b>&minus; Schiene</b>.</li>
-  </ul>
-  <p>Die Bauteile <b>mit zwei Klemmen</b> (Schalter, Lampe, Summer, Relais &hellip;) werden nicht angesteckt. Sie
-  verbinden sie mit Drähten: von der + Schiene zur linken Klemme des Schalters und von der rechten Klemme der Lampe,
+  <p><b>Für Bauteile mit zwei Klemmen ändert sich nichts.</b> Ein Schalter oder Taster, eine Lampe, ein Summer, ein
+  Relais, ein Widerstand, ein LDR, ein NTC, ein Impulsgenerator oder ein DIP-Schalter wird nicht angesteckt. Sie
+  verbinden sie mit Drähten, wie in einer echten Schaltung: von der + Schiene zur linken Klemme des Schalters und von der rechten Klemme der Lampe,
   des Summers oder der Relaisspule zur &minus; Schiene. Siehe <a href="#serie">Lampe, Schalter und Voltmeter mit zwei Klemmen</a>.</p>
-  <p>Statt ein Bauteil anzustecken, können Sie es auch mit einem Draht an eine Schiene anschließen: siehe
-  <a href="#draad">Mit einem Versorgungsdraht anschließen</a>.</p>
-  <p>Ein angestecktes Bauteil bekommt einen dünnen Stecker mit einem Punkt in der Farbe der Schiene. Ein
-  Bauteil, das nicht angesteckt ist, bekommt einen <b>grauen Punkt</b> und funktioniert nicht: Ein Eingang
-  gibt kein Signal, ein Ausgang bleibt aus und eine Anzeige bleibt dunkel.</p>
-  <p>Die <a href="verwerking.html">Verarbeitung</a> (Gatter, Zähler und Speicher) wird nicht angesteckt:
-  sie wird weiterhin unsichtbar versorgt.</p>
+  <p>Was folgt, gilt nur für Bauteile <b>ohne Klemmen</b>. Solange keine Schiene auf dem Panel steht, bekommen sie ihr
+  + und &minus; unsichtbar und alles funktioniert von selbst. Sobald <b>mindestens eine</b> Schiene vorhanden ist, gilt:</p>
+  <table>
+    <tr><th>Bauteil ohne Klemmen</th><th>Mit Schienen auf dem Panel</th></tr>
+    <tr><td>Die <a href="verwerking.html">Verarbeitung</a>: Gatter, Flipflop, Zähler, Speicher, Schrittzähler, Stoppuhr
+      und <a href="logicrun.html">LogicRun</a></td><td>Nichts zu tun: Sie werden weiterhin unsichtbar versorgt.</td></tr>
+    <tr><td><a href="uitvoer.html">Ausgänge</a>: 7-Segment-Anzeige, Motor, Person, Wagen, Spieldose, Ampel und
+      Schranke</td><td>Müssen an einer <b>&minus; Schiene</b> hängen: <a href="#inpluggen">angesteckt</a> <b>links</b> an
+      der Schiene oder mit einem <a href="#draad">Versorgungsdraht</a>.</td></tr>
+    <tr><td>Die <a href="invoer.html#eindschakelaar">Endschalter</a> der Person, des Wagens oder der
+      Schranke</td><td>Müssen an einer <b>+ Schiene</b> hängen: angesteckt <b>rechts</b> an der Schiene oder mit einem
+      Versorgungsdraht.</td></tr>
+    <tr><td>Das <a href="#voltmeter">Voltmeter</a> mit + und &minus;</td><td>Funktioniert immer. Sie dürfen es anstecken,
+      müssen es aber nicht.</td></tr>
+    <tr><td>Nur in alten Panels: die alten <a href="invoer.html">Eingänge</a> ohne Klemmen (Taster, Schalter,
+      DIP-Schalter, Impulsgeber, Licht- und Wärmesensor)</td><td>Rechts an einer + Schiene, wie die
+      Endschalter.</td></tr>
+    <tr><td>Nur in alten Panels: Lampe, Summer, Relais und Schaltrelais ohne Klemmen (die alte Lampe können Sie in den
+      <a href="instellingen.html#schakelelementen">Einstellungen</a> noch einschalten)</td><td>Links an einer
+      &minus; Schiene, wie die Anzeige.</td></tr>
+  </table>
+  <p>Ein Bauteil, das an einer Schiene hängt, bekommt einen Punkt in der Farbe der Schiene; ist es angesteckt, führt
+  auch ein dünner Stecker zur Schiene. Hängt es an keiner Schiene, ist der Punkt <b>grau</b> und das Bauteil
+  funktioniert nicht: Eine Anzeige bleibt dunkel, der Motor und die Modelle reagieren nicht und ein Endschalter gibt
+  kein Signal. Nur beim Voltmeter darf der Punkt (rechts, an der &minus; Seite) grau bleiben: Es misst dann gegen Masse.</p>
+  <p>Das <b>Signal</b> zu einem Eingang eines solchen Bauteils kommt über einen normalen Draht, zum Beispiel von der
+  rechten Klemme eines Schalters zu einem Eingang eines Gatters oder der Anzeige. Ab 2&nbsp;V ist es eine 1: siehe
+  <a href="#spanning">Spannung einer + Schiene</a>.</p>
 
   <h2 id="inpluggen">Anstecken</h2>
+  <p>Anstecken gibt es nur für Bauteile <b>ohne Klemmen</b>, die eine Schiene brauchen: Anzeige, Motor und Modelle
+  (links an einer &minus; Schiene) und Endschalter (rechts an einer + Schiene). Auch das <a href="#voltmeter">Voltmeter</a>
+  mit + und &minus; können Sie anstecken, und in alten Panels die Eingänge und Ausgänge ohne Klemmen. Bauteile mit zwei
+  Klemmen springen nicht an eine Schiene: Sie verbinden sie mit Drähten.</p>
   <ul>
-    <li>Ziehen Sie ein Bauteil an die Schiene. Innerhalb von 12 Pixeln springt es von selbst an.</li>
+    <li>Ziehen Sie das Bauteil an die richtige Seite der Schiene. Innerhalb von 12 Pixeln springt es von selbst an.</li>
     <li>Auch wenn Sie ein neues Bauteil aus der Leiste platzieren oder eine Gruppe verschieben, springt es an
       eine Schiene in der Nähe.</li>
     <li>Die <b>Mitte</b> des Bauteils muss neben dem gezeichneten Teil der Schiene liegen, nicht darüber oder
       darunter. Verlängern Sie die Schiene bei Bedarf.</li>
-    <li>Mit den Pfeiltasten verschieben Sie pixelweise; so können Sie ein Bauteil auch wieder abziehen.</li>
+    <li>Mit den Pfeiltasten verschieben Sie ein ausgewähltes Bauteil pixelweise; so können Sie es auch wieder abziehen.</li>
   </ul>
 
   <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">Der Summer mit zwei Klemmen</h2>
@@ -424,13 +442,17 @@
   <p>Logic berechnet das Feld mit zwei Polen pro Magnet: Jeder Pol gibt ein Feld, das mit dem Quadrat des Abstands abnimmt. Das ist nicht ganz exakt, aber die Form der Feldlinien und die Richtung des Kompasses stimmen.</p>
 
   <h2 id="draad">Mit einem Versorgungsdraht anschließen</h2>
-  <p>Statt ein Bauteil anzustecken, können Sie es auch mit einem Draht an eine Schiene anschließen, wie in einer
-  echten Schaltung. Das Bauteil darf dann überall auf dem Panel stehen.</p>
+  <p>Auch das gilt nur für Bauteile <b>ohne Klemmen</b>, die eine Schiene brauchen: Anzeige, Motor, Modelle und
+  Endschalter, und in alten Panels die Eingänge und Ausgänge ohne Klemmen. Statt ein solches Bauteil anzustecken,
+  können Sie es auch mit einem Draht an eine Schiene anschließen, wie in einer
+  echten Schaltung. Das Bauteil darf dann überall auf dem Panel stehen. Bauteile mit zwei Klemmen haben keinen Punkt:
+  Dort legen Sie den Draht von der Schiene einfach zu einer Klemme.</p>
   <ol class="steps">
     <li>Klicken Sie auf <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbindung</b>.</li>
     <li>Klicken Sie auf die Linie der Schiene, in der Höhe, in der der Draht beginnen soll. Ein Draht erscheint.</li>
-    <li>Ziehen Sie das Ende des Drahts zum <b>grauen Punkt</b> des Bauteils: links bei Eingängen (von einer
-      + Schiene), rechts bei Ausgängen und bei der &minus; Seite des Voltmeters (von einer &minus; Schiene). Von einer &minus; Schiene aus erscheint der Draht links der Schiene. Innerhalb von 12 Pixeln springt das Ende von selbst
+    <li>Ziehen Sie das Ende des Drahts zum <b>grauen Punkt</b> des Bauteils: rechts bei Ausgängen (Anzeige, Motor,
+      Modelle) und bei der &minus; Seite des Voltmeters (von einer &minus; Schiene), links bei Eingängen (Endschalter; von
+      einer + Schiene). Von einer &minus; Schiene aus erscheint der Draht links der Schiene. Innerhalb von 12 Pixeln springt das Ende von selbst
       auf den Punkt.</li>
   </ol>
   <p>Der Punkt bekommt die Farbe der Schiene und das Bauteil funktioniert. Ein Draht von einer + Schiene wird in der
@@ -438,8 +460,11 @@
   <ul>
     <li>Verschieben Sie die Schiene, bleibt der Anfang des Drahts auf der Schiene. Verschieben Sie das Bauteil, wandert
       das Ende des Drahts mit.</li>
-    <li>Ein Draht von einer + Schiene zu einem Eingang (eines Gatters, des Voltmeters oder R1 des Schaltrelais) wirkt
+    <li>Ein Draht von einer + Schiene zu einem <b>Eingang</b> (eines Gatters, des Zählers, der Anzeige oder zum + des
+      Voltmeters; in alten Panels auch zu R1 des Schaltrelais) ist kein Versorgungsdraht: Er wirkt
       wie ein normaler Draht mit der Spannung der Schiene.</li>
+    <li>Ein Draht von einer Schiene zu einer Klemme eines Bauteils mit zwei Klemmen ist auch ein normaler Draht: Er
+      gehört zum Stromkreis.</li>
     <li>Einen Versorgungsdraht löschen Sie wie jeden anderen <a href="verbindingen.html#verwijderen">Draht</a>.</li>
   </ul>
 
@@ -454,48 +479,80 @@
   </ul>
 
   <h2 id="spanning">Spannung einer + Schiene</h2>
-  <p>Die + Schiene bekommt die Klemmenspannung der Quelle, mit der sie verbunden ist. Wie bei echten Logikschaltungen funktioniert ein Eingang erst ab etwa <b>2&nbsp;V</b>.</p>
+  <p>Die + Schiene bekommt die Klemmenspannung der Quelle, mit der sie verbunden ist. Was bedeutet das für alles, was daran hängt?</p>
+  <ul>
+    <li><b>Bauteile mit zwei Klemmen</b> rechnen damit wie in einem echten Stromkreis: Bei niedrigerer Spannung fließt
+      weniger Strom und eine Lampe leuchtet schwächer (siehe <a href="#ohm">das ohmsche Gesetz</a>).</li>
+    <li>Ein <b>Logikeingang</b> (eines Gatters, des Zählers, der Anzeige &hellip;) funktioniert erst ab etwa
+      <b>2&nbsp;V</b>, wie bei echten Logikschaltungen. Das gilt für einen Draht, der an der Schiene selbst beginnt, und
+      auch für einen Draht von einer Klemme, zum Beispiel hinter einem Schalter: Dort zählt die Spannung an dieser Klemme.</li>
+    <li><b>Anzeige, Motor und Modelle</b> an der &minus; Schiene funktionieren erst, wenn auf dem Panel eine + Schiene mit
+      2&nbsp;V oder mehr steht.</li>
+  </ul>
   <table>
-    <tr><th>Spannung</th><th>Schiene</th><th>Eingang an dieser Schiene</th></tr>
-    <tr><td>0&nbsp;V (kein geschlossener Kreis)</td><td>grau</td><td>gibt kein Signal</td></tr>
-    <tr><td>unter 2&nbsp;V</td><td>dunkelrot</td><td>gibt kein Signal: Spannung zu niedrig</td></tr>
+    <tr><th>Spannung</th><th>Schiene</th><th>Eingang, der sein Signal von dieser Schiene bekommt</th></tr>
+    <tr><td>0&nbsp;V (kein geschlossener Kreis)</td><td>grau</td><td>bekommt kein Signal</td></tr>
+    <tr><td>unter 2&nbsp;V</td><td>dunkelrot</td><td>bekommt kein Signal: Spannung zu niedrig</td></tr>
     <tr><td>2&nbsp;V bis 12&nbsp;V</td><td>rot, heller bei höherer Spannung</td><td>funktioniert</td></tr>
   </table>
+  <p>Dasselbe gilt für einen Endschalter an der Schiene und, in alten Panels, für die Eingänge ohne Klemmen, die an
+  der Schiene angesteckt sind.</p>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
-  <p>Das Voltmeter steht in der Bauteilleiste. Zum Ausblenden setzen Sie in den
+  <p>Logic hat zwei Voltmeter. Dieses Voltmeter hat ein <b>+</b> links und ein <b>&minus;</b> rechts und braucht nur
+  einen Draht. Das <a href="#serie">Voltmeter mit 2 Klemmen</a> misst den Unterschied zwischen seinen beiden Klemmen. Sie
+  dürfen beide in einer Schaltung mit Bauteilen mit zwei Klemmen verwenden.</p>
+  <p>Dieses Voltmeter steht in der Bauteilleiste ab der <a href="instellingen.html#niveau">Stufe</a>
+  <b>Erweitert</b> (<b>Panelwahl &rsaquo; Stufe</b>), bei den Ausgängen. Um nur seine Schaltfläche ein- oder
+  auszublenden, setzen Sie in den
   <a href="instellingen.html#schakelelementen">Einstellungen</a>, Registerkarte <b>Schaltereinheiten</b>,
-  <b>Voltmeter</b> auf <b>False</b>.</p>
+  <b>Voltmeter</b> auf <b>True</b> oder <b>False</b>.</p>
   <p>Das Voltmeter misst die Spannung <b>gegen Masse</b> (0&nbsp;V) und zeigt sie mit einer Nachkommastelle,
   rot sobald Spannung anliegt.</p>
   <ul>
-    <li><b>+</b> (links): einen Draht anschließen oder das Messgerät rechts an eine + Schiene stecken. Dann
+    <li><b>+</b> (links): einen Draht von dem Punkt anschließen, den Sie messen möchten: von einer Klemme eines Bauteils
+      mit zwei Klemmen (zum Beispiel der rechten Klemme eines Schalters), von einer + Schiene oder vom Ausgang eines
+      Gatters. Sie können das Messgerät auch rechts an eine + Schiene stecken. Dann
       zeigt es die Spannung dieser Schiene.</li>
     <li><b>&minus;</b> (rechts): darf offen bleiben; dann misst das Messgerät gegen Masse. Sie können das Messgerät auch links an eine &minus; Schiene stecken
       oder einen Draht von einer &minus; Schiene zum Punkt rechts legen (parallel anschließen): Die Messung bleibt gleich.
       Legen Sie einen Draht zum grünen Quadrat rechts, misst das Messgerät den <b>Unterschied</b> zwischen + und &minus;,
       zum Beispiel den Spannungsabfall über einem <a href="#weerstand">Kontakt</a>.</li>
   </ul>
-  <p>Ein Draht führt die Spannung seiner Quelle mit:</p>
+  <p>Ein Draht führt die Spannung seiner Quelle mit. Das zeigt das Messgerät:</p>
   <table>
-    <tr><th>Quelle</th><th>Spannung auf dem Draht</th></tr>
-    <tr><td>Eingang an einer + Schiene, ein</td><td>die Spannung dieser Schiene</td></tr>
-    <tr><td>Draht, der an einer + Schiene beginnt</td><td>die Spannung dieser Schiene</td></tr>
-    <tr><td>Eingang ohne Schienen auf dem Panel, ein</td><td>5&nbsp;V</td></tr>
-    <tr><td>Gatter, Zähler oder Speicher, Ausgang ein</td><td>5&nbsp;V</td></tr>
-    <tr><td>alles, was aus ist</td><td>0&nbsp;V</td></tr>
+    <tr><th>Quelle: wo der Draht beginnt</th><th>Spannung auf dem Draht</th></tr>
+    <tr><td>eine + Schiene</td><td>die Spannung dieser Schiene</td></tr>
+    <tr><td>eine Klemme eines Bauteils mit zwei Klemmen (Quelle, Schalter, Lampe, Widerstand &hellip;)</td><td>die Spannung an dieser Klemme</td></tr>
+    <tr><td>der Ausgang eines Gatters, eines Zählers, eines Speichers oder von LogicRun, ein</td><td>5&nbsp;V</td></tr>
+    <tr><td>ein Endschalter an einer + Schiene, ein</td><td>die Spannung dieser Schiene</td></tr>
+    <tr><td>in alten Panels: Eingang ohne Klemmen an einer + Schiene, ein</td><td>die Spannung dieser Schiene</td></tr>
+    <tr><td>in alten Panels: Eingang ohne Klemmen, ohne Schienen auf dem Panel, ein</td><td>5&nbsp;V</td></tr>
+    <tr><td>ein Ausgang, der aus ist (Gatter, Zähler, Endschalter, alter Eingang ohne Klemmen), und eine &minus; Schiene</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Tipp:</strong> Stellen Sie die Quelle auf 1&nbsp;V und verbinden Sie einen Taster an der
-  + Schiene mit einer Lampe und dem Voltmeter. Drücken Sie den Taster, zeigt das Voltmeter 1,0&nbsp;V, aber die
-  Lampe bleibt aus: Die Spannung ist zu niedrig für einen Logikeingang.</div>
+  <p>Achtung: Auch an den Klemmen einer Lampe, die nicht leuchtet, kann Spannung anliegen. Hängt die Lampe an der
+  + Schiene und ist der Schalter dahinter offen, zeigt das Voltmeter an beiden Klemmen der Lampe die Spannung der Schiene.</p>
+  <div class="tip"><strong>Tipp:</strong> Stellen Sie die Quelle auf 1&nbsp;V. Verbinden Sie die + Schiene mit der
+  linken Klemme eines Schalters und die rechte Klemme mit dem + des Voltmeters und mit einem Eingang eines
+  ODER-Gatters. Starten Sie die Simulation und schließen Sie den Schalter: Das Voltmeter zeigt 1,0&nbsp;V, aber der
+  Draht zum Gatter bleibt schwarz und der Ausgang des Gatters bleibt aus. Die Spannung ist zu niedrig für einen
+  Logikeingang. Schieben Sie die Quelle höher: Ab etwa 2&nbsp;V wird der Draht rot und der Ausgang des Gatters geht an.</div>
 
   <h2 id="bewaren">Speichern und Einstellungen</h2>
   <ul>
     <li>Quellen (Spannung und Ri), Sicherungen (Nennstrom), Messgeräte und Schienen werden mit ihrer Position in der
       Panel-Datei (<code>.lpl</code>) gespeichert. Eine durchgebrannte Sicherung ist nach dem Öffnen wieder ganz.</li>
-    <li>Möchten Sie die Schaltflächen der Versorgung nicht in der Bauteilleiste, setzen Sie
-      <b>Versorgungsschienen (+ und -)</b> in den <a href="instellingen.html#schakelelementen">Einstellungen</a>
-      auf <b>False</b>: Dann verschwinden die Schaltflächen + Schiene und &minus; Schiene aus der Leiste. Jedes andere
+    <li>Auch die Bauteile mit zwei Klemmen werden mit ihrer Position und ihren Einstellungen gespeichert: zum Beispiel der
+      Widerstand und die Farbe einer Lampe, die Art eines Widerstands und die Stellung eines Schalters.</li>
+    <li>Für Bauteile ohne Klemmen: Steht ein Bauteil nach dem Öffnen wieder an seiner Schiene, ist es wieder
+      angesteckt. Ein Versorgungsdraht wird wie jeder andere Draht gespeichert.</li>
+    <li>Alte Panels mit Schienen, aber ohne Quelle bekommen beim Öffnen eine Quelle über jeder + Schiene: siehe
+      <a href="#kring">Der Versorgungskreis</a>. Alte Panels ohne Schienen funktionieren weiterhin ohne Quelle.</li>
+    <li>Welche Schaltflächen in der Bauteilleiste stehen, wählen Sie auf einmal mit einer
+      <a href="instellingen.html#niveau">Stufe</a> oder Schaltfläche für Schaltfläche in den
+      <a href="instellingen.html#schakelelementen">Einstellungen</a>. Setzen Sie dort
+      <b>Versorgungsschienen (+ und -)</b>
+      auf <b>False</b>, verschwinden die Schaltflächen + Schiene und &minus; Schiene aus der Leiste. Jedes andere
       Teil der Versorgung (Quelle, Sicherung, Milliamperemeter, Widerstand, Lampe, Schalter und Voltmeter mit
       2 Klemmen) hat dort eine eigene Wahl.</li>
   </ul>

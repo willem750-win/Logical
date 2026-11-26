@@ -34,6 +34,10 @@
   <h2 id="paneelkeuze">Paneelkeuze</h2>
   <p>Met <img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Paneelkeuze</b> begin je een nieuw paneel.
   Het huidige paneel wordt daarbij leeggemaakt; bewaar het eerst als je het wil houden.</p>
+  <p>De drie voorbeeldpanelen zijn gebouwd zoals een echte schakeling: bovenaan een
+  <a href="voeding.html#bron">bron</a> van 12&nbsp;V, links een rode + rail, rechts een blauwe &minus; rail, en
+  daartussen onderdelen met <a href="voeding.html#serie">klemmen</a>, verbonden met draden. Alle onderdelen
+  staan in het <a href="instellingen.html#niveau">niveau</a> Basis.</p>
   <dl class="parts">
     <dt>Nieuw standaardpaneel</dt>
     <dd>Een leeg paneel om zelf een schakeling te bouwen.</dd>
@@ -41,23 +45,97 @@
     <dt id="beslissen">Beslissingspaneel</dt>
     <dd>Een oefenpaneel om met logische poorten een beslissing te laten nemen. Klaar op het paneel staan:
       <ul>
-        <li>invoer: een drukknop, een schakelaar, een lichtsensor en een warmtesensor;</li>
-        <li>verwerking: een EN-poort, een OF-poort en een NIET-poort;</li>
-        <li>uitvoer: een lamp, een relais en een zoemer.</li>
+        <li>invoer (links): een drukknop, een schakelaar, een <a href="voeding.html#ldr">LDR</a> (lichtsensor) met een
+          weerstand van 10&nbsp;k&Omega; en een <a href="voeding.html#ntc">NTC</a> (warmtesensor) met een weerstand van
+          1000&nbsp;&Omega;;</li>
+        <li>verwerking (midden): een <a href="verwerking.html#en">EN-poort</a>, een
+          <a href="verwerking.html#of">OF-poort</a> en een <a href="verwerking.html#niet">NIET-poort</a>;</li>
+        <li>uitvoer (rechts): een lamp van 5&nbsp;V, een <a href="voeding.html#zoemer2">zoemer</a> en een
+          <a href="voeding.html#relais2">relais</a> dat met zijn maakcontact een lamp van 12&nbsp;V schakelt.</li>
       </ul>
-      Er zijn nog geen draden: jij beslist hoe je ze verbindt. Bijvoorbeeld: de zoemer gaat af
-      als het warm is <b>en</b> de schakelaar aan staat.</dd>
+      <figure>
+        <img src="../img/paneel-beslissen.png" alt="Beslissingspaneel: bron, + rail en &minus; rail; links drukknop, schakelaar, LDR en NTC; in het midden drie poorten; rechts lamp, zoemer en relais">
+        <figcaption>Het Beslissingspaneel bij het openen: alles hangt al aan de + en de &minus;, maar naar de poorten loopt nog geen draad.</figcaption>
+      </figure>
+      <p><b>Al bedraad</b> is alles wat naar de + en de &minus; gaat:</p>
+      <ul>
+        <li>de + rail gaat naar de linkse klem van de drukknop, de schakelaar, de LDR en de NTC;</li>
+        <li>elke sensor gaat via zijn weerstand naar de &minus; rail: samen vormen ze een
+          <a href="voeding.html#weerstand">spanningsdeler</a>;</li>
+        <li>de rechtse klem van de lamp van 5&nbsp;V, van de zoemer en van de spoel van het relais gaat naar de &minus; rail;</li>
+        <li>contact <b>C</b> van het relais hangt aan de + rail, het maakcontact aan de lamp van 12&nbsp;V, en die lamp aan de
+          &minus; rail.</li>
+      </ul>
+      <p>De poorten hebben geen draad naar de + of de &minus; nodig: ze krijgen hun voeding
+      <a href="simulatie.html#voeding">onzichtbaar</a>.</p>
+      <p><b>Jij legt de signaaldraden</b> (zie <a href="verbindingen.html">Verbindingen</a>): van de invoer naar de ingang van
+      een poort, en van de uitgang van een poort naar de uitvoer.</p>
+      <ul>
+        <li>Bij de drukknop en de schakelaar vertrekt de draad aan de rechtse klem.</li>
+        <li>Bij een sensor vertrekt hij ook aan de rechtse klem, tussen de sensor en zijn weerstand. Daar zitten dan twee draden.</li>
+        <li>De uitgang van een poort verbind je met de linkse klem van de lamp van 5&nbsp;V, de zoemer of de spoel van het relais.</li>
+      </ul>
+      <p>Een voorbeeld: de zoemer gaat af als het warm is <b>en</b> de schakelaar aan staat.</p>
+      <ol class="steps">
+        <li>Trek een draad van de rechtse klem van de NTC naar ingang <b>A1</b> van de EN-poort.</li>
+        <li>Trek een draad van de rechtse klem van de schakelaar naar ingang <b>A2</b>.</li>
+        <li>Trek een draad van uitgang <b>A</b> van de EN-poort naar de linkse klem van de zoemer.</li>
+        <li>Start de simulatie, klik op de hendel van de schakelaar en sleep de schuifknop onder de NTC naar 60&nbsp;&deg;C:
+          de zoemer gaat af. Bij 20&nbsp;&deg;C, of met de schakelaar open, zwijgt hij.</li>
+      </ol>
+      <p>Het licht of de temperatuur verander je met de schuifknop onder de sensor: sleep de knop, of klik ernaast voor
+      één stap (1&nbsp;% licht of 1&nbsp;&deg;C). Dat kan ook tijdens de simulatie.</p>
+      <p>Nog twee om te proberen:</p>
+      <ul>
+        <li>Een nachtlampje: de LDR naar ingang <b>N1</b> van de NIET-poort, uitgang <b>N</b> naar de lamp van 5&nbsp;V. De lamp
+          brandt als het donker is (15&nbsp;% licht) en dooft bij 80&nbsp;% licht. Zie ook <a href="les06.html">les 6</a>.</li>
+        <li>Een groot toestel schakelen: de drukknop naar ingang <b>O1</b> van de OF-poort, uitgang <b>O</b> naar de spoel van
+          het relais. Zolang je drukt, trekt het relais aan en brandt de lamp van 12&nbsp;V. Zie ook
+          <a href="les07.html">les 7</a>.</li>
+      </ul>
+    </dd>
 
     <dt id="tellerpaneel">Tellerpaneel</dt>
-    <dd>Een werkend voorbeeld van een teller. Een impulsgenerator en een drukknop leveren de
-      telpulsen, een tweede drukknop zet de teller terug op 0, en een display toont de stand.
-      De draden liggen er al: start de simulatie en de impulsgenerator.</dd>
+    <dd>Een werkend voorbeeld van een <a href="verwerking.html#teller">teller</a>. Alle draden liggen er al: het paneel
+      werkt meteen.
+      <figure>
+        <img src="../img/paneel-teller.png" alt="Tellerpaneel: twee drukknoppen, een impulsgenerator, een OF-poort, een teller en een display tussen een + rail en een &minus; rail">
+        <figcaption>Het Tellerpaneel: de impulsgenerator en de onderste drukknop gaan via een OF-poort naar de telingang Te; de bovenste drukknop zet de teller terug op 0.</figcaption>
+      </figure>
+      <ul>
+        <li>De + rail gaat naar de linkse klem van de twee drukknoppen en van de
+          <a href="voeding.html#puls2">impulsgenerator</a>.</li>
+        <li>De impulsgenerator gaat naar ingang <b>O1</b> van een <a href="verwerking.html#of">OF-poort</a>, de onderste
+          drukknop naar <b>O2</b>. De uitgang van de OF-poort gaat naar de telingang <b>Te</b>: de teller telt de pulsen van de
+          generator <b>of</b> elke druk op de knop.</li>
+        <li>De bovenste drukknop gaat naar <b>Re</b>: hij zet de teller terug op 0.</li>
+        <li>De uitgangen <b>T8</b>, <b>T4</b>, <b>T2</b> en <b>T1</b> van de teller gaan met vier draden naar de ingangen
+          <b>8</b>, <b>4</b>, <b>2</b> en <b>1</b> van het <a href="uitvoer.html#display">7-segmentdisplay</a>, dat de stand toont.
+          Het display heeft geen klemmen: het zit <a href="voeding.html#inpluggen">ingeplugd</a> op de &minus; rail.</li>
+      </ul>
+      <p>Start de simulatie en druk een paar keer op de onderste drukknop: de teller gaat telkens één verder. Klik daarna
+      op het kastje van de impulsgenerator: het springt op <b>aan</b> en de teller loopt vanzelf. Klik nog eens om te
+      stoppen, en druk op de bovenste drukknop om weer bij 0 te beginnen. Meer uitleg vind je in
+      <a href="les08.html">les 8</a>.</p>
+    </dd>
 
     <dt id="geheugenpaneel">Geheugenpaneel</dt>
-    <dd>Een werkend voorbeeld van een geheugen. Een teller met drukknoppen kiest het adres, een
-      dipschakelaar schrijft er een getal in, en twee displays tonen het adres en de inhoud.
-      Zet een getal op de dipschakelaar en druk op zijn knop om het op te slaan; tel daarna verder
-      en kom terug om het weer uit te lezen.</dd>
+    <dd>Een werkend voorbeeld van een <a href="verwerking.html#geheugen">geheugen</a>, dezelfde schakeling als in
+      <a href="les09.html">les 9</a>. Ook hier liggen alle draden er al.
+      <ul>
+        <li>De <a href="verwerking.html#teller">teller</a> bovenaan kiest het adres. De bovenste drukknop (op <b>Re</b>) zet
+          het adres terug op 0, de tweede (op <b>Te</b>) gaat één adres verder. De schakelaar eronder (op <b>A16</b>) telt er
+          16 bij: zo kom je bij de adressen 16 tot 31.</li>
+        <li>De <a href="voeding.html#dip2">dipschakelaar</a> zet een getal van 0 tot 15 klaar op de data-ingangen
+          <b>D8</b>, <b>D4</b>, <b>D2</b> en <b>D1</b>. Bij het openen staat hij op 5.</li>
+        <li>De onderste drukknop (op <b>S</b>, schrijven) bewaart dat getal in het gekozen adres.</li>
+        <li>Het bovenste display toont het adres, het onderste de inhoud van dat adres. Beide displays zitten
+          <a href="voeding.html#inpluggen">ingeplugd</a> op de &minus; rail.</li>
+      </ul>
+      <p>Start de simulatie. Klik op de schuifjes van de dipschakelaar om een getal te kiezen en druk op de onderste
+      drukknop om het op te slaan. Ga daarna met de tweede drukknop één adres verder en met de bovenste terug naar 0:
+      het getal staat er nog.</p>
+    </dd>
   </dl>
 
   <h2 id="opslaan">Openen en opslaan</h2>

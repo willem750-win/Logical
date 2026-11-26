@@ -1,25 +1,51 @@
 <!-- titel: Uitvoer -->
   <h1>Uitvoer</h1>
-  <p class="lead">Uitvoeronderdelen tonen het resultaat van de schakeling. Ze hebben een of meer
-  <span class="pin in">ingangen</span> links, waar je de draden van de verwerking op aansluit.</p>
-  <p>Een uitvoeronderdeel heeft geen aparte &minus;: die hangt onzichtbaar aan de massa. Zie
-  <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a> Staan er
-  <a href="voeding.html">voedingsrails</a> op het paneel, dan plug je de uitvoer links van een
-  &minus; rail (massa) in.</p>
+  <p class="lead">Uitvoeronderdelen tonen het resultaat van de schakeling. De lamp, de zoemer en het relais hebben
+  <b>twee klemmen</b>: je vindt ze op de pagina <a href="voeding.html">Voeding &amp; voltmeter</a>. Deze pagina gaat
+  over de uitvoer <b>zonder klemmen</b>: het display en de modellen, en de oude lamp, zoemer en relais uit oudere
+  panelen.</p>
+  <ul>
+    <li><b>Met twee klemmen</b> (pagina Voeding): de <a href="voeding.html#serie">lamp</a>, de
+      <a href="voeding.html#zoemer2">zoemer</a> en het <a href="voeding.html#relais2">relais</a>. Je verbindt ze met
+      draden, zoals in een echte kring.</li>
+    <li><b>Zonder klemmen</b> (deze pagina): het <a href="#display">7-segmentdisplay</a>, de <a href="#motor">motor</a>
+      en de modellen <a href="#persoon">persoon</a>, <a href="#wagen">wagentje</a>, <a href="#muziek">muziekdoos</a>,
+      <a href="#verkeerslicht">verkeerslicht</a> en <a href="#slagboom">slagboom</a>.</li>
+    <li id="oud"><b>Alleen in oudere panelen</b>: de oude onderdelen zonder klemmen: <a href="#lamp">lamp</a>,
+      <a href="#relais">relais</a>, <a href="#schakelrelais">schakelrelais</a> en <a href="#zoemer">zoemer</a>. Ze staan
+      vooraan op deze pagina. Bouw je een nieuw paneel, sla ze dan over.</li>
+  </ul>
+  <p>Het display en de modellen hebben een of meer <span class="pin in">ingangen</span> links, waar je de draden van
+  de verwerking op aansluit. Een aparte &minus; hebben ze niet:</p>
+  <ul>
+    <li><b>Zonder rails op het paneel</b> hangt hun &minus; onzichtbaar aan de massa. Zie
+      <a href="simulatie.html#voeding">Waar zijn de plus en de min?</a></li>
+    <li><b>Met <a href="voeding.html">voedingsrails</a> op het paneel</b> moet het onderdeel aan een &minus; rail (massa)
+      hangen. Plug het in met zijn rechterkant tegen een &minus; rail, of leg een
+      <a href="voeding.html#draad">voedingsdraad</a> van de &minus; rail naar het bolletje rechts op het onderdeel. Met een
+      grijs bolletje werkt het niet. Ook de + rail moet spanning van de bron krijgen. Zie
+      <a href="voeding.html#regels">Wat verandert er als er rails op het paneel staan?</a></li>
+  </ul>
+  <p>Dat geldt ook voor de oude lamp, het oude relais en de oude zoemer.</p>
+  <p>Het display staat in de onderdelenbalk vanaf het niveau Basis. De motor en de modellen komen erbij in het niveau
+  Gevorderden. Zie <a href="instellingen.html#niveau">Niveau van de onderdelenbalk</a>.</p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lamp</h2>
-  <p class="note">Dit onderdeel staat niet meer in de onderdelenbalk; in oudere panelen werkt het nog. Je kunt het weer aanzetten bij <a href="instellingen.html#schakelelementen">Instellingen</a> (tabblad SchakelElementen, eigen keuze). Gebruik nu de <a href="voeding.html#serie">lamp met twee klemmen</a>; die kan ook een rode, groene of oranje lamp zijn.</p>
+  <p class="note"><b>Oud onderdeel:</b> deze lamp zonder klemmen staat niet meer in de onderdelenbalk; in oudere panelen werkt ze nog. Alleen van deze lamp kan je de knop weer aanzetten, bij <a href="instellingen.html#schakelelementen">Instellingen</a> (tabblad SchakelElementen, eigen keuze). Gebruik nu de <a href="voeding.html#serie">lamp met twee klemmen</a>.</p>
   <p>Brandt zolang de ingang aan is.</p>
-  <p id="led"><b>Led:</b> klik met de rechtermuisknop op een lamp en kies <b>Kleur</b> &rsaquo; <b>Rode led</b>,
+  <p id="led"><b>Led (oude lamp):</b> klik met de rechtermuisknop op een oude lamp en kies <b>Kleur</b> &rsaquo; <b>Rode led</b>,
   <b>Groene led</b> of <b>Oranje led</b>. De lamp wordt dan een led in die kleur en werkt verder net als een lamp.
   Een led die uit is, toont een lichte tint van haar kleur. Met <b>Kleur</b> &rsaquo; <b>Lamp</b> wordt het weer een gewone lamp.</p>
   <figure>
     <img src="../img/led-voorbeeld.png" alt="Een rode, een oranje en een groene led">
     <figcaption>Een rode led die brandt, en een oranje en een groene led die uit zijn.</figcaption>
   </figure>
+  <p>De <a href="voeding.html#serie">lamp met twee klemmen</a> heeft een eigen kleurkeuze: rechtsklik &rsaquo; <b>Kleur</b>
+  &rsaquo; <b>Gewone lamp</b>, <b>Rode lamp</b>, <b>Groene lamp</b> of <b>Oranje lamp</b>. Een echte led met twee klemmen
+  vind je bij <a href="voeding.html#led">De led met twee klemmen</a>.</p>
 
   <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relais</h2>
-  <p class="note">Dit onderdeel staat niet meer in de onderdelenbalk; in oudere panelen werkt het nog. Gebruik nu de <a href="voeding.html#zoemer2">zoemer</a> en het <a href="voeding.html#relais2">relais</a> met twee klemmen.</p>
+  <p class="note"><b>Oud onderdeel:</b> dit relais zonder klemmen staat niet meer in de onderdelenbalk; in oudere panelen werkt het nog. Gebruik nu het <a href="voeding.html#relais2">relais</a> uit de groep Voeding: de spoel heeft twee klemmen en op het wisselcontact sluit je draden aan.</p>
   <p>Een relais is een schakelaar die door een elektromagneet bediend wordt. Links zit de ingang
   <b>R</b> naar de spoel, rechts het omschakelcontact met de aansluitingen <b>R1</b> (boven) en
   <b>R2</b> (onder).</p>
@@ -28,10 +54,10 @@
     <li>Ingang aan: de spoel wordt bekrachtigd, de rode led wordt groen en het contact schakelt om.</li>
   </ul>
   <p>Het relais toont zo hoe een klein stuursignaal een contact omzet. R1 en R2 zijn alleen
-  aanduidingen op het symbool: je kunt er geen draad op aansluiten. Wil je met het contact echt iets schakelen, gebruik dan het <a href="#schakelrelais">schakelrelais</a>.</p>
+  aanduidingen op het symbool: je kunt er geen draad op aansluiten. Wil je met het contact echt iets schakelen, gebruik dan het <a href="voeding.html#relais2">relais</a> uit de groep Voeding (in oudere panelen: het <a href="#schakelrelais">schakelrelais</a>).</p>
 
   <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Schakelrelais</h2>
-  <p class="note">Dit onderdeel staat niet meer in de onderdelenbalk; in oudere panelen werkt het nog. Gebruik nu de <a href="voeding.html#zoemer2">zoemer</a> en het <a href="voeding.html#relais2">relais</a> met twee klemmen.</p>
+  <p class="note"><b>Oud onderdeel:</b> het schakelrelais staat niet meer in de onderdelenbalk; in oudere panelen werkt het nog. Gebruik nu het <a href="voeding.html#relais2">relais</a> uit de groep Voeding: de spoel heeft twee klemmen en op het wisselcontact sluit je draden aan.</p>
   <p>Een relais waarvan je het contact echt kunt gebruiken: de spoel bedient een schakelaar die een
   tweede stroomkring aan- en uitzet, bijvoorbeeld een lamp of een zoemer.</p>
   <figure>
@@ -50,7 +76,7 @@
   Een draad aan R2 begin je zoals bij elke uitgang: met de draadknop op het blokje van R2 klikken. Ligt daar al een draad, klik dan op het stukje draad met de pijl net voor R2.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Zoemer</h2>
-  <p class="note">Dit onderdeel staat niet meer in de onderdelenbalk; in oudere panelen werkt het nog. Gebruik nu de <a href="voeding.html#zoemer2">zoemer</a> en het <a href="voeding.html#relais2">relais</a> met twee klemmen.</p>
+  <p class="note"><b>Oud onderdeel:</b> deze zoemer zonder klemmen staat niet meer in de onderdelenbalk; in oudere panelen werkt hij nog. Gebruik nu de <a href="voeding.html#zoemer2">zoemer met twee klemmen</a>.</p>
   <p>Gaat af zolang de ingang aan is. Handig als alarm.</p>
 
   <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Motor</h2>
@@ -170,16 +196,17 @@
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segmentdisplay</h2>
   <p>Het display heeft één ingang. Wat het toont, hangt af van wat je erop aansluit:</p>
-  <p>Het display heeft links ook vier ingangen <b>1</b>, <b>2</b>, <b>4</b> en <b>8</b> (van boven naar onder, zoals bij een
-  echte displaydecoder): het toont de som van de ingangen die aan staan (bijvoorbeeld 4 en 1 geeft 5). Sluit er de vier
-  uitgangen 8-4-2-1 van een teller, een geheugen of een <a href="voeding.html#dip2">dipschakelaar</a> op aan; vanaf een teller
-  of een geheugen lopen de vier draden dan netjes naast elkaar.</p>
   <ul>
     <li>de display-uitgang van een <a href="verwerking.html#teller">teller</a> of een
       <a href="verwerking.html#geheugen">geheugen</a>: de waarde als cijfer of letter, 0 tot 9 en daarna A tot F;</li>
     <li>elke andere uitgang (drukknop, schakelaar, poort, sensor...): <b>1</b> als de uitgang aan is,
       <b>0</b> als ze uit is.</li>
   </ul>
+  <p>Het display heeft links ook vier ingangen <b>1</b>, <b>2</b>, <b>4</b> en <b>8</b> (van boven naar onder, zoals bij een
+  echte displaydecoder): het toont de som van de ingangen die aan staan (bijvoorbeeld 4 en 1 geeft 5). Sluit er de vier
+  uitgangen 8-4-2-1 van een teller, een geheugen of een <a href="voeding.html#dip2">dipschakelaar</a> op aan; vanaf een teller
+  of een geheugen lopen de vier draden dan netjes naast elkaar.</p>
+  <p>Op een paneel met rails hangt het display aan de &minus; rail, zoals de andere uitvoer; anders blijft het donker.</p>
 
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
   <p>De voltmeter toont de spanning op zijn <b>+</b>, gemeten tegenover de massa, bijvoorbeeld

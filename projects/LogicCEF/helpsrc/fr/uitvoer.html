@@ -1,23 +1,52 @@
 <!-- titel: Sorties -->
   <h1>Sorties</h1>
-  <p class="lead">Les composants de sortie montrent le résultat du circuit. Ils ont une ou plusieurs
-  <span class="pin in">entrées</span> à gauche, auxquelles vous reliez les fils venant du traitement.</p>
-  <p>Un composant de sortie n&rsquo;a pas de &minus; séparé&nbsp;: il est relié de façon invisible à la masse. Voir
-  <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a> S&rsquo;il y a des <a href="voeding.html">rails d&rsquo;alimentation</a> sur le panneau, branchez les sorties à gauche d&rsquo;un rail &minus; (masse).</p>
+  <p class="lead">Les composants de sortie montrent le résultat du circuit. La lampe, le buzzer et le relais ont
+  <b>deux bornes</b>&nbsp;: vous les trouvez sur la page <a href="voeding.html">Alimentation &amp; voltmètre</a>. Cette
+  page traite des sorties <b>sans bornes</b>&nbsp;: l&rsquo;afficheur et les modèles, ainsi que l&rsquo;ancienne lampe,
+  l&rsquo;ancien buzzer et l&rsquo;ancien relais des anciens panneaux.</p>
+  <ul>
+    <li><b>À deux bornes</b> (page Alimentation)&nbsp;: la <a href="voeding.html#serie">lampe</a>, le
+      <a href="voeding.html#zoemer2">buzzer</a> et le <a href="voeding.html#relais2">relais</a>. Vous les reliez par des
+      fils, comme dans un vrai circuit.</li>
+    <li><b>Sans bornes</b> (cette page)&nbsp;: l&rsquo;<a href="#display">afficheur 7 segments</a>, le
+      <a href="#motor">moteur</a> et les modèles <a href="#persoon">personne</a>, <a href="#wagen">chariot</a>,
+      <a href="#muziek">boîte à musique</a>, <a href="#verkeerslicht">feu tricolore</a> et
+      <a href="#slagboom">barrière</a>.</li>
+    <li id="oud"><b>Seulement dans les anciens panneaux</b>&nbsp;: les anciens composants sans bornes&nbsp;:
+      <a href="#lamp">lampe</a>, <a href="#relais">relais</a>, <a href="#schakelrelais">relais avec contact</a> et
+      <a href="#zoemer">buzzer</a>. Ils sont au début de cette page. Si vous construisez un nouveau panneau, passez-les.</li>
+  </ul>
+  <p>L&rsquo;afficheur et les modèles ont une ou plusieurs <span class="pin in">entrées</span> à gauche, auxquelles vous
+  reliez les fils venant du traitement. Ils n&rsquo;ont pas de &minus; séparé&nbsp;:</p>
+  <ul>
+    <li><b>Sans rails sur le panneau</b>, leur &minus; est relié de façon invisible à la masse. Voir
+      <a href="simulatie.html#voeding">Où sont le plus et le moins&nbsp;?</a></li>
+    <li><b>Avec des <a href="voeding.html">rails d&rsquo;alimentation</a> sur le panneau</b>, le composant doit être relié
+      à un rail &minus; (masse). Branchez-le avec son côté droit contre un rail &minus;, ou tirez un
+      <a href="voeding.html#draad">fil d&rsquo;alimentation</a> du rail &minus; vers le point à droite du composant. Avec un
+      point gris, il ne fonctionne pas. Le rail + doit aussi recevoir la tension de la source. Voir
+      <a href="voeding.html#regels">Qu&rsquo;est-ce qui change quand il y a des rails sur le panneau&nbsp;?</a></li>
+  </ul>
+  <p>Cela vaut aussi pour l&rsquo;ancienne lampe, l&rsquo;ancien relais et l&rsquo;ancien buzzer.</p>
+  <p>L&rsquo;afficheur est dans la barre des composants à partir du niveau Base. Le moteur et les modèles s&rsquo;ajoutent
+  au niveau Avancé. Voir <a href="instellingen.html#niveau">Niveau de la barre des composants</a>.</p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lampe</h2>
-  <p class="note">Cet élément ne figure plus dans la barre de composants&nbsp;; il fonctionne encore dans les anciens panneaux. Vous pouvez le réactiver dans les <a href="instellingen.html#schakelelementen">Réglages</a> (onglet Éléments de commutation, choix personnel). Utilisez maintenant la <a href="voeding.html#serie">lampe à deux bornes</a>&nbsp;; elle peut aussi être une lampe rouge, verte ou orange.</p>
+  <p class="note"><b>Ancien composant&nbsp;:</b> cette lampe sans bornes n&rsquo;est plus dans la barre des composants&nbsp;; elle fonctionne encore dans les anciens panneaux. Seul le bouton de cette lampe peut être réactivé, dans les <a href="instellingen.html#schakelelementen">Réglages</a> (onglet Éléments de commutation, choix personnel). Utilisez maintenant la <a href="voeding.html#serie">lampe à deux bornes</a>.</p>
   <p>S&rsquo;allume tant que l&rsquo;entrée est active.</p>
-  <p id="led"><b>LED :</b> cliquez avec le bouton droit sur une lampe et choisissez <b>Couleur</b> &rsaquo; <b>LED rouge</b>,
+  <p id="led"><b>LED (ancienne lampe)&nbsp;:</b> cliquez avec le bouton droit sur une ancienne lampe et choisissez <b>Couleur</b> &rsaquo; <b>LED rouge</b>,
   <b>LED verte</b> ou <b>LED orange</b>. La lampe devient alors une LED de cette couleur et fonctionne pour le reste comme une lampe.
   Une LED éteinte montre une teinte claire de sa couleur. <b>Couleur</b> &rsaquo; <b>Lampe</b> en refait une lampe ordinaire.</p>
   <figure>
     <img src="../img/led-voorbeeld.png" alt="Une LED rouge, une orange et une verte">
     <figcaption>Une LED rouge allumée, et une LED orange et une LED verte éteintes.</figcaption>
   </figure>
+  <p>La <a href="voeding.html#serie">lampe à deux bornes</a> a son propre choix de couleur&nbsp;: clic droit &rsaquo; <b>Couleur</b>
+  &rsaquo; <b>Lampe ordinaire</b>, <b>Lampe rouge</b>, <b>Lampe verte</b> ou <b>Lampe orange</b>. Une vraie LED à deux bornes
+  est décrite sous <a href="voeding.html#led">La LED à deux bornes</a>.</p>
 
   <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relais</h2>
-  <p class="note">Cet élément ne figure plus dans la barre de composants&nbsp;; il fonctionne encore dans les anciens panneaux. Utilisez maintenant le <a href="voeding.html#zoemer2">buzzer</a> et le <a href="voeding.html#relais2">relais</a> à deux bornes.</p>
+  <p class="note"><b>Ancien composant&nbsp;:</b> ce relais sans bornes n&rsquo;est plus dans la barre des composants&nbsp;; il fonctionne encore dans les anciens panneaux. Utilisez maintenant le <a href="voeding.html#relais2">relais</a> du groupe Alimentation&nbsp;: sa bobine a deux bornes et vous reliez des fils à son contact inverseur.</p>
   <p>Un relais est un interrupteur commandé par un électroaimant. À gauche se trouve l&rsquo;entrée <b>R</b> vers
   la bobine, à droite le contact inverseur avec les bornes <b>R1</b> (en haut) et <b>R2</b> (en bas).</p>
   <ul>
@@ -25,10 +54,10 @@
     <li>Entrée active&nbsp;: la bobine est alimentée, la LED rouge devient verte et le contact bascule.</li>
   </ul>
   <p>Le relais montre ainsi comment un petit signal de commande fait basculer un contact. R1 et R2 ne sont
-  que des repères sur le symbole&nbsp;: vous ne pouvez pas y relier de fil. Pour vraiment commuter quelque chose avec le contact, utilisez le <a href="#schakelrelais">relais avec contact</a>.</p>
+  que des repères sur le symbole&nbsp;: vous ne pouvez pas y relier de fil. Pour vraiment commuter quelque chose avec le contact, utilisez le <a href="voeding.html#relais2">relais</a> du groupe Alimentation (dans les anciens panneaux&nbsp;: le <a href="#schakelrelais">relais avec contact</a>).</p>
 
   <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Relais avec contact</h2>
-  <p class="note">Cet élément ne figure plus dans la barre de composants&nbsp;; il fonctionne encore dans les anciens panneaux. Utilisez maintenant le <a href="voeding.html#zoemer2">buzzer</a> et le <a href="voeding.html#relais2">relais</a> à deux bornes.</p>
+  <p class="note"><b>Ancien composant&nbsp;:</b> le relais avec contact n&rsquo;est plus dans la barre des composants&nbsp;; il fonctionne encore dans les anciens panneaux. Utilisez maintenant le <a href="voeding.html#relais2">relais</a> du groupe Alimentation&nbsp;: sa bobine a deux bornes et vous reliez des fils à son contact inverseur.</p>
   <p>Un relais dont vous pouvez vraiment utiliser le contact&nbsp;: la bobine commande un interrupteur qui
   allume et éteint un deuxième circuit, par exemple une lampe ou un ronfleur.</p>
   <figure>
@@ -47,7 +76,7 @@
   Un fil sur R2 se commence comme sur toute sortie&nbsp;: cliquez sur le bloc de R2 avec le bouton fil. Si un fil y part déjà, cliquez sur le petit trait avec la flèche juste avant R2.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
-  <p class="note">Cet élément ne figure plus dans la barre de composants&nbsp;; il fonctionne encore dans les anciens panneaux. Utilisez maintenant le <a href="voeding.html#zoemer2">buzzer</a> et le <a href="voeding.html#relais2">relais</a> à deux bornes.</p>
+  <p class="note"><b>Ancien composant&nbsp;:</b> ce buzzer sans bornes n&rsquo;est plus dans la barre des composants&nbsp;; il fonctionne encore dans les anciens panneaux. Utilisez maintenant le <a href="voeding.html#zoemer2">buzzer à deux bornes</a>.</p>
   <p>Sonne tant que l&rsquo;entrée est active. Pratique comme alarme.</p>
 
   <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Moteur</h2>
@@ -172,16 +201,17 @@
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">Afficheur 7 segments</h2>
   <p>L&rsquo;afficheur a une seule entrée. Ce qu&rsquo;il affiche dépend de ce que vous y reliez&nbsp;:</p>
-  <p>À gauche, l&rsquo;afficheur a aussi quatre entrées <b>1</b>, <b>2</b>, <b>4</b> et <b>8</b> (de haut en bas, comme sur un
-  vrai décodeur d&rsquo;affichage)&nbsp;: il montre la somme des entrées activées (par exemple 4 et 1 donne 5). Branchez-y les
-  quatre sorties 8-4-2-1 d&rsquo;un compteur, d&rsquo;une mémoire ou d&rsquo;un <a href="voeding.html#dip2">interrupteur DIP</a>&nbsp;; depuis
-  un compteur ou une mémoire, les quatre fils courent alors proprement côte à côte.</p>
   <ul>
     <li>la sortie afficheur d&rsquo;un <a href="verwerking.html#teller">compteur</a> ou d&rsquo;une
       <a href="verwerking.html#geheugen">mémoire</a>&nbsp;: la valeur sous forme de chiffre ou de lettre, 0 à 9 puis A à F&nbsp;;</li>
     <li>toute autre sortie (bouton-poussoir, interrupteur, porte, capteur...)&nbsp;: <b>1</b> quand la sortie est active,
       <b>0</b> quand elle est inactive.</li>
   </ul>
+  <p>À gauche, l&rsquo;afficheur a aussi quatre entrées <b>1</b>, <b>2</b>, <b>4</b> et <b>8</b> (de haut en bas, comme sur un
+  vrai décodeur d&rsquo;affichage)&nbsp;: il montre la somme des entrées activées (par exemple 4 et 1 donne 5). Branchez-y les
+  quatre sorties 8-4-2-1 d&rsquo;un compteur, d&rsquo;une mémoire ou d&rsquo;un <a href="voeding.html#dip2">interrupteur DIP</a>&nbsp;; depuis
+  un compteur ou une mémoire, les quatre fils courent alors proprement côte à côte.</p>
+  <p>Sur un panneau avec des rails, l&rsquo;afficheur est branché sur le rail &minus;, comme les autres sorties&nbsp;; sinon il reste sombre.</p>
 
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmètre</h2>
   <p>Le voltmètre affiche la tension sur son <b>+</b>, mesurée par rapport à la masse, par exemple

@@ -1,23 +1,50 @@
 <!-- titel: Outputs -->
   <h1>Outputs</h1>
-  <p class="lead">Output components show the result of the circuit. They have one or more
-  <span class="pin in">inputs</span> on the left, to which you connect the wires from the processing part.</p>
-  <p>An output component has no separate &minus;: it is invisibly connected to ground. See
-  <a href="simulatie.html#voeding">Where are the plus and the minus?</a> If there are <a href="voeding.html">power rails</a> on the panel, plug the outputs in on the left of a &minus; rail (ground).</p>
+  <p class="lead">Output components show the result of the circuit. The lamp, the buzzer and the relay have
+  <b>two terminals</b>: you find them on the <a href="voeding.html">Power &amp; voltmeter</a> page. This page is about
+  the outputs <b>without terminals</b>: the display and the models, and the old lamp, buzzer and relay from older
+  panels.</p>
+  <ul>
+    <li><b>With two terminals</b> (Power page): the <a href="voeding.html#serie">lamp</a>, the
+      <a href="voeding.html#zoemer2">buzzer</a> and the <a href="voeding.html#relais2">relay</a>. You connect them with
+      wires, as in a real circuit.</li>
+    <li><b>Without terminals</b> (this page): the <a href="#display">7-segment display</a>, the <a href="#motor">motor</a>
+      and the models <a href="#persoon">person</a>, <a href="#wagen">cart</a>, <a href="#muziek">music box</a>,
+      <a href="#verkeerslicht">traffic light</a> and <a href="#slagboom">barrier gate</a>.</li>
+    <li id="oud"><b>Only in older panels</b>: the old parts without terminals: <a href="#lamp">lamp</a>,
+      <a href="#relais">relay</a>, <a href="#schakelrelais">switching relay</a> and <a href="#zoemer">buzzer</a>. They come
+      first on this page. If you are building a new panel, skip them.</li>
+  </ul>
+  <p>The display and the models have one or more <span class="pin in">inputs</span> on the left, to which you connect
+  the wires from the processing part. They have no separate &minus;:</p>
+  <ul>
+    <li><b>Without rails on the panel</b> their &minus; is invisibly connected to ground. See
+      <a href="simulatie.html#voeding">Where are the plus and the minus?</a></li>
+    <li><b>With <a href="voeding.html">power rails</a> on the panel</b> the part must hang on a &minus; rail (ground).
+      Plug it in with its right side against a &minus; rail, or run a <a href="voeding.html#draad">power wire</a> from the
+      &minus; rail to the dot on the right of the part. With a grey dot it does not work. The + rail must also get voltage
+      from the source. See <a href="voeding.html#regels">What changes when there are rails on the panel?</a></li>
+  </ul>
+  <p>The same goes for the old lamp, the old relay and the old buzzer.</p>
+  <p>The display is in the component toolbar from level Basic. The motor and the models are added in level Advanced.
+  See <a href="instellingen.html#niveau">Level of the component toolbar</a>.</p>
 
   <h2 id="lamp"><img src="../img/pal-lamp.png" class="ico" alt="">Lamp</h2>
-  <p class="note">This part is no longer in the component toolbar; it still works in older panels. You can switch it on again in <a href="instellingen.html#schakelelementen">Settings</a> (tab Switch Elements, own selection). Now use the <a href="voeding.html#serie">lamp with two terminals</a>; it can also be a red, green or orange lamp.</p>
+  <p class="note"><b>Old part:</b> this lamp without terminals is no longer in the component toolbar; it still works in older panels. Only for this lamp can you switch the button on again, in <a href="instellingen.html#schakelelementen">Settings</a> (tab Switch Elements, own selection). Now use the <a href="voeding.html#serie">lamp with two terminals</a>.</p>
   <p>Lights as long as the input is on.</p>
-  <p id="led"><b>LED:</b> right-click a lamp and choose <b>Colour</b> &rsaquo; <b>Red LED</b>,
+  <p id="led"><b>LED (old lamp):</b> right-click an old lamp and choose <b>Colour</b> &rsaquo; <b>Red LED</b>,
   <b>Green LED</b> or <b>Orange LED</b>. The lamp then becomes an LED in that colour and otherwise works just like a lamp.
   An LED that is off shows a light shade of its colour. <b>Colour</b> &rsaquo; <b>Lamp</b> turns it back into an ordinary lamp.</p>
   <figure>
     <img src="../img/led-voorbeeld.png" alt="A red, an orange and a green LED">
     <figcaption>A red LED that is lit, and an orange and a green LED that are off.</figcaption>
   </figure>
+  <p>The <a href="voeding.html#serie">lamp with two terminals</a> has its own colour choice: right-click &rsaquo; <b>Colour</b>
+  &rsaquo; <b>Ordinary lamp</b>, <b>Red lamp</b>, <b>Green lamp</b> or <b>Orange lamp</b>. A real LED with two terminals
+  is described under <a href="voeding.html#led">The LED with two terminals</a>.</p>
 
   <h2 id="relais"><img src="../img/pal-relais.png" class="ico" alt="">Relay</h2>
-  <p class="note">This part is no longer in the component toolbar; it still works in older panels. Now use the <a href="voeding.html#zoemer2">buzzer</a> and the <a href="voeding.html#relais2">relay</a> with two terminals.</p>
+  <p class="note"><b>Old part:</b> this relay without terminals is no longer in the component toolbar; it still works in older panels. Now use the <a href="voeding.html#relais2">relay</a> from the Power group: its coil has two terminals and you connect wires to its changeover contact.</p>
   <p>A relay is a switch operated by an electromagnet. On the left is input <b>R</b> to the coil,
   on the right the changeover contact with the terminals <b>R1</b> (top) and <b>R2</b> (bottom).</p>
   <ul>
@@ -25,10 +52,10 @@
     <li>Input on: the coil is energised, the red LED turns green and the contact switches over.</li>
   </ul>
   <p>The relay shows how a small control signal switches a contact. R1 and R2 are only labels
-  on the symbol: you cannot connect a wire to them. To really switch something with the contact, use the <a href="#schakelrelais">switching relay</a>.</p>
+  on the symbol: you cannot connect a wire to them. To really switch something with the contact, use the <a href="voeding.html#relais2">relay</a> from the Power group (in older panels: the <a href="#schakelrelais">switching relay</a>).</p>
 
   <h2 id="schakelrelais"><img src="../img/pal-schakelrelais.png" class="ico" alt="">Switching relay</h2>
-  <p class="note">This part is no longer in the component toolbar; it still works in older panels. Now use the <a href="voeding.html#zoemer2">buzzer</a> and the <a href="voeding.html#relais2">relay</a> with two terminals.</p>
+  <p class="note"><b>Old part:</b> the switching relay is no longer in the component toolbar; it still works in older panels. Now use the <a href="voeding.html#relais2">relay</a> from the Power group: its coil has two terminals and you connect wires to its changeover contact.</p>
   <p>A relay whose contact you can really use: the coil operates a switch that turns a second circuit
   on and off, for example a lamp or a buzzer.</p>
   <figure>
@@ -47,7 +74,7 @@
   You start a wire at R2 like at any output: click the block of R2 with the wire button. If a wire already starts there, click the short line with the arrow just before R2.</p>
 
   <h2 id="zoemer"><img src="../img/pal-zoemer.png" class="ico" alt="">Buzzer</h2>
-  <p class="note">This part is no longer in the component toolbar; it still works in older panels. Now use the <a href="voeding.html#zoemer2">buzzer</a> and the <a href="voeding.html#relais2">relay</a> with two terminals.</p>
+  <p class="note"><b>Old part:</b> this buzzer without terminals is no longer in the component toolbar; it still works in older panels. Now use the <a href="voeding.html#zoemer2">buzzer with two terminals</a>.</p>
   <p>Sounds as long as the input is on. Handy as an alarm.</p>
 
   <h2 id="motor"><img src="../img/pal-motor.png" class="ico" alt="">Motor</h2>
@@ -168,16 +195,17 @@
 
   <h2 id="display"><img src="../img/pal-display.png" class="ico" alt="">7-segment display</h2>
   <p>The display has one input. What it shows depends on what you connect to it:</p>
-  <p>On the left the display also has four inputs <b>1</b>, <b>2</b>, <b>4</b> and <b>8</b> (from top to bottom, as on a real
-  display decoder): it shows the sum of the inputs that are on (for example 4 and 1 gives 5). Connect the four outputs 8-4-2-1
-  of a counter, a memory or a <a href="voeding.html#dip2">DIP switch</a>; from a counter or a memory the four wires then run
-  neatly side by side.</p>
   <ul>
     <li>the display output of a <a href="verwerking.html#teller">counter</a> or a
       <a href="verwerking.html#geheugen">memory</a>: the value as a digit or letter, 0 to 9 and then A to F;</li>
     <li>any other output (push button, switch, gate, sensor...): <b>1</b> when the output is on,
       <b>0</b> when it is off.</li>
   </ul>
+  <p>On the left the display also has four inputs <b>1</b>, <b>2</b>, <b>4</b> and <b>8</b> (from top to bottom, as on a real
+  display decoder): it shows the sum of the inputs that are on (for example 4 and 1 gives 5). Connect the four outputs 8-4-2-1
+  of a counter, a memory or a <a href="voeding.html#dip2">DIP switch</a>; from a counter or a memory the four wires then run
+  neatly side by side.</p>
+  <p>On a panel with rails the display hangs on the &minus; rail, like the other outputs; otherwise it stays dark.</p>
 
   <h2 id="meter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
   <p>The voltmeter shows the voltage on its <b>+</b>, measured against ground, for example

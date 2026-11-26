@@ -802,6 +802,11 @@ procedure ElektronenRails(P: TWinControl; AU: Double; AToon: Boolean); forward;
 
 const
   PoortUitOhm = 50;   // inwendige weerstand van een logische uitgang als bron van 5 V
+  KnoopTol = 6;       // zo dicht bij het midden van een ingang hoort een los draadeinde bij die ingang
+
+// midden van de ingang (groen vierkantje) van een blok zonder klemmen waar Pt
+// binnen KnoopTol van ligt, anders Pt zelf (staat in jsl_draadlogica.inc)
+function IngangBij(P: TWinControl; const Pt: TPoint): TPoint; forward;
 
 // het schakelrelais waarvan Pt het contact R2 is, anders nil (dat contact geeft
 // de spanning van de rail van R1 door; al de andere logische uitgangen zijn een
@@ -882,6 +887,10 @@ var
   LogRelais: array of Boolean;
   RlC: TControl;
   RlR: TjanRail;
+  // ingang zonder klem (poort, teller, display ...) waar twee of meer draden
+  // uit de voedingskring samenkomen: een eigen knooppunt vanaf NK + NR + NL
+  NJ: Integer;
+  KnPt, KnIn, LosPt, LosIn: array of TPoint;
 
   // weerstand, minstens RKlein (een ideale bron of draad: bijna 0 ohm)
   function NietNul(R: Double): Double;
@@ -922,7 +931,27 @@ var
         if Rails[q] = R then Exit(NK + q);
     for q := 0 to NL - 1 do
       if NearPoint(Pt, LogPt[q]) then Exit(NK + NR + q);
+    // knooppunt op een ingang: het punt zelf, of een eind dat met de hand
+    // net naast het vierkantje van dezelfde ingang gelegd is
+    for q := 0 to NJ - 1 do
+      if NearPoint(Pt, KnPt[q]) or
+         ((Abs(Pt.X - KnIn[q].X) <= KnoopTol) and (Abs(Pt.Y - KnIn[q].Y) <= KnoopTol) and
+          NearPoint(IngangBij(P, Pt), KnIn[q])) then
+        Exit(NK + NR + NL + q);
     Result := -1;
+  end;
+
+  // draad van een logische uitgang (LogPt) naar een knooppunt op een ingang:
+  // een gewone signaaldraad, geen verbinding in de voedingskring
+  function SignaalDraad(XA, XB: Integer): Boolean;
+  var
+    T: Integer;
+  begin
+    if XA > XB then
+    begin
+      T := XA; XA := XB; XB := T;
+    end;
+    Result := (XA >= NK + NR) and (XA < NK + NR + NL) and (XB >= NK + NR + NL);
   end;
 
   procedure AddTak(AA, AB: Integer; AG: Double; AD: TjanVoedingsDeel);
@@ -1064,6 +1093,7 @@ begin
   PinBase[NP] := NK;
   // logische uitgangen die een klem voeden: het eind van de draad dat geen
   // klem of rail is (draden van dezelfde uitgang delen één knooppunt)
+  NJ := 0;
   NL := 0;
   SetLength(LogPt, 0); SetLength(LogHoog, 0); SetLength(LogRail, 0); SetLength(LogRelais, 0);
   for i := 0 to P.ControlCount - 1 do
@@ -1097,7 +1127,58 @@ begin
       end;
       Inc(NL);
     end;
-  SetLength(Ouder, NK + NR + NL);
+  // Knooppunt op een ingang zonder klem. Een poort, teller of display is geen
+  // onderdeel van de voedingskring: een draad van een klem naar zo een ingang
+  // eindigt "los". Komen daar twee of meer zulke draden samen (bijvoorbeeld
+  // twee schakelaars parallel op een ingang), dan is dat punt een knooppunt,
+  // zoals in een echte schakeling. Zonder dit knooppunt las elke draad alleen
+  // de spanning van zijn eigen klem en ging de ingang flikkeren.
+  SetLength(KnPt, 0); SetLength(KnIn, 0); SetLength(LosPt, 0); SetLength(LosIn, 0);
+  for i := 0 to P.ControlCount - 1 do
+    if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
+    begin
+      Con := TjanConnector(P.Controls[i]);
+      Con.EndCenters(Pa, Pb);
+      A := ItemAt(Pa);
+      B := ItemAt(Pb);
+      if (A >= 0) = (B >= 0) then Continue;
+      if A >= 0 then Pa := Pb   // Pa = het eind dat op geen klem of rail ligt
+      else A := B;              // A = het eind dat er wel op ligt
+      // begint op een logische uitgang die ook een klem voedt: een gewone
+      // signaaldraad, die hoort niet in de voedingskring
+      if A >= NK + NR then Continue;
+      // voedingsdraad (rail -> voedingsbolletje): geen signaal, zie Connect
+      if (A >= NK) and PowerDotAt(P, Pa) then Continue;
+      SetLength(LosPt, Length(LosPt) + 1);
+      LosPt[High(LosPt)] := Pa;
+    end;
+  // Een eind dat met de hand gelegd is (het begin van een draad springt niet
+  // vanzelf op het vierkantje) ligt soms enkele pixels naast de ingang. Voor
+  // einden met een buur dichtbij telt daarom het midden van de ingang.
+  SetLength(LosIn, Length(LosPt));
+  for i := 0 to High(LosPt) do LosIn[i] := LosPt[i];
+  for i := 0 to High(LosPt) do
+    for j := i + 1 to High(LosPt) do
+      if (Abs(LosPt[i].X - LosPt[j].X) <= 2 * KnoopTol) and
+         (Abs(LosPt[i].Y - LosPt[j].Y) <= 2 * KnoopTol) then
+      begin
+        LosIn[i] := IngangBij(P, LosPt[i]);
+        LosIn[j] := IngangBij(P, LosPt[j]);
+      end;
+  for i := 0 to High(LosPt) do
+  begin
+    if ItemAt(LosPt[i]) >= 0 then Continue;   // hoort al bij een knooppunt
+    for j := i + 1 to High(LosPt) do
+      if NearPoint(LosPt[i], LosPt[j]) or NearPoint(LosIn[i], LosIn[j]) then
+      begin
+        SetLength(KnPt, NJ + 1); SetLength(KnIn, NJ + 1);
+        KnPt[NJ] := LosPt[i];
+        KnIn[NJ] := LosIn[i];
+        Inc(NJ);
+        Break;
+      end;
+  end;
+  SetLength(Ouder, NK + NR + NL + NJ);
   for i := 0 to High(Ouder) do Ouder[i] := i;
   for i := 0 to P.ControlCount - 1 do
     if (P.Controls[i] is TjanConnector) and P.Controls[i].Visible then
@@ -1106,7 +1187,7 @@ begin
       Con.EndCenters(Pa, Pb);
       A := ItemAt(Pa);
       B := ItemAt(Pb);
-      if (A >= 0) and (B >= 0) then Union(A, B);
+      if (A >= 0) and (B >= 0) and not SignaalDraad(A, B) then Union(A, B);
     end;
   SetLength(NodeOf, Length(Ouder));
   for i := 0 to High(NodeOf) do NodeOf[i] := -1;
@@ -1700,7 +1781,7 @@ begin
   Toon := False;
   for k := 0 to NP - 1 do
     if (Parts[k] is TjanBron) and TjanBron(Parts[k]).Elektronen then Toon := True;
-  NI := NK + NR + NL;
+  NI := NK + NR + NL + NJ;
   SetLength(Draad, 0); SetLength(DrA, 0); SetLength(DrB, 0);
   ND := 0;
   for i := 0 to P.ControlCount - 1 do
@@ -1715,7 +1796,7 @@ begin
         B := ItemAt(Pb);
       end;
       Con.FStroomNieuw := 0;
-      if (A < 0) or (B < 0) or (A = B) then
+      if (A < 0) or (B < 0) or (A = B) or SignaalDraad(A, B) then
       begin
         Continue;
       end;

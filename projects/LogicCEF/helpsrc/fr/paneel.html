@@ -33,31 +33,110 @@
 
   <h2 id="paneelkeuze">Choix du panneau</h2>
   <p><img src="../img/knop-paneelkeuze.png" class="ico" alt=""><b>Choix du panneau</b> démarre un nouveau panneau.
-  Le panneau actuel est vidé&nbsp;; enregistrez-le d&rsquo;abord si vous voulez le garder. Les éléments du menu portent des noms néerlandais.</p>
+  Le panneau actuel est vidé&nbsp;; enregistrez-le d&rsquo;abord si vous voulez le garder.</p>
+  <p>Les trois panneaux d&rsquo;exemple sont construits comme un vrai circuit&nbsp;: en haut une
+  <a href="voeding.html#bron">source</a> de 12&nbsp;V, à gauche un rail + rouge, à droite un rail &minus; bleu, et
+  entre les deux des composants à <a href="voeding.html#serie">bornes</a>, reliés par des fils. Tous les composants
+  font partie du <a href="instellingen.html#niveau">niveau</a> Base.</p>
   <dl class="parts">
-    <dt>Nouveau panneau standard (<i>Nieuw standaardpaneel</i>)</dt>
+    <dt>Nouveau panneau standard</dt>
     <dd>Un panneau vide pour construire votre propre circuit.</dd>
 
-    <dt id="beslissen">Panneau de décision (<i>Beslissingspaneel</i>)</dt>
+    <dt id="beslissen">Panneau de décision</dt>
     <dd>Un panneau d&rsquo;exercice pour prendre une décision avec des portes logiques. Déjà sur le panneau&nbsp;:
       <ul>
-        <li>entrées&nbsp;: un bouton-poussoir, un interrupteur, un capteur de lumière et un capteur de chaleur&nbsp;;</li>
-        <li>traitement&nbsp;: une porte ET, une porte OU et une porte NON&nbsp;;</li>
-        <li>sorties&nbsp;: une lampe, un relais et un buzzer.</li>
+        <li>entrées (à gauche)&nbsp;: un bouton-poussoir, un interrupteur, une <a href="voeding.html#ldr">LDR</a> (capteur de
+          lumière) avec une résistance de 10&nbsp;k&Omega; et une <a href="voeding.html#ntc">CTN</a> (capteur de chaleur) avec
+          une résistance de 1000&nbsp;&Omega;&nbsp;;</li>
+        <li>traitement (au milieu)&nbsp;: une <a href="verwerking.html#en">porte ET</a>, une
+          <a href="verwerking.html#of">porte OU</a> et une <a href="verwerking.html#niet">porte NON</a>&nbsp;;</li>
+        <li>sorties (à droite)&nbsp;: une lampe 5&nbsp;V, un <a href="voeding.html#zoemer2">buzzer</a> et un
+          <a href="voeding.html#relais2">relais</a> dont le contact travail commande une lampe 12&nbsp;V.</li>
       </ul>
-      Il n&rsquo;y a pas encore de fils&nbsp;: c&rsquo;est vous qui décidez comment les relier. Par exemple&nbsp;: le buzzer
-      sonne quand il fait chaud <b>et</b> que l&rsquo;interrupteur est enclenché.</dd>
+      <figure>
+        <img src="../img/paneel-beslissen.png" alt="Panneau de décision&nbsp;: source, rail + et rail &minus;&nbsp;; à gauche bouton-poussoir, interrupteur, LDR et CTN&nbsp;; au milieu trois portes&nbsp;; à droite lampe, buzzer et relais">
+        <figcaption>Le Panneau de décision à l&rsquo;ouverture&nbsp;: tout est déjà relié au + et au &minus;, mais aucun fil ne va encore vers les portes.</figcaption>
+      </figure>
+      <p>Tout ce qui va au + et au &minus; est <b>déjà câblé</b>&nbsp;:</p>
+      <ul>
+        <li>le rail + va à la borne gauche du bouton-poussoir, de l&rsquo;interrupteur, de la LDR et de la CTN&nbsp;;</li>
+        <li>chaque capteur va au rail &minus; par sa résistance&nbsp;: ensemble, ils forment un
+          <a href="voeding.html#weerstand">diviseur de tension</a>&nbsp;;</li>
+        <li>la borne droite de la lampe 5&nbsp;V, du buzzer et de la bobine du relais va au rail &minus;&nbsp;;</li>
+        <li>le contact <b>C</b> du relais est relié au rail +, le contact travail à la lampe 12&nbsp;V, et cette lampe au
+          rail &minus;.</li>
+      </ul>
+      <p>Les portes n&rsquo;ont pas besoin de fil vers le + ou le &minus;&nbsp;: elles reçoivent leur alimentation de façon
+      <a href="simulatie.html#voeding">invisible</a>.</p>
+      <p><b>C&rsquo;est vous qui posez les fils de signal</b> (voir <a href="verbindingen.html">Connexions</a>)&nbsp;: d&rsquo;un
+      composant d&rsquo;entrée vers l&rsquo;entrée d&rsquo;une porte, et de la sortie d&rsquo;une porte vers un composant de sortie.</p>
+      <ul>
+        <li>Sur le bouton-poussoir et l&rsquo;interrupteur, le fil part de la borne droite.</li>
+        <li>Sur un capteur, il part aussi de la borne droite, entre le capteur et sa résistance. Deux fils s&rsquo;y rejoignent alors.</li>
+        <li>Reliez la sortie d&rsquo;une porte à la borne gauche de la lampe 5&nbsp;V, du buzzer ou de la bobine du relais.</li>
+      </ul>
+      <p>Un exemple&nbsp;: le buzzer sonne quand il fait chaud <b>et</b> que l&rsquo;interrupteur est enclenché.</p>
+      <ol class="steps">
+        <li>Tirez un fil de la borne droite de la CTN vers l&rsquo;entrée <b>A1</b> de la porte ET.</li>
+        <li>Tirez un fil de la borne droite de l&rsquo;interrupteur vers l&rsquo;entrée <b>A2</b>.</li>
+        <li>Tirez un fil de la sortie <b>A</b> de la porte ET vers la borne gauche du buzzer.</li>
+        <li>Démarrez la simulation, cliquez sur le levier de l&rsquo;interrupteur et faites glisser le curseur sous la CTN
+          jusqu&rsquo;à 60&nbsp;&deg;C&nbsp;: le buzzer sonne. À 20&nbsp;&deg;C, ou avec l&rsquo;interrupteur ouvert, il se tait.</li>
+      </ol>
+      <p>Vous changez la lumière ou la température avec le curseur sous le capteur&nbsp;: faites glisser le bouton, ou cliquez
+      à côté pour un pas (1&nbsp;% de lumière ou 1&nbsp;&deg;C). Cela fonctionne aussi pendant la simulation.</p>
+      <p>Deux autres idées à essayer&nbsp;:</p>
+      <ul>
+        <li>Une veilleuse&nbsp;: la LDR vers l&rsquo;entrée <b>N1</b> de la porte NON, la sortie <b>N</b> vers la lampe 5&nbsp;V.
+          La lampe s&rsquo;allume quand il fait sombre (15&nbsp;% de lumière) et s&rsquo;éteint à 80&nbsp;% de lumière. Voir aussi la
+          <a href="les06.html">leçon 6</a>.</li>
+        <li>Commander un gros appareil&nbsp;: le bouton-poussoir vers l&rsquo;entrée <b>O1</b> de la porte OU, la sortie <b>O</b>
+          vers la bobine du relais. Tant que vous appuyez, le relais reste enclenché et la lampe 12&nbsp;V est allumée. Voir
+          aussi la <a href="les07.html">leçon 7</a>.</li>
+      </ul>
+    </dd>
 
-    <dt id="tellerpaneel">Panneau compteur (<i>Tellerpaneel</i>)</dt>
-    <dd>Un exemple de compteur qui fonctionne. Un générateur d&rsquo;impulsions et un bouton-poussoir fournissent
-      les impulsions de comptage, un deuxième bouton-poussoir remet le compteur à 0, et un afficheur montre la valeur.
-      Les fils sont déjà posés&nbsp;: démarrez la simulation puis le générateur d&rsquo;impulsions.</dd>
+    <dt id="tellerpaneel">Panneau compteur</dt>
+    <dd>Un exemple de <a href="verwerking.html#teller">compteur</a> qui fonctionne. Tous les fils sont déjà posés&nbsp;: le
+      panneau fonctionne tout de suite.
+      <figure>
+        <img src="../img/paneel-teller.png" alt="Panneau compteur&nbsp;: deux boutons-poussoirs, un générateur d&rsquo;impulsions, une porte OU, un compteur et un afficheur entre un rail + et un rail &minus;">
+        <figcaption>Le Panneau compteur&nbsp;: le générateur d&rsquo;impulsions et le bouton-poussoir du bas passent par une porte OU vers l&rsquo;entrée de comptage Te&nbsp;; le bouton-poussoir du haut remet le compteur à 0.</figcaption>
+      </figure>
+      <ul>
+        <li>Le rail + va à la borne gauche des deux boutons-poussoirs et du
+          <a href="voeding.html#puls2">générateur d&rsquo;impulsions</a>.</li>
+        <li>Le générateur d&rsquo;impulsions va à l&rsquo;entrée <b>O1</b> d&rsquo;une <a href="verwerking.html#of">porte OU</a>, le
+          bouton-poussoir du bas à <b>O2</b>. La sortie de la porte OU va à l&rsquo;entrée de comptage <b>Te</b>&nbsp;: le compteur
+          compte les impulsions du générateur <b>ou</b> chaque appui sur le bouton.</li>
+        <li>Le bouton-poussoir du haut va à <b>Re</b>&nbsp;: il remet le compteur à 0.</li>
+        <li>Les sorties <b>T8</b>, <b>T4</b>, <b>T2</b> et <b>T1</b> du compteur vont par quatre fils vers les entrées
+          <b>8</b>, <b>4</b>, <b>2</b> et <b>1</b> de l&rsquo;<a href="uitvoer.html#display">afficheur 7 segments</a>, qui montre la
+          valeur. L&rsquo;afficheur n&rsquo;a pas de bornes&nbsp;: il est <a href="voeding.html#inpluggen">branché</a> sur le rail &minus;.</li>
+      </ul>
+      <p>Démarrez la simulation et appuyez quelques fois sur le bouton-poussoir du bas&nbsp;: le compteur avance chaque fois
+      de un. Cliquez ensuite sur le boîtier du générateur d&rsquo;impulsions&nbsp;: il passe sur <b>on</b> et le compteur avance
+      tout seul. Cliquez à nouveau pour l&rsquo;arrêter, et appuyez sur le bouton-poussoir du haut pour recommencer à 0.
+      Plus d&rsquo;explications dans la <a href="les08.html">leçon 8</a>.</p>
+    </dd>
 
-    <dt id="geheugenpaneel">Panneau mémoire (<i>Geheugenpaneel</i>)</dt>
-    <dd>Un exemple de mémoire qui fonctionne. Un compteur avec boutons-poussoirs choisit l&rsquo;adresse, un commutateur
-      DIP y écrit un nombre, et deux afficheurs montrent l&rsquo;adresse et le contenu.
-      Réglez un nombre sur le commutateur DIP et appuyez sur son bouton pour l&rsquo;enregistrer&nbsp;; comptez ensuite
-      plus loin, puis revenez pour le relire.</dd>
+    <dt id="geheugenpaneel">Panneau mémoire</dt>
+    <dd>Un exemple de <a href="verwerking.html#geheugen">mémoire</a> qui fonctionne, le même circuit que dans la
+      <a href="les09.html">leçon 9</a>. Ici aussi, tous les fils sont déjà posés.
+      <ul>
+        <li>Le <a href="verwerking.html#teller">compteur</a> en haut choisit l&rsquo;adresse. Le bouton-poussoir du haut (sur
+          <b>Re</b>) remet l&rsquo;adresse à 0, le deuxième (sur <b>Te</b>) avance d&rsquo;une adresse. L&rsquo;interrupteur en dessous
+          (sur <b>A16</b>) ajoute 16&nbsp;: vous arrivez ainsi aux adresses 16 à 31.</li>
+        <li>L&rsquo;<a href="voeding.html#dip2">interrupteur DIP</a> prépare un nombre de 0 à 15 sur les entrées de données
+          <b>D8</b>, <b>D4</b>, <b>D2</b> et <b>D1</b>. À l&rsquo;ouverture du panneau, il est réglé sur 5.</li>
+        <li>Le bouton-poussoir du bas (sur <b>S</b>, écrire) range ce nombre dans l&rsquo;adresse choisie.</li>
+        <li>L&rsquo;afficheur du haut montre l&rsquo;adresse, celui du bas le contenu de cette adresse. Les deux afficheurs sont
+          <a href="voeding.html#inpluggen">branchés</a> sur le rail &minus;.</li>
+      </ul>
+      <p>Démarrez la simulation. Cliquez sur les curseurs de l&rsquo;interrupteur DIP pour choisir un nombre et appuyez sur le
+      bouton-poussoir du bas pour l&rsquo;enregistrer. Avancez ensuite d&rsquo;une adresse avec le deuxième bouton-poussoir, puis
+      revenez à 0 avec celui du haut&nbsp;: le nombre est toujours là.</p>
+    </dd>
   </dl>
 
   <h2 id="opslaan">Ouvrir et enregistrer</h2>

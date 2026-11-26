@@ -1,17 +1,34 @@
 <!-- titel: Verbindingen -->
   <h1 id="connector">Verbindingen</h1>
-  <p class="lead">Draden brengen het signaal van een uitgang naar een ingang. Zonder draden doet
-  een schakeling niets.</p>
+  <p class="lead">Draden verbinden de onderdelen: van de + rail naar een schakelaar, van de schakelaar naar een poort,
+  van de poort naar een lamp en van de lamp naar de &minus; rail. Zonder draden doet een schakeling niets.</p>
 
   <h2>Een draad leggen</h2>
   <ol class="steps">
     <li>Klik in de onderdelenbalk op <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbinding</b>.
       De muisaanwijzer verandert in een draad: de draadmodus staat aan.</li>
-    <li>Klik op het aansluitpunt van een <span class="pin out">uitgang</span> (rechts op een onderdeel).
+    <li>Klik op het punt waar de draad begint: een <b>klem</b> van een onderdeel (het groene vierkantje), de
+      <b>lijn van een rail</b> of de <span class="pin out">uitgang</span> van een poort of een ander blok (rechts).
       Er verschijnt een stukje draad.</li>
-    <li>Sleep het uiteinde van de draad naar de <span class="pin in">ingang</span> van het volgende onderdeel.</li>
+    <li>Sleep het uiteinde van de draad naar het punt waar hij moet eindigen: een klem, de
+      <span class="pin in">ingang</span> van een poort of een ander blok (links) of de lijn van een rail. Dicht bij een
+      klem of een ingang springt het uiteinde er vanzelf op; een draad die op een klem begint, springt ook op de lijn
+      van een rail.</li>
     <li>Herhaal voor elke verbinding. Klik nog eens op <b>Verbinding</b> om de draadmodus uit te zetten.</li>
   </ol>
+  <p>Een lamp brandt pas als de kring gesloten is: er moet een weg zijn van de + rail tot de &minus; rail. Zie
+  <a href="voeding.html#kring">De voedingskring</a>; een voorbeeld stap voor stap staat in
+  <a href="werkwijze.html">Aan de slag</a>.</p>
+
+  <h2 id="parallel">Twee draden op één ingang</h2>
+  <p>Op de ingang van een poort, een teller of een ander blok mogen twee draden samenkomen, bijvoorbeeld van twee
+  schakelaars. De ingang is dan aan zodra één van de twee schakelaars gesloten is, net als bij twee schakelaars
+  in parallel. Leg het einde van de tweede draad op hetzelfde groene vierkantje als de eerste.</p>
+  <ul>
+    <li>Een draad van de + rail en een draad van de &minus; rail op dezelfde ingang vormen een <b>kortsluiting</b>.</li>
+    <li>Twee uitgangen van poorten verbind je niet met elkaar. Gebruik daarvoor een
+      <a href="verwerking.html#of">OF-poort</a>, zoals in het <a href="paneel.html#tellerpaneel">Tellerpaneel</a>.</li>
+  </ul>
 
   <h2>Draden en onderdelen verplaatsen</h2>
   <p>Versleep je een onderdeel, dan blijven de draden eraan vastzitten en lopen ze mee.
@@ -30,10 +47,8 @@
   <b>Draad selecteren</b>. Gaat de draad naar een ingang die aan staat, dan gaat die ingang uit.</p>
 
   <h3>Alle draden verwijderen</h3>
-  <table>
-    <tr><th>Knop</th><th>Waar</th><th>Wat doet het?</th></tr>
-    <tr><td class="btn"><img src="../img/knop-draden-weg.png" alt=""></td><td class="name">Bewerkknoppen</td><td>Verwijdert alle draden van het paneel.</td></tr>
-    <tr><td class="btn"><img src="../img/pal-draden-weg.png" alt=""></td><td class="name">Onderdelenbalk</td><td>Doet hetzelfde: alle draden weg, de onderdelen blijven staan.</td></tr>
-  </table>
+  <p>Klik bij de <a href="knoppen.html#draden">bewerkknoppen</a> op
+  <img src="../img/knop-draden-weg.png" class="ico" alt=""><b>Verwijder verbindingen</b>: alle draden verdwijnen, ook die
+  naar de rails en de bron. De onderdelen blijven staan.</p>
   <div class="tip"><strong>Tip:</strong> bouw eerst alle onderdelen op het paneel en leg pas daarna de draden.
   Werk van links (invoer) naar rechts (uitvoer).</div>

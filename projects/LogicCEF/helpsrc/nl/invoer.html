@@ -1,21 +1,31 @@
 <!-- titel: Invoer -->
   <h1>Invoer</h1>
-  <p class="lead">Invoeronderdelen zijn het begin van elke schakeling: ze geven een signaal
-  (aan = 1, uit = 0) aan hun uitgang. Je bedient ze met de muis.</p>
+  <p class="lead">Invoeronderdelen zijn het begin van elke schakeling: met een schakelaar, een drukknop of een sensor
+  bepaal je of er een signaal (aan = 1, uit = 0) naar de rest van de schakeling gaat. Je bedient ze met de muis.</p>
 
-  <p>Elk invoeronderdeel heeft een <span class="pin out">uitgang</span> aan de rechterkant.
-  Daar begin je een draad naar de rest van de schakeling. Zie <a href="verbindingen.html">Verbindingen</a>.</p>
-  <p>Staan er <a href="voeding.html">voedingsrails</a> op het paneel, dan plug je de invoer rechts van een
-  + rail in. De spanning van die rail bepaalt of de invoer een signaal kan geven (vanaf 2&nbsp;V).</p>
+  <p>De invoer heeft <b>klemmen</b> en staat in de onderdelenbalk in de groep Voeding: de
+  <a href="voeding.html#serie">schakelaar of drukknop</a>, de <a href="voeding.html#wisselschakelaar">wisselschakelaar</a>,
+  de <a href="voeding.html#puls2">impulsgenerator</a>, de <a href="voeding.html#dip2">dipschakelaar</a>, de
+  <a href="voeding.html#ldr">LDR</a> en de <a href="voeding.html#ntc">NTC</a>. Je verbindt ze met draden: zie
+  <a href="verbindingen.html">Verbindingen</a>.</p>
+  <ul>
+    <li>Een <b>schakelaar</b>, <b>drukknop</b> of <b>impulsgenerator</b> zet je tussen de + rail en de ingang: een draad
+      van de + rail naar de linkse klem en een draad van de rechtse klem naar de ingang.</li>
+    <li>Bij de <b>dipschakelaar</b> gaat de linkse klem naar de + rail en gaan de uitgangen 8, 4, 2 en 1 naar de ingangen.</li>
+    <li>Een <b>LDR</b> of <b>NTC</b> krijgt er een weerstand bij: de + rail naar de sensor, de sensor naar de weerstand en
+      de weerstand naar de &minus; rail. Het signaal neem je van de klem tussen de sensor en de weerstand, zoals in het
+      <a href="paneel.html#beslissen">Beslissingspaneel</a>. Zonder die weerstand blijft het signaal een 1, hoe je de
+      schuifknop ook zet.</li>
+  </ul>
+  <p>Vanaf 2&nbsp;V is het signaal een 1. Zo zie je dat het signaal energie is die van de bron komt.</p>
 
-  <div class="tip"><strong>Nieuw:</strong> de schakelaar, de drukknop, de licht- en de warmtesensor, de
-  dipschakelaar en de impulsgenerator op deze pagina staan niet meer in de onderdelenbalk. Gebruik in de plaats
-  de onderdelen met klemmen uit de groep Voeding: de <a href="voeding.html#serie">schakelaar of drukknop</a>, de
-  <a href="voeding.html#wisselschakelaar">wisselschakelaar</a>, de <a href="voeding.html#ldr">LDR</a>, de
-  <a href="voeding.html#ntc">NTC</a>, de <a href="voeding.html#puls2">impulsgenerator</a> en de
-  <a href="voeding.html#dip2">dipschakelaar</a>. Zet ze tussen de + rail en de ingang: vanaf 2&nbsp;V is het signaal
-  een 1. Zo zie je dat het signaal energie is die van de bron komt. Oude panelen met de onderdelen hieronder
-  werken nog gewoon.</div>
+  <div class="tip"><strong>Oudere panelen:</strong> de drukknop, de schakelaar, de dipschakelaar, de impulsgenerator, de
+  licht- en de warmtesensor hieronder hebben geen klemmen, maar een <span class="pin out">uitgang</span> aan de
+  rechterkant. Ze staan niet meer in de onderdelenbalk, maar werken nog gewoon in oudere panelen. Staan er
+  <a href="voeding.html">voedingsrails</a> op zo&rsquo;n paneel, dan moeten ze aan een + rail hangen: rechts van de rail
+  <a href="voeding.html#inpluggen">ingeplugd</a>, of met een <a href="voeding.html#draad">voedingsdraad</a>. De spanning
+  van die rail bepaalt of ze een signaal kunnen geven (vanaf 2&nbsp;V). De <a href="#eindschakelaar">eindschakelaar</a>
+  onderaan deze pagina is geen oud onderdeel: hij hoort bij modellen zoals de persoon en het wagentje.</div>
 
   <h2 id="drukknop"><img src="../img/pal-drukknop.png" class="ico" alt="">Drukknop</h2>
   <p>De uitgang is aan zolang je de knop met de muis ingedrukt houdt. Laat je los, dan gaat de uitgang uit.

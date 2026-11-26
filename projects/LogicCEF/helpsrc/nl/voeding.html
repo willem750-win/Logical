@@ -358,33 +358,50 @@
   <p>Meters, bronnen, de oscilloscoop, de potentiometer en de transistor draaien niet: hun scherm of schuifknop moet leesbaar blijven.</p>
 
   <h2 id="regels">Wat verandert er als er rails op het paneel staan?</h2>
-  <p>Zolang er geen enkele rail op het paneel staat, werkt alles zoals vroeger. Staat er
-  <b>minstens één</b> rail, dan moeten invoer en uitvoer <b>zonder klemmen</b> <b>ingeplugd</b> zijn:</p>
-  <ul>
-    <li>De oude <a href="invoer.html">invoer</a> uit oudere panelen (drukknop, schakelaar, dipschakelaar,
-      impulsgenerator, licht- en warmtesensor zonder klemmen) zit <b>rechts</b> van een <b>+ rail</b>.</li>
-    <li><a href="uitvoer.html">Uitvoer</a> zonder klemmen (motor, display, persoon en de andere modellen; in oudere
-      panelen ook de oude lamp, zoemer en relais) zit <b>links</b> van een <b>&minus; rail</b>.</li>
-  </ul>
-  <p>De onderdelen <b>met twee klemmen</b> (schakelaar, lamp, zoemer, relais &hellip;) plug je niet in. Je verbindt
-  ze met draden: van de + rail naar de linkse klem van de schakelaar, en van de rechtse klem van de lamp, de zoemer
+  <p><b>Voor onderdelen met twee klemmen verandert er niets.</b> Een schakelaar of drukknop, lamp, zoemer, relais,
+  weerstand, LDR, NTC, impulsgenerator of dipschakelaar plug je niet in. Je verbindt
+  ze met draden, zoals in een echte schakeling: van de + rail naar de linkse klem van de schakelaar, en van de rechtse klem van de lamp, de zoemer
   of de spoel van het relais naar de &minus; rail. Zie <a href="#serie">lamp, schakelaar en voltmeter met twee klemmen</a>.</p>
-  <p>In plaats van in te pluggen kan je een onderdeel ook met een draad op een rail aansluiten: zie
-  <a href="#draad">Aansluiten met een voedingsdraad</a>.</p>
-  <p>Een ingeplugd onderdeel krijgt een dunne stekker met een bolletje in de kleur van de rail. Een onderdeel
-  dat niet ingeplugd is, krijgt een <b>grijs bolletje</b> en werkt niet: invoer geeft geen signaal, uitvoer
-  blijft uit en een display blijft donker.</p>
-  <p>De <a href="verwerking.html">verwerking</a> (poorten, teller en geheugen) plug je niet in: die krijgt
-  haar voeding nog altijd onzichtbaar.</p>
+  <p>Wat hieronder staat, geldt alleen voor onderdelen <b>zonder klemmen</b>. Zolang er geen enkele rail op het paneel
+  staat, krijgen die hun + en &minus; onzichtbaar en werkt alles vanzelf. Staat er <b>minstens één</b> rail, dan geldt:</p>
+  <table>
+    <tr><th>Onderdeel zonder klemmen</th><th>Met rails op het paneel</th></tr>
+    <tr><td>De <a href="verwerking.html">verwerking</a>: poorten, flipflop, teller, geheugen, stappenteller, stopwatch en
+      <a href="logicrun.html">LogicRun</a></td><td>Niets te doen: ze krijgen hun voeding nog altijd onzichtbaar.</td></tr>
+    <tr><td><a href="uitvoer.html">Uitvoer</a>: 7-segmentdisplay, motor, persoon, wagentje, muziekdoos, verkeerslicht
+      en slagboom</td><td>Moet aan een <b>&minus; rail</b> hangen: <a href="#inpluggen">ingeplugd</a> <b>links</b> van de
+      rail, of met een <a href="#draad">voedingsdraad</a>.</td></tr>
+    <tr><td>De <a href="invoer.html#eindschakelaar">eindschakelaars</a> van de persoon, het wagentje of de
+      slagboom</td><td>Moeten aan een <b>+ rail</b> hangen: ingeplugd <b>rechts</b> van de rail, of met een
+      voedingsdraad.</td></tr>
+    <tr><td>De <a href="#voltmeter">voltmeter</a> met + en &minus;</td><td>Werkt altijd. Inpluggen mag, maar hoeft niet.</td></tr>
+    <tr><td>Alleen in oude panelen: de oude <a href="invoer.html">invoer</a> zonder klemmen (drukknop, schakelaar,
+      dipschakelaar, impulsgenerator, licht- en warmtesensor)</td><td>Rechts van een + rail, zoals de
+      eindschakelaars.</td></tr>
+    <tr><td>Alleen in oude panelen: lamp, zoemer, relais en schakelrelais zonder klemmen (de oude lamp kan je ook nog
+      aanzetten bij <a href="instellingen.html#schakelelementen">Instellingen</a>)</td><td>Links van een &minus; rail,
+      zoals het display.</td></tr>
+  </table>
+  <p>Een onderdeel dat aan een rail hangt, krijgt een bolletje in de kleur van de rail; is het ingeplugd, dan loopt er
+  ook een dunne stekker naar de rail. Hangt het nergens aan, dan is het bolletje <b>grijs</b> en werkt het onderdeel
+  niet: een display blijft donker, de motor en de modellen reageren niet en een eindschakelaar geeft geen signaal.
+  Alleen bij de voltmeter mag het bolletje (rechts, aan de &minus; kant) grijs blijven: hij meet dan tegenover de massa.</p>
+  <p>Het <b>signaal</b> naar een ingang van zo&rsquo;n onderdeel komt met een gewone draad, bijvoorbeeld van de rechtse
+  klem van een schakelaar naar een ingang van een poort of van het display. Vanaf 2&nbsp;V is het een 1: zie
+  <a href="#spanning">Spanning van een + rail</a>.</p>
 
   <h2 id="inpluggen">Inpluggen</h2>
+  <p>Inpluggen is er alleen voor onderdelen <b>zonder klemmen</b> die een rail nodig hebben: display, motor en modellen
+  (links van een &minus; rail) en eindschakelaars (rechts van een + rail). Ook de <a href="#voltmeter">voltmeter</a> met
+  + en &minus; kan je inpluggen, en in oude panelen de invoer en uitvoer zonder klemmen. Onderdelen met twee klemmen
+  springen niet op een rail: die verbind je met draden.</p>
   <ul>
-    <li>Sleep een onderdeel tegen de rail. Komt het binnen 12 pixels, dan springt het er vanzelf op.</li>
+    <li>Sleep het onderdeel tegen de goede kant van de rail. Komt het binnen 12 pixels, dan springt het er vanzelf op.</li>
     <li>Ook als je een nieuw onderdeel uit de balk plaatst, of een groep onderdelen sleept, springt het op een rail
       in de buurt.</li>
     <li>Het <b>midden</b> van het onderdeel moet naast het getekende stuk rail liggen, niet erboven of eronder.
       Maak de rail zo nodig langer.</li>
-    <li>Met de pijltjestoetsen verschuif je per pixel; zo kan je een onderdeel ook weer lostrekken.</li>
+    <li>Met de pijltjestoetsen verschuif je een geselecteerd onderdeel per pixel; zo kan je het ook weer lostrekken.</li>
   </ul>
 
   <h2 id="zoemer2"><img src="../img/pal-zoemer2.png" class="ico" alt="">De zoemer met twee klemmen</h2>
@@ -416,21 +433,28 @@
   <p>Logic rekent het veld uit met twee polen per magneet: elke pool geeft een veld dat afneemt met het kwadraat van de afstand. Dat is niet helemaal exact, maar de vorm van de veldlijnen en de richting van het kompas kloppen.</p>
 
   <h2 id="draad">Aansluiten met een voedingsdraad</h2>
-  <p>In plaats van een onderdeel in te pluggen, kan je het ook met een draad op een rail aansluiten, zoals in een
-  echte schakeling. Het onderdeel mag dan overal op het paneel staan.</p>
+  <p>Ook dit geldt alleen voor onderdelen <b>zonder klemmen</b> die een rail nodig hebben: display, motor, modellen en
+  eindschakelaars, en in oude panelen de invoer en uitvoer zonder klemmen. In plaats van zo&rsquo;n onderdeel in te
+  pluggen, kan je het ook met een draad op een rail aansluiten, zoals in een
+  echte schakeling. Het onderdeel mag dan overal op het paneel staan. Onderdelen met twee klemmen hebben geen bolletje:
+  daar leg je de draad van de rail gewoon naar een klem.</p>
   <ol class="steps">
     <li>Klik op <img src="../img/pal-verbinding.png" class="ico" alt=""><b>Verbinding</b>.</li>
     <li>Klik op de lijn van de rail, op de hoogte waar de draad moet beginnen. Er verschijnt een draad.</li>
-    <li>Sleep het einde van de draad naar het <b>grijze bolletje</b> van het onderdeel: links bij invoer (vanaf een
-      + rail), rechts bij uitvoer en bij de &minus; kant van de voltmeter (vanaf een &minus; rail). Vanaf een &minus; rail verschijnt de draad links van de rail. Binnen 12 pixels springt het einde vanzelf op het bolletje.</li>
+    <li>Sleep het einde van de draad naar het <b>grijze bolletje</b> van het onderdeel: rechts bij uitvoer (display,
+      motor, modellen) en bij de &minus; kant van de voltmeter (vanaf een &minus; rail), links bij invoer (eindschakelaars;
+      vanaf een + rail). Vanaf een &minus; rail verschijnt de draad links van de rail. Binnen 12 pixels springt het einde vanzelf op het bolletje.</li>
   </ol>
   <p>Het bolletje krijgt de kleur van de rail en het onderdeel werkt. Een draad van een + rail wordt tijdens de
   simulatie rood als er genoeg spanning op staat; een draad naar een &minus; rail is blauw.</p>
   <ul>
     <li>Versleep je de rail, dan blijft het begin van de draad op de rail. Versleep je het onderdeel, dan gaat het
       einde van de draad mee.</li>
-    <li>Een draad van een + rail naar een ingang (van een poort, de voltmeter of R1 van het schakelrelais) werkt als
+    <li>Een draad van een + rail naar een <b>ingang</b> (van een poort, de teller, het display of de + van de voltmeter;
+      in oude panelen ook R1 van het schakelrelais) is geen voedingsdraad: hij werkt als
       een gewone draad met de spanning van de rail.</li>
+    <li>Een draad van een rail naar een klem van een onderdeel met twee klemmen is ook een gewone draad: hij hoort bij de
+      stroomkring.</li>
     <li>Een voedingsdraad verwijder je zoals elke andere <a href="verbindingen.html#verwijderen">draad</a>.</li>
   </ul>
 
@@ -446,48 +470,78 @@
   </ul>
 
   <h2 id="spanning">Spanning van een + rail</h2>
-  <p>De + rail krijgt de klemspanning van de bron waarmee hij verbonden is. Net als bij echte logische
-  schakelingen werkt een ingang pas vanaf ongeveer <b>2&nbsp;V</b>.</p>
+  <p>De + rail krijgt de klemspanning van de bron waarmee hij verbonden is. Wat betekent dat voor wat eraan hangt?</p>
+  <ul>
+    <li><b>Onderdelen met twee klemmen</b> rekenen ermee zoals in een echte kring: bij een lagere spanning loopt er
+      minder stroom en brandt een lamp zwakker (zie <a href="#ohm">de wet van Ohm</a>).</li>
+    <li>Een <b>logische ingang</b> (van een poort, de teller, het display &hellip;) werkt pas vanaf ongeveer
+      <b>2&nbsp;V</b>, net als bij echte logische schakelingen. Dat geldt voor een draad die op de rail zelf begint, en
+      ook voor een draad vanaf een klem, bijvoorbeeld achter een schakelaar: daar telt de spanning op die klem.</li>
+    <li><b>Display, motor en modellen</b> aan de &minus; rail werken pas als er een + rail met 2&nbsp;V of meer op het
+      paneel staat.</li>
+  </ul>
   <table>
-    <tr><th>Spanning</th><th>Rail</th><th>Invoer op deze rail</th></tr>
-    <tr><td>0&nbsp;V (geen gesloten kring)</td><td>grijs</td><td>geeft geen signaal</td></tr>
-    <tr><td>onder 2&nbsp;V</td><td>donkerrood</td><td>geeft geen signaal: te weinig spanning</td></tr>
+    <tr><th>Spanning</th><th>Rail</th><th>Ingang die zijn signaal van deze rail krijgt</th></tr>
+    <tr><td>0&nbsp;V (geen gesloten kring)</td><td>grijs</td><td>krijgt geen signaal</td></tr>
+    <tr><td>onder 2&nbsp;V</td><td>donkerrood</td><td>krijgt geen signaal: te weinig spanning</td></tr>
     <tr><td>2&nbsp;V tot 12&nbsp;V</td><td>rood, feller naarmate de spanning hoger is</td><td>werkt</td></tr>
   </table>
+  <p>Hetzelfde geldt voor een eindschakelaar aan de rail en, in oude panelen, voor de invoer zonder klemmen die op de
+  rail ingeplugd is.</p>
 
   <h2 id="voltmeter"><img src="../img/pal-meter.png" class="ico" alt="">Voltmeter</h2>
-  <p>De voltmeter staat in de onderdelenbalk. Wil je hem verbergen, zet dan bij
+  <p>Logic heeft twee voltmeters. Deze voltmeter heeft een <b>+</b> links en een <b>&minus;</b> rechts en heeft maar
+  één draad nodig. De <a href="#serie">voltmeter met 2 klemmen</a> meet het verschil tussen zijn twee klemmen. Je mag
+  ze allebei gebruiken in een schakeling met onderdelen met twee klemmen.</p>
+  <p>Deze voltmeter staat in de onderdelenbalk vanaf het <a href="instellingen.html#niveau">niveau</a>
+  <b>Uitgebreid</b> (<b>Paneelkeuze &rsaquo; Niveau</b>), bij de uitvoer. Wil je alleen zijn knop tonen of verbergen,
+  zet dan bij
   <a href="instellingen.html#schakelelementen">Instellingen</a>, tabblad SchakelElementen,
-  <b>Voltmeter</b> op <b>False</b>.</p>
+  <b>Voltmeter</b> op <b>True</b> of <b>False</b>.</p>
   <p>De voltmeter meet de spanning <b>tegenover de massa</b> (0&nbsp;V) en toont ze met één decimaal,
   in het rood zodra er spanning is.</p>
   <ul>
-    <li><b>+</b> (links): sluit er een draad op aan, of plug de meter rechts van een + rail in. Dan toont hij
+    <li><b>+</b> (links): sluit er een draad op aan vanaf het punt dat je wil meten: een klem van een onderdeel met twee
+      klemmen (bijvoorbeeld de rechtse klem van een schakelaar), een + rail of de uitgang van een poort. Je mag de meter
+      ook rechts van een + rail inpluggen. Dan toont hij
       de spanning van die rail.</li>
     <li><b>&minus;</b> (rechts): mag open blijven; dan meet de meter tegenover de massa. Je mag de meter ook links van een &minus; rail inpluggen,
       of een draad van een &minus; rail naar het bolletje rechts leggen (parallel aansluiten): de meting blijft dezelfde.
       Leg je een draad naar het groene vierkantje rechts, dan meet de meter het <b>verschil</b> tussen + en &minus;,
       bijvoorbeeld de spanningsval over een <a href="#weerstand">contact</a>.</li>
   </ul>
-  <p>Een draad brengt de spanning van zijn bron mee:</p>
+  <p>Een draad brengt de spanning van zijn bron mee. Dat is wat de meter toont:</p>
   <table>
-    <tr><th>Bron</th><th>Spanning op de draad</th></tr>
-    <tr><td>invoer op een + rail, aan</td><td>de spanning van die rail</td></tr>
-    <tr><td>draad die op een + rail begint</td><td>de spanning van die rail</td></tr>
-    <tr><td>invoer zonder rails op het paneel, aan</td><td>5&nbsp;V</td></tr>
-    <tr><td>poort, teller of geheugen, uitgang aan</td><td>5&nbsp;V</td></tr>
-    <tr><td>alles wat uit staat</td><td>0&nbsp;V</td></tr>
+    <tr><th>Bron: de draad begint op &hellip;</th><th>Spanning op de draad</th></tr>
+    <tr><td>een + rail</td><td>de spanning van die rail</td></tr>
+    <tr><td>een klem van een onderdeel met twee klemmen (bron, schakelaar, lamp, weerstand &hellip;)</td><td>de spanning op die klem</td></tr>
+    <tr><td>de uitgang van een poort, teller, geheugen of LogicRun, aan</td><td>5&nbsp;V</td></tr>
+    <tr><td>een eindschakelaar aan een + rail, aan</td><td>de spanning van die rail</td></tr>
+    <tr><td>in oude panelen: invoer zonder klemmen op een + rail, aan</td><td>de spanning van die rail</td></tr>
+    <tr><td>in oude panelen: invoer zonder klemmen, zonder rails op het paneel, aan</td><td>5&nbsp;V</td></tr>
+    <tr><td>een uitgang die uit staat (poort, teller, eindschakelaar, oude invoer zonder klemmen), en een &minus; rail</td><td>0&nbsp;V</td></tr>
   </table>
-  <div class="tip"><strong>Tip:</strong> zet de bron op 1&nbsp;V en verbind een drukknop op de + rail met een
-  lamp en met de voltmeter. Druk je de knop in, dan toont de meter 1,0&nbsp;V, maar de lamp blijft uit:
-  de spanning is te laag voor een logische ingang.</div>
+  <p>Let op: ook op de klemmen van een lamp die niet brandt, kan spanning staan. Hangt de lamp aan de + rail en staat de
+  schakelaar erachter open, dan toont de meter op beide klemmen van de lamp de spanning van de rail.</p>
+  <div class="tip"><strong>Tip:</strong> zet de bron op 1&nbsp;V. Verbind de + rail met de linkse klem van een
+  schakelaar, en de rechtse klem met de + van de voltmeter en met een ingang van een OF-poort. Start de simulatie en
+  sluit de schakelaar: de meter toont 1,0&nbsp;V, maar de draad naar de poort blijft zwart en de uitgang van de poort
+  blijft uit. De spanning is te laag voor een logische ingang. Schuif de bron hoger: vanaf ongeveer 2&nbsp;V wordt de
+  draad rood en gaat de uitgang van de poort aan.</div>
 
   <h2 id="bewaren">Opslaan en instellingen</h2>
   <ul>
     <li>Bronnen (spanning en Ri), zekeringen (nominale stroom), meters en rails worden met hun plaats in het
       paneelbestand (<code>.lpl</code>) bewaard. Een gesmolten zekering is na het openen weer heel.</li>
-    <li>Wil je de knoppen van de voeding niet in de onderdelenbalk, zet dan bij
-      <a href="instellingen.html#schakelelementen">Instellingen</a> <b>Voedingsrails (+ en -)</b> op <b>False</b>:
+    <li>Ook de onderdelen met twee klemmen worden met hun plaats en hun keuzes bewaard: bijvoorbeeld de weerstand en de
+      kleur van een lamp, de soort van een weerstand en de stand van een schakelaar.</li>
+    <li>Voor onderdelen zonder klemmen: staat een onderdeel na het openen weer tegen zijn rail, dan is het weer
+      ingeplugd. Een voedingsdraad wordt bewaard zoals elke andere draad.</li>
+    <li>Oude panelen met rails maar zonder bron krijgen bij het openen een bron boven elke + rail: zie
+      <a href="#kring">De voedingskring</a>. Oude panelen zonder rails blijven zonder bron werken.</li>
+    <li>Welke knoppen in de onderdelenbalk staan, kies je in één keer met een
+      <a href="instellingen.html#niveau">niveau</a>, of knop per knop bij
+      <a href="instellingen.html#schakelelementen">Instellingen</a>. Zet je daar <b>Voedingsrails (+ en -)</b> op <b>False</b>,
       dan verdwijnen de knoppen + rail en &minus; rail uit de balk. Elk ander onderdeel van de voeding (bron, zekering,
       milliampèremeter, weerstand, lamp, schakelaar en voltmeter met 2 klemmen) heeft daar een eigen keuze.</li>
   </ul>
