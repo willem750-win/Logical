@@ -2187,3 +2187,105 @@ msgstr "Lampada arancione"
 
 msgid "Ordinary lamp"
 msgstr "Lampada normale"
+
+msgid "create stepper motor"
+msgstr "crea motore passo-passo"
+
+msgid "create servo motor"
+msgstr "crea servomotore"
+
+msgid "create fan"
+msgstr "crea ventilatore"
+
+msgid "Steps per revolution"
+msgstr "Passi per giro"
+
+msgid "Reset counter and shaft"
+msgstr "Azzera contatore e albero"
+
+msgid "Angle"
+msgstr "Angolo"
+
+msgid "Steps"
+msgstr "Passi"
+
+msgid "opposite coils!"
+msgstr "bobine opposte!"
+
+msgid "clockwise"
+msgstr "senso orario"
+
+msgid "anticlockwise"
+msgstr "senso antiorario"
+
+msgid "%d steps/rev"
+msgstr "%d passi/giro"
+
+msgid "Two opposite coils pull at the same time: the rotor does not know where to go and stays put."
+msgstr "Due bobine opposte tirano insieme: il rotore non sa dove andare e resta fermo."
+
+msgid "Steps: %s   shaft angle: %s°"
+msgstr "Passi: %s   angolo dell'albero: %s°"
+
+msgid "Stepper motor"
+msgstr "Motore passo-passo"
+
+msgid "steps per revolution)"
+msgstr "passi per giro)"
+
+msgid "Four coils A, B, C, D (100 ohm each) to the common terminal - (to the - rail).\nA coil pulls from 20 mA, also on the output of a gate. A, B, C, D in turn: clockwise; D, C, B, A: anticlockwise.\nRight-click: steps per revolution, reset the counter."
+msgstr "Quattro bobine A, B, C, D (100 ohm ciascuna) al morsetto comune - (alla barra -).\nUna bobina attira da 20 mA, anche all'uscita di una porta. A, B, C, D in sequenza: senso orario; D, C, B, A: antiorario.\nClic destro: passi per giro, azzera il contatore."
+
+msgid "coils"
+msgstr "bobine"
+
+msgid "steps"
+msgstr "passi"
+
+msgid "Real servo on the Arduino board"
+msgstr "Servo reale sulla scheda Arduino"
+
+msgid "none"
+msgstr "nessuno"
+
+msgid "no power"
+msgstr "senza alim."
+
+msgid "It gets too little power (at least 4 V between + and -): the arm does not move."
+msgstr "Riceve troppa poca alimentazione (almeno 4 V tra + e -): il braccio non si muove."
+
+msgid "Control voltage %s: the arm turns to %s°."
+msgstr "Tensione di comando %s: il braccio ruota a %s°."
+
+msgid "The real servo on %s turns along."
+msgstr "Il servo reale su %s ruota insieme."
+
+msgid "Real servo on %s: no board connected."
+msgstr "Servo reale su %s: nessuna scheda collegata."
+
+msgid "Servo motor"
+msgstr "Servomotore"
+
+msgid "Three terminals: + and - for the motor, S for the control signal. 0 V on S gives 0°, 5 V gives 180°.\nE.g. a potentiometer between + and - with the wiper on S. Right-click: a real servo on the Arduino board."
+msgstr "Tre morsetti: + e - per il motore, S per il segnale di comando. 0 V su S dà 0°, 5 V dà 180°.\nAd es. un potenziometro tra + e - con il cursore su S. Clic destro: un servo reale sulla scheda Arduino."
+
+msgid "supply"
+msgstr "alim."
+
+msgid "It turns clockwise: %s rpm."
+msgstr "Gira in senso orario: %s giri/min."
+
+msgid "It turns anticlockwise: %s rpm."
+msgstr "Gira in senso antiorario: %s giri/min."
+
+msgid "It stands still: less than 1 V."
+msgstr "È fermo: meno di 1 V."
+
+msgid "Fan"
+msgstr "Ventilatore"
+
+msgid "An ordinary motor: it keeps turning as long as current flows, faster with more voltage.\nSwap + and - and it turns the other way."
+msgstr "Un motore comune: gira finché passa corrente, più veloce con più tensione.\nScambia + e - e gira al contrario."
+
+msgid "Motors (stepper motor, servo motor, fan)"
+msgstr "Motori (passo-passo, servomotore, ventilatore)"

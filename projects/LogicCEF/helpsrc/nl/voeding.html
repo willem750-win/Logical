@@ -415,6 +415,15 @@
   </ul>
   <p>Spoel en contact zijn elektrisch gescheiden: het contact mag in een andere kring hangen, met een andere bron. Het relais werkt ook in de waarheidstabel: daar telt het als 1 als het aangetrokken is. Zie <a href="les11.html">les 11</a>; hoe een relais vanbinnen werkt, zie je in <a href="lesm4.html">Magnetisme 4</a>.</p>
 
+  <h2 id="stappenmotor"><img src="../img/pal-stappenmotor.png" class="ico" alt="">De stappenmotor</h2>
+  <p>Vier spoelen A, B, C en D rond een magneetje: de rotor (de rode punt is de noordpool). Links zitten de klemmen A tot D, onderaan de gemeenschappelijke klem &minus; (naar de &minus; rail). Elke spoel is 100&nbsp;&Omega;; vanaf 20&nbsp;mA wordt ze een elektromagneet en trekt ze de rotor naar zich toe, ook aan de uitgang van een poort. Zet je A, B, C, D na elkaar aan, dan draait de rotor rechtsom; in de omgekeerde volgorde linksom. Twee spoelen naast elkaar samen geven een halve stap. Twee spoelen tegenover elkaar trekken tegen elkaar in: de rotor blijft staan (rood uitroepteken). Rechts zie je de as met een wijzer, de hoek en het aantal stappen. Rechtsklik: <b>Stappen per omwenteling</b> (4, 48 of 200) en <b>Teller en as op nul</b>. Zie <a href="les43.html">les 43</a>.</p>
+
+  <h2 id="servo"><img src="../img/pal-servo.png" class="ico" alt="">De servomotor</h2>
+  <p>Een motor die naar een hoek draait in plaats van rond. Drie klemmen links: <b>+</b> (rood) en <b>&minus;</b> (zwart) voor de motor (100&nbsp;&Omega;, hij werkt vanaf 4&nbsp;V) en <b>S</b> (oranje) voor het stuursignaal. De spanning op S, gemeten tegen &minus;, kiest de hoek: 0&nbsp;V geeft 0&deg; (arm naar rechts), 2,5&nbsp;V geeft 90&deg; (omhoog), 5&nbsp;V of meer geeft 180&deg; (naar links). Het oranje driehoekje wijst de gevraagde hoek aan; de arm draait er met een eindige snelheid naartoe. Rechtsklik: <b>Echte servo op het Arduino-board</b>: kies een pin, dan draait een echte servo mee (zie <a href="board.html#servo">Arduino-board</a>). Zie <a href="les44.html">les 44</a>.</p>
+
+  <h2 id="ventilator"><img src="../img/pal-ventilator.png" class="ico" alt="">De ventilator</h2>
+  <p>Een gewone gelijkstroommotor met een schoepenrad en twee klemmen onderaan (25&nbsp;&Omega;). Hij draait zolang er stroom door gaat: 100&nbsp;omw/min per volt, vanaf 1&nbsp;V. Wissel je + en &minus; om, dan draait hij andersom. In de waarheidstabel telt hij als uitgang (M). Zie <a href="les44.html">les 44</a>.</p>
+
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetisme: staafmagneet, kompas, veldlijnenplaat, spoel, spijker, relais, stroomschommel, elektromotor, nulpuntmeter, draaiende magneet en transformator</h2>
   <p>De staafmagneet, het kompas en de veldlijnenplaat hebben geen klemmen: ze horen niet bij de stroomkring. Je zet ze los op het paneel en sleept ze rond. Zie <a href="lesm1.html">Wat is magnetisme?</a></p>
   <ul>

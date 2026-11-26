@@ -2497,3 +2497,105 @@ msgstr "橙灯"
 
 msgid "Ordinary lamp"
 msgstr "普通灯泡"
+
+msgid "create stepper motor"
+msgstr "创建步进电机"
+
+msgid "create servo motor"
+msgstr "创建舵机"
+
+msgid "create fan"
+msgstr "创建风扇"
+
+msgid "Steps per revolution"
+msgstr "每转步数"
+
+msgid "Reset counter and shaft"
+msgstr "计数器和轴归零"
+
+msgid "Angle"
+msgstr "角度"
+
+msgid "Steps"
+msgstr "步数"
+
+msgid "opposite coils!"
+msgstr "相对的线圈！"
+
+msgid "clockwise"
+msgstr "顺时针"
+
+msgid "anticlockwise"
+msgstr "逆时针"
+
+msgid "%d steps/rev"
+msgstr "%d 步/转"
+
+msgid "Two opposite coils pull at the same time: the rotor does not know where to go and stays put."
+msgstr "两个相对的线圈同时吸引：转子不知道往哪边转，停在原处。"
+
+msgid "Steps: %s   shaft angle: %s°"
+msgstr "步数：%s   轴的角度：%s°"
+
+msgid "Stepper motor"
+msgstr "步进电机"
+
+msgid "steps per revolution)"
+msgstr "步/转)"
+
+msgid "Four coils A, B, C, D (100 ohm each) to the common terminal - (to the - rail).\nA coil pulls from 20 mA, also on the output of a gate. A, B, C, D in turn: clockwise; D, C, B, A: anticlockwise.\nRight-click: steps per revolution, reset the counter."
+msgstr "四个线圈 A、B、C、D（各100欧）接到公共端子 -（接 - 导轨）。\n线圈从20 mA起吸引，门的输出也可以。A、B、C、D 依次：顺时针；D、C、B、A：逆时针。\n右键：每转步数，计数器归零。"
+
+msgid "coils"
+msgstr "线圈"
+
+msgid "steps"
+msgstr "步数"
+
+msgid "Real servo on the Arduino board"
+msgstr "Arduino板上的真实舵机"
+
+msgid "none"
+msgstr "无"
+
+msgid "no power"
+msgstr "无电源"
+
+msgid "It gets too little power (at least 4 V between + and -): the arm does not move."
+msgstr "电源不足（+ 与 - 之间至少 4 V）：摆臂不动。"
+
+msgid "Control voltage %s: the arm turns to %s°."
+msgstr "控制电压 %s：摆臂转到 %s°。"
+
+msgid "The real servo on %s turns along."
+msgstr "%s 上的真实舵机一起转动。"
+
+msgid "Real servo on %s: no board connected."
+msgstr "%s 上的真实舵机：未连接电路板。"
+
+msgid "Servo motor"
+msgstr "舵机"
+
+msgid "Three terminals: + and - for the motor, S for the control signal. 0 V on S gives 0°, 5 V gives 180°.\nE.g. a potentiometer between + and - with the wiper on S. Right-click: a real servo on the Arduino board."
+msgstr "三个端子：+ 和 - 给电机供电，S 为控制信号。S 上 0 V 对应 0°，5 V 对应 180°。\n例如在 + 和 - 之间接电位器，滑动端接 S。右键：Arduino 板上的真实舵机。"
+
+msgid "supply"
+msgstr "电源"
+
+msgid "It turns clockwise: %s rpm."
+msgstr "顺时针转动：%s 转/分。"
+
+msgid "It turns anticlockwise: %s rpm."
+msgstr "逆时针转动：%s 转/分。"
+
+msgid "It stands still: less than 1 V."
+msgstr "静止：低于 1 V。"
+
+msgid "Fan"
+msgstr "风扇"
+
+msgid "An ordinary motor: it keeps turning as long as current flows, faster with more voltage.\nSwap + and - and it turns the other way."
+msgstr "普通电机：有电流时一直转，电压越高转得越快。\n交换 + 和 -，它就反向转动。"
+
+msgid "Motors (stepper motor, servo motor, fan)"
+msgstr "电机（步进电机、舵机、风扇）"

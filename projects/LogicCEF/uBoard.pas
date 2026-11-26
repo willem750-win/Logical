@@ -62,6 +62,8 @@ type
     function Verbind(const APoort: string): Boolean;
     procedure Verbreek;
     procedure Schrijf(APin: Integer; AHoog: Boolean);
+    // pin in servomodus zetten en de hoek (0..180 graden) sturen
+    procedure SchrijfServo(APin, AHoek: Integer);
     property Open: Boolean read FOpen;
     property Klaar: Boolean read FKlaar;
     property Poort: string read FPoort;
@@ -97,6 +99,7 @@ const
   ModusIn = 0;
   ModusUit = 1;
   ModusPullUp = $0B;
+  ModusServo = 4;
 
 { TBoard }
 
@@ -262,6 +265,7 @@ begin
   begin
     BoardVerbonden := False;
     BoardSchrijf := nil;
+    BoardServo := nil;
     if FPaneel <> nil then
       for i := 0 to FPaneel.ControlCount - 1 do
         if (FPaneel.Controls[i] is TjanBoardIn) or (FPaneel.Controls[i] is TjanBoardUit) then
@@ -336,6 +340,20 @@ begin
     Stuur([$90 or P, FUitPort[P] and $7F, FUitPort[P] shr 7]);
 end;
 
+procedure TBoard.SchrijfServo(APin, AHoek: Integer);
+begin
+  if not (FOpen and FKlaar) or (APin < 2) or (APin > 13) then Exit;
+  if AHoek < 0 then AHoek := 0;
+  if AHoek > 180 then AHoek := 180;
+  if FModus[APin] <> ModusServo then
+  begin
+    Stuur([$F4, APin, ModusServo]);
+    FModus[APin] := ModusServo;
+  end;
+  // analoog bericht: E0 + pin, 7 lage bits, 7 hoge bits
+  Stuur([$E0 or APin, AHoek and $7F, AHoek shr 7]);
+end;
+
 procedure TBoard.TimerTick(Sender: TObject);
 var
   Buf: array[0..255] of Byte;
@@ -356,6 +374,7 @@ begin
     FKlaar := True;
     Stuur([$F9]);        // versie vragen
     BoardSchrijf := @Schrijf;
+    BoardServo := @SchrijfServo;
     BoardVerbonden := True;
     PinnenInstellen;
     // alle uitgangen meteen sturen, de hints bijwerken

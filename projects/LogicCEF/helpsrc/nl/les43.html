@@ -1,0 +1,49 @@
+<!-- titel: Les 43 - De stappenmotor -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#motoren">Motoren</a> &rsaquo; Les 43 van 44 &nbsp;&middot;&nbsp; Niveau: <a href="instellingen.html#niveau">Uitgebreid</a></p>
+  <h1>De stappenmotor</h1>
+  <div class="goal"><strong>Doel:</strong> een stappenmotor draait in kleine, precieze stapjes. Je zet de spoelen een voor een
+  aan, en telkens draait de as een vaste hoek verder. Zo weet je altijd precies hoe ver hij gedraaid is.</div>
+
+  <p><a class="open" href="../../panels/lessen/les43-stappenmotor.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les43.png" alt="Vier drukknoppen tussen de + rail en de klemmen A, B, C en D van een stappenmotor; de gemeenschappelijke klem aan de - rail">
+    <figcaption>A, B en C zijn na elkaar ingedrukt: de rotor staat bij spoel C en de as is 2 stappen (15&deg;) rechtsom gedraaid.</figcaption>
+  </figure>
+
+  <h2>Hoe werkt hij?</h2>
+  <p>In het midden zit een magneetje dat kan draaien: de <b>rotor</b>. De rode punt is de noordpool. Rond de rotor staan vier
+  <b>spoelen</b>: A boven, B rechts, C onder en D links. Loopt er stroom door een spoel, dan wordt ze een
+  <a href="lesm2.html">elektromagneet</a> en trekt ze de rotor naar zich toe. Elke spoel is 100&nbsp;&Omega; en trekt vanaf 20&nbsp;mA.</p>
+  <ul>
+    <li>Elke spoel heeft een eigen klem links (A, B, C, D). Het andere eind van alle spoelen komt samen in de
+      <b>gemeenschappelijke klem</b> &minus;, die aan de &minus; rail hangt.</li>
+    <li>Rechts zie je de <b>as</b> met een wijzer, de hoek en het aantal stappen. Deze motor maakt 48 stappen per omwenteling:
+      elke stap is 360 / 48 = 7,5&deg;.</li>
+  </ul>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en druk op knop A: spoel A wordt rood en de noordpool van de rotor wijst naar boven.</li>
+    <li>Druk nu na elkaar op B, C en D. Telkens springt de rotor naar de volgende spoel: hij draait <b>rechtsom</b>, en de
+      teller gaat 1, 2, 3. De wijzer van de as gaat telkens 7,5&deg; verder.</li>
+    <li>Druk weer op A, dan B ... Na 48 stappen heeft de as precies een keer rondgedraaid.</li>
+    <li>Druk in de omgekeerde volgorde: D, C, B, A. Nu draait hij <b>linksom</b> en telt de teller terug.</li>
+    <li>Laat alle knoppen los: de rotor blijft gewoon staan waar hij stond.</li>
+  </ol>
+
+  <h2>Opdracht: halve stappen en een fout</h2>
+  <p>Rechtsklik op de drukknoppen A en B en kies <b>Soort &rsaquo; Schakelaar (blijft staan)</b>. Zet A aan, dan A en B samen,
+  dan alleen B. Wat zie je? En wat gebeurt er als je A en C samen aanzet?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Met A en B samen trekken twee spoelen naast elkaar: de rotor gaat er precies tussen staan. Dat is een <b>halve stap</b>
+    (3,75&deg;): zo draait de motor fijner en rustiger. Met A en C samen trekken twee spoelen tegenover elkaar: de rotor weet niet
+    welke kant hij op moet en blijft staan. De motor toont een rood uitroepteken.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> stappenmotoren zitten in printers, 3D-printers en camera's, overal waar iets
+  precies moet bewegen. De kleine stappenmotor uit een starterkit (28BYJ-48) heeft een tandwielkast en maakt zo'n 2048 stappen
+  per omwenteling. Een Arduino stuurt hem met vier uitgangen via een drivermodule (ULN2003), want een pin geeft te weinig stroom.
+  Rechtsklik op de stappenmotor om 4, 48 of 200 stappen per omwenteling te kiezen.</div>
+
+  <div class="pager"><a href="les42.html">&larr; Les 42: Een poort stuurt een transistor</a><a href="les44.html">Les 44: De servomotor &rarr;</a></div>

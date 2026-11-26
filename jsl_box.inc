@@ -166,7 +166,7 @@ end;
 class function TjanSimLogicBox.IsUitvoer(C: TControl): Boolean;
 begin
   Result := (C is TjanSimLight) or (C is TjanSimBuzzer) or (C is TjanSimRelais) or
-    (C is TjanSimMotor) or (C is TjanDisplay) or (C is TjanZoemer2) or (C is TjanRelais2) or
+    (C is TjanSimMotor) or (C is TjanDisplay) or (C is TjanZoemer2) or (C is TjanRelais2) or (C is TjanVentilator) or
     ((C is TjanLamp2) and TjanLamp2(C).Is5V);
 end;
 
@@ -212,6 +212,7 @@ begin
   else if C is TjanSimBuzzer then B := TjanSimBuzzer(C).Lit
   else if C is TjanSimRelais then B := TjanSimRelais(C).Lit
   else if C is TjanZoemer2 then B := TjanZoemer2(C).Aan
+  else if C is TjanVentilator then B := TjanVentilator(C).Aan
   else if C is TjanRelais2 then B := TjanRelais2(C).Aan
   else if C is TjanLamp2 then B := TjanLamp2(C).Aan
   else B := False;
@@ -377,7 +378,7 @@ begin
   // opzetten van knoppen (Uitvoerobjecten)
   FLamp:=True;FRelais:=True;FSchakelRelais:=True;FBuzzer:=True;FMotor:=True;FPersoon:=True;FWagen:=True;FMuziek:=True;FVerkeer:=True;FSlagboom:=True;FDisplay:=true;
   FVoeding:=True;
-  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;FMagK:=True;FBoardK:=True;
+  FBronK:=True;FZekeringK:=True;FAmpMeterK:=True;FWeerstandK:=True;FLamp2K:=True;FSchak2K:=True;FVolt2K:=True;FLed2K:=True;FCondK:=True;FWattMeterK:=True;FPotK:=True;FDiodeK:=True;FWisselK:=True;FScoopK:=True;FTransK:=True;FLdrK:=True;FNtcK:=True;FWschK:=True;FPuls2K:=True;FDip2K:=True;FMagK:=True;FBoardK:=True;FMotorenK:=True;
   // hints van led en condensator: niet in main.lfm, dus hier de standaard (NL)
   FHLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   FHCond:='maak Condensator (laden en ontladen)';
@@ -403,6 +404,9 @@ begin
   FHTrafo:='maak Transformator';
   FHBoardIn:='maak Arduino-ingang (echte drukknop)';
   FHBoardUit:='maak Arduino-uitgang (echte pin)';
+  FHStapM:='maak Stappenmotor';
+  FHServo:='maak Servomotor';
+  FHVent:='maak Ventilator';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1494,7 +1498,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') or (obj[1] = 'TjanBoardIn') or (obj[1] = 'TjanBoardUit') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') or (obj[1] = 'TjanBoardIn') or (obj[1] = 'TjanBoardUit') or (obj[1] = 'TjanStappenmotor') or (obj[1] = 'TjanServo') or (obj[1] = 'TjanVentilator') then
     begin
       with TStringList.Create do
       try
@@ -1523,6 +1527,9 @@ begin
           else if obj[1] = 'TjanDraaimagneet' then VD := TjanDraaimagneet.Create(Self)
           else if obj[1] = 'TjanTransformator' then VD := TjanTransformator.Create(Self)
           else if obj[1] = 'TjanZoemer2' then VD := TjanZoemer2.Create(Self)
+          else if obj[1] = 'TjanStappenmotor' then VD := TjanStappenmotor.Create(Self)
+          else if obj[1] = 'TjanServo' then VD := TjanServo.Create(Self)
+          else if obj[1] = 'TjanVentilator' then VD := TjanVentilator.Create(Self)
           else if obj[1] = 'TjanBoardIn' then VD := TjanBoardIn.Create(Self)
           else if obj[1] = 'TjanBoardUit' then VD := TjanBoardUit.Create(Self)
           else if obj[1] = 'TjanRelais2' then VD := TjanRelais2.Create(Self)
@@ -1560,6 +1567,26 @@ begin
           else if VD is TjanZoemer2 then
           begin
             // geen extra velden
+          end
+          else if VD is TjanVentilator then
+          begin
+            // geen extra velden
+          end
+          else if VD is TjanStappenmotor then
+          begin
+            // TjanStappenmotor;h;l;t;w;stappen per omwenteling;halve stappen;
+            if Count >= 5 then TjanStappenmotor(VD).StapIdx := StrToIntDef(Trim(Strings[4]), 1);
+            if Count >= 6 then
+            begin
+              TjanStappenmotor(VD).HalveStappen := StrToIntDef(Trim(Strings[5]), 0);
+              TjanStappenmotor(VD).FToon := TjanStappenmotor(VD).HalveStappen;
+            end;
+          end
+          else if VD is TjanServo then
+          begin
+            // TjanServo;h;l;t;w;pin van het board;hoek;
+            if Count >= 5 then TjanServo(VD).Pin := StrToIntDef(Trim(Strings[4]), 0);
+            if Count >= 6 then TjanServo(VD).Hoek := StrToIntDef(Trim(Strings[5]), 90);
           end
           else if VD is TjanTransformator then
           begin
@@ -2529,6 +2556,9 @@ begin
     33: D := TjanBoardIn.Create(Self);
     34: D := TjanBoardUit.Create(Self);
     32: D := TjanRelais2.Create(Self);
+    35: D := TjanStappenmotor.Create(Self);
+    36: D := TjanServo.Create(Self);
+    37: D := TjanVentilator.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -3068,6 +3098,59 @@ begin
             MoveTo(R.Right - 5, CY - 3); LineTo(R.Right - 2, CY); LineTo(R.Right - 5, CY + 3);
           end;
           Pen.Width := 1;
+        end;
+      35:
+        begin
+          // stappenmotor: ring met vier spoeltjes, boven er een aan, en de rotor
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(205, 205, 210);
+          Pen.Color := RGBToColor(90, 90, 100);
+          Ellipse(Rect(CX - 9, CY - 9, CX + 10, CY + 10));
+          Brush.Color := RGBToColor(235, 70, 30);
+          FillRect(Rect(CX - 3, CY - 9, CX + 4, CY - 4));
+          Brush.Color := RGBToColor(200, 140, 80);
+          FillRect(Rect(CX + 5, CY - 3, CX + 10, CY + 4));
+          FillRect(Rect(CX - 3, CY + 5, CX + 4, CY + 10));
+          FillRect(Rect(CX - 9, CY - 3, CX - 4, CY + 4));
+          Pen.Width := 3;
+          Pen.Color := RGBToColor(215, 40, 40);
+          MoveTo(CX, CY); LineTo(CX, CY - 4);
+          Pen.Color := RGBToColor(40, 90, 200);
+          MoveTo(CX, CY); LineTo(CX, CY + 4);
+          Pen.Width := 1;
+          Pen.Color := clBlack;
+        end;
+      36:
+        begin
+          // servomotor: blauw huis met een witte arm schuin omhoog
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(40, 80, 160);
+          Pen.Color := RGBToColor(20, 40, 90);
+          Rectangle(Rect(CX - 10, CY - 1, CX + 11, CY + 9));
+          Pen.Color := clBlack;
+          Pen.Width := 4;
+          MoveTo(CX, CY); LineTo(CX - 5, CY - 7);
+          Pen.Color := clWhite;
+          Pen.Width := 2;
+          MoveTo(CX, CY); LineTo(CX - 5, CY - 7);
+          Pen.Width := 1;
+          Pen.Color := clBlack;
+          Brush.Color := clWhite;
+          Ellipse(Rect(CX - 2, CY - 2, CX + 3, CY + 3));
+        end;
+      37:
+        begin
+          // ventilator: ring met drie schoepen
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(235, 240, 245);
+          Pen.Color := RGBToColor(90, 90, 100);
+          Ellipse(Rect(CX - 9, CY - 9, CX + 10, CY + 10));
+          Brush.Color := RGBToColor(90, 160, 220);
+          Pen.Color := RGBToColor(30, 80, 130);
+          Polygon([Point(CX, CY), Point(CX - 3, CY - 8), Point(CX + 3, CY - 8)]);
+          Polygon([Point(CX, CY), Point(CX + 9, CY + 3), Point(CX + 5, CY + 8)]);
+          Polygon([Point(CX, CY), Point(CX - 9, CY + 3), Point(CX - 5, CY + 8)]);
+          Pen.Color := clBlack;
         end;
       6:
         begin

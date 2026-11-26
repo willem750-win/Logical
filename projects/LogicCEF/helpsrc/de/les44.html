@@ -1,0 +1,52 @@
+<!-- titel: Lektion 44 - Der Servomotor -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#motoren">Motoren</a> &rsaquo; Lektion 44 von 44 &nbsp;&middot;&nbsp; Stufe: <a href="instellingen.html#niveau">Erweitert</a></p>
+  <h1>Der Servomotor</h1>
+  <div class="goal"><strong>Ziel:</strong> Ein Servomotor dreht sich nicht ständig, sondern auf einen <b>Winkel</b>, den Sie mit
+  einer Spannung wählen. Daneben sehen Sie einen gewöhnlichen Motor (einen Ventilator), der sich einfach dreht, solange Strom fließt.</div>
+
+  <p><a class="open" href="../../panels/lessen/les44-servomotor.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les44.png" alt="Quelle mit 5 V; ein Servomotor mit + an der + Schiene und - an der - Schiene; ein Potentiometer zwischen den Schienen mit dem Schleifer an S; darunter ein Schalter und ein Ventilator">
+    <figcaption>Der Schleifer des Potentiometers steht auf 25&nbsp;%: An S liegen 3,74&nbsp;V, und der Arm steht auf 135&deg;.
+    Der Schalter ist geschlossen: Der Ventilator dreht sich an 5&nbsp;V mit 500&nbsp;U/min.</figcaption>
+  </figure>
+
+  <h2>Drei Drähte</h2>
+  <ul>
+    <li><b>+</b> (rot) und <b>&minus;</b> (schwarz) versorgen den Motor. Er arbeitet ab 4&nbsp;V.</li>
+    <li><b>S</b> (orange) ist das <b>Steuersignal</b>. Die Spannung an S wählt den Winkel: 0&nbsp;V ergibt 0&deg; (Arm nach rechts),
+      2,5&nbsp;V ergibt 90&deg; (senkrecht nach oben) und 5&nbsp;V ergibt 180&deg; (nach links).</li>
+  </ul>
+  <p>Hier hängt das Potentiometer zwischen + und &minus;, mit dem Schleifer an S: Das <a href="les33.html">Potentiometer</a> ist ein
+  Spannungsteiler, der eine Spannung von 0 bis 5&nbsp;V liefert.</p>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und verschieben Sie das Potentiometer. Der Arm folgt: Schieben Sie nach links, dreht sich der
+      Arm nach links.</li>
+    <li>Das orange Dreieck auf der Skala zeigt den <b>gewünschten</b> Winkel. Der Arm springt nicht sofort dorthin, sondern dreht
+      sich mit fester Geschwindigkeit. Stellen Sie den Schleifer in die Mitte: S wird 2,5&nbsp;V, und der Arm zeigt senkrecht nach
+      oben (90&deg;).</li>
+    <li>Stellen Sie die Quelle auf 3&nbsp;V. Jetzt bekommt der Servo zu wenig Spannung: Der Arm bleibt stehen, auch wenn Sie das
+      Potentiometer verschieben. Stellen Sie die Quelle wieder auf 5&nbsp;V.</li>
+    <li>Schließen Sie den Schalter: Der <b>Ventilator</b> dreht sich, solange Strom fließt. Erhöhen Sie die Spannung der Quelle: Er
+      dreht sich schneller (100&nbsp;U/min pro Volt). Ein gewöhnlicher Motor wählt keinen Winkel: Er dreht sich einfach.</li>
+  </ol>
+
+  <h2>Aufgabe: eine Schranke</h2>
+  <p>Entfernen Sie den Draht vom Schleifer zu S. Setzen Sie einen Schalter zwischen die + Schiene und S. Was macht der Arm, wenn
+  Sie den Schalter ein- und ausschalten? Können Sie S auch an den Ausgang eines Gatters hängen?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Mit geschlossenem Schalter liegen an S 5&nbsp;V: Der Arm dreht sich auf 180&deg;. Ist der Schalter offen, sinkt S auf
+    0&nbsp;V, und der Arm dreht sich auf 0&deg;. So entsteht eine Schranke mit zwei Stellungen. Ein Gatter liefert auch 0 oder
+    5&nbsp;V, also kann ein Gatter den Servo genauso gut steuern: z.&nbsp;B. ein UND-Gatter, das die Schranke erst öffnet, wenn zwei
+    Bedingungen erfüllt sind.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Ein Servo bekommt an S keine Spannung, sondern alle 20&nbsp;ms einen kurzen
+  Impuls: 1&nbsp;ms ist 0&deg;, 2&nbsp;ms ist 180&deg;. Innen misst ein Potentiometer auf der Achse den echten Winkel, und eine
+  Schaltung dreht den Motor, bis er stimmt. Servos stecken in Roboterarmen, Modellflugzeugen und ferngesteuerten Autos. Mit einem
+  Arduino-Board lässt Logic auch einen echten Servo mitdrehen: siehe <a href="board.html#servo">Arduino-Board</a>.</div>
+
+  <div class="pager"><a href="les43.html">&larr; Lektion 43: Der Schrittmotor</a><a href="leerpad.html">Lernpfad &rarr;</a></div>

@@ -1,0 +1,50 @@
+<!-- titel: Leçon 44 - Le servomoteur -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#motoren">Moteurs</a> &rsaquo; Leçon 44 sur 44 &nbsp;&middot;&nbsp; Niveau&nbsp;: <a href="instellingen.html#niveau">Étendu</a></p>
+  <h1>Le servomoteur</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> un servomoteur ne tourne pas en rond, mais vers un <b>angle</b> que vous
+  choisissez avec une tension. À côté, vous voyez un moteur ordinaire (un ventilateur) qui tourne simplement tant que le courant passe.</div>
+
+  <p><a class="open" href="../../panels/lessen/les44-servomotor.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les44.png" alt="Source de 5 V ; un servomoteur avec + au rail + et - au rail - ; un potentiomètre entre les rails avec le curseur sur S ; en dessous un interrupteur et un ventilateur">
+    <figcaption>Le curseur du potentiomètre est à 25&nbsp;%&nbsp;: S est à 3,74&nbsp;V et le bras est à 135&deg;.
+    L&rsquo;interrupteur est fermé&nbsp;: le ventilateur tourne à 500&nbsp;tr/min sous 5&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Trois fils</h2>
+  <ul>
+    <li><b>+</b> (rouge) et <b>&minus;</b> (noir) alimentent le moteur. Il fonctionne à partir de 4&nbsp;V.</li>
+    <li><b>S</b> (orange) est le <b>signal de commande</b>. La tension sur S choisit l&rsquo;angle&nbsp;: 0&nbsp;V donne 0&deg; (bras vers la
+      droite), 2,5&nbsp;V donne 90&deg; (tout droit vers le haut) et 5&nbsp;V donne 180&deg; (vers la gauche).</li>
+  </ul>
+  <p>Ici le potentiomètre est entre + et &minus;, avec le curseur sur S&nbsp;: le <a href="les33.html">potentiomètre</a> est un
+  diviseur de tension qui donne une tension de 0 à 5&nbsp;V.</p>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et faites glisser le potentiomètre. Le bras suit&nbsp;: glissez vers la gauche, et le bras tourne vers la gauche.</li>
+    <li>Le triangle orange sur l&rsquo;échelle indique l&rsquo;angle <b>demandé</b>. Le bras n&rsquo;y saute pas d&rsquo;un coup, mais tourne à
+      vitesse fixe. Mettez le curseur au milieu&nbsp;: S passe à 2,5&nbsp;V et le bras pointe tout droit vers le haut (90&deg;).</li>
+    <li>Réglez la source sur 3&nbsp;V. Le servo reçoit maintenant trop peu d&rsquo;alimentation&nbsp;: le bras ne bouge plus, même si vous
+      déplacez le potentiomètre. Remettez la source sur 5&nbsp;V.</li>
+    <li>Fermez l&rsquo;interrupteur&nbsp;: le <b>ventilateur</b> tourne tant que le courant passe. Augmentez la tension de la source&nbsp;:
+      il tourne plus vite (100&nbsp;tr/min par volt). Un moteur ordinaire ne choisit pas d&rsquo;angle&nbsp;: il tourne, c&rsquo;est tout.</li>
+  </ol>
+
+  <h2>Exercice&nbsp;: une barrière</h2>
+  <p>Enlevez le fil du curseur vers S. Placez un interrupteur entre le rail + et S. Que fait le bras quand vous allumez et éteignez
+  l&rsquo;interrupteur&nbsp;? Pouvez-vous aussi relier S à la sortie d&rsquo;une porte&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Interrupteur fermé, S est à 5&nbsp;V&nbsp;: le bras tourne vers 180&deg;. Interrupteur ouvert, S descend à 0&nbsp;V et le bras
+    tourne vers 0&deg;. Voilà une barrière à deux positions. Une porte donne aussi 0 ou 5&nbsp;V&nbsp;: une porte peut donc commander le
+    servo tout aussi bien, par ex. une porte ET qui n&rsquo;ouvre la barrière que si deux conditions sont vraies.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> un servo ne reçoit pas une tension sur S, mais une courte impulsion toutes les
+  20&nbsp;ms&nbsp;: 1&nbsp;ms correspond à 0&deg;, 2&nbsp;ms à 180&deg;. À l&rsquo;intérieur, un potentiomètre sur l&rsquo;axe mesure l&rsquo;angle réel,
+  et un circuit fait tourner le moteur jusqu&rsquo;à ce qu&rsquo;il corresponde. On trouve des servos dans les bras de robot, les modèles
+  réduits d&rsquo;avion et les voitures télécommandées. Avec une carte Arduino, Logic peut aussi faire tourner un vrai servo&nbsp;: voir
+  <a href="board.html#servo">Carte Arduino</a>.</div>
+
+  <div class="pager"><a href="les43.html">&larr; Leçon 43 : Le moteur pas à pas</a><a href="leerpad.html">Parcours &rarr;</a></div>

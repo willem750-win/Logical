@@ -1,0 +1,49 @@
+<!-- titel: Lesson 44 - The servo motor -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#motoren">Motors</a> &rsaquo; Lesson 44 of 44 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Extended</a></p>
+  <h1>The servo motor</h1>
+  <div class="goal"><strong>Goal:</strong> a servo motor does not turn round and round, but to an <b>angle</b> that you choose
+  with a voltage. Next to it you see an ordinary motor (a fan) that simply turns as long as current flows.</div>
+
+  <p><a class="open" href="../../panels/lessen/les44-servomotor.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les44.png" alt="5 V source; a servo motor with + to the + rail and - to the - rail; a potentiometer between the rails with the wiper on S; below a switch and a fan">
+    <figcaption>The wiper of the potentiometer is at 25&nbsp;%: S is at 3.74&nbsp;V and the arm is at 135&deg;.
+    The switch is closed: the fan turns at 500&nbsp;rpm on 5&nbsp;V.</figcaption>
+  </figure>
+
+  <h2>Three wires</h2>
+  <ul>
+    <li><b>+</b> (red) and <b>&minus;</b> (black) power the motor. It works from 4&nbsp;V.</li>
+    <li><b>S</b> (orange) is the <b>control signal</b>. The voltage on S chooses the angle: 0&nbsp;V gives 0&deg; (arm to the right),
+      2.5&nbsp;V gives 90&deg; (straight up) and 5&nbsp;V gives 180&deg; (to the left).</li>
+  </ul>
+  <p>Here the potentiometer is between + and &minus;, with the wiper on S: the <a href="les33.html">potentiometer</a> is a
+  voltage divider that gives a voltage from 0 to 5&nbsp;V.</p>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and slide the potentiometer. The arm follows: slide to the left and the arm turns to the left.</li>
+    <li>The orange triangle on the scale shows the <b>requested</b> angle. The arm does not jump there at once, but turns at a fixed
+      speed. Put the wiper in the middle: S becomes 2.5&nbsp;V and the arm points straight up (90&deg;).</li>
+    <li>Set the source to 3&nbsp;V. Now the servo gets too little power: the arm stays put, even when you move the potentiometer.
+      Set the source back to 5&nbsp;V.</li>
+    <li>Close the switch: the <b>fan</b> turns as long as current flows. Raise the source voltage: it turns faster
+      (100&nbsp;rpm per volt). An ordinary motor does not choose an angle: it just turns.</li>
+  </ol>
+
+  <h2>Task: a barrier</h2>
+  <p>Remove the wire from the wiper to S. Put a switch between the + rail and S. What does the arm do when you switch it on and
+  off? Can you also connect S to the output of a gate?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>With the switch closed S is at 5&nbsp;V: the arm turns to 180&deg;. When the switch is open S drops to 0&nbsp;V and the arm
+    turns to 0&deg;. That is a barrier with two positions. A gate also gives 0 or 5&nbsp;V, so a gate can drive the servo just as
+    well: e.g. an AND gate that only opens the barrier when two conditions are true.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> a servo does not get a voltage on S, but a short pulse every 20&nbsp;ms: 1&nbsp;ms
+  is 0&deg;, 2&nbsp;ms is 180&deg;. Inside, a potentiometer on the shaft measures the real angle, and a circuit turns the motor until
+  it matches. Servos are in robot arms, model aircraft and remote-controlled cars. With an Arduino board Logic can also make a real
+  servo turn along: see <a href="board.html#servo">Arduino board</a>.</div>
+
+  <div class="pager"><a href="les43.html">&larr; Lesson 43: The stepper motor</a><a href="leerpad.html">Learning path &rarr;</a></div>

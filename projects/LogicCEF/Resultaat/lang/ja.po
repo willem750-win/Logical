@@ -2497,3 +2497,105 @@ msgstr "オレンジのランプ"
 
 msgid "Ordinary lamp"
 msgstr "普通のランプ"
+
+msgid "create stepper motor"
+msgstr "ステッピングモーターを作成"
+
+msgid "create servo motor"
+msgstr "サーボモーターを作成"
+
+msgid "create fan"
+msgstr "ファンを作成"
+
+msgid "Steps per revolution"
+msgstr "1回転あたりのステップ数"
+
+msgid "Reset counter and shaft"
+msgstr "カウンターと軸をゼロに戻す"
+
+msgid "Angle"
+msgstr "角度"
+
+msgid "Steps"
+msgstr "ステップ"
+
+msgid "opposite coils!"
+msgstr "向かい合うコイル！"
+
+msgid "clockwise"
+msgstr "時計回り"
+
+msgid "anticlockwise"
+msgstr "反時計回り"
+
+msgid "%d steps/rev"
+msgstr "%d ステップ/回転"
+
+msgid "Two opposite coils pull at the same time: the rotor does not know where to go and stays put."
+msgstr "向かい合う2つのコイルが同時に引っぱる：ロータはどちらへ行けばよいかわからず止まったまま。"
+
+msgid "Steps: %s   shaft angle: %s°"
+msgstr "ステップ: %s   軸の角度: %s°"
+
+msgid "Stepper motor"
+msgstr "ステッピングモーター"
+
+msgid "steps per revolution)"
+msgstr "ステップ/回転)"
+
+msgid "Four coils A, B, C, D (100 ohm each) to the common terminal - (to the - rail).\nA coil pulls from 20 mA, also on the output of a gate. A, B, C, D in turn: clockwise; D, C, B, A: anticlockwise.\nRight-click: steps per revolution, reset the counter."
+msgstr "4つのコイル A, B, C, D（各100Ω）から共通端子 -（- レールへ）。\nコイルは20 mAから引きつけます（ゲートの出力でも可）。A, B, C, D の順：時計回り；D, C, B, A：反時計回り。\n右クリック：1回転あたりのステップ数、カウンターのリセット。"
+
+msgid "coils"
+msgstr "コイル"
+
+msgid "steps"
+msgstr "ステップ"
+
+msgid "Real servo on the Arduino board"
+msgstr "Arduinoボードの実物サーボ"
+
+msgid "none"
+msgstr "なし"
+
+msgid "no power"
+msgstr "電源なし"
+
+msgid "It gets too little power (at least 4 V between + and -): the arm does not move."
+msgstr "電源が足りません（+ と - の間に4 V以上必要）：アームは動きません。"
+
+msgid "Control voltage %s: the arm turns to %s°."
+msgstr "制御電圧 %s：アームは %s° に回ります。"
+
+msgid "The real servo on %s turns along."
+msgstr "%s の実物サーボも一緒に回ります。"
+
+msgid "Real servo on %s: no board connected."
+msgstr "%s の実物サーボ：ボードが接続されていません。"
+
+msgid "Servo motor"
+msgstr "サーボモーター"
+
+msgid "Three terminals: + and - for the motor, S for the control signal. 0 V on S gives 0°, 5 V gives 180°.\nE.g. a potentiometer between + and - with the wiper on S. Right-click: a real servo on the Arduino board."
+msgstr "端子は3つ：モーター用の + と -、制御信号用の S。S が 0 V で 0°、5 V で 180°。\n例：+ と - の間のポテンショメーターのワイパーを S へ。右クリック：Arduinoボードの実物サーボ。"
+
+msgid "supply"
+msgstr "電源"
+
+msgid "It turns clockwise: %s rpm."
+msgstr "時計回りに回転：%s rpm。"
+
+msgid "It turns anticlockwise: %s rpm."
+msgstr "反時計回りに回転：%s rpm。"
+
+msgid "It stands still: less than 1 V."
+msgstr "停止中：1 V未満。"
+
+msgid "Fan"
+msgstr "ファン"
+
+msgid "An ordinary motor: it keeps turning as long as current flows, faster with more voltage.\nSwap + and - and it turns the other way."
+msgstr "普通のモーター：電流が流れている間回り、電圧が高いほど速く回ります。\n+ と - を入れ替えると逆に回ります。"
+
+msgid "Motors (stepper motor, servo motor, fan)"
+msgstr "モーター（ステッピング、サーボ、ファン）"

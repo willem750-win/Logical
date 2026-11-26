@@ -281,7 +281,7 @@ begin
         begin
           Inc(NR); S := 'R' + IntToStr(NR);
         end
-        else if c is TjanSimMotor then
+        else if (c is TjanSimMotor) or (c is TjanVentilator) then
         begin
           Inc(NM); S := 'M' + IntToStr(NM);
         end

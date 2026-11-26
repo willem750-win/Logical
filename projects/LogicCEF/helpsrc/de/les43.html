@@ -1,0 +1,51 @@
+<!-- titel: Lektion 43 - Der Schrittmotor -->
+  <p class="crumb"><a href="leerpad.html">Lernpfad</a> &rsaquo; <a href="leerpad.html#motoren">Motoren</a> &rsaquo; Lektion 43 von 44 &nbsp;&middot;&nbsp; Stufe: <a href="instellingen.html#niveau">Erweitert</a></p>
+  <h1>Der Schrittmotor</h1>
+  <div class="goal"><strong>Ziel:</strong> Ein Schrittmotor dreht sich in kleinen, genauen Schritten. Sie schalten die Spulen eine
+  nach der anderen ein, und jedes Mal dreht sich die Achse um einen festen Winkel weiter. So wissen Sie immer genau, wie weit er
+  sich gedreht hat.</div>
+
+  <p><a class="open" href="../../panels/lessen/les43-stappenmotor.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/les43.png" alt="Vier Taster zwischen der + Schiene und den Klemmen A, B, C und D eines Schrittmotors; die gemeinsame Klemme an der - Schiene">
+    <figcaption>A, B und C wurden nacheinander gedrückt: Der Rotor steht bei Spule C, die Achse hat sich 2 Schritte (15&deg;)
+    rechtsherum gedreht.</figcaption>
+  </figure>
+
+  <h2>Wie funktioniert er?</h2>
+  <p>In der Mitte sitzt ein kleiner Magnet, der sich drehen kann: der <b>Rotor</b>. Die rote Spitze ist der Nordpol. Um den Rotor
+  stehen vier <b>Spulen</b>: A oben, B rechts, C unten und D links. Fließt Strom durch eine Spule, wird sie zum
+  <a href="lesm2.html">Elektromagneten</a> und zieht den Rotor zu sich. Jede Spule hat 100&nbsp;&Omega; und zieht ab 20&nbsp;mA.</p>
+  <ul>
+    <li>Jede Spule hat links eine eigene Klemme (A, B, C, D). Das andere Ende aller Spulen trifft sich in der
+      <b>gemeinsamen Klemme</b> &minus;, die an der &minus; Schiene hängt.</li>
+    <li>Rechts sehen Sie die <b>Achse</b> mit einem Zeiger, den Winkel und die Anzahl der Schritte. Dieser Motor macht 48 Schritte
+      pro Umdrehung: Jeder Schritt ist 360 / 48 = 7,5&deg;.</li>
+  </ul>
+
+  <h2>Probieren Sie es</h2>
+  <ol class="steps">
+    <li>Starten Sie die Simulation und drücken Sie Taster A: Spule A wird rot, und der Nordpol des Rotors zeigt nach oben.</li>
+    <li>Drücken Sie jetzt nacheinander B, C und D. Jedes Mal springt der Rotor zur nächsten Spule: Er dreht sich <b>rechtsherum</b>,
+      und der Zähler zeigt 1, 2, 3. Der Zeiger der Achse geht jedes Mal 7,5&deg; weiter.</li>
+    <li>Drücken Sie wieder A, dann B ... Nach 48 Schritten hat sich die Achse genau einmal gedreht.</li>
+    <li>Drücken Sie in umgekehrter Reihenfolge: D, C, B, A. Jetzt dreht er sich <b>linksherum</b>, und der Zähler zählt rückwärts.</li>
+    <li>Lassen Sie alle Taster los: Der Rotor bleibt einfach stehen, wo er war.</li>
+  </ol>
+
+  <h2>Aufgabe: halbe Schritte und ein Fehler</h2>
+  <p>Rechtsklick auf die Taster A und B, wählen Sie <b>Art &rsaquo; Schalter (bleibt stehen)</b>. Schalten Sie A ein, dann A und B
+  zusammen, dann nur B. Was sehen Sie? Und was passiert, wenn Sie A und C zusammen einschalten?</p>
+  <details>
+    <summary>Lösung</summary>
+    <p>Mit A und B zusammen ziehen zwei benachbarte Spulen: Der Rotor stellt sich genau dazwischen. Das ist ein <b>halber
+    Schritt</b> (3,75&deg;): Der Motor dreht feiner und ruhiger. Mit A und C zusammen ziehen zwei gegenüberliegende Spulen: Der Rotor
+    weiß nicht, wohin, und bleibt stehen. Der Motor zeigt ein rotes Ausrufezeichen.</p>
+  </details>
+
+  <div class="tip"><strong>In Wirklichkeit:</strong> Schrittmotoren stecken in Druckern, 3D-Druckern und Kameras, überall, wo sich
+  etwas genau bewegen muss. Der kleine Schrittmotor aus einem Starterkit (28BYJ-48) hat ein Getriebe und macht etwa 2048 Schritte
+  pro Umdrehung. Ein Arduino steuert ihn mit vier Ausgängen über ein Treibermodul (ULN2003), denn ein Pin liefert zu wenig Strom.
+  Rechtsklick auf den Schrittmotor, um 4, 48 oder 200 Schritte pro Umdrehung zu wählen.</div>
+
+  <div class="pager"><a href="les42.html">&larr; Lektion 42: Ein Gatter steuert einen Transistor</a><a href="les44.html">Lektion 44: Der Servomotor &rarr;</a></div>

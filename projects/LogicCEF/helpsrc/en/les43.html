@@ -1,0 +1,49 @@
+<!-- titel: Lesson 43 - The stepper motor -->
+  <p class="crumb"><a href="leerpad.html">Learning path</a> &rsaquo; <a href="leerpad.html#motoren">Motors</a> &rsaquo; Lesson 43 of 44 &nbsp;&middot;&nbsp; Level: <a href="instellingen.html#niveau">Extended</a></p>
+  <h1>The stepper motor</h1>
+  <div class="goal"><strong>Goal:</strong> a stepper motor turns in small, precise steps. You switch on the coils one by one,
+  and each time the shaft turns a fixed angle further. So you always know exactly how far it has turned.</div>
+
+  <p><a class="open" href="../../panels/lessen/les43-stappenmotor.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/les43.png" alt="Four push buttons between the + rail and terminals A, B, C and D of a stepper motor; the common terminal to the - rail">
+    <figcaption>A, B and C were pressed in turn: the rotor is at coil C and the shaft has turned 2 steps (15&deg;) clockwise.</figcaption>
+  </figure>
+
+  <h2>How does it work?</h2>
+  <p>In the middle is a small magnet that can turn: the <b>rotor</b>. The red tip is the north pole. Around the rotor are four
+  <b>coils</b>: A at the top, B on the right, C at the bottom and D on the left. When current flows through a coil it becomes an
+  <a href="lesm2.html">electromagnet</a> and pulls the rotor towards it. Each coil is 100&nbsp;&Omega; and pulls from 20&nbsp;mA.</p>
+  <ul>
+    <li>Each coil has its own terminal on the left (A, B, C, D). The other end of all coils comes together in the
+      <b>common terminal</b> &minus;, which is connected to the &minus; rail.</li>
+    <li>On the right you see the <b>shaft</b> with a pointer, the angle and the number of steps. This motor makes 48 steps per
+      revolution: each step is 360 / 48 = 7.5&deg;.</li>
+  </ul>
+
+  <h2>Try it</h2>
+  <ol class="steps">
+    <li>Start the simulation and press button A: coil A turns red and the north pole of the rotor points up.</li>
+    <li>Now press B, C and D in turn. Each time the rotor jumps to the next coil: it turns <b>clockwise</b> and the counter goes
+      1, 2, 3. The pointer of the shaft moves 7.5&deg; further each time.</li>
+    <li>Press A again, then B ... After 48 steps the shaft has turned exactly once.</li>
+    <li>Press in the reverse order: D, C, B, A. Now it turns <b>anticlockwise</b> and the counter counts down.</li>
+    <li>Release all buttons: the rotor simply stays where it was.</li>
+  </ol>
+
+  <h2>Task: half steps and a mistake</h2>
+  <p>Right-click push buttons A and B and choose <b>Type &rsaquo; Switch (stays put)</b>. Switch on A, then A and B together, then
+  only B. What do you see? And what happens if you switch on A and C together?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>With A and B together two neighbouring coils pull: the rotor stops exactly between them. That is a <b>half step</b>
+    (3.75&deg;): the motor turns more finely and smoothly. With A and C together two opposite coils pull: the rotor does not know
+    which way to go and stays put. The motor shows a red exclamation mark.</p>
+  </details>
+
+  <div class="tip"><strong>In real life:</strong> stepper motors are in printers, 3D printers and cameras, wherever something has
+  to move precisely. The small stepper motor from a starter kit (28BYJ-48) has a gearbox and makes about 2048 steps per revolution.
+  An Arduino drives it with four outputs through a driver module (ULN2003), because a pin gives too little current. Right-click the
+  stepper motor to choose 4, 48 or 200 steps per revolution.</div>
+
+  <div class="pager"><a href="les42.html">&larr; Lesson 42: A gate drives a transistor</a><a href="les44.html">Lesson 44: The servo motor &rarr;</a></div>

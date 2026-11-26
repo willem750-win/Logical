@@ -1,0 +1,51 @@
+<!-- titel: Leçon 43 - Le moteur pas à pas -->
+  <p class="crumb"><a href="leerpad.html">Parcours</a> &rsaquo; <a href="leerpad.html#motoren">Moteurs</a> &rsaquo; Leçon 43 sur 44 &nbsp;&middot;&nbsp; Niveau&nbsp;: <a href="instellingen.html#niveau">Étendu</a></p>
+  <h1>Le moteur pas à pas</h1>
+  <div class="goal"><strong>Objectif&nbsp;:</strong> un moteur pas à pas tourne par petits pas précis. Vous allumez les bobines une
+  par une, et chaque fois l&rsquo;axe tourne d&rsquo;un angle fixe. Ainsi vous savez toujours exactement de combien il a tourné.</div>
+
+  <p><a class="open" href="../../panels/lessen/les43-stappenmotor.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/les43.png" alt="Quatre boutons-poussoirs entre le rail + et les bornes A, B, C et D d'un moteur pas à pas ; la borne commune au rail -">
+    <figcaption>A, B et C ont été enfoncés l&rsquo;un après l&rsquo;autre&nbsp;: le rotor est à la bobine C et l&rsquo;axe a tourné de
+    2 pas (15&deg;) dans le sens horaire.</figcaption>
+  </figure>
+
+  <h2>Comment fonctionne-t-il&nbsp;?</h2>
+  <p>Au centre se trouve un petit aimant qui peut tourner&nbsp;: le <b>rotor</b>. La pointe rouge est le pôle nord. Autour du rotor
+  il y a quatre <b>bobines</b>&nbsp;: A en haut, B à droite, C en bas et D à gauche. Quand le courant passe dans une bobine, elle
+  devient un <a href="lesm2.html">électroaimant</a> et attire le rotor. Chaque bobine fait 100&nbsp;&Omega; et attire à partir de 20&nbsp;mA.</p>
+  <ul>
+    <li>Chaque bobine a sa propre borne à gauche (A, B, C, D). L&rsquo;autre extrémité de toutes les bobines se rejoint dans la
+      <b>borne commune</b> &minus;, reliée au rail &minus;.</li>
+    <li>À droite, vous voyez l&rsquo;<b>axe</b> avec une aiguille, l&rsquo;angle et le nombre de pas. Ce moteur fait 48 pas par tour&nbsp;:
+      chaque pas vaut 360 / 48 = 7,5&deg;.</li>
+  </ul>
+
+  <h2>Essayez</h2>
+  <ol class="steps">
+    <li>Lancez la simulation et appuyez sur le bouton A&nbsp;: la bobine A devient rouge et le pôle nord du rotor pointe vers le haut.</li>
+    <li>Appuyez maintenant sur B, C et D l&rsquo;un après l&rsquo;autre. Chaque fois, le rotor saute vers la bobine suivante&nbsp;: il tourne
+      dans le <b>sens horaire</b> et le compteur indique 1, 2, 3. L&rsquo;aiguille de l&rsquo;axe avance chaque fois de 7,5&deg;.</li>
+    <li>Appuyez de nouveau sur A, puis B ... Après 48 pas, l&rsquo;axe a fait exactement un tour.</li>
+    <li>Appuyez dans l&rsquo;ordre inverse&nbsp;: D, C, B, A. Il tourne maintenant dans le <b>sens antihoraire</b> et le compteur
+      décompte.</li>
+    <li>Relâchez tous les boutons&nbsp;: le rotor reste simplement là où il était.</li>
+  </ol>
+
+  <h2>Exercice&nbsp;: demi-pas et une erreur</h2>
+  <p>Clic droit sur les boutons-poussoirs A et B, choisissez <b>Type &rsaquo; Interrupteur (reste en place)</b>. Allumez A, puis A et
+  B ensemble, puis seulement B. Que voyez-vous&nbsp;? Et que se passe-t-il si vous allumez A et C ensemble&nbsp;?</p>
+  <details>
+    <summary>Solution</summary>
+    <p>Avec A et B ensemble, deux bobines voisines tirent&nbsp;: le rotor se place exactement entre elles. C&rsquo;est un <b>demi-pas</b>
+    (3,75&deg;)&nbsp;: le moteur tourne plus finement et plus doucement. Avec A et C ensemble, deux bobines opposées tirent&nbsp;: le rotor ne
+    sait pas de quel côté aller et reste sur place. Le moteur affiche un point d&rsquo;exclamation rouge.</p>
+  </details>
+
+  <div class="tip"><strong>En vrai&nbsp;:</strong> on trouve des moteurs pas à pas dans les imprimantes, les imprimantes 3D et les
+  appareils photo, partout où quelque chose doit bouger avec précision. Le petit moteur pas à pas d&rsquo;un kit de démarrage (28BYJ-48)
+  a un réducteur et fait environ 2048 pas par tour. Un Arduino le commande avec quatre sorties via un module de commande (ULN2003),
+  car une broche donne trop peu de courant. Clic droit sur le moteur pas à pas pour choisir 4, 48 ou 200 pas par tour.</div>
+
+  <div class="pager"><a href="les42.html">&larr; Leçon 42 : Une porte commande un transistor</a><a href="les44.html">Leçon 44 : Le servomoteur &rarr;</a></div>

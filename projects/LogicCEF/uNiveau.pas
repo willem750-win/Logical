@@ -63,11 +63,11 @@ type
   end;
 
 const
-  // De 41 knoppen van Instellingen > SchakelElementen (zie maaksettingsframe in
+  // De 42 knoppen van Instellingen > SchakelElementen (zie maaksettingsframe in
   // main.pas). KPersoon, KWagen, KMuziek en KVerkeer staan er niet in: die
   // volgen Grid.KLogicRun. KBoard (Arduino) staat niet in Instellingen en
   // wordt apart gezet. Een knop die hier ontbreekt, wordt nooit verborgen.
-  Tabel: array[0..40] of TNiveauRij = (
+  Tabel: array[0..41] of TNiveauRij = (
     // Basis: energieblok, les 1-11, oefeningen
     (Naam: 'KDraad'; Vanaf: nvBasis),
     (Naam: 'KVoeding'; Vanaf: nvBasis),
@@ -92,6 +92,7 @@ const
     (Naam: 'KTransistor'; Vanaf: nvBasis),
     // Uitgebreid: magnetisme, stroom en spanning, rekenen, elektronica
     (Naam: 'KMagnetisme'; Vanaf: nvUitgebreid),
+    (Naam: 'KMotoren'; Vanaf: nvUitgebreid),
     (Naam: 'KWisselbron'; Vanaf: nvUitgebreid),
     (Naam: 'KZekering'; Vanaf: nvUitgebreid),
     (Naam: 'KMeter'; Vanaf: nvUitgebreid),
@@ -123,11 +124,12 @@ const
   // TjanSpoel van TjanWeerstand, TjanWisselbron van TjanBron, TjanScoop van
   // TjanVoltmeter2, TjanDiode van TjanLed2, TjanWattMeter van TjanAmpMeter,
   // TjanBoardIn van TjanSchakelaar2 ...), dus "is" zou hier fout tellen.
-  KlassenUitgebreid: array[0..21] of string = (
+  KlassenUitgebreid: array[0..24] of string = (
     'TjanMagneet', 'TjanKompas', 'TjanVeldplaat', 'TjanSpoel', 'TjanIJzer', 'TjanRelaisModel',
     'TjanSchommel', 'TjanElektromotor', 'TjanNulmeter', 'TjanDraaimagneet', 'TjanTransformator',
     'TjanWisselbron', 'TjanZekering', 'TjanMeter', 'TjanSimFlipFlop', 'TjanLed2', 'TjanCondensator',
-    'TjanPotmeter', 'TjanDiode', 'TjanScoop', 'TjanWattMeter', 'TjanWissel2');
+    'TjanPotmeter', 'TjanDiode', 'TjanScoop', 'TjanWattMeter', 'TjanWissel2',
+    'TjanStappenmotor', 'TjanServo', 'TjanVentilator');
   KlassenGevorderden: array[0..10] of string = (
     'TjanLogicRun', 'TjanSimPersoon', 'TjanSimWagen', 'TjanSimMuziek', 'TjanSimVerkeerslicht',
     'TjanSimSlagboom', 'TjanSimMotor', 'TjanSimStappenteller', 'TjanSimStopwatch',

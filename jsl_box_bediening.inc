@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;DStapM:=false;DServo:=false;DVent:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -72,6 +72,9 @@ begin
   else if PtInRect(RRelais2, P) then DRelais2 := True
   else if PtInRect(RBoardIn, P) then DBoardIn := True
   else if PtInRect(RBoardUit, P) then DBoardUit := True
+  else if PtInRect(RStapM, P) then DStapM := True
+  else if PtInRect(RServo, P) then DServo := True
+  else if PtInRect(RVent, P) then DVent := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -163,6 +166,9 @@ begin
   else if PtInRect(RRelais2, P) then NewHint := FHRelais
   else if PtInRect(RBoardIn, P) then NewHint := FHBoardIn
   else if PtInRect(RBoardUit, P) then NewHint := FHBoardUit
+  else if PtInRect(RStapM, P) then NewHint := FHStapM
+  else if PtInRect(RServo, P) then NewHint := FHServo
+  else if PtInRect(RVent, P) then NewHint := FHVent
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -574,7 +580,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False; DStapM := False; DServo := False; DVent := False;
 
     // nieuw
     DSquare := False;
@@ -868,6 +874,12 @@ begin
     NewVoedingsDeel(33)
   else if DBoardUit then
     NewVoedingsDeel(34)
+  else if DStapM then
+    NewVoedingsDeel(35)
+  else if DServo then
+    NewVoedingsDeel(36)
+  else if DVent then
+    NewVoedingsDeel(37)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1490,6 +1502,9 @@ if FBoxTaal=stDutch then
   HTransformator:='maak Transformator';
   HBoardIn:='maak Arduino-ingang (echte drukknop)';
   HBoardUit:='maak Arduino-uitgang (echte pin)';
+  HStappenmotor:='maak Stappenmotor';
+  HServo:='maak Servomotor';
+  HVentilator:='maak Ventilator';
   HVoltmeter2:='maak Voltmeter met 2 klemmen';
   HLed2:='maak Led met 2 klemmen (met voorschakelweerstand)';
   HCondensator:='maak Condensator (laden en ontladen)';
@@ -1561,6 +1576,9 @@ if FBoxTaal=stEnglish then
   HTransformator:=LangTr('create transformer');
   HBoardIn:=LangTr('create Arduino input (real push button)');
   HBoardUit:=LangTr('create Arduino output (real pin)');
+  HStappenmotor:=LangTr('create stepper motor');
+  HServo:=LangTr('create servo motor');
+  HVentilator:=LangTr('create fan');
   HVoltmeter2:=LangTr('create Voltmeter with 2 terminals');
   HLed2:=LangTr('create LED with 2 terminals (with series resistor)');
   HCondensator:=LangTr('create Capacitor (charging and discharging)');
@@ -1630,6 +1648,9 @@ if FBoxTaal=stFrench then
   HTransformator:='faire Transformateur';
   HBoardIn:='faire Entrée Arduino (vrai bouton-poussoir)';
   HBoardUit:='faire Sortie Arduino (vraie broche)';
+  HStappenmotor:='faire Moteur pas à pas';
+  HServo:='faire Servomoteur';
+  HVentilator:='faire Ventilateur';
   HVoltmeter2:='faire Voltmètre à 2 bornes';
   HLed2:='faire LED à 2 bornes (avec résistance série)';
   HCondensator:='faire Condensateur (charge et décharge)';
@@ -1700,6 +1721,9 @@ if FBoxTaal=stFrench then
   HTransformator:='Transformator erstellen';
   HBoardIn:='Arduino-Eingang (echter Taster) erstellen';
   HBoardUit:='Arduino-Ausgang (echter Pin) erstellen';
+  HStappenmotor:='Schrittmotor erstellen';
+  HServo:='Servomotor erstellen';
+  HVentilator:='Ventilator erstellen';
   HVoltmeter2:='Voltmeter mit 2 Klemmen erstellen';
   HLed2:='LED mit 2 Klemmen erstellen (mit Vorwiderstand)';
   HCondensator:='Kondensator erstellen (Laden und Entladen)';
@@ -1794,6 +1818,9 @@ begin SetVoedingKnop(FMagK, Value); end;
 
 procedure TjanSimLogicBox.SetKBoard(const Value: Boolean);
 begin SetVoedingKnop(FBoardK, Value); end;
+
+procedure TjanSimLogicBox.SetKMotoren(const Value: Boolean);
+begin SetVoedingKnop(FMotorenK, Value); end;
 
 procedure TjanSimLogicBox.SetKVoltmeter2(const Value: Boolean);
 begin SetVoedingKnop(FVolt2K, Value); end;
@@ -1906,6 +1933,9 @@ begin
   RRelais2 := Rect(0, 0, 0, 0);
   RBoardIn := Rect(0, 0, 0, 0);
   RBoardUit := Rect(0, 0, 0, 0);
+  RStapM := Rect(0, 0, 0, 0);
+  RServo := Rect(0, 0, 0, 0);
+  RVent := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1936,6 +1966,13 @@ begin
   if FVolt2K then Knop(RVolt2, 6, DVolt2);
   if FScoopK then Knop(RScoop, 13, DScoop);
   if FTransK then Knop(RTrans, 14, DTrans);
+  // motoren: stappenmotor, servomotor, ventilator
+  if FMotorenK then
+  begin
+    Knop(RStapM, 35, DStapM);
+    Knop(RServo, 36, DServo);
+    Knop(RVent, 37, DVent);
+  end;
   if FMagK then
   begin
     Knop(RMagneet, 20, DMagneet);

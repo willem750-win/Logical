@@ -1,0 +1,49 @@
+<!-- titel: Les 44 - De servomotor -->
+  <p class="crumb"><a href="leerpad.html">Leerpad</a> &rsaquo; <a href="leerpad.html#motoren">Motoren</a> &rsaquo; Les 44 van 44 &nbsp;&middot;&nbsp; Niveau: <a href="instellingen.html#niveau">Uitgebreid</a></p>
+  <h1>De servomotor</h1>
+  <div class="goal"><strong>Doel:</strong> een servomotor draait niet rond, maar naar een <b>hoek</b> die je met een spanning
+  kiest. Daarnaast zie je een gewone motor (een ventilator) die gewoon rond draait zolang er stroom is.</div>
+
+  <p><a class="open" href="../../panels/lessen/les44-servomotor.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/les44.png" alt="Bron van 5 V; een servomotor met + aan de + rail en - aan de - rail; een potentiometer tussen de rails met de loper aan S; daaronder een schakelaar en een ventilator">
+    <figcaption>De loper van de potentiometer staat op 25&nbsp;%: er staat 3,74&nbsp;V op S en de arm staat op 135&deg;.
+    De schakelaar is dicht: de ventilator draait op 5&nbsp;V aan 500&nbsp;omw/min.</figcaption>
+  </figure>
+
+  <h2>Drie draden</h2>
+  <ul>
+    <li><b>+</b> (rood) en <b>&minus;</b> (zwart) geven de motor zijn voeding. Hij werkt vanaf 4&nbsp;V.</li>
+    <li><b>S</b> (oranje) is het <b>stuursignaal</b>. De spanning op S kiest de hoek: 0&nbsp;V geeft 0&deg; (arm naar rechts),
+      2,5&nbsp;V geeft 90&deg; (recht omhoog) en 5&nbsp;V geeft 180&deg; (naar links).</li>
+  </ul>
+  <p>Hier hangt de potentiometer tussen + en &minus;, met de loper aan S: de <a href="les33.html">potentiometer</a> is een
+  spanningsdeler die een spanning van 0 tot 5&nbsp;V geeft.</p>
+
+  <h2>Probeer het</h2>
+  <ol class="steps">
+    <li>Start de simulatie en schuif de potentiometer. De arm volgt: schuif je naar links, dan draait de arm naar links.</li>
+    <li>Het oranje driehoekje op de schaal wijst de <b>gevraagde</b> hoek aan. De arm draait er niet in een keer naartoe, maar met
+      een vaste snelheid. Zet de loper in het midden: S wordt 2,5&nbsp;V en de arm staat recht omhoog (90&deg;).</li>
+    <li>Zet de bron op 3&nbsp;V. Nu krijgt de servo te weinig voeding: de arm blijft staan, ook als je de potentiometer verschuift.
+      Zet de bron terug op 5&nbsp;V.</li>
+    <li>Sluit de schakelaar: de <b>ventilator</b> draait rond zolang er stroom is. Zet de bron hoger: hij draait sneller
+      (100&nbsp;omw/min per volt). Een gewone motor kiest geen hoek: hij draait gewoon.</li>
+  </ol>
+
+  <h2>Opdracht: een slagboom</h2>
+  <p>Haal de draad van de loper naar S weg. Zet een schakelaar tussen de + rail en S. Wat doet de arm als je de schakelaar aan
+  en uit zet? Kun je S ook aan de uitgang van een poort hangen?</p>
+  <details>
+    <summary>Oplossing</summary>
+    <p>Met de schakelaar dicht staat er 5&nbsp;V op S: de arm draait naar 180&deg;. Is de schakelaar open, dan zakt S naar 0&nbsp;V
+    en draait de arm naar 0&deg;. Zo maak je een slagboom met twee standen. Een poort geeft ook 0 of 5&nbsp;V, dus een poort kan de
+    servo net zo goed sturen: bv. een EN-poort die de slagboom pas opent als twee voorwaarden kloppen.</p>
+  </details>
+
+  <div class="tip"><strong>In het echt:</strong> een servo krijgt geen spanning op S, maar elke 20&nbsp;ms een kort pulsje: 1&nbsp;ms
+  is 0&deg;, 2&nbsp;ms is 180&deg;. Binnenin meet een potentiometer op de as de echte hoek, en een schakeling draait de motor tot die
+  klopt. Servo's zitten in robotarmen, modelvliegtuigen en bestuurbare auto's. Met een Arduino-board laat Logic ook een echte servo
+  meedraaien: zie <a href="board.html#servo">Arduino-board</a>.</div>
+
+  <div class="pager"><a href="les43.html">&larr; Les 43: De stappenmotor</a><a href="leerpad.html">Leerpad &rarr;</a></div>

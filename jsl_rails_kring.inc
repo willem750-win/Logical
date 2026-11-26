@@ -1341,6 +1341,18 @@ begin
             G := -Hulp; Off := 0;
           end;
         end
+      else if Parts[k] is TjanStappenmotor then
+      begin
+        // stappenmotor: vier spoelen van A, B, C, D naar de gemeenschappelijke klem
+        for j := 0 to 3 do
+          AddTak(PinNode(k, j), PinNode(k, 4), 1 / TjanStappenmotor(Parts[k]).SpoelOhm, Parts[k]);
+      end
+      else if Parts[k] is TjanServo then
+      begin
+        // servo: de motor tussen + en -, de ingang S met 1 megaohm naar -
+        AddTak(PinNode(k, 0), PinNode(k, 1), 1 / TjanServo(Parts[k]).MotorOhm, Parts[k]);
+        AddTak(PinNode(k, 2), PinNode(k, 1), 1 / 1000000, Parts[k]);
+      end
       else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
       begin
         // wisselschakelaar: het midden (klem 2) naar B (klem 1) of A (klem 0)
@@ -1687,6 +1699,15 @@ begin
         SetStroom(Parts[k], U * (Koppeling * 0.001 + (1 - Koppeling) / 40) + Hulp * Amp);
         Meet(U, F, Parts[k].FAmp, Amp);
       end
+    else if Parts[k] is TjanServo then
+      SetStroom(Parts[k], U / TjanServo(Parts[k]).MotorOhm)
+    else if Parts[k] is TjanStappenmotor then
+    begin
+      Hulp := 0;
+      for j := 0 to 3 do
+        Hulp := Hulp + Abs(V[PinNode(k, j)] - V[PinNode(k, 4)]) / TjanStappenmotor(Parts[k]).SpoelOhm;
+      SetStroom(Parts[k], Hulp);
+    end
     else if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // stroom van het midden naar het gekozen contact
@@ -1849,6 +1870,25 @@ begin
         if MaakDicht then Vraag[PinBase[k] + 3] := -FIc
         else if VerbreekDicht then Vraag[PinBase[k] + 4] := -FIc;
       end;
+    if Parts[k] is TjanStappenmotor then
+    begin
+      // elke spoel neemt haar stroom uit de draden, de gemeenschappelijke klem geeft de som terug
+      Hulp := 0;
+      for j := 0 to 3 do
+      begin
+        F := (V[PinNode(k, j)] - V[PinNode(k, 4)]) / TjanStappenmotor(Parts[k]).SpoelOhm;
+        Vraag[PinBase[k] + j] := F;
+        Hulp := Hulp + F;
+      end;
+      Vraag[PinBase[k] + 4] := -Hulp;
+    end;
+    if Parts[k] is TjanServo then
+    begin
+      // + en S nemen stroom uit de draden, - geeft de som terug
+      F := (V[PinNode(k, 2)] - V[PinNode(k, 1)]) / 1000000;
+      Vraag[PinBase[k] + 2] := F;
+      Vraag[PinBase[k] + 1] := -Amp - F;
+    end;
     if (Parts[k] is TjanSchakelaar2) and TjanSchakelaar2(Parts[k]).Wissel then
     begin
       // het midden neemt de stroom uit de draden, het gekozen contact geeft
@@ -1992,6 +2032,14 @@ begin
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanZoemer2 then
     Result := Format('TjanZoemer2;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanVentilator then
+    Result := Format('TjanVentilator;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+  else if C is TjanStappenmotor then
+    Result := Format('TjanStappenmotor;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanStappenmotor(C).StapIdx, TjanStappenmotor(C).HalveStappen])
+  else if C is TjanServo then
+    Result := Format('TjanServo;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
+      TjanServo(C).Pin, Round(TjanServo(C).Hoek)])
   else if C is TjanTransformator then
     Result := Format('TjanTransformator;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanTransformator(C).N1Idx, TjanTransformator(C).N2Idx])

@@ -195,6 +195,12 @@ begin
       begin Result := 'voeding'; AAnchor := 'zoemer2'; end;
     'relais2':
       begin Result := 'voeding'; AAnchor := 'relais2'; end;
+    'stappenmotor':
+      begin Result := 'voeding'; AAnchor := 'stappenmotor'; end;
+    'servo':
+      begin Result := 'voeding'; AAnchor := 'servo'; end;
+    'ventilator':
+      begin Result := 'voeding'; AAnchor := 'ventilator'; end;
     'wisselschakelaar':
       begin Result := 'voeding'; AAnchor := 'wisselschakelaar'; end;
     'puls2':

@@ -1879,7 +1879,7 @@ type
     FSlagboom:Boolean;
     FVoeding:Boolean;   // knoppen + en - rail in de balk tonen
     // knoppen van de voedingskring in de balk tonen (Instellingen > Schakelelementen)
-    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K, FMagK, FBoardK: Boolean;
+    FBronK, FZekeringK, FAmpMeterK, FWeerstandK, FLamp2K, FSchak2K, FVolt2K, FLed2K, FCondK, FWattMeterK, FPotK, FDiodeK, FWisselK, FScoopK, FTransK, FLdrK, FNtcK, FWschK, FPuls2K, FDip2K, FMagK, FBoardK, FMotorenK: Boolean;
     FSymbolen:TjanSymbolen; // tekenwijze van de poorten
     FKader: Boolean;
 
@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit, RStapM, RServo, RVent: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit, DStapM, DServo, DVent: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit, FHStapM, FHServo, FHVent: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2128,6 +2128,7 @@ type
     procedure SetKDip2(const Value: Boolean);
     procedure SetKMagnetisme(const Value: Boolean);
     procedure SetKBoard(const Value: Boolean);
+    procedure SetKMotoren(const Value: Boolean);
     procedure SetKVoltmeter2(const Value: Boolean);
     procedure SetKLed2(const Value: Boolean);
     procedure SetKCondensator(const Value: Boolean);
@@ -2371,6 +2372,8 @@ type
     property KMagnetisme: Boolean read FMagK write SetKMagnetisme default True;
     // de twee knoppen van het Arduino-board (ingang en uitgang)
     property KBoard: Boolean read FBoardK write SetKBoard default True;
+    // stappenmotor, servomotor en ventilator
+    property KMotoren: Boolean read FMotorenK write SetKMotoren default True;
     property KVoltmeter2: Boolean read FVolt2K write SetKVoltmeter2 default True;
     property KLed2: Boolean read FLed2K write SetKLed2 default True;
     property KCondensator: Boolean read FCondK write SetKCondensator default True;
@@ -2414,6 +2417,9 @@ type
     property HNulmeter: string read FHNulmeter write FHNulmeter;
     property HDraaimagneet: string read FHDraaiM write FHDraaiM;
     property HTransformator: string read FHTrafo write FHTrafo;
+    property HStappenmotor: string read FHStapM write FHStapM;
+    property HServo: string read FHServo write FHServo;
+    property HVentilator: string read FHVent write FHVent;
     property HBoardIn: string read FHBoardIn write FHBoardIn;
     property HBoardUit: string read FHBoardUit write FHBoardUit;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
@@ -4301,6 +4307,117 @@ end;
     property Pin: Integer read FPin write SetPin;
   end;
 
+  { TjanStappenmotor: stappenmotor met vier spoelen A, B, C en D (klem 0..3,
+    links) en een gemeenschappelijke klem (klem 4, linksonder). Elke spoel is
+    100 ohm tussen haar klem en de gemeenschappelijke klem; vanaf 20 mA trekt
+    ze de rotor (een magneetje) naar zich toe, dus ook aan de uitgang van een
+    poort. A, B, C, D na elkaar: rechtsom; D, C, B, A: linksom. Twee spoelen
+    naast elkaar samen: een halve stap. Twee spoelen tegenover elkaar: de
+    rotor weet niet waarheen en blijft staan. Rechts de as met een wijzer, de
+    hoek en het aantal stappen. Rechtsklik: stappen per omwenteling (4, 48,
+    200) en teller op nul. }
+  TjanStappenmotor = class(TjanVoedingsDeel)
+  private
+    FTimer: TTimer;
+    FPos: Integer;          // stand van de rotor in halve stappen (+ = rechtsom), telt door
+    FToon: Double;          // getekende stand (halve stappen), loopt FPos na
+    FStapIdx: Integer;      // index in StapPerToer
+    FTrilt: Boolean;        // twee spoelen tegenover elkaar
+    FMasker: Integer;       // spoelen die stroom krijgen (bit 0 = A ... bit 3 = D)
+    FRichting: Integer;     // laatste stap: 1 rechtsom, -1 linksom
+    procedure Tik(Sender: TObject);
+    procedure SetStapIdx(const Value: Integer);
+    procedure StapClick(Sender: TObject);
+    procedure NulClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function SpoelOhm: Double;
+    // stroom door spoel I (0 = A .. 3 = D), in A
+    function SpoelStroom(I: Integer): Double;
+    function SpoelAan(I: Integer): Boolean;
+    function StappenPerToer: Integer;
+    // aantal stappen (halve stappen tellen voor 0,5), + = rechtsom
+    function Stappen: Double;
+    // hoek van de as in graden (+ = rechtsom), telt door voorbij 360
+    function Hoek: Double;
+    procedure NulZetten;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+    property HalveStappen: Integer read FPos write FPos;
+    property Trilt: Boolean read FTrilt;
+  published
+    property StapIdx: Integer read FStapIdx write SetStapIdx;
+  end;
+
+  { TjanServo: servomotor met drie klemmen links: + (klem 0, rood), S (klem 2,
+    het stuursignaal, oranje) en - (klem 1, zwart). Tussen + en - zit de
+    motor (100 ohm), vanaf 4 V werkt hij. De stuurspanning op S (t.o.v. -) van
+    0 tot 5 V geeft de hoek van 0 tot 180 graden; de arm draait er met een
+    eindige snelheid naartoe. Bv. een potentiometer tussen + en - met de
+    loper aan S, of de uitgang van een poort (0 of 180 graden). Rechtsklik:
+    een pin van het Arduino-board kiezen: dan draait een echte servo mee. }
+  TjanServo = class(TjanVoedingsDeel)
+  private
+    FTimer: TTimer;
+    FHoek: Double;          // stand van de arm in graden (0..180)
+    FPin: Integer;          // 0 = geen board, anders 2..13
+    FGestuurd: Integer;     // laatst naar het board gestuurde hoek, -1 = nog niets
+    procedure Tik(Sender: TObject);
+    procedure SetPin(const Value: Integer);
+    procedure SetHoek(const Value: Double);
+    procedure PinClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function MotorOhm: Double;
+    function Voeding: Double;      // spanning tussen + en -
+    function Stuurspanning: Double; // spanning op S t.o.v. -
+    function Werkt: Boolean;       // genoeg voeding
+    function Doel: Double;         // gevraagde hoek (graden)
+    procedure Stuur(AltijdSturen: Boolean = False);
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Pin: Integer read FPin write SetPin;
+    property Hoek: Double read FHoek write SetHoek;
+  end;
+
+  { TjanVentilator: een gewone gelijkstroommotor met een schoepenrad, twee
+    klemmen onderaan (25 ohm). Hij draait zolang er stroom door gaat: sneller
+    bij een hogere spanning, andersom als je + en - omwisselt. Ook aan de
+    uitgang van een poort (traag). Telt mee in de waarheidstabel. }
+  TjanVentilator = class(TjanWeerstand)
+  private
+    FTimer: TTimer;
+    FHoek: Double;          // stand van de schoepen (graden)
+    FToeren: Double;        // getekend toerental, loopt het echte na
+    procedure Tik(Sender: TObject);
+  protected
+    function KanDraaien: Boolean; override;
+    function StdMaat: TPoint; override;
+    function ExtraBreedte: Integer; override;
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Ohm: Double; override;
+    // toerental bij de huidige spanning (omw/min, + = rechtsom)
+    function Toeren: Double;
+    function Aan: Boolean;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  end;
+
   { TjanGroupSelect:meerdere objecten tegelijk selecteren en verplaatsen.
     Wordt als onzichtbaar besturingselement op het paneel gezet. Tijdens het
     slepen van een selectierechthoek toont het die rechthoek; daarna ligt het
@@ -4434,6 +4551,8 @@ var
   // BoardSchrijf zet een pin hoog of laag; BoardVerbonden = er is een board.
   BoardSchrijf: procedure(APin: Integer; AHoog: Boolean) of object = nil;
   BoardVerbonden: Boolean = False;
+  // BoardServo zet een pin in servomodus en stuurt de hoek (0..180 graden).
+  BoardServo: procedure(APin, AHoek: Integer) of object = nil;
 
 implementation
 
@@ -4464,4 +4583,5 @@ uses Process;
 {$I jsl_stappen_flipflop.inc}
 {$I jsl_magnetisme.inc}
 {$I jsl_board.inc}
+{$I jsl_motoren.inc}
 end.

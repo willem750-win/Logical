@@ -2497,3 +2497,105 @@ msgstr "Оранжевая лампа"
 
 msgid "Ordinary lamp"
 msgstr "Обычная лампа"
+
+msgid "create stepper motor"
+msgstr "создать шаговый двигатель"
+
+msgid "create servo motor"
+msgstr "создать сервопривод"
+
+msgid "create fan"
+msgstr "создать вентилятор"
+
+msgid "Steps per revolution"
+msgstr "Шагов на оборот"
+
+msgid "Reset counter and shaft"
+msgstr "Сбросить счётчик и вал"
+
+msgid "Angle"
+msgstr "Угол"
+
+msgid "Steps"
+msgstr "Шаги"
+
+msgid "opposite coils!"
+msgstr "противоположные катушки!"
+
+msgid "clockwise"
+msgstr "по часовой стрелке"
+
+msgid "anticlockwise"
+msgstr "против часовой стрелки"
+
+msgid "%d steps/rev"
+msgstr "%d шагов/об"
+
+msgid "Two opposite coils pull at the same time: the rotor does not know where to go and stays put."
+msgstr "Две противоположные катушки тянут одновременно: ротор не знает, куда повернуть, и стоит на месте."
+
+msgid "Steps: %s   shaft angle: %s°"
+msgstr "Шаги: %s   угол вала: %s°"
+
+msgid "Stepper motor"
+msgstr "Шаговый двигатель"
+
+msgid "steps per revolution)"
+msgstr "шагов на оборот)"
+
+msgid "Four coils A, B, C, D (100 ohm each) to the common terminal - (to the - rail).\nA coil pulls from 20 mA, also on the output of a gate. A, B, C, D in turn: clockwise; D, C, B, A: anticlockwise.\nRight-click: steps per revolution, reset the counter."
+msgstr "Четыре катушки A, B, C, D (по 100 Ом) к общей клемме - (к шине -).\nКатушка притягивает от 20 мА, в том числе от выхода вентиля. A, B, C, D по очереди: по часовой; D, C, B, A: против часовой.\nПравый щелчок: шагов на оборот, сбросить счётчик."
+
+msgid "coils"
+msgstr "катушки"
+
+msgid "steps"
+msgstr "шаги"
+
+msgid "Real servo on the Arduino board"
+msgstr "Настоящий сервопривод на плате Arduino"
+
+msgid "none"
+msgstr "нет"
+
+msgid "no power"
+msgstr "нет питания"
+
+msgid "It gets too little power (at least 4 V between + and -): the arm does not move."
+msgstr "Слишком мало питания (нужно не менее 4 В между + и -): рычаг не двигается."
+
+msgid "Control voltage %s: the arm turns to %s°."
+msgstr "Управляющее напряжение %s: рычаг поворачивается на %s°."
+
+msgid "The real servo on %s turns along."
+msgstr "Настоящий сервопривод на %s поворачивается вместе."
+
+msgid "Real servo on %s: no board connected."
+msgstr "Настоящий сервопривод на %s: плата не подключена."
+
+msgid "Servo motor"
+msgstr "Сервопривод"
+
+msgid "Three terminals: + and - for the motor, S for the control signal. 0 V on S gives 0°, 5 V gives 180°.\nE.g. a potentiometer between + and - with the wiper on S. Right-click: a real servo on the Arduino board."
+msgstr "Три клеммы: + и - для двигателя, S для управляющего сигнала. 0 В на S дают 0°, 5 В дают 180°.\nНапример, потенциометр между + и - с движком на S. Правый щелчок: настоящий сервопривод на плате Arduino."
+
+msgid "supply"
+msgstr "питание"
+
+msgid "It turns clockwise: %s rpm."
+msgstr "Вращается по часовой стрелке: %s об/мин."
+
+msgid "It turns anticlockwise: %s rpm."
+msgstr "Вращается против часовой стрелки: %s об/мин."
+
+msgid "It stands still: less than 1 V."
+msgstr "Стоит: меньше 1 В."
+
+msgid "Fan"
+msgstr "Вентилятор"
+
+msgid "An ordinary motor: it keeps turning as long as current flows, faster with more voltage.\nSwap + and - and it turns the other way."
+msgstr "Обычный двигатель: вращается, пока течёт ток, быстрее при большем напряжении.\nПоменяйте + и - местами, и он закрутится в другую сторону."
+
+msgid "Motors (stepper motor, servo motor, fan)"
+msgstr "Двигатели (шаговый, сервопривод, вентилятор)"

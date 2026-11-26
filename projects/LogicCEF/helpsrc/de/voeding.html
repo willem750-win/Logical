@@ -424,6 +424,15 @@
   </ul>
   <p>Spule und Kontakt sind elektrisch getrennt: Der Kontakt darf in einem anderen Kreis mit einer anderen Quelle liegen. Das Relais funktioniert auch in der Wahrheitstabelle: Dort zählt es als 1, wenn es angezogen ist. Siehe <a href="les11.html">Lektion 11</a>; wie ein Relais innen funktioniert, zeigt <a href="lesm4.html">Magnetismus 4</a>.</p>
 
+  <h2 id="stappenmotor"><img src="../img/pal-stappenmotor.png" class="ico" alt="">Der Schrittmotor</h2>
+  <p>Vier Spulen A, B, C und D um einen kleinen Magneten: den Rotor (die rote Spitze ist der Nordpol). Links sind die Klemmen A bis D, unten die gemeinsame Klemme &minus; (zur &minus; Schiene). Jede Spule hat 100&nbsp;&Omega;; ab 20&nbsp;mA wird sie zum Elektromagneten und zieht den Rotor zu sich, auch am Ausgang eines Gatters. Schalten Sie A, B, C, D nacheinander ein, dreht sich der Rotor rechtsherum; in umgekehrter Reihenfolge linksherum. Zwei benachbarte Spulen zusammen ergeben einen halben Schritt. Zwei gegenüberliegende Spulen ziehen gegeneinander: Der Rotor bleibt stehen (rotes Ausrufezeichen). Rechts sehen Sie die Achse mit einem Zeiger, den Winkel und die Anzahl der Schritte. Rechtsklick: <b>Schritte pro Umdrehung</b> (4, 48 oder 200) und <b>Zähler und Achse auf null</b>. Siehe <a href="les43.html">Lektion 43</a>.</p>
+
+  <h2 id="servo"><img src="../img/pal-servo.png" class="ico" alt="">Der Servomotor</h2>
+  <p>Ein Motor, der sich auf einen Winkel dreht, statt sich ständig zu drehen. Drei Klemmen links: <b>+</b> (rot) und <b>&minus;</b> (schwarz) für den Motor (100&nbsp;&Omega;, er arbeitet ab 4&nbsp;V) und <b>S</b> (orange) für das Steuersignal. Die Spannung an S, gemessen gegen &minus;, wählt den Winkel: 0&nbsp;V ergibt 0&deg; (Arm nach rechts), 2,5&nbsp;V ergibt 90&deg; (nach oben), 5&nbsp;V oder mehr ergibt 180&deg; (nach links). Das orange Dreieck zeigt den gewünschten Winkel; der Arm dreht sich mit begrenzter Geschwindigkeit dorthin. Rechtsklick: <b>Echter Servo am Arduino-Board</b>: Wählen Sie einen Pin, dann dreht sich ein echter Servo mit (siehe <a href="board.html#servo">Arduino-Board</a>). Siehe <a href="les44.html">Lektion 44</a>.</p>
+
+  <h2 id="ventilator"><img src="../img/pal-ventilator.png" class="ico" alt="">Der Ventilator</h2>
+  <p>Ein gewöhnlicher Gleichstrommotor mit einem Flügelrad und zwei Klemmen unten (25&nbsp;&Omega;). Er dreht sich, solange Strom fließt: 100&nbsp;U/min pro Volt, ab 1&nbsp;V. Vertauschen Sie + und &minus;, dreht er sich andersherum. In der Wahrheitstabelle zählt er als Ausgang (M). Siehe <a href="les44.html">Lektion 44</a>.</p>
+
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetismus: Stabmagnet, Kompass, Feldlinienplatte, Spule, Nagel, Relais, Leiterschaukel, Elektromotor, Nullpunktmessgerät, drehender Magnet und Transformator</h2>
   <p>Stabmagnet, Kompass und Feldlinienplatte haben keine Klemmen: Sie gehören nicht zum Stromkreis. Man legt sie frei auf das Panel und zieht sie herum. Siehe <a href="lesm1.html">Was ist Magnetismus?</a></p>
   <ul>

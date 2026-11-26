@@ -416,6 +416,15 @@
   </ul>
   <p>Coil and contact are electrically separate: the contact may be in another circuit, with another source. The relay also works in the truth table: there it counts as 1 when it is pulled in. See <a href="les11.html">lesson 11</a>; how a relay works inside is shown in <a href="lesm4.html">Magnetism 4</a>.</p>
 
+  <h2 id="stappenmotor"><img src="../img/pal-stappenmotor.png" class="ico" alt="">The stepper motor</h2>
+  <p>Four coils A, B, C and D around a small magnet: the rotor (the red tip is the north pole). The terminals A to D are on the left, the common terminal &minus; at the bottom (to the &minus; rail). Each coil is 100&nbsp;&Omega;; from 20&nbsp;mA it becomes an electromagnet and pulls the rotor towards it, also on the output of a gate. Switch on A, B, C, D in turn and the rotor turns clockwise; in the reverse order anticlockwise. Two neighbouring coils together give a half step. Two opposite coils pull against each other: the rotor stays put (red exclamation mark). On the right you see the shaft with a pointer, the angle and the number of steps. Right-click: <b>Steps per revolution</b> (4, 48 or 200) and <b>Reset counter and shaft</b>. See <a href="les43.html">lesson 43</a>.</p>
+
+  <h2 id="servo"><img src="../img/pal-servo.png" class="ico" alt="">The servo motor</h2>
+  <p>A motor that turns to an angle instead of round and round. Three terminals on the left: <b>+</b> (red) and <b>&minus;</b> (black) for the motor (100&nbsp;&Omega;, it works from 4&nbsp;V) and <b>S</b> (orange) for the control signal. The voltage on S, measured against &minus;, chooses the angle: 0&nbsp;V gives 0&deg; (arm to the right), 2.5&nbsp;V gives 90&deg; (up), 5&nbsp;V or more gives 180&deg; (to the left). The orange triangle shows the requested angle; the arm turns there at a limited speed. Right-click: <b>Real servo on the Arduino board</b>: choose a pin and a real servo turns along (see <a href="board.html#servo">Arduino board</a>). See <a href="les44.html">lesson 44</a>.</p>
+
+  <h2 id="ventilator"><img src="../img/pal-ventilator.png" class="ico" alt="">The fan</h2>
+  <p>An ordinary DC motor with a fan wheel and two terminals at the bottom (25&nbsp;&Omega;). It turns as long as current flows: 100&nbsp;rpm per volt, from 1&nbsp;V. Swap + and &minus; and it turns the other way. In the truth table it counts as an output (M). See <a href="les44.html">lesson 44</a>.</p>
+
   <h2 id="magnetisme"><img src="../img/pal-magneet.png" class="ico" alt="">Magnetism: bar magnet, compass, field line sheet, coil, nail, relay, current swing, electric motor, centre-zero meter, rotating magnet and transformer</h2>
   <p>The bar magnet, the compass and the field line sheet have no terminals: they are not part of the circuit. You put them anywhere on the panel and drag them around. See <a href="lesm1.html">What is magnetism?</a></p>
   <ul>

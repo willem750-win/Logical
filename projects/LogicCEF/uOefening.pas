@@ -335,7 +335,7 @@ begin
       O := TObject(Outs[j]);
       if (O is TjanSimBuzzer) or (O is TjanZoemer2) then begin Inc(NZ); Namen[j] := T('Z', 'B', 'B', 'S') + IntToStr(NZ); end
       else if (O is TjanSimRelais) or (O is TjanRelais2) then begin Inc(NR); Namen[j] := 'R' + IntToStr(NR); end
-      else if O is TjanSimMotor then begin Inc(NM); Namen[j] := 'M' + IntToStr(NM); end
+      else if (O is TjanSimMotor) or (O is TjanVentilator) then begin Inc(NM); Namen[j] := 'M' + IntToStr(NM); end
       else if O is TjanDisplay then begin Inc(ND); Namen[j] := 'D' + IntToStr(ND); end
       else begin Inc(NL); Namen[j] := 'L' + IntToStr(NL); end;
     end;
