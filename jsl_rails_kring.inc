@@ -2061,7 +2061,8 @@ begin
     Result := Format('TjanWeerstand;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanWeerstand(C).Soort])
   else if C is TjanBoardUit then
-    Result := Format('TjanBoardUit;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanBoardUit(C).Pin])
+    Result := Format('TjanBoardUit;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanBoardUit(C).Pin,
+      Ord(TjanBoardUit(C).Kleur)])
   else if C is TjanLamp2 then
     Result := Format('TjanLamp2;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanLamp2(C).Soort, Ord(TjanLamp2(C).Kleur)])

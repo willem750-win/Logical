@@ -1626,6 +1626,9 @@ begin
           else if VD is TjanBoardUit then
           begin
             if Count >= 5 then TjanBoardUit(VD).Pin := StrToIntDef(Trim(Strings[4]), 13);
+            // zesde veld (nieuwer): kleur van de lamp
+            if (Count >= 6) and (StrToIntDef(Trim(Strings[5]), 0) in [0 .. Ord(High(TLampKleur))]) then
+              TjanBoardUit(VD).Kleur := TLampKleur(StrToIntDef(Trim(Strings[5]), 0));
           end
           else if VD is TjanBoardIn then
           begin

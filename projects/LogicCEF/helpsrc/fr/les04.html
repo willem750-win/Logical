@@ -39,4 +39,83 @@
     s&rsquo;allume que si les trois sont activés.</p>
   </details>
 
+  <h2 id="arduino">Avec une vraie carte Arduino</h2>
+  <p>Construisez la commande à deux mains pour de vrai. Dans la version Arduino, A et B sont deux <a href="board.html">entrées Arduino</a> (broches 2 et 3) et la lampe est une sortie Arduino (broche 13).</p>
+  <p><a class="open" href="../../panels/lessen/les04-en-poort-arduino.lpl">&#9654; Ouvrir la version Arduino</a></p>
+  <figure>
+    <svg viewBox="0 0 600 340" role="img" aria-label="Schéma de câblage : boutons-poussoirs entre la broche 2 et GND et entre la broche 3 et GND, une LED avec 220 ohms entre la broche 13 et GND" style="max-width:600px;background:#fff;border:1px solid #ccc;border-radius:6px">
+    <g font-family="Arial, sans-serif" font-size="12">
+    <rect x="40" y="190" width="520" height="140" rx="12" fill="#1f5aa6" stroke="#0d3a75" stroke-width="2"/>
+    <rect x="28" y="245" width="44" height="46" fill="#b8b8b8" stroke="#777"/><text x="50" y="273" text-anchor="middle" font-size="11">USB</text>
+    <text x="400" y="282" text-anchor="middle" fill="#fff" font-size="26" font-weight="bold">UNO</text>
+    <rect x="122" y="198" width="396" height="18" fill="#222"/>
+    <rect x="135" y="202" width="10" height="10" fill="#555" stroke="#ddd" stroke-width="0.5"/>
+    <text x="140" y="230" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="165" y="202" width="10" height="10" fill="#2a9d3a" stroke="#ddd" stroke-width="0.5"/>
+    <text x="170" y="230" text-anchor="middle" fill="#fff" font-size="10">13</text>
+    <rect x="195" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="200" y="230" text-anchor="middle" fill="#fff" font-size="10">12</text>
+    <rect x="225" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="230" y="230" text-anchor="middle" fill="#fff" font-size="10">~11</text>
+    <rect x="255" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="260" y="230" text-anchor="middle" fill="#fff" font-size="10">~10</text>
+    <rect x="285" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="290" y="230" text-anchor="middle" fill="#fff" font-size="10">~9</text>
+    <rect x="315" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="320" y="230" text-anchor="middle" fill="#fff" font-size="10">8</text>
+    <rect x="345" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="350" y="230" text-anchor="middle" fill="#fff" font-size="10">7</text>
+    <rect x="375" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="380" y="230" text-anchor="middle" fill="#fff" font-size="10">~6</text>
+    <rect x="405" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="410" y="230" text-anchor="middle" fill="#fff" font-size="10">~5</text>
+    <rect x="435" y="202" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="440" y="230" text-anchor="middle" fill="#fff" font-size="10">4</text>
+    <rect x="465" y="202" width="10" height="10" fill="#2a9d3a" stroke="#ddd" stroke-width="0.5"/>
+    <text x="470" y="230" text-anchor="middle" fill="#fff" font-size="10">~3</text>
+    <rect x="495" y="202" width="10" height="10" fill="#2a9d3a" stroke="#ddd" stroke-width="0.5"/>
+    <text x="500" y="230" text-anchor="middle" fill="#fff" font-size="10">2</text>
+    <rect x="192" y="304" width="186" height="18" fill="#222"/>
+    <rect x="205" y="308" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="210" y="298" text-anchor="middle" fill="#fff" font-size="10">RES</text>
+    <rect x="235" y="308" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="240" y="298" text-anchor="middle" fill="#fff" font-size="10">3.3V</text>
+    <rect x="265" y="308" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="270" y="298" text-anchor="middle" fill="#fff" font-size="10">5V</text>
+    <rect x="295" y="308" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="300" y="298" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="325" y="308" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="330" y="298" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="355" y="308" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="360" y="298" text-anchor="middle" fill="#fff" font-size="10">VIN</text>
+    <path d="M140 207 V28 H500" stroke="#333" stroke-width="3" fill="none"/>
+    <text x="104" y="24" fill="#333" font-size="11">GND</text>
+    <path d="M500 207 V128" stroke="#2a9d3a" stroke-width="3" fill="none"/>
+    <circle cx="500" cy="124" r="4" fill="#333"/><circle cx="500" cy="84" r="4" fill="#333"/>
+    <path d="M512 80 V128 M512 104 H522" stroke="#333" stroke-width="3"/>
+    <path d="M500 80 V28" stroke="#333" stroke-width="3"/>
+    <path d="M470 207 V128" stroke="#2a9d3a" stroke-width="3" fill="none"/>
+    <circle cx="470" cy="124" r="4" fill="#333"/><circle cx="470" cy="84" r="4" fill="#333"/>
+    <path d="M482 80 V128 M482 104 H492" stroke="#333" stroke-width="3"/>
+    <path d="M470 80 V28" stroke="#333" stroke-width="3"/>
+    <path d="M170 207 V160" stroke="#2a9d3a" stroke-width="3" fill="none"/>
+    <rect x="163" y="112" width="14" height="48" rx="3" fill="#e8d3a3" stroke="#7a5a20"/>
+    <path d="M163 124 H177 M163 132 H177 M163 140 H177" stroke="#b03030" stroke-width="3"/>
+    <path d="M170 112 V94" stroke="#333" stroke-width="3"/>
+    <circle cx="170" cy="80" r="14" fill="#ffdddd" stroke="#c00000" stroke-width="2"/>
+    <path d="M162 86 H178 L170 72 Z" fill="#c00000"/><path d="M162 71 H178" stroke="#c00000" stroke-width="2"/>
+    <path d="M170 66 V28" stroke="#333" stroke-width="3"/>
+    <text x="180" y="178" fill="#333" font-size="11">220 &#937;</text>
+    <text x="492" y="108" text-anchor="end" fill="#333" font-weight="bold">bouton-poussoir</text>
+    </g></svg>
+    <figcaption>Deux boutons-poussoirs&nbsp;: broche <b>2</b> et broche <b>3</b> vers <b>GND</b>. La LED avec une résistance de 220&nbsp;&Omega; de la broche <b>13</b> vers <b>GND</b>&nbsp;; la patte longue vers la résistance.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Débranchez le câble USB et branchez deux boutons-poussoirs et une LED comme sur le schéma. Pas encore de LED&nbsp;?
+      La petite LED <b>L</b> de la carte est aussi sur la broche 13.</li>
+    <li>Rebranchez le câble, connectez la carte dans Logic (<a href="board.html">Carte Arduino</a>) et lancez la simulation.</li>
+    <li>Appuyez sur un seul bouton&nbsp;: la LED reste éteinte. Appuyez sur les deux en même temps&nbsp;: la LED s&rsquo;allume.
+      C&rsquo;est ainsi que fonctionne une vraie commande à deux mains.</li>
+  </ol>
+
   <div class="pager"><a href="les03.html">&larr; Leçon 3 : La porte NON</a><a href="les05.html">Leçon 5 : La porte OU &rarr;</a></div>
