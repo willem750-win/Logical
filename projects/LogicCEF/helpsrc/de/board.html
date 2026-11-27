@@ -50,6 +50,92 @@
   Ordnung; eine Lampe, einen Motor oder ein Relais steuern Sie über einen Transistor oder ein Relaismodul (siehe
   <a href="les42.html">Lektion 42</a>). Schließen Sie nie 230&nbsp;V an das Board an.</div>
 
+  <h2 id="aansluiten">Einen Taster und eine LED anschließen</h2>
+  <p>So schließen Sie die echten Bauteile an das Board an. Ziehen Sie zuerst das USB-Kabel ab; stecken Sie es erst wieder ein, wenn alles fest sitzt.</p>
+  <figure>
+    <svg viewBox="0 0 620 350" role="img" aria-label="Anschlussplan: ein Taster zwischen Pin 2 und GND und eine LED mit einem Widerstand von 220 Ohm zwischen Pin 13 und GND des Arduino Uno" style="max-width:620px;background:#fff;border:1px solid #ccc;border-radius:6px">
+    <g font-family="Arial, sans-serif" font-size="12">
+    <rect x="40" y="170" width="520" height="150" rx="12" fill="#1f5aa6" stroke="#0d3a75" stroke-width="2"/>
+    <rect x="28" y="230" width="44" height="46" fill="#b8b8b8" stroke="#777"/><text x="50" y="258" text-anchor="middle" font-size="11">USB</text>
+    <text x="330" y="262" text-anchor="middle" fill="#fff" font-size="26" font-weight="bold">UNO</text>
+    <rect x="122" y="178" width="396" height="18" fill="#222"/>
+    <rect x="135" y="182" width="10" height="10" fill="#555" stroke="#ddd" stroke-width="0.5"/>
+    <text x="140" y="210" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="165" y="182" width="10" height="10" fill="#2a9d3a" stroke="#ddd" stroke-width="0.5"/>
+    <text x="170" y="210" text-anchor="middle" fill="#fff" font-size="10">13</text>
+    <rect x="195" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="200" y="210" text-anchor="middle" fill="#fff" font-size="10">12</text>
+    <rect x="225" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="230" y="210" text-anchor="middle" fill="#fff" font-size="10">~11</text>
+    <rect x="255" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="260" y="210" text-anchor="middle" fill="#fff" font-size="10">~10</text>
+    <rect x="285" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="290" y="210" text-anchor="middle" fill="#fff" font-size="10">~9</text>
+    <rect x="315" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="320" y="210" text-anchor="middle" fill="#fff" font-size="10">8</text>
+    <rect x="345" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="350" y="210" text-anchor="middle" fill="#fff" font-size="10">7</text>
+    <rect x="375" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="380" y="210" text-anchor="middle" fill="#fff" font-size="10">~6</text>
+    <rect x="405" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="410" y="210" text-anchor="middle" fill="#fff" font-size="10">~5</text>
+    <rect x="435" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="440" y="210" text-anchor="middle" fill="#fff" font-size="10">4</text>
+    <rect x="465" y="182" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="470" y="210" text-anchor="middle" fill="#fff" font-size="10">~3</text>
+    <rect x="495" y="182" width="10" height="10" fill="#2a9d3a" stroke="#ddd" stroke-width="0.5"/>
+    <text x="500" y="210" text-anchor="middle" fill="#fff" font-size="10">2</text>
+    <rect x="180" y="226" width="12" height="7" fill="#ffd34d"/><text x="198" y="233" fill="#fff" font-size="10">L</text>
+    <rect x="192" y="290" width="186" height="18" fill="#222"/>
+    <rect x="205" y="294" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="210" y="284" text-anchor="middle" fill="#fff" font-size="10">RES</text>
+    <rect x="235" y="294" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="240" y="284" text-anchor="middle" fill="#fff" font-size="10">3.3V</text>
+    <rect x="265" y="294" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="270" y="284" text-anchor="middle" fill="#fff" font-size="10">5V</text>
+    <rect x="295" y="294" width="10" height="10" fill="#555" stroke="#ddd" stroke-width="0.5"/>
+    <text x="300" y="284" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="325" y="294" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="330" y="284" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="355" y="294" width="10" height="10" fill="#888" stroke="#ddd" stroke-width="0.5"/>
+    <text x="360" y="284" text-anchor="middle" fill="#fff" font-size="10">VIN</text>
+    <path d="M170 187 V150" stroke="#2a9d3a" stroke-width="3" fill="none"/>
+    <rect x="162" y="95" width="16" height="55" rx="3" fill="#e8d3a3" stroke="#7a5a20"/>
+    <path d="M162 108 H178 M162 116 H178 M162 124 H178" stroke="#b03030" stroke-width="3"/>
+    <text x="186" y="128" fill="#333">220 &#937;</text>
+    <path d="M170 95 V45 H100 V70" stroke="#2a9d3a" stroke-width="3" fill="none"/>
+    <circle cx="100" cy="88" r="15" fill="#ffdddd" stroke="#c00000" stroke-width="2"/>
+    <path d="M90 80 H110 L100 96 Z" fill="#c00000"/><path d="M90 97 H110" stroke="#c00000" stroke-width="2"/>
+    <text x="60" y="64" fill="#c00000" font-size="11">langes Bein (+)</text>
+    <text x="122" y="92" fill="#c00000" font-weight="bold">LED</text>
+    <path d="M100 103 V140 H140 V178" stroke="#333" stroke-width="3" fill="none"/>
+    <path d="M500 187 V90 H515" stroke="#2a9d3a" stroke-width="3" fill="none"/>
+    <circle cx="520" cy="90" r="4" fill="#333"/><circle cx="560" cy="90" r="4" fill="#333"/>
+    <path d="M514 76 H566 M540 76 V64" stroke="#333" stroke-width="3"/>
+    <text x="540" y="56" text-anchor="middle" fill="#333" font-weight="bold">Taster</text>
+    <path d="M565 90 H595 V335 H300 V304" stroke="#333" stroke-width="3" fill="none"/>
+    </g></svg>
+    <figcaption>Der Taster zwischen Pin <b>2</b> und <b>GND</b> (Arduino-Eingang); die LED mit einem Widerstand von 220&nbsp;&Omega; zwischen Pin <b>13</b> und <b>GND</b> (Arduino-Ausgang). Das lange Bein der LED zeigt zum Widerstand.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Taster</b> (für den <b>Arduino-Eingang</b>): ein Bein an Pin <b>2</b>, das andere an <b>GND</b>. Ein Widerstand ist
+      nicht nötig. Drücken Sie den Taster, ist der Pin mit GND verbunden, und Logic sieht den Taster auf dem Bildschirm geschlossen.</li>
+    <li><b>LED</b> (für den <b>Arduino-Ausgang</b>): von Pin <b>13</b> über einen Widerstand von <b>220&nbsp;&Omega;</b> zum
+      <b>langen Bein</b> (+) der LED; das kurze Bein, an der flachen Seite der LED, an <b>GND</b>. Steckt die LED falsch herum,
+      leuchtet sie nicht, aber es geht nichts kaputt.</li>
+  </ul>
+  <h3>Ein Versuch ohne zusätzliche Bauteile</h3>
+  <ol class="steps">
+    <li>Öffnen Sie das Beispiel oben (Arduino-Eingang an D2, NICHT-Gatter, Arduino-Ausgang an D13), verbinden Sie das Board und
+      starten Sie die Simulation.</li>
+    <li>An Pin 13 sitzt schon eine kleine LED auf dem Board selbst, beschriftet mit <b>L</b>. Sie leuchtet: Der Taster ist nicht
+      gedrückt, und das NICHT-Gatter macht daraus eine 1.</li>
+    <li>Nehmen Sie einen Steckdraht und stecken Sie ein Ende in Pin <b>2</b> und das andere in <b>GND</b>: Das ist, als ob Sie den
+      Taster drücken. Die LED L geht aus, und der Taster und die Lampe auf dem Bildschirm folgen.</li>
+  </ol>
+  <div class="tip"><strong>Tipp:</strong> Geben Sie jedem Arduino-Bauteil einen eigenen Pin (Rechtsklick &rsaquo; <b>Pin des
+  Arduino</b>). Pin 0 und 1 können Sie nicht wählen: Die USB-Verbindung benutzt sie.</div>
+
   <h2 id="servo">Ein echter Servo</h2>
   <p>Ein <a href="voeding.html#servo">Servomotor</a> auf dem Panel kann einen echten Servo mitdrehen lassen. Rechtsklick auf den Servo, wählen Sie <b>Echter Servo am Arduino-Board</b> und einen Pin (z.&nbsp;B. <b>D9</b>). Schließen Sie den Servo so an: braun oder schwarz an <b>GND</b>, rot an <b>5V</b>, orange oder gelb an den gewählten Pin. Logic schaltet diesen Pin in den Servomodus und sendet den Winkel des Arms auf dem Bildschirm. Siehe <a href="les44.html">Lektion 44</a>.</p>
   <figure>
