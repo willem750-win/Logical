@@ -296,3 +296,24 @@ ol.lessons li.b::before { content: attr(data-nr) "."; position: absolute; left: 
 /* ingang naar een deel van een pagina (de drie niveaus van het leerpad) */
 nav > a.sub { padding: 4px 20px 4px 44px; font-size: 14px; }
 nav > a.sub.active { font-weight: 600; }
+
+/* ---------- Zoeken (zoek.js) ---------- */
+
+nav .zoek { padding: 0 20px 12px; }
+nav .zoek input {
+  width: 100%; box-sizing: border-box; padding: 6px 10px;
+  border: 1px solid var(--border); border-radius: 6px; font: inherit; font-size: 14px;
+}
+nav #zoekuit {
+  display: none; margin-top: 6px; max-height: 60vh; overflow-y: auto;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--panel);
+}
+nav #zoekuit a {
+  display: block; padding: 6px 10px; border-bottom: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 13px; line-height: 1.4;
+}
+nav #zoekuit a:last-child { border-bottom: none; }
+nav #zoekuit a b { display: block; color: var(--accent); font-weight: 600; }
+nav #zoekuit a span { color: var(--muted); }
+nav #zoekuit mark { background: #ffe58a; color: inherit; padding: 0; }
+nav #zoekuit .geen { padding: 8px 10px; color: var(--muted); font-size: 13px; }

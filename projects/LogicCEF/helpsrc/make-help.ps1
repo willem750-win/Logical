@@ -10,6 +10,10 @@
   paginatitel gebruikt wordt. De navigatie links en de taalknoppen worden
   hier toegevoegd, zodat ze op alle pagina's gelijk blijven.
 
+  Zoeken: per taal komt er een <taal>\zoekindex.js met de tekst van elke
+  pagina, opgedeeld per kop (h2); zoek.js toont de treffers onder het
+  zoekvak in de navigatie. Werkt zonder internet en zonder server.
+
   Gebruik:
       powershell -ExecutionPolicy Bypass -File helpsrc\make-help.ps1
 #>
@@ -21,6 +25,13 @@ if (-not $Out) { $Out = Join-Path (Split-Path $Src -Parent) 'Resultaat/help' }
 
 $Langs = 'nl', 'en', 'fr', 'de'
 $LangLabel = @{ nl = 'NL'; en = 'EN'; fr = 'FR'; de = 'DE' }
+# zoekvak: tekst in het vak en tekst als er niets gevonden is
+$ZoekTekst = @{
+  nl = @('Zoeken in de help...', 'Niets gevonden.')
+  en = @('Search the help...', 'Nothing found.')
+  fr = @("Rechercher dans l'aide...", 'Aucun résultat.')
+  de = @('In der Hilfe suchen...', 'Nichts gefunden.')
+}
 
 # Volgorde en groepen van de navigatie. 'group:' = tussenkop. Een naam met
 # een # (pagina#anker) is een ingang naar een deel van een pagina: de drie
@@ -78,6 +89,7 @@ $Utf8 = New-Object System.Text.UTF8Encoding($false)
 New-Item -ItemType Directory -Force $Out | Out-Null
 Copy-Item (Join-Path $Src 'help.css') (Join-Path $Out 'help.css') -Force
 Copy-Item (Join-Path $Src 'stroom.js') (Join-Path $Out 'stroom.js') -Force
+Copy-Item (Join-Path $Src 'zoek.js') (Join-Path $Out 'zoek.js') -Force
 New-Item -ItemType Directory -Force (Join-Path $Out 'img') | Out-Null
 Copy-Item (Join-Path $Src 'img/*') (Join-Path $Out 'img') -Force
 
@@ -86,6 +98,7 @@ foreach ($L in $Langs) {
   $LangDir = Join-Path $Src $L
   if (-not (Test-Path $LangDir)) { continue }
   New-Item -ItemType Directory -Force (Join-Path $Out $L) | Out-Null
+  $Zoek = New-Object System.Collections.ArrayList
 
   # gewone pagina's, plus de lessen van het leerpad (les*.html): die staan niet
   # apart in de navigatie, daar is 'Leerpad' actief
@@ -108,6 +121,23 @@ foreach ($L in $Langs) {
     if ($Body -match '^\s*<!--\s*titel:\s*(.*?)\s*-->') {
       $Title = $Matches[1]
       $Body = $Body.Substring($Matches[0].Length).TrimStart()
+    }
+
+    # zoekindex: de pagina per kop (h2), zonder tekeningen en scripts
+    $PaginaTitel = [System.Net.WebUtility]::HtmlDecode($Title)
+    foreach ($Deel in [regex]::Split($Body, '(?=<h2[\s>])')) {
+      $Anker = ''; $Kop = ''
+      if ($Deel -match '^<h2([^>]*)>([\s\S]*?)</h2>') {
+        $Attr = $Matches[1]; $Kop = $Matches[2]
+        if ($Attr -match 'id="([^"]+)"') { $Anker = $Matches[1] }
+      }
+      $Tekst = $Deel -replace '(?s)<svg.*?</svg>', ' ' -replace '(?s)<script.*?</script>', ' ' -replace '<[^>]+>', ' '
+      $Tekst = ([System.Net.WebUtility]::HtmlDecode($Tekst) -replace '\s+', ' ').Trim()
+      if ($Tekst.Length -lt 3) { continue }
+      $Kop = ([System.Net.WebUtility]::HtmlDecode(($Kop -replace '<[^>]+>', '')) -replace '\s+', ' ').Trim()
+      $U = "$P.html"; if ($Anker) { $U += "#$Anker" }
+      $T = $PaginaTitel; if ($Kop) { $T += ' > ' + $Kop }
+      [void]$Zoek.Add([ordered]@{ u = $U; t = $T; x = $Tekst })
     }
 
     $sb = New-Object System.Text.StringBuilder
@@ -147,18 +177,23 @@ foreach ($L in $Langs) {
 <nav>
   <div class="brand"><img src="../img/logo.png" class="logo" alt="">Logic</div>
   <div class="langs">$LangLinks</div>
+  <div class="zoek"><input type="search" id="zoekvak" placeholder="$($ZoekTekst[$L][0])" aria-label="$($ZoekTekst[$L][0])" autocomplete="off"><div id="zoekuit" data-geen="$($ZoekTekst[$L][1])"></div></div>
 $($sb.ToString().TrimEnd())
 </nav>
 <main>
 $($Body.TrimEnd())
 </main>
 </div>
+<script src="zoekindex.js"></script>
+<script src="../zoek.js"></script>
 </body>
 </html>
 "@
     [IO.File]::WriteAllText((Join-Path $Out "$L/$P.html"), $Html.Replace("`r`n", "`n"), $Utf8)
     $Count++
   }
+  $Json = ConvertTo-Json -InputObject @($Zoek) -Compress -Depth 3
+  [IO.File]::WriteAllText((Join-Path $Out "$L/zoekindex.js"), "var ZOEKINDEX = $Json;`n", $Utf8)
 }
 
 # Startpagina zonder taal: doorsturen naar het Nederlands
