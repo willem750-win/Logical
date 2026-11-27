@@ -52,6 +52,59 @@
 
   <h2 id="servo">A real servo</h2>
   <p>A <a href="voeding.html#servo">servo motor</a> on the panel can make a real servo turn along. Right-click the servo, choose <b>Real servo on the Arduino board</b> and a pin (e.g. <b>D9</b>). Connect the servo like this: brown or black to <b>GND</b>, red to <b>5V</b>, orange or yellow to the chosen pin. Logic puts that pin in servo mode and sends the angle of the arm on the screen. See <a href="les44.html">lesson 44</a>.</p>
+  <figure>
+    <svg viewBox="0 0 580 320" role="img" aria-label="Wiring diagram: the orange wire of the servo to pin 9, the red one to 5V and the brown one to GND of the Arduino Uno" style="max-width:580px;background:#fff;border:1px solid #ccc;border-radius:6px">
+    <g font-family="Arial, sans-serif" font-size="12">
+    <rect x="20" y="50" width="330" height="220" rx="12" fill="#1f5aa6" stroke="#0d3a75" stroke-width="2"/>
+    <rect x="8" y="90" width="44" height="50" fill="#b8b8b8" stroke="#777"/><text x="30" y="120" text-anchor="middle" font-size="11">USB</text>
+    <text x="190" y="165" text-anchor="middle" fill="#fff" font-size="26" font-weight="bold">UNO</text>
+    <text x="190" y="185" text-anchor="middle" fill="#cfe0ff" font-size="12">Arduino</text>
+    <rect x="150" y="58" width="190" height="18" fill="#222"/>
+    <text x="245" y="96" text-anchor="middle" fill="#fff" font-size="10">DIGITAL</text>
+    <rect x="155" y="62" width="10" height="10" fill="#888"/>
+    <text x="160" y="86" text-anchor="middle" fill="#fff" font-size="10">13</text>
+    <rect x="181" y="62" width="10" height="10" fill="#888"/>
+    <text x="186" y="86" text-anchor="middle" fill="#fff" font-size="10">12</text>
+    <rect x="207" y="62" width="10" height="10" fill="#888"/>
+    <text x="212" y="86" text-anchor="middle" fill="#fff" font-size="10">~11</text>
+    <rect x="233" y="62" width="10" height="10" fill="#888"/>
+    <text x="238" y="86" text-anchor="middle" fill="#fff" font-size="10">~10</text>
+    <rect x="259" y="62" width="10" height="10" fill="#ff8c00"/>
+    <text x="264" y="86" text-anchor="middle" fill="#fff" font-size="10">~9</text>
+    <rect x="285" y="62" width="10" height="10" fill="#888"/>
+    <text x="290" y="86" text-anchor="middle" fill="#fff" font-size="10">8</text>
+    <rect x="311" y="62" width="10" height="10" fill="#888"/>
+    <text x="316" y="86" text-anchor="middle" fill="#fff" font-size="10">7</text>
+    <rect x="110" y="244" width="172" height="18" fill="#222"/>
+    <text x="196" y="222" text-anchor="middle" fill="#fff" font-size="10">POWER</text>
+    <rect x="117" y="248" width="10" height="10" fill="#888"/>
+    <text x="122" y="238" text-anchor="middle" fill="#fff" font-size="10">RES</text>
+    <rect x="147" y="248" width="10" height="10" fill="#888"/>
+    <text x="152" y="238" text-anchor="middle" fill="#fff" font-size="10">3.3V</text>
+    <rect x="177" y="248" width="10" height="10" fill="#e00000"/>
+    <text x="182" y="238" text-anchor="middle" fill="#fff" font-size="10">5V</text>
+    <rect x="207" y="248" width="10" height="10" fill="#7a3c14"/>
+    <text x="212" y="238" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="237" y="248" width="10" height="10" fill="#888"/>
+    <text x="242" y="238" text-anchor="middle" fill="#fff" font-size="10">GND</text>
+    <rect x="267" y="248" width="10" height="10" fill="#888"/>
+    <text x="272" y="238" text-anchor="middle" fill="#fff" font-size="10">VIN</text>
+    <rect x="440" y="130" width="100" height="60" rx="4" fill="#2e5fb0" stroke="#1a3a70" stroke-width="2"/>
+    <rect x="452" y="112" width="40" height="18" fill="#2e5fb0" stroke="#1a3a70" stroke-width="2"/>
+    <circle cx="472" cy="112" r="7" fill="#fff" stroke="#444"/>
+    <path d="M472 112 L515 98" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M472 112 L515 98" stroke="#444" stroke-width="1" fill="none"/>
+    <text x="490" y="168" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">SG90</text>
+    <rect x="400" y="140" width="18" height="40" fill="#222"/>
+    <path d="M418 150 H440 M418 160 H440 M418 170 H440" stroke="#555" stroke-width="3"/>
+    <path d="M400 150 H385 V26 H264 V66" fill="none" stroke="#ff8c00" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M400 160 H375 V290 H182 V258" fill="none" stroke="#e00000" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M400 170 H365 V302 H212 V258" fill="none" stroke="#7a3c14" stroke-width="4" stroke-linejoin="round"/>
+    <text x="395" y="40" fill="#d07000" font-weight="bold">~9 (signal)</text>
+    <text x="420" y="285" fill="#e00000" font-weight="bold">5V (plus)</text>
+    <text x="420" y="303" fill="#7a3c14" font-weight="bold">GND (minus)</text>
+    </g></svg>
+    <figcaption>How to connect a servo to an Arduino Uno: <b>orange</b> (signal) to pin <b>~9</b> at the top, <b>red</b> to <b>5V</b> and <b>brown</b> to <b>GND</b> at the bottom by POWER. Use the 5V next to 3.3V. Unplug the USB cable before you connect wires.</figcaption>
+  </figure>
   <p>A small servo (such as the SG90 from a starter kit) may use the 5V of the board. A bigger servo gets its own supply; then connect the GND of that supply to the GND of the board.</p>
 
   <h2>Not working?</h2>
