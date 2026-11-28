@@ -2599,3 +2599,9 @@ msgstr "Обычный двигатель: вращается, пока течё
 
 msgid "Motors (stepper motor, servo motor, fan)"
 msgstr "Двигатели (шаговый, сервопривод, вентилятор)"
+
+msgid "It also really buzzes, through the speakers. Right-click: sound off."
+msgstr "Он также по-настоящему жужжит через динамики. Правый щелчок: выключить звук."
+
+msgid "Sound off (right-click: sound on)."
+msgstr "Звук выключен (правый щелчок: включить звук)."

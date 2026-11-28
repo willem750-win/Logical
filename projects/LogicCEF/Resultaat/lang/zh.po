@@ -2599,3 +2599,9 @@ msgstr "普通电机：有电流时一直转，电压越高转得越快。\n交�
 
 msgid "Motors (stepper motor, servo motor, fan)"
 msgstr "电机（步进电机、舵机、风扇）"
+
+msgid "It also really buzzes, through the speakers. Right-click: sound off."
+msgstr "它也会通过扬声器真的发出蜂鸣声。右键：关闭声音。"
+
+msgid "Sound off (right-click: sound on)."
+msgstr "声音已关闭（右键：打开声音）。"

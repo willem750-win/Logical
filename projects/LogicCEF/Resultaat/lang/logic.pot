@@ -186,7 +186,7 @@ msgstr ""
 msgid "V: forward, A: backward\nStart/Finish: begin and end of the road\nTel: a pulse at each post (1-5)\nright-click: place limit switches"
 msgstr ""
 
-#: jsl_bewegend.inc:1535
+#: jsl_bewegend.inc:1535 jsl_magnetisme.inc:3591
 msgid "Sound"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "one input per note (C D E F G A B C')\non: the key lights up and the note sounds\nright-click: sound on/off"
 msgstr ""
 
-#: jsl_bewegend.inc:1780 jsl_bewegend.inc:1786 jsl_rails_kring.inc:582
+#: jsl_bewegend.inc:1780 jsl_bewegend.inc:1786 jsl_rails_kring.inc:584
 msgid "red"
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "amber"
 msgstr ""
 
-#: jsl_bewegend.inc:1782 jsl_bewegend.inc:1787 jsl_rails_kring.inc:584
+#: jsl_bewegend.inc:1782 jsl_bewegend.inc:1787 jsl_rails_kring.inc:586
 msgid "green"
 msgstr ""
 
@@ -858,11 +858,11 @@ msgstr ""
 msgid "A magnet or a coil with a current pulls it as soon as the field is strong enough.\nThe closer to a pole, the larger the force."
 msgstr ""
 
-#: jsl_magnetisme.inc:1741 jsl_magnetisme.inc:3541
+#: jsl_magnetisme.inc:1741 jsl_magnetisme.inc:3747
 msgid "NC"
 msgstr ""
 
-#: jsl_magnetisme.inc:1742 jsl_magnetisme.inc:3540
+#: jsl_magnetisme.inc:1742 jsl_magnetisme.inc:3746
 msgid "NO"
 msgstr ""
 
@@ -1074,43 +1074,51 @@ msgstr ""
 msgid "Right-click: turns of the primary and the secondary coil."
 msgstr ""
 
-#: jsl_magnetisme.inc:3431
+#: jsl_magnetisme.inc:3629
 msgid "The buzzer is sounding."
 msgstr ""
 
-#: jsl_magnetisme.inc:3433
+#: jsl_magnetisme.inc:3631
 msgid "The buzzer is silent: less than 10 mA flows."
 msgstr ""
 
-#: jsl_magnetisme.inc:3435 jsl_magnetisme.inc:3447 fsettings.lfm
+#: jsl_magnetisme.inc:3633 jsl_magnetisme.inc:3653 fsettings.lfm
 msgid "Buzzer"
 msgstr ""
 
-#: jsl_magnetisme.inc:3439
+#: jsl_magnetisme.inc:3637
 msgid "Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate."
 msgstr ""
 
-#: jsl_magnetisme.inc:3542
+#: jsl_magnetisme.inc:3642
+msgid "It also really buzzes, through the speakers. Right-click: sound off."
+msgstr ""
+
+#: jsl_magnetisme.inc:3646
+msgid "Sound off (right-click: sound on)."
+msgstr ""
+
+#: jsl_magnetisme.inc:3748
 msgid "coil"
 msgstr ""
 
-#: jsl_magnetisme.inc:3555
+#: jsl_magnetisme.inc:3761
 msgid "The relay is energised: the NO contact is closed, the NC contact open."
 msgstr ""
 
-#: jsl_magnetisme.inc:3560
+#: jsl_magnetisme.inc:3766
 msgid "The relay is released: the NC contact is closed, the NO contact open."
 msgstr ""
 
-#: jsl_magnetisme.inc:3563 jsl_magnetisme.inc:3583 fsettings.lfm
+#: jsl_magnetisme.inc:3769 jsl_magnetisme.inc:3789 fsettings.lfm
 msgid "Relay"
 msgstr ""
 
-#: jsl_magnetisme.inc:3565
+#: jsl_magnetisme.inc:3771
 msgid "Coil: 60 ohms, current %s. Pulls in from 35 mA, drops out below 20 mA."
 msgstr ""
 
-#: jsl_magnetisme.inc:3572
+#: jsl_magnetisme.inc:3778
 msgid "Terminals: the coil at the bottom (in on the left, out on the right); top left the common contact C,\ntop right the NO contact and middle right the NC contact. A gate (5 V) can drive the coil."
 msgstr ""
 
@@ -1298,55 +1306,55 @@ msgstr ""
 msgid "Memory block"
 msgstr ""
 
-#: jsl_rails_kring.inc:166
+#: jsl_rails_kring.inc:168
 msgid "+ rail (supply):"
 msgstr ""
 
-#: jsl_rails_kring.inc:171
+#: jsl_rails_kring.inc:173
 msgid "Plug inputs in on the right of the rail. Below 2V no signal.\nThe voltage comes from the source (battery). Drag the ends to resize."
 msgstr ""
 
-#: jsl_rails_kring.inc:181
+#: jsl_rails_kring.inc:183
 msgid "- rail (ground)\nPlug outputs in on the left of the rail.\nDrag the ends to resize."
 msgstr ""
 
-#: jsl_rails_kring.inc:194
+#: jsl_rails_kring.inc:196
 msgid "+ rail"
 msgstr ""
 
-#: jsl_rails_kring.inc:199
+#: jsl_rails_kring.inc:201
 msgid "- rail"
 msgstr ""
 
-#: jsl_rails_kring.inc:200
+#: jsl_rails_kring.inc:202
 msgid "Ground"
 msgstr ""
 
-#: jsl_rails_kring.inc:569
+#: jsl_rails_kring.inc:571
 msgid "good contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:570
+#: jsl_rails_kring.inc:572
 msgid "long thin wire"
 msgstr ""
 
-#: jsl_rails_kring.inc:571
+#: jsl_rails_kring.inc:573
 msgid "poor contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:572
+#: jsl_rails_kring.inc:574
 msgid "burnt contact"
 msgstr ""
 
-#: jsl_rails_kring.inc:574
+#: jsl_rails_kring.inc:576
 msgid "series resistor"
 msgstr ""
 
-#: jsl_rails_kring.inc:583
+#: jsl_rails_kring.inc:585
 msgid "yellow"
 msgstr ""
 
-#: jsl_rails_kring.inc:586
+#: jsl_rails_kring.inc:588
 msgid "blue"
 msgstr ""
 

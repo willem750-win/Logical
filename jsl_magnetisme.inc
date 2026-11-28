@@ -3368,6 +3368,168 @@ const
   Zoemer2W = 80;
   Zoemer2H = 46;
   Zoemer2Drempel = 0.010;   // A: vanaf hier zoemt hij
+  ZM_PERIODE = 50;          // samples per golf: 22050 / 50 = 441 Hz
+  ZM_GOLVEN = 220;          // een halve seconde, die steeds opnieuw speelt
+  {$IFDEF UNIX}
+  ZM_LINUX_SEC = 30;        // aplay kan niet herhalen: een lange WAV, daarna opnieuw
+  {$ENDIF}
+
+// ============================================================
+// Echt geluid van de zoemers met twee klemmen: een zachte zoemtoon zolang
+// er een zoemer aan staat (en zijn geluid aan staat). Op Windows herhaalt
+// PlaySound een korte WAV, op Linux speelt aplay (of pw-play, paplay) een
+// lange WAV. De muziekdoos gaat voor: speelt die, dan zwijgen de zoemers.
+// ============================================================
+
+var
+  ZoemerWav: TBytes;
+  ZoemerKlinkt: Boolean = False;
+  {$IFDEF UNIX}
+  ZoemerProc: TProcess = nil;
+  {$ENDIF}
+
+function MaakZoemWav(ASec: Integer): TBytes;
+var
+  B: TBytes;
+  i, n: Integer;
+  t, v: Double;
+
+  procedure Zet32(P: Integer; V: LongWord);
+  begin
+    B[P] := Byte(V); B[P + 1] := Byte(V shr 8); B[P + 2] := Byte(V shr 16); B[P + 3] := Byte(V shr 24);
+  end;
+
+  procedure Zet16(P: Integer; V: Word);
+  begin
+    B[P] := Byte(V); B[P + 1] := Byte(V shr 8);
+  end;
+
+  procedure ZetTekst(P: Integer; const T: string);
+  var
+    j: Integer;
+  begin
+    for j := 1 to 4 do B[P + j - 1] := Ord(T[j]);
+  end;
+
+begin
+  // een hele golf past precies in de lus: geen klik bij het herhalen
+  if ASec <= 0 then n := ZM_PERIODE * ZM_GOLVEN
+  else n := ZM_PERIODE * (MZ_RATE div ZM_PERIODE) * ASec;
+  SetLength(B, 44 + 2 * n);
+  ZetTekst(0, 'RIFF'); Zet32(4, 36 + 2 * n); ZetTekst(8, 'WAVE');
+  ZetTekst(12, 'fmt '); Zet32(16, 16); Zet16(20, 1); Zet16(22, 1);
+  Zet32(24, MZ_RATE); Zet32(28, MZ_RATE * 2); Zet16(32, 2); Zet16(34, 16);
+  ZetTekst(36, 'data'); Zet32(40, 2 * n);
+  for i := 0 to n - 1 do
+  begin
+    t := (i mod ZM_PERIODE) / ZM_PERIODE * 2 * Pi;
+    // een wat ruwe toon, zoals een zoemer, maar niet te hard
+    v := Sin(t) + 0.45 * Sin(3 * t) + 0.25 * Sin(5 * t);
+    Zet16(44 + 2 * i, Word(SmallInt(Round(v * 0.22 * 32767 / 1.7))));
+  end;
+  Result := B;
+end;
+
+procedure ZoemerGeluid(AAan: Boolean);
+{$IFDEF UNIX}
+const
+  Spelers: array[0..3] of string = ('aplay', 'pw-play', 'paplay', 'afplay');
+var
+  Pad, Prog: string;
+  F: TFileStream;
+  j: Integer;
+{$ENDIF}
+begin
+  if not AAan then
+  begin
+    if not ZoemerKlinkt then Exit;
+    ZoemerKlinkt := False;
+    {$IFDEF WINDOWS}
+    if MuziekBron = nil then PlaySound(nil, 0, 0);
+    {$ENDIF}
+    {$IFDEF UNIX}
+    if Assigned(ZoemerProc) then
+    begin
+      try
+        if ZoemerProc.Running then
+        begin
+          ZoemerProc.Terminate(0);
+          ZoemerProc.WaitOnExit;
+        end;
+      except
+      end;
+      FreeAndNil(ZoemerProc);
+    end;
+    {$ENDIF}
+    Exit;
+  end;
+  {$IFDEF WINDOWS}
+  if ZoemerKlinkt then Exit;
+  if Length(ZoemerWav) = 0 then ZoemerWav := MaakZoemWav(0);
+  ZoemerKlinkt := PlaySound(PChar(@ZoemerWav[0]), 0, SND_MEMORY or SND_ASYNC or SND_LOOP or SND_NODEFAULT);
+  {$ENDIF}
+  {$IFDEF UNIX}
+  // speelt hij nog? (na ZM_LINUX_SEC seconden opnieuw beginnen)
+  if ZoemerKlinkt and Assigned(ZoemerProc) and ZoemerProc.Running then Exit;
+  FreeAndNil(ZoemerProc);
+  ZoemerKlinkt := False;
+  Prog := '';
+  for j := 0 to High(Spelers) do
+  begin
+    Prog := ExeSearch(Spelers[j], GetEnvironmentVariable('PATH'));
+    if Prog <> '' then Break;
+  end;
+  if Prog = '' then Exit;
+  Pad := GetTempDir(False) + 'logic-zoemer.wav';
+  try
+    if not FileExists(Pad) then
+    begin
+      if Length(ZoemerWav) = 0 then ZoemerWav := MaakZoemWav(ZM_LINUX_SEC);
+      F := TFileStream.Create(Pad, fmCreate);
+      try
+        F.WriteBuffer(ZoemerWav[0], Length(ZoemerWav));
+      finally
+        F.Free;
+      end;
+    end;
+    ZoemerProc := TProcess.Create(nil);
+    ZoemerProc.Executable := Prog;
+    if ExtractFileName(Prog) = 'aplay' then ZoemerProc.Parameters.Add('-q');
+    ZoemerProc.Parameters.Add(Pad);
+    ZoemerProc.Execute;
+    ZoemerKlinkt := True;
+  except
+    FreeAndNil(ZoemerProc);
+  end;
+  {$ENDIF}
+end;
+
+// na elke berekening van de kring: moet er gezoemd worden?
+procedure ZoemersBijwerken(P: TWinControl);
+var
+  i: Integer;
+  Moet: Boolean;
+  C: TControl;
+begin
+  if P = nil then Exit;
+  Moet := False;
+  for i := 0 to P.ControlCount - 1 do
+  begin
+    C := P.Controls[i];
+    if (C is TjanZoemer2) and C.Visible and TjanZoemer2(C).Geluid and TjanZoemer2(C).Aan then
+    begin
+      Moet := True;
+      Break;
+    end;
+  end;
+  // de muziekdoos gaat voor
+  if MuziekBron <> nil then
+  begin
+    ZoemerKlinkt := False;
+    Exit;
+  end;
+  ZoemerGeluid(Moet);
+end;
 
 constructor TjanZoemer2.Create(AOwner: TComponent);
 begin
@@ -3375,6 +3537,34 @@ begin
   Width := Zoemer2W;
   Height := Zoemer2H;
   HelpKeyword := 'zoemer2';
+  FGeluid := True;
+end;
+
+destructor TjanZoemer2.Destroy;
+var
+  P: TWinControl;
+begin
+  P := Parent;
+  if Aan then
+  begin
+    FAmp := 0;   // telt niet meer mee
+    Visible := False;
+    if P <> nil then ZoemersBijwerken(P) else ZoemerGeluid(False);
+  end;
+  inherited Destroy;
+end;
+
+procedure TjanZoemer2.SetGeluid(const Value: Boolean);
+begin
+  if Value = FGeluid then Exit;
+  FGeluid := Value;
+  UpdateHintText;
+  if Parent <> nil then ZoemersBijwerken(Parent);
+end;
+
+procedure TjanZoemer2.GeluidClick(Sender: TObject);
+begin
+  if not FLock then Geluid := not Geluid;
 end;
 
 function TjanZoemer2.KanDraaien: Boolean;
@@ -3393,8 +3583,16 @@ begin
 end;
 
 procedure TjanZoemer2.AddMenuItems(APop: TPopupMenu);
+var
+  Mi: TMenuItem;
 begin
-  // geen soorten zoals bij de weerstand
+  // geen soorten zoals bij de weerstand; wel het geluid aan of uit
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Geluid', 'Sound', 'Son', 'Ton');
+  Mi.Checked := FGeluid;
+  Mi.Enabled := not FLock;
+  Mi.OnClick := GeluidClick;
+  APop.Items.Add(Mi);
 end;
 
 // links in op de hoogte van de ingang van het symbool, rechts uit op de
@@ -3439,6 +3637,14 @@ begin
       'Two terminals: in on the left, out on the right (to the - rail). It sounds from 10 mA, also on the output of a gate.',
       'Deux bornes : entrée à gauche, sortie à droite (vers le rail -). Il sonne à partir de 10 mA, aussi à la sortie d''une porte.',
       'Zwei Klemmen: links hinein, rechts hinaus (zur - Schiene). Er summt ab 10 mA, auch am Ausgang eines Gatters.');
+  if FGeluid then
+    Hint := Hint + #13#10 + Tr(FTaal, 'Hij zoemt ook echt, via de luidsprekers. Rechtsklik: geluid uit.',
+      'It also really buzzes, through the speakers. Right-click: sound off.',
+      'Il sonne aussi pour de vrai, par les haut-parleurs. Clic droit : son coupé.',
+      'Er summt auch wirklich, über die Lautsprecher. Rechtsklick: Ton aus.')
+  else
+    Hint := Hint + #13#10 + Tr(FTaal, 'Geluid uit (rechtsklik: geluid aan).', 'Sound off (right-click: sound on).',
+      'Son coupé (clic droit : son activé).', 'Ton aus (Rechtsklick: Ton an).');
 end;
 
 procedure TjanZoemer2.SendStatusToBar;

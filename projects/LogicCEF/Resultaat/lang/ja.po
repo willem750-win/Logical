@@ -2599,3 +2599,9 @@ msgstr "普通のモーター：電流が流れている間回り、電圧が高
 
 msgid "Motors (stepper motor, servo motor, fan)"
 msgstr "モーター（ステッピング、サーボ、ファン）"
+
+msgid "It also really buzzes, through the speakers. Right-click: sound off."
+msgstr "スピーカーから実際にブザー音も鳴ります。右クリック：音を消す。"
+
+msgid "Sound off (right-click: sound on)."
+msgstr "音なし（右クリック：音を出す）。"

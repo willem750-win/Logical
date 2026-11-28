@@ -2289,3 +2289,9 @@ msgstr "Un motore comune: gira finché passa corrente, più veloce con più tens
 
 msgid "Motors (stepper motor, servo motor, fan)"
 msgstr "Motori (passo-passo, servomotore, ventilatore)"
+
+msgid "It also really buzzes, through the speakers. Right-click: sound off."
+msgstr "Suona anche davvero, dagli altoparlanti. Clic destro: audio spento."
+
+msgid "Sound off (right-click: sound on)."
+msgstr "Audio spento (clic destro: audio acceso)."

@@ -1566,7 +1566,8 @@ begin
             TjanZekering(VD).NomIdx := StrToIntDef(Trim(Strings[4]), 2)
           else if VD is TjanZoemer2 then
           begin
-            // geen extra velden
+            // TjanZoemer2;h;l;t;w;geluid;  (zonder veld: geluid aan)
+            if Count >= 5 then TjanZoemer2(VD).Geluid := Trim(Strings[4]) <> '0';
           end
           else if VD is TjanVentilator then
           begin

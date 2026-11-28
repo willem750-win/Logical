@@ -4221,6 +4221,10 @@ end;
     rechts uit), 200 ohm. Hij zoemt vanaf 10 mA, dus ook aan de uitgang van
     een poort (5 V). }
   TjanZoemer2 = class(TjanWeerstand)
+  private
+    FGeluid: Boolean;      // zoemt ook echt, via de luidsprekers
+    procedure SetGeluid(const Value: Boolean);
+    procedure GeluidClick(Sender: TObject);
   protected
     function KanDraaien: Boolean; override;
     function StdMaat: TPoint; override;
@@ -4232,8 +4236,11 @@ end;
     function PinPos(I: Integer): TPoint; override;
     function Ohm: Double; override;
     function Aan: Boolean;
+    destructor Destroy; override;
     procedure UpdateHintText; override;
     procedure SendStatusToBar; override;
+  published
+    property Geluid: Boolean read FGeluid write SetGeluid default True;
   end;
 
   { TjanRelais2: relais in schemasymbool met een spoel met twee klemmen

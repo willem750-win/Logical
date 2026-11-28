@@ -2,6 +2,8 @@
 
 // staat in jsl_magnetisme.inc: kompassen en veldplaten opnieuw tekenen
 procedure MagneetVeranderd(AParent: TWinControl); forward;
+// staat in jsl_magnetisme.inc: de zoemers echt laten zoemen (luidsprekers)
+procedure ZoemersBijwerken(P: TWinControl); forward;
 
 { TjanRail }
 
@@ -1767,6 +1769,9 @@ begin
     for k := 0 to NP - 1 do
       if Parts[k] is TjanBoardUit then TjanBoardUit(Parts[k]).Stuur;
 
+  // zoemers met geluid: zoemen via de luidsprekers zolang er een aan staat
+  ZoemersBijwerken(P);
+
   // de + rails: spanning t.o.v. de - rail (zonder - rail: t.o.v. de massa)
   for k := 0 to NR - 1 do
   begin
@@ -2031,7 +2036,7 @@ begin
   else if C is TjanIJzer then
     Result := Format('TjanIJzer;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanZoemer2 then
-    Result := Format('TjanZoemer2;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
+    Result := Format('TjanZoemer2;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, Ord(TjanZoemer2(C).Geluid)])
   else if C is TjanVentilator then
     Result := Format('TjanVentilator;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width])
   else if C is TjanStappenmotor then
