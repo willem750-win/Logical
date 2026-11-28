@@ -1,0 +1,59 @@
+<!-- titel: Velleman K8055 -->
+  <h1 id="k8055"><img src="../img/pal-k8055-uit.png" class="ico" alt="">A Velleman K8055</h1>
+  <p class="lead">Logic can also use a <b>Velleman K8055</b> (or the ready-made VM8055): a USB experiment board with push
+  buttons and LEDs on it. You do not need to install or connect anything to start: press a button on the board, and a circuit
+  in Logic lights an LED on the board.</p>
+
+  <h2>What do you need?</h2>
+  <ul>
+    <li>A <b>K8055</b> (soldered) or a <b>VM8055</b>, with a USB cable.</li>
+    <li>Leave the two jumpers <b>SK5</b> and <b>SK6</b> closed: that is card 0. Logic takes the first K8055 it finds.</li>
+    <li>Windows needs no driver: the board works as an ordinary USB device. The Velleman program (and K8055D.dll) is not
+      needed.</li>
+  </ul>
+
+  <h2>The two components</h2>
+  <table>
+    <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">K8055 input</td><td>A
+      <b>push button with two terminals</b> in the circuit. It is closed as long as the real input is on. Inputs 1, 2 and 3
+      each have a <b>push button on the board</b> (INP1, INP2, INP3). Connect your own button between the input and GND. Without
+      a board you press it with the mouse.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">K8055 output</td><td>A
+      <a href="voeding.html#serie">5&nbsp;V lamp</a> with two terminals. When it lights (e.g. on the output of a gate), Logic
+      switches on the <b>real output</b>, and the <b>LED on the board</b> for that output lights.</td></tr>
+  </table>
+  <p>Right-click to choose the input (INP1 to INP5) or the output (OUT1 to OUT8). The two buttons are in the component bar
+  at <a href="instellingen.html#niveau">level</a> <b>Advanced</b>, next to those of the <a href="board.html">Arduino board</a>.
+  You may use a K8055 and an Arduino together.</p>
+
+  <h2>Connecting</h2>
+  <p>There is nothing to do. Plug the board into the USB port and put a K8055 input or output on the panel: within two
+  seconds it is connected. The label <b>K8055 INP1</b> above the push button then turns red instead of grey, and the hint says
+  "The K8055 is connected". Unplug the board and everything works on the screen again.</p>
+
+  <h2>A first test</h2>
+  <p><a class="open" href="../../panels/k8055-en-poort.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/k8055-voorbeeld.png" alt="Two K8055 inputs INP1 and INP2 on an AND gate; the output to K8055 output OUT1">
+    <figcaption>The two-hand control of <a href="les04.html">lesson 4</a> with the K8055: INP1 and INP2 are pressed, the AND
+    gate gives a 1 and the LED of OUT1 on the board lights.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Plug in the K8055, open the example and start the simulation.</li>
+    <li>Press the button <b>INP1</b> on the board: the push button on the screen closes, but the LED stays off.</li>
+    <li>Press <b>INP1</b> and <b>INP2</b> together: the LED of <b>OUT1</b> on the board lights.</li>
+  </ol>
+
+  <div class="tip"><strong>Connecting your own parts:</strong> the outputs of the K8055 switch to <b>GND</b> (open
+  collector, up to 50&nbsp;V and 100&nbsp;mA per output). Put your own lamp, buzzer or relay between the <b>+</b> of your own
+  supply and the output; connect the &minus; of that supply to GND of the board.</div>
+
+  <h2>Not working?</h2>
+  <ul>
+    <li><b>The label stays grey</b>: check that the power LED on the board is on, and plug it in again. If you work in a
+      virtual machine, attach the board to that machine.</li>
+    <li><b>Linux</b>: you must be allowed to read and write the device <code>/dev/hidraw…</code>. Create the file
+      <code>/etc/udev/rules.d/99-k8055.rules</code> with the line
+      <code>SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10cf", MODE="0666"</code> and plug the board in again.</li>
+  </ul>

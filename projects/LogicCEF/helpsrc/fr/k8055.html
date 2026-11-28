@@ -1,0 +1,59 @@
+<!-- titel: Velleman K8055 -->
+  <h1 id="k8055"><img src="../img/pal-k8055-uit.png" class="ico" alt="">Une Velleman K8055</h1>
+  <p class="lead">Logic peut aussi utiliser une <b>Velleman K8055</b> (ou la VM8055 toute montée)&nbsp;: une carte
+  d&rsquo;expérimentation USB avec des boutons-poussoirs et des LED. Pour commencer, rien à installer ni à brancher&nbsp;: appuyez
+  sur un bouton de la carte, et un circuit dans Logic allume une LED sur la carte.</p>
+
+  <h2>De quoi avez-vous besoin&nbsp;?</h2>
+  <ul>
+    <li>Une <b>K8055</b> (soudée) ou une <b>VM8055</b>, avec un câble USB.</li>
+    <li>Laissez les deux cavaliers <b>SK5</b> et <b>SK6</b> fermés&nbsp;: c&rsquo;est la carte 0. Logic prend la première K8055 trouvée.</li>
+    <li>Windows n&rsquo;a besoin d&rsquo;aucun pilote&nbsp;: la carte fonctionne comme un appareil USB ordinaire. Le programme de
+      Velleman (et K8055D.dll) n&rsquo;est pas nécessaire.</li>
+  </ul>
+
+  <h2>Les deux composants</h2>
+  <table>
+    <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">Entrée K8055</td><td>Un
+      <b>bouton-poussoir à deux bornes</b> dans le circuit. Il est fermé tant que la vraie entrée est active. Les entrées 1, 2
+      et 3 ont chacune un <b>bouton sur la carte</b> (INP1, INP2, INP3). Branchez votre propre bouton entre l&rsquo;entrée et GND.
+      Sans carte, appuyez dessus avec la souris.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">Sortie K8055</td><td>Une
+      <a href="voeding.html#serie">lampe de 5&nbsp;V</a> à deux bornes. Quand elle brille (par ex. à la sortie d&rsquo;une porte),
+      Logic active la <b>vraie sortie</b>, et la <b>LED de la carte</b> pour cette sortie s&rsquo;allume.</td></tr>
+  </table>
+  <p>Clic droit pour choisir l&rsquo;entrée (INP1 à INP5) ou la sortie (OUT1 à OUT8). Les deux boutons se trouvent dans la barre
+  des composants au <a href="instellingen.html#niveau">niveau</a> <b>Avancé</b>, à côté de ceux de la
+  <a href="board.html">carte Arduino</a>. Vous pouvez utiliser une K8055 et un Arduino ensemble.</p>
+
+  <h2>Connexion</h2>
+  <p>Rien à faire. Branchez la carte sur le port USB et placez une entrée ou une sortie K8055 sur le panneau&nbsp;: en deux
+  secondes, elle est connectée. L&rsquo;inscription <b>K8055 INP1</b> au-dessus du bouton devient alors rouge au lieu de gris, et
+  l&rsquo;info-bulle indique «&nbsp;La K8055 est connectée&nbsp;». Débranchez la carte et tout fonctionne de nouveau à l&rsquo;écran.</p>
+
+  <h2>Un premier essai</h2>
+  <p><a class="open" href="../../panels/k8055-en-poort.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/k8055-voorbeeld.png" alt="Deux entrées K8055 INP1 et INP2 sur une porte ET ; la sortie vers la sortie K8055 OUT1">
+    <figcaption>La commande à deux mains de la <a href="les04.html">leçon 4</a> avec la K8055&nbsp;: INP1 et INP2 sont enfoncés,
+    la porte ET donne 1 et la LED de OUT1 s&rsquo;allume sur la carte.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Branchez la K8055, ouvrez l&rsquo;exemple et lancez la simulation.</li>
+    <li>Appuyez sur le bouton <b>INP1</b> de la carte&nbsp;: le bouton-poussoir à l&rsquo;écran se ferme, mais la LED reste éteinte.</li>
+    <li>Appuyez sur <b>INP1</b> et <b>INP2</b> ensemble&nbsp;: la LED de <b>OUT1</b> s&rsquo;allume sur la carte.</li>
+  </ol>
+
+  <div class="tip"><strong>Brancher vos propres composants&nbsp;:</strong> les sorties de la K8055 commutent vers <b>GND</b>
+  (collecteur ouvert, jusqu&rsquo;à 50&nbsp;V et 100&nbsp;mA par sortie). Placez votre lampe, buzzer ou relais entre le <b>+</b> de
+  votre propre alimentation et la sortie&nbsp;; reliez le &minus; de cette alimentation au GND de la carte.</div>
+
+  <h2>Ça ne marche pas&nbsp;?</h2>
+  <ul>
+    <li><b>L&rsquo;inscription reste grise</b>&nbsp;: vérifiez que la LED d&rsquo;alimentation de la carte est allumée, et rebranchez-la.
+      Si vous travaillez dans une machine virtuelle, attachez la carte à cette machine.</li>
+    <li><b>Linux</b>&nbsp;: vous devez pouvoir lire et écrire l&rsquo;appareil <code>/dev/hidraw…</code>. Créez le fichier
+      <code>/etc/udev/rules.d/99-k8055.rules</code> avec la ligne
+      <code>SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10cf", MODE="0666"</code> et rebranchez la carte.</li>
+  </ul>

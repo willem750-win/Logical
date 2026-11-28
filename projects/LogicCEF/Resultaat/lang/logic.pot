@@ -218,7 +218,7 @@ msgstr ""
 msgid "green"
 msgstr ""
 
-#: jsl_bewegend.inc:1783 jsl_bewegend.inc:1788 jsl_voedingsdelen.inc:2782
+#: jsl_bewegend.inc:1783 jsl_bewegend.inc:1788 jsl_k8055.inc:143
 msgid "off"
 msgstr ""
 
@@ -322,279 +322,287 @@ msgstr ""
 msgid "low (0 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:518 jsl_box_bediening.inc:518
+#: jsl_box_bediening.inc:522 jsl_box_bediening.inc:522
 msgid "create Switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1524 jsl_box_bediening.inc:1524
+#: jsl_box_bediening.inc:1534 jsl_box_bediening.inc:1534
 msgid "create buzzer (two terminals)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1525 jsl_box_bediening.inc:1525
+#: jsl_box_bediening.inc:1535 jsl_box_bediening.inc:1535
 msgid "create Motor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1526 jsl_box_bediening.inc:1526
+#: jsl_box_bediening.inc:1536 jsl_box_bediening.inc:1536
 msgid "create DipSwitsh"
 msgstr ""
 
-#: jsl_box_bediening.inc:1527 jsl_box_bediening.inc:1527
+#: jsl_box_bediening.inc:1537 jsl_box_bediening.inc:1537
 msgid "create 7 segment display"
 msgstr ""
 
-#: jsl_box_bediening.inc:1528 jsl_box_bediening.inc:1528
+#: jsl_box_bediening.inc:1538 jsl_box_bediening.inc:1538
 msgid "create Connection"
 msgstr ""
 
-#: jsl_box_bediening.inc:1529 jsl_box_bediening.inc:1529
+#: jsl_box_bediening.inc:1539 jsl_box_bediening.inc:1539
 msgid "create Push button"
 msgstr ""
 
-#: jsl_box_bediening.inc:1530 jsl_box_bediening.inc:1530
+#: jsl_box_bediening.inc:1540 jsl_box_bediening.inc:1540
 msgid "create logic lamp (5 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1531 jsl_box_bediening.inc:1531
+#: jsl_box_bediening.inc:1541 jsl_box_bediening.inc:1541
 msgid "create AND-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1532 jsl_box_bediening.inc:1532
+#: jsl_box_bediening.inc:1542 jsl_box_bediening.inc:1542
 msgid "create NOT-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1533 jsl_box_bediening.inc:1533
+#: jsl_box_bediening.inc:1543 jsl_box_bediening.inc:1543
 msgid "create OR-Logic gate"
 msgstr ""
 
-#: jsl_box_bediening.inc:1534 jsl_box_bediening.inc:1534
+#: jsl_box_bediening.inc:1544 jsl_box_bediening.inc:1544
 msgid "create NAND-Logic gate (not-and)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1535 jsl_box_bediening.inc:1535
+#: jsl_box_bediening.inc:1545 jsl_box_bediening.inc:1545
 msgid "create NOR-Logic gate (not-or)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1536 jsl_box_bediening.inc:1536
+#: jsl_box_bediening.inc:1546 jsl_box_bediening.inc:1546
 msgid "create XOR-Logic gate (exclusive or)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1537 jsl_box_bediening.inc:1537
+#: jsl_box_bediening.inc:1547 jsl_box_bediening.inc:1547
 msgid "create Memory block"
 msgstr ""
 
-#: jsl_box_bediening.inc:1538 jsl_box_bediening.inc:1538
+#: jsl_box_bediening.inc:1548 jsl_box_bediening.inc:1548
 msgid "create Impuls generator"
 msgstr ""
 
-#: jsl_box_bediening.inc:1539 jsl_box_bediening.inc:1539
+#: jsl_box_bediening.inc:1549 jsl_box_bediening.inc:1549
 msgid "create relay (two-terminal coil, changeover contact)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1540 jsl_box_bediening.inc:1540
+#: jsl_box_bediening.inc:1550 jsl_box_bediening.inc:1550
 msgid "create Switching relay (relay with contact)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1541 jsl_box_bediening.inc:1541
+#: jsl_box_bediening.inc:1551 jsl_box_bediening.inc:1551
 msgid "create Switsh"
 msgstr ""
 
-#: jsl_box_bediening.inc:1542 jsl_box_bediening.inc:1542
+#: jsl_box_bediening.inc:1552 jsl_box_bediening.inc:1552
 msgid "create Light sensor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1543 jsl_box_bediening.inc:1543
+#: jsl_box_bediening.inc:1553 jsl_box_bediening.inc:1553
 msgid "create Counter block"
 msgstr ""
 
-#: jsl_box_bediening.inc:1544 jsl_box_bediening.inc:1544
+#: jsl_box_bediening.inc:1554 jsl_box_bediening.inc:1554
 msgid "create Step counter (counts up to 9999)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1545 jsl_box_bediening.inc:1545
+#: jsl_box_bediening.inc:1555 jsl_box_bediening.inc:1555
 msgid "create Flip-flop (SR, D, JK or T)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1546 jsl_box_bediening.inc:1546
+#: jsl_box_bediening.inc:1556 jsl_box_bediening.inc:1556
 msgid "create Stopwatch (time with end time)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1547 jsl_box_bediening.inc:1547
+#: jsl_box_bediening.inc:1557 jsl_box_bediening.inc:1557
 msgid "create HeatSensor"
 msgstr ""
 
-#: jsl_box_bediening.inc:1548 jsl_box_bediening.inc:1548
+#: jsl_box_bediening.inc:1558 jsl_box_bediening.inc:1558
 msgid "create Voltmeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1549 jsl_box_bediening.inc:1549
+#: jsl_box_bediening.inc:1559 jsl_box_bediening.inc:1559
 msgid "create Person (with limit switches)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1550 jsl_box_bediening.inc:1550
+#: jsl_box_bediening.inc:1560 jsl_box_bediening.inc:1560
 msgid "create Cart (road with posts)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1551 jsl_box_bediening.inc:1551
+#: jsl_box_bediening.inc:1561 jsl_box_bediening.inc:1561
 msgid "create Music box (8 piano keys)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1552 jsl_box_bediening.inc:1552
+#: jsl_box_bediening.inc:1562 jsl_box_bediening.inc:1562
 msgid "create Traffic light (with pedestrian light)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1553 jsl_box_bediening.inc:1553
+#: jsl_box_bediening.inc:1563 jsl_box_bediening.inc:1563
 msgid "create Barrier gate (car park)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1554 jsl_box_bediening.inc:1554
+#: jsl_box_bediening.inc:1564 jsl_box_bediening.inc:1564
 msgid "create + rail (supply)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1555 jsl_box_bediening.inc:1555
+#: jsl_box_bediening.inc:1565 jsl_box_bediening.inc:1565
 msgid "create - rail (ground)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1556 jsl_box_bediening.inc:1556
+#: jsl_box_bediening.inc:1566 jsl_box_bediening.inc:1566
 msgid "create Source (battery, 0 to 12 V)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1557 jsl_box_bediening.inc:1557
+#: jsl_box_bediening.inc:1567 jsl_box_bediening.inc:1567
 msgid "create Fuse"
 msgstr ""
 
-#: jsl_box_bediening.inc:1558 jsl_box_bediening.inc:1558
+#: jsl_box_bediening.inc:1568 jsl_box_bediening.inc:1568
 msgid "create Milliammeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1559 jsl_box_bediening.inc:1559
+#: jsl_box_bediening.inc:1569 jsl_box_bediening.inc:1569
 msgid "create Wattmeter"
 msgstr ""
 
-#: jsl_box_bediening.inc:1560 jsl_box_bediening.inc:1560
+#: jsl_box_bediening.inc:1570 jsl_box_bediening.inc:1570
 msgid "create Resistance (contact, long wire)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1561 jsl_box_bediening.inc:1561
+#: jsl_box_bediening.inc:1571 jsl_box_bediening.inc:1571
 msgid "create Lamp with 2 terminals, for 12 V or 5 V (series and parallel)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1562 jsl_box_bediening.inc:1562
+#: jsl_box_bediening.inc:1572 jsl_box_bediening.inc:1572
 msgid "create Switch with 2 terminals"
 msgstr ""
 
-#: jsl_box_bediening.inc:1563 jsl_box_bediening.inc:1563
+#: jsl_box_bediening.inc:1573 jsl_box_bediening.inc:1573
 msgid "create Changeover switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1564 jsl_box_bediening.inc:1564
+#: jsl_box_bediening.inc:1574 jsl_box_bediening.inc:1574
 msgid "create Pulse generator"
 msgstr ""
 
-#: jsl_box_bediening.inc:1565 jsl_box_bediening.inc:1565
+#: jsl_box_bediening.inc:1575 jsl_box_bediening.inc:1575
 msgid "create DIP switch"
 msgstr ""
 
-#: jsl_box_bediening.inc:1566 jsl_box_bediening.inc:1566
+#: jsl_box_bediening.inc:1576 jsl_box_bediening.inc:1576
 msgid "create bar magnet"
 msgstr ""
 
-#: jsl_box_bediening.inc:1567 jsl_box_bediening.inc:1567
+#: jsl_box_bediening.inc:1577 jsl_box_bediening.inc:1577
 msgid "create compass"
 msgstr ""
 
-#: jsl_box_bediening.inc:1568 jsl_box_bediening.inc:1568
+#: jsl_box_bediening.inc:1578 jsl_box_bediening.inc:1578
 msgid "create field line sheet"
 msgstr ""
 
-#: jsl_box_bediening.inc:1569 jsl_box_bediening.inc:1569
+#: jsl_box_bediening.inc:1579 jsl_box_bediening.inc:1579
 msgid "create coil"
 msgstr ""
 
-#: jsl_box_bediening.inc:1570 jsl_box_bediening.inc:1570
+#: jsl_box_bediening.inc:1580 jsl_box_bediening.inc:1580
 msgid "create nail (iron)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1571 jsl_box_bediening.inc:1571
+#: jsl_box_bediening.inc:1581 jsl_box_bediening.inc:1581
 msgid "create relay (open model)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1572 jsl_box_bediening.inc:1572
+#: jsl_box_bediening.inc:1582 jsl_box_bediening.inc:1582
 msgid "create current swing"
 msgstr ""
 
-#: jsl_box_bediening.inc:1573 jsl_box_bediening.inc:1573
+#: jsl_box_bediening.inc:1583 jsl_box_bediening.inc:1583
 msgid "create electric motor (model)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1574 jsl_box_bediening.inc:1574
+#: jsl_box_bediening.inc:1584 jsl_box_bediening.inc:1584
 msgid "create centre-zero meter (galvanometer)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1575 jsl_box_bediening.inc:1575
+#: jsl_box_bediening.inc:1585 jsl_box_bediening.inc:1585
 msgid "create rotating magnet (dynamo)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1576 jsl_box_bediening.inc:1576
+#: jsl_box_bediening.inc:1586 jsl_box_bediening.inc:1586
 msgid "create transformer"
 msgstr ""
 
-#: jsl_box_bediening.inc:1577 jsl_box_bediening.inc:1577
+#: jsl_box_bediening.inc:1587 jsl_box_bediening.inc:1587
 msgid "create Arduino input (real push button)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1578 jsl_box_bediening.inc:1578
+#: jsl_box_bediening.inc:1588 jsl_box_bediening.inc:1588
 msgid "create Arduino output (real pin)"
 msgstr ""
 
-#: jsl_box_bediening.inc:1579 jsl_box_bediening.inc:1579
-msgid "create stepper motor"
-msgstr ""
-
-#: jsl_box_bediening.inc:1580 jsl_box_bediening.inc:1580
-msgid "create servo motor"
-msgstr ""
-
-#: jsl_box_bediening.inc:1581 jsl_box_bediening.inc:1581
-msgid "create fan"
-msgstr ""
-
-#: jsl_box_bediening.inc:1582 jsl_box_bediening.inc:1582
-msgid "create Voltmeter with 2 terminals"
-msgstr ""
-
-#: jsl_box_bediening.inc:1583 jsl_box_bediening.inc:1583
-msgid "create LED with 2 terminals (with series resistor)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1584 jsl_box_bediening.inc:1584
-msgid "create Capacitor (charging and discharging)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1585 jsl_box_bediening.inc:1585
-msgid "create Potentiometer (three terminals)"
-msgstr ""
-
-#: jsl_box_bediening.inc:1586 jsl_box_bediening.inc:1586
-msgid "create Diode"
-msgstr ""
-
-#: jsl_box_bediening.inc:1587 jsl_box_bediening.inc:1587
-msgid "create AC voltage source"
-msgstr ""
-
-#: jsl_box_bediening.inc:1588 jsl_box_bediening.inc:1588
-msgid "create Oscilloscope"
-msgstr ""
-
 #: jsl_box_bediening.inc:1589 jsl_box_bediening.inc:1589
-msgid "create Transistor"
+msgid "create K8055 input (real push button)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1590 jsl_box_bediening.inc:1590
-msgid "create LDR"
+msgid "create K8055 output (real output)"
 msgstr ""
 
 #: jsl_box_bediening.inc:1591 jsl_box_bediening.inc:1591
+msgid "create stepper motor"
+msgstr ""
+
+#: jsl_box_bediening.inc:1592 jsl_box_bediening.inc:1592
+msgid "create servo motor"
+msgstr ""
+
+#: jsl_box_bediening.inc:1593 jsl_box_bediening.inc:1593
+msgid "create fan"
+msgstr ""
+
+#: jsl_box_bediening.inc:1594 jsl_box_bediening.inc:1594
+msgid "create Voltmeter with 2 terminals"
+msgstr ""
+
+#: jsl_box_bediening.inc:1595 jsl_box_bediening.inc:1595
+msgid "create LED with 2 terminals (with series resistor)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1596 jsl_box_bediening.inc:1596
+msgid "create Capacitor (charging and discharging)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1597 jsl_box_bediening.inc:1597
+msgid "create Potentiometer (three terminals)"
+msgstr ""
+
+#: jsl_box_bediening.inc:1598 jsl_box_bediening.inc:1598
+msgid "create Diode"
+msgstr ""
+
+#: jsl_box_bediening.inc:1599 jsl_box_bediening.inc:1599
+msgid "create AC voltage source"
+msgstr ""
+
+#: jsl_box_bediening.inc:1600 jsl_box_bediening.inc:1600
+msgid "create Oscilloscope"
+msgstr ""
+
+#: jsl_box_bediening.inc:1601 jsl_box_bediening.inc:1601
+msgid "create Transistor"
+msgstr ""
+
+#: jsl_box_bediening.inc:1602 jsl_box_bediening.inc:1602
+msgid "create LDR"
+msgstr ""
+
+#: jsl_box_bediening.inc:1603 jsl_box_bediening.inc:1603
 msgid "create NTC"
 msgstr ""
 
@@ -672,6 +680,42 @@ msgstr ""
 
 #: jsl_groep_logicrun.inc:1122
 msgid "Edit program..."
+msgstr ""
+
+#: jsl_k8055.inc:83 jsl_k8055.inc:124 jsl_k8055.inc:139
+msgid "K8055 input"
+msgstr ""
+
+#: jsl_k8055.inc:116
+msgid "The K8055 is connected: the real input operates this contact."
+msgstr ""
+
+#: jsl_k8055.inc:121
+msgid "No K8055 connected: press it with the mouse, like a push button."
+msgstr ""
+
+#: jsl_k8055.inc:128
+msgid "INP1 to INP3 have a push button on the board; connect your own button between the input and GND.\nRight-click: choose the input."
+msgstr ""
+
+#: jsl_k8055.inc:141 jsl_k8055.inc:223 jsl_voedingsdelen.inc:3533
+msgid "on"
+msgstr ""
+
+#: jsl_k8055.inc:182 jsl_k8055.inc:211 jsl_k8055.inc:221
+msgid "K8055 output"
+msgstr ""
+
+#: jsl_k8055.inc:203
+msgid "The K8055 is connected: when this lamp is lit, the real output (and its LED) switches on."
+msgstr ""
+
+#: jsl_k8055.inc:208
+msgid "No K8055 connected: only the lamp on the screen lights."
+msgstr ""
+
+#: jsl_k8055.inc:213
+msgid "Each output has an LED on the board. Right-click: choose the output."
 msgstr ""
 
 #: jsl_magnetisme.inc:202
@@ -1822,10 +1866,6 @@ msgstr ""
 msgid "Switch with two terminals in the circuit. Click the lever to open or close it."
 msgstr ""
 
-#: jsl_voedingsdelen.inc:3533 uLogicRun.pas:712 uOefening.pas:276
-msgid "on"
-msgstr ""
-
 #: jsl_voedingsdelen.inc:3548 jsl_voedingsdelen.inc:3559 fsettings.lfm
 msgid "Pulse generator"
 msgstr ""
@@ -1866,295 +1906,295 @@ msgstr ""
 msgid "Draws the voltage between + and − over time, like a voltmeter that writes.\nIt measures during the simulation and draws no current. Right-click: range, time base, clear."
 msgstr ""
 
-#: main.pas:312
+#: main.pas:313
 msgid "Stop simulation"
 msgstr ""
 
-#: main.pas:314 main.pas:1509
+#: main.pas:315 main.pas:1510
 msgid "Start simulation"
 msgstr ""
 
-#: main.pas:375
+#: main.pas:376
 msgid "LogicBox\n\n- Central container for simulation objects.\n- Manages selection, events and status messages.\n- Can block child objects in run mode."
 msgstr ""
 
-#: main.pas:430
+#: main.pas:431
 msgid "Shows the name or info of the active object"
 msgstr ""
 
-#: main.pas:436
+#: main.pas:437
 msgid "Shows the current status or function"
 msgstr ""
 
-#: main.pas:442
+#: main.pas:443
 msgid "Displays the X and Y position of the current object"
 msgstr ""
 
-#: main.pas:448
+#: main.pas:449
 msgid "Shows the object type"
 msgstr ""
 
-#: main.pas:454
+#: main.pas:455
 msgid "Shows extra debug information"
 msgstr ""
 
-#: main.pas:462
+#: main.pas:463
 msgid "Status bar"
 msgstr ""
 
-#: main.pas:479
+#: main.pas:480
 msgid "Algemeen"
 msgstr ""
 
-#: main.pas:479
+#: main.pas:480
 msgid "General"
 msgstr ""
 
-#: main.pas:480
+#: main.pas:481
 msgid "SchakelElementen"
 msgstr ""
 
-#: main.pas:480
+#: main.pas:481
 msgid "Switch Elements"
 msgstr ""
 
-#: main.pas:481 main.pas:481
+#: main.pas:482 main.pas:482
 msgid "Hints"
 msgstr ""
 
-#: main.pas:706
+#: main.pas:707
 msgid "You switched components on or off while the level \"%s\" is active."
 msgstr ""
 
-#: main.pas:712
+#: main.pas:713
 msgid "Do you want to save this as your own selection? Your previous own selection is then replaced."
 msgstr ""
 
-#: main.pas:1489
+#: main.pas:1490
 msgid "Logic Circuits"
 msgstr ""
 
-#: main.pas:1490
+#: main.pas:1491
 msgid "Choose language..."
 msgstr ""
 
-#: main.pas:1491
+#: main.pas:1492
 msgid "Copy the panel to the clipboard..."
 msgstr ""
 
-#: main.pas:1493
+#: main.pas:1494
 msgid "Grid Yes/No\nGo to open settings for additional options..."
 msgstr ""
 
-#: main.pas:1494
+#: main.pas:1495
 msgid "Guidelines on grid YES/NO..."
 msgstr ""
 
-#: main.pas:1495
+#: main.pas:1496
 msgid "Draw frame on grid..."
 msgstr ""
 
-#: main.pas:1496
+#: main.pas:1497
 msgid "Change panel title..."
 msgstr ""
 
-#: main.pas:1497
+#: main.pas:1498
 msgid "Bar Input / Processing / Output on/off"
 msgstr ""
 
-#: main.pas:1498
+#: main.pas:1499
 msgid "Schematic symbols: IEC (European) or ANSI (American)"
 msgstr ""
 
-#: main.pas:1500
+#: main.pas:1501
 msgid "Open settings"
 msgstr ""
 
-#: main.pas:1501
+#: main.pas:1502
 msgid "Close application"
 msgstr ""
 
-#: main.pas:1502
+#: main.pas:1503
 msgid "About Logic..."
 msgstr ""
 
-#: main.pas:1503
+#: main.pas:1504
 msgid "Open help (F1)"
 msgstr ""
 
-#: main.pas:1504
+#: main.pas:1505
 msgid "Open saved panel..."
 msgstr ""
 
-#: main.pas:1505
+#: main.pas:1506
 msgid "Save panel..."
 msgstr ""
 
-#: main.pas:1506
+#: main.pas:1507
 msgid "Click here to select the panel..."
 msgstr ""
 
-#: main.pas:1507
+#: main.pas:1508
 msgid "Remove connections..."
 msgstr ""
 
-#: main.pas:1508
+#: main.pas:1509
 msgid "Delete selected object..."
 msgstr ""
 
-#: main.pas:1575
+#: main.pas:1576
 msgid "Welcome and guided tour..."
 msgstr ""
 
-#: main.pas:1579
+#: main.pas:1580
 msgid "Level"
 msgstr ""
 
-#: main.pas:1608
+#: main.pas:1609
 msgid "Decision panel"
 msgstr ""
 
-#: main.pas:1609
+#: main.pas:1610
 msgid "Counter panel"
 msgstr ""
 
-#: main.pas:1610
+#: main.pas:1611
 msgid "Memory panel"
 msgstr ""
 
-#: main.pas:1611
+#: main.pas:1612
 msgid "New standard panel"
 msgstr ""
 
-#: main.pas:2006
+#: main.pas:2007
 msgid "Undo (Ctrl+Z)"
 msgstr ""
 
-#: main.pas:2007
+#: main.pas:2008
 msgid "Redo (Ctrl+Y)"
 msgstr ""
 
-#: main.pas:2025
+#: main.pas:2026
 msgid "LogicRun: program in steps"
 msgstr ""
 
-#: main.pas:2033 main.pas:2033
+#: main.pas:2034 main.pas:2034
 msgid "Truth table of the panel"
 msgstr ""
 
-#: main.pas:2041 main.pas:2041
+#: main.pas:2042 main.pas:2042
 msgid "Exercise: assignment and check"
 msgstr ""
 
-#: main.pas:2051 main.pas:2051
+#: main.pas:2052 main.pas:2052
 msgid "Timing diagram of the panel"
 msgstr ""
 
-#: main.pas:2059 main.pas:2059
+#: main.pas:2060 main.pas:2060
 msgid "Magnifier (F7): enlarges the panel around the mouse. Right-click: 1.5x, 2x or 3x"
 msgstr ""
 
-#: main.pas:2067 main.pas:2067
+#: main.pas:2068 main.pas:2068
 msgid "Arduino board: connect a real board through USB"
 msgstr ""
 
-#: main.pas:2172 main.pas:2172
+#: main.pas:2173 main.pas:2173
 msgid "This panel is not an exercise. Open an exercise from the help (Exercises)."
 msgstr ""
 
-#: main.pas:2438 main.pas:2438
+#: main.pas:2439 main.pas:2439
 msgid "without name"
 msgstr ""
 
-#: main.pas:2439 main.pas:2439
+#: main.pas:2440 main.pas:2440
 msgid "The panel \"%s\" has been changed."
 msgstr ""
 
-#: main.pas:2440 main.pas:2440
+#: main.pas:2441 main.pas:2441
 msgid "Do you want to save the changes?"
 msgstr ""
 
-#: main.pas:3304
+#: main.pas:3309
 msgid "Screenshot of the panel has been copied to the clipboard."
 msgstr ""
 
-#: main.pas:3508
+#: main.pas:3513
 msgid "Change title"
 msgstr ""
 
-#: main.pas:3509
+#: main.pas:3514
 msgid "Enter new title:"
 msgstr ""
 
-#: main.pas:3711
+#: main.pas:3716
 msgid "level"
 msgstr ""
 
-#: main.pas:3745
+#: main.pas:3750
 msgid "This panel uses components of the level \"%s\". It works as it is."
 msgstr ""
 
-#: main.pas:3751
+#: main.pas:3756
 msgid "Do you also want the buttons of that level in the component toolbar, until you close Logic?"
 msgstr ""
 
-#: main.pas:3865
+#: main.pas:3870
 msgid "This is the component toolbar. Click a component and then click on the panel to place it."
 msgstr ""
 
-#: main.pas:3866
+#: main.pas:3871
 msgid "First come the wire, the gates and the counters, then the output and the power supply: source, switches, lamps and meters."
 msgstr ""
 
-#: main.pas:3867
+#: main.pas:3872
 msgid "Hold the mouse over a button to see what it is."
 msgstr ""
 
-#: main.pas:3877
+#: main.pas:3882
 msgid "This is the panel: here you build your circuit. Drag a component to move it."
 msgstr ""
 
-#: main.pas:3878
+#: main.pas:3883
 msgid "You lay a wire with Connection in the toolbar: click a terminal and drag to the next one."
 msgstr ""
 
-#: main.pas:3886
+#: main.pas:3891
 msgid "Start the simulation: now your circuit works. Click switches and buttons and watch what the lamps do."
 msgstr ""
 
-#: main.pas:3887
+#: main.pas:3892
 msgid "Click again to go on building."
 msgstr ""
 
-#: main.pas:3895
+#: main.pas:3900
 msgid "Panel choice: open a ready-made panel or start a new one. Here you also find the welcome window and this tour again."
 msgstr ""
 
-#: main.pas:3896
+#: main.pas:3901
 msgid "Under Level you choose how many components the toolbar shows: Basic, Extended or Advanced."
 msgstr ""
 
-#: main.pas:3903
+#: main.pas:3908
 msgid "Open a panel you saved. The folder lessen holds the examples of all lessons."
 msgstr ""
 
-#: main.pas:3908
+#: main.pas:3913
 msgid "Save your circuit to a file, so you can continue later."
 msgstr ""
 
-#: main.pas:3913
+#: main.pas:3918
 msgid "Tools for the panel: delete a component or all wires, the grid and the guidelines, and the settings."
 msgstr ""
 
-#: main.pas:3919
+#: main.pas:3924
 msgid "The help, with the learning path: lessons from the first circuit to magnetism."
 msgstr ""
 
-#: main.pas:3920
+#: main.pas:3925
 msgid "Also press F1 with the mouse over a component or button: you get an explanation of that item."
 msgstr ""
 
-#: main.pas:3927
+#: main.pas:3932
 msgid "Here you choose the language. Done! Start with lesson 1 to build your first circuit."
 msgstr ""
 
@@ -2234,87 +2274,87 @@ msgstr ""
 msgid "Cannot open port %s. Is it in use (e.g. by the Arduino IDE)?"
 msgstr ""
 
-#: uhelpmanager.pas:278
+#: uhelpmanager.pas:280
 msgid "Button / Switch\n\n- Simulates a binary input or output.\n- Left mouse click usually changes the state.\n- Right mouse click opens extra settings.\n- Name and state can be shown in the status bar."
 msgstr ""
 
-#: uhelpmanager.pas:300
+#: uhelpmanager.pas:302
 msgid "Switch\n\n- Simulates an on/off switch.\n- Can be selected and operated.\n- Name and state can be shown in the status bar."
 msgstr ""
 
-#: uhelpmanager.pas:319
+#: uhelpmanager.pas:321
 msgid "Logic block\n\n- Processes inputs according to a logic function.\n- Supported functions may include AND, OR and NOT.\n- The selected function can be shown in the status bar or hint."
 msgstr ""
 
-#: uhelpmanager.pas:338
+#: uhelpmanager.pas:340
 msgid "Power rail\n\n- + rail: plug inputs in on the right; the voltage comes from the source.\n- - rail (ground): plug outputs in on the left.\n- Drag the middle to move, drag an end to resize."
 msgstr ""
 
-#: uhelpmanager.pas:357
+#: uhelpmanager.pas:359
 msgid "Source (battery)\n\n- Slider: 0 to 12 V in steps of 0.5 V.\n- + with a wire to the + rail, - to the - rail.\n- Right-click: internal resistance."
 msgstr ""
 
-#: uhelpmanager.pas:376
+#: uhelpmanager.pas:378
 msgid "Fuse\n\n- In series between the source and the + rail.\n- Blows when the current is too high.\n- Right-click: rated current, replace fuse."
 msgstr ""
 
-#: uhelpmanager.pas:394
+#: uhelpmanager.pas:396
 msgid "Milliammeter\n\n- In series between the source and the + rail.\n- Shows the current the circuit uses."
 msgstr ""
 
-#: uhelpmanager.pas:409
+#: uhelpmanager.pas:411
 msgid "Wattmeter\n\n- In series, like a milliammeter.\n- Shows the power P = U x I of everything after the meter."
 msgstr ""
 
-#: uhelpmanager.pas:426
+#: uhelpmanager.pas:428
 msgid "Resistance (contact)\n\n- In series in the supply line: voltage drop U = I x R.\n- Good contact 0.05 ohm, long thin wire 1 ohm, poor contact 2 ohm, burnt contact 10 ohm.\n- Measure the voltage drop with a voltmeter across both terminals.\n- Right-click: choose the kind."
 msgstr ""
 
-#: uhelpmanager.pas:447
+#: uhelpmanager.pas:449
 msgid "Voltmeter\n\n- Shows the voltage on the + against ground.\n- + via a wire or plugged onto a + rail."
 msgstr ""
 
-#: uhelpmanager.pas:463
+#: uhelpmanager.pas:465
 msgid "Connector / Wire\n\n- Connects objects together.\n- Can be selected for editing or deleting.\n- Popup menu may contain extra actions."
 msgstr ""
 
-#: uhelpmanager.pas:481
+#: uhelpmanager.pas:483
 msgid "Sensor\n\n- Represents a detection or input component.\n- Usually provides a binary state."
 msgstr ""
 
-#: uhelpmanager.pas:495
+#: uhelpmanager.pas:497
 msgid "Heating / Warm element\n\n- Represents a heating output or warm symbol."
 msgstr ""
 
-#: uhelpmanager.pas:507
+#: uhelpmanager.pas:509
 msgid "Pulse\n\n- Generates or shows a temporary pulse.\n- Useful for triggers or test signals."
 msgstr ""
 
-#: uhelpmanager.pas:521
+#: uhelpmanager.pas:523
 msgid "DIP switch\n\n- Allows multiple fixed binary settings."
 msgstr ""
 
-#: uhelpmanager.pas:534
+#: uhelpmanager.pas:536
 msgid "Grid\n\n- Supports object placement, selection and frame drawing.\n- Can use SnapToGrid, guide lines and rulers.\n- Title and work area can be handled separately."
 msgstr ""
 
-#: uhelpmanager.pas:550
+#: uhelpmanager.pas:552
 msgid "No specific help found for keyword: "
 msgstr ""
 
-#: uhelpmanager.pas:550
+#: uhelpmanager.pas:552
 msgid "\n\nExpected help page:\n"
 msgstr ""
 
-#: uhelpmanager.pas:568
+#: uhelpmanager.pas:570
 msgid "No HelpKeyword assigned."
 msgstr ""
 
-#: uhelpmanager.pas:585 uhelpmanager.pas:664
+#: uhelpmanager.pas:587 uhelpmanager.pas:666
 msgid "No internal help handler assigned.\n"
 msgstr ""
 
-#: uhelpmanager.pas:673
+#: uhelpmanager.pas:675
 msgid "Table of contents not found.\n"
 msgstr ""
 

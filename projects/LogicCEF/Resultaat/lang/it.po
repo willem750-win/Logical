@@ -2295,3 +2295,33 @@ msgstr "Suona anche davvero, dagli altoparlanti. Clic destro: audio spento."
 
 msgid "Sound off (right-click: sound on)."
 msgstr "Audio spento (clic destro: audio acceso)."
+
+msgid "create K8055 input (real push button)"
+msgstr "crea ingresso K8055 (pulsante reale)"
+
+msgid "create K8055 output (real output)"
+msgstr "crea uscita K8055 (uscita reale)"
+
+msgid "K8055 input"
+msgstr "Ingresso K8055"
+
+msgid "The K8055 is connected: the real input operates this contact."
+msgstr "La K8055 è collegata: l'ingresso reale aziona questo contatto."
+
+msgid "No K8055 connected: press it with the mouse, like a push button."
+msgstr "Nessuna K8055 collegata: premilo con il mouse, come un pulsante."
+
+msgid "INP1 to INP3 have a push button on the board; connect your own button between the input and GND.\nRight-click: choose the input."
+msgstr "Da INP1 a INP3 c'è un pulsante sulla scheda; collega il tuo pulsante tra l'ingresso e GND.\nClic destro: scegli l'ingresso."
+
+msgid "K8055 output"
+msgstr "Uscita K8055"
+
+msgid "The K8055 is connected: when this lamp is lit, the real output (and its LED) switches on."
+msgstr "La K8055 è collegata: quando questa lampada è accesa, l'uscita reale (e il suo LED) si accende."
+
+msgid "No K8055 connected: only the lamp on the screen lights."
+msgstr "Nessuna K8055 collegata: si accende solo la lampada sullo schermo."
+
+msgid "Each output has an LED on the board. Right-click: choose the output."
+msgstr "Ogni uscita ha un LED sulla scheda. Clic destro: scegli l'uscita."

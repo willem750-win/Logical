@@ -1,0 +1,60 @@
+<!-- titel: Velleman K8055 -->
+  <h1 id="k8055"><img src="../img/pal-k8055-uit.png" class="ico" alt="">Eine Velleman K8055</h1>
+  <p class="lead">Logic kann auch eine <b>Velleman K8055</b> (oder die fertig aufgebaute VM8055) benutzen: eine
+  USB-Experimentierplatine mit Tastern und LEDs. Zum Anfangen müssen Sie nichts installieren und nichts anschließen: Drücken Sie
+  einen Taster auf der Platine, und eine Schaltung in Logic lässt eine LED auf der Platine leuchten.</p>
+
+  <h2>Was brauchen Sie?</h2>
+  <ul>
+    <li>Eine <b>K8055</b> (gelötet) oder eine <b>VM8055</b>, mit einem USB-Kabel.</li>
+    <li>Lassen Sie die zwei Jumper <b>SK5</b> und <b>SK6</b> geschlossen: Das ist Karte 0. Logic nimmt die erste K8055, die es findet.</li>
+    <li>Windows braucht keinen Treiber: Die Platine arbeitet wie ein gewöhnliches USB-Gerät. Das Programm von Velleman (und die
+      K8055D.dll) ist nicht nötig.</li>
+  </ul>
+
+  <h2>Die zwei Bauteile</h2>
+  <table>
+    <tr><th>Knopf</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">K8055-Eingang</td><td>Ein
+      <b>Taster mit zwei Klemmen</b> im Stromkreis. Er ist geschlossen, solange der echte Eingang an ist. Die Eingänge 1, 2 und 3
+      haben je einen <b>Taster auf der Platine</b> (INP1, INP2, INP3). Einen eigenen Taster schließen Sie zwischen Eingang und
+      GND an. Ohne Platine drücken Sie mit der Maus darauf.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">K8055-Ausgang</td><td>Eine
+      <a href="voeding.html#serie">Lampe für 5&nbsp;V</a> mit zwei Klemmen. Leuchtet sie (z.&nbsp;B. am Ausgang eines Gatters),
+      schaltet Logic den <b>echten Ausgang</b> ein, und die <b>LED auf der Platine</b> für diesen Ausgang leuchtet.</td></tr>
+  </table>
+  <p>Mit Rechtsklick wählen Sie den Eingang (INP1 bis INP5) oder den Ausgang (OUT1 bis OUT8). Die zwei Knöpfe stehen in der
+  Bauteilleiste bei der <a href="instellingen.html#niveau">Stufe</a> <b>Fortgeschritten</b>, neben denen des
+  <a href="board.html">Arduino-Boards</a>. Sie dürfen eine K8055 und einen Arduino zusammen benutzen.</p>
+
+  <h2>Verbinden</h2>
+  <p>Es ist nichts zu tun. Stecken Sie die Platine in den USB-Anschluss und setzen Sie einen K8055-Eingang oder -Ausgang auf
+  das Panel: Innerhalb von zwei Sekunden ist sie verbunden. Die Beschriftung <b>K8055 INP1</b> über dem Taster wird dann rot
+  statt grau, und der Hinweis sagt „Die K8055 ist verbunden“. Ziehen Sie die Platine ab, funktioniert alles wieder auf dem
+  Bildschirm.</p>
+
+  <h2>Ein erster Versuch</h2>
+  <p><a class="open" href="../../panels/k8055-en-poort.lpl">&#9654; Dieses Beispiel öffnen</a></p>
+  <figure>
+    <img src="../img/k8055-voorbeeld.png" alt="Zwei K8055-Eingänge INP1 und INP2 an einem UND-Gatter; der Ausgang zum K8055-Ausgang OUT1">
+    <figcaption>Die Zweihandbedienung aus <a href="les04.html">Lektion 4</a> mit der K8055: INP1 und INP2 sind gedrückt, das
+    UND-Gatter liefert eine 1, und die LED von OUT1 auf der Platine leuchtet.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Stecken Sie die K8055 ein, öffnen Sie das Beispiel und starten Sie die Simulation.</li>
+    <li>Drücken Sie den Taster <b>INP1</b> auf der Platine: Der Taster auf dem Bildschirm schließt, aber die LED bleibt aus.</li>
+    <li>Drücken Sie <b>INP1</b> und <b>INP2</b> zusammen: Die LED von <b>OUT1</b> auf der Platine leuchtet.</li>
+  </ol>
+
+  <div class="tip"><strong>Eigene Bauteile anschließen:</strong> Die Ausgänge der K8055 schalten nach <b>GND</b> (offener
+  Kollektor, bis 50&nbsp;V und 100&nbsp;mA je Ausgang). Eine eigene Lampe, einen Summer oder ein Relais schließen Sie zwischen das
+  <b>+</b> einer eigenen Versorgung und den Ausgang an; verbinden Sie das &minus; dieser Versorgung mit GND der Platine.</div>
+
+  <h2>Klappt es nicht?</h2>
+  <ul>
+    <li><b>Die Beschriftung bleibt grau</b>: Prüfen Sie, ob die Power-LED auf der Platine leuchtet, und stecken Sie sie neu ein.
+      Arbeiten Sie in einer virtuellen Maschine, verbinden Sie die Platine mit dieser Maschine.</li>
+    <li><b>Linux</b>: Sie müssen das Gerät <code>/dev/hidraw…</code> lesen und schreiben dürfen. Legen Sie die Datei
+      <code>/etc/udev/rules.d/99-k8055.rules</code> mit der Zeile
+      <code>SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10cf", MODE="0666"</code> an und stecken Sie die Platine neu ein.</li>
+  </ul>

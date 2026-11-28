@@ -1,0 +1,59 @@
+<!-- titel: Velleman K8055 -->
+  <h1 id="k8055"><img src="../img/pal-k8055-uit.png" class="ico" alt="">Een Velleman K8055</h1>
+  <p class="lead">Logic kan ook een <b>Velleman K8055</b> (of de kant-en-klare VM8055) gebruiken: een USB-experimenteerbord met
+  drukknopjes en ledjes erop. Je hoeft niets te installeren en niets aan te sluiten om te beginnen: druk op een knopje op het
+  bordje, en een schakeling in Logic laat een ledje op het bordje branden.</p>
+
+  <h2>Wat heb je nodig?</h2>
+  <ul>
+    <li>Een <b>K8055</b> (gesoldeerd) of een <b>VM8055</b>, met een USB-kabel.</li>
+    <li>Laat de twee jumpers <b>SK5</b> en <b>SK6</b> dicht: dat is kaart 0. Logic neemt de eerste K8055 die het vindt.</li>
+    <li>Windows heeft geen driver nodig: het bordje werkt als een gewoon USB-toestel. Het programma van Velleman (en de
+      K8055D.dll) is niet nodig.</li>
+  </ul>
+
+  <h2>De twee onderdelen</h2>
+  <table>
+    <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">K8055-ingang</td><td>Een
+      <b>drukknop met twee klemmen</b> in de kring. Hij is dicht zolang de echte ingang aan is. Ingang 1, 2 en 3 hebben elk
+      een <b>drukknopje op het bordje</b> (INP1, INP2, INP3). Een eigen knop zet je tussen de ingang en GND. Zonder bordje druk
+      je er met de muis op.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">K8055-uitgang</td><td>Een
+      <a href="voeding.html#serie">lamp van 5&nbsp;V</a> met twee klemmen. Brandt ze (bv. aan de uitgang van een poort), dan
+      zet Logic de <b>echte uitgang</b> aan, en het <b>ledje op het bordje</b> bij die uitgang brandt.</td></tr>
+  </table>
+  <p>Met rechtsklik kies je de ingang (INP1 tot INP5) of de uitgang (OUT1 tot OUT8). De twee knoppen staan in de
+  onderdelenbalk bij het <a href="instellingen.html#niveau">niveau</a> <b>Gevorderden</b>, naast die van het
+  <a href="board.html">Arduino-board</a>. Je mag een K8055 en een Arduino samen gebruiken.</p>
+
+  <h2>Verbinden</h2>
+  <p>Er is niets te doen. Steek het bordje in de USB-poort en zet een K8055-ingang of -uitgang op het paneel: binnen twee
+  seconden is het verbonden. Het opschrift <b>K8055 INP1</b> boven de drukknop wordt dan rood in plaats van grijs, en de hint
+  zegt "De K8055 is verbonden". Trek je het bordje uit, dan werkt alles weer gewoon op het scherm.</p>
+
+  <h2>Een eerste proef</h2>
+  <p><a class="open" href="../../panels/k8055-en-poort.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/k8055-voorbeeld.png" alt="Twee K8055-ingangen INP1 en INP2 op een EN-poort; de uitgang naar K8055-uitgang OUT1">
+    <figcaption>De tweehandsbediening van <a href="les04.html">les 4</a> met de K8055: INP1 en INP2 zijn ingedrukt, de EN-poort
+    geeft een 1 en het ledje van OUT1 op het bordje brandt.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Steek de K8055 in, open het voorbeeld en start de simulatie.</li>
+    <li>Druk op het knopje <b>INP1</b> op het bordje: de drukknop op het scherm gaat dicht, maar het ledje blijft uit.</li>
+    <li>Druk <b>INP1</b> en <b>INP2</b> samen in: het ledje van <b>OUT1</b> op het bordje gaat aan.</li>
+  </ol>
+
+  <div class="tip"><strong>Zelf iets aansluiten:</strong> de uitgangen van de K8055 schakelen naar <b>GND</b> (open
+  collector, tot 50&nbsp;V en 100&nbsp;mA per uitgang). Een eigen lampje, zoemer of relais zet je tussen de <b>+</b> van een eigen
+  voeding en de uitgang; verbind de &minus; van die voeding met GND van het bordje.</div>
+
+  <h2>Lukt het niet?</h2>
+  <ul>
+    <li><b>Het opschrift blijft grijs</b>: kijk of het power-ledje op het bordje brandt, en steek het opnieuw in. Werk je in een
+      virtuele machine, koppel het bordje dan aan die machine.</li>
+    <li><b>Linux</b>: je moet het toestel <code>/dev/hidraw…</code> mogen lezen en schrijven. Maak het bestand
+      <code>/etc/udev/rules.d/99-k8055.rules</code> met de regel
+      <code>SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10cf", MODE="0666"</code> en steek het bordje opnieuw in.</li>
+  </ul>

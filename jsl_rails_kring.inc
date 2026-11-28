@@ -1769,6 +1769,9 @@ begin
     for k := 0 to NP - 1 do
       if Parts[k] is TjanBoardUit then TjanBoardUit(Parts[k]).Stuur;
 
+  // uitgangen van een Velleman K8055: de uitgang volgt de lamp
+  if K8055Verbonden then K8055Bijwerken(P);
+
   // zoemers met geluid: zoemen via de luidsprekers zolang er een aan staat
   ZoemersBijwerken(P);
 
@@ -2065,6 +2068,11 @@ begin
   else if C is TjanWeerstand then
     Result := Format('TjanWeerstand;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanWeerstand(C).Soort])
+  else if C is TjanK8055Uit then
+    Result := Format('TjanK8055Uit;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanK8055Uit(C).Nr,
+      Ord(TjanK8055Uit(C).Kleur)])
+  else if C is TjanK8055In then
+    Result := Format('TjanK8055In;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanK8055In(C).Nr])
   else if C is TjanBoardUit then
     Result := Format('TjanBoardUit;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanBoardUit(C).Pin,
       Ord(TjanBoardUit(C).Kleur)])

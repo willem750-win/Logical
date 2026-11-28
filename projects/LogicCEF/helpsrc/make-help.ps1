@@ -40,7 +40,7 @@ $Pages = @(
   'index', 'installeren', 'werkwijze', 'leerpad',
   'leerpad#niveau-basis', 'leerpad#niveau-uitgebreid', 'leerpad#niveau-gevorderden', 'oefeningen',
   'group:scherm', 'knoppen', 'paneel', 'onderdelenbalk',
-  'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding', 'board',
+  'group:onderdelen', 'invoer', 'verwerking', 'uitvoer', 'voeding', 'board', 'k8055',
   'group:werken', 'verbindingen', 'objecten', 'simulatie', 'logicrun', 'waarheidstabel', 'tijddiagram', 'instellingen'
 )
 
@@ -48,28 +48,28 @@ $Nav = @{
   nl = @{ index = 'Start'; installeren = 'Installeren'; werkwijze = 'Aan de slag'; leerpad = 'Leerpad'; oefeningen = 'Oefeningen'; knoppen = 'Knoppenbalk'; paneel = 'Paneel &amp; raster';
           'leerpad#niveau-basis' = 'Basis'; 'leerpad#niveau-uitgebreid' = 'Uitgebreid'; 'leerpad#niveau-gevorderden' = 'Gevorderden';
           onderdelenbalk = 'Onderdelenbalk'; invoer = 'Invoer'; verwerking = 'Verwerking'; uitvoer = 'Uitvoer';
-          voeding = 'Voeding &amp; voltmeter'; board = 'Arduino-board';
+          voeding = 'Voeding &amp; voltmeter'; board = 'Arduino-board'; k8055 = 'Velleman K8055';
           verbindingen = 'Verbindingen'; objecten = 'Objecten bedienen'; simulatie = 'Simulatie'; logicrun = 'LogicRun'; waarheidstabel = 'Waarheidstabel'; tijddiagram = 'Tijddiagram';
           instellingen = 'Instellingen &amp; taal';
           'group:scherm' = 'Het scherm'; 'group:onderdelen' = 'Onderdelen'; 'group:werken' = 'Werken met Logic' }
   en = @{ index = 'Start'; installeren = 'Installing'; werkwijze = 'Getting started'; leerpad = 'Learning path'; oefeningen = 'Exercises'; knoppen = 'Button bar'; paneel = 'Panel &amp; grid';
           'leerpad#niveau-basis' = 'Basic'; 'leerpad#niveau-uitgebreid' = 'Extended'; 'leerpad#niveau-gevorderden' = 'Advanced';
           onderdelenbalk = 'Component bar'; invoer = 'Inputs'; verwerking = 'Processing'; uitvoer = 'Outputs';
-          voeding = 'Power &amp; voltmeter'; board = 'Arduino board';
+          voeding = 'Power &amp; voltmeter'; board = 'Arduino board'; k8055 = 'Velleman K8055';
           verbindingen = 'Connections'; objecten = 'Working with objects'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Truth table'; tijddiagram = 'Timing diagram';
           instellingen = 'Settings &amp; language';
           'group:scherm' = 'The window'; 'group:onderdelen' = 'Components'; 'group:werken' = 'Working with Logic' }
   fr = @{ index = 'Accueil'; installeren = 'Installation'; werkwijze = 'Premiers pas'; leerpad = 'Parcours'; oefeningen = 'Exercices'; knoppen = 'Barre de boutons'; paneel = 'Panneau &amp; grille';
           'leerpad#niveau-basis' = 'Base'; 'leerpad#niveau-uitgebreid' = 'Étendu'; 'leerpad#niveau-gevorderden' = 'Avancé';
           onderdelenbalk = 'Barre des composants'; invoer = 'Entrées'; verwerking = 'Traitement'; uitvoer = 'Sorties';
-          voeding = 'Alimentation &amp; voltmètre'; board = 'Carte Arduino';
+          voeding = 'Alimentation &amp; voltmètre'; board = 'Carte Arduino'; k8055 = 'Velleman K8055';
           verbindingen = 'Connexions'; objecten = 'Manipuler les objets'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Table de vérité'; tijddiagram = 'Chronogramme';
           instellingen = 'Réglages &amp; langue';
           'group:scherm' = 'La fenêtre'; 'group:onderdelen' = 'Composants'; 'group:werken' = 'Travailler avec Logic' }
   de = @{ index = 'Start'; installeren = 'Installation'; werkwijze = 'Erste Schritte'; leerpad = 'Lernpfad'; oefeningen = 'Übungen'; knoppen = 'Schaltflächenleiste'; paneel = 'Panel &amp; Raster';
           'leerpad#niveau-basis' = 'Basis'; 'leerpad#niveau-uitgebreid' = 'Erweitert'; 'leerpad#niveau-gevorderden' = 'Fortgeschritten';
           onderdelenbalk = 'Bauteilleiste'; invoer = 'Eingänge'; verwerking = 'Verarbeitung'; uitvoer = 'Ausgänge';
-          voeding = 'Versorgung &amp; Voltmeter'; board = 'Arduino-Board';
+          voeding = 'Versorgung &amp; Voltmeter'; board = 'Arduino-Board'; k8055 = 'Velleman K8055';
           verbindingen = 'Verbindungen'; objecten = 'Objekte bedienen'; simulatie = 'Simulation'; logicrun = 'LogicRun'; waarheidstabel = 'Wahrheitstabelle'; tijddiagram = 'Zeitdiagramm';
           instellingen = 'Einstellungen &amp; Sprache';
           'group:scherm' = 'Das Fenster'; 'group:onderdelen' = 'Bauteile'; 'group:werken' = 'Arbeiten mit Logic' }
@@ -79,7 +79,7 @@ $Nav = @{
 $NavIcon = @{
   leerpad = 'knop-help'; oefeningen = 'knop-oef';
   knoppen = 'knop-simuleren'; paneel = 'knop-raster'; onderdelenbalk = 'pal-verbinding';
-  invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus'; board = 'pal-board-uit';
+  invoer = 'pal-schakelaar'; verwerking = 'pal-en'; uitvoer = 'pal-lamp'; voeding = 'pal-rail-plus'; board = 'pal-board-uit'; k8055 = 'pal-k8055-uit';
   verbindingen = 'pal-verbinding'; objecten = 'knop-verwijder'; simulatie = 'knop-simuleren'; logicrun = 'knop-logicrun'; waarheidstabel = 'knop-waarheid'; tijddiagram = 'knop-tijd';
   instellingen = 'knop-instellingen'
 }

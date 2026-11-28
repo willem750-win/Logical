@@ -2605,3 +2605,33 @@ msgstr "スピーカーから実際にブザー音も鳴ります。右クリッ
 
 msgid "Sound off (right-click: sound on)."
 msgstr "音なし（右クリック：音を出す）。"
+
+msgid "create K8055 input (real push button)"
+msgstr "K8055入力を作成（実物の押しボタン）"
+
+msgid "create K8055 output (real output)"
+msgstr "K8055出力を作成（実物の出力）"
+
+msgid "K8055 input"
+msgstr "K8055入力"
+
+msgid "The K8055 is connected: the real input operates this contact."
+msgstr "K8055が接続されています：実物の入力がこの接点を動かします。"
+
+msgid "No K8055 connected: press it with the mouse, like a push button."
+msgstr "K8055が接続されていません：押しボタンのようにマウスで押してください。"
+
+msgid "INP1 to INP3 have a push button on the board; connect your own button between the input and GND.\nRight-click: choose the input."
+msgstr "INP1〜INP3にはボード上に押しボタンがあります。自分のボタンは入力とGNDの間につなぎます。\n右クリック：入力を選ぶ。"
+
+msgid "K8055 output"
+msgstr "K8055出力"
+
+msgid "The K8055 is connected: when this lamp is lit, the real output (and its LED) switches on."
+msgstr "K8055が接続されています：このランプが点くと、実物の出力（とそのLED）がオンになります。"
+
+msgid "No K8055 connected: only the lamp on the screen lights."
+msgstr "K8055が接続されていません：画面のランプだけが点きます。"
+
+msgid "Each output has an LED on the board. Right-click: choose the output."
+msgstr "各出力にはボード上のLEDがあります。右クリック：出力を選ぶ。"

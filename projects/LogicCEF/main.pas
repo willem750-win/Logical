@@ -15,7 +15,7 @@ uses
   {$IFDEF WINDOWS}uMiniBrowser,{$ENDIF}
   {$IF DEFINED(LINUX) AND DEFINED(LCLGTK2)}uMiniBrowserLinux,{$ENDIF}
   // Frames om in te laden
-  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom, uBoard, uNiveau;
+  FSettings, uLogicRun, uUpdate, uLangPo, uWaarheid, uTijddiagram, uOefening, uWelkom, uBoard, uNiveau, uK8055;
 const
   IniFileName = 'taal.ini';
 
@@ -189,6 +189,7 @@ type
      btBoard: TSpeedButton;             // verbinding met een echt Arduino-board
      FBoard: TBoard;
      FBoardForm: TBoardForm;
+     FK8055: TK8055;      // Velleman K8055: verbindt vanzelf als er K8055-onderdelen zijn
      FLoep: TLoep;
      FpmLoep: TPopupMenu;
      // extra talen uit lang\*.po (uLangPo), in de taalkeuze na de vier
@@ -3245,6 +3246,10 @@ begin
  LaadGridsettings;
  LaadBoxsettings;
  SyncSymbolenCombo;
+
+ // Velleman K8055: zoekt het bordje zelf zodra er een K8055-onderdeel op het paneel staat
+ if FK8055 = nil then
+   FK8055 := TK8055.Create(Self, Grid);
 
  // niveau van de onderdelenbalk: de eigen instellingen zijn geladen, het
  // niveau komt eroverheen (het schrijft niets in de ini-bestanden)

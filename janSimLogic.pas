@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit, RStapM, RServo, RVent: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit, RStapM, RServo, RVent, RK8055In, RK8055Uit: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit, DStapM, DServo, DVent: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit, DStapM, DServo, DVent, DK8055In, DK8055Uit: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit, FHStapM, FHServo, FHVent: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit, FHStapM, FHServo, FHVent, FHK8055In, FHK8055Uit: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2422,6 +2422,8 @@ type
     property HVentilator: string read FHVent write FHVent;
     property HBoardIn: string read FHBoardIn write FHBoardIn;
     property HBoardUit: string read FHBoardUit write FHBoardUit;
+    property HK8055In: string read FHK8055In write FHK8055In;
+    property HK8055Uit: string read FHK8055Uit write FHK8055Uit;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -4314,6 +4316,47 @@ end;
     property Pin: Integer read FPin write SetPin;
   end;
 
+  { TjanK8055In: een ingang (1..5) van een Velleman K8055 (USB). Hij werkt als
+    een drukknop met twee klemmen: dicht zolang de echte ingang aan is (de
+    knopjes INP1..INP3 op het bordje, of een contact naar GND). Zonder bordje
+    druk je er met de muis op. De verbinding zit in het programma (uK8055). }
+  TjanK8055In = class(TjanSchakelaar2)
+  private
+    FNr: Integer;           // 1..5
+    procedure SetNr(const Value: Integer);
+    procedure NrClick(Sender: TObject);
+  protected
+    function HandleClick(X, Y: Integer): Boolean; override;
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Nr: Integer read FNr write SetNr;
+  end;
+
+  { TjanK8055Uit: een uitgang (1..8) van een Velleman K8055. Hij werkt als een
+    lamp van 5 V met twee klemmen: brandt hij, dan zet Logic de echte uitgang
+    aan (het ledje op het bordje gaat aan). }
+  TjanK8055Uit = class(TjanLamp2)
+  private
+    FNr: Integer;           // 1..8
+    procedure SetNr(const Value: Integer);
+    procedure NrClick(Sender: TObject);
+  protected
+    procedure AddMenuItems(APop: TPopupMenu); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function LampLabel: string; override;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Nr: Integer read FNr write SetNr;
+  end;
+
   { TjanStappenmotor: stappenmotor met vier spoelen A, B, C en D (klem 0..3,
     links) en een gemeenschappelijke klem (klem 4, linksonder). Elke spoel is
     100 ohm tussen haar klem en de gemeenschappelijke klem; vanaf 20 mA trekt
@@ -4549,6 +4592,11 @@ procedure VoedingBijwerken(P: TWinControl);
 procedure SimulatieStap(P: TWinControl; ADt: Double);
 // spanning op klem APin van een onderdeel van de voedingskring (t.o.v. de massa)
 function VoedingsPinVolt(D: TjanVoedingsDeel; APin: Integer): Double;
+// de uitgangen van een Velleman K8055 bijwerken naar de lampjes TjanK8055Uit
+// (na elke berekening van de kring; AltijdSturen = ook als niets veranderde)
+procedure K8055Bijwerken(P: TWinControl; AltijdSturen: Boolean = False);
+// ingang ANr (1..5) uit de eerste databyte van een K8055-rapport
+function K8055Ingang(AData: Byte; ANr: Integer): Boolean;
 
 var
   // opent het LogicRun-venster voor het blok (Sender); gezet door het
@@ -4560,6 +4608,10 @@ var
   BoardVerbonden: Boolean = False;
   // BoardServo zet een pin in servomodus en stuurt de hoek (0..180 graden).
   BoardServo: procedure(APin, AHoek: Integer) of object = nil;
+  // Velleman K8055 (uK8055): K8055Schrijf zet de 8 uitgangen (bit 0 = uitgang 1);
+  // K8055Verbonden = er is een bordje.
+  K8055Schrijf: procedure(AMasker: Byte) of object = nil;
+  K8055Verbonden: Boolean = False;
 
 implementation
 
@@ -4590,5 +4642,6 @@ uses Process;
 {$I jsl_stappen_flipflop.inc}
 {$I jsl_magnetisme.inc}
 {$I jsl_board.inc}
+{$I jsl_k8055.inc}
 {$I jsl_motoren.inc}
 end.

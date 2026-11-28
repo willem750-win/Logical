@@ -2605,3 +2605,33 @@ msgstr "它也会通过扬声器真的发出蜂鸣声。右键：关闭声音。
 
 msgid "Sound off (right-click: sound on)."
 msgstr "声音已关闭（右键：打开声音）。"
+
+msgid "create K8055 input (real push button)"
+msgstr "创建 K8055 输入（真实按钮）"
+
+msgid "create K8055 output (real output)"
+msgstr "创建 K8055 输出（真实输出）"
+
+msgid "K8055 input"
+msgstr "K8055 输入"
+
+msgid "The K8055 is connected: the real input operates this contact."
+msgstr "K8055 已连接：真实输入控制这个触点。"
+
+msgid "No K8055 connected: press it with the mouse, like a push button."
+msgstr "未连接 K8055：像按钮一样用鼠标按它。"
+
+msgid "INP1 to INP3 have a push button on the board; connect your own button between the input and GND.\nRight-click: choose the input."
+msgstr "INP1 到 INP3 在板上有按钮；自己的按钮接在输入和 GND 之间。\n右键：选择输入。"
+
+msgid "K8055 output"
+msgstr "K8055 输出"
+
+msgid "The K8055 is connected: when this lamp is lit, the real output (and its LED) switches on."
+msgstr "K8055 已连接：这盏灯亮时，真实输出（及其 LED）打开。"
+
+msgid "No K8055 connected: only the lamp on the screen lights."
+msgstr "未连接 K8055：只有屏幕上的灯亮。"
+
+msgid "Each output has an LED on the board. Right-click: choose the output."
+msgstr "每个输出在板上都有一个 LED。右键：选择输出。"

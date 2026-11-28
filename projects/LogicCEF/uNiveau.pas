@@ -130,10 +130,10 @@ const
     'TjanWisselbron', 'TjanZekering', 'TjanMeter', 'TjanSimFlipFlop', 'TjanLed2', 'TjanCondensator',
     'TjanPotmeter', 'TjanDiode', 'TjanScoop', 'TjanWattMeter', 'TjanWissel2',
     'TjanStappenmotor', 'TjanServo', 'TjanVentilator');
-  KlassenGevorderden: array[0..10] of string = (
+  KlassenGevorderden: array[0..12] of string = (
     'TjanLogicRun', 'TjanSimPersoon', 'TjanSimWagen', 'TjanSimMuziek', 'TjanSimVerkeerslicht',
     'TjanSimSlagboom', 'TjanSimMotor', 'TjanSimStappenteller', 'TjanSimStopwatch',
-    'TjanBoardIn', 'TjanBoardUit');
+    'TjanBoardIn', 'TjanBoardUit', 'TjanK8055In', 'TjanK8055Uit');
 
 // zoals MyTr in main.pas: 'ENG' (en een onbekende code) gaat langs de extra
 // talen (uLangPo); make-pot.ps1 verzamelt de Engelse tekst van elke Tr(...)

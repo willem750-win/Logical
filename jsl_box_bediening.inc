@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;DStapM:=false;DServo:=false;DVent:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;DStapM:=false;DServo:=false;DVent:=false;DK8055In:=false;DK8055Uit:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -75,6 +75,8 @@ begin
   else if PtInRect(RStapM, P) then DStapM := True
   else if PtInRect(RServo, P) then DServo := True
   else if PtInRect(RVent, P) then DVent := True
+  else if PtInRect(RK8055In, P) then DK8055In := True
+  else if PtInRect(RK8055Uit, P) then DK8055Uit := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -169,6 +171,8 @@ begin
   else if PtInRect(RStapM, P) then NewHint := FHStapM
   else if PtInRect(RServo, P) then NewHint := FHServo
   else if PtInRect(RVent, P) then NewHint := FHVent
+  else if PtInRect(RK8055In, P) then NewHint := FHK8055In
+  else if PtInRect(RK8055Uit, P) then NewHint := FHK8055Uit
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -580,7 +584,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False; DStapM := False; DServo := False; DVent := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False; DStapM := False; DServo := False; DVent := False; DK8055In := False; DK8055Uit := False;
 
     // nieuw
     DSquare := False;
@@ -880,6 +884,10 @@ begin
     NewVoedingsDeel(36)
   else if DVent then
     NewVoedingsDeel(37)
+  else if DK8055In then
+    NewVoedingsDeel(38)
+  else if DK8055Uit then
+    NewVoedingsDeel(39)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1502,6 +1510,8 @@ if FBoxTaal=stDutch then
   HTransformator:='maak Transformator';
   HBoardIn:='maak Arduino-ingang (echte drukknop)';
   HBoardUit:='maak Arduino-uitgang (echte pin)';
+  HK8055In:='maak K8055-ingang (echte drukknop)';
+  HK8055Uit:='maak K8055-uitgang (echte uitgang)';
   HStappenmotor:='maak Stappenmotor';
   HServo:='maak Servomotor';
   HVentilator:='maak Ventilator';
@@ -1576,6 +1586,8 @@ if FBoxTaal=stEnglish then
   HTransformator:=LangTr('create transformer');
   HBoardIn:=LangTr('create Arduino input (real push button)');
   HBoardUit:=LangTr('create Arduino output (real pin)');
+  HK8055In:=LangTr('create K8055 input (real push button)');
+  HK8055Uit:=LangTr('create K8055 output (real output)');
   HStappenmotor:=LangTr('create stepper motor');
   HServo:=LangTr('create servo motor');
   HVentilator:=LangTr('create fan');
@@ -1648,6 +1660,8 @@ if FBoxTaal=stFrench then
   HTransformator:='faire Transformateur';
   HBoardIn:='faire Entrée Arduino (vrai bouton-poussoir)';
   HBoardUit:='faire Sortie Arduino (vraie broche)';
+  HK8055In:='faire Entrée K8055 (vrai bouton)';
+  HK8055Uit:='faire Sortie K8055 (vraie sortie)';
   HStappenmotor:='faire Moteur pas à pas';
   HServo:='faire Servomoteur';
   HVentilator:='faire Ventilateur';
@@ -1721,6 +1735,8 @@ if FBoxTaal=stFrench then
   HTransformator:='Transformator erstellen';
   HBoardIn:='Arduino-Eingang (echter Taster) erstellen';
   HBoardUit:='Arduino-Ausgang (echter Pin) erstellen';
+  HK8055In:='K8055-Eingang (echter Taster) erstellen';
+  HK8055Uit:='K8055-Ausgang (echter Ausgang) erstellen';
   HStappenmotor:='Schrittmotor erstellen';
   HServo:='Servomotor erstellen';
   HVentilator:='Ventilator erstellen';
@@ -1936,6 +1952,8 @@ begin
   RStapM := Rect(0, 0, 0, 0);
   RServo := Rect(0, 0, 0, 0);
   RVent := Rect(0, 0, 0, 0);
+  RK8055In := Rect(0, 0, 0, 0);
+  RK8055Uit := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -1992,6 +2010,8 @@ begin
   begin
     Knop(RBoardIn, 33, DBoardIn);
     Knop(RBoardUit, 34, DBoardUit);
+    Knop(RK8055In, 38, DK8055In);
+    Knop(RK8055Uit, 39, DK8055Uit);
   end;
 end;
 

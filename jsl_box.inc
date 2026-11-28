@@ -407,6 +407,8 @@ begin
   FHStapM:='maak Stappenmotor';
   FHServo:='maak Servomotor';
   FHVent:='maak Ventilator';
+  FHK8055In:='maak K8055-ingang (echte drukknop)';
+  FHK8055Uit:='maak K8055-uitgang (echte uitgang)';
   FHLdr:='maak LDR';
   FHNtc:='maak NTC';
   FOutputAantal:=5;
@@ -1498,7 +1500,7 @@ begin
     if (obj[1] = 'TjanBron') or (obj[1] = 'TjanZekering') or (obj[1] = 'TjanAmpMeter') or
        (obj[1] = 'TjanWeerstand') or
        (obj[1] = 'TjanLamp2') or (obj[1] = 'TjanSchakelaar2') or (obj[1] = 'TjanVoltmeter2') or
-       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') or (obj[1] = 'TjanBoardIn') or (obj[1] = 'TjanBoardUit') or (obj[1] = 'TjanStappenmotor') or (obj[1] = 'TjanServo') or (obj[1] = 'TjanVentilator') then
+       (obj[1] = 'TjanLed2') or (obj[1] = 'TjanCondensator') or (obj[1] = 'TjanWattMeter') or (obj[1] = 'TjanPotmeter') or (obj[1] = 'TjanDiode') or (obj[1] = 'TjanWisselbron') or (obj[1] = 'TjanScoop') or (obj[1] = 'TjanTransistor') or (obj[1] = 'TjanLDR') or (obj[1] = 'TjanNTC') or (obj[1] = 'TjanWissel2') or (obj[1] = 'TjanPuls2') or (obj[1] = 'TjanDip2') or (obj[1] = 'TjanMagneet') or (obj[1] = 'TjanKompas') or (obj[1] = 'TjanVeldplaat') or (obj[1] = 'TjanSpoel') or (obj[1] = 'TjanIJzer') or (obj[1] = 'TjanRelaisModel') or (obj[1] = 'TjanSchommel') or (obj[1] = 'TjanElektromotor') or (obj[1] = 'TjanNulmeter') or (obj[1] = 'TjanDraaimagneet') or (obj[1] = 'TjanTransformator') or (obj[1] = 'TjanZoemer2') or (obj[1] = 'TjanRelais2') or (obj[1] = 'TjanBoardIn') or (obj[1] = 'TjanBoardUit') or (obj[1] = 'TjanStappenmotor') or (obj[1] = 'TjanServo') or (obj[1] = 'TjanVentilator') or (obj[1] = 'TjanK8055In') or (obj[1] = 'TjanK8055Uit') then
     begin
       with TStringList.Create do
       try
@@ -1532,6 +1534,8 @@ begin
           else if obj[1] = 'TjanVentilator' then VD := TjanVentilator.Create(Self)
           else if obj[1] = 'TjanBoardIn' then VD := TjanBoardIn.Create(Self)
           else if obj[1] = 'TjanBoardUit' then VD := TjanBoardUit.Create(Self)
+          else if obj[1] = 'TjanK8055In' then VD := TjanK8055In.Create(Self)
+          else if obj[1] = 'TjanK8055Uit' then VD := TjanK8055Uit.Create(Self)
           else if obj[1] = 'TjanRelais2' then VD := TjanRelais2.Create(Self)
           else if obj[1] = 'TjanVoltmeter2' then VD := TjanVoltmeter2.Create(Self)
           else if obj[1] = 'TjanLed2' then VD := TjanLed2.Create(Self)
@@ -1624,6 +1628,18 @@ begin
           end
           else if (VD is TjanWeerstand) and (Count >= 5) then
             TjanWeerstand(VD).Soort := StrToIntDef(Trim(Strings[4]), 2)
+          else if VD is TjanK8055Uit then
+          begin
+            // TjanK8055Uit;h;l;t;w;uitgang;kleur;
+            if Count >= 5 then TjanK8055Uit(VD).Nr := StrToIntDef(Trim(Strings[4]), 1);
+            if (Count >= 6) and (StrToIntDef(Trim(Strings[5]), 0) in [0 .. Ord(High(TLampKleur))]) then
+              TjanK8055Uit(VD).Kleur := TLampKleur(StrToIntDef(Trim(Strings[5]), 0));
+          end
+          else if VD is TjanK8055In then
+          begin
+            // TjanK8055In;h;l;t;w;ingang;
+            if Count >= 5 then TjanK8055In(VD).Nr := StrToIntDef(Trim(Strings[4]), 1);
+          end
           else if VD is TjanBoardUit then
           begin
             if Count >= 5 then TjanBoardUit(VD).Pin := StrToIntDef(Trim(Strings[4]), 13);
@@ -2563,6 +2579,8 @@ begin
     35: D := TjanStappenmotor.Create(Self);
     36: D := TjanServo.Create(Self);
     37: D := TjanVentilator.Create(Self);
+    38: D := TjanK8055In.Create(Self);
+    39: D := TjanK8055Uit.Create(Self);
   else
     D := TjanAmpMeter.Create(Self);
   end;
@@ -3155,6 +3173,31 @@ begin
           Polygon([Point(CX, CY), Point(CX + 9, CY + 3), Point(CX + 5, CY + 8)]);
           Polygon([Point(CX, CY), Point(CX - 9, CY + 3), Point(CX - 5, CY + 8)]);
           Pen.Color := clBlack;
+        end;
+      38, 39:
+        begin
+          // Velleman K8055: rood bordje met een pijl naar binnen (ingang)
+          // of naar buiten (uitgang)
+          Brush.Style := bsSolid;
+          Brush.Color := RGBToColor(200, 40, 40);
+          Pen.Color := RGBToColor(120, 20, 20);
+          Rectangle(Rect(CX - 6, CY - 8, CX + 8, CY + 9));
+          Font.Name := 'Arial'; Font.Size := 7; Font.Style := [fsBold]; Font.Color := clWhite;
+          Brush.Style := bsClear;
+          TextOut(CX - 2, CY - 6, 'K');
+          Pen.Color := clBlack;
+          Pen.Width := 2;
+          if AKind = 38 then
+          begin
+            MoveTo(R.Left + 2, CY); LineTo(CX - 7, CY);
+            MoveTo(CX - 10, CY - 3); LineTo(CX - 7, CY); LineTo(CX - 10, CY + 3);
+          end
+          else
+          begin
+            MoveTo(CX + 9, CY); LineTo(R.Right - 2, CY);
+            MoveTo(R.Right - 5, CY - 3); LineTo(R.Right - 2, CY); LineTo(R.Right - 5, CY + 3);
+          end;
+          Pen.Width := 1;
         end;
       6:
         begin
