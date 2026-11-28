@@ -225,3 +225,239 @@ begin
     FOnStatus(Self, 'OUT' + IntToStr(FNr) + ': ' + Tr(FTaal, 'uit', 'off', 'inactive', 'aus'), 1);
   FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
 end;
+
+{ TjanK8055Ana }
+
+const
+  K8055AnaW = 150;
+  K8055AnaH = 74;
+
+constructor TjanK8055Ana.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Width := K8055AnaW;
+  Height := K8055AnaH;
+  FNr := 1;
+  FStand := 128;
+  HelpKeyword := 'k8055';
+end;
+
+function TjanK8055Ana.PinCount: Integer;
+begin
+  Result := 2;
+end;
+
+// rechts: + boven, - onder
+function TjanK8055Ana.PinPos(I: Integer): TPoint;
+begin
+  if I = 0 then Result := Point(K8055AnaW - 8, 10)
+  else Result := Point(K8055AnaW - 8, K8055AnaH - 18);
+end;
+
+// met het bordje: de gemeten waarde; anders de schuif
+function TjanK8055Ana.Emk: Double;
+var
+  S: Integer;
+begin
+  if K8055Verbonden then S := K8055Analoog[FNr] else S := FStand;
+  Result := S * 5.0 / 255;
+end;
+
+function TjanK8055Ana.Ri: Double;
+begin
+  Result := 10;
+end;
+
+procedure TjanK8055Ana.SetNr(const Value: Integer);
+begin
+  if (Value < 1) or (Value > 2) or (Value = FNr) then Exit;
+  FNr := Value;
+  UpdateHintText;
+  Invalidate;
+  if Parent <> nil then VoedingBijwerken(Parent);
+end;
+
+procedure TjanK8055Ana.SetStand(const Value: Integer);
+var
+  V: Integer;
+begin
+  V := Value;
+  if V < 0 then V := 0;
+  if V > 255 then V := 255;
+  if V = FStand then Exit;
+  FStand := V;
+  Invalidate;
+  if (Parent <> nil) and not K8055Verbonden then VoedingBijwerken(Parent);
+end;
+
+procedure TjanK8055Ana.NrClick(Sender: TObject);
+begin
+  if not FLock then Nr := TMenuItem(Sender).Tag;
+end;
+
+procedure TjanK8055Ana.AddMenuItems(APop: TPopupMenu);
+var
+  Mi, Sub: TMenuItem;
+  i: Integer;
+begin
+  Mi := TMenuItem.Create(APop);
+  Mi.Caption := Tr(FTaal, 'Analoge ingang van de K8055', 'K8055 analog input', 'Entrée analogique de la K8055',
+    'Analoger Eingang der K8055');
+  APop.Items.Add(Mi);
+  for i := 1 to 2 do
+  begin
+    Sub := TMenuItem.Create(APop);
+    Sub.Caption := 'A' + IntToStr(i);
+    Sub.Tag := i;
+    Sub.RadioItem := True;
+    Sub.Checked := i = FNr;
+    Sub.Enabled := not FLock;
+    Sub.OnClick := NrClick;
+    Mi.Add(Sub);
+  end;
+end;
+
+function TjanK8055Ana.SchuifRect: TRect;
+begin
+  Result := Rect(12, K8055AnaH - 18, K8055AnaW - 30, K8055AnaH - 12);
+end;
+
+procedure TjanK8055Ana.SchuifNaar(X: Integer);
+var
+  R: TRect;
+begin
+  R := SchuifRect;
+  Stand := Round((X - R.Left) / (R.Right - R.Left) * 255);
+end;
+
+// zonder bordje: met de muis op de schuif klikken of slepen
+function TjanK8055Ana.HandleClick(X, Y: Integer): Boolean;
+var
+  R: TRect;
+begin
+  Result := False;
+  if K8055Verbonden or FLock then Exit;
+  R := SchuifRect;
+  InflateRect(R, 6, 6);
+  if not PtInRect(R, Point(X, Y)) then Exit;
+  Result := True;
+  FSchuift := True;
+  SchuifNaar(X);
+end;
+
+procedure TjanK8055Ana.MouseMove(Shift: TShiftState; X, Y: Integer);
+begin
+  if FSchuift then
+  begin
+    if ssLeft in Shift then SchuifNaar(X) else FSchuift := False;
+    Exit;
+  end;
+  inherited MouseMove(Shift, X, Y);
+end;
+
+procedure TjanK8055Ana.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if FSchuift then
+  begin
+    FSchuift := False;
+    Exit;
+  end;
+  inherited MouseUp(Button, Shift, X, Y);
+end;
+
+procedure TjanK8055Ana.Paint;
+var
+  R: TRect;
+  S, XK, CX, CY: Integer;
+  A: Double;
+begin
+  if K8055Verbonden then S := K8055Analoog[FNr] else S := FStand;
+  with Canvas do
+  begin
+    Pen.Style := psSolid;
+    Pen.Width := 1;
+    // het bordje (rood) met een draaiknop
+    Brush.Style := bsSolid;
+    Brush.Color := RGBToColor(200, 40, 40);
+    Pen.Color := RGBToColor(120, 20, 20);
+    Rectangle(0, 0, K8055AnaW - 16, K8055AnaH);
+    CX := 26; CY := 28;
+    Brush.Color := RGBToColor(60, 60, 70);
+    Ellipse(CX - 15, CY - 15, CX + 16, CY + 16);
+    // de stand van de knop: van linksonder (0) naar rechtsonder (255)
+    A := (225 - S / 255 * 270) * Pi / 180;
+    Pen.Color := clWhite;
+    Pen.Width := 3;
+    MoveTo(CX, CY);
+    LineTo(CX + Round(12 * Cos(A)), CY - Round(12 * Sin(A)));
+    Pen.Width := 1;
+    Brush.Style := bsClear;
+    Font.Name := 'Arial';
+    Font.Style := [fsBold];
+    Font.Size := 7;
+    if K8055Verbonden then Font.Color := clWhite else Font.Color := RGBToColor(255, 200, 200);
+    TextOut(48, 4, 'K8055 A' + IntToStr(FNr));
+    Font.Size := 11;
+    Font.Color := clWhite;
+    TextOut(48, 18, FormatFloat('0.00', Emk) + ' V');
+    Font.Size := 7;
+    Font.Style := [];
+    TextOut(48, 38, IntToStr(S) + ' / 255');
+    // de schuif (alleen te gebruiken zonder bordje)
+    R := SchuifRect;
+    Brush.Style := bsSolid;
+    if K8055Verbonden then Brush.Color := RGBToColor(150, 60, 60) else Brush.Color := RGBToColor(240, 220, 220);
+    Pen.Color := RGBToColor(90, 20, 20);
+    Rectangle(R);
+    XK := R.Left + Round((R.Right - R.Left) * S / 255);
+    Brush.Color := RGBToColor(40, 40, 50);
+    Rectangle(XK - 3, R.Top - 4, XK + 4, R.Bottom + 4);
+    // draadjes naar de klemmen, + en -
+    Pen.Color := clBlack;
+    MoveTo(K8055AnaW - 16, PinPos(0).Y + 3); LineTo(PinPos(0).X, PinPos(0).Y + 3);
+    MoveTo(K8055AnaW - 16, PinPos(1).Y + 3); LineTo(PinPos(1).X, PinPos(1).Y + 3);
+    Brush.Style := bsClear;
+    Font.Size := 8; Font.Style := [fsBold];
+    Font.Color := clWhite;
+    TextOut(K8055AnaW - 28, PinPos(0).Y - 4, '+');
+    TextOut(K8055AnaW - 28, PinPos(1).Y - 6, '-');
+  end;
+  PaintPin(PinPos(0).X, PinPos(0).Y, FPinV[0] >= RailMinVolt);
+  PaintPin(PinPos(1).X, PinPos(1).Y, FPinV[1] >= RailMinVolt);
+  PaintSelection;
+end;
+
+procedure TjanK8055Ana.UpdateHintText;
+var
+  S: string;
+begin
+  if K8055Verbonden then
+    S := Tr(FTaal, 'De K8055 is verbonden: de spanning volgt het draaiknopje (of de sensor) op deze ingang.',
+      'The K8055 is connected: the voltage follows the knob (or the sensor) on this input.',
+      'La K8055 est connectée : la tension suit le bouton rotatif (ou le capteur) de cette entrée.',
+      'Die K8055 ist verbunden: Die Spannung folgt dem Drehknopf (oder dem Sensor) an diesem Eingang.')
+  else
+    S := Tr(FTaal, 'Geen K8055 verbonden: stel de spanning in met de schuif.',
+      'No K8055 connected: set the voltage with the slider.',
+      'Aucune K8055 connectée : réglez la tension avec le curseur.',
+      'Keine K8055 verbunden: Stellen Sie die Spannung mit dem Schieber ein.');
+  Hint := Tr(FTaal, 'K8055-analoge ingang', 'K8055 analog input', 'Entrée analogique K8055', 'Analoger K8055-Eingang') +
+    ' A' + IntToStr(FNr) + ': ' + FormatFloat('0.00', Emk) + ' V' + #13#10 + S + #13#10 +
+    Tr(FTaal,
+      'Een spanningsbron van 0 tot 5 V met twee klemmen: + boven, - onder (naar de - rail).' + #13#10 +
+        'Rechtsklik: A1 of A2 kiezen.',
+      'A voltage source from 0 to 5 V with two terminals: + at the top, - at the bottom (to the - rail).' + #13#10 +
+        'Right-click: choose A1 or A2.',
+      'Une source de tension de 0 à 5 V à deux bornes : + en haut, - en bas (vers le rail -).' + #13#10 +
+        'Clic droit : choisir A1 ou A2.',
+      'Eine Spannungsquelle von 0 bis 5 V mit zwei Klemmen: + oben, - unten (zur - Schiene).' + #13#10 +
+        'Rechtsklick: A1 oder A2 wählen.');
+end;
+
+procedure TjanK8055Ana.SendStatusToBar;
+begin
+  if not Assigned(FOnStatus) then Exit;
+  FOnStatus(Self, Tr(FTaal, 'K8055-analoge ingang', 'K8055 analog input', 'Entrée analogique K8055', 'Analoger K8055-Eingang') + ' > ', 0);
+  FOnStatus(Self, 'A' + IntToStr(FNr) + ': ' + FormatFloat('0.00', Emk) + ' V', 1);
+  FOnStatus(Self, Format('X=%d Y=%d', [Left, Top]), 2);
+end;

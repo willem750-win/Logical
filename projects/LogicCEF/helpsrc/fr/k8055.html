@@ -12,7 +12,7 @@
       Velleman (et K8055D.dll) n&rsquo;est pas nécessaire.</li>
   </ul>
 
-  <h2>Les deux composants</h2>
+  <h2>Les composants</h2>
   <table>
     <tr><th>Bouton</th><th>Nom</th><th>Qu&rsquo;est-ce que c&rsquo;est&nbsp;?</th></tr>
     <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">Entrée K8055</td><td>Un
@@ -22,6 +22,7 @@
     <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">Sortie K8055</td><td>Une
       <a href="voeding.html#serie">lampe de 5&nbsp;V</a> à deux bornes. Quand elle brille (par ex. à la sortie d&rsquo;une porte),
       Logic active la <b>vraie sortie</b>, et la <b>LED de la carte</b> pour cette sortie s&rsquo;allume.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-ana.png" alt=""></td><td class="name">Entrée analogique K8055</td><td>Une <b>source de tension de 0 à 5&nbsp;V</b> à deux bornes (+ en haut, &minus; en bas). Avec la carte, la tension suit le <b>bouton rotatif</b> A1 ou A2 de la carte (ou un capteur sur cette entrée)&nbsp;; sans carte, réglez-la avec le curseur. Clic droit&nbsp;: A1 ou A2.</td></tr>
   </table>
   <p>Clic droit pour choisir l&rsquo;entrée (INP1 à INP5) ou la sortie (OUT1 à OUT8). Les deux boutons se trouvent dans la barre
   des composants au <a href="instellingen.html#niveau">niveau</a> <b>Avancé</b>, à côté de ceux de la
@@ -45,9 +46,94 @@
     <li>Appuyez sur <b>INP1</b> et <b>INP2</b> ensemble&nbsp;: la LED de <b>OUT1</b> s&rsquo;allume sur la carte.</li>
   </ol>
 
-  <div class="tip"><strong>Brancher vos propres composants&nbsp;:</strong> les sorties de la K8055 commutent vers <b>GND</b>
-  (collecteur ouvert, jusqu&rsquo;à 50&nbsp;V et 100&nbsp;mA par sortie). Placez votre lampe, buzzer ou relais entre le <b>+</b> de
-  votre propre alimentation et la sortie&nbsp;; reliez le &minus; de cette alimentation au GND de la carte.</div>
+  <h2 id="analoog">L&rsquo;entrée analogique&nbsp;: un bouton rotatif</h2>
+  <p>La K8055 a deux <b>entrées analogiques</b>, A1 et A2. Elles mesurent une tension de 0 à 5&nbsp;V en 256 petits pas (0 à 255).
+  Chaque entrée a déjà un <b>bouton rotatif</b> sur la carte. L&rsquo;<b>entrée analogique K8055</b> dans Logic est une petite source
+  qui donne exactement cette tension&nbsp;: tournez le bouton, et la tension de votre circuit à l&rsquo;écran change.</p>
+  <p><a class="open" href="../../panels/k8055-servo.lpl">&#9654; Ouvrir cet exemple</a></p>
+  <figure>
+    <img src="../img/k8055-servo.png" alt="Une entrée analogique K8055 A1 avec son + sur l'entrée S d'un servomoteur ; le servo est à 73 degrés">
+    <figcaption>Le bouton A1 est à 104 sur 255&nbsp;: cela fait 2,04&nbsp;V sur l&rsquo;entrée S du <a href="voeding.html#servo">servo</a>,
+    et le bras est à 73&deg;. Si la <a href="board.html#servo">carte Arduino</a> est aussi connectée, un vrai servo sur D9 tourne
+    aussi.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Branchez la K8055, ouvrez l&rsquo;exemple et lancez la simulation.</li>
+    <li>Tournez le bouton <b>A1</b> de la carte&nbsp;: la tension à l&rsquo;écran change et le bras du servo tourne.</li>
+    <li>Tout à gauche, c&rsquo;est 0&nbsp;V (0&deg;), tout à droite 5&nbsp;V (180&deg;).</li>
+  </ol>
+  <div class="tip"><strong>Un vrai capteur&nbsp;:</strong> au lieu du bouton, vous pouvez aussi brancher une <b>LDR</b> ou une
+  <b>CTN</b> sur A1 (voir le manuel de la K8055 pour les cavaliers). Logic mesure alors vraiment la lumière ou la chaleur, comme
+  dans la <a href="les40.html">veilleuse</a> et l&rsquo;<a href="les41.html">alarme de température</a>.</div>
+
+  <h2 id="aansluiten">Brancher vos propres composants sur une sortie</h2>
+  <p>Une sortie de la K8055 <b>ne fournit pas de tension</b>&nbsp;: elle fonctionne comme un interrupteur vers <b>GND</b> (collecteur ouvert). Quand la sortie est active, sa borne (par ex. <b>O1</b>) est reliée à GND. Il vous faut donc un <b>plus</b>, par exemple le <b>5V</b> de votre Arduino. Placez votre composant entre ce 5V et la borne de la sortie, et reliez le <b>GND</b> de l&rsquo;Arduino au <b>GND</b> de la K8055.</p>
+  <figure>
+    <svg viewBox="0 0 640 330" role="img" aria-label="Schéma de câblage : le 5V d'un Arduino vers un buzzer et une LED avec résistance ; le buzzer vers la sortie O1, la LED vers O3 de la K8055 ; GND de l'Arduino vers GND de la K8055" style="max-width:640px;background:#fff;border:1px solid #ccc;border-radius:6px">
+    <g font-family="Arial, sans-serif" font-size="12">
+    <rect x="330" y="120" width="280" height="180" rx="10" fill="#b32020" stroke="#701010" stroke-width="2"/>
+    <text x="470" y="240" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">K8055</text>
+    <rect x="344" y="122" width="262" height="20" fill="#2a7a2a"/>
+    <circle cx="360" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="360" y="160" text-anchor="middle" fill="#fff" font-size="11">O1</text>
+    <rect x="356" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="384" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="384" y="160" text-anchor="middle" fill="#fff" font-size="11">O2</text>
+    <rect x="380" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="408" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="408" y="160" text-anchor="middle" fill="#fff" font-size="11">O3</text>
+    <rect x="404" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="432" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="432" y="160" text-anchor="middle" fill="#fff" font-size="11">O4</text>
+    <rect x="428" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="456" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="456" y="160" text-anchor="middle" fill="#fff" font-size="11">O5</text>
+    <rect x="452" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="480" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="480" y="160" text-anchor="middle" fill="#fff" font-size="11">O6</text>
+    <rect x="476" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="504" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="504" y="160" text-anchor="middle" fill="#fff" font-size="11">O7</text>
+    <rect x="500" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="528" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="528" y="160" text-anchor="middle" fill="#fff" font-size="11">O8</text>
+    <rect x="524" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="556" cy="132" r="6" fill="#ddd" stroke="#555"/><text x="556" y="160" text-anchor="middle" fill="#fff" font-size="11">GND</text>
+    <circle cx="590" cy="132" r="6" fill="#ddd" stroke="#555"/><text x="590" y="160" text-anchor="middle" fill="#fff" font-size="10">CLAMP</text>
+    <rect x="30" y="200" width="150" height="100" rx="10" fill="#1f5aa6" stroke="#0d3a75" stroke-width="2"/>
+    <text x="105" y="262" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">UNO</text>
+    <rect x="62" y="202" width="16" height="16" fill="#222"/><rect x="102" y="202" width="16" height="16" fill="#222"/>
+    <text x="70" y="232" text-anchor="middle" fill="#fff" font-size="10">GND</text><text x="110" y="232" text-anchor="middle" fill="#fff" font-size="10">5V</text>
+    <path d="M70 210 V18 H624 V108 H556 V126" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M110 210 V40 H408" fill="none" stroke="#e00000" stroke-width="4" stroke-linejoin="round"/>
+    <text x="120" y="56" fill="#e00000" font-weight="bold">+5V</text>
+    <path d="M360 40 V52" stroke="#e00000" stroke-width="3"/>
+    <circle cx="360" cy="72" r="18" fill="#222"/><circle cx="360" cy="72" r="4" fill="#555"/>
+    <text x="368" y="60" fill="#ff8080" font-weight="bold" font-size="11">+</text>
+    <path d="M360 90 V126" stroke="#333" stroke-width="3"/>
+    <text x="336" y="76" text-anchor="end" fill="#333" font-weight="bold">buzzer</text>
+    <path d="M408 40 V48" stroke="#e00000" stroke-width="3"/>
+    <rect x="401" y="48" width="14" height="30" rx="3" fill="#e8d3a3" stroke="#7a5a20"/>
+    <path d="M401 56 H415 M401 63 H415 M401 70 H415" stroke="#b03030" stroke-width="2"/>
+    <text x="420" y="68" fill="#333" font-size="11">220 &#937;</text>
+    <path d="M408 78 V86" stroke="#333" stroke-width="3"/>
+    <circle cx="408" cy="98" r="11" fill="#ffdddd" stroke="#c00000" stroke-width="2"/>
+    <path d="M401 93 H415 L408 105 Z" fill="#c00000"/><path d="M401 106 H415" stroke="#c00000" stroke-width="2"/>
+    <path d="M408 109 V126" stroke="#333" stroke-width="3"/>
+    <text x="424" y="102" fill="#c00000" font-weight="bold">LED</text>
+    </g></svg>
+    <figcaption>Un buzzer sur <b>O1</b> et une LED avec une résistance de 220&nbsp;&Omega; sur <b>O3</b>. Le <b>5V</b> de l&rsquo;Arduino donne le plus&nbsp;; le fil noir relie le <b>GND</b> de l&rsquo;Arduino au <b>GND</b> de la K8055.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Quoi</th><th>Comment</th></tr>
+    <tr><td>LED</td><td>5V &rarr; résistance de 220&nbsp;&Omega; &rarr; patte longue de la LED&nbsp;; patte courte &rarr; <b>O1</b></td></tr>
+    <tr><td>Buzzer actif</td><td>5V &rarr; la patte <b>+</b> (la longue)&nbsp;; l&rsquo;autre patte &rarr; <b>O1</b></td></tr>
+    <tr><td>Petit relais (5&nbsp;V)</td><td>5V &rarr; bobine &rarr; <b>O1</b>&nbsp;; reliez aussi la borne <b>CLAMP</b> au 5V</td></tr>
+  </table>
+  <div class="tip"><strong>Attention&nbsp;:</strong> au plus <b>100&nbsp;mA</b> par sortie (une LED ou un buzzer convient&nbsp;; un petit
+  moteur se commande par un relais). Avec un relais ou un moteur, <b>CLAMP</b> doit aller au plus&nbsp;: cela protège la K8055 contre
+  la pointe de tension à la coupure. Ne branchez jamais du 230&nbsp;V. La LED de la carte s&rsquo;allume aussi.</div>
+
 
   <h2>Ça ne marche pas&nbsp;?</h2>
   <ul>

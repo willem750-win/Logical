@@ -2002,10 +2002,10 @@ type
     // voedingskring: bron (accu), zekering, milliampèremeter (bij KVoeding)
     RBron, RZekering, RAmpMeter, RWattMeter, RWeerstand: TRect;
     RLamp2, RSchak2, RVolt2: TRect;           // lamp, schakelaar, voltmeter met 2 klemmen
-    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit, RStapM, RServo, RVent, RK8055In, RK8055Uit: TRect;                      // led en condensator met 2 klemmen
+    RLed2, RCond, RPot, RDiode, RWissel, RScoop, RTrans, RLdr, RNtc, RWsch, RPuls2, RDip2, RMagneet, RKompas, RVeldplaat, RSpoel, RIJzer, RRelaisM, RSchommel, RMotorM, RNulmeter, RDraaiM, RTrafo, RZoemer2, RRelais2, RBoardIn, RBoardUit, RStapM, RServo, RVent, RK8055In, RK8055Uit, RK8055Ana: TRect;                      // led en condensator met 2 klemmen
     DBron, DZekering, DAmpMeter, DWattMeter, DWeerstand: Boolean;
     DLamp2, DSchak2, DVolt2: Boolean;
-    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit, DStapM, DServo, DVent, DK8055In, DK8055Uit: Boolean;
+    DLed2, DCond, DPot, DDiode, DWissel, DScoop, DTrans, DLdr, DNtc, DWsch, DPuls2, DDip2, DMagneet, DKompas, DVeldplaat, DSpoel, DIJzer, DRelaisM, DSchommel, DMotorM, DNulmeter, DDraaiM, DTrafo, DZoemer2, DRelais2, DBoardIn, DBoardUit, DStapM, DServo, DVent, DK8055In, DK8055Uit, DK8055Ana: Boolean;
     FSupplyTimer: TTimer;   // rekent de voeding ook buiten de simulatie uit
 
     FOnEnter: TNotifyEvent;
@@ -2049,7 +2049,7 @@ type
     FHSlagboom:String;
     FHRailPlus: string;   // hint van de knop + rail
     FHRailMin: string;    // hint van de knop - rail
-    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit, FHStapM, FHServo, FHVent, FHK8055In, FHK8055Uit: string;
+    FHBron, FHZekering, FHAmpMeter, FHWeerstand, FHLamp2, FHSchak2, FHVolt2, FHLed2, FHCond, FHWattMeter, FHPot, FHDiode, FHWissel, FHScoop, FHTrans, FHLdr, FHNtc, FHWsch, FHPuls2, FHDip2, FHMagneet, FHKompas, FHVeldplaat, FHSpoel, FHIJzer, FHRelaisM, FHSchommel, FHMotorM, FHNulmeter, FHDraaiM, FHTrafo, FHBoardIn, FHBoardUit, FHStapM, FHServo, FHVent, FHK8055In, FHK8055Uit, FHK8055Ana: string;
     FVoedingBottom: Integer;  // onderkant van de laatste rij knoppen (PlaatsVoeding)
     FRijFix: Boolean;         // bezig met de hoogte van de balk aan te passen
     FBalkHoogte: Integer;     // hoogte van de balk boven/onder (1 of meer rijen)
@@ -2424,6 +2424,7 @@ type
     property HBoardUit: string read FHBoardUit write FHBoardUit;
     property HK8055In: string read FHK8055In write FHK8055In;
     property HK8055Uit: string read FHK8055Uit write FHK8055Uit;
+    property HK8055Ana: string read FHK8055Ana write FHK8055Ana;
     property HVoltmeter2: string read FHVolt2 write FHVolt2;
     property HLed2: string read FHLed2 write FHLed2;
     property HCondensator: string read FHCond write FHCond;
@@ -4357,6 +4358,39 @@ end;
     property Nr: Integer read FNr write SetNr;
   end;
 
+  { TjanK8055Ana: een analoge ingang (A1 of A2) van een Velleman K8055 als een
+    kleine spanningsbron van 0 tot 5 V met twee klemmen rechts: + boven (klem 0)
+    en - onder (klem 1). Met het bordje volgt de spanning het draaiknopje (of
+    een sensor op die ingang); zonder bordje stel je ze in met de schuif. }
+  TjanK8055Ana = class(TjanVoedingsDeel)
+  private
+    FNr: Integer;           // 1 of 2
+    FStand: Integer;        // 0..255, zoals de K8055 meet
+    FSchuift: Boolean;
+    procedure SetNr(const Value: Integer);
+    procedure SetStand(const Value: Integer);
+    procedure NrClick(Sender: TObject);
+    function SchuifRect: TRect;
+    procedure SchuifNaar(X: Integer);
+  protected
+    function HandleClick(X, Y: Integer): Boolean; override;
+    procedure AddMenuItems(APop: TPopupMenu); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure Paint; override;
+    function PinCount: Integer; override;
+    function PinPos(I: Integer): TPoint; override;
+    function Emk: Double;          // 0..5 V
+    function Ri: Double;
+    procedure UpdateHintText; override;
+    procedure SendStatusToBar; override;
+  published
+    property Nr: Integer read FNr write SetNr;
+    property Stand: Integer read FStand write SetStand;
+  end;
+
   { TjanStappenmotor: stappenmotor met vier spoelen A, B, C en D (klem 0..3,
     links) en een gemeenschappelijke klem (klem 4, linksonder). Elke spoel is
     100 ohm tussen haar klem en de gemeenschappelijke klem; vanaf 20 mA trekt
@@ -4612,6 +4646,8 @@ var
   // K8055Verbonden = er is een bordje.
   K8055Schrijf: procedure(AMasker: Byte) of object = nil;
   K8055Verbonden: Boolean = False;
+  // laatst gemeten analoge ingangen A1 en A2 (0..255), gezet door uK8055
+  K8055Analoog: array[1..2] of Integer = (0, 0);
 
 implementation
 

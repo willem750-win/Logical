@@ -11,7 +11,7 @@ begin
   DBuzzer:=false;DMotor:=false;DPersoon:=false;DWagen:=false;DMuziek:=false;DVerkeer:=false;DSlagboom:=false;DSensor:=false;DTeller:=false;DStappen:=false;DFlipFlop:=false;DStopwatch:=false;DMemory:=false;DDisplay:=false;
   DDipSwitsh:=false;DGrid:=false;DRailPlus:=false;DRailMin:=false;
   DBron:=false;DZekering:=false;DAmpMeter:=false;DWattMeter:=false;DWeerstand:=false;
-  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;DStapM:=false;DServo:=false;DVent:=false;DK8055In:=false;DK8055Uit:=false;
+  DLamp2:=false;DSchak2:=false;DVolt2:=false;DLed2:=false;DCond:=false;DPot:=false;DDiode:=false;DWissel:=false;DScoop:=false;DTrans:=false;DLdr:=false;DNtc:=false;DWsch:=false;DPuls2:=false;DDip2:=false;DMagneet:=false;DKompas:=false;DVeldplaat:=false;DSpoel:=false;DIJzer:=false;DRelaisM:=false;DSchommel:=false;DMotorM:=false;DNulmeter:=false;DDraaiM:=false;DTrafo:=false;DZoemer2:=false;DRelais2:=false;DBoardIn:=false;DBoardUit:=false;DStapM:=false;DServo:=false;DVent:=false;DK8055In:=false;DK8055Uit:=false;DK8055Ana:=false;
   DMeter:=false;DRelais:=false;DSchakel:=false;DWarm:=false;
 
   if PtInRect(RSquare, P) then DSquare := True
@@ -77,6 +77,7 @@ begin
   else if PtInRect(RVent, P) then DVent := True
   else if PtInRect(RK8055In, P) then DK8055In := True
   else if PtInRect(RK8055Uit, P) then DK8055Uit := True
+  else if PtInRect(RK8055Ana, P) then DK8055Ana := True
   else if PtInRect(RVolt2, P) then DVolt2 := True
   else if PtInRect(RLed2, P) then DLed2 := True
   else if PtInRect(RCond, P) then DCond := True
@@ -173,6 +174,7 @@ begin
   else if PtInRect(RVent, P) then NewHint := FHVent
   else if PtInRect(RK8055In, P) then NewHint := FHK8055In
   else if PtInRect(RK8055Uit, P) then NewHint := FHK8055Uit
+  else if PtInRect(RK8055Ana, P) then NewHint := FHK8055Ana
   else if PtInRect(RLdr, P) then NewHint := FHLdr
   else if PtInRect(RNtc, P) then NewHint := FHNtc
   else if PtInRect(RGrid, P) then NewHint := FHGrid;
@@ -584,7 +586,7 @@ var
     DLight := False; DRelais := False; DSchakel := False; DBuzzer := False; DMotor := False; DPersoon := False; DWagen := False; DMuziek := False; DVerkeer := False; DSlagboom := False; DDisplay := False;
     DRailPlus := False; DRailMin := False; DMeter := False;
     DBron := False; DZekering := False; DAmpMeter := False; DWattMeter := False; DWeerstand := False;
-    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False; DStapM := False; DServo := False; DVent := False; DK8055In := False; DK8055Uit := False;
+    DLamp2 := False; DSchak2 := False; DVolt2 := False; DLed2 := False; DCond := False; DPot := False; DDiode := False; DWissel := False; DScoop := False; DTrans := False; DLdr := False; DNtc := False; DWsch := False; DPuls2 := False; DDip2 := False; DMagneet := False; DKompas := False; DVeldplaat := False; DSpoel := False; DIJzer := False; DRelaisM := False; DSchommel := False; DMotorM := False; DNulmeter := False; DDraaiM := False; DTrafo := False; DZoemer2 := False; DRelais2 := False; DBoardIn := False; DBoardUit := False; DStapM := False; DServo := False; DVent := False; DK8055In := False; DK8055Uit := False; DK8055Ana := False;
 
     // nieuw
     DSquare := False;
@@ -888,6 +890,8 @@ begin
     NewVoedingsDeel(38)
   else if DK8055Uit then
     NewVoedingsDeel(39)
+  else if DK8055Ana then
+    NewVoedingsDeel(40)
   else if DVolt2 then
     NewVoedingsDeel(6)
   else if DLed2 then
@@ -1512,6 +1516,7 @@ if FBoxTaal=stDutch then
   HBoardUit:='maak Arduino-uitgang (echte pin)';
   HK8055In:='maak K8055-ingang (echte drukknop)';
   HK8055Uit:='maak K8055-uitgang (echte uitgang)';
+  HK8055Ana:='maak K8055-analoge ingang (draaiknop, 0 tot 5 V)';
   HStappenmotor:='maak Stappenmotor';
   HServo:='maak Servomotor';
   HVentilator:='maak Ventilator';
@@ -1588,6 +1593,7 @@ if FBoxTaal=stEnglish then
   HBoardUit:=LangTr('create Arduino output (real pin)');
   HK8055In:=LangTr('create K8055 input (real push button)');
   HK8055Uit:=LangTr('create K8055 output (real output)');
+  HK8055Ana:=LangTr('create K8055 analog input (knob, 0 to 5 V)');
   HStappenmotor:=LangTr('create stepper motor');
   HServo:=LangTr('create servo motor');
   HVentilator:=LangTr('create fan');
@@ -1662,6 +1668,7 @@ if FBoxTaal=stFrench then
   HBoardUit:='faire Sortie Arduino (vraie broche)';
   HK8055In:='faire Entrée K8055 (vrai bouton)';
   HK8055Uit:='faire Sortie K8055 (vraie sortie)';
+  HK8055Ana:='faire Entrée analogique K8055 (bouton, 0 à 5 V)';
   HStappenmotor:='faire Moteur pas à pas';
   HServo:='faire Servomoteur';
   HVentilator:='faire Ventilateur';
@@ -1737,6 +1744,7 @@ if FBoxTaal=stFrench then
   HBoardUit:='Arduino-Ausgang (echter Pin) erstellen';
   HK8055In:='K8055-Eingang (echter Taster) erstellen';
   HK8055Uit:='K8055-Ausgang (echter Ausgang) erstellen';
+  HK8055Ana:='Analogen K8055-Eingang (Drehknopf, 0 bis 5 V) erstellen';
   HStappenmotor:='Schrittmotor erstellen';
   HServo:='Servomotor erstellen';
   HVentilator:='Ventilator erstellen';
@@ -1954,6 +1962,7 @@ begin
   RVent := Rect(0, 0, 0, 0);
   RK8055In := Rect(0, 0, 0, 0);
   RK8055Uit := Rect(0, 0, 0, 0);
+  RK8055Ana := Rect(0, 0, 0, 0);
   N := 0;
   X := LK;
   Y := TOP;
@@ -2012,6 +2021,7 @@ begin
     Knop(RBoardUit, 34, DBoardUit);
     Knop(RK8055In, 38, DK8055In);
     Knop(RK8055Uit, 39, DK8055Uit);
+    Knop(RK8055Ana, 40, DK8055Ana);
   end;
 end;
 

@@ -12,7 +12,7 @@
       needed.</li>
   </ul>
 
-  <h2>The two components</h2>
+  <h2>The components</h2>
   <table>
     <tr><th>Button</th><th>Name</th><th>What is it?</th></tr>
     <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">K8055 input</td><td>A
@@ -22,6 +22,7 @@
     <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">K8055 output</td><td>A
       <a href="voeding.html#serie">5&nbsp;V lamp</a> with two terminals. When it lights (e.g. on the output of a gate), Logic
       switches on the <b>real output</b>, and the <b>LED on the board</b> for that output lights.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-ana.png" alt=""></td><td class="name">K8055 analog input</td><td>A <b>voltage source from 0 to 5&nbsp;V</b> with two terminals (+ at the top, &minus; at the bottom). With the board, the voltage follows the <b>knob</b> A1 or A2 on the board (or a sensor on that input); without a board you set it with the slider. Right-click: A1 or A2.</td></tr>
   </table>
   <p>Right-click to choose the input (INP1 to INP5) or the output (OUT1 to OUT8). The two buttons are in the component bar
   at <a href="instellingen.html#niveau">level</a> <b>Advanced</b>, next to those of the <a href="board.html">Arduino board</a>.
@@ -45,9 +46,93 @@
     <li>Press <b>INP1</b> and <b>INP2</b> together: the LED of <b>OUT1</b> on the board lights.</li>
   </ol>
 
-  <div class="tip"><strong>Connecting your own parts:</strong> the outputs of the K8055 switch to <b>GND</b> (open
-  collector, up to 50&nbsp;V and 100&nbsp;mA per output). Put your own lamp, buzzer or relay between the <b>+</b> of your own
-  supply and the output; connect the &minus; of that supply to GND of the board.</div>
+  <h2 id="analoog">The analog input: a knob</h2>
+  <p>The K8055 has two <b>analog inputs</b>, A1 and A2. They measure a voltage from 0 to 5&nbsp;V in 256 small steps (0 to 255).
+  Each input already has a <b>knob</b> on the board. The <b>K8055 analog input</b> in Logic is a small source that gives exactly
+  that voltage: turn the knob, and the voltage in your circuit on the screen changes.</p>
+  <p><a class="open" href="../../panels/k8055-servo.lpl">&#9654; Open this example</a></p>
+  <figure>
+    <img src="../img/k8055-servo.png" alt="A K8055 analog input A1 with its + to input S of a servo motor; the servo is at 73 degrees">
+    <figcaption>Knob A1 is at 104 of 255: that is 2.04&nbsp;V on input S of the <a href="voeding.html#servo">servo</a>, and the
+    arm is at 73&deg;. If the <a href="board.html#servo">Arduino board</a> is also connected, a real servo on D9 turns along.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Plug in the K8055, open the example and start the simulation.</li>
+    <li>Turn knob <b>A1</b> on the board: the voltage on the screen changes and the servo arm turns along.</li>
+    <li>Fully left is 0&nbsp;V (0&deg;), fully right 5&nbsp;V (180&deg;).</li>
+  </ol>
+  <div class="tip"><strong>A real sensor:</strong> instead of the knob you can also connect an <b>LDR</b> or an <b>NTC</b> to A1
+  (see the K8055 manual for the jumpers). Then Logic really measures light or heat, as in the <a href="les40.html">night
+  light</a> and the <a href="les41.html">temperature alarm</a>.</div>
+
+  <h2 id="aansluiten">Connecting your own parts to an output</h2>
+  <p>An output of the K8055 <b>gives no voltage</b>: it works as a switch to <b>GND</b> (open collector). When the output is on, its terminal (e.g. <b>O1</b>) is connected to GND. So you need a <b>plus</b> yourself, for example the <b>5V</b> of your Arduino. Put your part between that 5V and the output terminal, and connect <b>GND</b> of the Arduino to <b>GND</b> of the K8055.</p>
+  <figure>
+    <svg viewBox="0 0 640 330" role="img" aria-label="Wiring diagram: the 5V of an Arduino to a buzzer and to an LED with a resistor; the buzzer to output O1, the LED to O3 of the K8055; GND of the Arduino to GND of the K8055" style="max-width:640px;background:#fff;border:1px solid #ccc;border-radius:6px">
+    <g font-family="Arial, sans-serif" font-size="12">
+    <rect x="330" y="120" width="280" height="180" rx="10" fill="#b32020" stroke="#701010" stroke-width="2"/>
+    <text x="470" y="240" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">K8055</text>
+    <rect x="344" y="122" width="262" height="20" fill="#2a7a2a"/>
+    <circle cx="360" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="360" y="160" text-anchor="middle" fill="#fff" font-size="11">O1</text>
+    <rect x="356" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="384" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="384" y="160" text-anchor="middle" fill="#fff" font-size="11">O2</text>
+    <rect x="380" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="408" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="408" y="160" text-anchor="middle" fill="#fff" font-size="11">O3</text>
+    <rect x="404" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="432" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="432" y="160" text-anchor="middle" fill="#fff" font-size="11">O4</text>
+    <rect x="428" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="456" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="456" y="160" text-anchor="middle" fill="#fff" font-size="11">O5</text>
+    <rect x="452" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="480" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="480" y="160" text-anchor="middle" fill="#fff" font-size="11">O6</text>
+    <rect x="476" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="504" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="504" y="160" text-anchor="middle" fill="#fff" font-size="11">O7</text>
+    <rect x="500" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="528" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="528" y="160" text-anchor="middle" fill="#fff" font-size="11">O8</text>
+    <rect x="524" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="556" cy="132" r="6" fill="#ddd" stroke="#555"/><text x="556" y="160" text-anchor="middle" fill="#fff" font-size="11">GND</text>
+    <circle cx="590" cy="132" r="6" fill="#ddd" stroke="#555"/><text x="590" y="160" text-anchor="middle" fill="#fff" font-size="10">CLAMP</text>
+    <rect x="30" y="200" width="150" height="100" rx="10" fill="#1f5aa6" stroke="#0d3a75" stroke-width="2"/>
+    <text x="105" y="262" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">UNO</text>
+    <rect x="62" y="202" width="16" height="16" fill="#222"/><rect x="102" y="202" width="16" height="16" fill="#222"/>
+    <text x="70" y="232" text-anchor="middle" fill="#fff" font-size="10">GND</text><text x="110" y="232" text-anchor="middle" fill="#fff" font-size="10">5V</text>
+    <path d="M70 210 V18 H624 V108 H556 V126" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M110 210 V40 H408" fill="none" stroke="#e00000" stroke-width="4" stroke-linejoin="round"/>
+    <text x="120" y="56" fill="#e00000" font-weight="bold">+5V</text>
+    <path d="M360 40 V52" stroke="#e00000" stroke-width="3"/>
+    <circle cx="360" cy="72" r="18" fill="#222"/><circle cx="360" cy="72" r="4" fill="#555"/>
+    <text x="368" y="60" fill="#ff8080" font-weight="bold" font-size="11">+</text>
+    <path d="M360 90 V126" stroke="#333" stroke-width="3"/>
+    <text x="336" y="76" text-anchor="end" fill="#333" font-weight="bold">buzzer</text>
+    <path d="M408 40 V48" stroke="#e00000" stroke-width="3"/>
+    <rect x="401" y="48" width="14" height="30" rx="3" fill="#e8d3a3" stroke="#7a5a20"/>
+    <path d="M401 56 H415 M401 63 H415 M401 70 H415" stroke="#b03030" stroke-width="2"/>
+    <text x="420" y="68" fill="#333" font-size="11">220 &#937;</text>
+    <path d="M408 78 V86" stroke="#333" stroke-width="3"/>
+    <circle cx="408" cy="98" r="11" fill="#ffdddd" stroke="#c00000" stroke-width="2"/>
+    <path d="M401 93 H415 L408 105 Z" fill="#c00000"/><path d="M401 106 H415" stroke="#c00000" stroke-width="2"/>
+    <path d="M408 109 V126" stroke="#333" stroke-width="3"/>
+    <text x="424" y="102" fill="#c00000" font-weight="bold">LED</text>
+    </g></svg>
+    <figcaption>A buzzer on <b>O1</b> and an LED with a 220&nbsp;&Omega; resistor on <b>O3</b>. The <b>5V</b> of the Arduino gives the plus; the black wire connects <b>GND</b> of the Arduino to <b>GND</b> of the K8055.</figcaption>
+  </figure>
+  <table>
+    <tr><th>What</th><th>How</th></tr>
+    <tr><td>LED</td><td>5V &rarr; 220&nbsp;&Omega; resistor &rarr; long leg of the LED; short leg &rarr; <b>O1</b></td></tr>
+    <tr><td>Active buzzer</td><td>5V &rarr; the <b>+</b> leg (the long one); the other leg &rarr; <b>O1</b></td></tr>
+    <tr><td>Small relay (5&nbsp;V)</td><td>5V &rarr; coil &rarr; <b>O1</b>; also connect the <b>CLAMP</b> terminal to the 5V</td></tr>
+  </table>
+  <div class="tip"><strong>Careful:</strong> at most <b>100&nbsp;mA</b> per output (an LED or buzzer is fine; drive a small motor
+  through a relay). With a relay or motor, <b>CLAMP</b> must go to the plus: it protects the K8055 against the voltage spike when
+  switching off. Never connect 230&nbsp;V. The LED on the board simply lights along.</div>
+
 
   <h2>Not working?</h2>
   <ul>

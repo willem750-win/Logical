@@ -2635,3 +2635,18 @@ msgstr "K8055が接続されていません：画面のランプだけが点き�
 
 msgid "Each output has an LED on the board. Right-click: choose the output."
 msgstr "各出力にはボード上のLEDがあります。右クリック：出力を選ぶ。"
+
+msgid "create K8055 analog input (knob, 0 to 5 V)"
+msgstr "K8055アナログ入力を作成（つまみ、0〜5 V）"
+
+msgid "K8055 analog input"
+msgstr "K8055アナログ入力"
+
+msgid "The K8055 is connected: the voltage follows the knob (or the sensor) on this input."
+msgstr "K8055が接続されています：電圧はこの入力のつまみ（またはセンサー）に従います。"
+
+msgid "No K8055 connected: set the voltage with the slider."
+msgstr "K8055が接続されていません：スライダーで電圧を設定してください。"
+
+msgid "A voltage source from 0 to 5 V with two terminals: + at the top, - at the bottom (to the - rail).\nRight-click: choose A1 or A2."
+msgstr "端子が2つある0〜5 Vの電圧源：上が +、下が -（- レールへ）。\n右クリック：A1かA2を選ぶ。"

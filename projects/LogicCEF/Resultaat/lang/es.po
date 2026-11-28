@@ -2630,3 +2630,18 @@ msgstr "Ninguna K8055 conectada: solo se enciende la lámpara de la pantalla."
 
 msgid "Each output has an LED on the board. Right-click: choose the output."
 msgstr "Cada salida tiene un LED en la placa. Clic derecho: elegir la salida."
+
+msgid "create K8055 analog input (knob, 0 to 5 V)"
+msgstr "crear entrada analógica K8055 (mando, 0 a 5 V)"
+
+msgid "K8055 analog input"
+msgstr "Entrada analógica K8055"
+
+msgid "The K8055 is connected: the voltage follows the knob (or the sensor) on this input."
+msgstr "La K8055 está conectada: la tensión sigue el mando (o el sensor) de esta entrada."
+
+msgid "No K8055 connected: set the voltage with the slider."
+msgstr "Ninguna K8055 conectada: ajusta la tensión con el deslizador."
+
+msgid "A voltage source from 0 to 5 V with two terminals: + at the top, - at the bottom (to the - rail).\nRight-click: choose A1 or A2."
+msgstr "Una fuente de tensión de 0 a 5 V con dos bornes: + arriba, - abajo (al riel -).\nClic derecho: elegir A1 o A2."

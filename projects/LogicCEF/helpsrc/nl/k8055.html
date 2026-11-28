@@ -12,7 +12,7 @@
       K8055D.dll) is niet nodig.</li>
   </ul>
 
-  <h2>De twee onderdelen</h2>
+  <h2>De onderdelen</h2>
   <table>
     <tr><th>Knop</th><th>Naam</th><th>Wat is het?</th></tr>
     <tr><td class="btn"><img src="../img/pal-k8055-in.png" alt=""></td><td class="name">K8055-ingang</td><td>Een
@@ -22,6 +22,7 @@
     <tr><td class="btn"><img src="../img/pal-k8055-uit.png" alt=""></td><td class="name">K8055-uitgang</td><td>Een
       <a href="voeding.html#serie">lamp van 5&nbsp;V</a> met twee klemmen. Brandt ze (bv. aan de uitgang van een poort), dan
       zet Logic de <b>echte uitgang</b> aan, en het <b>ledje op het bordje</b> bij die uitgang brandt.</td></tr>
+    <tr><td class="btn"><img src="../img/pal-k8055-ana.png" alt=""></td><td class="name">K8055-analoge ingang</td><td>Een <b>spanningsbron van 0 tot 5&nbsp;V</b> met twee klemmen (+ boven, &minus; onder). Met het bordje volgt de spanning het <b>draaiknopje</b> A1 of A2 op het bordje (of een sensor op die ingang); zonder bordje stel je ze in met de schuif. Rechtsklik: A1 of A2.</td></tr>
   </table>
   <p>Met rechtsklik kies je de ingang (INP1 tot INP5) of de uitgang (OUT1 tot OUT8). De twee knoppen staan in de
   onderdelenbalk bij het <a href="instellingen.html#niveau">niveau</a> <b>Gevorderden</b>, naast die van het
@@ -45,9 +46,94 @@
     <li>Druk <b>INP1</b> en <b>INP2</b> samen in: het ledje van <b>OUT1</b> op het bordje gaat aan.</li>
   </ol>
 
-  <div class="tip"><strong>Zelf iets aansluiten:</strong> de uitgangen van de K8055 schakelen naar <b>GND</b> (open
-  collector, tot 50&nbsp;V en 100&nbsp;mA per uitgang). Een eigen lampje, zoemer of relais zet je tussen de <b>+</b> van een eigen
-  voeding en de uitgang; verbind de &minus; van die voeding met GND van het bordje.</div>
+  <h2 id="analoog">De analoge ingang: een draaiknopje</h2>
+  <p>De K8055 heeft twee <b>analoge ingangen</b>, A1 en A2. Ze meten een spanning van 0 tot 5&nbsp;V in 256 stapjes (0 tot 255).
+  Op het bordje zit op elke ingang al een <b>draaiknopje</b>. De <b>K8055-analoge ingang</b> in Logic is een kleine bron die
+  precies die spanning geeft: draai je aan het knopje, dan verandert de spanning in je schakeling op het scherm.</p>
+  <p><a class="open" href="../../panels/k8055-servo.lpl">&#9654; Open dit voorbeeld</a></p>
+  <figure>
+    <img src="../img/k8055-servo.png" alt="Een K8055-analoge ingang A1 met de + aan de ingang S van een servomotor; de servo staat op 73 graden">
+    <figcaption>Het knopje A1 staat op 104 van 255: dat is 2,04&nbsp;V op de ingang S van de <a href="voeding.html#servo">servo</a>,
+    en de arm staat op 73&deg;. Is ook het <a href="board.html#servo">Arduino-board</a> verbonden, dan draait een echte servo op
+    D9 mee.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li>Steek de K8055 in, open het voorbeeld en start de simulatie.</li>
+    <li>Draai aan het knopje <b>A1</b> op het bordje: de spanning op het scherm verandert, en de arm van de servo draait mee.</li>
+    <li>Helemaal links is 0&nbsp;V (0&deg;), helemaal rechts 5&nbsp;V (180&deg;).</li>
+  </ol>
+  <div class="tip"><strong>Een echte sensor:</strong> in plaats van het knopje kun je ook een <b>LDR</b> of een <b>NTC</b> op A1
+  aansluiten (zie de handleiding van de K8055 voor de jumpers). Dan meet Logic echt licht of warmte, zoals in het
+  <a href="les40.html">nachtlampje</a> en het <a href="les41.html">temperatuuralarm</a>.</div>
+
+  <h2 id="aansluiten">Zelf iets aansluiten op een uitgang</h2>
+  <p>Een uitgang van de K8055 <b>geeft geen spanning</b>: hij werkt als een schakelaar naar <b>GND</b> (open collector). Staat de uitgang aan, dan is de klem (bv. <b>O1</b>) met GND verbonden. Je hebt dus zelf een <b>plus</b> nodig, bijvoorbeeld de <b>5V</b> van je Arduino. Zet je onderdeel tussen die 5V en de klem van de uitgang, en verbind de <b>GND</b> van de Arduino met de <b>GND</b> van de K8055.</p>
+  <figure>
+    <svg viewBox="0 0 640 330" role="img" aria-label="Aansluitschema: de 5V van een Arduino naar een zoemer en een led met weerstand; de zoemer naar uitgang O1, de led naar O3 van de K8055; GND van de Arduino naar GND van de K8055" style="max-width:640px;background:#fff;border:1px solid #ccc;border-radius:6px">
+    <g font-family="Arial, sans-serif" font-size="12">
+    <rect x="330" y="120" width="280" height="180" rx="10" fill="#b32020" stroke="#701010" stroke-width="2"/>
+    <text x="470" y="240" text-anchor="middle" fill="#fff" font-size="24" font-weight="bold">K8055</text>
+    <rect x="344" y="122" width="262" height="20" fill="#2a7a2a"/>
+    <circle cx="360" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="360" y="160" text-anchor="middle" fill="#fff" font-size="11">O1</text>
+    <rect x="356" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="384" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="384" y="160" text-anchor="middle" fill="#fff" font-size="11">O2</text>
+    <rect x="380" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="408" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="408" y="160" text-anchor="middle" fill="#fff" font-size="11">O3</text>
+    <rect x="404" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="432" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="432" y="160" text-anchor="middle" fill="#fff" font-size="11">O4</text>
+    <rect x="428" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="456" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="456" y="160" text-anchor="middle" fill="#fff" font-size="11">O5</text>
+    <rect x="452" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="480" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="480" y="160" text-anchor="middle" fill="#fff" font-size="11">O6</text>
+    <rect x="476" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="504" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="504" y="160" text-anchor="middle" fill="#fff" font-size="11">O7</text>
+    <rect x="500" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="528" cy="132" r="6" fill="#ddd" stroke="#555"/>
+    <text x="528" y="160" text-anchor="middle" fill="#fff" font-size="11">O8</text>
+    <rect x="524" y="170" width="8" height="8" fill="#ffd34d"/>
+    <circle cx="556" cy="132" r="6" fill="#ddd" stroke="#555"/><text x="556" y="160" text-anchor="middle" fill="#fff" font-size="11">GND</text>
+    <circle cx="590" cy="132" r="6" fill="#ddd" stroke="#555"/><text x="590" y="160" text-anchor="middle" fill="#fff" font-size="10">CLAMP</text>
+    <rect x="30" y="200" width="150" height="100" rx="10" fill="#1f5aa6" stroke="#0d3a75" stroke-width="2"/>
+    <text x="105" y="262" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">UNO</text>
+    <rect x="62" y="202" width="16" height="16" fill="#222"/><rect x="102" y="202" width="16" height="16" fill="#222"/>
+    <text x="70" y="232" text-anchor="middle" fill="#fff" font-size="10">GND</text><text x="110" y="232" text-anchor="middle" fill="#fff" font-size="10">5V</text>
+    <path d="M70 210 V18 H624 V108 H556 V126" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M110 210 V40 H408" fill="none" stroke="#e00000" stroke-width="4" stroke-linejoin="round"/>
+    <text x="120" y="56" fill="#e00000" font-weight="bold">+5V</text>
+    <path d="M360 40 V52" stroke="#e00000" stroke-width="3"/>
+    <circle cx="360" cy="72" r="18" fill="#222"/><circle cx="360" cy="72" r="4" fill="#555"/>
+    <text x="368" y="60" fill="#ff8080" font-weight="bold" font-size="11">+</text>
+    <path d="M360 90 V126" stroke="#333" stroke-width="3"/>
+    <text x="336" y="76" text-anchor="end" fill="#333" font-weight="bold">zoemer</text>
+    <path d="M408 40 V48" stroke="#e00000" stroke-width="3"/>
+    <rect x="401" y="48" width="14" height="30" rx="3" fill="#e8d3a3" stroke="#7a5a20"/>
+    <path d="M401 56 H415 M401 63 H415 M401 70 H415" stroke="#b03030" stroke-width="2"/>
+    <text x="420" y="68" fill="#333" font-size="11">220 &#937;</text>
+    <path d="M408 78 V86" stroke="#333" stroke-width="3"/>
+    <circle cx="408" cy="98" r="11" fill="#ffdddd" stroke="#c00000" stroke-width="2"/>
+    <path d="M401 93 H415 L408 105 Z" fill="#c00000"/><path d="M401 106 H415" stroke="#c00000" stroke-width="2"/>
+    <path d="M408 109 V126" stroke="#333" stroke-width="3"/>
+    <text x="424" y="102" fill="#c00000" font-weight="bold">led</text>
+    </g></svg>
+    <figcaption>Een zoemer op <b>O1</b> en een led met een weerstand van 220&nbsp;&Omega; op <b>O3</b>. De <b>5V</b> van de Arduino geeft de plus; de zwarte draad verbindt <b>GND</b> van de Arduino met <b>GND</b> van de K8055.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Wat</th><th>Hoe</th></tr>
+    <tr><td>Led</td><td>5V &rarr; weerstand van 220&nbsp;&Omega; &rarr; lang pootje van de led; kort pootje &rarr; <b>O1</b></td></tr>
+    <tr><td>Actieve zoemer</td><td>5V &rarr; het <b>+</b>-pootje (het lange); het andere pootje &rarr; <b>O1</b></td></tr>
+    <tr><td>Klein relais (5&nbsp;V)</td><td>5V &rarr; spoel &rarr; <b>O1</b>; verbind ook de klem <b>CLAMP</b> met de 5V</td></tr>
+  </table>
+  <div class="tip"><strong>Let op:</strong> hoogstens <b>100&nbsp;mA</b> per uitgang (een led of zoemer is goed; een motortje
+  stuur je via een relais). Bij een relais of motor moet <b>CLAMP</b> aan de plus: dat beschermt de K8055 tegen de spanningspiek
+  bij het uitschakelen. Sluit nooit 230&nbsp;V aan. Het ledje op het bordje gaat gewoon mee aan.</div>
+
 
   <h2>Lukt het niet?</h2>
   <ul>

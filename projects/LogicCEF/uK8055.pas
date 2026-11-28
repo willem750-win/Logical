@@ -55,6 +55,7 @@ type
     procedure Schrijf(AMasker: Byte);
     procedure IngangenBijwerken(AData: Byte);
     procedure HintsBijwerken(AInval: Boolean);
+    procedure AnaloogBijwerken(A1, A2: Byte);
     function OnderdelenOpPaneel: Boolean;
   public
     constructor Create(AOwner: TComponent; APaneel: TWinControl); reintroduce;
@@ -158,7 +159,8 @@ begin
   Result := False;
   if FPaneel = nil then Exit;
   for i := 0 to FPaneel.ControlCount - 1 do
-    if (FPaneel.Controls[i] is TjanK8055In) or (FPaneel.Controls[i] is TjanK8055Uit) then
+    if (FPaneel.Controls[i] is TjanK8055In) or (FPaneel.Controls[i] is TjanK8055Uit) or
+      (FPaneel.Controls[i] is TjanK8055Ana) then
       Exit(True);
 end;
 
@@ -294,6 +296,7 @@ begin
   begin
     FOpen := False;
     HintsBijwerken(True);
+    VoedingBijwerken(FPaneel);
     if Assigned(FOnStatus) then FOnStatus(Self);
   end;
 end;
@@ -332,13 +335,29 @@ begin
     end;
 end;
 
+// de analoge ingangen A1 en A2: bij een verandering van minstens 2 (ruis) de
+// kring opnieuw berekenen en de onderdelen TjanK8055Ana opnieuw tekenen
+procedure TK8055.AnaloogBijwerken(A1, A2: Byte);
+var
+  i: Integer;
+begin
+  if (Abs(A1 - K8055Analoog[1]) < 2) and (Abs(A2 - K8055Analoog[2]) < 2) then Exit;
+  K8055Analoog[1] := A1;
+  K8055Analoog[2] := A2;
+  if FPaneel = nil then Exit;
+  for i := 0 to FPaneel.ControlCount - 1 do
+    if FPaneel.Controls[i] is TjanK8055Ana then FPaneel.Controls[i].Invalidate;
+  VoedingBijwerken(FPaneel);
+end;
+
 procedure TK8055.HintsBijwerken(AInval: Boolean);
 var
   i: Integer;
 begin
   if FPaneel = nil then Exit;
   for i := 0 to FPaneel.ControlCount - 1 do
-    if (FPaneel.Controls[i] is TjanK8055In) or (FPaneel.Controls[i] is TjanK8055Uit) then
+    if (FPaneel.Controls[i] is TjanK8055In) or (FPaneel.Controls[i] is TjanK8055Uit) or
+      (FPaneel.Controls[i] is TjanK8055Ana) then
     begin
       TjanVoedingsDeel(FPaneel.Controls[i]).UpdateHintText;
       if AInval then FPaneel.Controls[i].Invalidate;
@@ -360,7 +379,10 @@ begin
     Exit;
   end;
   if FLeser.Teller > 0 then
+  begin
     IngangenBijwerken(FLeser.Data[0]);
+    AnaloogBijwerken(FLeser.Data[2], FLeser.Data[3]);
+  end;
   // nieuwe K8055-onderdelen (bv. net geladen paneel): hints en uitgangen bijwerken
   if FTel mod 25 = 0 then
   begin

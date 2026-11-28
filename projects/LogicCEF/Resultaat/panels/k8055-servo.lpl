@@ -1,0 +1,16 @@
+TjanRail;428;69;60;23;+;50;
+TjanRail;448;849;60;23;-;0;
+TjanBron;84;414;12;112;50;0;0;
+TjanConnector;20;76;85;350;jcmTR;jcpBL;jcsTRBL;0,971429;11;
+TjanConnector;20;515;85;350;jcmBR;jcpTL;jcsTLBR;0,022857;11;
+TjanServo;118;430;160;186;9;90;
+TjanConnector;8;76;173;362;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;63;430;233;434;jcmBR;jcpTL;jcsTLBR;0;11;
+TjanK8055Ana;74;200;194;150;1;128;
+TjanConnector;8;341;203;97;jcmBR;jcpTL;jcsTLBR;0,5;11;
+TjanConnector;55;341;249;523;jcmBR;jcpTL;jcsTLBR;0;11;
+Paneelkleur;-2147483626;
+Dotkleur;8421504;
+Grid;True;
+Statusbalk;False;
+Voeding;1;

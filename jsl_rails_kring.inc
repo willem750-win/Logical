@@ -1343,6 +1343,9 @@ begin
             G := -Hulp; Off := 0;
           end;
         end
+      else if Parts[k] is TjanK8055Ana then
+        // analoge ingang van een K8055: een bron van 0 tot 5 V (+ aan klem 0)
+        AddTakE(PinNode(k, 0), PinNode(k, 1), 1 / TjanK8055Ana(Parts[k]).Ri, TjanK8055Ana(Parts[k]).Emk, Parts[k])
       else if Parts[k] is TjanStappenmotor then
       begin
         // stappenmotor: vier spoelen van A, B, C, D naar de gemeenschappelijke klem
@@ -1701,6 +1704,8 @@ begin
         SetStroom(Parts[k], U * (Koppeling * 0.001 + (1 - Koppeling) / 40) + Hulp * Amp);
         Meet(U, F, Parts[k].FAmp, Amp);
       end
+    else if Parts[k] is TjanK8055Ana then
+      SetStroom(Parts[k], (U - TjanK8055Ana(Parts[k]).Emk) / TjanK8055Ana(Parts[k]).Ri)
     else if Parts[k] is TjanServo then
       SetStroom(Parts[k], U / TjanServo(Parts[k]).MotorOhm)
     else if Parts[k] is TjanStappenmotor then
@@ -2068,6 +2073,9 @@ begin
   else if C is TjanWeerstand then
     Result := Format('TjanWeerstand;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width,
       TjanWeerstand(C).Soort])
+  else if C is TjanK8055Ana then
+    Result := Format('TjanK8055Ana;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanK8055Ana(C).Nr,
+      TjanK8055Ana(C).Stand])
   else if C is TjanK8055Uit then
     Result := Format('TjanK8055Uit;%d;%d;%d;%d;%d;%d;', [C.Height, C.Left, C.Top, C.Width, TjanK8055Uit(C).Nr,
       Ord(TjanK8055Uit(C).Kleur)])
